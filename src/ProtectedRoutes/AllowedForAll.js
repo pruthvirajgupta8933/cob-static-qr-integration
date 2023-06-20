@@ -3,17 +3,19 @@ import { Route } from 'react-router-dom';
 // import { roleBasedAccess } from '../_components/reuseable_components/roleBasedAccess';
 import { roleBasedAccess } from '../_components/reuseable_components/roleBasedAccess';
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 const AllowedForAll = (props) => {
-    console.log(props,"this is props")
-  const { Component } = props;
+  
+  const { user } = useSelector((state) => state.auth);
+const { Component } = props;
   let history = useHistory();
-  const roleBasedShowTab = roleBasedAccess();
+  
  
   
   useEffect(() => {
     
-    if(roleBasedShowTab?.merchant === false) {
+    if( user.isLoggedIn) {
         history.push('/login-page')
     }
   })
