@@ -559,6 +559,16 @@ function DashboardMainContent() {
                                 </ApproverRoute>
                             )}
 
+                            {roles?.verifier && (
+                                <VerifierRoute
+                                    exact
+                                    path={`${path}/referzone`}
+                                    Component={ReferZone}
+                                >
+                                    <ReferZone />
+                                </VerifierRoute>
+                            )}
+
 
                             {roles?.approver && (
                                 <ApproverRoute

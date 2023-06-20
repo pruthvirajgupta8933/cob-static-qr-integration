@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForApproved } from "../../slices/kycSlice";
+import { kycForApproved, kycForPending } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
@@ -149,11 +149,13 @@ const ReferZone = () => {
 
   const refreshAfterRefer = () => {
     dispatch(
-      kycForApproved({
+      kycForPending({
         page: currentPage,
         page_size: pageSize,
         searchquery: "",
-        merchantStatus: "Approved",
+        merchantStatus: "Processing",
+        isDirect:""
+
       })
     )
       .then((resp) => {
@@ -169,11 +171,12 @@ const ReferZone = () => {
 
   useEffect(() => {
     dispatch(
-      kycForApproved({
+      kycForPending({
         page: currentPage,
         page_size: pageSize,
         searchquery: "",
-        merchantStatus: "Approved",
+        merchantStatus: "Processing",
+        isDirect:""
       })
     )
       .then((resp) => {

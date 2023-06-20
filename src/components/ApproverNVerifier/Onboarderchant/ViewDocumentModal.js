@@ -206,29 +206,14 @@ const ViewDocumentModal = (props) => {
                 <div className="col-md-6">
                   <div class="file-input">
                     <h6 className="">Attachments</h6>
-                    <input
-                      ref={aRef}
-                      type="file"
-                      id="file"
-                      class="file"
-                      onChange={(e) => handleUploadAttachments(e)}
-                    />
+
                     <div className="d-flex">
                       <div>
-                        <label for="file">
-                          Upload Files{" "}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-paperclip"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                          </svg>
-                          <p class="file-name"></p>
+                        <label for="file-upload" class="btn btn-sm cob-btn-primary">
+                          <i class="fa fa-cloud-upload"></i> Upload
                         </label>
+                        <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
+
                       </div>
                       <div className="ml-3">
                         <button
