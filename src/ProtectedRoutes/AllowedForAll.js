@@ -9,7 +9,7 @@ const AllowedForAll = (props) => {
   const { Component } = props;
   let history = useHistory();
   const roleBasedShowTab = roleBasedAccess();
-  console.log(roleBasedShowTab,"roleBasedShowTab for allowedmerchant")
+ 
   
   useEffect(() => {
     

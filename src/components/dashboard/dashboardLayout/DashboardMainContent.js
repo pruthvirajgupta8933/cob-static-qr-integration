@@ -72,8 +72,8 @@ import MandateReport from "../../../subscription_components/MandateReport";
 import BizzAppData from '../../ApproverNVerifier/BizzData';
 import CreateMandate from "../../../subscription_components/Create_Mandate/index";
 import DebitReport from "../../../subscription_components/DebitReport";
-import AllowedRoute from "../../../ProtectedRoutes/AllowedRoute";
 import Faq from "../../../components/Faq/Faq"
+import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
 
 
 
@@ -503,10 +503,15 @@ function DashboardMainContent() {
 
 
                             {/* Routing for Faq */}
-                            <AllowedRoute  exact path={`${path}/faq`} Component={Faq}>
+
+                            <AllowedForAll  exact path={`${path}/faq`} Component={Faq}>
                                 <Faq/>
 
-                            </AllowedRoute>
+                            </AllowedForAll>
+                            {/* <All  exact path={`${path}/faq`} Component={Faq}>
+                                <Faq/>
+
+                            </AllowedRoute> */}
 
 
 
