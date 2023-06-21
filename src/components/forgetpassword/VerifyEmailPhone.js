@@ -96,12 +96,12 @@ const VerifyEmailPhone = (props) => {
       <div className="container-fluid toppad ">
         <div className="row">
           <div className="col-sm-6 mx-auto">
-            <div className="card ">
+            <div className="card mt-5 ">
               <div className="card-header text-center ">
                 Forgot Password
               </div>
               <div className="card-body NunitoSans-Regular">
-                <h6 className="card-title">
+                <h6 className="card-title ml-2">
                   We have sent the OTP on your registered Email Address and on
                   Phone Number.{" "}
                 </h6>
@@ -129,7 +129,7 @@ const VerifyEmailPhone = (props) => {
                             color: "red",
                             position: "absolute",
                             zIndex: " 999",
-                            top: "157px",
+                            top: "127px",
                           }}
                         >
                           {errors.emailotp}
