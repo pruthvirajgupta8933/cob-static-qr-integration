@@ -122,10 +122,10 @@ function TransactionSummery() {
 
       {/* <div className="profileBarStatus">
         </div> */}
-      <main className="">
-        <div className="">
+      <main>
+        <div >
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="mb-2">Transaction Summary</h5>
+          <h5 className="mb-5">Transaction Summary</h5>
           {/* </div> */}
           <section className="">
             <div className="container-fluid">
@@ -164,10 +164,12 @@ function TransactionSummery() {
                   <></>
                 )}
                 <div className="">
+                {(showData.length !== 0) &&
                   <p className="m-0">
                     Total Successful Transactions: {totalSuccessTxn} | Total
                     Amount {`(INR)`}: {totalAmt}{" "}
                   </p>
+}
                 </div>
                 <table
                   cellspaccing={0}
@@ -177,7 +179,7 @@ function TransactionSummery() {
                   className="tables"
                 >
                   <tbody>
-                  {(showData.length <= 0 && isLoading === false) &&
+                  {(showData.length !== 0 && isLoading === false) &&
                     <tr>
                       <th>Sr. No.</th>
                       <th>Client's Name</th>

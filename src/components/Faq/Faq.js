@@ -1,7 +1,6 @@
 import React from 'react';
-import classes from "./faq.module.css"
-
 const Faq = () => {
+  
   return (
     <section>
       <main>
@@ -64,12 +63,14 @@ const Faq = () => {
               </div>
 
               <p>
+              <a data-bs-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3" className="text-decoration-none">
                 <span class="d-inline-flex align-items-center">
                   <i class="fa fa-caret-right me-2"></i>
-                  <a data-bs-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3" className="text-decoration-none">
+                  
                     <h6 class="m-0" >How do I signup for SabPaisa?</h6>
-                  </a>
+                  
                 </span>
+                </a>
               </p>
               <div className="collapse ml-3" id="collapseExample3">
                 <p>To sign up for SabPaisa, visit <a href="https://sabpaisa.in/sign-up/">https://sabpaisa.in/sign-up/</a>, fill in your details, and our team will get in touch with you at the earliest.</p>
@@ -78,25 +79,27 @@ const Faq = () => {
            
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4" className="text-decoration-none">
+                
                   <h6 class="m-0">What all card Information does SabPaisa store?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample4">
               <p>SabPaisa stores only the last four digits of a card, which is the industry standard.</p>
             </div>
-
-
-            <p>
+         <p>
+         <a data-bs-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5" className="text-decoration-none">
+                
                   <h6 class="m-0">For what purposes can the end-customer use SabPaisa?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
 
             <div className="collapse ml-3" id="collapseExample5">
@@ -108,108 +111,126 @@ const Faq = () => {
               </ul>
             </div>
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample56" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample56" className="text-decoration-none">
+                
                   <h6 class="m-0">What payment options are available in SabPaisa?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample6">
               <p>All the modes of payments are available with SabPaia, from Debit cards, Credit Card, Wallets, UPI, Bharat QR etc. We have almost 10 lac e-cash counters that make payments convenient.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample57" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample57" className="text-decoration-none">
+                
                   <h6 class="m-0">My customer mostly uses Net banking, what’s in for me?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample7">
               <p>SabPaisa offers Netbanking services with all major banks for the convenience of the customers.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample58" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample58" className="text-decoration-none">
+               
                   <h6 class="m-0" >Do you support International Payments?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample8">
               <p>SabPaisa is working on getting international payments.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false" aria-controls="collapseExample9" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false" aria-controls="collapseExample9" className="text-decoration-none">
+                
                   <h6 class="m-0">Do you support mobile payments?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample9">
               <p>Yes, SabPaisa supports mobile payments.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample10" role="button" aria-expanded="false" aria-controls="collapseExample10" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample10" role="button" aria-expanded="false" aria-controls="collapseExample10" className="text-decoration-none">
+                
                   <h6 class="m-0">Do you support partial refunds?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample10">
               <p>Yes, we support partial refunds.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample11" role="button" aria-expanded="false" aria-controls="collapseExample11" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample11" role="button" aria-expanded="false" aria-controls="collapseExample11" className="text-decoration-none">
+               
                   <h6 class="m-0">How long does it take to go live?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample11">
               <p>SabPaisa offers you the fastest TAT after all formalities like KYC, agreement etc is done.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample12" role="button" aria-expanded="false" aria-controls="collapseExample12" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample12" role="button" aria-expanded="false" aria-controls="collapseExample12" className="text-decoration-none">
+                
                   <h6 class="m-0">Is the payment experience customisable as per my website’s look and feel?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample12">
               <p>No, the payment experience is not customisable as per the merchant’s website’s look and feel at this point.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample13" role="button" aria-expanded="false" aria-controls="collapseExample13" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample13" role="button" aria-expanded="false" aria-controls="collapseExample13" className="text-decoration-none">
+                
                   <h6 class="m-0">How and when will I receive the money for payments made to us?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample13">
               <p>SabPaisa Payment Gateway is governed by the Payment and Settlement Act of RBI and payments are done to merchants within RBI prescribed TATs.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample14" role="button" aria-expanded="false" aria-controls="collapseExample14" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample14" role="button" aria-expanded="false" aria-controls="collapseExample14" className="text-decoration-none">
+                
                   <h6 class="m-0">What kind Of MIS/Reports do you provide?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample14">
               <p>We provide a dashboard to every merchant, wherein they can do the following:</p>
@@ -224,48 +245,56 @@ const Faq = () => {
 
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample15" role="button" aria-expanded="false" aria-controls="collapseExample15" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample15" role="button" aria-expanded="false" aria-controls="collapseExample15" className="text-decoration-none">
+               
                   <h6 class="m-0">What kind of customer support can I expect from SabPaisa?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample15">
               <p>To ensure that all our merchants/clients are given 100% attention, SabPaisa assigns every merchant an Account Manager to handle any issues.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample16" role="button" aria-expanded="false" aria-controls="collapseExample16" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample16" role="button" aria-expanded="false" aria-controls="collapseExample16" className="text-decoration-none">
+                
                   <h6 class="m-0">Are You PCI DSS Certified?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample16">
               <p>Yes, we are PCI-DSS certified.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample17" role="button" aria-expanded="false" aria-controls="collapseExample17" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample17" role="button" aria-expanded="false" aria-controls="collapseExample17" className="text-decoration-none">
+                
                   <h6 class="m-0"> How will you guarantee my data privacy?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample17">
               <p>SabPaisa uses the HTTPS extension that protects the integrity and confidentiality of data for secure connections. We are also PCI-DSS certified and adhere to RBI guidelines of data privacy.</p>
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample18" role="button" aria-expanded="false" aria-controls="collapseExample18" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample18" role="button" aria-expanded="false" aria-controls="collapseExample18" className="text-decoration-none">
+                
                   <h6 class="m-0" >What all documents are required for signing up with SabPaisa?</h6>
-                </a>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample18">
               <p>It varies with the constitution of the firm. Broadly, documents for business proofs, signatory individual’s proofs, bank statements and cancelled cheques along with GST registration.
@@ -274,12 +303,14 @@ const Faq = () => {
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample19" role="button" aria-expanded="false" aria-controls="collapseExample19" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample19" role="button" aria-expanded="false" aria-controls="collapseExample19" className="text-decoration-none">
+                
                   <h6 class="m-0">Do you have Sandbox where I can test the integration before going live with SabPaisa?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample19">
               <p>Yes, SabPaisa has a Sandbox where one can test the integration before going live with SabPaisa.
@@ -288,12 +319,14 @@ const Faq = () => {
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample20" role="button" aria-expanded="false" aria-controls="collapseExample20" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample20" role="button" aria-expanded="false" aria-controls="collapseExample20" className="text-decoration-none">
-                  <h6 class="m-0">Toggle TitleHow can I contact SabPaisa?</h6>
-                </a>
+               
+                  <h6 class="m-0">How can I contact SabPaisa?</h6>
+                
               </span>
+              </a>
             </p>
             <div className="collapse ml-3" id="collapseExample20">
               <p>For sales enquiries signup with your details at https://sabpaisa.in/sign-up/ and our Sales Team will get in touch with you.
@@ -302,12 +335,14 @@ const Faq = () => {
             </div>
 
             <p>
+            <a data-bs-toggle="collapse" href="#collapseExample21" role="button" aria-expanded="false" aria-controls="collapseExample21" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-                <a data-bs-toggle="collapse" href="#collapseExample21" role="button" aria-expanded="false" aria-controls="collapseExample21" className="text-decoration-none">
+               
                   <h6 class="m-0">Where do I seek support from SabPaisa?</h6>
-                </a>
+               
               </span>
+              </a>
             </p>
             <div className="collapse mb-5" id="collapseExample21">
               <p>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223</p>
