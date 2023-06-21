@@ -112,7 +112,7 @@ const ReceiptByEmail = () => {
 
   // }
   const onClick = () => {
-    var tableContents = document.getElementById("joshi").innerHTML;
+    var tableContents = document.getElementById("data-table").innerHTML;
     var a = window.open("", "", "height=900, width=900");
     a.document.write(
       '<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >'
@@ -155,7 +155,7 @@ const ReceiptByEmail = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <h2 className="text-center">OR</h2>
+                    <h6 className="text-center">OR</h6>
                   </div>
                   <div className="form-group">
                     <label for="txn_id_input">Enter Student ID :</label>
@@ -171,7 +171,7 @@ const ReceiptByEmail = () => {
 
                   <div className="form-group">
                     <button
-                      className="btn cob-btn-primary"
+                      className="btn cob-btn-primary btn-sm"
                       disabled={btnDisable}
                       onClick={(e) => onSubmit(e, transactionId, studentEmailId)}
                     >
@@ -183,24 +183,19 @@ const ReceiptByEmail = () => {
             </div>
           </div>
         </div>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mt-4">
           <div className="col-lg-6">
             {show &&
               data.map((user) => (
-                <div className="card mt-0" key={user.Id}>
+                <div className="card" key={user.Id}>
                   <div className="card-body table-responsive">
-                    <h5>TRANSACTION RECEIPT</h5>
-                    <table className="table" id="joshi">
+                  <div className="d-flex justify-content-end">
+                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                    </div>
+                    <table className="table table-striped" id="data-table">
                       <thead>
                         <tr>
-                          <th>
-                            <img
-                              src={sabpaisalogo}
-                              alt="logo"
-                              width={"90px"}
-                              height={"25px"}
-                            />
-                          </th>
+                          <th colspan="2">Sabpaisa Transaction Receipt</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -243,7 +238,7 @@ const ReceiptByEmail = () => {
                       </tbody>
                     </table>
                   </div>
-                  <div className="card-footer">
+                  {/* <div className="card-footer">
                     <button
                       value="click"
                       onClick={onClick}
@@ -251,7 +246,7 @@ const ReceiptByEmail = () => {
                     >
                       Print
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               ))}
           </div>

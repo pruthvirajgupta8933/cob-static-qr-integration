@@ -32,14 +32,7 @@ function PrintDocument(props) {
                                             >
                                             <tbody>
                                                 <tr>
-                                                <td align="left">
-                                                    <img
-                                                    src={sabpaisalogo}
-                                                    alt="sabpaisa"
-                                                    data-pagespeed-url-hash={706682889}
-                                                    style={{ width: "10%" }}
-                                                    />
-                                                </td>
+                                                
                                                 </tr>
                                             </tbody>
                                             </table>

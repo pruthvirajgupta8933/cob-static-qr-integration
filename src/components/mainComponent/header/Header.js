@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from "./header.module.css"
-import sabpaisalogo from "../../../assets/images/sabpaisa-logo-white.png"
+import sabpaisalogo from "../../../assets/images/sabpaisalogo.png"
 // import themeClasses from "../../../theme.module.scss"
 
 function Header() {
