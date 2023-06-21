@@ -366,7 +366,7 @@ const SettlementReportNew = () => {
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="m-b-sm gx-float-left ml-3">Settlement Report</h5>
+          <h5 className="mb-5 ml-2">Settlement Report</h5>
           {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
