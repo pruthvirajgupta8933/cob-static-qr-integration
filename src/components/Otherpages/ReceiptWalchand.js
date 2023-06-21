@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 import Header from "../mainComponent/header/Header";
@@ -64,8 +63,8 @@ const ReceiptWalchand = () => {
   };
 
   const printHandler = (id) => {
-    var tableContents = document.getElementById(id).innerHTML;
-    var a = window.open("", "", "height=900, width=900");
+    let tableContents = document.getElementById(id).innerHTML;
+    let a = window.open("", "", "height=900, width=900");
     a.document.write(
       '<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >'
     );
@@ -111,7 +110,7 @@ const ReceiptWalchand = () => {
 
                     <div className="form-group">
                       <button
-                        className="btn cob-btn-primary"
+                        className="btn cob-btn-primary btn-sm"
                         onClick={(e) => onSubmit(e,pnrId)}
                         disabled={btnDisable}
                       >
@@ -135,19 +134,14 @@ const ReceiptWalchand = () => {
                   {/* {console.log(user)} */}
                   <div className="card">
                     <div className="card-body table-responsive">
-                      <h3>TRANSACTION RECEIPT</h3>
+                    <div className="d-flex justify-content-end">
+                      <button onClick={()=>{printHandler('table_'+i)}} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                    </div>
                       <table className="table" id={`table_${i}`}>
                         <thead className="">
-                          <tr>
-                            <th>
-                              <img
-                                src={sabpaisalogo}
-                                alt="logo"
-                                width={"90px"}
-                                height={"25px"}
-                              />
-                            </th>
-                          </tr>
+                        <tr>
+                          <th colspan="2">Sabpaisa Transaction Receipt</th>
+                        </tr>
                         </thead>
                         <tbody>
                           <tr>
@@ -190,9 +184,9 @@ const ReceiptWalchand = () => {
                         </tbody>
                       </table>
                     </div>
-                    <div className="card-footer">
+                    {/* <div className="card-footer">
                     <button value='click' onClick={()=>{printHandler('table_'+i)}} className="btn cob-btn-primary">Print</button>
-                    </div>
+                    </div> */}
                   </div>
                 </>
               ))}

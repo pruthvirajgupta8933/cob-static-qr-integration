@@ -116,46 +116,6 @@ input, select{
 
 /* font classes  */
 
-.Satoshi-Bold {
-  /* font-family: "Satoshi-Bold" !important; */
-}
-
-.Satoshi-Medium {
-  /* font-family: "Satoshi-Medium" !important; */
-}
-
-.OpenSans-Regular {
-  /* font-family: "OpenSans-Regular" !important; */
-}
-
-.NunitoSans-Regular {
-  /* font-family: "NunitoSans-Regular" !important; */
-}
-
-.NunitoSans-Medium {
-  /* font-family: "NunitoSans-Medium" !important; */
-}
-
-.Roboto-Regular {
-  /* font-family: "Roboto-Regular" !important; */
-}
-
-.Roboto-Medium {
-  /* font-family: "Roboto-Medium" !important; */
-}
-
-.Montserrat-Regular {
-  /* font-family: "Montserrat-Regular" !important; */
-}
-
-.Montserrat-Medium {
-  /* font-family: "Montserrat-Medium" !important; */
-}
-
-.Satoshi-Bold {
-  /* font-family: "Satoshi-Bold" !important; */
-}
-
 /* ENd As per figma css */
 
 /* For Desktop View */
@@ -167,24 +127,22 @@ input, select{
 }
 
 /* For Tablet View */
-@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+/* @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
  
-}
+} */
 
 /* For Mobile Portrait View */
-@media screen and (max-device-width: 480px) and (orientation: portrait) {
+/* @media screen and (max-device-width: 480px) and (orientation: portrait) {
 
-}
+} */
 
 /* For Mobile Landscape View */
-@media screen and (max-device-width: 640px) and (orientation: landscape) {
+/* @media screen and (max-device-width: 640px) and (orientation: landscape) {
 
-}
+} */
 
 /* For Mobile Phones Portrait or Landscape View */
 @media screen and (max-device-width: 640px) {
-
-
   .login-float-none {
     float: none;
   }
@@ -193,19 +151,19 @@ input, select{
 }
 
 /* For iPhone 4 Portrait or Landscape View */
-@media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+/* @media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
 
-}
+} */
 
 /* For iPhone 5 Portrait or Landscape View */
-@media (device-height: 568px) and (device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+/* @media (device-height: 568px) and (device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
 
-}
+} */
 
 /* For iPhone 6 and 6 plus Portrait or Landscape View */
-@media (min-device-height: 667px) and (min-device-width: 375px) and (-webkit-min-device-pixel-ratio: 3) {
+/* @media (min-device-height: 667px) and (min-device-width: 375px) and (-webkit-min-device-pixel-ratio: 3) {
 
-}
+} */
 
 /* Font Size Class */
 

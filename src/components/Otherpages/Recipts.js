@@ -1,12 +1,11 @@
-import axios from 'axios';
+
 import React, { useState } from 'react';
+import axios from 'axios';
 import * as Yup from "yup"
 import { Formik, Form } from "formik"
-import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 import API_URL from '../../config';
 import FormikController from '../../_components/formik/FormikController';
-// import { axiosInstance } from '../../utilities/axiosInstance';
-import Header from "../mainComponent/header/Header" 
+import Header from "../mainComponent/header/Header"
 import toastConfig from '../../utilities/toastTypes';
 
 export const Recipts = () => {
@@ -24,40 +23,6 @@ export const Recipts = () => {
   const [data, setData] = useState([])
   const [btnDisable, setBtnDisable] = useState(false)
 
-
-
-
-
-  //   const onSubmit =  (value) => {
-
-  //     const transaction_id = value.transaction_id;
-  //       setIsLoading(true);
-  //       axiosInstance.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
-  //       .then((response) => {
-
-  //         if(response.data?.length> 0){
-  //           setData(response.data[0]);
-  //           setIsShow(true);
-  //           // setErrMessage('');
-  //           setIsLoading(false);
-  //         }else{
-  //           setIsShow(false)
-  //           setIsLoading(false);
-  //           alert('No Data Found')
-  //         }
-
-  //       })
-  //       .catch((e) => {
-  //         alert('No Data Found')
-  //         setIsLoading(false);
-  //         // console.log(e);
-  //         setIsShow(false);
-  //         // setErrMessage('No Data Found');
-
-  //       })
-
-
-  // }
   const onSubmit = (input) => {
     setData({});
     setBtnDisable(true)
@@ -100,8 +65,8 @@ export const Recipts = () => {
 
   const onClick = () => {
 
-    var tableContents = document.getElementById("receipt_table").innerHTML;
-    var a = window.open('', '', 'height=900, width=900');
+    let tableContents = document.getElementById("receipt_table").innerHTML;
+    let a = window.open('', '', 'height=900, width=900');
     a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
     a.document.write(tableContents);
     a.document.write('</table>');
@@ -153,77 +118,70 @@ export const Recipts = () => {
 
 
         {show ?
-            <div className="row justify-content-center mt-4">
-              <div className="col-lg-6">
-                <React.Fragment>
-                  <div className="card ">
-                    <div className="card-body">
-                      <table className="table table-striped" id="receipt_table" style={{ border: "1px solid #ccc", width: "100%", maxWidth: "100%", marginBottom: "1rem", backgroundColor: "initial", color: "#212529" }} >
-                        <tbody>
-                          <thead >
-                            <tr >
-                              <th><img src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"} /></th>
-                            </tr>
-                          </thead>
-                          <tr>
-                            <th style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }} scope="row">TRANSACTION RECEIPT</th>
-                          </tr>
-
-                          <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payer Name</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.payee_name}</td>
-                          </tr>
-
-                          <tr >
-                            <th style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }} scope="row">Sabpaisa Transaction ID</th>
-                            <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }} className="text-wrap">{data.txn_id}</td>
-                          </tr>
-
-
-                          <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Client Transaction ID</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.client_txn_Id}</td>
-                          </tr>
-
-
-                          <tr>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Client Name</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.client_name}</td>
-                          </tr>
-
-                          <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payee Amount</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.payee_amount}</td>
-                          </tr>
-
-                          <tr>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payment Mode</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.payment_mode}</td>
-                          </tr>
-
-                          <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Transaction Date</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.trans_date}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payment Status</th>
-                            <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.status}</td>
-
-                          </tr>
-                        </tbody>
-
-                      </table>
+          <div className="row justify-content-center mt-4">
+            <div className="col-lg-6">
+              <React.Fragment>
+                <div className="card ">
+                  <div className="card-body">
+                    <div className="d-flex justify-content-end">
+                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
                     </div>
-                    <div className="text-right">
-                    <button value='click' onClick={onClick} className="btn cob-btn-primary btn-sm w-50" >Print</button>
+                    <table className="table table-striped" id="receipt_table" style={{ border: "1px solid #ccc", width: "100%", maxWidth: "100%", marginBottom: "1rem", backgroundColor: "initial", color: "#212529" }} >
+                      <tbody>
+                        <tr>
+                          <th colspan="2">Sabpaisa Transaction Receipt</th>
+                        </tr>
+                        <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payer Name</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.payee_name}</td>
+                        </tr>
 
-                    </div>
+                        <tr >
+                          <th style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }} scope="row">Sabpaisa Transaction ID</th>
+                          <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }} className="text-wrap">{data.txn_id}</td>
+                        </tr>
+
+
+                        <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Client Transaction ID</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.client_txn_Id}</td>
+                        </tr>
+
+
+                        <tr>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Client Name</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.client_name}</td>
+                        </tr>
+
+                        <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payee Amount</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.payee_amount}</td>
+                        </tr>
+
+                        <tr>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payment Mode</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.payment_mode}</td>
+                        </tr>
+
+                        <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Transaction Date</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.trans_date}</td>
+
+                        </tr>
+                        <tr>
+                          <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>Payment Status</th>
+                          <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)", padding: "0.75rem", verticalAlign: "top" }}>{data.status}</td>
+
+                        </tr>
+                      </tbody>
+
+                    </table>
                   </div>
-                </React.Fragment>
+                </div>
+              </React.Fragment>
 
-              </div>
             </div>
+          </div>
           : <></>}
       </div>
     </div>

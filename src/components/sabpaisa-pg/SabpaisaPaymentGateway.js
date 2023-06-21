@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { PaymentInitModal } from "pg-test-project";
-import { v4 as uuidv4 } from 'uuid';
+
 
 function SabpaisaPaymentGateway(props) {
   const clientDetails = props?.clientData

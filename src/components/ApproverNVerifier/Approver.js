@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import PendingVerification from "./PendingVerification";
 import VerifiedMerchant from "./VerifiedMerchant";
 import ApprovedMerchant from "./ApprovedMerchant";
-import NavBar from "../../components/dashboard/NavBar/NavBar";
 import PendindKyc from "./PendindKyc";
 import NotFilledKYC from "./NotFilledKYC";
 import RejectedKYC from "./RejectedKYC";
@@ -14,11 +14,11 @@ import { merchantTab } from "../../slices/approverVerifierTabSlice";
 import classes from "./approver.module.css"
 
 const Approver = () => {
+  
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   // console.log(verifierApproverTab?.currenTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
-  const [users, setUsers] = useState();
   // console.log("currenTab",currenTab)
   const dispatch = useDispatch();
 

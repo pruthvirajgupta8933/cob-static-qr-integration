@@ -1,5 +1,4 @@
 import React from 'react'
-import sabpaisalogo from "../../assets/images/sabpaisalogo.png"
 import TransactionEnqMultiParam from '../dashboard/AllPages/TransactionEnqMultiParam'
 import Header from '../mainComponent/header/Header'
 

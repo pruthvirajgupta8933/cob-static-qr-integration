@@ -23,15 +23,6 @@ function TransactionEnquirey() {
   const [disable, setIsDisable] = useState(false)
   const [loadingState, setLoadingState] = useState(false)
 
-  let now = moment().format("YYYY-M-D");
-  let splitDate = now.split("-");
-  if (splitDate[1].length === 1) {
-    splitDate[1] = "0" + splitDate[1];
-  }
-  if (splitDate[2].length === 1) {
-    splitDate[2] = "0" + splitDate[2];
-  }
-  splitDate = splitDate.join("-");
 
   const convertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
@@ -47,9 +38,9 @@ function TransactionEnquirey() {
     axios.get(API_URL.VIEW_TXN + `/${transaction_id}`)
       .then((response) => {
         if (response?.data.length > 0) {
-          
+
           setLoadingState(false)
-         
+
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
@@ -67,10 +58,11 @@ function TransactionEnquirey() {
               setIsDisable(false)
 
             }
-          }).catch((err) => { 
+          }).catch((err) => {
             setIsShow(false);
             setErrMessage(true);
-            setIsDisable(false)});
+            setIsDisable(false)
+          });
         }
       })
       .catch((e) => {
@@ -125,62 +117,62 @@ function TransactionEnquirey() {
       <main className="">
         <div className="">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-            <h5 className="">Transaction Enquiry</h5>
+          <h5 className="">Transaction Enquiry</h5>
           {/* </div> */}
           <section className="">
             <div className="container-fluid p-0">
               <div className="row">
-                
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}
-                  >
-                    {(formik) => (
-                      <Form className="col-lg-12">
-                        <div className="form-row mt-4 ml-1">
-                          <div className="form-group col-md-4 col-sm-12 col-lg-4">
-                            <FormikController
-                              control="input"
-                              type="text"
-                              label="Transaction ID  *"
-                              lableClassName="font-weight-bold"
-                              name="transaction_id"
-                              placeholder="Enter Sabpaisa Transaction ID"
-                              className="form-control"
-                            />
 
-                            <button
-                              disabled={disable}
-                              className="btn btn-sm text-white cob-btn-primary mt-2"
-                              type="submit"
-                            >
-                              View
-                            </button>
-                            {(show && printData?.length > 0) && <button
-                              Value="click"
-                              onClick={onClick}
-                              className="btn btn-secondary text-white mt-2 ml-3 btn-sm"
-                            >
-                              <i class="fa fa-print" aria-hidden="true"></i> Print
-                            </button>}
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={onSubmit}
+                >
+                  {(formik) => (
+                    <Form className="col-lg-12">
+                      <div className="form-row mt-4 ml-1">
+                        <div className="form-group col-md-4 col-sm-12 col-lg-4">
+                          <FormikController
+                            control="input"
+                            type="text"
+                            label="Transaction ID  *"
+                            lableClassName="font-weight-bold"
+                            name="transaction_id"
+                            placeholder="Enter Sabpaisa Transaction ID"
+                            className="form-control"
+                          />
 
-                          </div>
+                          <button
+                            disabled={disable}
+                            className="btn btn-sm text-white cob-btn-primary mt-2"
+                            type="submit"
+                          >
+                            View
+                          </button>
+                          {(show && printData?.length > 0) && <button
+                            Value="click"
+                            onClick={onClick}
+                            className="btn btn-secondary text-white mt-2 ml-3 btn-sm"
+                          >
+                            <i class="fa fa-print" aria-hidden="true"></i> Print
+                          </button>}
+
                         </div>
-                      </Form>
-                    )}
-                  </Formik>
-            
-                
-                <CustomLoader loadingState={loadingState} />     
-                
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+
+
+                <CustomLoader loadingState={loadingState} />
+
                 {!loadingState && show && printData?.length > 0 && (
                   <div className="overflow-auto col-lg-12 mb-5 border">
                     <div class="container-fluid">
                       <div class="row">
                         {printData?.map((datas, key) =>
                           (<div class="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
-                          )}
+                        )}
                       </div>
                     </div>
 
@@ -191,11 +183,11 @@ function TransactionEnquirey() {
 
                 {errMessage && (
                   <div className="col">
-                  <h3 className="text-danger text-center">
-                    Record Not Found!
-                  </h3>
+                    <h3 className="text-danger text-center">
+                      Record Not Found!
+                    </h3>
                   </div>
-                 
+
                 )}
               </div>
             </div>

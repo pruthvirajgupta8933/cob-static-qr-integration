@@ -23,14 +23,11 @@ import { axiosInstance } from "../../../utilities/axiosInstance";
 import Notification from "../../../_components/reuseable_components/Notification";
 import moment from "moment";
 
-
-
 const TransactionHistory = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const roles = roleBasedAccess();
-
-  const { auth, dashboard } = useSelector((state) => state);
+   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
 
 
@@ -39,8 +36,8 @@ const TransactionHistory = () => {
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   // const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
-  const [startDate, setStartDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  // const [startDate, setStartDate] = useState("");
+  // const [toDate, setToDate] = useState("");
   // const [txnStatus,SetTxnStatus] = useState("All");
   // const [payModeId,SetPayModeId] = useState("All")
   const [txnList, SetTxnList] = useState([]);
@@ -471,7 +468,7 @@ const TransactionHistory = () => {
       <main className="">
         <div className="">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="">Transactions History</h5>
+          <h5 className="">Transaction History</h5>
           {/* </div> */}
           <section className="">
             <div className="container-fluid">

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 import Header from "../mainComponent/header/Header";
+import { uniqueId } from "lodash";
 
 const StudentRecipets = () => {
   const initialState = {
@@ -23,7 +23,7 @@ const StudentRecipets = () => {
   // const [isLoading, setIsLoading] = useState(false);
   // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState([initialState]);
-  const [btnDisable,setBtnDisable] = useState(false)
+  const [btnDisable, setBtnDisable] = useState(false)
 
   const onSubmit = async (e, transactionId, studentId) => {
     e.preventDefault();
@@ -38,33 +38,33 @@ const StudentRecipets = () => {
     await axios
       .get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
-        if(response?.data.length === 0 || null) {
+        if (response?.data.length === 0 || null) {
           toastConfig.errorToast("No Data Found")
           setBtnDisable(false)
           setIsShow(false);
         }
         if (response?.data.length > 0) {
-        setData(response.data);
-        setIsShow(true);
-        setBtnDisable(false)
-        toastConfig.successToast("Data Found")
-        // setIsLoading(true);
-      } else {
-        axios.get(API_URL.SP2_VIEW_TXN + `/${transactionId}`).then((r) => {
-          if (r?.data.length > 0) {
-            
-            setIsShow(true);
-            setData(r?.data);
-            toastConfig.successToast("Data Found")
-            // setIsLoading(false);
-            // setErrMessage(false);
-            setBtnDisable(false)
-          } else {
-            setIsShow(false);
-            // setErrMessage(true);
-          }
-        });
-      }
+          setData(response.data);
+          setIsShow(true);
+          setBtnDisable(false)
+          toastConfig.successToast("Data Found")
+          // setIsLoading(true);
+        } else {
+          axios.get(API_URL.SP2_VIEW_TXN + `/${transactionId}`).then((r) => {
+            if (r?.data.length > 0) {
+
+              setIsShow(true);
+              setData(r?.data);
+              toastConfig.successToast("Data Found")
+              // setIsLoading(false);
+              // setErrMessage(false);
+              setBtnDisable(false)
+            } else {
+              setIsShow(false);
+              // setErrMessage(true);
+            }
+          });
+        }
       })
 
       .catch((error) => {
@@ -79,8 +79,8 @@ const StudentRecipets = () => {
   };
 
   const onClick = () => {
-    var tableContents = document.getElementById("joshi").innerHTML;
-    var a = window.open("", "", "height=900, width=900");
+    let tableContents = document.getElementById("data-table").innerHTML;
+    let a = window.open("", "", "height=900, width=900");
     a.document.write(
       '<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >'
     );
@@ -92,14 +92,14 @@ const StudentRecipets = () => {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="container">
         {/* ============================== */}
         <div className="container-fluid">
-          <div className="row justify-content-center">
+          <div className="row justify-content-center mb-4">
             <div className="col-lg-6">
               <div className="card ">
-                <div className="card-header text-center receipt-header">
+                <div className="card-header text-center">
                   SABPAISA TRANSACTION RECEIPT
                 </div>
                 <div className="card-body">
@@ -123,7 +123,7 @@ const StudentRecipets = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <h2 className="text-center">OR</h2>
+                      <h6 className="text-center">OR</h6>
                     </div>
                     <div className="form-group">
                       <label for="txn_id_input">Enter Student ID :</label>
@@ -139,7 +139,7 @@ const StudentRecipets = () => {
 
                     <div className="form-group">
                       <button
-                        className="btn receipt-button"
+                        className="btn cob-btn-primary btn-sm"
                         onClick={(e) => onSubmit(e, transactionId, studentId)}
                         disabled={btnDisable}
                       >
@@ -158,20 +158,15 @@ const StudentRecipets = () => {
           <div className="col-lg-6">
             {show &&
               data.map((user) => (
-                <div className="card" key={user.id}>
+                <div className="card" key={uniqueId()}>
                   <div className="card-body table-responsive">
-                    <h3>TRANSACTION RECEIPT</h3>
-                    <table className="table" id="joshi">
+                    <div className="d-flex justify-content-end">
+                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                    </div>
+                    <table className="table" id="data-table">
                       <thead className="">
                         <tr>
-                          <th>
-                            <img
-                              src={sabpaisalogo}
-                              alt="logo"
-                              width={"90px"}
-                              height={"25px"}
-                            />
-                          </th>
+                          <th colspan="2">Sabpaisa Transaction Receipt</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -214,15 +209,6 @@ const StudentRecipets = () => {
                         </tr>
                       </tbody>
                     </table>
-                  </div>
-                  <div className="card-footer">
-                    <button
-                      value="click"
-                      onClick={onClick}
-                      className="btn  cob-btn-primary "
-                    >
-                      Print
-                    </button>
                   </div>
                 </div>
               ))}
