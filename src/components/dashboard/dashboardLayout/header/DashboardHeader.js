@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import headerClasses from "./dashboard-header.module.css"
 // import themeClasses from "../../../../theme.module.scss"
-import Sabpaisalogo3 from "../../../../assets/images/sabpaisa-white-logo1.png";
+import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
 
 function DashboardHeader() {
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ function DashboardHeader() {
                 {/* <span className="navbar-toggler-icon" /> */}
                 <i className="fa fa-bars"></i>
             </button>
-                <img src={Sabpaisalogo3} alt="profile" title="profile" className={`${headerClasses.navbar_brand_logo}`} />
+                <img src={Sabpaisalogo} alt="profile" title="profile" className={`${headerClasses.navbar_brand_logo}`} />
             </a>
 
             <div className={`d-flex justify-content-between ${headerClasses.navbar_mobile}`}>

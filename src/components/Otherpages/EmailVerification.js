@@ -1,6 +1,6 @@
 import React, { useEffect ,useState} from 'react';
 import { Link ,useParams} from 'react-router-dom';
-import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 // import axios from 'axios';
 import API_URL from '../../config';
 import {axiosInstanceAuth} from '../../utilities/axiosInstance';
