@@ -1,11 +1,10 @@
-import axios from 'axios';
+
 import React, { useState } from 'react';
+import axios from 'axios';
 import * as Yup from "yup"
 import { Formik, Form } from "formik"
-import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 import API_URL from '../../config';
 import FormikController from '../../_components/formik/FormikController';
-// import { axiosInstance } from '../../utilities/axiosInstance';
 import Header from "../mainComponent/header/Header"
 import toastConfig from '../../utilities/toastTypes';
 
@@ -24,40 +23,6 @@ export const Recipts = () => {
   const [data, setData] = useState([])
   const [btnDisable, setBtnDisable] = useState(false)
 
-
-
-
-
-  //   const onSubmit =  (value) => {
-
-  //     const transaction_id = value.transaction_id;
-  //       setIsLoading(true);
-  //       axiosInstance.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
-  //       .then((response) => {
-
-  //         if(response.data?.length> 0){
-  //           setData(response.data[0]);
-  //           setIsShow(true);
-  //           // setErrMessage('');
-  //           setIsLoading(false);
-  //         }else{
-  //           setIsShow(false)
-  //           setIsLoading(false);
-  //           alert('No Data Found')
-  //         }
-
-  //       })
-  //       .catch((e) => {
-  //         alert('No Data Found')
-  //         setIsLoading(false);
-  //         // console.log(e);
-  //         setIsShow(false);
-  //         // setErrMessage('No Data Found');
-
-  //       })
-
-
-  // }
   const onSubmit = (input) => {
     setData({});
     setBtnDisable(true)
@@ -100,8 +65,8 @@ export const Recipts = () => {
 
   const onClick = () => {
 
-    var tableContents = document.getElementById("receipt_table").innerHTML;
-    var a = window.open('', '', 'height=900, width=900');
+    let tableContents = document.getElementById("receipt_table").innerHTML;
+    let a = window.open('', '', 'height=900, width=900');
     a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
     a.document.write(tableContents);
     a.document.write('</table>');

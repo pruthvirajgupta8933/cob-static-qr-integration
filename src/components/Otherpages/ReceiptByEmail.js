@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 import Header from "../mainComponent/header/Header";
@@ -112,8 +111,8 @@ const ReceiptByEmail = () => {
 
   // }
   const onClick = () => {
-    var tableContents = document.getElementById("data-table").innerHTML;
-    var a = window.open("", "", "height=900, width=900");
+    let tableContents = document.getElementById("data-table").innerHTML;
+    let a = window.open("", "", "height=900, width=900");
     a.document.write(
       '<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >'
     );

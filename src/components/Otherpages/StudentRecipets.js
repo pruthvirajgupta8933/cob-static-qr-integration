@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 import Header from "../mainComponent/header/Header";
+import { uniqueId } from "lodash";
 
 const StudentRecipets = () => {
   const initialState = {
@@ -79,8 +79,8 @@ const StudentRecipets = () => {
   };
 
   const onClick = () => {
-    var tableContents = document.getElementById("data-table").innerHTML;
-    var a = window.open("", "", "height=900, width=900");
+    let tableContents = document.getElementById("data-table").innerHTML;
+    let a = window.open("", "", "height=900, width=900");
     a.document.write(
       '<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >'
     );
@@ -158,7 +158,7 @@ const StudentRecipets = () => {
           <div className="col-lg-6">
             {show &&
               data.map((user) => (
-                <div className="card" key={user.id}>
+                <div className="card" key={uniqueId()}>
                   <div className="card-body table-responsive">
                     <div className="d-flex justify-content-end">
                       <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
