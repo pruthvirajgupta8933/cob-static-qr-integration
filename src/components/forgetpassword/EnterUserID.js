@@ -50,7 +50,7 @@ const EnterUserID = (props) => {
     <div className="container-fluid toppad">
       <div className="row ">
         <div className="col-sm-6 mx-auto">
-          <div className="card ">
+          <div className="card mt-5 ">
             <div className="card-header text-center">Forgot Password</div>
             <div className="card-body NunitoSans-Regular">
               <h5 className="card-title">Please Enter the details. </h5>
