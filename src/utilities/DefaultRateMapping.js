@@ -48,7 +48,9 @@ export const DefaultRateMapping = ({ setFlag }) => {
                         successUrl: "https://sabpaisa.in/",
                         failedUrl: "https://sabpaisa.in/",
                         subscriptionstatus: "Subscribed",
-                        businessType: 2
+                        businessType: 2,
+                        businessctgcode:"3",
+                        referralcode : userData?.loginId // merchant login id
                     };
 
                     // console.log("inputData",inputData);

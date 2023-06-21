@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../../NavBar/NavBar";
-import { Link } from "react-router-dom";
 import "./product.css";
 import onlinePayment from "../../../../assets/images/onlinePayment.png";
 import paymentLink from "../../../../assets/images/paymentLink.png";
@@ -13,6 +11,8 @@ import linkPaisa from "../../../../assets/images/linkPaisa.png";
 
 import API_URL from "../../../../config";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import { uniqueId } from "lodash";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Products = () => {
   const [product, setProduct] = useState([]);
@@ -39,12 +39,12 @@ const Products = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-  
+
 
   return (
     <section className="ant-layout">
       <div>
-        
+
 
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
@@ -68,7 +68,7 @@ const Products = () => {
           {spinner && <div className="row justify-content-md-center"><span className="spinner-border" role="status"></span></div>}
 
           {product?.map((Products, i) => (
-            <div className="col-sm-12 col-md-12 col-lg-6" key={i}>
+            <div className="col-sm-12 col-md-12 col-lg-6" key={uniqueId()}>
               <div className="card p-3 mt-2">
                 <div className="card-body">
                   <h5 className="card-title prod-header">
@@ -82,12 +82,12 @@ const Products = () => {
                     {Products.application_name}
                   </h5>
                   <p className="card-text">
-                    
+
                     {Products.application_description}
                   </p>
                   <div>
                     <p className="prod-read">
-                    
+
                       <Link
                         to={`/dashboard/sabpaisa-pricing/${Products.application_id}/${Products.application_name}`}
                       >
@@ -96,7 +96,7 @@ const Products = () => {
                       </Link>
                     </p>
                   </div>
-                
+
                 </div>
               </div>
             </div>

@@ -235,28 +235,26 @@ const CommentModal = (props) => {
                       {(commentsList?.length !== undefined ||
                         commentsList?.length > 0) &&
                         Array.isArray(commentsList)
-                        ? commentsList?.map((remark, i) => (
+                        ? commentsList?.map((commentData, i) => (
                           <tr key={i}>
                             <td>
-                              {remark?.comment_by_user_name.toUpperCase()}
+                              {commentData?.comment_by_user_name.toUpperCase()}
                             </td>
                             <td
                               style={{ overflowWrap: "anywhere" }}
                             >
-                              {remark?.comments}
+                              {commentData?.comments}
                             </td>
                             <td>
-                              {dateManipulate(remark?.comment_on)}
+                              {dateManipulate(commentData?.comment_on)}
                             </td>
-                            <td>{remark?.merchant_tab}</td>
+                            <td>{commentData?.merchant_tab ?? commentData?.comment_type}</td>
                             <td>
-                              {remark?.file_path !== null &&
-                                isUrlValid(remark?.file_path) &&
-                                fileTypeCheck(
-                                  remark?.file_path
-                                ) && (
+                              {commentData?.file_path !== null &&
+                                isUrlValid(commentData?.file_path) &&
+                                fileTypeCheck(commentData?.file_path) && (
                                   <a
-                                    href={remark?.file_path}
+                                    href={commentData?.file_path}
                                     target={"_blank"}
                                     download
                                     rel="noreferrer"
