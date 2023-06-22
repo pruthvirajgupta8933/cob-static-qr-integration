@@ -96,18 +96,18 @@ const VerifyEmailPhone = (props) => {
       <div className="container-fluid toppad ">
         <div className="row">
           <div className="col-sm-6 mx-auto">
-            <div className="card mt-5 ">
+            <div className="card mt-4 ">
               <div className="card-header text-center ">
                 Forgot Password
               </div>
               <div className="card-body NunitoSans-Regular">
-                <h6 className="card-title ml-2">
+                <h6 className="card-title">
                   We have sent the OTP on your registered Email Address and on
                   Phone Number.{" "}
                 </h6>
                 <form className="form-inline" onSubmit={handleSubmit}>
                   <div className="form-inline">
-                    <div className="form-group mx-sm-3 mb-2 float-center">
+                    <div className="mb-2 float-center">
                       <label htmlFor="inputEmailOTP" className="sr-only">
                         emailOTP
                       </label>
@@ -119,36 +119,29 @@ const VerifyEmailPhone = (props) => {
                         onChange={Email}
                         placeholder="Email OTP"
                       />
-                      <br />
-                      <br />
-                      <br />
-                      {errors.emailotp && (
-                        <p
-                          className="abhitest"
-                          style={{
-                            color: "red",
-                            position: "absolute",
-                            zIndex: " 999",
-                            top: "127px",
-                          }}
-                        >
-                          {errors.emailotp}
-                        </p>
-                      )}
-                    </div>
-                    <button
+                       <button
                       type="button"
                       name="emailverify"
-                      className="userIdbutton text-white mb-2"
+                      className="userIdbutton text-white mb-2 ml-4"
                       value="firstone"
                       onClick={() => emailverify()}
                     >
                       Verify
                     </button>
+                    <div>
+                      {errors.emailotp && (
+                        <p
+                          className="text-danger"
+                          >
+                          {errors.emailotp}
+                        </p>
+                      )}
+                      </div>
+                    </div>
+                   
                     {/* onClick={()=>props.props('a3')} */}
                   </div>
-
-                  <div className="form-inline" style={{ display: "none" }}>
+                    <div className="form-inline" style={{ display: "none" }}>
                     <div className="form-group mb-2">
                       <label htmlFor="staticPhone2" className="sr-only">
                         SMS OTP
