@@ -5,7 +5,6 @@ import moment from "moment";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
-import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 // import toastConfig from '../../utilities/toastTypes';
@@ -197,7 +196,7 @@ const BizzAppData = () => {
             {(formik) => (
             <Form>
               
-              <div className="container">
+              <div className="container mt-5">
                 <div className="row">
                   <div className="form-group  col-md-3">
                   <ReactDatePicker

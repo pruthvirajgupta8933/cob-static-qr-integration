@@ -202,7 +202,7 @@ const [data, setData] = useState([]);
             <h5 className="">Rate Mapping</h5>
           </div>
 
-          <div className="row">
+          <div className="row mt-5">
             <div className="col-lg-3 mt-2">
               <SearchFilter
                 kycSearch={kycSearch}

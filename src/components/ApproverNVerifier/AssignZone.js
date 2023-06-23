@@ -185,7 +185,7 @@ function AssignZone() {
             <h5 className="">Configuration</h5>
           </div>
 
-          <div className="row  mt-2">
+          <div className="row mt-5">
 
             <div className="col-lg-3">
               <SearchFilter

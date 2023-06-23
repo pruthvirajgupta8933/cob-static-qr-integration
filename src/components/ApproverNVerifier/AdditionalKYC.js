@@ -241,9 +241,9 @@ const AdditionalKYC = () => {
       <main className="">
         <div className="">
           <div className="">
-            <h5 className="">Additional KYC</h5>
+            <h5 className="ml-4">Additional KYC</h5>
           </div>
-          <div className="container-fluid">
+          <div className="container-fluid mt-5">
             <div className="row">
               <div className="col-lg-12">
                 <div className="form-group col-lg-3 col-md-12">
