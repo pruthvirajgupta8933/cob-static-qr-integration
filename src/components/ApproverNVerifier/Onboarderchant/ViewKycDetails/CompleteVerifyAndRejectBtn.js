@@ -18,11 +18,9 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
   const dropDownDocList = docList?.map((r) => r?.status?.toString());
   // console.log("dropDownDocList", dropDownDocList)
-
   const hasPendingItem = dropDownDocList.some(item => item.includes("Pending"))
-  const hasRejectItem = dropDownDocList.some(item => item.includes("Rejected"))
   const hasVerifiedItem = dropDownDocList.some(item => item.includes("Verified")) // tab 4
-  const hasApprovedItem = dropDownDocList.some(item => item.includes("Approved")) // tab 4
+  
 
 
   const [buttonText, setButtonText] = useState("Verify");
@@ -116,30 +114,18 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 
 
-  // const enableApproverBtn = () => {
-  //   let enableBtn = false;
-  //   if (roles?.approver)
-  //     if ((hasVerifiedItem && currenTab === 4) || (hasPendingItem && currenTab === 3)) {
-  //       enableBtn = true;
-
-  //     }
-  //   return enableBtn;
-  // };
-
-
-  useEffect(() => {
+useEffect(() => {
     if (currenTab === 3) {
       setButtonText("Verify All Selected")
-      // console.log("The Button Name is verify kyc",buttonText)
+     
     }
     if (currenTab === 4) {
       setButtonText("Approve All Selected")
-      // console.log("The Button Name is Approve kyc",buttonText)
+      
 
     }
 
-    //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
-    //  console.log("isverified",isverified)
+    
 
   }, [roles, Allow_To_Do_Verify_Kyc_details]);
 
