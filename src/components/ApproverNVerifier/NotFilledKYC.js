@@ -8,9 +8,7 @@ import Table from "../../_components/table_components/table/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
-// import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
-import CustomLoader from "../../_components/loader/index";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 const rowData = NotFilledKYCData;

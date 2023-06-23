@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import toastConfig from "../../utilities/toastTypes";
-import moment from "moment";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
@@ -11,7 +10,6 @@ import Table from "../../_components/table_components/table/Table";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import CustomLoader from "../../_components/loader";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
 

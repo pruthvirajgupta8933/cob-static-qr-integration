@@ -6,13 +6,11 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "./Onboarderchant/CommentModal";
-import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import CustomLoader from "../../_components/loader";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
 
@@ -157,12 +155,6 @@ const PendindKyc = () => {
 
   const dispatch = useDispatch();
 
-  // const kycSearch = (e, fieldType) => {
-  //   fieldType === "text"
-  //     ? setSearchByDropDown(false)
-  //     : setSearchByDropDown(true);
-  //   setSearchText(e);
-  // };
 
   const kycSearch = (e, fieldType) => {
     if (fieldType === "text") {

@@ -7,9 +7,7 @@ import FormikController from "../../_components/formik/FormikController";
 import { useDispatch } from "react-redux";
 import { updateZoneData, getZoneInfo, getZoneEmployeName, getMccCodeMaster } from '../../slices/merchantZoneMappingSlice';
 import { riskCategory } from '../../slices/rateMappingSlice';
-
-
-const validationSchema = Yup.object({
+  const validationSchema = Yup.object({
   emp_name: Yup.string().required("Required"),
   riskCategoryCode: Yup.string().required("Required").nullable(),
   mccCode: Yup.string().required("Required").nullable()
@@ -28,7 +26,7 @@ const ViewZoneModal = (props) => {
   const [zoneInfo, setZoneinfo] = useState([])
   const dispatch = useDispatch();
 
-  const empNameFilterVal = employeeName.filter((item) => { 
+   const empNameFilterVal = employeeName.filter((item) => { 
    
     if (item.value?.toLowerCase() === zoneInfo.employee_name?.toLowerCase()) {
       return item
@@ -65,24 +63,7 @@ useEffect(() => {
   }, [])
 
 
-  // useEffect(() => {
-
-  //   if (zoneCode !== "") {
-  //     const postData = {
-  //       zoneCode: zoneCode
-  //     };
-  //    dispatch(zoneMaster(postData)).then((resp) => {
-  //         const data = convertToFormikSelectJson("empCode", "zoneHeadName", resp?.payload?.zone_master);
-  //         setZoneHead(data)
-  //       }).catch(() => {
-
-  //       })
-  //   }
-
-  // }, [zoneCode]);
-
-
-  useEffect(() => {
+useEffect(() => {
 
   dispatch(getZoneEmployeName()).then((resp) => {
       const data = convertToFormikSelectJson("empCode", "empName", resp?.payload);
@@ -276,8 +257,8 @@ useEffect(() => {
 
                          </div>
                         <div className="modal-footer">
-                          {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                          <button 
+
+                         <button 
                           type="submit"
                            onClick={resetForm} 
                            className="btn cob-btn-primary  text-white" disabled={buttonDisable}>Submit</button>
@@ -308,12 +289,8 @@ useEffect(() => {
                 </tr>
               </tbody>
             </table>
-
             </div>
-            
-            
-
-          </div>
+            </div>
 
           
  

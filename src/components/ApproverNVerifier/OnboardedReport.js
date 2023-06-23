@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-
 import toastConfig from "../../utilities/toastTypes";
 import { onboardedReport } from "../../slices/kycSlice";
 import moment from "moment";
@@ -30,19 +28,14 @@ const OnboardedReport = () => {
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [dataCount, setDataCount] = useState("");
-
-  const [currentPage, setCurrentPage] = useState(1);
+ const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [loadingState, setLoadingState] = useState(false);
-
-  // eslint-disable-next-line no-unused-vars
-  const [kycIdClick, setKycIdClick] = useState(null);
+// eslint-disable-next-line no-unused-vars
+ 
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [onboardValue, setOnboradValue] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [showData, setShowData] = useState(false);
   const [selectedvalue, setSelectedvalue] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [dataClick, setDataClick] = useState(false);
@@ -141,11 +134,10 @@ const OnboardedReport = () => {
   splitDate = splitDate.join("-");
 
   // eslint-disable-next-line no-unused-vars
-  const [todayDate, setTodayDate] = useState(splitDate);
-
+  
   const initialValues = {
-    from_date: todayDate,
-    to_date: todayDate,
+    from_date: splitDate,
+    to_date: splitDate,
     status: "",
   };
 
@@ -180,7 +172,6 @@ const OnboardedReport = () => {
         setData(data);
         setDataClick(true);
         setDataCount(dataCoun);
-        setShowData(true);
         setVerifiedMerchant(data);
         setDisabled(false);
 
@@ -208,10 +199,10 @@ const OnboardedReport = () => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-        setKycIdClick(data);
+        
         setDataCount(dataCoun);
         setVerifiedMerchant(data);
-        setIsLoaded(false);
+        
       })
 
       .catch((err) => {});

@@ -73,10 +73,11 @@ const SignupData = () => {
 
 useEffect(() => {
     const postData = {
-      from_date: saveData?.from_date,
-      to_date: saveData?.to_date,
+     
+      from_date:  moment(saveData?.from_date).startOf('day').format('YYYY-MM-DD'),
+      to_date:  moment(saveData?.to_date).startOf('day').format('YYYY-MM-DD'),
     };
-    let apiRes = axiosInstanceJWT
+     axiosInstanceJWT
       .post(
         `${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,
         postData
@@ -100,7 +101,7 @@ useEffect(() => {
     setLoadingState(true);
     const postData = {
       from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
-      to_date: values.to_date,
+      to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
     };
     let apiRes = axiosInstanceJWT
       .post(

@@ -19,21 +19,8 @@ function Pagination(props) {
   
   }
 
-//   const getData = async (e) => { 
-//     await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getReports/${clientCode}`)  
-//   .then(res => {     
-//     setData(res.data);  
-//     setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-//     console.log(res.data)
 
-//   })  
-//   .catch(err => {  
-//     console.log(err)
-//   });
-  
-// }
-
-  useEffect(()=>{
+ useEffect(()=>{
     setPaginatedData(_(data).slice(0).take(pageSize).value())
   },[pageSize]);
 

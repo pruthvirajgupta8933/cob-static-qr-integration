@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useState} from 'react'
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
-import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 import API_URL from '../../config';
 import Blob from "blob";
 
@@ -29,20 +28,7 @@ const MerchnatListExportToxl = (props) => {
         a.click();
         window.URL.revokeObjectURL(url);
        
-        // let excelArr = [];
-
-        // data?.map((item, index) => {
-        //   // console.log("index",index)
-        //   if(index===0){
-        //     excelArr.push(Object.keys(item)) 
-        //   }
-        //   const excelData =  Object.values(item)
-        //   excelArr.push(excelData);
-          
-        // });
-        // // console.log("excelArr",excelArr)
-        // const fileName = props?.filename;
-        // exportToSpreadsheet(excelArr, fileName);
+       
 
       }
     })

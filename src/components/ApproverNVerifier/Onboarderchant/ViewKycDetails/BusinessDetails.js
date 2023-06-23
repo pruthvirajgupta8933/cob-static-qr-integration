@@ -8,18 +8,13 @@ import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 const BusinessDetails = (props) => {
   const { merchantKycId, KycTabStatus } = props;
   const dispatch = useDispatch();
-
-
-  const { auth } = useSelector((state) => state);
+   const { auth } = useSelector((state) => state);
 
   const { user } = auth;
   const { loginId } = user;
 
 
-
-
-
-  const handleVerifyClick = () => {
+const handleVerifyClick = () => {
 
     const veriferDetails = {
       login_id: merchantKycId.loginMasterId,

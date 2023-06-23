@@ -15,21 +15,18 @@ import {
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import ReactDatePicker from "../../../_components/formik/components/ReactDatePicker";
 import moment from "moment";
 
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
-  const roles = roleBasedAccess();
+ 
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
-
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
-
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,12 +72,12 @@ const ChargeBackTxnHistory = () => {
   //   clientMerchantDetailsList
   // );
 
-  const [todayDate, setTodayDate] = useState(splitDate);
+ 
 
   const initialValues = {
     clientCode: "",
-    fromDate: todayDate,
-    endDate: todayDate,
+    fromDate: splitDate,
+    endDate: splitDate,
     noOfClient: "1",
     rpttype: "0",
   };
@@ -103,10 +100,7 @@ const ChargeBackTxnHistory = () => {
     true
   );
 
-
-
-
-  useEffect(() => {
+useEffect(() => {
 
 
     setTimeout(() => {
@@ -157,9 +151,7 @@ const ChargeBackTxnHistory = () => {
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-
-
-    setUpdateTxnList(TxnListArrUpdated);
+      setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
     setPaginatedData(
@@ -506,7 +498,7 @@ const ChargeBackTxnHistory = () => {
                           className="page-link"
                           onClick={(nex) => {
                             setCurrentPage((nex) =>
-                              nex === pages.length > 9 ? nex : nex + 1
+                              nex ===  pages.length > 9 ? nex : nex + 1
                             );
                           }}
                           href={() => false}

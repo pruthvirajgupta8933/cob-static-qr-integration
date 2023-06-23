@@ -7,7 +7,7 @@ import FormikController from "../../_components/formik/FormikController";
 
 import RateRadioMapping from './RateRadioMapping';
 import { useDispatch } from "react-redux";
-import { businessCategory, templateRate, viewRateMap } from '../../slices/rateMappingSlice';
+import { templateRate, viewRateMap } from '../../slices/rateMappingSlice';
 import { busiCategory } from '../../slices/kycSlice';
 
 const initialValues = {

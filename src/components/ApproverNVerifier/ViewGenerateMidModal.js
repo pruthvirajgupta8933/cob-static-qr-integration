@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
 import { kycBankNames,kycpaymentModeType } from "../../slices/kycSlice";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { forGeneratingMid } from "../../slices/referralAndMidOperationSlice";
 import { getallGenrateMidData } from "../../slices/referralAndMidOperationSlice";
-import moment from "moment";
 import DateFormatter from "../../utilities/DateConvert";
 const ViewGenerateMidModal = (props) => {
-  const [show, setShow] = useState(false);
   const [bankData, setBankData] = useState([]);
   const[paymentMode,setPaymentMode]=useState([])
   const [loading, setLoading] = useState(false);
@@ -19,7 +17,7 @@ const ViewGenerateMidModal = (props) => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
+
 
   const initialValues = {
     bank_id: "",
@@ -71,22 +69,17 @@ const ViewGenerateMidModal = (props) => {
         const data = resp?.payload?.MidData;
         setGenrateMidData(data)
             
-            // setData(data);
-            
         })
 
         .catch((err) => {
 
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [props?.userData?.clientCode]);
 
   const handleSubmit = (values, resetForm) => {
-   
     setLoading(true);
     // setDisable(true)
-
-    const midData = {
+const midData = {
       clientCode: props?.userData?.clientCode,
       bankName: values?.bank_id,
       payment_mode:values?.payment_mode
@@ -95,18 +88,11 @@ const ViewGenerateMidModal = (props) => {
       .then((resp) => {
         setData(resp.payload.ResponseData);
         resp?.payload?.status_code === 200 ? toastConfig.successToast(resp?.payload?.message) :toastConfig.errorToast(resp?.payload)
-
-       
-        // toastConfig.successToast(resp.payload.message);
-
-        // setDisable(false)
-        
         setLoading(false);
         resetForm();
         return props.afterGeneratingMid()
       })
-
-      .catch((err) => {
+    .catch((err) => {
 
         
         toastConfig.errorToast(err);
@@ -114,11 +100,7 @@ const ViewGenerateMidModal = (props) => {
       });
   };
 
-  
-
-  
-
-  return (
+ return (
 
       <div
         className="modal fade mymodals"
@@ -156,9 +138,9 @@ const ViewGenerateMidModal = (props) => {
                       className="close"
                       data-dismiss="modal"
                       aria-label="Close"
-                      onClick={() => {
-                        setShow(false);
-                      }}
+                      // onClick={() => {
+                      //   setShow(false);
+                      // }}
                     >
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -233,7 +215,7 @@ const ViewGenerateMidModal = (props) => {
                               </tbody>
                             </table>
 
-                            {/* <button type="button" class="btn btn-secondary text-white" data-dismiss="modal" onClick={setShow(false)}>Close</button> */}
+                           
                           </div>
                         
                       </Form>
