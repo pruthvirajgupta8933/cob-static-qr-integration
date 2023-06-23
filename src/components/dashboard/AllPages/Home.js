@@ -443,9 +443,8 @@ function Home() {
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">
               <div className="modal-body ">
-
                 {/* ratemapping loader  */}
-                {/* <DefaultRateMapping setFlag={setIsRateMappingInProcess} /> */}
+                <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
 
                 {!isRateMappingInProcess && (
                   <div className="">
