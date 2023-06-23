@@ -258,7 +258,7 @@ function Signup() {
                     </div>
                     <div className={`${classes.left_screen} card`}>
                         <div className="p-4">
-                            <h4 className="text-center">Welcome to Sabpaisa</h4>
+                            <h4 className="text-center">Welcome to SabPaisa</h4>
                             <p className="text-center">Sign up  to Create New Account</p>
                             <Formik
                                 initialValues={{

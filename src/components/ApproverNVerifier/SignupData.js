@@ -73,8 +73,9 @@ const SignupData = () => {
 
 useEffect(() => {
     const postData = {
-      from_date: saveData?.from_date,
-      to_date: saveData?.to_date,
+     
+      from_date:  moment(saveData?.from_date).startOf('day').format('YYYY-MM-DD'),
+      to_date:  moment(saveData?.to_date).startOf('day').format('YYYY-MM-DD'),
     };
      axiosInstanceJWT
       .post(
