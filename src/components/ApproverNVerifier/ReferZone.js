@@ -227,12 +227,12 @@ const ReferZone = () => {
       <main className="">
         <div className="">
           <div className="">
-            <h5 className="">
+            <h5 className="ml-2">
               Provision of Sourcing Partner
             </h5>
           </div>
 
-          <div className="container-fluid">
+          <div className="container-fluid mt-5">
             <div className="row">
               <div className="col-lg-3">
                 {/* <SearchFilter

@@ -195,9 +195,9 @@ function AssignZone() {
       <main className="">
         <div className="">
           <div className="">
-            <h5 className="">MID Generation</h5>
+            <h5 className="ml-3">MID Generation</h5>
           </div>
-          <div className="container-fluid">
+          <div className="container-fluid mt-5">
           <div className="row">
             <div className="form-group col-md-3">
               <SearchFilter

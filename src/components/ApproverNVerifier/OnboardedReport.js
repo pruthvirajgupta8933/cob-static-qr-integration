@@ -265,7 +265,7 @@ const OnboardedReport = () => {
           enableReinitialize={true}
         >
           {(formik, resetForm) => (
-            <Form className="row">
+            <Form className="row mt-5">
                   <div className="form-group col-md-3">
                   <label htmlFor="fromDate" className="ml-3">From Date:</label>
                         <ReactDatePicker
