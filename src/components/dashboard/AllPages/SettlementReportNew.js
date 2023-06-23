@@ -498,6 +498,7 @@ const SettlementReportNew = () => {
                         <th> Client Transaction ID </th>
                         <th> Amount </th>
                         <th> Settlement Amount </th>
+                        <th> Transaction Date </th>
                         <th> Settlement Date </th>
                         <th> Settlement Bank Ref </th>
                         <th> Settlement UTR </th>
@@ -527,6 +528,7 @@ const SettlementReportNew = () => {
                                 item.settlement_amount
                               ).toFixed(2)}
                             </td>
+                            <td>{convertDate(item.trans_date)}</td>
                             <td>{convertDate(item.settlement_date)}</td>
                             <td>{item.settlement_bank_ref}</td>
                             <td>{item.settlement_utr}</td>
