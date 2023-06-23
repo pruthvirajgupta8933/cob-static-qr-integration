@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
 import { toast } from "react-toastify";
-import NavBar from "../NavBar/NavBar";
 import { logout } from "../../../slices/auth";
 
 function ChangePassword() {
@@ -19,27 +18,7 @@ function ChangePassword() {
 
   const { loginId, userName } = user;
 
-  // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
-
-  // useEffect(() => {
-
-  //     if(passwordChange===true){
-
-  //         toast.success("Your password has been changed",{
-  //             autoClose:2000,
-  //             limit :1,
-  //             transition:Zoom
-  //           })
-  //     }
-  //     if(passwordChange===false){
-
-  //       toast.error("Password Change Unsuccessful.",{
-  //         autoClose:2000,
-  //         limit :1,
-  //         transition:Zoom
-  //       })}
-
-  // }, [passwordChange])
+  
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,

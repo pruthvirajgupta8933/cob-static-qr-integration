@@ -4,17 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
-import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import CustomLoader from "../../_components/loader";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
 
@@ -167,7 +163,7 @@ function PendingVerification() {
     },
   ];
 
-  const rowData = PendingVerificationData;
+ 
   //  const { user } = useSelector((state) => state.auth);
   const roleBasePermissions = roleBasedAccess();
   const loadingState = useSelector(
@@ -175,11 +171,8 @@ function PendingVerification() {
   );
   const Allow_To_Do_Verify_Kyc_details =
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
-
-  //  const { loginId } = user;
-  //  const id =loginId
-
-  const [dataCount, setDataCount] = useState("");
+    
+   const [dataCount, setDataCount] = useState("");
   const [newRegistrationData, setNewRegistrationData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);

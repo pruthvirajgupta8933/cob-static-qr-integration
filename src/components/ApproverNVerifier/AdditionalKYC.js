@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
-import NavBar from "../dashboard/NavBar/NavBar";
 import { useState } from "react";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
-import { camelCase } from 'lodash';
 import * as Yup from "yup";
 import {
   authPanValidation,
@@ -20,7 +18,7 @@ const AdditionalKYC = () => {
   const dispatch = useDispatch();
   const { kyc } = useSelector((state) => state);
 
-  const { allTabsValidate } = kyc;
+  
 
   const documentTypeList = [
     { documentType: "PAN", value: "1" },
@@ -48,46 +46,8 @@ const AdditionalKYC = () => {
   const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
-  const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
-  // const bankAccountStatus = allTabsValidate?.BankDetails;
-
-  //  For PAN INFORMATION
-  const panFirstName =
-    BusinessDetailsStatus?.AuthPanValidation?.first_name === null
-      ? ""
-      : BusinessDetailsStatus?.AuthPanValidation?.first_name;
-
-  const panLastName =
-    BusinessDetailsStatus?.AuthPanValidation?.last_name === null
-      ? ""
-      : BusinessDetailsStatus?.AuthPanValidation?.last_name;
-
-  const panValidity = BusinessDetailsStatus?.AuthPanValidation?.valid;
-
-  let accHolderName = `${panFirstName} ${panLastName}`;
-
-  //  For PAN INFORMATION
-
-
-
-  // For Bank Account Info
-
-  const AccfirstName =
-    allTabsValidate?.BankDetails?.accountValidation?.first_name;
-  const AcclastName =
-    allTabsValidate?.BankDetails?.accountValidation?.last_name;
-
-  let bankAccountHolderName = `${AccfirstName} ${AcclastName}`;
-
-  const accountStatus =
-    allTabsValidate?.BankDetails?.accountValidation?.account_status;
-
-  const accountValidity =
-    allTabsValidate?.BankDetails?.accountValidation?.valid;
-
-  // For Bank Account Info
-
-  const validationSchemaForPAN = Yup.object({
+  
+ const validationSchemaForPAN = Yup.object({
     pan_card: Yup.string()
       .trim()
       .matches(reqexPAN, "PAN number is Invalid")
@@ -134,23 +94,11 @@ const AdditionalKYC = () => {
   const panInfodata = Object.entries(showPanInfo);
   const banckAccountInfo=Object.entries(bankAccount)
   
-
-
-
-
-
-
-
-
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
   };
 
-  // console.log("Pan First Name   =====> ", accHolderName.length > 2
-  // ? accHolderName : "")
-
-  // console.log("PAN VALIDITY",panValidity)
-
+  
   useEffect(() => {
     setPanStatus(false);
     setGstStatus(false);
@@ -193,10 +141,7 @@ const AdditionalKYC = () => {
         fy: "2018-19",
       })
     ).then((res) => {
-
-
-      if (
-
+    if (
         setIsLoading(false),
         setGstinData(res?.payload),
         res.meta.requestStatus === "fulfilled" &&
@@ -285,11 +230,10 @@ const AdditionalKYC = () => {
                       <div className="col-lg-3 mr-2">
                         <button
                           type="submit"
-                          // className={`verify-btn cob-btn-primary text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
                           className="btn cob-btn-primary text-white"
-                        // disabled={buttonDisable}
+                       
                         >
-                          {/* {isLoading ? 'Loading...' : 'Verify'} */}
+                          
                           {
                             isLoading &&
                             <>
@@ -466,17 +410,7 @@ const AdditionalKYC = () => {
                     </div>
                   ))}
                 </div>
-                {/* <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Valid :{" "}
-                    {accountValidity === true
-                      ? "True"
-                      : accountValidity === false
-                        ? "false"
-                        : "Not Found"}
-                  </div>
-                 
-                </div> */}
+                
               </div>
             ) : (
               ""

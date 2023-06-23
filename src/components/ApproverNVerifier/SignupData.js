@@ -76,7 +76,7 @@ useEffect(() => {
       from_date: saveData?.from_date,
       to_date: saveData?.to_date,
     };
-    let apiRes = axiosInstanceJWT
+     axiosInstanceJWT
       .post(
         `${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,
         postData

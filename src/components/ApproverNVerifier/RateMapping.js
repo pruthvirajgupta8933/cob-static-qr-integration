@@ -2,11 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
-import moment from "moment";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import NavBar from "../../components/dashboard/NavBar/NavBar";
 import ViewRateMapping from "./ViewRateMapping";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CustomLoader from "../../_components/loader";

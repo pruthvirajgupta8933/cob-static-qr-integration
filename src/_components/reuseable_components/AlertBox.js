@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function AlertBox(props) {
-  const { heading, text1, text2, text3, linkUrl, linkName, bgColor, cardData } = props
+  const { heading, text1, linkName, bgColor, cardData } = props
   // console.log("cardData", cardData)
 
   return (

@@ -4,14 +4,13 @@ import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch, useSelector } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
-// import { saveReferingMerchant } from "../../slices/kycSlice";
 import { saveReferingMerchant } from "../../slices/referralAndMidOperationSlice";
 import { getRefferal } from "../../services/kyc/merchant-kyc";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 
 const ViewReferZoneModal = (props) => {
   const [selectedValue, setSelectedvalue] = useState("");
-  const [show, setShow] = useState(false);
+ 
   const [refferalList, setRefferalList] = useState([])
 
   const dispatch = useDispatch();
@@ -73,12 +72,10 @@ const ViewReferZoneModal = (props) => {
         // console.log("API RESPONSE : :", resp);
         toastConfig.successToast(resp.payload.message);
         props.setOpenModal(false)
-        setShow(false);
+       
         return props.refreshAfterRefer()
       })
-
       .catch((err) => {
-        setShow(false);
         toastConfig.errorToast(err);
       });
   };
@@ -120,7 +117,7 @@ const ViewReferZoneModal = (props) => {
                       aria-label="Close"
                       onClick={() => {
                         setSelectedvalue(false)
-                        setShow(false);
+                       
                       }
                       }
                     >

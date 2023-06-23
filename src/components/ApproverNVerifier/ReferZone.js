@@ -1,13 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForApproved, kycForPending } from "../../slices/kycSlice";
+import { kycForPending } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import moment from "moment";
-import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal";
-import NavBar from "../../components/dashboard/NavBar/NavBar";
 import Table from "../../_components/table_components/table/Table";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
@@ -125,14 +121,12 @@ const ReferZone = () => {
       ),
     },
   ];
-  const rowData = ReferZoneData;
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
@@ -141,9 +135,7 @@ const ReferZone = () => {
   // console.log("openZoneModal",openZoneModal)
   const dispatch = useDispatch();
 
-  const approvedSearch = (e) => {
-    setSearchText(e.target.value);
-  };
+
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
