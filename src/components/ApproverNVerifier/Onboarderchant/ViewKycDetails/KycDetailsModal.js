@@ -27,7 +27,7 @@ const KycDetailsModal = (props) => {
   let renderPendingApprovel = props.renderPendingApproval;
   let renderPendingVerificationTable = props?.renderPendingVerification;
   let renderApprovedTable = props?.renderApprovedTable;
-  let renderToPendingKyc=props?.renderToPendingKyc;
+  let renderToPendingKyc = props?.renderToPendingKyc;
 
   let merchantKycId = props?.kycId;
   // console.log(props,'test');
@@ -63,8 +63,8 @@ const KycDetailsModal = (props) => {
         })
       );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch,merchantKycId?.loginMasterId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, merchantKycId?.loginMasterId]);
 
   useEffect(() => {
     if (merchantKycId !== null) {
@@ -76,7 +76,7 @@ const KycDetailsModal = (props) => {
         setDocTypeList(data);
       });
     }
-  }, [dispatch,merchantKycId?.businessType]);
+  }, [dispatch, merchantKycId?.businessType]);
 
   //--------------------------------------//
 
@@ -88,7 +88,7 @@ const KycDetailsModal = (props) => {
         setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
       });
     }
-  }, [dispatch,merchantKycId?.businessType]);
+  }, [dispatch, merchantKycId?.businessType]);
 
   useEffect(() => {
     if (merchantKycId !== null) {
@@ -102,7 +102,7 @@ const KycDetailsModal = (props) => {
         });
       }
     }
-  }, [dispatch,merchantKycId?.businessCategory]);
+  }, [dispatch, merchantKycId?.businessCategory]);
 
 
   useEffect(() => {
@@ -113,45 +113,45 @@ const KycDetailsModal = (props) => {
   const modalBody = () => {
     return (
       <>
-          <div className="container">
-            
-            {/* contact info section */}
-            <MerchantContactInfo
-              merchantKycId={merchantKycId}
-              role={roles}
-              KycTabStatus={KycTabStatusStore}
-            />
+        <div className="container">
 
-            {/* business overview */}
-            <BusinessOverview
-              businessTypeResponse={businessTypeResponse}
-              businessCategoryResponse={businessCategoryResponse}
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
+          {/* contact info section */}
+          <MerchantContactInfo
+            merchantKycId={merchantKycId}
+            role={roles}
+            KycTabStatus={KycTabStatusStore}
+          />
 
-            {/* business details */}
-            <BusinessDetails
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
+          {/* business overview */}
+          <BusinessOverview
+            businessTypeResponse={businessTypeResponse}
+            businessCategoryResponse={businessCategoryResponse}
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
 
-            {/* Bank details */}
-            <BankDetails
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
+          {/* business details */}
+          <BusinessDetails
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
 
-            {/* Merchant Documents */}
-            <MerchantDocument
-              docList={KycDocUpload}
-              setDocList={setDocList}
-              docTypeList={docTypeList}
-              role={roles}
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
-               <CompleteVerification
+          {/* Bank details */}
+          <BankDetails
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
+
+          {/* Merchant Documents */}
+          <MerchantDocument
+            docList={KycDocUpload}
+            setDocList={setDocList}
+            docTypeList={docTypeList}
+            role={roles}
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
+          <CompleteVerification
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
             renderApprovalTable={renderPendingApprovel}
@@ -160,8 +160,8 @@ const KycDetailsModal = (props) => {
             closeVerification={closeVerification}
             renderToPendingKyc={renderToPendingKyc}
           />
-          </div>
-      
+        </div>
+
 
       </>
     )
@@ -170,26 +170,26 @@ const KycDetailsModal = (props) => {
   const modalFooter = () => {
     return (
       <>
-            <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary text-white"
-              data-dismiss="modal"
-              onClick={() => {
-                props?.handleModal(false);
-              }}
-            >
-              Close
-            </button>
-         
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary text-white"
+            data-dismiss="modal"
+            onClick={() => {
+              props?.handleModal(false);
+            }}
+          >
+            Close
+          </button>
+
         </div>
       </>
     )
   }
-  
+
 
   return (
-     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
+    <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
   );
 };
 

@@ -30,7 +30,7 @@ export const DefaultRateMapping = ({ setFlag }) => {
                     const inputData = {
                         clientId: clientId,
                         clientCode: clientCode,
-                        clientContact: clientContact, // need to fix
+                        clientContact: clientContact,
                         clientEmail: clientEmail,
                         address: "Delhi",
                         clientLogoPath: "client/logopath",
@@ -49,8 +49,8 @@ export const DefaultRateMapping = ({ setFlag }) => {
                         failedUrl: "https://sabpaisa.in/",
                         subscriptionstatus: "Subscribed",
                         businessType: 2,
-                        businessctgcode:"3",
-                        referralcode : userData?.loginId // merchant login id
+                        businessctgcode: "3", // dynamic pass
+                        referralcode: userData?.loginId // merchant login id
                     };
 
                     // console.log("inputData",inputData);
@@ -98,18 +98,19 @@ export const DefaultRateMapping = ({ setFlag }) => {
     }, [])
 
 
-
+    
 
     return (
         <React.Fragment>
-            {loader &&
+            
+            {true &&
                 <div className="text-center">
                     <div className="h-100">
                         <p>Please Wait ...</p>
                         <p className="spinner-border-loading" role="status">
-                            {/* <span className="sr-only">Loading...</span> */}
                         </p>
-                        <p>Creating your dashboard</p>
+                        <p>Rate Mapping Start</p>
+                        <p>Note : Do Not Close the Tab / Browser</p>
                     </div>
                 </div>}
         </React.Fragment>

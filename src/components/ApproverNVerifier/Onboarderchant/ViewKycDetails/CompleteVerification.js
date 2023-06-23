@@ -4,12 +4,10 @@ import { toast } from "react-toastify";
 import {
   completeVerification,
   completeVerificationRejectKyc,
-  reverseToPendingVerification,
-  reverseToPendingApproval,
-  reverseToPendingkyc
 } from "../../../../slices/kycOperationSlice"
 import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
+import { DefaultRateMapping } from '../../../../utilities/DefaultRateMapping';
 
 
 const CompleteVerification = (props) => {
@@ -17,7 +15,9 @@ const CompleteVerification = (props) => {
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
-  let renderToPendingKyc = props?.renderToPendingKyc
+  const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
+
+  // let renderToPendingKyc = props?.renderToPendingKyc
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
@@ -47,8 +47,8 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  const [pushedButton, setPushedButton] = useState("")
-  const [pushButtonClick, setPushButtonClick] = useState()
+  // const [pushedButton, setPushedButton] = useState("")
+  // const [pushButtonClick, setPushButtonClick] = useState()
   const handleVerifyClick = () => {
 
     const veriferDetails = {
@@ -102,12 +102,10 @@ const CompleteVerification = (props) => {
                 resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
                 dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
                 pendingApporvalTable()
-
                 closeVerificationModal(false)
               })
               .catch((e) => {
                 toast.error("Something went wrong, Please Try Again later")
-
               });
           }
 
@@ -221,17 +219,17 @@ const CompleteVerification = (props) => {
 
 
   useEffect(() => {
-    if (currenTab === 4 && roles?.approver) {
-      setPushedButton("Back to Pending Verification")
+    // if (currenTab === 4 && roles?.approver) {
+    //   setPushedButton("Back to Pending Verification")
 
-    }
-    if (currenTab === 5 && roles?.approver) {
-      setPushedButton("Back to Pending Approval")
+    // }
+    // if (currenTab === 5 && roles?.approver) {
+    //   setPushedButton("Back to Pending Approval")
 
 
-    }
-    if (currenTab === 6 && roles?.approver)
-      setPushedButton("Back to Pending kyc")
+    // }
+    // if (currenTab === 6 && roles?.approver)
+    //   setPushedButton("Back to Pending kyc")
 
 
 
@@ -259,7 +257,7 @@ const CompleteVerification = (props) => {
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button" disabled={disable} onClick={() => {
             handleVerifyClick()
-          }} className="btn  cob-btn-primary  btn-sm text-white m-2">{buttonText}</button>
+          }} className="btn  cob-btn-primary  btn-sm text-white m-2">{buttonText} </button>
 
 
 
@@ -267,6 +265,9 @@ const CompleteVerification = (props) => {
           : enableBtnApprovedTab === true ? <button type="button"
             onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
         }
+
+        {/* ratemapping loader  */}
+                <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
 
         {/* {(currenTab === 4 || currenTab === 5 || currenTab === 6) && (roles?.approver) ?
 
