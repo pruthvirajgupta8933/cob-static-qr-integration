@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
@@ -10,7 +9,7 @@ import { logout } from "../../../slices/auth";
 
 function ChangePassword() {
   const dispatch = useDispatch();
-  let history = useHistory();
+  
 
   // let { path, url } = useRouteMatch();
   const { user } = useSelector((state) => state.auth);

@@ -100,7 +100,7 @@ useEffect(() => {
     setLoadingState(true);
     const postData = {
       from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
-      to_date: values.to_date,
+      to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
     };
     let apiRes = axiosInstanceJWT
       .post(

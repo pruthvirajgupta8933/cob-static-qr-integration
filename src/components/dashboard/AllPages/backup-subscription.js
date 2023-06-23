@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import axios from "axios";
-// import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
-// import { Link } from 'react-router-dom';
-import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import API_URL from '../../../config';
-import { Link } from 'react-router-dom';
 import CreateClientCode from './Modals/CreateClientCode';
 import BusinessCategory from './Modals/BusinessCategory';
-import NavBar from '../NavBar/NavBar';
 // import paymentGateWay from '../../../payment-gateway/'
 
 
@@ -288,7 +281,7 @@ const Subsciption = () => {
   return (
     <section className="ant-layout">
       <div>
-        
+
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
@@ -299,21 +292,19 @@ const Subsciption = () => {
           <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
             <div className="container-fluid">
 
-            <div className="row">
-    <div className="col">
-      1 of 2
-    </div>
-    <div className="col">
-      2 of 2
-    </div>
-  </div>
+              <div className="row">
+                <div className="col">
+                  1 of 2
+                </div>
+                <div className="col">
+                  2 of 2
+                </div>
+              </div>
               <div className="row">
 
-
-
                 {subscriptionPlanData.length <= 0 ? <h3>Loading...</h3> : subscriptionPlanData.map((s, i) =>
-                  
-                  
+
+
                   <div className="col-sm-12 col-md-6" key={i}>
                     <div className="col mb-4">
 
@@ -334,7 +325,7 @@ const Subsciption = () => {
                                 Link with href
                               </a>
                               <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                               Subscribe
+                                Subscribe
                               </button>
                             </p>
                             <div className="collapse" id="collapseExample">

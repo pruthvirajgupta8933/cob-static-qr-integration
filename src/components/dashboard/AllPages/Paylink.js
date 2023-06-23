@@ -5,7 +5,6 @@ import BulkPayer from './createpaymentlink/BulkPayer';
 import Reports from './createpaymentlink/Reports';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import NavBar from '../NavBar/NavBar';
 
 
 function Paylink() {

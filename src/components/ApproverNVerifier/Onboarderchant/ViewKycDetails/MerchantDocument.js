@@ -8,7 +8,6 @@ import { toast } from "react-toastify"
 import classes from "./viewStatus.module.css"
 import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
-
 const MerchantDocument = (props) => {
   const { docList, docTypeList, role, merchantKycId } = props;
   const roleBasePermissions = roleBasedAccess()
