@@ -379,7 +379,7 @@ const Faq = () => {
               </span>
               </a>
             </p>
-            <div className="collapse mb-5" id="collapseExample21">
+            <div className="collapse" id="collapseExample21">
               <p className={` ${classes.font_size}`}>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223</p>
             </div>
 
@@ -393,17 +393,12 @@ const Faq = () => {
               </span>
               </a>
             </p>
-            <div className="collapse ml-3" id="collapseExample22">
+            <div className="collapse ml-3 mb-5" id="collapseExample22">
               <p className={` ${classes.font_size}`}>TSR = (Total Success Transactions + Total Failed Transactions)/ Total Transactions
 
               </p>
             </div>
           </div>
-
-        
-         
-
-          
           </div>
         </div>
       </main>
