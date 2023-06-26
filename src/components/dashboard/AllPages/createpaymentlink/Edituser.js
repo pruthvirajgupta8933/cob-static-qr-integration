@@ -97,7 +97,6 @@ export const Edituser = (props) => {
   }, []);
 
 
-console.log("props.modalToggle", props.modalToggle)
 
   //modal body and modal footer need to send in custom modal as a props.
   const modalBody = () => {
