@@ -47,7 +47,7 @@ function CreateClientCode(props) {
         setIsCodeValid(null);
         if(inputText.length===6 || inputText.length===5){
             const data  = {"client_code": inputText}
-            axiosInstance.post("https://stgcobapi.sabpaisa.in/auth-service/account/check-clientcode",data).then(
+            axiosInstance.post(API_URL.AUTH_CHECK_CLIENT_CODE,data).then(
                 res=>{
                     // console.log(res.data.status)
                     setIsCodeValid(res.data.status);
