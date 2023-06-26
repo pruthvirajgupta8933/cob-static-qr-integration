@@ -14,7 +14,7 @@ const Faq = () => {
     }
     
    linkElements.forEach((link, index) => {
-      link.addEventListener('click', () => {
+  link.addEventListener('click', () => {
         collapseElements[index].classList.toggle('show');
         collapseElements.forEach((collapse, idx) => {
           if (idx !== index) {
@@ -26,10 +26,7 @@ const Faq = () => {
     
   });
  
-
-  
-  
-  return (
+ return (
     <>
     <section>
       <main>
@@ -369,28 +366,29 @@ const Faq = () => {
               </p>
             </div>
 
+
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample21" role="button" aria-expanded="false" aria-controls="collapseExample21" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
-               
+                
                   <h6 class="m-0">Where do I seek support from SabPaisa?</h6>
-               
-              </span>
+               </span>
               </a>
             </p>
-            <div className="collapse" id="collapseExample21">
-              <p className={` ${classes.font_size}`}>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223</p>
+            <div className="collapse ml-3" id="collapseExample21">
+              <p className={` ${classes.font_size}`}>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223
+
+              </p>
             </div>
 
-            <p>
+          <p>
             <a data-bs-toggle="collapse" href="#collapseExample22" role="button" aria-expanded="false" aria-controls="collapseExample22" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
                 
                   <h6 class="m-0">How to calculate TSR (Transaction Success Rate)?</h6>
-               
-              </span>
+               </span>
               </a>
             </p>
             <div className="collapse ml-3 mb-5" id="collapseExample22">
