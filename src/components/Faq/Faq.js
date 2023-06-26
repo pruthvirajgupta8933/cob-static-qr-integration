@@ -1,7 +1,36 @@
 import React from 'react';
+import classes from './faq.module.css'
 const Faq = () => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const collapseElements = [];
+    const linkElements = [];
+
+    for (let i = 1; i <= 22; i++) {
+      const collapseElement = document.getElementById(`collapseExample${i}`);
+      const linkElement = document.querySelector(`[href="#collapseExample${i}"]`);
+      
+      collapseElements.push(collapseElement);
+      linkElements.push(linkElement);
+    }
+    
+   linkElements.forEach((link, index) => {
+      link.addEventListener('click', () => {
+        collapseElements[index].classList.toggle('show');
+        collapseElements.forEach((collapse, idx) => {
+          if (idx !== index) {
+            collapse.classList.remove('show');
+          }
+        });
+      });
+    });
+    
+  });
+ 
+
+  
   
   return (
+    <>
     <section>
       <main>
         <div className="container-fluid mb-5">
@@ -21,7 +50,7 @@ const Faq = () => {
           </div>
           <div className="my-4"></div>
           <div className="row">
-            <div className="col-md-12 border p-2">
+            <div className="col-md-12 border p-2 ">
               <p>
                 <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1" class="text-decoration-none">
                   <span class="d-inline-flex align-items-center">
@@ -30,9 +59,15 @@ const Faq = () => {
                   </span>
                 </a>
               </p>
-              <div className="collapse ml-3" id="collapseExample1">
-                <p className="font-weight-bold">With SabPaisa, you get unmatched benefits that suit all your needs. Some benefits are listed below:</p>
-                <ul>
+              <div
+               className="collapse ml-3" 
+             
+               id="collapseExample1">
+                <p
+                 className="font-weight-bold"
+                // className={`font-weight-bold ${classes.font_size}`}
+                 >With SabPaisa, you get unmatched benefits that suit all your needs. Some benefits are listed below:</p>
+                <ul  className={` ${classes.font_size}`}>
                   <li>Maximum Online & Offline Modes</li>
                   <li>Top Notch Security</li>
                   <li>Advanced API</li>
@@ -53,7 +88,7 @@ const Faq = () => {
               </p>
               <div className="collapse ml-3" id="collapseExample2">
 
-                <ul>
+                <ul className={`${classes.font_size}`}>
                   <li>SabPaisa charges according to industry standards for its services. </li>
                   <li>For PG- It depends on the merchant’s industry and business volumes.</li>
                   <li>For Subscription- Nominal fee for mandates and transactions as per industry norms and as agreed with the merchant</li>
@@ -73,12 +108,12 @@ const Faq = () => {
                 </a>
               </p>
               <div className="collapse ml-3" id="collapseExample3">
-                <p>To sign up for SabPaisa, visit <a href="https://sabpaisa.in/sign-up/">https://sabpaisa.in/sign-up/</a>, fill in your details, and our team will get in touch with you at the earliest.</p>
+                <p className={` ${classes.font_size}`}>To sign up for SabPaisa, visit <a href="https://sabpaisa.in/sign-up/">https://sabpaisa.in/sign-up/</a>, fill in your details, and our team will get in touch with you at the earliest.</p>
               </div>
 
            
 
-            <p>
+            <p >
             <a data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4" className="text-decoration-none">
               <span class="d-inline-flex align-items-center">
                 <i class="fa fa-caret-right me-2"></i>
@@ -89,7 +124,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample4">
-              <p>SabPaisa stores only the last four digits of a card, which is the industry standard.</p>
+              <p className={` ${classes.font_size}`}>SabPaisa stores only the last four digits of a card, which is the industry standard.</p>
             </div>
          <p>
          <a data-bs-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5" className="text-decoration-none">
@@ -103,9 +138,9 @@ const Faq = () => {
             </p>
 
             <div className="collapse ml-3" id="collapseExample5">
-              <ul>
+              <ul className={` ${classes.font_size}`}>
                 <li>Payment collection through Payment Gateway.</li>
-                <li>Auto payment collection through Payment Links even without a website.</li>
+                <li >Auto payment collection through Payment Links even without a website.</li>
                 <li>Collect recurring payments through the Subscription Platform.</li>
 
               </ul>
@@ -121,7 +156,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample6">
-              <p>All the modes of payments are available with SabPaia, from Debit cards, Credit Card, Wallets, UPI, Bharat QR etc. We have almost 10 lac e-cash counters that make payments convenient.</p>
+              <p className={` ${classes.font_size}`}>All the modes of payments are available with SabPaia, from Debit cards, Credit Card, Wallets, UPI, Bharat QR etc. We have almost 10 lac e-cash counters that make payments convenient.</p>
             </div>
 
             <p>
@@ -135,7 +170,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample7">
-              <p>SabPaisa offers Netbanking services with all major banks for the convenience of the customers.</p>
+              <p className={` ${classes.font_size}`}>SabPaisa offers Netbanking services with all major banks for the convenience of the customers.</p>
             </div>
 
             <p>
@@ -149,7 +184,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample8">
-              <p>SabPaisa is working on getting international payments.</p>
+              <p className={` ${classes.font_size}`}>SabPaisa is working on getting international payments.</p>
             </div>
 
             <p>
@@ -163,7 +198,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample9">
-              <p>Yes, SabPaisa supports mobile payments.</p>
+              <p className={` ${classes.font_size}`}>Yes, SabPaisa supports mobile payments.</p>
             </div>
 
             <p>
@@ -177,7 +212,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample10">
-              <p>Yes, we support partial refunds.</p>
+              <p className={` ${classes.font_size}`}>Yes, we support partial refunds.</p>
             </div>
 
             <p>
@@ -191,7 +226,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample11">
-              <p>SabPaisa offers you the fastest TAT after all formalities like KYC, agreement etc is done.</p>
+              <p className={` ${classes.font_size}`}>SabPaisa offers you the fastest TAT after all formalities like KYC, agreement etc is done.</p>
             </div>
 
             <p>
@@ -205,7 +240,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample12">
-              <p>No, the payment experience is not customisable as per the merchant’s website’s look and feel at this point.</p>
+              <p className={` ${classes.font_size}`}>No, the payment experience is not customisable as per the merchant’s website’s look and feel at this point.</p>
             </div>
 
             <p>
@@ -219,7 +254,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample13">
-              <p>SabPaisa Payment Gateway is governed by the Payment and Settlement Act of RBI and payments are done to merchants within RBI prescribed TATs.</p>
+              <p className={` ${classes.font_size}`}>SabPaisa Payment Gateway is governed by the Payment and Settlement Act of RBI and payments are done to merchants within RBI prescribed TATs.</p>
             </div>
 
             <p>
@@ -233,8 +268,8 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample14">
-              <p>We provide a dashboard to every merchant, wherein they can do the following:</p>
-              <ul>
+              <p className='font-weight-bold'>We provide a dashboard to every merchant, wherein they can do the following:</p>
+              <ul className={` ${classes.font_size}`}>
                 <li>View/download transactions with date range updated in real-time including offline modes like cash, NEFT, RTGS etc. </li>
                 <li>View/download settlements daily</li>
                 <li>Transaction-based enquiry</li>
@@ -255,7 +290,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample15">
-              <p>To ensure that all our merchants/clients are given 100% attention, SabPaisa assigns every merchant an Account Manager to handle any issues.</p>
+              <p className={` ${classes.font_size}`}>To ensure that all our merchants/clients are given 100% attention, SabPaisa assigns every merchant an Account Manager to handle any issues.</p>
             </div>
 
             <p>
@@ -269,7 +304,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample16">
-              <p>Yes, we are PCI-DSS certified.</p>
+              <p className={` ${classes.font_size}`}>Yes, we are PCI-DSS certified.</p>
             </div>
 
             <p>
@@ -283,7 +318,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample17">
-              <p>SabPaisa uses the HTTPS extension that protects the integrity and confidentiality of data for secure connections. We are also PCI-DSS certified and adhere to RBI guidelines of data privacy.</p>
+              <p className={` ${classes.font_size}`}>SabPaisa uses the HTTPS extension that protects the integrity and confidentiality of data for secure connections. We are also PCI-DSS certified and adhere to RBI guidelines of data privacy.</p>
             </div>
 
             <p>
@@ -297,7 +332,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample18">
-              <p>It varies with the constitution of the firm. Broadly, documents for business proofs, signatory individual’s proofs, bank statements and cancelled cheques along with GST registration.
+              <p className={` ${classes.font_size}`}>It varies with the constitution of the firm. Broadly, documents for business proofs, signatory individual’s proofs, bank statements and cancelled cheques along with GST registration.
 
               </p>
             </div>
@@ -313,7 +348,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample19">
-              <p>Yes, SabPaisa has a Sandbox where one can test the integration before going live with SabPaisa.
+              <p className={` ${classes.font_size}`}>Yes, SabPaisa has a Sandbox where one can test the integration before going live with SabPaisa.
 
               </p>
             </div>
@@ -329,7 +364,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample20">
-              <p>For sales enquiries signup with your details at https://sabpaisa.in/sign-up/ and our Sales Team will get in touch with you.
+              <p className={` ${classes.font_size}`}>For sales enquiries signup with your details at https://sabpaisa.in/sign-up/ and our Sales Team will get in touch with you.
 
               </p>
             </div>
@@ -345,13 +380,35 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse mb-5" id="collapseExample21">
-              <p>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223</p>
+              <p className={` ${classes.font_size}`}>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223</p>
+            </div>
+
+            <p>
+            <a data-bs-toggle="collapse" href="#collapseExample22" role="button" aria-expanded="false" aria-controls="collapseExample22" className="text-decoration-none">
+              <span class="d-inline-flex align-items-center">
+                <i class="fa fa-caret-right me-2"></i>
+                
+                  <h6 class="m-0">How to calculate TSR (Transaction Success Rate)?</h6>
+               
+              </span>
+              </a>
+            </p>
+            <div className="collapse ml-3" id="collapseExample22">
+              <p className={` ${classes.font_size}`}>TSR = (Total Success Transactions + Total Failed Transactions)/ Total Transactions
+
+              </p>
             </div>
           </div>
+
+        
+         
+
+          
           </div>
         </div>
       </main>
-    </section>
+    </section></>
+    
 
   );
 };

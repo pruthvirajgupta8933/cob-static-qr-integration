@@ -116,8 +116,7 @@ const RefundTransactionHistory = () => {
       noOfClient: values.noOfClient,
       rpttype: values.rpttype,
     }
-    console.log(paramData,"paramdata value")
-
+    
     setLoading(true);
     setIsDisable(true);
     dispatch(fetchRefundTransactionHistory(paramData)).then((res) => {

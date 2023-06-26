@@ -17,6 +17,7 @@ const NavBar = () => {
   const exitback = () => {
     dispatch(logout());
   };
+  
   return (
       <nav
         className="navbar navbar-light NunitoSans-Regular minh d-none-"
