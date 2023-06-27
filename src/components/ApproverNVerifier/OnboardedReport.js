@@ -41,6 +41,7 @@ const OnboardedReport = () => {
   const [dataClick, setDataClick] = useState(false);
 
   
+  
 
   let noResultsFound = data;
 
@@ -191,8 +192,8 @@ const OnboardedReport = () => {
         page: currentPage,
         page_size: pageSize,
         selectedChoice,
-        from_date: onboardValue.from_date,
-        to_date: onboardValue.to_date,
+        from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
+        to_date:moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
       })
     )
       .then((resp) => {
@@ -220,8 +221,8 @@ const OnboardedReport = () => {
     dispatch(
       onboardedReportExport({
         selectedChoice,
-        from_date: onboardValue.from_date,
-        to_date: onboardValue.to_date,
+        from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
+        to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
       })
     ).then((res) => {
       const blob = new Blob([res?.payload], {
@@ -317,9 +318,8 @@ const OnboardedReport = () => {
                   </div>
 
                   <div className="form-group col-md-3">
-                  <label></label>
-                    <button
-                      type="subbmit"
+                   <button
+                      type="submit"
                       className="btn cob-btn-primary mt-4 approve text-white btn-sm"
                       disabled={disabled}
                     >
