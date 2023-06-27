@@ -42,7 +42,7 @@ const BizzAppData = () => {
   const handleSubmit = (values) => {
     const postData = {
       start_date:moment(values.start_date).startOf('day').format('YYYY-MM-DD'),
-      end_date: values.end_date,
+      end_date: moment(values.end_date).startOf('day').format('YYYY-MM-DD'),
     };
   
     let apiRes = axiosInstanceJWT
