@@ -392,8 +392,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3 mb-5" id="collapseExample22">
-              <p className={` ${classes.font_size}`}>TSR = (Total Success Transactions + Total Failed Transactions)/ Total Transactions
-
+              <p className={` ${classes.font_size}`}>TSR =((Total Success Transactions + Total Failed Transactions)/ Total Transactions)*100
               </p>
             </div>
           </div>
