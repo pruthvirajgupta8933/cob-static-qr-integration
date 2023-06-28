@@ -229,12 +229,10 @@ function Login() {
                                 </Form>
                                 )}
                             </Formik>
-                            <div className="d-flex justify-content-center m-2">
-                            {/* <p>OR</p> */}
-                            
-                            {/* <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} /> */}
-                            
+                            <p className="text-center mt-1">OR</p>
 
+                            <div className="d-flex justify-content-center">                            
+                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                             </div>
                         
                             <div className="text-center mt-2">

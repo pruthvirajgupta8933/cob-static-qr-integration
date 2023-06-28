@@ -2,7 +2,7 @@
 .cob_logo{
     width: 100%;
     max-width: 150px;
-    height: auto;
+    height: 30px;
 }
 
 .navbar_bg_color
@@ -12,5 +12,7 @@
 
 .position_sticky{
     position: sticky;
+    padding-top: 2px;
+    padding-bottom: 3px;
     top: 0; right: 0; left: 0; z-index: 1030
 }
