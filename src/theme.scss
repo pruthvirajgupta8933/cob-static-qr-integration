@@ -1,7 +1,7 @@
 @import url("../src/assets/fonts/Sofia/sofia.css");
 
-$primaryColor: #29205d;
-// $primaryColor: #154280;
+// $primaryColor: #29205d;
+$primaryColor: #154280;
 
 // $buttonPrimary:
 // $buttonOnHover:
@@ -27,11 +27,11 @@ $primaryColor: #29205d;
 
 // inner dashboard 
 .sidebarBg{
-    background-color: #130532;  //;
+    background-color: $primaryColor // #130532;  //;
 }
 
 .dashboardHeaderBg{
-    background-color: #130532; //#130532;
+    background-color: $primaryColor //#130532; //#130532;
 }
 
 
