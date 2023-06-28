@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import { login, logout } from "../../../slices/auth";
 import { clearMessage } from "../../../slices/message";
-import imageSlide1 from "../../../assets/images/COB.png";
+import imageSlide1 from "../../../assets/images/sb-front-bnrr.png";
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from '../header/Header'
 import classes from "./login.module.css"
@@ -138,7 +138,7 @@ function Login() {
                             <h1>An all-in-one</h1>
                             <h2>Dashboard</h2>
                             <h4>Trusted by over 3000+ Mega Clients</h4>
-                            <img src="https://partner.sabpaisa.in/static/media/COB.291fe45cb61eeb6e8b0d.png" alt="banner" className={`${classes.login_banner}`} />
+                            <img src={imageSlide1} alt="banner" className={`${classes.login_banner}`} />
                         </div>
                     </div>
 
