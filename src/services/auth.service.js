@@ -30,7 +30,7 @@ const login = (username, password,is_social) => {
       
       sessionStorage.setItem("user", JSON.stringify(response.data));
       sessionStorage.setItem("categoryId", 1)
-      sessionStorage.setItem("prog_id", stringEnc(password))
+      // sessionStorage.setItem("prog_id", stringEnc(password))
       return response.data;
     });
 };

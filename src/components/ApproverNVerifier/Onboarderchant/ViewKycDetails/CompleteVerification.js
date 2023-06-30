@@ -8,8 +8,11 @@ import {
   reverseToPendingApproval,
   reverseToPendingkyc
 } from "../../../../slices/kycOperationSlice"
-import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
+import { approvekyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
+import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
+import { DefaultRateMapping } from '../../../../utilities/DefaultRateMapping';
+import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
 
 
 const CompleteVerification = (props) => {
@@ -33,10 +36,11 @@ const CompleteVerification = (props) => {
   const [enableBtnApprovedTab, setEnableBtnApprovedTab] = useState(false)
   const [disable, setDisable] = useState(false)
   const [buttonClick, setButtonClick] = useState(false)
+  const [triggerRateMapping, setTriggerRateMapping] = useState(false)
   const [commetText, setCommetText] = useState()
 
 
-  const { auth } = useSelector((state) => state);
+  const { auth, approverDashboard, kyc } = useSelector((state) => state);
 
   const { user } = auth;
   const { loginId } = user;
@@ -49,6 +53,17 @@ const CompleteVerification = (props) => {
   const [buttonText, setButtonText] = useState("Complete Verification");
   const [pushedButton, setPushedButton] = useState("")
   const [pushButtonClick, setPushButtonClick] = useState()
+
+  useEffect(() => {
+    dispatch(generalFormData({
+      rr_amount: kyc.kycUserList?.rolling_reserve,
+      business_cat_type: kyc.kycUserList?.business_category_type,
+      refer_by: kyc.kycUserList?.refer_by
+    }))
+
+  }, [kyc])
+
+
   const handleVerifyClick = () => {
 
     const veriferDetails = {
@@ -86,26 +101,35 @@ const CompleteVerification = (props) => {
     }
 
 
-    const dataAppr = {
-      login_id: merchantKycId.loginMasterId,
-      approved_by: loginId,
-    };
-
 
 
     if (currenTab === 4) {
       if (isverified === true && isapproved === false) {
         if (roles?.approver === true) {
           if (window.confirm("Approve kyc")) {
+            // dataAppr = [...dataAppr]
+
+
+            let dataAppr = {
+              login_id: merchantKycId.loginMasterId,
+              approved_by: loginId,
+              rolling_reserve: parseFloat(approverDashboard?.generalFormData?.rr_amount),
+              refer_by: approverDashboard?.generalFormData?.refer_by,
+              business_category_type: approverDashboard?.generalFormData?.business_cat_type,
+            };
+            GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })
+
             dispatch(approvekyc(dataAppr))
               .then((resp) => {
                 resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
                 dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
+                dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId, password_required: true }));
+                setTriggerRateMapping(true)
                 pendingApporvalTable()
-
-                closeVerificationModal(false)
+                // closeVerificationModal(false)
               })
               .catch((e) => {
+                setTriggerRateMapping(false)
                 toast.error("Something went wrong, Please Try Again later")
 
               });
@@ -118,7 +142,7 @@ const CompleteVerification = (props) => {
   }
 
   const handleRejectClick = (commetText) => {
-    
+
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       rejected_by: loginId,
@@ -131,27 +155,27 @@ const CompleteVerification = (props) => {
           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
           setButtonClick(false)
           setCommetText("");
-          if(currenTab === 4){
+          if (currenTab === 4) {
             return pendingApporvalTable()
-          }else if(currenTab === 3){
+          } else if (currenTab === 3) {
             return pendingVerfyTable()
-          }else if (currenTab===5){
+          } else if (currenTab === 5) {
             return approvedTable()
           }
-         
+
         })
         .catch((e) => {
           toast.error("Something went wrong, Please Try Again later")
         });
     }
-}
+  }
 
 
- 
+
 
   useEffect(() => {
 
-////////////////////////////////////////////////////// Button enable for approver
+    ////////////////////////////////////////////////////// Button enable for approver
     const approver = () => {
       let enableBtn = false;
       if (currenTab === 4) {
@@ -214,29 +238,15 @@ const CompleteVerification = (props) => {
 
     //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
     //  console.log("isverified",isverified)
+    // return () => {
+    //   setTriggerRateMapping(false)
+    // }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
 
 
 
-  useEffect(() => {
-    if (currenTab === 4 && roles?.approver) {
-      setPushedButton("Back to Pending Verification")
-
-    }
-    if (currenTab === 5 && roles?.approver) {
-      setPushedButton("Back to Pending Approval")
-
-
-    }
-    if (currenTab === 6 && roles?.approver)
-      setPushedButton("Back to Pending kyc")
-
-
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roles])
 
 
   // console.log("---------start final btn-----")
@@ -255,36 +265,24 @@ const CompleteVerification = (props) => {
 
       <label className="font-weight-bold col-lg-12">Comments : <span>{KycTabStatus?.comments}</span></label>
       <div className="col-lg-12">
-
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button" disabled={disable} onClick={() => {
             handleVerifyClick()
           }} className="btn  cob-btn-primary  btn-sm text-white m-2">{buttonText}</button>
 
-
-
             <button type="button" onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button></>
           : enableBtnApprovedTab === true ? <button type="button"
             onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
         }
-
-        {/* {(currenTab === 4 || currenTab === 5 || currenTab === 6) && (roles?.approver) ?
-
-          <button type="button" onClick={() => setPushButtonClick(true)} className="btn btn-success btn-sm text-white ml-2">{pushedButton}</button> : <></>} */}
-
-        {/* <div className="col-lg-12">
-          {pushButtonClick === true ?
-            <>
-              <label for="comments col-lg-12">Reject Comments For Pushing Back</label>
-              <textarea id="comments" className="col-lg-12" name="reject_commet" rows="4" cols="40" onChange={(e) => setCommetText(e.target.value)}>
-              </textarea>
-              <button type="button"
-                // onClick={() => handlePushBack(commetText)}
-                className="btn btn-danger btn-sm text-white pull-left mt-20">Submit</button></> : <></>
-          }
-        </div> */}
-
       </div>
+
+      <div className="col-lg-12">
+        {/* Ratemapping */}
+        {/* {console.log("triggerRateMapping", triggerRateMapping)} */}
+        {triggerRateMapping && <DefaultRateMapping setFlag={() => { }} merchantLoginId={merchantKycId?.loginMasterId} />}
+      </div>
+
+
       <div className="col-lg-12">
         {buttonClick === true ?
 

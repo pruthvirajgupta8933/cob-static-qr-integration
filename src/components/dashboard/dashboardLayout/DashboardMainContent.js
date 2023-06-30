@@ -74,6 +74,7 @@ import CreateMandate from "../../../subscription_components/Create_Mandate/index
 import DebitReport from "../../../subscription_components/DebitReport";
 import Faq from "../../../components/Faq/Faq"
 import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
+import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
 
 
 
@@ -583,6 +584,15 @@ function DashboardMainContent() {
                                 >
                                     <ReferZone />
                                 </ApproverRoute>
+                            )}
+                            {roles?.approver && (
+                                <Route
+                                    exact
+                                    path={`${path}/ratemapping/:loginid`}
+                                    Component={ManualRateMapping}
+                                >
+                                    <ManualRateMapping />
+                                </Route>
                             )}
 
                             <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>

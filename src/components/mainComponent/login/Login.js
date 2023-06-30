@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 
 import { login, logout } from "../../../slices/auth";
 import { clearMessage } from "../../../slices/message";
-import imageSlide1 from "../../../assets/images/sb-front-bnrr.png";
+import sbbnner from "../../../assets/images/sb-front-bnrr.png"
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from '../header/Header'
 import classes from "./login.module.css"
+
 // import api from './api';
 
 const INITIAL_FORM_STATE = {
@@ -138,7 +139,8 @@ function Login() {
                             <h1>An all-in-one</h1>
                             <h2>Dashboard</h2>
                             <h4>Trusted by over 3000+ Mega Clients</h4>
-                            <img src={imageSlide1} alt="banner" className={`${classes.login_banner}`} />
+                            {/* <img src="https://partner.sabpaisa.in/static/media/COB.291fe45cb61eeb6e8b0d.png" alt="banner" className={`${classes.login_banner}`} /> */}
+                            <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
                         </div>
                     </div>
 
@@ -202,8 +204,8 @@ function Login() {
                                         </div>
                                     </div>
                                     <ErrorMessage name="userPassword">
-                                            {(msg) => (<div className="text-danger" >{msg}</div>)}
-                                        </ErrorMessage>
+                                        {(msg) => (<div className="text-danger" >{msg}</div>)}
+                                    </ErrorMessage>
 
 
                                     <div className="form-text p-2 text-right">
@@ -212,34 +214,33 @@ function Login() {
                                         </Link>
                                     </div>
                                     <div className="d-flex">
-                                    <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 " disabled={
-                                        !(formik.isValid && formik.dirty)
-                                            ? true
-                                            : false
-                                    }> {loading && (
-                                        <span
-                                            class="spinner-grow spinner-grow-sm text-light mr-1"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
-                                    )}
-                                        Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                                        <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 " disabled={
+                                            !(formik.isValid && formik.dirty)
+                                                ? true
+                                                : false
+                                        }> {loading && (
+                                            <span
+                                                class="spinner-grow spinner-grow-sm text-light mr-1"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></span>
+                                        )}
+                                            Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
                                     </div>
 
                                 </Form>
                                 )}
                             </Formik>
                             <p className="text-center mt-1">OR</p>
-
-                            <div className="d-flex justify-content-center">                            
-                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
+                            <div className="d-flex justify-content-center">
+                                <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                             </div>
-                        
+
                             <div className="text-center mt-2">
                                 <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa?  <Link className="text-primary text-decoration-underline" to={`/Registration/${queryString}`}>Sign Up</Link></p>
                             </div>
                         </div>
-                        <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer"  target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer"  target="_blank">Privacy Policy</a></p></div>
+                        <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a></p></div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-3 ">

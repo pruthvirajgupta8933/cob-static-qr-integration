@@ -456,7 +456,7 @@ function Signup() {
                                         </div>
                                         <p className="text-center">OR</p>
                                         <div className="d-flex justify-content-center m-2">
-                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} class="signup-google" btnText={"Sign up with Google"}  />
+                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} btnText={"Sign up with Google"}  />
 
                                         </div>
                                     </Form>

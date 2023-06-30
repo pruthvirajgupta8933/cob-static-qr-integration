@@ -1,6 +1,6 @@
 import API_URL from "../config";
 
-import {axiosInstanceJWT} from "../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../utilities/axiosInstance";
 import authService from "./auth.service";
 import TokenService from "./token.service";
 

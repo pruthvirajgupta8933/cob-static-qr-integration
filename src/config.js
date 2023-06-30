@@ -53,6 +53,8 @@ const API_LIVE = {
   /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
   BizzAPPForm: `${url}/biz-app-form/`,
+  Business_Category_Type: `${url}/auth-service/auth/business-category`,
+
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
@@ -143,6 +145,7 @@ const API_LIVE = {
   /**Kyc DocumentsUploads */
   searchQuery: `${kyc_url}/kyc/get-merchant-data/?search=Pending&search_query=lpsuman2001@gmail.com&page_size=5&page=1`,
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
+  getAllClientCode: `${kyc_url}/kyc/get-all-client-code`, //get APi
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
@@ -199,6 +202,7 @@ const API_LIVE = {
   Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
   //Get All Bnak Names in Kyc Bank Details Dropdown Tab
   GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
+  GET_PLATFORM_BY_ID: `${kyc_url}/kyc/get-platform-by-id/`,
   GET_PAYMENT_MODE: `${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
