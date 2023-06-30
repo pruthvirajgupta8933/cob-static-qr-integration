@@ -205,8 +205,8 @@ function Login() {
                                         </div>
                                     </div>
                                     <ErrorMessage name="userPassword">
-                                            {(msg) => (<div className="text-danger" >{msg}</div>)}
-                                        </ErrorMessage>
+                                        {(msg) => (<div className="text-danger" >{msg}</div>)}
+                                    </ErrorMessage>
 
 
                                     <div className="form-text p-2 text-right">
@@ -215,36 +215,33 @@ function Login() {
                                         </Link>
                                     </div>
                                     <div className="d-flex">
-                                    <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 " disabled={
-                                        !(formik.isValid && formik.dirty)
-                                            ? true
-                                            : false
-                                    }> {loading && (
-                                        <span
-                                            class="spinner-grow spinner-grow-sm text-light mr-1"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
-                                    )}
-                                        Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                                        <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 " disabled={
+                                            !(formik.isValid && formik.dirty)
+                                                ? true
+                                                : false
+                                        }> {loading && (
+                                            <span
+                                                class="spinner-grow spinner-grow-sm text-light mr-1"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></span>
+                                        )}
+                                            Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
                                     </div>
 
                                 </Form>
                                 )}
                             </Formik>
-                            <div className="d-flex justify-content-center m-2">
-                            {/* <p>OR</p> */}
-                            
-                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
-                            
-
+                            <p className="text-center mt-1">OR</p>
+                            <div className="d-flex justify-content-center">
+                                <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                             </div>
-                        
+
                             <div className="text-center mt-2">
                                 <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa?  <Link className="text-primary text-decoration-underline" to={`/Registration/${queryString}`}>Sign Up</Link></p>
                             </div>
                         </div>
-                        <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer"  target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer"  target="_blank">Privacy Policy</a></p></div>
+                        <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a></p></div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-3 ">
