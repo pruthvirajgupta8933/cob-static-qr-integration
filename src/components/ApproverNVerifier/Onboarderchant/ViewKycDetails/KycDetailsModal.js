@@ -6,6 +6,7 @@ import {
   businessTypeById,
   documentsUpload,
   GetKycTabsStatus,
+  platformType,
 } from "../../../../slices/kycSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -18,6 +19,9 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import CompleteVerification from "./CompleteVerification";
 import { isNumber } from "lodash";
 import CustomModal from "../../../../_components/custom_modal";
+import GeneralForm from "./GeneralForm";
+import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
+
 
 const KycDetailsModal = (props) => {
   // console.log(props)
@@ -27,15 +31,17 @@ const KycDetailsModal = (props) => {
   let renderPendingApprovel = props.renderPendingApproval;
   let renderPendingVerificationTable = props?.renderPendingVerification;
   let renderApprovedTable = props?.renderApprovedTable;
-  let renderToPendingKyc=props?.renderToPendingKyc;
+  let renderToPendingKyc = props?.renderToPendingKyc;
 
   let merchantKycId = props?.kycId;
-  // console.log(props,'test');
+
+
 
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
   const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
+  const [platform, setPlatform] = useState("");
   const roles = roleBasedAccess();
 
   //   console.log(props?.kycId, "Props =======>");
@@ -62,12 +68,8 @@ const KycDetailsModal = (props) => {
           login_id: merchantKycId?.loginMasterId,
         })
       );
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch,merchantKycId?.loginMasterId]);
 
-  useEffect(() => {
-    if (merchantKycId !== null) {
+
       const businessType = merchantKycId?.businessType;
 
       // console.log(busiType,"Business TYPE==========>")
@@ -75,23 +77,17 @@ const KycDetailsModal = (props) => {
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
         setDocTypeList(data);
       });
-    }
-  }, [dispatch,merchantKycId?.businessType]);
 
-  //--------------------------------------//
 
-  useEffect(() => {
-    if (merchantKycId !== null) {
       dispatch(
         businessTypeById({ business_type_id: merchantKycId?.businessType })
       ).then((resp) => {
         setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
       });
-    }
-  }, [dispatch,merchantKycId?.businessType]);
 
-  useEffect(() => {
-    if (merchantKycId !== null) {
+
+
+
       const busnCatId = parseInt(merchantKycId?.businessCategory);
       if (isNumber(busnCatId)) {
         dispatch(
@@ -101,8 +97,15 @@ const KycDetailsModal = (props) => {
           setBusinessCategoryResponse(resp?.payload[0]?.category_name);
         });
       }
+
+      approverDashboardService.getPlatformById(merchantKycId?.platformId).then(resp=>{
+        setPlatform(resp.data.platformName)
+      })
     }
-  }, [dispatch,merchantKycId?.businessCategory]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, merchantKycId]);
+
 
 
   useEffect(() => {
@@ -110,48 +113,56 @@ const KycDetailsModal = (props) => {
   }, [KycDocUpload])
 
 
+
   const modalBody = () => {
     return (
       <>
-          <div className="container">
-            
-            {/* contact info section */}
-            <MerchantContactInfo
-              merchantKycId={merchantKycId}
-              role={roles}
-              KycTabStatus={KycTabStatusStore}
-            />
+        <div className="container">
 
-            {/* business overview */}
-            <BusinessOverview
-              businessTypeResponse={businessTypeResponse}
-              businessCategoryResponse={businessCategoryResponse}
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
+          {/* contact info section */}
+          <MerchantContactInfo
+            merchantKycId={merchantKycId}
+            role={roles}
+            KycTabStatus={KycTabStatusStore}
+          />
 
-            {/* business details */}
-            <BusinessDetails
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
+          {/* business overview */}
+          <BusinessOverview
+            businessTypeResponse={businessTypeResponse}
+            businessCategoryResponse={businessCategoryResponse}
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+            platform={platform}
+          />
 
-            {/* Bank details */}
-            <BankDetails
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
+          {/* business details */}
+          <BusinessDetails
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
 
-            {/* Merchant Documents */}
-            <MerchantDocument
-              docList={KycDocUpload}
-              setDocList={setDocList}
-              docTypeList={docTypeList}
-              role={roles}
-              merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-            />
-               <CompleteVerification
+          {/* Bank details */}
+          <BankDetails
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
+
+          {/* Merchant Documents */}
+          <MerchantDocument
+            docList={KycDocUpload}
+            setDocList={setDocList}
+            docTypeList={docTypeList}
+            role={roles}
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+          />
+
+          {/* Extra field required when merhcant goes to approved */}
+          <GeneralForm merchantKycId={merchantKycId}
+
+          />
+
+          <CompleteVerification
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
             renderApprovalTable={renderPendingApprovel}
@@ -160,8 +171,8 @@ const KycDetailsModal = (props) => {
             closeVerification={closeVerification}
             renderToPendingKyc={renderToPendingKyc}
           />
-          </div>
-      
+        </div>
+
 
       </>
     )
@@ -170,26 +181,26 @@ const KycDetailsModal = (props) => {
   const modalFooter = () => {
     return (
       <>
-            <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary text-white"
-              data-dismiss="modal"
-              onClick={() => {
-                props?.handleModal(false);
-              }}
-            >
-              Close
-            </button>
-         
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary text-white"
+            data-dismiss="modal"
+            onClick={() => {
+              props?.handleModal(false);
+            }}
+          >
+            Close
+          </button>
+
         </div>
       </>
     )
   }
-  
+
 
   return (
-     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
+    <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
   );
 };
 

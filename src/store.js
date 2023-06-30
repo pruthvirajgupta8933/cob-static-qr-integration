@@ -16,6 +16,7 @@ import merchantReportSlice from "./slices/merchant-slice/reportSlice";
 import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 import { DebitReportsDataReducer } from "./slices/subscription-slice/debitSlice";
 import { createMandateReducer } from "./slices/subscription-slice/createMandateSlice";
+import  approverDashboardSlice  from "./slices/approver-dashboard/approverDashboardSlice"
 
 const reducer = {
   auth: authReducer,
@@ -36,7 +37,10 @@ const reducer = {
   // For subscription
   Reports: reportsDataReducer,
   DebitReports: DebitReportsDataReducer,
-  createMandate:createMandateReducer
+  createMandate: createMandateReducer,
+
+  // approver
+  approverDashboard: approverDashboardSlice
 };
 
 const store = configureStore({
