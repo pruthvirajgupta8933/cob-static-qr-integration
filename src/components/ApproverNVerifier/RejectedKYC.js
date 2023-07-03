@@ -174,6 +174,7 @@ const RejectedKYC = () => {
       ),
     },
   ];
+
   const kycSearch = (e, fieldType) => {
     if (fieldType === "text") {
       setSearchByDropDown(false);
@@ -276,14 +277,14 @@ const RejectedKYC = () => {
           />}
           
       
-        <div>
-          <KycDetailsModal
+      
+         {isOpenModal && <KycDetailsModal
             kycId={kycIdClick}
             handleModal={setIsModalOpen}
             isOpenModal={isOpenModal}
             renderToPendingKyc={kycForRejectedMerchnats}
-          />
-        </div>
+          />}
+        
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <CountPerPageFilter
@@ -327,7 +328,7 @@ const RejectedKYC = () => {
         {/* <CustomLoader loadingState={loadingState} /> */}
         {loadingState && <SkeletonTable />}
 
-        {data?.length == 0 && !loadingState && (
+        {data?.length === 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}
       </div>

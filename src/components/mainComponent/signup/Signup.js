@@ -13,6 +13,7 @@ import classes from "./signup.module.css"
 import Header from '../header/Header'
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
+import signupBnr from "../../../assets/images/sb-front-bnrr.png"
 
 
 const phoneRegExp =
@@ -253,7 +254,7 @@ function Signup() {
                             <h1>Empower your</h1>
                             <h2>Business</h2>
                             <h4>Boost your finance</h4>
-                            <img src="https://partner.sabpaisa.in/static/media/COB.291fe45cb61eeb6e8b0d.png" className={` ${classes.signup_banner}`} />
+                            <img src={signupBnr} className={` ${classes.signup_banner}`} alt="banner" />
                         </div>
                     </div>
                     <div className={`${classes.left_screen} card`}>
@@ -445,7 +446,7 @@ function Signup() {
                                                     }
                                                     data-rel={btnDisable}
                                                 >
-                                                    Create an account
+                                                    Create Account
                                                 </button>
                                             </div>
 
@@ -453,8 +454,8 @@ function Signup() {
                                             {/* <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} /> */}
                                             {/* </div> */}
                                         </div>
+                                        <p className="text-center">OR</p>
                                         <div className="d-flex justify-content-center m-2">
-                                       
                                         <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} btnText={"Sign up with Google"}  />
 
                                         </div>

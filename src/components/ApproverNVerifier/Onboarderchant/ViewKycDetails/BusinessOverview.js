@@ -4,10 +4,11 @@ import { verifyKycEachTab, GetKycTabsStatus } from '../../../../slices/kycSlice'
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
+import { useEffect } from 'react';
 
 
 const BusinessOverview = (props) => {
-  const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
+  const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus, platform} = props;
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
@@ -21,6 +22,11 @@ const BusinessOverview = (props) => {
   const { user } = auth;
   const { loginId } = user;
   
+
+useEffect(() => {
+
+}, [])
+
 
 const handleVerifyClick = () => {
     const veriferDetails = {
@@ -137,7 +143,7 @@ const handleVerifyClick = () => {
       </div>
 
       <div className="form-row g-3">
-      <div className="col-sm-6 col-md-6 col-lg-6">
+      <div className="col-sm-3 col-md-3 col-lg-3">
         <label className="">
           Avg Ticket Amount<span style={{ color: "red" }}>*</span>
         </label>
@@ -151,7 +157,20 @@ const handleVerifyClick = () => {
             merchantKycId?.avg_ticket_size
           }
         />
+      </div>
+      
+      <div className="col-sm-3 col-md-3 col-lg-3">
+        <label className="">
+          Platform
+        </label>
 
+        <input
+          type="text"
+          className="form-control"
+          id="inputPassword3"
+          disabled="true"
+          value={platform}
+        />
       </div>
 
       <div className="col-sm-6 col-md-6 col-lg-6">
@@ -178,7 +197,7 @@ const handleVerifyClick = () => {
 
       </div>
       </div>
-      <hr/>
+      
       <div className="form-row g-3">
       <div className="col-lg-6 font-weight-bold ">
         <p>Status : <span>{KycTabStatus?.business_info_status}</span></p>

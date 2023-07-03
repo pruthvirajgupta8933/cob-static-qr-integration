@@ -444,7 +444,7 @@ function Home() {
             <div className="modal-content">
               <div className="modal-body ">
                 {/* ratemapping loader  */}
-                <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
+                {/* <DefaultRateMapping setFlag={setIsRateMappingInProcess} /> */}
 
                 {!isRateMappingInProcess && (
                   <div className="">
@@ -533,20 +533,18 @@ function Home() {
             className="modal-content"
             style={{ width: "709px", marginTop: "70px" }}
           >
+            
             <div className="modal-body ">
-              <button
+              <div className="container">
+                <div className="row justify-content-end"> <button
                 type="button"
                 onClick={() => {
                   handleClose();
                 }}
-                className="close"
+                className="cob-close-btn btn btn-default text-end"
                 data-dismiss="modal"
                 aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-
-              <div className="container ">
+              > X </button></div>
                 <div className="row justify-content-md-center">
                   <div className="col-md-auto">
                     <ul>

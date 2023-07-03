@@ -1020,7 +1020,7 @@ export const kycSlice = createSlice({
       state.isLoading = true;
     },
     [kycForNotFilled.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
+      // state.kycUserList = action.payload;
       state.isLoading = false;
     },
     [kycForNotFilled.rejected]: (state, action) => {
@@ -1034,7 +1034,7 @@ export const kycSlice = createSlice({
       state.isLoadingForPending = true;
     },
     [kycForPendingMerchants.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
+      // state.kycUserList = action.payload;
       state.isLoadingForPending = false;
     },
     [kycForPendingMerchants.rejected]: (state, action) => {
@@ -1048,7 +1048,7 @@ export const kycSlice = createSlice({
       state.isLoadingForPendingVerification = true;
     },
     [kycForPending.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
+      // state.kycUserList = action.payload;
       state.isLoadingForPendingVerification = false;
     },
     [kycForPending.rejected]: (state, action) => {
@@ -1062,7 +1062,7 @@ export const kycSlice = createSlice({
       state.isLoadingForPendingApproval = true;
     },
     [kycForVerified.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
+      // state.kycUserList = action.payload;
       state.isLoadingForPendingApproval = false;
     },
     [kycForVerified.rejected]: (state, action) => {
@@ -1076,7 +1076,7 @@ export const kycSlice = createSlice({
       state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
+      // state.kycUserList = action.payload;
       state.isLoadingForApproved = false;
     },
     [kycForApproved.rejected]: (state, action) => {
@@ -1090,7 +1090,7 @@ export const kycSlice = createSlice({
       state.isLoadingForRejected = true;
     },
     [kycForRejectedMerchants.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
+      // state.kycUserList = action.payload;
       state.isLoadingForRejected = false;
     },
     [kycForRejectedMerchants.rejected]: (state, action) => {
