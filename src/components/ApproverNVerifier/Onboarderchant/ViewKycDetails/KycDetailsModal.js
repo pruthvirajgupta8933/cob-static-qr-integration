@@ -158,7 +158,9 @@ const KycDetailsModal = (props) => {
           />
 
           {/* Extra field required when merhcant goes to approved */}
-          <GeneralForm merchantKycId={merchantKycId}
+          <GeneralForm 
+          merchantKycId={merchantKycId}
+          role={roles}
 
           />
 

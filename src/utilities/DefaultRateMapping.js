@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 
 export const DefaultRateMapping = ({ setFlag, merchantLoginId }) => {
-    console.log("merchantLoginId", merchantLoginId)
+    // console.log("merchantLoginId", merchantLoginId)
     const dispatch = useDispatch()
     const { kyc } = useSelector(state => state)
 
@@ -28,10 +28,8 @@ export const DefaultRateMapping = ({ setFlag, merchantLoginId }) => {
         async function callAPI(url, method, isJwtAxiosRequired, body = {}) {
             let response = {}
             if (isJwtAxiosRequired) {
-                console.log("axiosInstanceJWT true")
                 response = await axiosInstanceJWT.post(url, body)
             } else {
-                console.log("axiosInstanceJWT else")
                 response = method === "post" ? await axiosInstance.post(url, body) : await axiosInstance.get(url);
             }
 
@@ -43,9 +41,9 @@ export const DefaultRateMapping = ({ setFlag, merchantLoginId }) => {
             try {
                 // loader = true
                 // Call the APIs one by one
-                if (kyc?.kycUserList?.clientCode) {
+                if (kyc?.kycUserList?.clientCode && kyc?.kycUserList?.secret_key!=="") {
                     // const result1 = await callAPI(API_URL.Kyc_User_List, "post", true, { login_id: merchantLoginId, password_required: true });
-                    const merchantData = await kyc?.kycUserList
+                    const merchantData = kyc?.kycUserList
 
                     // console.log("merchantData ==", merchantData)
                     const result2 = await callAPI(API_URL.GET_PLATFORM_BY_ID, "post", true, { platform_id: merchantData?.platformId });
