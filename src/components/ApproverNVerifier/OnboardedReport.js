@@ -41,8 +41,6 @@ const OnboardedReport = () => {
   const [dataClick, setDataClick] = useState(false);
 
   
-  
-
   let noResultsFound = data;
 
   // console.log(noResultsFound, "noResultsFound");
@@ -122,9 +120,7 @@ const OnboardedReport = () => {
     );
   };
 
- 
-
-  let now = moment().format("YYYY-M-D");
+ let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
