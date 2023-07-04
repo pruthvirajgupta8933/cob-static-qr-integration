@@ -25,6 +25,7 @@ import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
 import { isNull } from "lodash";
 import AlertBox from "../../../_components/reuseable_components/AlertBox";
 import classes from "./Home/home.module.css"
+import DataVisualizatoin from "../../chart/DataVisualizatoin";
 
 
 function Home() {
@@ -118,6 +119,7 @@ function Home() {
         <div className="col-lg-12">
           {/* KYC ALETT */}
           <KycAlert />
+          {/* <DataVisualizatoin /> */}
         </div>
       </div>
       <br />

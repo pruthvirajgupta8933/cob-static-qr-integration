@@ -188,8 +188,8 @@ const CommentModal = (props) => {
                 </div>
 
                 <div className="col">
-                  <label for="file-upload" class="custom-file-upload">
-                    <i class="fa fa-cloud-upload"></i> Upload File
+                  <label for="file-upload" className="custom-file-upload">
+                    <i className="fa fa-cloud-upload"></i> Upload File
                   </label>
                   <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
                   <div className="mt-2 ml-3">

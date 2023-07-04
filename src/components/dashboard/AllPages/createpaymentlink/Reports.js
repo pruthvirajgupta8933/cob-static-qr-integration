@@ -169,7 +169,7 @@ const Reports = () => {
               </tbody>
             </table>
 
-            <div class="d-flex justify-content-center align-items-center loader-container">
+            <div className="d-flex justify-content-center align-items-center loader-container">
               <CustomLoader loadingState={loadingState} />
             </div>
           </div>

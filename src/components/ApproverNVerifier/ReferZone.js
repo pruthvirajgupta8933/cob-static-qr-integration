@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForPending } from "../../slices/kycSlice";
+import { FetchAllByKycStatus, clearFetchAllByKycStatus, kycForPending } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal";
 import Table from "../../_components/table_components/table/Table";
@@ -9,11 +9,33 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 const ReferZone = () => {
+
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
+
+  const [data, setData] = useState([]);
+  const [assignZone, setAssignzone] = useState([]);
+  const [dataCount, setDataCount] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [modalDisplayData, setModalDisplayData] = useState({});
+  const [openZoneModal, setOpenModal] = useState(false);
+  const [refereshRequired, setRefreshRequired] = useState(false);
+  const [serachByDropDown, setSearchByDropDown] = useState(false);
+  const [merchantStatus, setMerchantStatus] = useState(KYC_STATUS_APPROVED);
+
+
+  const { kyc } = useSelector((state) => state);
+
+  const { allKycData } = kyc
+
+
   const ReferZoneData = [
     {
       id: "1",
@@ -121,68 +143,96 @@ const ReferZone = () => {
       ),
     },
   ];
-  const [data, setData] = useState([]);
-  const [assignZone, setAssignzone] = useState([]);
-  const [dataCount, setDataCount] = useState("");
-  const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [modalDisplayData, setModalDisplayData] = useState({});
-  const [openZoneModal, setOpenModal] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
 
   // console.log("openZoneModal",openZoneModal)
   const dispatch = useDispatch();
+  const selectStatus = [
+    { key: "1", value: KYC_STATUS_NOT_FILLED },
+    { key: "2", value: KYC_STATUS_PENDING },
+    { key: "3", value: KYC_STATUS_PROCESSING },
+    { key: "4", value: KYC_STATUS_VERIFIED },
+    { key: "5", value: KYC_STATUS_APPROVED },
+    { key: "6", value: KYC_STATUS_REJECTED },
+  ]
 
 
-
-  const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
-
-  const refreshAfterRefer = () => {
-    dispatch(
-      kycForPending({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: "",
-        merchantStatus: "Processing",
-        isDirect:""
-
-      })
-    )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setAssignzone(data);
-      })
-
-      .catch((err) => { });
-  };
+  const refreshAfterRefer = (d) => { setRefreshRequired(d) }
 
   useEffect(() => {
     dispatch(
-      kycForPending({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: "",
-        merchantStatus: "Processing",
-        isDirect:""
-      })
-    )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setAssignzone(data);
-      })
+      FetchAllByKycStatus(
+        {
+          page: currentPage,
+          page_size: pageSize,
+          searchquery: searchText,
+          kycStatus: merchantStatus,
+          isDirect: ""
+        }
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
-  }, [currentPage, pageSize]);
+      ));
+
+    return () => {
+      dispatch(clearFetchAllByKycStatus())
+    }
+  }, [searchText, merchantStatus, currentPage, pageSize, refereshRequired])
+
+
+  useEffect(() => {
+    setData(allKycData?.result);
+    setDataCount(allKycData?.count);
+    setAssignzone(allKycData?.result);
+
+    allKycData?.error && toastConfig.successToast("Data is not loading, Try again")
+    
+  }, [allKycData])
+
+
+
+
+  //   kycForPending({
+  //     page: currentPage,
+  //     page_size: pageSize,
+  //     searchquery: "",
+  //     merchantStatus: "Processing",
+  //     isDirect: ""
+  //   })
+  // )
+  //   .then((resp) => {
+  //     const data = resp?.payload?.results;
+  //     const dataCoun = resp?.payload?.count;
+  //     setData(data);
+  //     setDataCount(dataCoun);
+  //     setAssignzone(data);
+  //   })
+
+  //   .catch((err) => { });
+
+
+  // useEffect(() => {
+  //   dispatch(
+  //     kycForPending({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: "",
+  //       merchantStatus: "Processing",
+  //       isDirect: ""
+  //     })
+  //   )
+  //     .then((resp) => {
+  //       const data = resp?.payload?.results;
+  //       const dataCoun = resp?.payload?.count;
+  //       setData(data);
+  //       setDataCount(dataCoun);
+  //       setAssignzone(data);
+  //     })
+
+  //     .catch((err) => {
+  //       toastConfig.errorToast("Data not loaded");
+  //     });
+  // }, [currentPage, pageSize]);
+
+
 
   const kycSearch = (e, fieldType) => {
     fieldType === "text"
@@ -191,7 +241,7 @@ const ReferZone = () => {
     setSearchText(e);
   };
 
-  
+
 
   const searchByText = (text) => {
     setData(
@@ -227,21 +277,15 @@ const ReferZone = () => {
           <div className="container-fluid mt-5">
             <div className="row">
               <div className="col-lg-3">
-                {/* <SearchFilter
+                <SearchFilter
                   kycSearch={kycSearch}
                   searchText={searchText}
                   searchByText={searchByText}
                   setSearchByDropDown={setSearchByDropDown}
-                /> */}
-                <SearchFilter
-          kycSearch={kycSearch}
-          searchText={searchText}
-          searchByText={searchByText}
-          setSearchByDropDown={setSearchByDropDown}
-          searchTextByApiCall={true}
-        />
-
+                  searchTextByApiCall={true}
+                />
               </div>
+
               <div className="col-lg-3">
                 <CountPerPageFilter
                   pageSize={pageSize}
@@ -249,12 +293,19 @@ const ReferZone = () => {
                   changePageSize={changePageSize}
                 />
               </div>
+
+              <div className="col-lg-3">
+                <label className="form-label">Merchant KYC Status</label>
+                <select className="form-select" onChange={e => setMerchantStatus(e.target.value)} value={merchantStatus}>
+                  {selectStatus?.map(item => (<option key={item.key} value={item.value}>{item.value}</option>))}
+                </select>
+              </div>
             </div>
 
 
             <div className="">
               <div className="scroll overflow-auto">
-                {!loadingState && data?.length !== 0 && (
+                {!allKycData?.loading && data?.length !== 0 && (
                   <Table
                     row={ReferZoneData}
                     data={data}
@@ -265,8 +316,8 @@ const ReferZone = () => {
                   />
                 )}
               </div>
-              <CustomLoader loadingState={loadingState} />
-              {data?.length == 0 && !loadingState && (
+              <CustomLoader loadingState={allKycData?.loading} />
+              {data?.length == 0 && !allKycData?.loading && (
                 <h5 className="text-center font-weight-bold">No Data Found</h5>
               )}
             </div>
@@ -282,9 +333,10 @@ const ReferZone = () => {
             setOpenModal={setOpenModal}
             refreshAfterRefer={refreshAfterRefer}
           />
-        ) }
+        )}
       </div>
     </section>
   );
 };
+
 export default ReferZone;

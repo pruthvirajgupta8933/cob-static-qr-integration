@@ -5,6 +5,7 @@ import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 // CHECK_PERMISSION_PAYLINK
 const menulist = (object) => {
     //pass login id
+    console.log("axiosInstanceJWT",axiosInstanceJWT)
     return axiosInstanceJWT.post(`${API_URL.menuListByLoginId}`,object)
   }
   

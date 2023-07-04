@@ -49,10 +49,10 @@ const Faq = () => {
           <div className="row">
             <div className="col-md-12 border p-2 ">
               <p>
-                <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1" class="text-decoration-none">
-                  <span class="d-inline-flex align-items-center">
-                    <i class="fa fa-caret-right me-2"></i>
-                    <h6 class="m-0">What are the benefits of using SabPaisa?</h6>
+                <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1" className="text-decoration-none">
+                  <span className="d-inline-flex align-items-center">
+                    <i className="fa fa-caret-right me-2"></i>
+                    <h6 className="m-0">What are the benefits of using SabPaisa?</h6>
                   </span>
                 </a>
               </p>
@@ -77,9 +77,9 @@ const Faq = () => {
 
               <p>
                 <a data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2" className="text-decoration-none">
-                  <span class="d-inline-flex align-items-center">
-                    <i class="fa fa-caret-right me-2"></i>
-                    <h6 class="m-0">Is SabPaisa free or are there any charges? What are the charges taken by SabPaisa for various services?</h6>
+                  <span className="d-inline-flex align-items-center">
+                    <i className="fa fa-caret-right me-2"></i>
+                    <h6 className="m-0">Is SabPaisa free or are there any charges? What are the charges taken by SabPaisa for various services?</h6>
                   </span>
                 </a>
               </p>
@@ -96,10 +96,10 @@ const Faq = () => {
 
               <p>
               <a data-bs-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3" className="text-decoration-none">
-                <span class="d-inline-flex align-items-center">
-                  <i class="fa fa-caret-right me-2"></i>
+                <span className="d-inline-flex align-items-center">
+                  <i className="fa fa-caret-right me-2"></i>
                   
-                    <h6 class="m-0" >How do I signup for SabPaisa?</h6>
+                    <h6 className="m-0" >How do I signup for SabPaisa?</h6>
                   
                 </span>
                 </a>
@@ -112,10 +112,10 @@ const Faq = () => {
 
             <p >
             <a data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">What all card Information does SabPaisa store?</h6>
+                  <h6 className="m-0">What all card Information does SabPaisa store?</h6>
                 
               </span>
               </a>
@@ -125,10 +125,10 @@ const Faq = () => {
             </div>
          <p>
          <a data-bs-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">For what purposes can the end-customer use SabPaisa?</h6>
+                  <h6 className="m-0">For what purposes can the end-customer use SabPaisa?</h6>
                 
               </span>
               </a>
@@ -144,10 +144,10 @@ const Faq = () => {
             </div>
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample56" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">What payment options are available in SabPaisa?</h6>
+                  <h6 className="m-0">What payment options are available in SabPaisa?</h6>
                 
               </span>
               </a>
@@ -158,10 +158,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample57" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">My customer mostly uses Net banking, what’s in for me?</h6>
+                  <h6 className="m-0">My customer mostly uses Net banking, what’s in for me?</h6>
                
               </span>
               </a>
@@ -172,10 +172,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample58" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                
-                  <h6 class="m-0" >Do you support International Payments?</h6>
+                  <h6 className="m-0" >Do you support International Payments?</h6>
                 
               </span>
               </a>
@@ -186,10 +186,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false" aria-controls="collapseExample9" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">Do you support mobile payments?</h6>
+                  <h6 className="m-0">Do you support mobile payments?</h6>
                 
               </span>
               </a>
@@ -200,10 +200,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample10" role="button" aria-expanded="false" aria-controls="collapseExample10" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">Do you support partial refunds?</h6>
+                  <h6 className="m-0">Do you support partial refunds?</h6>
                
               </span>
               </a>
@@ -214,10 +214,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample11" role="button" aria-expanded="false" aria-controls="collapseExample11" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                
-                  <h6 class="m-0">How long does it take to go live?</h6>
+                  <h6 className="m-0">How long does it take to go live?</h6>
                
               </span>
               </a>
@@ -228,10 +228,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample12" role="button" aria-expanded="false" aria-controls="collapseExample12" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">Is the payment experience customisable as per my website’s look and feel?</h6>
+                  <h6 className="m-0">Is the payment experience customisable as per my website’s look and feel?</h6>
                
               </span>
               </a>
@@ -242,10 +242,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample13" role="button" aria-expanded="false" aria-controls="collapseExample13" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">How and when will I receive the money for payments made to us?</h6>
+                  <h6 className="m-0">How and when will I receive the money for payments made to us?</h6>
                 
               </span>
               </a>
@@ -256,10 +256,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample14" role="button" aria-expanded="false" aria-controls="collapseExample14" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">What kind Of MIS/Reports do you provide?</h6>
+                  <h6 className="m-0">What kind Of MIS/Reports do you provide?</h6>
                 
               </span>
               </a>
@@ -278,10 +278,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample15" role="button" aria-expanded="false" aria-controls="collapseExample15" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                
-                  <h6 class="m-0">What kind of customer support can I expect from SabPaisa?</h6>
+                  <h6 className="m-0">What kind of customer support can I expect from SabPaisa?</h6>
                
               </span>
               </a>
@@ -292,10 +292,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample16" role="button" aria-expanded="false" aria-controls="collapseExample16" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">Are You PCI DSS Certified?</h6>
+                  <h6 className="m-0">Are You PCI DSS Certified?</h6>
                
               </span>
               </a>
@@ -306,10 +306,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample17" role="button" aria-expanded="false" aria-controls="collapseExample17" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0"> How will you guarantee my data privacy?</h6>
+                  <h6 className="m-0"> How will you guarantee my data privacy?</h6>
                
               </span>
               </a>
@@ -320,10 +320,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample18" role="button" aria-expanded="false" aria-controls="collapseExample18" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0" >What all documents are required for signing up with SabPaisa?</h6>
+                  <h6 className="m-0" >What all documents are required for signing up with SabPaisa?</h6>
                 
               </span>
               </a>
@@ -336,10 +336,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample19" role="button" aria-expanded="false" aria-controls="collapseExample19" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">Do you have Sandbox where I can test the integration before going live with SabPaisa?</h6>
+                  <h6 className="m-0">Do you have Sandbox where I can test the integration before going live with SabPaisa?</h6>
                
               </span>
               </a>
@@ -352,10 +352,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample20" role="button" aria-expanded="false" aria-controls="collapseExample20" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                
-                  <h6 class="m-0">How can I contact SabPaisa?</h6>
+                  <h6 className="m-0">How can I contact SabPaisa?</h6>
                 
               </span>
               </a>
@@ -369,10 +369,10 @@ const Faq = () => {
 
             <p>
             <a data-bs-toggle="collapse" href="#collapseExample21" role="button" aria-expanded="false" aria-controls="collapseExample21" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">Where do I seek support from SabPaisa?</h6>
+                  <h6 className="m-0">Where do I seek support from SabPaisa?</h6>
                </span>
               </a>
             </p>
@@ -384,15 +384,15 @@ const Faq = () => {
 
           <p>
             <a data-bs-toggle="collapse" href="#collapseExample22" role="button" aria-expanded="false" aria-controls="collapseExample22" className="text-decoration-none">
-              <span class="d-inline-flex align-items-center">
-                <i class="fa fa-caret-right me-2"></i>
+              <span className="d-inline-flex align-items-center">
+                <i className="fa fa-caret-right me-2"></i>
                 
-                  <h6 class="m-0">How to calculate TSR (Transaction Success Rate)?</h6>
+                  <h6 className="m-0">How to calculate TSR (Transaction Success Rate)?</h6>
                </span>
               </a>
             </p>
             <div className="collapse ml-3 mb-5" id="collapseExample22">
-              <p className={` ${classes.font_size}`}>TSR =((Total Success Transactions + Total Failed Transactions)/ Total Transactions)*100
+              <p className={` ${classes.font_size}`}>Transaction success rate (TSR) is calculated by dividing the total number of processed (success+busines declined) transactions by the total number of attempted transactions over a given time period. For example, if SabPaisa processed 100 transactions, and 82 were successful & 16 were failed due business declined, then your TSR would be 98%.
               </p>
             </div>
           </div>

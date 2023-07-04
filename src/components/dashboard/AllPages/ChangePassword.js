@@ -168,8 +168,8 @@ function ChangePassword() {
                             placeholder="Re-type New Password"
                             className="form-control"
                           />
-                          <div class="input-group-append">
-                          <span class="input-group-text" id="basic-addon2" onClick={handleClickShowPassword} > 
+                          <div className="input-group-append">
+                          <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword} > 
                           {values.showPassword ? (
                                 <i className="fa fa-eye" aria-hidden="true"></i>
                               ) : (

@@ -204,13 +204,13 @@ const ViewDocumentModal = (props) => {
                 </div>
 
                 <div className="col-md-6">
-                  <div class="file-input">
+                  <div className="file-input">
                     <h6 className="">Attachments</h6>
 
                     <div className="d-flex">
                       <div>
-                        <label for="file-upload" class="btn btn-sm cob-btn-primary">
-                          <i class="fa fa-cloud-upload"></i> Upload
+                        <label for="file-upload" className="btn btn-sm cob-btn-primary">
+                          <i className="fa fa-cloud-upload"></i> Upload
                         </label>
                         <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
 
@@ -232,7 +232,7 @@ const ViewDocumentModal = (props) => {
                           <div>{attachCommentFile?.name}</div>
                           <button
                             type="button"
-                            class="close"
+                            className="close"
                             aria-label="Close"
                             onClick={resetUploadFile}
                           >
@@ -317,7 +317,7 @@ const ViewDocumentModal = (props) => {
                                 removeDocument(remark?.document_id);
                               }}
                             >
-                              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              <i className="fa fa-trash-o" aria-hidden="true"></i>
                             </button>
                           </td>
                         </tr>

@@ -43,7 +43,7 @@ const ViewReferZoneModal = (props) => {
 
 
     }).catch(err => toastConfig.errorToast(err))
-
+    props.refreshAfterRefer(false)
 
   }, []);
 
@@ -73,7 +73,7 @@ const ViewReferZoneModal = (props) => {
         toastConfig.successToast(resp.payload.message);
         props.setOpenModal(false)
        
-        return props.refreshAfterRefer()
+        props.refreshAfterRefer(true)
       })
       .catch((err) => {
         toastConfig.errorToast(err);
@@ -131,8 +131,8 @@ const ViewReferZoneModal = (props) => {
                     </div>
 
                     <Form>
-                      <div class="container-fluid">
-                        <div class="row">
+                      <div className="container-fluid">
+                        <div className="row">
                           <div className="col-lg-12">
                             <FormikController
                               control="radio"
@@ -182,7 +182,7 @@ const ViewReferZoneModal = (props) => {
 
                       <div className="modal-footer">
                      
-                          <div class="col-lg-12">
+                          <div className="col-lg-12">
 
                             <button
                               type="subbmit"

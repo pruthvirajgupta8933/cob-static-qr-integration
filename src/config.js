@@ -176,6 +176,7 @@ const API_LIVE = {
   GET_BIZZ_DATA: `${url}/get-biz-app-form/`,
   //////////////////////// For merchnat list export to csv
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
+  GET_MERCHANT_DATA: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,

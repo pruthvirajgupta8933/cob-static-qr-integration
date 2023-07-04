@@ -12,7 +12,9 @@ import { toast } from 'react-toastify'
 const GeneralForm = ({merchantKycId, role}) => {
 
     const dispatch = useDispatch()
-    const { approverDashboard , kyc } = useSelector(state => state)
+    const { approverDashboard , kyc, verifierApproverTab } = useSelector(state => state)
+    // const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
+    const currenTab = parseInt(verifierApproverTab?.currenTab)
 
     useEffect(() => {
         dispatch(businessCategoryType())
@@ -94,8 +96,8 @@ const GeneralForm = ({merchantKycId, role}) => {
                                 />
                             </div>
                             
-                            <div className="col-md-4 ">
-                            {role?.approver && (formik.dirty && <button type="submit" className="btn cob-btn-primary btn-sm" > Update</button>)}
+                            <div className="col-md-4">
+                            {role?.approver &&  currenTab === 4  && (formik.dirty && <button type="submit" className="btn cob-btn-primary btn-sm" > Update</button>)}
                             </div>
                         </Form>
                     </div>

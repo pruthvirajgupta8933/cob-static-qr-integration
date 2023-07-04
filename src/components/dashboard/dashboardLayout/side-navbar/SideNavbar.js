@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
@@ -16,10 +16,10 @@ function SideNavbar() {
     });
 
 
+
     const toggleMenu = (e) => {
         e.currentTarget.nextSibling.classList.toggle("hide-menu-nav")
     }
-
 
 
 
@@ -173,7 +173,7 @@ function SideNavbar() {
                             to={`${url}/faq`}
                             className={`nav-link ${sideNavClasses.nav_link}`}
                         >
-                            <i class="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
                             FAQ/Help
                         </Link>
                     </li>
