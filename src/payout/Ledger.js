@@ -190,7 +190,7 @@ const PayoutLedger = (props) => {
             <div>
               <div className="d-flex">
                 <LedgerCards />
-                <p class="text-secondary">Transaction Count {TotalData}</p>
+                <p className="text-secondary">Transaction Count {TotalData}</p>
               </div>
               {ledgerData?.length == 0 ? (
                 <h2 className="d-flex justify-content-center">No Data Found</h2>

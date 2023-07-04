@@ -4,9 +4,9 @@ import "./index.css";
 const ProgressBar = ({ progressWidth }) => {
   return (
     <div>
-      <div class="progress" style={{ height: "10px" }}>
+      <div className="progress" style={{ height: "10px" }}>
         <div
-          class="progress-bar progress-bar-striped bg-info progress-bar-animated"
+          className="progress-bar progress-bar-striped bg-info progress-bar-animated"
           role="progressbar"
           style={{ width: `${progressWidth}` }}
           aria-valuenow="10"

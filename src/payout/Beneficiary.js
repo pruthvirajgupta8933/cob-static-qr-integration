@@ -58,7 +58,7 @@ const Beneficiary = () => {
             <div className="right_layout my_account_wrapper right_side_heading">
               <h1 className="m-b-sm gx-float-left">Beneficiary Details</h1>
             </div>
-            <div class="table-responsive">
+            <div className="table-responsive">
               <div className="col-md-12 ml-4 col-md-offset-4">
                 <div className="scroll overflow-auto">
                   {loadingState ? (

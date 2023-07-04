@@ -143,12 +143,12 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
           </div>
           <button
             type="button"
-            class="btn btn-light"
+            className="btn btn-light"
             onClick={() => backToPersonalScreen("personalScreen")}
           >
             Back
           </button>
-          <button class="btn bttn cob-btn-primary" type="submit">
+          <button className="btn bttn cob-btn-primary" type="submit">
             Next
           </button>
         </Form>

@@ -4,14 +4,18 @@ import { axiosInstanceJWT } from "../utilities/axiosInstance";
 import authService from "./auth.service";
 import TokenService from "./token.service";
 
+console.log("file call")
+// console.log("TokenService.getLocalAccessToken()",TokenService.getLocalAccessToken())
 
 const setup = async (store) => {
+  // console.log("inner function",setup)
   axiosInstanceJWT.interceptors.request.use(
     (config) => {
       const token =  TokenService.getLocalAccessToken();
       if (token) {
         config.headers["Authorization"] = 'Bearer ' + token;  
       }
+      console.log("config",config)
       return config;
     },
     (error) => {
@@ -19,12 +23,15 @@ const setup = async (store) => {
     }
   );
 
+  // console.log("setup",setup)
 
   axiosInstanceJWT.interceptors.response.use(
     (res) => {
+      console.log("res",res)
       return res;
     },
     async (err) => {
+      console.log("err",err)
       const originalConfig = err.config;
       if (originalConfig.url !== "/auth-service/auth/login" && err.response) {
         // Access Token was expired
@@ -33,10 +40,13 @@ const setup = async (store) => {
           window.location.reload();
         }
         
+        console.log("err.response.status",err.response.status)
+        console.log("originalConfig._retry",originalConfig._retry)
         if (err.response.status === 403 && !originalConfig._retry) {
           originalConfig._retry = true;
 
           try {
+            console.log("try",axiosInstanceJWT)
           const rs = await axiosInstanceJWT.post(API_URL.BASE_URL_COB +"/auth-service/auth/refresh-token", {
               refresh_token: TokenService.getLocalrefreshToken(),
             });
@@ -46,6 +56,8 @@ const setup = async (store) => {
 
             return axiosInstanceJWT(originalConfig);
           } catch (_error) {
+            console.log("catch",_error)
+
             return Promise.reject(_error);
           }
         }

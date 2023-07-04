@@ -237,7 +237,7 @@ const AdditionalKYC = () => {
                           {
                             isLoading &&
                             <>
-                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 
                             </>
                           }
@@ -283,7 +283,7 @@ const AdditionalKYC = () => {
                           {
                             isLoading &&
                             <>
-                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 
                             </>
                           }
@@ -354,12 +354,12 @@ const AdditionalKYC = () => {
             )}
 
         {panStatus === true && selectedDocType === "1" && (
-              <div class="container mt-5">
-                <h5 class="">PAN Details</h5>
-                <div class="row">
+              <div className="container mt-5">
+                <h5 className="">PAN Details</h5>
+                <div className="row">
                   {panInfodata.map(([key, value]) => (
-                    <div class="col-md-6 p-2 text-uppercase" key={key}>
-                      <span class="font-weight-bold mb-1">
+                    <div className="col-md-6 p-2 text-uppercase" key={key}>
+                      <span className="font-weight-bold mb-1">
                         {key.replace('_', ' ')}:
                       </span>
                       {typeof value === "boolean" ? (
@@ -374,12 +374,12 @@ const AdditionalKYC = () => {
             )}
 
         {gstStatus === true && selectedDocType === "2" &&
-              <div class="container mt-5">
-                <h5 class="">GSTIN Information</h5>
-                <div class="row">
+              <div className="container mt-5">
+                <h5 className="">GSTIN Information</h5>
+                <div className="row">
                   {objArray.map(([key, value]) => (
-                    <div class="col-md-6 p-2 text-uppercase" key={key}>
-                      <span class="font-weight-bold mb-1">
+                    <div className="col-md-6 p-2 text-uppercase" key={key}>
+                      <span className="font-weight-bold mb-1">
                         {key.replace('_', ' ')}:
                       </span>
                       {typeof value === "boolean" ? (
@@ -396,10 +396,10 @@ const AdditionalKYC = () => {
             {bankStatus === true && selectedDocType === "3" ? (
               <div className="container" style={{ marginTop: "32px" }}>
                 <h5 className="font-weight-bold">Bank Account Information</h5>
-                <div class="row">
+                <div className="row">
                   {banckAccountInfo.map(([key, value]) => (
-                    <div class="col-md-6 p-2 text-uppercase" key={key}>
-                      <span class="font-weight-bold mb-1">
+                    <div className="col-md-6 p-2 text-uppercase" key={key}>
+                      <span className="font-weight-bold mb-1">
                         {key.replace('_', ' ')}:
                       </span>
                       {typeof value === "boolean" ? (

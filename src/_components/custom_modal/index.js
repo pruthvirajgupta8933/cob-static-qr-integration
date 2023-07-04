@@ -43,7 +43,7 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
           </div>
 
           {modalBody && <div className="modal-body">{modalBody()}</div>}
-          {modalFooter && <div class="modal-footer">{modalFooter()}</div>}
+          {modalFooter && <div className="modal-footer">{modalFooter()}</div>}
         </div>
       </div>
     </div>

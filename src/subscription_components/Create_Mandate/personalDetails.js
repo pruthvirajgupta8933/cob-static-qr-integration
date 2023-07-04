@@ -103,12 +103,12 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
           </div>
           <button
             type="button"
-            class="btn btn-light"
+            className="btn btn-light"
             onClick={() => backToPreviousScreen("mandateScreen")}
           >
             Back
           </button>
-          <button class="btn bttn cob-btn-primary" type="submit">
+          <button className="btn bttn cob-btn-primary" type="submit">
             Next
           </button>
         </Form>

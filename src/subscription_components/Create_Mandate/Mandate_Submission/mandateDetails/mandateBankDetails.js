@@ -3,15 +3,15 @@ import React from 'react'
 const MandateBankDetails = ({ updatedData }) => {
   return (
     <div>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm">
+      <div className="container">
+        <div className="row">
+          <div className="col-sm">
             <h4>Bank Name</h4>
             <span>
               <p className="text-secondary">{updatedData?.payerBank}</p>
             </span>
           </div>
-          <div class="col-sm">
+          <div className="col-sm">
             <h4>Account Number</h4>
             <p className="text-secondary">{updatedData?.payerAccountNumber}</p>
           </div>
@@ -21,7 +21,7 @@ const MandateBankDetails = ({ updatedData }) => {
           </div>
         </div>
         <div className="row">
-          <div class="col-sm">
+          <div className="col-sm">
             <h4>IFSC Code</h4>
             <span>
               <p className="text-secondary">{updatedData?.payerBankIfscCode}</p>

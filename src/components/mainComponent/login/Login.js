@@ -220,12 +220,12 @@ function Login() {
                                                 : false
                                         }> {loading && (
                                             <span
-                                                class="spinner-grow spinner-grow-sm text-light mr-1"
+                                                className="spinner-grow spinner-grow-sm text-light mr-1"
                                                 role="status"
                                                 aria-hidden="true"
                                             ></span>
                                         )}
-                                            Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                                            Login <i className="fa fa-sign-in" aria-hidden="true"></i></button>
                                     </div>
 
                                 </Form>
