@@ -15,7 +15,6 @@ import {
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import ReactDatePicker from "../../../_components/formik/components/ReactDatePicker";
 import moment from "moment";
 
 const RefundTransactionHistory = () => {
@@ -281,45 +280,35 @@ const RefundTransactionHistory = () => {
                       </div>
 
                       <div className="form-group col-md-3">
-                      <ReactDatePicker
-                        label="From Date"
-                        id="fromDate"
-                        name="fromDate"
-                        selected={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                        onChange={date => formik.setFieldValue('fromDate', date)}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0"
-                        errorMsg={formik.errors["fromDate"]}
-                        required={true}
-                      />
-                        {/* <FormikController
-                          control="input"
-                          type="date"
+                      <FormikController
+                          control="date"
                           label="From Date"
+                          id="fromDate"
                           name="fromDate"
-                          className="form-control rounded-0"
-                        /> */}
+                          value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                          onChange={date => formik.setFieldValue('fromDate', date)}
+                          format="dd-MM-y"
+                          clearIcon={null}
+                          className="form-control rounded-0 p-0"
+                          required={true}
+                          errorMsg={formik.errors["fromDate"]}
+                        />
                       </div>
 
                       <div className="form-group col-md-3">
-                      <ReactDatePicker
-                        label="End Date"
-                        id="endDate"
-                        name="endDate"
-                        selected={formik.values.endDate ? new Date(formik.values.endDate) : null}
-                        onChange={date => formik.setFieldValue('endDate', date)}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0"
-                        errorMsg={formik.errors["endDate"]}
-                        required={true}
-                      />
-                        {/* <FormikController
-                          control="input"
-                          type="date"
+                      <FormikController
+                          control="date"
                           label="End Date"
+                          id="endDate"
                           name="endDate"
-                          className="form-control rounded-0"
-                        /> */}
+                          value={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                          onChange={date => formik.setFieldValue('endDate', date)}
+                          format="dd-MM-y"
+                          clearIcon={null}
+                          className="form-control rounded-0 p-0"
+                          required={true}
+                          errorMsg={formik.errors["endDate"]}
+                        />
                       </div>
                     </div>
                     <div className="form-row">
