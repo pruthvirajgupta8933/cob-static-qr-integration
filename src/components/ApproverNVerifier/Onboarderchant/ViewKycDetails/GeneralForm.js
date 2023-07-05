@@ -56,7 +56,6 @@ const GeneralForm = ({merchantKycId, role}) => {
 
     return (
         <div className="row mb-4 border p-1">
-
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -73,6 +72,7 @@ const GeneralForm = ({merchantKycId, role}) => {
                                     name="rr_amount"
                                     className="form-control"
                                     label="Rolling Reserve Amount"
+                                    disabled={!role?.approver}
                                 />
                             </div>
 
@@ -83,6 +83,7 @@ const GeneralForm = ({merchantKycId, role}) => {
                                     options={businessCategoryOption}
                                     className="form-select"
                                     label="Business Category"
+                                    disabled={!role?.approver}
                                 />
                             </div>
 
@@ -93,6 +94,7 @@ const GeneralForm = ({merchantKycId, role}) => {
                                     options={clientCodeOption}
                                     className="form-select"
                                     label="Refer By (if any)"
+                                    disabled={!role?.approver}
                                 />
                             </div>
                             

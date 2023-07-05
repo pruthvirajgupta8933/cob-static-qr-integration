@@ -5,7 +5,6 @@ import { clearFetchAllByKycStatus, onboardedReport } from "../../slices/kycSlice
 import moment from "moment";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
@@ -14,7 +13,7 @@ import DateFormatter from "../../utilities/DateConvert";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import { onboardedReportExport } from "../../services/kyc/export-data.service";
 
-import "react-datepicker/dist/react-datepicker.css";
+
 
 
 const OnboardedReport = () => {
@@ -189,7 +188,7 @@ const OnboardedReport = () => {
 
   const exportToExcelFn = () => {
     onboardedReportExport({
-      status : onboardValue.status,
+      status: onboardValue.status,
       from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
     }).then((res) => {
@@ -218,37 +217,41 @@ const OnboardedReport = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          // onSubmit={(values)=>handleSubmit(values)}
           onSubmit={(values, { resetForm }) => {
             handleSubmit(values);
           }}
           enableReinitialize={true}
         >
-          {(formik, resetForm) => (
+          {(formik) => (
             <Form className="row mt-5">
               <div className="form-group col-md-3">
-                <label htmlFor="fromDate" className="ml-3">From Date:</label>
-                <ReactDatePicker
-                  id="fromDate"
+                <FormikController
+                  control="date"
+                  label="From Date"
+                  id="from_date"
                   name="from_date"
-                  selected={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                  value={formik.values.from_date ? new Date(formik.values.from_date) : null}
                   onChange={date => formik.setFieldValue('from_date', date)}
-                  dateFormat="dd/MM/yyyy"
-                  className="form-control rounded-0"
-                  errorMsg={formik.errors["from_date"]}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
                   required={true}
+                  errorMsg={formik.errors["from_date"]}
                 />
               </div>
 
               <div className="form-group col-md-3 ">
-                <label htmlFor="endDate">End Date:</label>
-                <ReactDatePicker
-                  id="endDate"
+                <FormikController
+                  control="date"
+                  label="End Date"
+                  id="to_date"
                   name="to_date"
-                  selected={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                  value={formik.values.to_date ? new Date(formik.values.to_date) : null}
                   onChange={date => formik.setFieldValue('to_date', date)}
-                  dateFormat="dd/MM/yyyy"
-                  className="form-control rounded-0"
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
                   errorMsg={formik.errors["to_date"]}
                 />
               </div>
