@@ -89,11 +89,14 @@ function Home() {
   // prepare chart data
   let chartDataArr = [["Date", "Number Of Transaction"]]
     if(roles.merchant){
-      
       txnChartData?.map((item)=>(
       chartDataArr.push([moment(item?.txnDate).format('MMMM Do YYYY'), parseInt(item?.txnNo)])))
     }
 
+    // if no transaction found
+    if(chartDataArr.length===1){
+      chartDataArr.push([moment(Date()).format('MMMM Do YYYY'), 0])
+    }
   
 
   return (

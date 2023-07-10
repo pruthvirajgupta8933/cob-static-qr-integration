@@ -12,6 +12,8 @@ function DataVisualizatoin({data, chartTitle}) {
   //   ["2007", 1030],
   // ];
 
+  
+
   const options = {
     title: chartTitle,
     curveType: "function",
