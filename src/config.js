@@ -313,6 +313,10 @@ const API_LIVE = {
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
   mandateSubmit: `${subAPIURL}/registration`,
   mandateSendRequest: `https://enach.npci.org.in/onmags/sendRequest`,
+
+
+  // for chart
+  GET_TRANSACTION_DATA_CHART : reportAPIURL+"/REST/getSuccessGraph"
 };
 
 const B2B_API_LIVE = {

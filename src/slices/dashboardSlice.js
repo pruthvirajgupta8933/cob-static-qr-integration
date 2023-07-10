@@ -14,7 +14,8 @@ const initialState = {
   refundTransactionHistory:[],
   isLoadingTxnHistory:false,
   productSubscribe : true,
-  isExportData:false
+  isExportData:false,
+  txnChartData:[]
 };
 
 
@@ -23,6 +24,26 @@ export const successTxnSummary = createAsyncThunk(
     async (object, thunkAPI ) => {
         try {
             const response = await Dashboardservice.successTxnSummary(object);
+            return response;
+          } catch (error) {
+            const message =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+            thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue();
+          }
+    }
+  );
+
+
+export const TxnChartDataSlice = createAsyncThunk(
+    "dashbaord/TxnChartDataSlice",
+    async (obj, thunkAPI ) => {
+        try {
+            const response = await Dashboardservice.getTxnDataForGraph(obj);
             return response;
           } catch (error) {
             const message =
@@ -232,6 +253,19 @@ export const successTxnSummary = createAsyncThunk(
         state.isLoadingTxnHistory = false;
         state.transactionHistory=[];
       },
+
+      [TxnChartDataSlice.fulfilled]: (state, action) => {
+        state.txnChartData = action.payload.data;
+      },
+      [TxnChartDataSlice.pending]: (state) => {
+        // state.isLoadingTxnHistory = true;
+        state.txnChartData=[];
+      },
+      [TxnChartDataSlice.rejected]: (state) => {
+        // state.isLoadingTxnHistory = false;
+        state.txnChartData=[];
+      },
+
       [fetchSettlementReportSlice.fulfilled]: (state, action) => {
         // state.isLoadingTxnHistory = false;
         state.settlementReport = action.payload;

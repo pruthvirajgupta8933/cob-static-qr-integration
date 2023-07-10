@@ -13,6 +13,8 @@ import { roleBasedAccess } from '../../../../_components/reuseable_components/ro
 import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
 import { DefaultRateMapping } from '../../../../utilities/DefaultRateMapping';
 import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
+import { ratemapping } from '../../../../slices/approver-dashboard/rateMappingSlice';
+import toastConfig from '../../../../utilities/toastTypes';
 
 
 const CompleteVerification = (props) => {
@@ -36,7 +38,6 @@ const CompleteVerification = (props) => {
   const [enableBtnApprovedTab, setEnableBtnApprovedTab] = useState(false)
   const [disable, setDisable] = useState(false)
   const [buttonClick, setButtonClick] = useState(false)
-  const [triggerRateMapping, setTriggerRateMapping] = useState(false)
   const [commetText, setCommetText] = useState()
 
 
@@ -44,6 +45,7 @@ const CompleteVerification = (props) => {
 
   const { user } = auth;
   const { loginId } = user;
+  const { approveKyc } = kyc
 
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -64,13 +66,29 @@ const CompleteVerification = (props) => {
   }, [kyc])
 
 
-  const handleVerifyClick = () => {
+  useEffect(() => {
 
+    if (approveKyc.isApproved && !approveKyc.isError) {
+
+      dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
+      dispatch(ratemapping({ merchantLoginId: merchantKycId?.loginMasterId }))
+      pendingApporvalTable()
+    }
+
+    if (approveKyc.isError) {
+      toastConfig.errorToast("Something went wrong, Please Try Again later")
+    }
+  }, [approveKyc])
+
+
+
+  const handleVerifyClick = () => {
     const veriferDetails = {
       login_id: merchantKycId?.loginMasterId,
       verified_by: loginId,
-
     };
+
+
 
 
     if (currenTab === 3) {
@@ -116,23 +134,28 @@ const CompleteVerification = (props) => {
               rolling_reserve: parseFloat(approverDashboard?.generalFormData?.rr_amount),
               refer_by: approverDashboard?.generalFormData?.refer_by,
               business_category_type: approverDashboard?.generalFormData?.business_cat_type,
+              rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type
+
             };
+            // console.log("dataAppr",dataAppr)
+
+            // update the redux state - for the ratemapping
+
             GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })
-
             dispatch(approvekyc(dataAppr))
-              .then((resp) => {
-                resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
-                dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-                dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId, password_required: true }));
-                setTriggerRateMapping(true)
-                pendingApporvalTable()
-                // closeVerificationModal(false)
-              })
-              .catch((e) => {
-                setTriggerRateMapping(false)
-                toast.error("Something went wrong, Please Try Again later")
 
-              });
+            // .then((resp) => {
+
+            //   // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
+            //   // dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
+            //   // dispatch(ratemapping({merchantLoginId : merchantKycId?.loginMasterId}))
+            //   // pendingApporvalTable()
+            //   // closeVerificationModal(false)
+            // })
+            // .catch((e) => {
+            //   toast.error("Something went wrong, Please Try Again later")
+
+            // });
           }
 
         }
@@ -276,11 +299,6 @@ const CompleteVerification = (props) => {
         }
       </div>
 
-      <div className="col-lg-12">
-        {/* Ratemapping */}
-        {/* {console.log("triggerRateMapping", triggerRateMapping)} */}
-        {triggerRateMapping && <DefaultRateMapping setFlag={() => { }} merchantLoginId={merchantKycId?.loginMasterId} />}
-      </div>
 
 
       <div className="col-lg-12">
