@@ -7,6 +7,7 @@ import {
 
 import { APP_ENV } from "../config";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
+import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 
 const initialState = {
   isLoading: false,
@@ -158,7 +159,16 @@ const initialState = {
   },
   OpenModalForKycSubmit: {
     isOpen: false
+  },
+  approveKyc:{
+    isApproved:false,
+    isError:false,
+    logs:{},
+
   }
+
+  
+  
 };
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
@@ -933,14 +943,28 @@ export const businessCategoryById = createAsyncThunk(
 
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
-  async (requestParam) => {
-    const response = await axiosInstanceJWT
-      .post(`${API_URL.APPROVE_KYC}`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam,thunkAPI) => {
+    try {
+      const response = await approverDashboardService.approveKyc(requestParam);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
 
-    return response.data;
+    // const response = await axiosInstanceJWT
+    //   .post(`${API_URL.APPROVE_KYC}`, requestParam)
+    //   .catch((error) => {
+    //     return error.response;
+    //   });
+
+    // return response.data;
   }
 );
 
@@ -1024,7 +1048,11 @@ export const kycSlice = createSlice({
       state.allKycData.loading = false
       state.allKycData.result = []
       state.allKycData.message = ""
-
+    },
+    clearApproveKyc:(state)=>{
+      state.approveKyc.isApproved = false
+      state.approveKyc.isError = false
+      state.approveKyc.logs = {}
     }
   },
   extraReducers: {
@@ -1409,6 +1437,23 @@ export const kycSlice = createSlice({
     [verifyKycEachTab.fulfilled]: (state, action) => {
       state.KycTabStatusStore = action.payload;
     },
+
+// when kyc approve
+    [approvekyc.pending]: (state) => {
+      state.approveKyc.isApproved = false
+      state.approveKyc.isError = false
+      state.approveKyc.logs = {}
+
+    },
+    [approvekyc.fulfilled]: (state, action) => {
+      state.approveKyc.isApproved = true
+      state.approveKyc.logs = action.payload
+    },
+    [approvekyc.rejected]: (state, action) => {
+      state.approveKyc.isApproved = false
+      state.approveKyc.isError = true
+      state.approveKyc.logs = action.payload
+    },
   },
 });
 
@@ -1420,6 +1465,7 @@ export const {
   isPhoneVerified,
   clearKycState,
   UpdateModalStatus,
-  clearFetchAllByKycStatus
+  clearFetchAllByKycStatus,
+  clearApproveKyc
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

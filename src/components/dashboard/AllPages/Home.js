@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
+import { TxnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
 import { useRouteMatch, Redirect, Link } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import "../css/Home.css";
@@ -9,6 +9,7 @@ import {
   GetKycTabsStatus,
   kycUserList,
   UpdateModalStatus,
+  
 } from "../../../slices/kycSlice";
 // import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
@@ -26,6 +27,7 @@ import { isNull } from "lodash";
 import AlertBox from "../../../_components/reuseable_components/AlertBox";
 import classes from "./Home/home.module.css"
 import DataVisualizatoin from "../../chart/DataVisualizatoin";
+import moment from "moment";
 
 
 function Home() {
@@ -35,14 +37,17 @@ function Home() {
   const [modalState, setModalState] = useState("Not-Filled");
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
+  const { auth, kyc, productCatalogueSlice, dashboard } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
   const { user } = auth;
+  const {txnChartData} = dashboard
 
   const { SubscribedPlanData } = productCatalogueSlice;
 
   useEffect(() => {
+    // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
     dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
+    roles.merchant && dispatch(TxnChartDataSlice({"p_client_code":user?.clientMerchantDetailsList[0]?.clientCode}))
   }, []);
 
   useEffect(() => {
@@ -80,6 +85,19 @@ function Home() {
       (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
       d?.plan_code === "005"
   );
+
+  // prepare chart data
+  let chartDataArr = [["Date", "Number Of Transaction"]]
+    if(roles.merchant){
+      txnChartData?.map((item)=>(
+      chartDataArr.push([moment(item?.txnDate).format('MMMM Do YYYY'), parseInt(item?.txnNo)])))
+    }
+
+    // if no transaction found
+    if(chartDataArr.length===1){
+      chartDataArr.push([moment(Date()).format('MMMM Do YYYY'), 0])
+    }
+  
 
   return (
     <section className="">
@@ -119,7 +137,8 @@ function Home() {
         <div className="col-lg-12">
           {/* KYC ALETT */}
           <KycAlert />
-          {/* <DataVisualizatoin /> */}
+          {roles?.merchant && chartDataArr?.length>1 && <DataVisualizatoin data={chartDataArr} chartTitle="Recent Transaction" />}
+
         </div>
       </div>
       <br />
