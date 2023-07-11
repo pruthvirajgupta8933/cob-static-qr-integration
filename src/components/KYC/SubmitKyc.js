@@ -69,7 +69,7 @@ const { user } = auth;
       });
 
     } else {
-      alert("Kindly remove the extra document that does not required");
+      alert("Kindly remove the extra document which are not required");
     }
 
 

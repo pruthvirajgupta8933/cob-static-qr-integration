@@ -439,7 +439,7 @@ const isrequired = savedData?.map((r) => r.type);
                             if (dropDownDocList.length === finalArray.length) {
                               setTab(6);
                             } else {
-                              alert("Kindly remove the extra document that does not required");
+                              alert("Kindly remove the extra document which are not required");
                             }
                           }}
                         >
