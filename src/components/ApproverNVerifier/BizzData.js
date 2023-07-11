@@ -4,9 +4,9 @@ import API_URL from "../../config";
 import moment from "moment";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
+import FormikController from "../../_components/formik/FormikController";
 
 
 const validationSchema = Yup.object({
@@ -41,10 +41,10 @@ const BizzAppData = () => {
 
   const handleSubmit = (values) => {
     const postData = {
-      start_date:moment(values.start_date).startOf('day').format('YYYY-MM-DD'),
+      start_date: moment(values.start_date).startOf('day').format('YYYY-MM-DD'),
       end_date: moment(values.end_date).startOf('day').format('YYYY-MM-DD'),
     };
-  
+
     let apiRes = axiosInstanceJWT
       .post(API_URL.GET_BIZZ_DATA, postData)
       .then((resp) => {
@@ -194,80 +194,77 @@ const BizzAppData = () => {
             enableReinitialize={true}
           >
             {(formik) => (
-            <Form>
-              
-              <div className="container mt-5">
-                <div className="row">
-                  <div className="form-group  col-md-3">
-                  <ReactDatePicker
-                        label="From Date"
-                        id="fromDate"
-                        name="fromDate"
-                        selected={formik.values.start_date ? new Date(formik.values.start_date) : null}
-                        onChange={date => formik.setFieldValue('start_date', date)}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0"
-                        errorMsg={formik.errors["start_date"]}
-                        required={true}
-                      />
-                   
-                  </div>
+              <Form>
 
-                  <div className="form-group col-md-3 ">
-                    {/* <FormikController
-                      control="input"
-                      type="date"
-                      label="End Date"
-                      name="end_date"
-                      className="form-control rounded-0"
-                    /> */}
-                     <ReactDatePicker
-                        label="End Date"
-                        id="endDate"
-                        name="end_date"
-                        selected={formik.values.end_date ? new Date(formik.values.end_date) : null}
-                        onChange={date => formik.setFieldValue('end_date', date)}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0"
-                        errorMsg={formik.errors["end_date"]}
-                        required={true}
-                      />
-                  </div>
+                <div className="container mt-5">
                   <div className="row">
-                  <div className="col-lg-12">
-                    <button
-                      type="submit"
-                      className="btn cob-btn-primary approve text-white"
-                    >
-                      Submit
-                    </button>
-                    {FormData?.length > 0 ? (
-                      <button
-                        className="btn cob-btn-primary approve text-white ml-3"
-                        type="button"
-                        onClick={() => exportToExcelFn()}
-                        style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                      >
-                        Export
-                      </button>
-                    ) : (
-                      <></>
-                    )}
+                    <div className="form-group  col-md-3">
+                    <FormikController
+                          control="date"
+                          label="From Date"
+                          id="start_date"
+                          name="start_date"
+                          value={formik.values.start_date ? new Date(formik.values.start_date) : null}
+                          onChange={date => formik.setFieldValue('start_date', date)}
+                          format="dd-MM-y"
+                          clearIcon={null}
+                          className="form-control rounded-0 p-0"
+                          required={true}
+                          errorMsg={formik.errors["start_date"]}
+                        />
+
+                    </div>
+
+                    <div className="form-group col-md-3 ">
+                      <FormikController
+                        control="date"
+                        label="End Date"
+                        id="end_date"
+                        name="end_date"
+                        value={formik.values.end_date ? new Date(formik.values.end_date) : null}
+                        onChange={date => formik.setFieldValue('end_date', date)}
+                        format="dd-MM-y"
+                        clearIcon={null}
+                        className="form-control rounded-0 p-0"
+                        required={true}
+                        errorMsg={formik.errors["end_date"]}
+                      />
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <button
+                          type="submit"
+                          className="btn cob-btn-primary approve text-white"
+                        >
+                          Submit
+                        </button>
+                        {FormData?.length > 0 ? (
+                          <button
+                            className="btn cob-btn-primary approve text-white ml-3"
+                            type="button"
+                            onClick={() => exportToExcelFn()}
+                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                          >
+                            Export
+                          </button>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     </div>
                   </div>
+                  {FormData?.length === 0 || FormData?.length === undefined ? (
+                    <></>
+                  ) : (
+                    <h5 className="mt-4" >Total Records : {FormData?.length}</h5>
+                  )}
                 </div>
-                {FormData?.length === 0 || FormData?.length === undefined ? (
-                  <></>
-                ) : (
-                  <h5 className="mt-4" >Total Records : {FormData?.length}</h5>
-                )}
-              </div>
-            </Form>
+              </Form>
             )}
           </Formik>
-          {FormData.length===0 && show===true && <h5 className="text-center font-weight-bold mt-5">
-                    No Data Found
-                  </h5>}
+          {FormData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
+            No Data Found
+          </h5>}
           <div className="col-md-12">
             <div className="scroll overflow-auto">
               {show === true && FormData?.length !== 0 ? (
@@ -302,7 +299,7 @@ const BizzAppData = () => {
                   </thead>
                   <tbody>
                     {FormData?.length === 0 ||
-                    FormData?.length === undefined ? (
+                      FormData?.length === undefined ? (
                       <tr>
                         {/* <td colSpan={"8"}>
                           <h1 className="nodatafound">No data found</h1>

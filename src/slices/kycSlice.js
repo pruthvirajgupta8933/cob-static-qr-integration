@@ -6,14 +6,16 @@ import {
 } from "../utilities/axiosInstance";
 
 import { APP_ENV } from "../config";
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
+import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 
 const initialState = {
-  isLoading:false,
-  isLoadingForPending:false,
-  isLoadingForPendingVerification:false,
-  isLoadingForPendingApproval:false,
-  isLoadingForApproved:false,
-  isLoadingForRejected:false,
+  isLoading: false,
+  isLoadingForPending: false,
+  isLoadingForPendingVerification: false,
+  isLoadingForPendingApproval: false,
+  isLoadingForApproved: false,
+  isLoadingForRejected: false,
   documentByloginId: {},
   kycApproved: {
     count: null,
@@ -44,6 +46,13 @@ const initialState = {
     dropDownDocList: [],
   },
 
+  allKycData: {
+    result: [],
+    loading: false,
+    error: false,
+    message: ""
+  },
+
   KycTabStatusStore: {},
 
   businessType: [],
@@ -58,7 +67,7 @@ const initialState = {
   merchantInfo: [],
   kycBankNames: [],
   saveMerchantBankDetais: [],
-  kycForPendingMerchants:[],
+  kycForPendingMerchants: [],
   kycForPending: [],
   kycForRejectedMerchants: [],
   kycForVerified: [],
@@ -131,9 +140,9 @@ const initialState = {
   },
 
   GetBankid: [],
-  
-  consentKyc:{
-    message:"",
+
+  consentKyc: {
+    message: "",
     status: false,
   },
 
@@ -153,9 +162,16 @@ const initialState = {
     message: "",
   },
   OpenModalForKycSubmit: {
-    isOpen:false
+    isOpen: false
   },
+  approveKyc:{
+    isApproved:false,
+    isError:false,
+    logs:{},
 
+  }
+
+  
   
 };
 
@@ -318,25 +334,25 @@ export const businessOverviewState = createAsyncThunk(
   "kyc/businessOverviewState",
   async (requestParam) => {
     let response = {}
-    if(APP_ENV){
+    if (APP_ENV) {
       response = await axiosInstanceJWT
-      .get(`${API_URL.Business_overview_state_}`, {
-        headers: {},
-      })
-      .catch((error) => {
-        return error.response;
-      });
-    }else{
+        .get(`${API_URL.Business_overview_state_}`, {
+          headers: {},
+        })
+        .catch((error) => {
+          return error.response;
+        });
+    } else {
 
       response = await axiosInstanceJWT
-      .post(`${API_URL.Business_overview_state_}`, {
-        headers: {},
-      })
-      .catch((error) => {
-        return error.response;
-      });
+        .post(`${API_URL.Business_overview_state_}`, {
+          headers: {},
+        })
+        .catch((error) => {
+          return error.response;
+        });
     }
-   
+
 
     return response?.data;
   }
@@ -365,8 +381,8 @@ export const saveMerchantInfo = createAsyncThunk(
 export const documentsUpload = createAsyncThunk(
   "kyc/documentsUpload",
   async (data) => {
-     const requestParam = data?.businessType;
-   const response = await axiosInstanceJWT
+    const requestParam = data?.businessType;
+    const response = await axiosInstanceJWT
       .get(`${API_URL?.DocumentsUpload}/?business_type_id=${requestParam}`, {
         headers: {},
       })
@@ -582,6 +598,28 @@ export const kycForPending = createAsyncThunk(
   }
 );
 
+
+
+
+export const FetchAllByKycStatus = createAsyncThunk(
+  "kyc/FetchAllByKycStatus",
+  async (data) => {
+    const requestParam = data.page;
+    const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+    const kycStatus = data?.kycStatus;
+    // const order_by = 
+    const response = await axiosInstanceJWT
+      .get(
+        `${API_URL.GET_MERCHANT_DATA}?search=${kycStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}&order_by=-id`
+      )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
 //////////////////////////////////////////////////
 export const kycForVerified = createAsyncThunk(
   "kyc/kycForVerified",
@@ -604,23 +642,23 @@ export const kycForVerified = createAsyncThunk(
 
 
 export const onboardedReport = createAsyncThunk(
-  "kyc/kycForVerified",
+  "kyc/onboardedReport",
   async (data) => {
-   const requestParam = data.page;
+    const requestParam = data.page;
     const requestParam1 = data.page_size;
     const from_date = data.from_date;
-    const to_date=data?.to_date
-    const selectedvalue =data?.selectedChoice;
-    const dynamicDate = selectedvalue === "Verified" ? "verified_date" : selectedvalue === "Approved" ? "approved_date" : ""
-  
-    
+    const to_date = data?.to_date
+    const kyc_status = data?.kyc_status;
+
+    let order_by = kyc_status.toLowerCase() + "_date"
+    if(!kyc_status===KYC_STATUS_APPROVED || !kyc_status===KYC_STATUS_VERIFIED){
+      order_by = "id"
+    }
+
+
     const response = await axiosInstanceJWT
       .get(
-        
-        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-${dynamicDate}&search_map=${dynamicDate}&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
-        {
-          headers: {},
-        }
+        `${API_URL.KYC_FOR_ONBOARDED}?search=${kyc_status}&order_by=-${order_by}&search_map=${order_by}&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
       )
       .catch((error) => {
         return error.response;
@@ -630,31 +668,7 @@ export const onboardedReport = createAsyncThunk(
   }
 );
 
-////////////////////////////////////////////////
-export const onboardedReportExport = createAsyncThunk(
-  "kyc/kycForVerified",
-  async (data) => {
-   
-    const from_date = data.from_date;
-    const to_date=data?.to_date
-    const selectedvalue =data?.selectedChoice;
-    const dynamicDate = selectedvalue === "Verified" ? "verified_date" : selectedvalue === "Approved" ? "approved_date" : ""
-  
-    
-    const response = await axiosInstanceJWT
-      .get(
-        
-        `${API_URL.KYC_FOR_ONBOARDED}export-excel/?search=${selectedvalue}&search_map=${dynamicDate}&from_date=${from_date}&to_date=${to_date}`,
-        {
-          responseType: 'arraybuffer'
-       })
-      .catch((error) => {
-        return error.response;
-      });
 
-    return response.data;
-  }
-);
 ////////////////////////////////////////////////////
 export const kycForApproved = createAsyncThunk(
   "kyc/kycForApproved",
@@ -662,7 +676,7 @@ export const kycForApproved = createAsyncThunk(
     const requestParam = data.page;
     const requestParam1 = data.page_size;
 
-    const isDirect = data?.isDirect ===undefined ? "" : data?.isDirect;
+    const isDirect = data?.isDirect === undefined ? "" : data?.isDirect;
     const searchquery = data?.searchquery === undefined ? "" : data?.searchquery;
 
     // console.log("isDirect",isDirect)
@@ -682,7 +696,7 @@ export const kycForCompleted = createAsyncThunk(
   async (requestParam) => {
     const response = await axiosInstanceJWT
       .get(`${API_URL.KYC_FOR_COMPLETED}`, {
-        headers: {},  
+        headers: {},
       })
       .catch((error) => {
         return error.response;
@@ -932,14 +946,28 @@ export const businessCategoryById = createAsyncThunk(
 
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
-  async (requestParam) => {
-    const response = await axiosInstanceJWT
-      .post(`${API_URL.APPROVE_KYC}`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam,thunkAPI) => {
+    try {
+      const response = await approverDashboardService.approveKyc(requestParam);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
 
-    return response.data;
+    // const response = await axiosInstanceJWT
+    //   .post(`${API_URL.APPROVE_KYC}`, requestParam)
+    //   .catch((error) => {
+    //     return error.response;
+    //   });
+
+    // return response.data;
   }
 );
 
@@ -1015,15 +1043,27 @@ export const kycSlice = createSlice({
     clearKycState: (state) => {
       state.kycUserList = {};
     },
-    UpdateModalStatus:(state,action) => {
-      state.OpenModalForKycSubmit.isOpen= action?.payload
-    },
+    
 
     saveDropDownAndFinalArray: (state, action) => {
       
      state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
      state.compareDocListArray.finalArray = action?.payload?.finalArray;
       },
+    UpdateModalStatus: (state, action) => {
+      state.OpenModalForKycSubmit.isOpen = action?.payload
+    },
+    clearFetchAllByKycStatus: (state) => {
+      state.allKycData.error = false
+      state.allKycData.loading = false
+      state.allKycData.result = []
+      state.allKycData.message = ""
+    },
+    clearApproveKyc:(state)=>{
+      state.approveKyc.isApproved = false
+      state.approveKyc.isError = false
+      state.approveKyc.logs = {}
+    }
   },
   extraReducers: {
     [kycForNotFilled.pending]: (state, action) => {
@@ -1081,6 +1121,45 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
       state.isLoadingForPendingApproval = false;
     },
+    //-------------------------------------------
+    [onboardedReport.pending]: (state) => {
+      state.allKycData.loading = true;
+      state.allKycData.error = false;
+      state.allKycData.result = {};
+    },
+    [onboardedReport.fulfilled]: (state, action) => {
+      state.allKycData.loading = false;
+      state.allKycData.result = action.payload.results;
+      state.allKycData.count = action.payload.count;
+      state.allKycData.next = action.payload.next;
+      state.allKycData.previous = action.payload.previous;
+    },
+    [onboardedReport.rejected]: (state, action) => {
+      state.allKycData.loading = false;
+      state.allKycData.error = true;
+      state.allKycData.result = [];
+      console.log(action.error)
+      state.allKycData.message = action.error.message;
+    },
+    //-------------------------------------------
+    [FetchAllByKycStatus.pending]: (state) => {
+      state.allKycData.loading = true;
+      state.allKycData.error = false;
+      state.allKycData.result = {};
+    },
+    [FetchAllByKycStatus.fulfilled]: (state, action) => {
+      state.allKycData.loading = false;
+      state.allKycData.result = action.payload.results;
+      state.allKycData.count = action.payload.count;
+      state.allKycData.next = action.payload.next;
+      state.allKycData.previous = action.payload.previous;
+    },
+    [FetchAllByKycStatus.rejected]: (state, action) => {
+      state.allKycData.loading = false;
+      state.allKycData.error = true;
+      state.allKycData.result = [];
+      state.allKycData.message = action.error.message;
+    },
     //-----------------------------------------------
     [kycForApproved.pending]: (state, action) => {
       state.status = "pending";
@@ -1109,7 +1188,7 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
       state.isLoadingForRejected = false;
     },
-//-------------------------------------------------------------
+    //-------------------------------------------------------------
 
     //-------------------------------------------------
     [kycUserList.pending]: (state, action) => {
@@ -1157,7 +1236,7 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [updateContactInfo.fulfilled]: (state, action) => {
-      
+
       state.allTabsValidate.merchantContactInfo.submitStatus = action.payload;
     },
     [updateContactInfo.rejected]: (state, action) => {
@@ -1291,7 +1370,7 @@ export const kycSlice = createSlice({
     },
     [GetKycTabsStatus.fulfilled]: (state, action) => {
       // console.log("alert 2" )
-      
+
       state.KycTabStatusStore = action.payload;
 
     },
@@ -1314,7 +1393,7 @@ export const kycSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message;
     },
-    
+
 
 
 
@@ -1368,6 +1447,23 @@ export const kycSlice = createSlice({
     [verifyKycEachTab.fulfilled]: (state, action) => {
       state.KycTabStatusStore = action.payload;
     },
+
+// when kyc approve
+    [approvekyc.pending]: (state) => {
+      state.approveKyc.isApproved = false
+      state.approveKyc.isError = false
+      state.approveKyc.logs = {}
+
+    },
+    [approvekyc.fulfilled]: (state, action) => {
+      state.approveKyc.isApproved = true
+      state.approveKyc.logs = action.payload
+    },
+    [approvekyc.rejected]: (state, action) => {
+      state.approveKyc.isApproved = false
+      state.approveKyc.isError = true
+      state.approveKyc.logs = action.payload
+    },
   },
 });
 
@@ -1379,6 +1475,8 @@ export const {
   isPhoneVerified,
   clearKycState,
   UpdateModalStatus,
-  saveDropDownAndFinalArray
+  saveDropDownAndFinalArray,
+  clearFetchAllByKycStatus,
+  clearApproveKyc
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

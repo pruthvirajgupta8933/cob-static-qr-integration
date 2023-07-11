@@ -6,26 +6,26 @@ const PersonalDetails = ({ updatedData }) => {
   // console.log(updatedData,"Updated Data")
   return (
     <div>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm">
+      <div className="container">
+        <div className="row">
+          <div className="col-sm">
             <h4>Name</h4>
             <span>
               <p className="text-secondary">{updatedData?.payerName}</p>
             </span>
           </div>
-          <div class="col-sm">
+          <div className="col-sm">
             <h4>Email</h4>
             <p className="text-secondary">{updatedData?.payerEmail}</p>
           </div>
-          <div class="col-sm">
+          <div className="col-sm">
             <h4>Moblie Number</h4>
             <p className="text-secondary">{updatedData?.payerMobile}</p>
           </div>
         </div>
-        <div class="row">
+        <div className="row">
         {updatedData?.telePhone === "" ? <></> :
-          <div class="col-lg-4">
+          <div className="col-lg-4">
             <h4>Telephone Number</h4>
             <span>
               <p className="text-secondary">{`91-011-${updatedData?.telePhone}`}</p>
@@ -33,7 +33,7 @@ const PersonalDetails = ({ updatedData }) => {
           </div>
             }
              {updatedData?.panNo === "" ? <></> :
-                <div class="col-lg-4">
+                <div className="col-lg-4">
             <h4>PAN Number</h4>
             <span>
               <p className="text-secondary">{`91-${updatedData?.panNo}`}</p>

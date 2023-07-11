@@ -24,7 +24,7 @@ function Select(props) {
             <option
               key={i}
               value={props.valueFlag ? option.value : option.key}
-              dataKey={i}
+              datakey={i}
               disabled={option?.disabled}
             >
               {option?.value}

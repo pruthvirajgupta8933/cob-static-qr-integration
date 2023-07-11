@@ -4,33 +4,30 @@ import { businessCategoryType, generalFormData, getAllCLientCodeSlice } from '..
 import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson'
 import { Form, Formik } from 'formik'
 import FormikController from '../../../../_components/formik/FormikController'
-import { generateWord } from '../../../../utilities/generateClientCode'
 import Yup from '../../../../_components/formik/Yup'
 import { kycUserList } from '../../../../slices/kycSlice'
+// import { Toast } from 'react-toastify/dist/components'
+import { toast } from 'react-toastify'
 
-const GeneralForm = ({merchantKycId}) => {
+const GeneralForm = ({ merchantKycId, role }) => {
 
     const dispatch = useDispatch()
-    const { approverDashboard , kyc } = useSelector(state => state)
+    const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
+    // const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
+    const currenTab = parseInt(verifierApproverTab?.currenTab)
 
-    // console.log(approverDashboard)
     useEffect(() => {
         dispatch(businessCategoryType())
         dispatch(getAllCLientCodeSlice())
-        dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId,}))
-        // dispatch(generalFormData({
-        //     rr_amount: kyc.kycUserList?.rolling_reserve,
-        //     business_cat_type: kyc.kycUserList?.business_category_type,
-        //     refer_by: kyc.kycUserList?.refer_by
-    
-        // }))
+        dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId, }))
     }, [])
 
 
     const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve,
         business_cat_type: kyc.kycUserList?.business_category_type,
-        refer_by: kyc.kycUserList?.refer_by
+        refer_by: kyc.kycUserList?.refer_by,
+        rolling_reserve_type: "Percentage"
 
     }
 
@@ -44,37 +41,29 @@ const GeneralForm = ({merchantKycId}) => {
 
 
     const handleSubmit = (val) => {
-      
         dispatch(generalFormData(val))
+        toast.success("Successfully updated")
     }
 
-    // useEffect(() => {
 
-    // }, [approverDashboard])
-    // console.log("approverDashboard",approverDashboard)
 
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
-    const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList)
-    // console.log("businessCategoryOption", businessCategoryOption)
+    const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
+
 
     return (
         <div className="row mb-4 border p-1">
-
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmit}
+                onSubmit={(values, { setStatus }) => {
+                    setStatus(true)
+                    handleSubmit(values)
+                }}
                 enableReinitialize={true} >
-                {({
-                    values,
-                    setFieldValue,
-                    errors,
-                    setFieldError,
-                    dirty
+                {(formik) => (
 
-                }) => (
                     <div className="">
-
                         <Form className="row g-3">
                             <div className="col-md-4">
                                 <FormikController
@@ -82,7 +71,12 @@ const GeneralForm = ({merchantKycId}) => {
                                     type="number"
                                     name="rr_amount"
                                     className="form-control"
-                                    label="Rolling Reserve Amount"
+                                    label="Rolling Reserve (%)"
+                                    disabled={!role?.approver}
+                                    onChange={(e) => {
+                                        formik.setFieldValue("rr_amount",e.target.value)
+                                        formik.setStatus(false);
+                                    }}
                                 />
                             </div>
 
@@ -93,6 +87,11 @@ const GeneralForm = ({merchantKycId}) => {
                                     options={businessCategoryOption}
                                     className="form-select"
                                     label="Business Category"
+                                    disabled={!role?.approver}
+                                    onChange={(e) => {
+                                        formik.setFieldValue("business_cat_type",e.target.value)
+                                        formik.setStatus(false);
+                                    }}
                                 />
                             </div>
 
@@ -103,34 +102,21 @@ const GeneralForm = ({merchantKycId}) => {
                                     options={clientCodeOption}
                                     className="form-select"
                                     label="Refer By (if any)"
+                                    disabled={!role?.approver}
+                                    onChange={(e) => {
+                                        formik.setFieldValue("refer_by",e.target.value)
+                                        formik.setStatus(false);
+                                    }}
                                 />
                             </div>
 
-                            <div className="col-md-4 ">
-                            {/* {console.log("dirty",dirty)} */}
-                            {dirty &&  <button type="submit" className="btn cob-btn-primary btn-sm" > Submit</button>}
+                            <div className="col-md-4">
+                                {role?.approver && currenTab === 4 && (!formik.status && <button type="submit" className="btn cob-btn-primary btn-sm" >Save</button>)}
                             </div>
                         </Form>
-
                     </div>
                 )}
             </Formik>
-            {/*             
-                <div className="col-sm-12 col-md-12 col-lg-4 ">
-                    <label className>Rolling Reserve Amount<span className="text-danger" >*</span></label>
-                    <input type="text" className="form-control" id="inputPassword3" disabled defaultValue="UBIN0916684" />
-                </div>
-
-                <div className="col-sm-12 col-md-12 col-lg-4">
-                    <label className>Business category<span style={{ color: 'red' }}>*</span></label>
-                    <input type="text" className="form-control" id="inputPassword3" disabled defaultValue={520101234655697} />
-                </div>
-
-                <div className="col-sm-12 col-md-12 col-lg-4">
-                    <label className>Refer by(if any)<span style={{ color: 'red' }}>*</span></label>
-                    <input type="text" className="form-control" id="inputPassword3" disabled defaultValue={520101234655697} />
-                </div> */}
-
         </div>
     )
 }

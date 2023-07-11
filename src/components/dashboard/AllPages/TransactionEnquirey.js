@@ -154,7 +154,7 @@ function TransactionEnquirey() {
                             onClick={onClick}
                             className="btn btn-secondary text-white mt-2 ml-3 btn-sm"
                           >
-                            <i class="fa fa-print" aria-hidden="true"></i> Print
+                            <i className="fa fa-print" aria-hidden="true"></i> Print
                           </button>}
 
                         </div>
@@ -168,10 +168,10 @@ function TransactionEnquirey() {
 
                 {!loadingState && show && printData?.length > 0 && (
                   <div className="overflow-auto col-lg-12 mb-5 border">
-                    <div class="container-fluid">
-                      <div class="row">
+                    <div className="container-fluid">
+                      <div className="row">
                         {printData?.map((datas, key) =>
-                          (<div class="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
+                          (<div className="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
                         )}
                       </div>
                     </div>

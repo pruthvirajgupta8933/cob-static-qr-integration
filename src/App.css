@@ -322,6 +322,13 @@ h1, h2, h3, h4, h5, h6{
   display: block !important;
 }
 
+.react-date-picker__wrapper{
+  border:none !important;
+}
+.react-date-picker{
+  padding: 3px 2px 2px 4px !important;;
+}
+
 
 
 /* sidenav bar */

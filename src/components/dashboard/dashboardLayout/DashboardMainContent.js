@@ -81,12 +81,15 @@ import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
 function DashboardMainContent() {
     let history = useHistory();
     let { path } = useRouteMatch();
-    const { user } = useSelector((state) => state.auth);
+ 
+    const { menuListReducer, auth  } = useSelector((state) => state);
+    const { user } = auth;
     const roles = roleBasedAccess();
     const dispatch = useDispatch();
     const location = useLocation();
 
 
+    
     // create new client code
     useEffect(() => {
         //  check the role and clientcode should be null
@@ -161,6 +164,7 @@ function DashboardMainContent() {
         dispatch(fetchMenuList(postBody))
     }, [user, dispatch])
 
+    // menuListReducer.enableMenu.length===0 
 
     useEffect(() => {
         // fetch subscribe product data
@@ -538,7 +542,7 @@ function DashboardMainContent() {
                                     path={`${path}/onboarded-report`}
                                     Component={OnboardedReport}
                                 >
-                                    <SignupData />
+                                    <OnboardedReport />
 
                                 </VerifierRoute>
                             )}
@@ -550,7 +554,7 @@ function DashboardMainContent() {
                                     path={`${path}/onboarded-report`}
                                     Component={OnboardedReport}
                                 >
-                                    <SignupData />
+                                    <OnboardedReport />
                                 </ApproverRoute>
                             )}
 

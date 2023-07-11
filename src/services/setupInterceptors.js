@@ -4,8 +4,11 @@ import { axiosInstanceJWT } from "../utilities/axiosInstance";
 import authService from "./auth.service";
 import TokenService from "./token.service";
 
+// console.log("file call")
+// console.log("TokenService.getLocalAccessToken()",TokenService.getLocalAccessToken())
 
 const setup = async (store) => {
+  // console.log("inner function",setup)
   axiosInstanceJWT.interceptors.request.use(
     (config) => {
       const token =  TokenService.getLocalAccessToken();
@@ -19,6 +22,7 @@ const setup = async (store) => {
     }
   );
 
+  // console.log("setup",setup)
 
   axiosInstanceJWT.interceptors.response.use(
     (res) => {
@@ -32,7 +36,6 @@ const setup = async (store) => {
           await authService.logout();
           window.location.reload();
         }
-        
         if (err.response.status === 403 && !originalConfig._retry) {
           originalConfig._retry = true;
 

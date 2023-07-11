@@ -295,13 +295,13 @@ function BankDetails(props) {
                   />
 
                   {(values?.ifscCode !== null && loading) &&
-                    <div class="input-group-append">
-                      <button class="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
+                    <div className="input-group-append">
+                      <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
                         disabled={loading}
                       >
 
-                        <span class="spinner-border spinner-border-sm" role="status">
-                          <span class="sr-only">Loading...</span>
+                        <span className="spinner-border spinner-border-sm" role="status">
+                          <span className="sr-only">Loading...</span>
                         </span>
 
                       </button>
@@ -372,8 +372,8 @@ function BankDetails(props) {
 
                   {/* if found any error in validation */}
                   {(values?.ifscCode !== null && (errors.hasOwnProperty("oldAccountNumber") || errors.hasOwnProperty("oldIfscCode"))) &&
-                    <div class="input-group-append">
-                      <button class="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
+                    <div className="input-group-append">
+                      <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
                         disabled={loading}
                         onClick={() => {
                           checkInputIsValid(
@@ -385,8 +385,8 @@ function BankDetails(props) {
                           );
                         }}>
                         {loading ?
-                          <span class="spinner-border spinner-border-sm" role="status">
-                            <span class="sr-only">Loading...</span>
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
                           </span>
                           :
                           "Verify"

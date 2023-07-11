@@ -9,9 +9,9 @@ const TermsAndConditions = () => {
       <Header />
       <div className="tcContainer" data-bs-spy="scroll" data-bs-offset="50">
         <div className="tcheading">Terms and Conditions</div>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm tcsubheading">Last Updated Date: 30/11/2021</div>
+        <div className="container">
+          <div className="row">
+            <div className="col-sm tcsubheading">Last Updated Date: 30/11/2021</div>
             <div className="tcinfo1">
               <p>
                 This agreement (“user agreement”) incorporates the Terms and

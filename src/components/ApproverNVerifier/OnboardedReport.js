@@ -1,47 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import { useDispatch } from "react-redux";
-import "react-datepicker/dist/react-datepicker.css";
-import toastConfig from "../../utilities/toastTypes";
-import { onboardedReport } from "../../slices/kycSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearFetchAllByKycStatus, onboardedReport } from "../../slices/kycSlice";
 import moment from "moment";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import { onboardedReportExport } from "../../slices/kycSlice";
-import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import { onboardedReportExport } from "../../services/kyc/export-data.service";
 
 
-const validationSchema = Yup.object({
-  from_date: Yup.date().required("Required").nullable(),
-  to_date: Yup.date()
-    .min(Yup.ref("from_date"), "End date can't be before Start date")
-    .required("Required"),
-  status: Yup.string().required("Required").nullable(),
-});
+
 
 const OnboardedReport = () => {
-  const [data, setData] = useState([]);
-  const [verfiedMerchant, setVerifiedMerchant] = useState([]);
-  const [dataCount, setDataCount] = useState("");
- const [currentPage, setCurrentPage] = useState(1);
+  // const [data, setData] = useState([]);
+  const [searchingData, setSearchingData] = useState([]);
+  // const [dataCount, setDataCount] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [loadingState, setLoadingState] = useState(false);
-// eslint-disable-next-line no-unused-vars
- 
+  // eslint-disable-next-line no-unused-vars
+
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [onboardValue, setOnboradValue] = useState("");
+  const [onboardValue, setOnboradValue] = useState({});
   const [searchText, setSearchText] = useState("");
-  const [selectedvalue, setSelectedvalue] = useState("");
+  const [selectedvalue, setSelectedvalue] = useState(KYC_STATUS_APPROVED);
   const [disabled, setDisabled] = useState(false);
   const [dataClick, setDataClick] = useState(false);
 
-  
-  let noResultsFound = data;
+
+
+  const dispatch = useDispatch();
+  const { kyc } = useSelector(state => state)
+  const { allKycData } = kyc
+  const { result, loading, error, message, count, next, previous } = allKycData
+
+  useEffect(() => {
+    setSearchingData(result)
+  }, [result])
+
+  // let noResultsFound = data;
 
   // console.log(noResultsFound, "noResultsFound");
 
@@ -84,7 +86,7 @@ const OnboardedReport = () => {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) =>DateFormatter(row.signUpDate,false),
+      selector: (row) => DateFormatter(row.signUpDate, false),
       sortable: true,
     },
 
@@ -110,17 +112,24 @@ const OnboardedReport = () => {
   };
 
   const searchByText = (text) => {
-    setData(
-      verfiedMerchant?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
-    );
+    if (searchText?.length !== 0) {
+      setSearchingData(
+        searchingData?.filter((item) =>
+          Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(searchText?.toLocaleLowerCase())
+        )
+      );
+    } else {
+      setSearchingData(result)
+    }
+
   };
 
- let now = moment().format("YYYY-M-D");
+
+
+  let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
@@ -131,251 +140,197 @@ const OnboardedReport = () => {
   splitDate = splitDate.join("-");
 
   // eslint-disable-next-line no-unused-vars
-  
+
   const initialValues = {
     from_date: splitDate,
     to_date: splitDate,
-    status: "",
+    status: KYC_STATUS_APPROVED,
   };
 
-  const dispatch = useDispatch();
+  const validationSchema = Yup.object({
+    from_date: Yup.date().required("Required").nullable(),
+    to_date: Yup.date()
+      .min(Yup.ref("from_date"), "End date can't be before Start date")
+      .required("Required"),
+    status: Yup.string().required("Required").nullable(),
+  });
 
-  // console.log(loadingState, "loadingState");
-
-  let selectedChoice =
-    selectedvalue === "1"
-      ? "Verified"
-      : selectedvalue === "2"
-      ? "Approved"
-      : "";
 
   const handleSubmit = (values) => {
     setOnboradValue(values);
-    setDisabled(true);
     dispatch(
       onboardedReport({
         page: currentPage,
         page_size: pageSize,
-        selectedChoice,
+        kyc_status: values.status,
         from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
         to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
       })
     )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-
-        const dataCoun = resp?.payload?.count;
-        // setKycIdClick(data);
-        setData(data);
-        setDataClick(true);
-        setDataCount(dataCoun);
-        setVerifiedMerchant(data);
-        setDisabled(false);
-
-        // setIsLoaded(false)
-      })
-
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-        setDisabled(false);
-      });
   };
 
-  
- useEffect(() => {
-    dispatch(
-      onboardedReport({
-        page: currentPage,
-        page_size: pageSize,
-        selectedChoice,
-        from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
-        to_date:moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
-      })
-    )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        
-        setDataCount(dataCoun);
-        setVerifiedMerchant(data);
-        
-      })
+  useEffect(() => {
 
-      .catch((err) => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pageSize]);
+    return () => {
+      dispatch(clearFetchAllByKycStatus())
+    }
+  }, [])
 
-  
+
+
+
+  // only two date coloum is available in the db, 
   const selectStatus = [
-    { key: "0", value: "Select"},
-    { key: "1", value: "Verified" },
-    { key: "2", value: "Approved" },
+    { key: KYC_STATUS_VERIFIED, value: KYC_STATUS_VERIFIED },
+    { key: KYC_STATUS_APPROVED, value: KYC_STATUS_APPROVED }
   ];
 
+
   const exportToExcelFn = () => {
-    dispatch(
-      onboardedReportExport({
-        selectedChoice,
-        from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
-        to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
-      })
-    ).then((res) => {
+    onboardedReportExport({
+      status: onboardValue.status,
+      from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
+      to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
+    }).then((res) => {
       const blob = new Blob([res?.payload], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `ONBOARDED_REPORT_.xlsx`;
+      a.download = `Onboard-report_.xlsx`;
       a.click();
       window.URL.revokeObjectURL(url);
     });
   };
 
-  
-  return (
-    <section className="">
 
+  return (
+
+    <section className="">
       <div className="">
         <div className="">
           <h5 className="">
-            Verified and Approved Merchant
+            Onboarded Report
           </h5>
         </div>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          // onSubmit={(values)=>handleSubmit(values)}
           onSubmit={(values, { resetForm }) => {
             handleSubmit(values);
           }}
           enableReinitialize={true}
         >
-          {(formik, resetForm) => (
+          {(formik) => (
             <Form className="row mt-5">
-                  <div className="form-group col-md-3">
-                  <label htmlFor="fromDate" className="ml-3">From Date:</label>
-                        <ReactDatePicker
-                          id="fromDate"
-                          name="from_date"
-                          selected={formik.values.from_date ? new Date(formik.values.from_date) : null}
-                          onChange={date => formik.setFieldValue('from_date', date)}
-                           dateFormat="dd/MM/yyyy"
-                          className="form-control rounded-0"
-                          errorMsg={formik.errors["from_date"]}
-                          required={true}
-                        />
-                     
-                    
-                    {/* <FormikController
-                      control="input"
-                      type="date"
-                      label="From Date"
-                      name="from_date"
-                      className="form-control"
-                      // value={startDate}
-                      // onChange={(e)=>setStartDate(e.target.value)}
-                    /> */}
-                  </div>
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="date"
+                  label="From Date"
+                  id="from_date"
+                  name="from_date"
+                  value={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                  onChange={date => formik.setFieldValue('from_date', date)}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
+                  errorMsg={formik.errors["from_date"]}
+                />
+              </div>
 
-                  <div className="form-group col-md-3 ">
-                  <label htmlFor="endDate">End Date:</label>
-                        <ReactDatePicker
-                          id="endDate"
-                          name="to_date"
-                          selected={formik.values.to_date ? new Date(formik.values.to_date) : null}
-                          onChange={date => formik.setFieldValue('to_date', date)}
-                          dateFormat="dd/MM/yyyy"
-                          className="form-control rounded-0"
-                          errorMsg={formik.errors["to_date"]}
-                        />
-                    {/* <FormikController
-                      control="input"
-                      type="date"
-                      label="End Date"
-                      name="to_date"
-                      className="form-control"
-                    /> */}
-                  </div>
-                  <div className="form-group col-md-3">
-                    <FormikController
-                      control="select"
-                      type="date"
-                      label="Select your choice"
-                      name="status"
-                      options={selectStatus}
-                      className="form-select"
-                    />
-                    {formik.handleChange(
-                      "status",
-                      setSelectedvalue(formik?.values?.status)
-                    )}
-                  </div>
+              <div className="form-group col-md-3 ">
+                <FormikController
+                  control="date"
+                  label="End Date"
+                  id="to_date"
+                  name="to_date"
+                  value={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                  onChange={date => formik.setFieldValue('to_date', date)}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
+                  errorMsg={formik.errors["to_date"]}
+                />
+              </div>
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="select"
+                  label="Merchant KYC Status"
+                  name="status"
+                  options={selectStatus}
+                  className="form-select"
+                />
+                {formik.handleChange(
+                  "status",
+                  setSelectedvalue(formik?.values?.status)
+                )}
+              </div>
 
-                  <div className="form-group col-md-3">
-                   <button
-                      type="submit"
-                      className="btn cob-btn-primary mt-4 approve text-white btn-sm"
-                      disabled={disabled}
-                    >
-                      Submit
-                    </button>
-                </div>
+              <div className="form-group col-md-3">
+                <button
+                  type="submit"
+                  className="btn cob-btn-primary mt-4 approve text-white btn-sm"
+                  disabled={disabled}
+                >
+                  Submit
+                </button>
+              </div>
             </Form>
           )}
         </Formik>
-        {dataClick === true && noResultsFound?.length === 0 ? (
-          <h5 className="text-center font-weight-bold">No Data Found</h5>
-        ) : (
-          <></>
+
+        {searchingData?.length === 0 && (
+          <h6 className="text-center font-weight-bold">No Data Found</h6>
         )}
 
-{!loadingState && data?.length !== 0 && (
+        {!loading && result?.length !== 0 && (
           <>
-          <div className="row">
-          <div className="form-group col-lg-3 ml-3 ">
-              <SearchFilter
-                kycSearch={kycSearch}
-                searchText={searchText}
-                searchByText={searchByText}
-                setSearchByDropDown={setSearchByDropDown}
-                searchTextByApiCall={true}
-              />
+            <div className="row">
+              <div className="form-group col-lg-3">
+                <SearchFilter
+                  kycSearch={kycSearch}
+                  searchText={searchText}
+                  searchByText={searchByText}
+                  setSearchByDropDown={setSearchByDropDown}
+                  searchTextByApiCall={false}
+                />
+              </div>
+
+              <div className="form-group col-lg-3">
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={count}
+                  changePageSize={changePageSize}
+                />
+              </div>
+              <div className="form-group col-lg-3">
+                <button
+                  className="btn btn-sm text-white mt-4 cob-btn-primary "
+                  type="button"
+                  onClick={() => exportToExcelFn()}
+                >
+                  Export
+                </button>
+              </div>
             </div>
 
-            <div className="form-group col-lg-3">
-              <CountPerPageFilter
-                pageSize={pageSize}
-                dataCount={dataCount}
-                changePageSize={changePageSize}
-              />
-            </div>
-            <div className="form-group col-lg-3">
-              <button
-                className="btn btn-sm text-white mt-4 cob-btn-primary "
-                type="button"
-                onClick={() => exportToExcelFn()}
-              >
-                Export
-              </button>
-            </div>
-          </div>
-
-            <div className="container-fluid ">
-              <div className="scroll overflow-auto ml-4">
-                {!loadingState && data?.length !== 0 && (
+            <div className="container p-0">
+              <div className="scroll overflow-auto">
+                {!loading && searchingData?.length !== 0 && (
                   <Table
                     row={rowSignUpData}
-                    data={data}
-                    dataCount={dataCount}
+                    data={searchingData}
+                    dataCount={count}
                     pageSize={pageSize}
                     currentPage={currentPage}
                     changeCurrentPage={changeCurrentPage}
                   />
                 )}
               </div>
-              <CustomLoader loadingState={loadingState} />
+              <CustomLoader loadingState={loading} />
             </div>
           </>
         )}
@@ -385,3 +340,13 @@ const OnboardedReport = () => {
 };
 
 export default OnboardedReport;
+
+
+
+// function OnboardedReport() {
+//   return (
+//     <div>OnboardedReport</div>
+//   )
+// }
+
+// export default OnboardedReport

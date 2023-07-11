@@ -19,7 +19,7 @@ const Table = (props) => {
         className="table table-bordered"
         columns={props.row}
         data={props.data}
-        sortIcon={<i class="fa fa-arrow-up ml-1"></i>}
+        sortIcon={<i className="fa fa-arrow-up ml-1"></i>}
         fixedHeader={fixedHeaderFooter}
         // pagination
         // selectableRows

@@ -122,8 +122,8 @@ const AuthMandate = ({ updatedData }) => {
   const modalFooter = () => {
     return (
    <>
-    <button type="button" class="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
-    <button type="button" class="btn approve text-white btn-sm" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
+    <button type="button" className="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
+    <button type="button" className="btn approve text-white btn-sm" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
     </>
  
     )
@@ -339,7 +339,7 @@ const AuthMandate = ({ updatedData }) => {
                             <>
                            
                               <span
-                                class="spinner-border spinner-border-sm"
+                                className="spinner-border spinner-border-sm"
                                 role="status"
                                 aria-hidden="true"
                               ></span>

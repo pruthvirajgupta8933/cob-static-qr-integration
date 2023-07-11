@@ -21,6 +21,10 @@ import { isNumber } from "lodash";
 import CustomModal from "../../../../_components/custom_modal";
 import GeneralForm from "./GeneralForm";
 import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
+import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
+import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMappingSlice";
+import { rateMappingFn } from "../../../../utilities/rateMapping";
+
 
 
 const KycDetailsModal = (props) => {
@@ -49,7 +53,7 @@ const KycDetailsModal = (props) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
-  const { kyc } = state;
+  const { kyc, rateMappingSlice } = state;
 
   const { KycTabStatusStore, KycDocUpload } = kyc;
   // console.log(KycTabStatusStore)
@@ -58,7 +62,7 @@ const KycDetailsModal = (props) => {
   //------------- Kyc  Document List ------------//
 
   useEffect(() => {
-    if (merchantKycId !== null) {
+    if (merchantKycId !== null && merchantKycId?.loginMasterId !== "") {
       dispatch(
         kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
       )
@@ -71,25 +75,30 @@ const KycDetailsModal = (props) => {
 
 
       const businessType = merchantKycId?.businessType;
+      if (businessType !== "" && businessType !== null && businessType !== undefined) {
+        // console.log(busiType,"Business TYPE==========>")
+        dispatch(documentsUpload({ businessType })).then((resp) => {
+          const data = convertToFormikSelectJson("id", "name", resp?.payload);
+          setDocTypeList(data);
+        });
 
-      // console.log(busiType,"Business TYPE==========>")
-      dispatch(documentsUpload({ businessType })).then((resp) => {
-        const data = convertToFormikSelectJson("id", "name", resp?.payload);
-        setDocTypeList(data);
-      });
+
+        dispatch(
+          businessTypeById({ business_type_id: merchantKycId?.businessType })
+        ).then((resp) => {
+          setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
+        });
+  
+
+      }
 
 
-      dispatch(
-        businessTypeById({ business_type_id: merchantKycId?.businessType })
-      ).then((resp) => {
-        setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
-      });
-
+  
 
 
 
       const busnCatId = parseInt(merchantKycId?.businessCategory);
-      if (isNumber(busnCatId)) {
+      if (isNumber(busnCatId) && busnCatId !== "" && busnCatId !== null && busnCatId !== undefined) {
         dispatch(
           businessCategoryById({ category_id: merchantKycId?.businessCategory })
         ).then((resp) => {
@@ -98,7 +107,7 @@ const KycDetailsModal = (props) => {
         });
       }
 
-      approverDashboardService.getPlatformById(merchantKycId?.platformId).then(resp=>{
+      approverDashboardService.getPlatformById(merchantKycId?.platformId).then(resp => {
         setPlatform(resp.data.platformName)
       })
     }
@@ -113,11 +122,19 @@ const KycDetailsModal = (props) => {
   }, [KycDocUpload])
 
 
+  useEffect(() => {
+
+    return () => {
+      dispatch(clearRatemapping())
+    }
+  }, [])
+
 
   const modalBody = () => {
     return (
       <>
-        <div className="container">
+        {/* if rate mapping trigger , hide the all coloum */}
+        {!rateMappingSlice?.flag && <div className="container">
 
           {/* contact info section */}
           <MerchantContactInfo
@@ -158,7 +175,9 @@ const KycDetailsModal = (props) => {
           />
 
           {/* Extra field required when merhcant goes to approved */}
-          <GeneralForm merchantKycId={merchantKycId}
+          <GeneralForm
+            merchantKycId={merchantKycId}
+            role={roles}
 
           />
 
@@ -171,11 +190,16 @@ const KycDetailsModal = (props) => {
             closeVerification={closeVerification}
             renderToPendingKyc={renderToPendingKyc}
           />
-        </div>
+        </div>}
 
-
+        {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
+        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null) && <div className="container">
+          <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} />
+        </div>}
       </>
     )
+
+
   }
 
   const modalFooter = () => {

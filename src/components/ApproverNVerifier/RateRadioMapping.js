@@ -26,8 +26,8 @@ const RateRadioMapping = (props) => {
           ? props?.riskTemplate?.map((riskTemplate, i) => (
             <tr key={i}>
               <td>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="isChecked" id="flexRadioDefault1" />
+                <div className="form-check">
+                  <input className="form-check-input" type="radio" name="isChecked" id="flexRadioDefault1" />
 
                 </div>
 

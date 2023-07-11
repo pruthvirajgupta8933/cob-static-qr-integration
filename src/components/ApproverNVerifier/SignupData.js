@@ -11,8 +11,8 @@ import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
-import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 import DateFormatter from "../../utilities/DateConvert";
+import FormikController from "../../_components/formik/FormikController";
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -279,35 +279,36 @@ useEffect(() => {
           >
             {(formik) => (
               <Form>
-                
-               
                   <div className="row">
                     <div className="form-group  col-md-3 ">
-                      <ReactDatePicker
-                        label="From Date"
-                        id="fromDate"
-                        name="from_date"
-                        selected={formik.values.from_date ? new Date(formik.values.from_date) : null}
-                        onChange={date => formik.setFieldValue('from_date', date)}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0 date-input"
-                        errorMsg={formik.errors["from_date"]}
-                        required={true}
-                      />
-                      
-
+                    <FormikController
+                          control="date"
+                          label="From Date"
+                          id="from_date"
+                          name="from_date"
+                          value={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                          onChange={date => formik.setFieldValue('from_date', date)}
+                          format="dd-MM-y"
+                          clearIcon={null}
+                          className="form-control rounded-0 p-0"
+                          required={true}
+                          errorMsg={formik.errors["from_date"]}
+                        />
                     </div>
                     <div className="form-group col-md-3 ml-3">
-                    <ReactDatePicker
-                        label="End Date"
-                        id="endDate"
-                        name="to_date"
-                        selected={formik.values.to_date ? new Date(formik.values.to_date) : null}
-                        onChange={date => formik.setFieldValue('to_date', date)}
-                        dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0"
-                        errorMsg={formik.errors["to_date"]}
-                      />
+                    <FormikController
+                          control="date"
+                          label="End Date"
+                          id="to_date"
+                          name="to_date"
+                          value={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                          onChange={date => formik.setFieldValue('to_date', date)}
+                          format="dd-MM-y"
+                          clearIcon={null}
+                          className="form-control rounded-0 p-0"
+                          required={true}
+                          errorMsg={formik.errors["to_date"]}
+                        />
                     </div>
                   
 

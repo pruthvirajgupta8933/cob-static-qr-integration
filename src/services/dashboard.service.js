@@ -10,6 +10,12 @@ const successTxnSummary = (object) => {
   }).catch(err => console.log(err));
 };
 
+
+  // Graph 
+  const getTxnDataForGraph = (object) => {
+    return axiosInstance.post(API_URL.GET_TRANSACTION_DATA_CHART,object)
+  }
+
 const subscriptionplan = () => {
   return axiosInstance.get(API_URL.FETCH_APP_AND_PLAN)
     .then((response) => {
@@ -63,5 +69,6 @@ export const Dashboardservice = {
   fetchTransactionHistory,
   settlementReport,
   refundTransactionHistory,
-  chargebackTxnHistory
+  chargebackTxnHistory,
+  getTxnDataForGraph
 };

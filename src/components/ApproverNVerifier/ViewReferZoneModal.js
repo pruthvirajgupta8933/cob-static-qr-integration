@@ -43,7 +43,7 @@ const ViewReferZoneModal = (props) => {
 
 
     }).catch(err => toastConfig.errorToast(err))
-
+    props.refreshAfterRefer(false)
 
   }, []);
 
@@ -72,8 +72,8 @@ const ViewReferZoneModal = (props) => {
         // console.log("API RESPONSE : :", resp);
         toastConfig.successToast(resp.payload.message);
         props.setOpenModal(false)
-
-        return props.refreshAfterRefer()
+       
+        props.refreshAfterRefer(true)
       })
       .catch((err) => {
         toastConfig.errorToast(err);
@@ -130,26 +130,26 @@ const ViewReferZoneModal = (props) => {
                     <p className="m-1">ClientCode: {props?.userData?.clientCode}</p>
                   </div>
 
-                  <Form>
-                    <div class="container-fluid">
-                      <div class="row">
-                        <div className="col-lg-12">
-                          <FormikController
-                            control="radio"
-                            onChange={(e) => {
-                              setSelectedvalue(e.target.value);
-                              formik.setFieldValue(
-                                "sourcing_point",
-                                e.target.value
-                              );
-                            }}
-                            checked=""
-                            name="sourcing_point"
-                            options={referingMode}
-                            className="form-check-input"
-                            placeholder="Enter Source Code"
-                          />
-                        </div>
+                    <Form>
+                      <div className="container-fluid">
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <FormikController
+                              control="radio"
+                              onChange={(e) => {
+                                setSelectedvalue(e.target.value);
+                                formik.setFieldValue(
+                                  "sourcing_point",
+                                  e.target.value
+                                );
+                              }}
+                              checked=""
+                              name="sourcing_point"
+                              options={referingMode}
+                              className="form-check-input"
+                              placeholder="Enter Source Code"
+                            />
+                          </div>
 
 
                         {formik.values.sourcing_point === "For Zone" &&
@@ -176,7 +176,8 @@ const ViewReferZoneModal = (props) => {
                             </div>
                          </div>
                       <div className="modal-footer">
-                       <div class="col-lg-12">
+                     
+                          <div className="col-lg-12">
 
                         <button
                           type="subbmit"
