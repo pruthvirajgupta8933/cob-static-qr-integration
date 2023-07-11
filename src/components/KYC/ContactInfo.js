@@ -227,7 +227,7 @@ function ContactInfo(props) {
 
   const tooltipData = {
     "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
-    "contact_phone": "We will react out to this phone for any account related issues."
+    "contact_phone": "We will reach out to this phone for any account related issues."
   }
 
   return (
