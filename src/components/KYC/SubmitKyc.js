@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -7,8 +7,6 @@ import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 
-import FormikController from "../../_components/formik/FormikController";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 function SubmitKyc(props) {
@@ -18,28 +16,26 @@ function SubmitKyc(props) {
   const dispatch = useDispatch();
 
   const { auth, kyc } = useSelector((state) => state);
-  const { user } = auth;
+const { dropDownDocList, finalArray } = kyc?.compareDocListArray
+
+const { user } = auth;
 
   const { loginId } = user;
 
   const { kycUserList } = kyc;
-  const merchant_consent = kycUserList?.merchant_consent?.term_condition;
-  const isEmpCodeSaved = kycUserList?.emp_code?.is_saved;
-  const empCode = kycUserList?.emp_code?.emp_code;
-  // console.log( kycUserList?.emp_code)
 
+
+  const merchant_consent = kycUserList?.merchant_consent?.term_condition;
   const kyc_status = kycUserList?.status;
-  const [readOnly, setReadOnly] = useState(false);
   const [disable, setIsDisable] = useState(false);
-  const [refferalList, setRefferalList] = useState([])
-  const [refferalListSelectOption, setRefferalListSelectOption] = useState([])
+
+
 
   const initialValues = {
     term_condition: merchant_consent,
   };
 
   const validationSchema = Yup.object({
-    // referral_code: Yup.string().required("Please select the referral code.").nullable(),
     term_condition: Yup.string().oneOf(
       ["true"],
       "You must accept all the terms & conditions"
@@ -48,60 +44,38 @@ function SubmitKyc(props) {
 
 
 
-  useEffect(() => {
-
-    // getRefferal().then(res => {
-    //   setRefferalList(res?.data?.message)
-    //   const data = convertToFormikSelectJson(
-    //     "emp_code",
-    //     "referral_code",
-    //     res?.data?.message
-    //   )
-    //   setRefferalListSelectOption(data)
-
-
-    // }).catch(err => console.log(err))
-
-
-  }, []);
-
-
-
-  const onSubmit = (value) => {
-   
+ const onSubmit = (value) => {
     setIsDisable(true);
-    dispatch(
-      saveKycConsent({
-        term_condition: value.term_condition,
-        login_id: loginId,
-        submitted_by: loginId,
-      })
-    ).then((res) => {
-      if (
-        res?.meta?.requestStatus === "fulfilled" &&
-        res?.payload?.status === true
-      ) {
-        toast.success(res?.payload?.message);
-        setIsDisable(false);
-        // const kyc_consent_status = res?.payload?.status;
-        dispatch(UpdateModalStatus(true));
-        history.push("/dashboard");
-      } else {
-        toast.error(res?.payload?.detail);
-        setIsDisable(false);
-      }
-    });
+    if (dropDownDocList.length === finalArray.length) {
+      dispatch(
+        saveKycConsent({
+          term_condition: value.term_condition,
+          login_id: loginId,
+          submitted_by: loginId,
+        })
+      ).then((res) => {
+        if (
+          res?.meta?.requestStatus === "fulfilled" &&
+          res?.payload?.status === true
+        ) {
+          toast.success(res?.payload?.message);
+          setIsDisable(false);
+          dispatch(UpdateModalStatus(true));
+          history.push("/dashboard");
+        } else {
+          toast.error(res?.payload?.detail);
+          setIsDisable(false);
+        }
+      });
+
+    } else {
+      alert("Kindly remove the extra document that does not required");
+    }
+
+
   };
 
-
-
-  // useEffect(() => {
-  // if(consent_status === true) {
-  //   history.push("/dashboard");
-  // }
-  // },[consent_status])
-
-  return (
+return (
     <div className="col-md-12 p-3 NunitoSans-Regular">
       {role.merchant && (
         <Formik
@@ -113,18 +87,6 @@ function SubmitKyc(props) {
           {(formik) => (
             <Form>
               <div className="row">
-                {/* {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED) && */}
-                {/* {true &&
-                  <div className="col-4">
-                    <FormikController
-                      control="select"
-                      name="referral_code"
-                      options={refferalListSelectOption}
-                      className="form-select"
-                      label="Referral Code"
-                    />
-                  </div>
-                } */}
               </div>
 
               <div className="row">
@@ -142,51 +104,51 @@ function SubmitKyc(props) {
                       className="mr-2 mt-1"
                     />
                     <span>I have read and understood the&nbsp;
-                    <a
-                      href="https://sabpaisa.in/term-conditions/"
-                      className="text-decoration-none text-primary"
-                      rel="noreferrer"
-                      alt="Term & Conditions"
-                      target="_blank"
-                      title="Term & Conditions"
-                    >
-                      Terms & Conditions
-                    </a>,{" "}
-                    <a
-                      href="https://sabpaisa.in/privacy-policy/"
-                      alt="Privacy Policy"
-                      target="_blank"
-                      title="Privacy Policy"
-                      rel="noreferrer"
-                      className="text-decoration-none text-primary"
-                    >
-                      Privacy Policy
-                    </a>
-                    ,
-                    <a
-                      href="https://sabpaisa.in/service-agreement"
-                      alt="Service Agreement"
-                      target="_blank"
-                      title="Service Agreement"
-                      rel="noreferrer"
-                      className="text-decoration-none text-primary"
-                    >&nbsp;Service Agreement
-                    </a>&nbsp;By submitting the form, I agree to abide by the rules at
-                    all times.
+                      <a
+                        href="https://sabpaisa.in/term-conditions/"
+                        className="text-decoration-none text-primary"
+                        rel="noreferrer"
+                        alt="Term & Conditions"
+                        target="_blank"
+                        title="Term & Conditions"
+                      >
+                        Terms & Conditions
+                      </a>,{" "}
+                      <a
+                        href="https://sabpaisa.in/privacy-policy/"
+                        alt="Privacy Policy"
+                        target="_blank"
+                        title="Privacy Policy"
+                        rel="noreferrer"
+                        className="text-decoration-none text-primary"
+                      >
+                        Privacy Policy
+                      </a>
+                      ,
+                      <a
+                        href="https://sabpaisa.in/service-agreement"
+                        alt="Service Agreement"
+                        target="_blank"
+                        title="Service Agreement"
+                        rel="noreferrer"
+                        className="text-decoration-none text-primary"
+                      >&nbsp;Service Agreement
+                      </a>&nbsp;By submitting the form, I agree to abide by the rules at
+                      all times.
                     </span>
                   </div>
                   <div className="col-lg-11 para-style2 ">
-                  
+
                   </div>
                   {
-                  <ErrorMessage name="term_condition">
-                    {(msg) => (<p className="text-danger">{msg}</p>)}
-                  </ErrorMessage>
-                }
+                    <ErrorMessage name="term_condition">
+                      {(msg) => (<p className="text-danger">{msg}</p>)}
+                    </ErrorMessage>
+                  }
                 </div>
               </div>
 
-           
+
               <br />
               <br />
               <div className="row">
@@ -197,6 +159,7 @@ function SubmitKyc(props) {
                       disabled={disable}
                       className="save-next-btn float-lg-right cob-btn-primary text-white"
                       type="submit"
+
                     >
                       Submit
                     </button>
