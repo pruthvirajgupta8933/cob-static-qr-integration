@@ -41,6 +41,10 @@ const initialState = {
     merchant: "",
     type: "",
   },
+  compareDocListArray:{
+    finalArray: [],
+    dropDownDocList: [],
+  },
 
   allKycData: {
     result: [],
@@ -291,7 +295,7 @@ export const collectionFrequency = createAsyncThunk(
       .catch((error) => {
         return error.response;
       });
-    // console.log(response)
+   
     return response.data;
   }
 );
@@ -711,7 +715,6 @@ export const kycForCompleted = createAsyncThunk(
 //       .catch((error) => {
 //         return error.response;
 //       });
-
 //     return response.data;
 //   }
 // );
@@ -1040,6 +1043,13 @@ export const kycSlice = createSlice({
     clearKycState: (state) => {
       state.kycUserList = {};
     },
+    
+
+    saveDropDownAndFinalArray: (state, action) => {
+      
+     state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
+     state.compareDocListArray.finalArray = action?.payload?.finalArray;
+      },
     UpdateModalStatus: (state, action) => {
       state.OpenModalForKycSubmit.isOpen = action?.payload
     },
@@ -1465,6 +1475,7 @@ export const {
   isPhoneVerified,
   clearKycState,
   UpdateModalStatus,
+  saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc
 } = kycSlice.actions;

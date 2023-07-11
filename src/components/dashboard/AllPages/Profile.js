@@ -212,7 +212,7 @@ export const Profile = () => {
                     </div>
 
                     <div className="row mb-3">
-                      <label className="col-sm-2 col-form-label">Contact Nubmer</label>
+                      <label className="col-sm-2 col-form-label">Contact Number</label>
                       <div className="col-sm-10">
                         <input type="text" className="form-control" value={clientMobileNo} disabled={true} />
                       </div>

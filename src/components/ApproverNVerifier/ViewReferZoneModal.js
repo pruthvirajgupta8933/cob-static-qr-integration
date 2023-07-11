@@ -10,7 +10,7 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 
 const ViewReferZoneModal = (props) => {
   const [selectedValue, setSelectedvalue] = useState("");
- 
+
   const [refferalList, setRefferalList] = useState([])
 
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const ViewReferZoneModal = (props) => {
 
 
   const initialValues = {
-    sourcing_point:"",
+    sourcing_point: "",
     sourcing_code: ""
   };
 
@@ -64,7 +64,7 @@ const ViewReferZoneModal = (props) => {
       approver_id: loginId,
       sourcing_point: selectedValue,
       sourcing_code: values.sourcing_code,
-      emp_code : values.sourcing_code
+      emp_code: values.sourcing_code
     };
 
     dispatch(saveReferingMerchant(saveRefData))
@@ -83,52 +83,52 @@ const ViewReferZoneModal = (props) => {
 
   return (
 
-      <div
-        className="modal fade mymodals abhishek"
-        id="exampleModalCenter"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              // onSubmit={(values)=>handleSubmit(values)}
-              onSubmit={handleSubmit}
-              enableReinitialize={true}
-            >
-              {(formik) => (
-                <>
-                  <div className="modal-header">
-                    <h5
-                      className="modal-title bolding text-black"
-                      id="exampleModalLongTitle"
-                    >
-                      Update Source
-                    </h5>
+    <div
+      className="modal fade mymodals abhishek"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-content">
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            // onSubmit={(values)=>handleSubmit(values)}
+            onSubmit={handleSubmit}
+            enableReinitialize={true}
+          >
+            {(formik) => (
+              <>
+                <div className="modal-header">
+                  <h5
+                    className="modal-title bolding text-black"
+                    id="exampleModalLongTitle"
+                  >
+                    Update Source
+                  </h5>
 
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                      onClick={() => {
-                        setSelectedvalue(false)
-                       
-                      }
-                      }
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => {
+                      setSelectedvalue(false)
+
+                    }
+                    }
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div className="row mb-1">
+                    <p className="m-1">Name: {props?.userData?.clientName}</p>
+                    <p className="m-1">ClientCode: {props?.userData?.clientCode}</p>
                   </div>
-                  <div className="modal-body">
-                    <div className="row mb-1">
-                      <p className="m-1">Name: {props?.userData?.clientName}</p>
-                      <p className="m-1">ClientCode: {props?.userData?.clientCode}</p>
-                    </div>
 
                     <Form>
                       <div className="container-fluid">
@@ -152,7 +152,7 @@ const ViewReferZoneModal = (props) => {
                           </div>
 
 
-                          {formik.values.sourcing_point==="For Zone" && 
+                        {formik.values.sourcing_point === "For Zone" &&
                           <div className="col-lg-12">
                             <FormikController
                               control="select"
@@ -162,8 +162,8 @@ const ViewReferZoneModal = (props) => {
                               label=""
                             />
                           </div>}
-                        
-                          {formik.values.sourcing_point !=="For Zone" && 
+
+                        {formik.values.sourcing_point !== "For Zone" &&
                           <div className="col-lg-12">
                             <FormikController
                               control="input"
@@ -173,35 +173,29 @@ const ViewReferZoneModal = (props) => {
                               placeHolder="Enter Source Code"
                             />
                           </div>}
-
-
-
-                        </div>
-                      </div>
-
-
+                            </div>
+                         </div>
                       <div className="modal-footer">
                      
                           <div className="col-lg-12">
 
-                            <button
-                              type="subbmit"
-                              className="submit-btn cob-btn-primary text-white"
-                            >
-
-                              Refer Merchant
-                            </button>
-                          </div>
-                      
+                        <button
+                          type="subbmit"
+                          className="submit-btn cob-btn-primary text-white"
+                        >
+                          Refer Merchant
+                        </button>
                       </div>
-                    </Form>
-                  </div>
-                </>
-              )}
-            </Formik>
-          </div>
+
+                    </div>
+                  </Form>
+                </div>
+              </>
+            )}
+          </Formik>
         </div>
       </div>
+    </div>
 
   );
 };

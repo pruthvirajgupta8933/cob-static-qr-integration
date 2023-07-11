@@ -400,8 +400,7 @@ function ContactInfo(props) {
             </div>
             <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                {console.log("VerifyKycStatus",VerifyKycStatus)}
-                  {VerifyKycStatus === KYC_STATUS_VERIFIED ? (
+                {VerifyKycStatus === KYC_STATUS_VERIFIED ? (
                     <></>
                   ) : (
                     <button

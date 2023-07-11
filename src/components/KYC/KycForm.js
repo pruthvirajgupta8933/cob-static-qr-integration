@@ -209,6 +209,7 @@ function KycForm() {
                             role={roles}
                             kycid={kycid}
                             tab={SetTab}
+                            tabValue={tab}
                             title={setTitle}
                           />
                         )) ||

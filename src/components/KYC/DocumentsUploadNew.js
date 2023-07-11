@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState} from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -7,18 +8,18 @@ import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
 import {
-  approveDoc,
   documentsUpload,
   GetKycTabsStatus,
   kycDocumentUploadList,
   merchantInfo,
   removeDocument,
-  verifyKycDocumentTab,
+  saveDropDownAndFinalArray
+ 
 } from "../../slices/kycSlice";
+
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 // import $ from "jquery";
-import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 // import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import { isNull } from "lodash";
 import { isUndefined } from "lodash";
@@ -30,28 +31,59 @@ import {
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  const { role, kycid } = props;
+  const { role} = props;
 
-  const roles = roleBasedAccess();
 
   const dispatch = useDispatch();
 
   const [docTypeList, setDocTypeList] = useState([]);
+  const[isRequiredData,setIsRequiredData]=useState([])
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [savedData, setSavedData] = useState([]);
   const [requiredDocList, setRequiredDocList] = useState([1, 2, 5, 6, 11]);
-  const [readOnly, setReadOnly] = useState(false);
+  // const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
   const [imgAttr, setImgAttr] = useState("#");
-  const [newOptionsData, setnewOptionsData] = useState(docTypeList);
+  
+  
 
+   const filteredList = isRequiredData?.filter((r) => r?.is_required === true);
+   const dropDownDocList = filteredList.map((r) => r?.id?.toString());  /// dropdown array
+   
+  const uploadedDocList = Object.values(savedData)?.map((r) => r?.type)
+  const optionalArray = isRequiredData?.filter((r) => r?.is_required === false);
+  const dropoptionalArray = optionalArray.map((r) => r?.id?.toString());
+  const finalArray = uploadedDocList.filter((value) => !dropoptionalArray.includes(value));
+
+
+  // console.log("dropDownDocList",dropDownDocList)
+  // console.log("finalArray",finalArray)
+  
+  
+  useEffect(() => {
+    
+    if (dropDownDocList?.length > 0 && finalArray?.length > 0) {
+      
+      
+      dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
+      console.log("dropDownDocList",dropDownDocList)
+      console.log("finalArray",finalArray)
+
+    }
+  }, [props?.tabValue,isRequiredData]);
+
+
+  
+ 
+
+  
+  // console.log("finalArray",finalArray)
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate, KycTabStatusStore } = kyc;
   const BusinessOverviewStatus =
     allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
-  const kyc_status = KycList?.status;
   const businessType = KycList?.businessType;
 
   const documentStatus = KycTabStatusStore?.document_status;
@@ -71,6 +103,8 @@ function DocumentsUpload(props) {
     }
     return obj;
   });
+
+
   function readURL(input, id) {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
@@ -99,6 +133,7 @@ function DocumentsUpload(props) {
   useEffect(() => {
     dispatch(documentsUpload({ businessType }))
       .then((resp) => {
+        setIsRequiredData(resp?.payload)
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
         setDocTypeList(data);
         setImgAttr("#");
@@ -115,9 +150,15 @@ function DocumentsUpload(props) {
       required.push(val);
     }
   });
+ 
 
 
-  const isrequired = savedData?.map((r) => r.type);
+  // const requiredData=required.every((elem)=>isrequired.includes(elem.toString()))
+  // console.log(requiredData,"requiredData")
+
+  
+const isrequired = savedData?.map((r) => r.type);
+ 
   // const myFilter = (elm) => {
   //   return elm != null && elm !== false && elm !== "";
   // };
@@ -273,7 +314,7 @@ function DocumentsUpload(props) {
                       name="docType"
                       className="form-select"
                       options={newDocumentedOption}
-                      readOnly={readOnly}
+                      // readOnly={readOnly}
                       disabled={
                         documentStatus === KYC_STATUS_VERIFIED ||
                         documentStatus === KYC_STATUS_APPROVED
@@ -394,7 +435,13 @@ function DocumentsUpload(props) {
                         <button
                           className="btn btn-sm cob-btn-primary  text-white m-1"
                           type="button"
-                          onClick={() => setTab(6)}
+                          onClick={() => {
+                            if (dropDownDocList.length === finalArray.length) {
+                              setTab(6);
+                            } else {
+                              alert("Kindly remove the extra document that does not required");
+                            }
+                          }}
                         >
                           Save & Next
                         </button>
