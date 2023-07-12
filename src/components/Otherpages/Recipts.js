@@ -8,7 +8,7 @@ import FormikController from '../../_components/formik/FormikController';
 import Header from "../mainComponent/header/Header"
 import toastConfig from '../../utilities/toastTypes';
 
-export const Recipts = () => {
+ const Recipts = () => {
 
 
   const initialValues = {
@@ -188,3 +188,6 @@ export const Recipts = () => {
 
   )
 };
+
+
+export default Recipts 
