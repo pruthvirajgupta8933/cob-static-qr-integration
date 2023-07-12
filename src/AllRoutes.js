@@ -1,84 +1,82 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Switch, Route } from "react-router-dom";
+const Receipts = React.lazy(() => import("./components/Otherpages/Recipts"))
+const EmailVerification = React.lazy(() => import('./components/Otherpages/EmailVerification'))
+const StudentRecipets = React.lazy(() => import('./components/Otherpages/StudentRecipets'));
+const ReceiptByEmail = React.lazy(() => import('./components/Otherpages/ReceiptByEmail'));
+const ReceiptWalchand = React.lazy(() => import('./components/Otherpages/ReceiptWalchand'));
+const ViewTransactionDetails = React.lazy(() => import('./components/Otherpages/ViewTransactionDetails'));
+const UrlNotFound = React.lazy(() => import('./components/dashboard/UrlNotFound'));
+const BizzForm = React.lazy(() => import('./components/BizzAppForm/BizzForm'))
+const PrivacyPolicy = React.lazy(() => import('./TermsOfService/PrivacyPolicy'));
+const TermsAndConditions = React.lazy(() => import('./TermsOfService/TermsAndConditions'));
 
-import ForgetPassword from './components/forgetpassword/ForgetPassword';
-// import CommonPage from './components/Otherpages/CommonPage';
-import EmailVerification from './components/Otherpages/EmailVerification'
-import { Recipts } from './components/Otherpages/Recipts';
-import StudentRecipets from './components/Otherpages/StudentRecipets';
-import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
-import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
-// import EmandatePage from './components/Otherpages/EmandatePage';
-// import InternetConnection from './_components/reuseable_components/InternetConnection';
-// import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
-import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
-import UrlNotFound from './components/dashboard/UrlNotFound';
-
-import BizzForm from './components/BizzAppForm/BizzForm'
-import PrivacyPolicy from './TermsOfService/PrivacyPolicy';
-import TermsAndConditions from './TermsOfService/TermsAndConditions';
-// import Test from './components/Otherpages/Test';
-// import Header from './components/mainComponent/header/Header';
-import Login from './components/mainComponent/login/Login';
-import DashboardMainContent from './components/dashboard/dashboardLayout/DashboardMainContent';
-import Signup from './components/mainComponent/signup/Signup';
+const Login = React.lazy(() => import('./components/mainComponent/login/Login'));
+const DashboardMainContent = React.lazy(() => import('./components/dashboard/dashboardLayout/DashboardMainContent'));
+const Signup = React.lazy(() => import('./components/mainComponent/signup/Signup'));
+const ForgetPassword = React.lazy(() => import('./components/forgetpassword/ForgetPassword'));
 
 function AllRoutes() {
 
+  const fallbackMsg = (<div> Please Wait... </div>);
   return (
 
     <Switch>
       <Route exact path="/login-page">
-        <Login />
+        <Suspense fallback={fallbackMsg} > <Login /> </Suspense>
       </Route>
       <Route exact path="/">
-        <Login />
+        <Suspense fallback={fallbackMsg} > <Login /> </Suspense>
       </Route>
       <Route exact path="/login">
-        <Login />
+        <Suspense fallback={fallbackMsg} > <Login /> </Suspense>
       </Route>
       <Route exact path="/registration">
-        <Signup />
+        <Suspense fallback={fallbackMsg} > <Signup /> </Suspense>
       </Route>
       <Route path="/dashboard">
-        <DashboardMainContent />
+        <Suspense fallback={fallbackMsg} > <DashboardMainContent /> </Suspense>
       </Route>
-      {/* <Route exact path="/commonpages">
-        <CommonPage />
-      </Route> */}
       <Route path="/forget">
-        <ForgetPassword />
+        <Suspense fallback={fallbackMsg} >  <ForgetPassword /> </Suspense>
       </Route>
       <Route exact path="/emailverification/:loginId">
-        <EmailVerification />
+        <Suspense fallback={fallbackMsg} >  <EmailVerification /> </Suspense>
       </Route>
       <Route exact path="/Receipt">
-        <Recipts />
+        <Suspense fallback={fallbackMsg} >  <Receipts /></Suspense>
       </Route>
       <Route exact path="/stdReceipt">
-        <StudentRecipets />
+
+        <Suspense fallback={fallbackMsg} >  <StudentRecipets /> </Suspense>
+
       </Route>
       <Route exact path="/ReceiptByEmail">
-        <ReceiptByEmail />
+        <Suspense fallback={fallbackMsg} >  <ReceiptByEmail /> </Suspense>
+
       </Route>
       <Route exact path="/ReceiptWalchand">
-        <ReceiptWalchand />
+
+        <Suspense fallback={fallbackMsg} >  <ReceiptWalchand /> </Suspense>
+
       </Route>
       <Route exact path="/bizzForm">
-        <BizzForm />
+
+        <Suspense fallback={fallbackMsg} > <BizzForm /> </Suspense>
+
       </Route>
       <Route exact path="/ViewTransactionDetails">
-        <ViewTransactionDetails />
+        <Suspense fallback={fallbackMsg} > <ViewTransactionDetails /> </Suspense>
+
       </Route>
       <Route exact path="/TermsAndCondtions">
-        <TermsAndConditions />
+        <Suspense fallback={fallbackMsg} > <TermsAndConditions /> </Suspense>
+
       </Route>
       <Route exact path="/PrivacyPolicy">
-        <PrivacyPolicy />
+        <Suspense fallback={fallbackMsg} > <PrivacyPolicy /> </Suspense>
+
       </Route>
-      {/* <Route exact path="/test-login">
-        <Test />
-      </Route> */}
       <Route path="*" component={UrlNotFound} />
     </Switch>
 

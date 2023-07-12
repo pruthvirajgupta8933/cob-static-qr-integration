@@ -98,7 +98,7 @@ const EnterUserID = (props) => {
                           We'll never share your email with anyone else.
                         </small>
                       </div>
-                      <button type="submit" className="userIdbutton text-white">
+                      <button type="submit" className="btn cob-btn-primary btn-sm text-white">
                         Submit
                       </button>
                     </Form>

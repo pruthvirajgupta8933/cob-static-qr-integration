@@ -193,7 +193,7 @@ function TransactionEnqMultiParam() {
   };
 
   return (
-    <section className="ant-layout">
+    <section className="ant-layout m-3">
       <PrintDocument data={printData} />
 
       {/* Modal */}
@@ -412,7 +412,7 @@ function TransactionEnqMultiParam() {
                       <div className="col-lg-12 mrg-btm- bgcolor">
                         <button
                           type="submit"
-                          className="btn cob-btn-primary"
+                          className="btn cob-btn-primary btn-sm"
                           disabled={btnDisable}
                         >
                           {btnDisable ? <>
