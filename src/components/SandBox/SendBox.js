@@ -96,7 +96,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h5 className=""><u>Test Credentials (PHP5 /JAVA /.NET /Android /ReactJS /React Native /Node JS /Flutter)</u> </h5>
+                    <h6 className="">Test Credentials (PHP5 | JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -213,17 +213,17 @@ function Sandbox() {
                 <div className="col-lg-12 border m-1 p-2">
                   <a
                     data-toggle="collapse"
-                    href="#multiCollapseExample1"
+                    href="#multiCollapseExample3"
                     role="button"
                     aria-expanded="true"
-                    aria-controls="multiCollapseExample1"
+                    aria-controls="multiCollapseExample3"
                   >
-                    <h5 className=""><u>Test Credentials (PHP7 /OpenCart /WooCommerce)</u> </h5>
+                    <h6 className="">Test Credentials (PHP7 | OpenCart | WooCommerce) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
-                    className="collapse multi-collapse show"
-                    id="multiCollapseExample1"
+                    className="collapse multi-collapse"
+                    id="multiCollapseExample3"
                   >
                     <div className="form-group row">
                       <div className="col-lg-4">
@@ -324,11 +324,11 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample2"
                   >
-                    <h5 className=""><u>Live Credentials</u></h5>
+                    <h6 className="">Live Credentials</h6>
                   </a>
 
                   <form
-                    className="collapse multi-collapse show"
+                    className="collapse multi-collapse"
                     id="multiCollapseExample2"
                   >
                     <div className="form-group row">
