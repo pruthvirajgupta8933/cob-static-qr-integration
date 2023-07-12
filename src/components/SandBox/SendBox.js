@@ -96,7 +96,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h5 className=""><u>Test Credentials</u> </h5>
+                    <h5 className=""><u>Test Credentials (PHP5 /JAVA /.NET /Android /ReactJS /React Native /Node JS /Flutter)</u> </h5>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -118,7 +118,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           User Name
@@ -126,32 +126,29 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value="Abh789@sp"
                         />
                       </div>
-                      {!APP_ENV &&
+                      
                         <div className="col-lg-4">
-                          <label
-                            htmlFor="inputPassword3"
-                            className="col-form-label"
-                          >
+                          <label className="col-form-label">
                             Password
                           </label>
                           <input
                             type="text"
                             className="form-control"
-                            id="inputPassword3"
+                            
                             disabled="true"
                             value="P8c3WQ7ei@sp"
                           />
-                        </div>}
+                        </div>
 
 
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Authentication Key
@@ -159,7 +156,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value="P8c3WQ7ei"
                         />
@@ -181,7 +178,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Authentication IV
@@ -189,14 +186,14 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value="oLA38cwT6IYNGqb3"
                         />
                       </div>
                       <div className="col-lg-6">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Environment Base URL
@@ -204,7 +201,113 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
+                          disabled="true"
+                          value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <div className="col-lg-12 border m-1 p-2">
+                  <a
+                    data-toggle="collapse"
+                    href="#multiCollapseExample1"
+                    role="button"
+                    aria-expanded="true"
+                    aria-controls="multiCollapseExample1"
+                  >
+                    <h5 className=""><u>Test Credentials (PHP7 /OpenCart /WooCommerce)</u> </h5>
+                  </a>
+                  {/* <h2>Test Credentials</h2> */}
+                  <form
+                    className="collapse multi-collapse show"
+                    id="multiCollapseExample1"
+                  >
+                    <div className="form-group row">
+                      <div className="col-lg-4">
+                        <label htmlFor="inputEmail3" className="col-form-label">
+                          Client Code
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          disabled="true"
+                          value="NITE5"
+                        />
+                      </div>
+                      <div className="col-lg-4">
+                        <label
+                          
+                          className="col-form-label"
+                        >
+                          User Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          disabled="true"
+                          value="Ish988@sp"
+                        />
+                      </div>
+                    
+                        <div className="col-lg-4">
+                          <label
+                            
+                            className="col-form-label"
+                          >
+                            Password
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            disabled="true"
+                            value="wF2F0io7gdNj"
+                          />
+                        </div>
+
+
+                      <div className="col-lg-4">
+                        <label
+                          
+                          className="col-form-label"
+                        >
+                          Authentication Key
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          disabled="true"
+                          value="zvMzY0UZLxkiE6ad"
+                        />
+                      </div>
+                      <div className="col-lg-4">
+                        <label
+                          
+                          className="col-form-label"
+                        >
+                          Authentication IV
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          disabled="true"
+                          value="iFwrtsCSw3j7HG15"
+                        />
+                      </div>
+                      <div className="col-lg-6">
+                        <label
+                          
+                          className="col-form-label"
+                        >
+                          Environment Base URL
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          
                           disabled="true"
                           value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
                         />
@@ -244,7 +347,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className=" col-form-label"
                         >
                           User Name
@@ -252,7 +355,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value={data && data?.clientUserName}
                         />
@@ -260,7 +363,7 @@ function Sandbox() {
 
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Authentication Key
@@ -268,7 +371,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value={data && data?.authKey}
                         />
@@ -276,7 +379,7 @@ function Sandbox() {
 
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Client Password
@@ -288,7 +391,7 @@ function Sandbox() {
                               : "password"
                           }
                             className="form-control"
-                            id="inputPassword3"
+                            
                             name="passwordd"
                             readOnly="true"
                             value={data && data?.clientPassword} />
@@ -312,7 +415,7 @@ function Sandbox() {
                         </div>
 
                         {/* <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Client Password
@@ -324,7 +427,7 @@ function Sandbox() {
                               : "password"
                           }
                           className="form-control"
-                          id="inputPassword3"
+                          
                           name="passwordd"
                           readOnly="true"
                           value={data && data?.clientPassword}
@@ -349,7 +452,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           Authentication IV{" "}
@@ -357,7 +460,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value={data && data?.authIV}
                         />
@@ -365,7 +468,7 @@ function Sandbox() {
 
                       <div className="col-lg-6">
                         <label
-                          htmlFor="inputPassword3"
+                          
                           className="col-form-label"
                         >
                           SabPaisa Domain/Environment Base URL
@@ -374,7 +477,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          id="inputPassword3"
+                          
                           disabled="true"
                           value={`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`}
                         />

@@ -1,9 +1,7 @@
 import React, {useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-// import * as Yup from "yup";
 import Yup from "../../_components/formik/Yup"
 import FormikController from "../../_components/formik/FormikController";
-
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -17,8 +15,6 @@ import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import {
   Regex,
   RegexMsg,
-  // space,
-  // wordValidation,
 } from "../../_components/formik/ValidationRegex";
 // import { values } from "lodash";
 import gotVerified from "../../assets/images/verified.png";
@@ -195,9 +191,6 @@ function ContactInfo(props) {
     });
   };
 
-  //-------------------------------------------------------------------------------------------------------
-
-  //---------------------------------------
 
   const checkInputIsValid = (err, val, setErr, key) => {
     const hasErr = err.hasOwnProperty(key);
@@ -216,7 +209,6 @@ function ContactInfo(props) {
   };
 
   const handlerModal = (val, key) => {
-    // console.log(val);
     if (key === "phone") {
       setShowOtpVerifyModalPhone(val);
     }
@@ -225,9 +217,11 @@ function ContactInfo(props) {
     }
   };
 
+
+
   const tooltipData = {
     "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
-    "contact_phone": "We will react out to this phone for any account related issues."
+    "contact_phone": "We will reach out to this phone for any account related issues."
   }
 
   return (

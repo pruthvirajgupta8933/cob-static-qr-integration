@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -14,7 +14,7 @@ import {
   merchantInfo,
   removeDocument,
   saveDropDownAndFinalArray
- 
+
 } from "../../slices/kycSlice";
 
 import plus from "../../assets/images/plus.png";
@@ -31,13 +31,13 @@ import {
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  const { role} = props;
+  const { role } = props;
 
 
   const dispatch = useDispatch();
 
   const [docTypeList, setDocTypeList] = useState([]);
-  const[isRequiredData,setIsRequiredData]=useState([])
+  const [isRequiredData, setIsRequiredData] = useState([])
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [savedData, setSavedData] = useState([]);
@@ -45,39 +45,39 @@ function DocumentsUpload(props) {
   // const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
   const [imgAttr, setImgAttr] = useState("#");
-  
-  
 
-   const filteredList = isRequiredData?.filter((r) => r?.is_required === true);
-   const dropDownDocList = filteredList.map((r) => r?.id?.toString());  /// dropdown array
-   
+
+
+  const filteredList = isRequiredData?.filter((r) => r?.is_required === true);
+  const dropDownDocList = filteredList.map((r) => r?.id?.toString());  /// dropdown array
+
   const uploadedDocList = Object.values(savedData)?.map((r) => r?.type)
   const optionalArray = isRequiredData?.filter((r) => r?.is_required === false);
   const dropoptionalArray = optionalArray.map((r) => r?.id?.toString());
-  const finalArray = uploadedDocList.filter((value) => !dropoptionalArray.includes(value));
+  let finalArray = uploadedDocList.filter((value) => !dropoptionalArray.includes(value));
 
 
   // console.log("dropDownDocList",dropDownDocList)
   // console.log("finalArray",finalArray)
-  
-  
+
+
   useEffect(() => {
-    
+
     if (dropDownDocList?.length > 0 && finalArray?.length > 0) {
-      
-      
+
+
       dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
-      console.log("dropDownDocList",dropDownDocList)
-      console.log("finalArray",finalArray)
+      // console.log("dropDownDocList",dropDownDocList)
+      // console.log("finalArray",finalArray)
 
     }
-  }, [props?.tabValue,isRequiredData]);
+  }, [props?.tabValue, isRequiredData]);
 
 
-  
- 
 
-  
+
+
+
   // console.log("finalArray",finalArray)
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate, KycTabStatusStore } = kyc;
@@ -92,7 +92,7 @@ function DocumentsUpload(props) {
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
-  const documentListData = savedData?.filter((data)=>((data?.status).toLowerCase())!=="rejected")?.map((data) => data?.type);
+  const documentListData = savedData?.filter((data) => ((data?.status).toLowerCase()) !== "rejected")?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) =>
     documentListData?.includes(elem?.toString())
@@ -150,15 +150,15 @@ function DocumentsUpload(props) {
       required.push(val);
     }
   });
- 
+
 
 
   // const requiredData=required.every((elem)=>isrequired.includes(elem.toString()))
   // console.log(requiredData,"requiredData")
 
-  
-const isrequired = savedData?.map((r) => r.type);
- 
+
+  const isrequired = savedData?.map((r) => r.type);
+
   // const myFilter = (elm) => {
   //   return elm != null && elm !== false && elm !== "";
   // };
@@ -188,6 +188,8 @@ const isrequired = savedData?.map((r) => r.type);
 
         dispatch(merchantInfo(kycData))
           .then(function (response) {
+            dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
+
             if (response?.payload?.status) {
               setTitle("SUBMIT KYC");
               dispatch(GetKycTabsStatus({ login_id: loginId }));
@@ -217,7 +219,7 @@ const isrequired = savedData?.map((r) => r.type);
     }, 2000);
   };
 
-  const removeDoc = (doc_id) => {
+  const removeDoc = (doc_id, doc_type) => {
     const isConfirm = window.confirm(
       "Are you sure you want to remove this document"
     );
@@ -232,6 +234,8 @@ const isrequired = savedData?.map((r) => r.type);
             getKycDocList(role);
           }, 1300);
 
+          finalArray = finalArray.filter((item) => item !== doc_type);
+          dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
           resp?.payload?.status
             ? toast.success(resp?.payload?.message)
             : toast.error(resp?.payload?.message);
@@ -289,8 +293,8 @@ const isrequired = savedData?.map((r) => r.type);
   return (
     <>
       {BusinessOverviewStatus === true ||
-      (KycList?.businessType !== null &&
-        KycList?.businessType !== undefined) ? (
+        (KycList?.businessType !== null &&
+          KycList?.businessType !== undefined) ? (
         <div className="col-lg-12 p-0">
           <Formik
             initialValues={initialValues}
@@ -302,8 +306,8 @@ const isrequired = savedData?.map((r) => r.type);
           >
             {(formik) => (
               <Form>
-              <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-6 mb-2">
+                <div className="row">
+                  <div className="col-sm-12 col-md-12 col-lg-6 mb-2">
                     <label className=" col-form-label mt-0">
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
@@ -317,7 +321,7 @@ const isrequired = savedData?.map((r) => r.type);
                       // readOnly={readOnly}
                       disabled={
                         documentStatus === KYC_STATUS_VERIFIED ||
-                        documentStatus === KYC_STATUS_APPROVED
+                          documentStatus === KYC_STATUS_APPROVED
                           ? true
                           : false
                       }
@@ -335,12 +339,12 @@ const isrequired = savedData?.map((r) => r.type);
                       Document name should be unique.
                     </span>
                   </div>
-              </div>
+                </div>
 
-              <div className="row">
-              {role?.merchant ? (
+                <div className="row">
+                  {role?.merchant ? (
                     documentStatus !== "Approved" &&
-                    documentStatus !== "Verified" ? (
+                      documentStatus !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
                         <>
                           <div className="col-lg-6 ">
@@ -353,7 +357,7 @@ const isrequired = savedData?.map((r) => r.type);
                                   className="file-upload-input"
                                   id="3"
                                   onChange={(e) => handleChange(e, 3)}
-                                  // onChange={(e) => console.log(e, 3)}
+                                // onChange={(e) => console.log(e, 3)}
                                 />
                                 <div className="drag-text">
                                   <p className="p-2 font-9">
@@ -377,7 +381,7 @@ const isrequired = savedData?.map((r) => r.type);
                             {/* uploaded document preview */}
                             {/* {console.log("imgAttr",imgAttr)} */}
                             {imgAttr !== "#" &&
-                            imgAttr.startsWith("data:application/pdf") ? (
+                              imgAttr.startsWith("data:application/pdf") ? (
                               <iframe
                                 src={imgAttr + "#toolbar=0"}
                                 height={155}
@@ -387,7 +391,7 @@ const isrequired = savedData?.map((r) => r.type);
                               ""
                             )}
                             {imgAttr === "#" ||
-                            imgAttr.startsWith("data:application/pdf") ? (
+                              imgAttr.startsWith("data:application/pdf") ? (
                               <></>
                             ) : (
                               <div className="file-upload-content imagepre_3">
@@ -409,12 +413,12 @@ const isrequired = savedData?.map((r) => r.type);
                   ) : (
                     <></>
                   )}
-              </div>
+                </div>
 
-              <div className="row">
-              {documentStatus !== "Approved" &&
-                  documentStatus !== "Verified" &&
-                  role?.merchant ? (
+                <div className="row">
+                  {documentStatus !== "Approved" &&
+                    documentStatus !== "Verified" &&
+                    role?.merchant ? (
                     <div className="col-lg-6  mt-4">
                       <button
                         className="btn btn-sm cob-btn-primary  text-white m-1"
@@ -429,9 +433,9 @@ const isrequired = savedData?.map((r) => r.type);
 
                       {/* add function go to the next step */}
                       {documentStatus !== "Approved" &&
-                      documentStatus !== "Verified" &&
-                      role?.merchant &&
-                      btn ? (
+                        documentStatus !== "Verified" &&
+                        role?.merchant &&
+                        btn ? (
                         <button
                           className="btn btn-sm cob-btn-primary  text-white m-1"
                           type="button"
@@ -439,7 +443,7 @@ const isrequired = savedData?.map((r) => r.type);
                             if (dropDownDocList.length === finalArray.length) {
                               setTab(6);
                             } else {
-                              alert("Kindly remove the extra document that does not required");
+                              alert("Alert! Kindly check the list of the required documents");
                             }
                           }}
                         >
@@ -452,9 +456,9 @@ const isrequired = savedData?.map((r) => r.type);
                   ) : (
                     <></>
                   )}
-              </div>
+                </div>
                 <div className="form-row">
-                
+
                   {savedData?.length ? (
                     <>
                       <hr />
@@ -477,7 +481,7 @@ const isrequired = savedData?.map((r) => r.type);
                         <></>
                       )} */}
                       <div className="col-lg-12 mt-4">
-                      <h5>Preview Documents</h5>
+                        <h5>Preview Documents</h5>
                         <table className="table table-bordered">
                           <thead>
                             <tr>
@@ -486,8 +490,8 @@ const isrequired = savedData?.map((r) => r.type);
                               <th>Document Name</th>
                               <th>Document Status</th>
                               {role?.merchant &&
-                              documentStatus !== "Approved" &&
-                              documentStatus !== "Verified" ? (
+                                documentStatus !== "Approved" &&
+                                documentStatus !== "Verified" ? (
                                 <th>Remove Item</th>
                               ) : (
                                 <></>
@@ -514,13 +518,13 @@ const isrequired = savedData?.map((r) => r.type);
                                 </td>
                                 <td>{doc?.status}</td>
                                 {role?.merchant &&
-                                documentStatus !== "Approved" &&
-                                documentStatus !== "Verified" ? (
+                                  documentStatus !== "Approved" &&
+                                  documentStatus !== "Verified" ? (
                                   <td>
                                     <button
                                       type="button"
                                       onClick={() => {
-                                        removeDoc(doc?.documentId);
+                                        removeDoc(doc?.documentId, doc?.type);
                                       }}
                                     >
                                       <i className="fa fa-trash"></i>

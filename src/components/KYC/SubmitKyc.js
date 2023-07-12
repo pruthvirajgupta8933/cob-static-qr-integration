@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -16,13 +16,14 @@ function SubmitKyc(props) {
   const dispatch = useDispatch();
 
   const { auth, kyc } = useSelector((state) => state);
-const { dropDownDocList, finalArray } = kyc?.compareDocListArray
 
-const { user } = auth;
+
+  const { user } = auth;
 
   const { loginId } = user;
 
-  const { kycUserList } = kyc;
+  const { kycUserList, compareDocListArray } = kyc;
+  const { dropDownDocList, finalArray } = compareDocListArray
 
 
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
@@ -44,7 +45,7 @@ const { user } = auth;
 
 
 
- const onSubmit = (value) => {
+  const onSubmit = (value) => {
     setIsDisable(true);
     if (dropDownDocList.length === finalArray.length) {
       dispatch(
@@ -69,13 +70,13 @@ const { user } = auth;
       });
 
     } else {
-      alert("Kindly remove the extra document that does not required");
+      alert("Alert! Kindly check the list of the required documents");
     }
 
 
   };
 
-return (
+  return (
     <div className="col-md-12 p-3 NunitoSans-Regular">
       {role.merchant && (
         <Formik
