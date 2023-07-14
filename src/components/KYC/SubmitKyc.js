@@ -43,6 +43,8 @@ function SubmitKyc(props) {
     ),
   });
 
+ 
+
 
 
   const onSubmit = (value) => {

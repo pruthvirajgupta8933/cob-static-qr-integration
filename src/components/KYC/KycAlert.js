@@ -71,7 +71,10 @@ function KycAlert() {
         <p key={i}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
       )}
       <hr />
-      <Link className="submit-btn cob-btn-primary btn-sm text-decoration-none  text-white" to="dashboard/kyc">Go to KYC the Form</Link>
+      <Link className="submit-btn cob-btn-primary btn-sm text-decoration-none  text-white" to="dashboard/kyc">
+        <i className="fa fa-arrow-right" ariaHidden="true"></i> KYC Form
+
+      </Link>
     </div>
 
   )

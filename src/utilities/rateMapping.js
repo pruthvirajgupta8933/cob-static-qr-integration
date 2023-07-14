@@ -1,5 +1,5 @@
 import API_URL from "../config";
-import { createUpdater } from "../custom-hooks/updateGetValue";
+// import { createUpdater } from "../custom-hooks/updateGetValue";
 
 import { axiosInstance, axiosInstanceJWT } from "./axiosInstance";
 
@@ -7,10 +7,10 @@ export const rateMappingFn = (loginId) => {
     console.log("---rate mapping start---", loginId)
     let loader = true
 
-    const initialValue = {
-        loader : true,
-        isError : false
-    }
+    // const initialValue = {
+    //     loader : true,
+    //     isError : false
+    // }
     // const rateMappingState = createUpdater(initialValue)
     // console.log(rateMappingState.getValue())
 

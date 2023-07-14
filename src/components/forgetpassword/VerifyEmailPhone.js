@@ -12,11 +12,10 @@ import axios from "axios";
 import { axiosInstanceJWT,axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 const VerifyEmailPhone = (props) => {
-  const { handleFormSubmit } = props;
   // const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
   // console.log(auth.forgotPassword.sendUserName);
-  let history = useHistory();
+ 
 
   const [emailotp, setEmailotp] = useState("");
   const [smsotp, setSmsotp] = useState("");
