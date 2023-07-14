@@ -119,19 +119,19 @@ function Home() {
         )}
       </div>
 
-      <hr/>
-      <div className="row mt-3">
-        <div className="col-lg-7 col-sm-12 col-md-3">
-        {/* chart */}
-          {roles?.merchant && <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />}
-        </div>
+      <hr />
+      {/* Dashboard Update  */}
+      {roles?.merchant &&
+          <div className="row mt-3">
+            <div className="col-lg-7 col-sm-12 col-md-3">
+              {/* chart */}
+              <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />
+            </div>
 
-        <div className="col-lg-5 col-sm-12 col-md-5">
-          <h6 className="bg-secondary p-2 text-white">Dasboard Update</h6>
+            <div className="col-lg-5 col-sm-12 col-md-5">
+              <h6 className="bg-secondary p-2 text-white">Dasboard Update</h6>
 
-          {roles?.merchant &&
-            <React.Fragment>
-            {/* KYC alert */}
+              {/* KYC alert */}
               <KycAlert />
 
               {/* payment alert */}
@@ -143,16 +143,61 @@ function Home() {
                   linkName={"Make Payment"}
                   bgColor={"alert-danger"}
                 />
-              )
-              }
-            </React.Fragment>}
+              )}
 
 
+              {/* KYC Status -Update Message */}
+              <div className="row kyc-link">
+                {roles?.merchant === true &&
+                  kyc?.kycUserList?.status !== "Approved" && (
 
-        </div>
-      </div>
+                    <div className="col-lg-12 col-md-12">
+                      <div className="card col-lg-12- cardkyc pull-left">
+                        <div className="card-body ">
+                          <span className="font-weight-bold">
+                            You can accept payments upto ₹10,000 for now. To extend
+                            the limit complete your KYC and get it approved.
+                          </span>
+                          <Link
+                            to={`/dashboard/kyc`}
+                            data-toggle="modal"
+                            data-target="#exampleModalCenter"
+                          >
+                            <button
+                              className="text-white  kycbtns"
+                              style={{
+                                backgroundColor: "#0156B3",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              Complete KYC
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                {roles?.merchant === true &&
+                  kyc?.kycUserList?.status === "Approved" && (
+
+                    <div className="col-lg-12 col-md-12">
+                      <div className="card col-lg-12- cardkyc pull-left">
+                        <div className="font-weight-bold card-body ">
+                          <span>
+                            Congratulations! Your KYC documents have been approved.
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+              </div>
+
+            </div>
+          </div>
+      }
+      <hr />
       <br />
-
       {/* static content displaying */}
       <div className="row">
         <div className="col-sm-9 d-flex flex-wrap justify-content-center">
@@ -276,58 +321,7 @@ function Home() {
       <br />
       <br />
 
-      {/* KYC Status -Update Message */}
-      <div className="row kyc-link">
-        {roles?.merchant === true &&
-          kyc?.kycUserList?.status !== "Approved" && (
 
-            <div className="col-lg-12 col-md-12">
-              <div className="card col-lg-12- cardkyc pull-left">
-                <div className="card-body ">
-                  <span className="font-weight-bold">
-                    You can accept payments upto ₹10,000 for now. To extend
-                    the limit complete your KYC and get it approved.
-                  </span>
-                  <Link
-                    to={`/dashboard/kyc`}
-                    data-toggle="modal"
-                    data-target="#exampleModalCenter"
-                  >
-                    <button
-                      className="text-white  kycbtns"
-                      style={{
-                        backgroundColor: "#0156B3",
-                        paddingLeft: "10px",
-                      }}
-                    >
-                      Complete KYC
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
-        {roles?.merchant === true &&
-          kyc?.kycUserList?.status === "Approved" && (
-
-            <div className="col-lg-12 col-md-12">
-              <div className="card col-lg-12- cardkyc pull-left">
-                <div className="font-weight-bold card-body ">
-                  <span>
-                    Congratulations! Your KYC documents have been approved.
-                  </span>
-                  <button
-                    className="text-white pull-right kycbtns"
-                    disabled
-                  >
-                    KYC Done
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-      </div>
 
       <br />
       <br />
