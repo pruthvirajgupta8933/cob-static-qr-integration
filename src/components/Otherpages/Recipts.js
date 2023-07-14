@@ -8,7 +8,7 @@ import FormikController from '../../_components/formik/FormikController';
 import Header from "../mainComponent/header/Header"
 import toastConfig from '../../utilities/toastTypes';
 
-export const Recipts = () => {
+ const Recipts = () => {
 
 
   const initialValues = {
@@ -28,7 +28,7 @@ export const Recipts = () => {
     setBtnDisable(true)
     const transaction_id = input.transaction_id;
     axios
-      .get(API_URL.VIEW_TXN + `/${transaction_id}`)
+      .get(API_URL.VIEW_TXN + `/${transaction_id}/0`)
       .then((response) => {
         let res = response.data
         if (res?.length === 0 || null) {
@@ -188,3 +188,6 @@ export const Recipts = () => {
 
   )
 };
+
+
+export default Recipts 

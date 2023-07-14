@@ -241,7 +241,7 @@ const BizzAppForm = (props) => {
                                             </div>
                                             <button
                                                 type="submit"
-                                                className="createpasswordBtn mt-3 text-white"
+                                                className="btn cob-btn-primary btn-sm text-white mt-3"
                                             >
                                                 Submit
                                             </button>

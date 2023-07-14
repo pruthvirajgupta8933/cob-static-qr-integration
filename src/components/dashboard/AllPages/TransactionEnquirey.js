@@ -35,7 +35,7 @@ function TransactionEnquirey() {
     setIsDisable(true)
     const transaction_id = input.transaction_id;
 
-    axios.get(API_URL.VIEW_TXN + `/${transaction_id}`)
+    axios.get(API_URL.VIEW_TXN + `/${transaction_id}/0`)
       .then((response) => {
         if (response?.data.length > 0) {
 

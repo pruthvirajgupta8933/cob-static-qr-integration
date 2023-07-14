@@ -121,7 +121,7 @@ const VerifyEmailPhone = (props) => {
                        <button
                       type="button"
                       name="emailverify"
-                      className="userIdbutton text-white mb-2 ml-4"
+                      className="btn cob-btn-primary btn-sm text-white text-white mb-2 ml-4"
                       value="firstone"
                       onClick={() => emailverify()}
                     >
@@ -184,7 +184,7 @@ const VerifyEmailPhone = (props) => {
                       type="submit"
                       name="otpverify"
                       value="secondone"
-                      className="userIdbutton mb-2"
+                      className="btn cob-btn-primary btn-sm text-white mb-2"
                       onClick={() => smsverify()}
                     >
                       Verify

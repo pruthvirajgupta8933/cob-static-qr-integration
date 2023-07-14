@@ -94,6 +94,7 @@ const CreatePassword = (props) => {
                         <label htmlFor="exampleInputPassword1">
                           New Password
                         </label>
+
                         <div className="input-group" id="show_hide_password">
                           <Field
                             className="form-control"
@@ -106,10 +107,10 @@ const CreatePassword = (props) => {
                                 : "password"
                             }
                             name="password"
-
                             autoComplete="off"
                           />
-                          <div className="input-group-addon viewforanother">
+
+                          <span class="input-group-text">
                             <a
                               href={() => false}
                               onClick={handleClickShowPassword}
@@ -126,7 +127,7 @@ const CreatePassword = (props) => {
                                 ></i>
                               )}
                             </a>
-                          </div>
+                          </span>
 
                         </div>
                         <ErrorMessage name="password">
@@ -157,7 +158,7 @@ const CreatePassword = (props) => {
                             size={50}
                           />
 
-                          <div className="input-group-addon viewforanother">
+                          <span class="input-group-text">
                             <a
                               href={() => false}
                               onClick={togglePassword}
@@ -174,7 +175,7 @@ const CreatePassword = (props) => {
                                 ></i>
                               )}
                             </a>
-                          </div>
+                          </span>
                         </div>
                         <ErrorMessage name="confirmpassword">
                           {(msg) => (
@@ -188,7 +189,7 @@ const CreatePassword = (props) => {
 
                       <button
                         type="submit"
-                        className="createpasswordBtn mt-3 text-white ml-3"
+                        className="btn cob-btn-primary btn-sm text-white m-3 text-white"
                       >
                         Submit
                       </button>
