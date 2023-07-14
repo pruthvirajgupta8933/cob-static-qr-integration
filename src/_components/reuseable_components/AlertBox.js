@@ -6,19 +6,18 @@ function AlertBox(props) {
   // console.log("cardData", cardData)
 
   return (
-
-
     <div className="accordion" id="collapseParentId">
       <div className="card p-0">
         <div className={`card-header p-0 text-white ${bgColor}`} id="headingOne">
           <h5 className="mb-0">
             <button className="btn btn-link  font-size-16" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                {/* <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" />
+              {/* <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" />
                 <span className="sr-only">Loading...</span> */}
-                <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                <span className="sr-only">Loading...</span>
-                <span className="ml-1 tooltip-custom" data-tip={text1}>{heading}</span>
-              
+              <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <span className="sr-only">Loading...</span>
+              <span className="ml-1 tooltip-custom" data-tip={text1}>{heading} <i className="fa fa-exclamation-circle" ariaHidden="true"></i>
+              </span>
+
             </button>
           </h5>
         </div>
@@ -26,13 +25,13 @@ function AlertBox(props) {
           <div className="card-body">
             <div className="row">
               {cardData?.map(data => (
-                <div className="col-4 mb-1" key={data}>
+                <div className="col-12 mb-1" key={data}>
                   <div className={`alert bg-light`} role="alert" >
                     <p>{`Kindly pay the amount of the subscribed product`}</p>
                     <p>{`Product : ${data?.applicationName}`} </p>
                     <p>{`Product Plan : ${data?.planName}`} </p>
                     <hr />
-                    <Link className="btn cob-btn-primary  text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
+                    <Link className="btn cob-btn-primary text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
                   </div>
                 </div>
               ))}

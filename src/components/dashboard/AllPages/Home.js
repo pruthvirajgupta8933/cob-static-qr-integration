@@ -9,9 +9,8 @@ import {
   GetKycTabsStatus,
   kycUserList,
   UpdateModalStatus,
-  
 } from "../../../slices/kycSlice";
-// import NavBar from "../NavBar/NavBar";
+
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
 import onlineimg from "../../../assets/images/onlinePayment.png";
@@ -22,12 +21,11 @@ import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
-import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
 import { isNull } from "lodash";
 import AlertBox from "../../../_components/reuseable_components/AlertBox";
 import classes from "./Home/home.module.css"
-import DataVisualizatoin from "../../chart/DataVisualizatoin";
 import moment from "moment";
+import ChartContainer from "../../chart/ChartContainer";
 
 
 function Home() {
@@ -40,14 +38,14 @@ function Home() {
   const { auth, kyc, productCatalogueSlice, dashboard } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
   const { user } = auth;
-  const {txnChartData} = dashboard
+  const { txnChartData } = dashboard
 
   const { SubscribedPlanData } = productCatalogueSlice;
 
   useEffect(() => {
     // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
     dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
-    roles.merchant && dispatch(TxnChartDataSlice({"p_client_code":user?.clientMerchantDetailsList[0]?.clientCode}))
+    roles.merchant && dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
   }, []);
 
   useEffect(() => {
@@ -87,23 +85,33 @@ function Home() {
   );
 
   // prepare chart data
-  let chartDataArr = [["Date", "Number Of Transaction"]]
-    if(roles.merchant){
-      txnChartData?.map((item)=>(
-      chartDataArr.push([moment(item?.txnDate).format('MMMM Do YYYY'), parseInt(item?.txnNo)])))
-    }
+  let chartDataArr = {};
 
-    // if no transaction found
-    if(chartDataArr.length===1){
-      chartDataArr.push([moment(Date()).format('MMMM Do YYYY'), 0])
+  let labels = []
+  let values = []
+  let extraValues = []
+
+  if (roles.merchant) {
+    txnChartData?.map((item) => {
+      labels.push(moment(item?.txnDate).format('MMMM Do'))
+      values.push(parseInt(item?.txnNo))
+      extraValues.push(parseInt(item?.tsr))
     }
-  
+    )
+  }
+
+  chartDataArr = {
+    labels,
+    values,
+    extraValues
+  }
+
 
   return (
     <section className="">
       {/* KYC container start from here */}
       <div className="row">
-        {/* hide when login by bank and businees category b2b */}
+        {/* hide when login by bank and if businees category b2b */}
         {roles?.bank === true || roles?.b2b === true ? (
           <></>
         ) : (
@@ -111,38 +119,41 @@ function Home() {
         )}
       </div>
 
-      <div className="row">
-        <div className="col-lg-12">
-          {roles?.merchant === true && (
+      <hr/>
+      <div className="row mt-3">
+        <div className="col-lg-7 col-sm-12 col-md-3">
+        {/* chart */}
+          {roles?.merchant && <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />}
+        </div>
+
+        <div className="col-lg-5 col-sm-12 col-md-5">
+          <h6 className="bg-secondary p-2 text-white">Dasboard Update</h6>
+
+          {roles?.merchant &&
             <React.Fragment>
+            {/* KYC alert */}
+              <KycAlert />
+
+              {/* payment alert */}
               {unPaidProduct?.length > 0 && (
                 <AlertBox
                   cardData={unPaidProduct}
-                  // key={data?.clientSubscribedPlanDetailsId}
                   heading={`Payment Alert`}
                   text1={`Kindly pay the amount of the subscribed product`}
-                  // text2={`Product : ${data?.applicationName}` }
-                  // text3={`Product Plan : ${data?.planName}`}
-                  // linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
                   linkName={"Make Payment"}
                   bgColor={"alert-danger"}
                 />
               )
               }
-            </React.Fragment>
-          )}
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-lg-12">
-          {/* KYC ALETT */}
-          <KycAlert />
-          {roles?.merchant && chartDataArr?.length>1 && <DataVisualizatoin data={chartDataArr} chartTitle="Recent Transaction" />}
+            </React.Fragment>}
+
+
 
         </div>
       </div>
       <br />
 
+      {/* static content displaying */}
       <div className="row">
         <div className="col-sm-9 d-flex flex-wrap justify-content-center">
 
@@ -264,10 +275,12 @@ function Home() {
       <br />
       <br />
       <br />
-      <div className="row kyc-link">
 
+      {/* KYC Status -Update Message */}
+      <div className="row kyc-link">
         {roles?.merchant === true &&
           kyc?.kycUserList?.status !== "Approved" && (
+
             <div className="col-lg-12 col-md-12">
               <div className="card col-lg-12- cardkyc pull-left">
                 <div className="card-body ">
@@ -296,6 +309,7 @@ function Home() {
           )}
         {roles?.merchant === true &&
           kyc?.kycUserList?.status === "Approved" && (
+
             <div className="col-lg-12 col-md-12">
               <div className="card col-lg-12- cardkyc pull-left">
                 <div className="font-weight-bold card-body ">
@@ -317,6 +331,7 @@ function Home() {
 
       <br />
       <br />
+      {/* Display the products  */}
       <div className="row">
         {roles?.merchant === true && (
           <div className="container-fluid">
@@ -447,7 +462,6 @@ function Home() {
         )}
       </div>
 
-      {/* KYC container end here */}
 
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
@@ -554,18 +568,18 @@ function Home() {
             className="modal-content"
             style={{ width: "709px", marginTop: "70px" }}
           >
-            
+
             <div className="modal-body ">
               <div className="container">
                 <div className="row justify-content-end"> <button
-                type="button"
-                onClick={() => {
-                  handleClose();
-                }}
-                className="cob-close-btn btn btn-default text-end"
-                data-dismiss="modal"
-                aria-label="Close"
-              > X </button></div>
+                  type="button"
+                  onClick={() => {
+                    handleClose();
+                  }}
+                  className="cob-close-btn btn btn-default text-end"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                > X </button></div>
                 <div className="row justify-content-md-center">
                   <div className="col-md-auto">
                     <ul>
