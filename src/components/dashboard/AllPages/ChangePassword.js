@@ -9,15 +9,9 @@ import { logout } from "../../../slices/auth";
 
 function ChangePassword() {
   const dispatch = useDispatch();
-  
-
-  // let { path, url } = useRouteMatch();
+   // let { path, url } = useRouteMatch();
   const { user } = useSelector((state) => state.auth);
-
-
   const { loginId, userName } = user;
-
-  
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,
@@ -28,11 +22,24 @@ function ChangePassword() {
   };
 
   const [values, setValues] = useState({
-    new_password: "",
-    old_password: "",
+     old_password: "",
     confirm_password: "",
     showPassword: false,
   });
+
+  const [passwordType, setPasswordType] = useState({
+    new_password: "",
+    showPasswords: false,
+});
+
+const togglePassword = () => {
+  setPasswordType({
+      ...passwordType,
+      showPasswords: !passwordType.showPasswords,
+  });
+};
+
+
   // const exitback = () => {
 
   // };
@@ -107,11 +114,11 @@ function ChangePassword() {
 
                     <div className="form-group">
 
-
-                      <div className="col-lg-4 mb-3">
+                     <div className="col-lg-4 mb-3">
                         <label className="form-label">
                           Old Password
                         </label>
+                        
                         <Field
                           type={
                             values.showPassword
@@ -138,15 +145,32 @@ function ChangePassword() {
                         >
                           New Password
                         </label>
+                        <div className="input-group">
                         <Field
-                          type={values.showPassword ? "text" : "password"}
+                         type={
+                          passwordType.showPasswords
+                              ? "text"
+                              : "password"
+                      }
                           name="new_password"
                           placeholder="Enter New Password"
                           className="form-control"
                         />
-
-
-                        <ErrorMessage name="new_password">
+                         <div className="input-group-append">
+                          <span className="input-group-text" id="basic-addon2" onClick={togglePassword} > 
+                          {passwordType.showPasswords ? (
+                                <i className="fa fa-eye" aria-hidden="true"></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                           </span>
+                           </div>
+                         </div>
+                        
+                      <ErrorMessage name="new_password">
                           {(msg) => (
                             <div className="text-danger m-0">{msg}</div>
                           )}
@@ -179,19 +203,7 @@ function ChangePassword() {
                                 ></i>
                               )}
                            </span></div>
-                          <span className="input-group-addon eyeicon d-none">
-                            <a onClick={handleClickShowPassword} href={false}>
-
-                              {values.showPassword ? (
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                              ) : (
-                                <i
-                                  className="fa fa-eye-slash"
-                                  aria-hidden="true"
-                                ></i>
-                              )}
-                            </a>
-                          </span>
+                        
                        
                         </div>
                         <ErrorMessage name="confirm_password">

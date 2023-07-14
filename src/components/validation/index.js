@@ -60,7 +60,7 @@ export default function validation(values) {
     }
 
  else if (values.emailotp.length > 6) {
-         errors.emailotp = 'OTP needs to 6 characters only'
+         errors.emailotp = 'OTP should be of 6 characters only'
      }
 
 
