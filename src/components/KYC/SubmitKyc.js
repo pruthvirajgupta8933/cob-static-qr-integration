@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -42,6 +42,8 @@ const { user } = auth;
     ),
   });
 
+ 
+
 
 
  const onSubmit = (value) => {
@@ -69,7 +71,7 @@ const { user } = auth;
       });
 
     } else {
-      alert("Kindly remove the extra document which are not required");
+      alert("Kindly remove the extra document which are not required!");
     }
 
 

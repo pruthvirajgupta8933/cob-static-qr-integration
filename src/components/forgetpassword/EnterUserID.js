@@ -2,10 +2,9 @@ import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { getEmailToSendOtpSlice } from "../../slices/auth";
-import { useDispatch, useSelector } from "react-redux";
-import toastConfig from "../../utilities/toastTypes";
+import { useDispatch} from "react-redux";
 import { toast } from "react-toastify";
-import { Regex, RegexMsg } from ".././../_components/formik/ValidationRegex";
+
 
 const EnterUserID = (props) => {
   // const { handleFormSubmit } = props;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import axios from "axios";
 import API_URL from "../../config";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
@@ -79,7 +78,7 @@ const CreatePassword = (props) => {
     <div className="container-fluid toppad">
       <div className="row ">
         <div className="col-sm-6 mx-auto">
-          <div className="card ">
+          <div className="card mt-5 ">
             <div className="card-header text-center">Create Password</div>
             <div className="card-body NunitoSans-Regular">
               <h5 className="card-title">Please Enter the details. </h5>
@@ -189,7 +188,7 @@ const CreatePassword = (props) => {
 
                       <button
                         type="submit"
-                        className="createpasswordBtn mt-3 text-white"
+                        className="createpasswordBtn mt-3 text-white ml-3"
                       >
                         Submit
                       </button>

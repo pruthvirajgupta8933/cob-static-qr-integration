@@ -88,7 +88,7 @@ const Faq = () => {
                 <ul className={`${classes.font_size}`}>
                   <li>SabPaisa charges according to industry standards for its services. </li>
                   <li>For PG- It depends on the merchant’s industry and business volumes.</li>
-                  <li>For Subscription- Nominal fee for mandates and transactions as per industry norms and as agreed with the merchant</li>
+                  <li>For Subscription- Nominal fee for mandates and transactions as per industry norms and as agreed with the merchant.</li>
                   <li>For Paylink- Nominal fee, as agreed with the merchant.</li>
                   <li>For Payout- Nominal fee, as agreed with the merchant.</li>
                 </ul>
@@ -271,7 +271,7 @@ const Faq = () => {
                 <li>View/download settlements daily</li>
                 <li>Transaction-based enquiry</li>
                 <li>Create payment links</li>
-                <li>Can also see abPaisa’s updated product catalogue </li>
+                <li>Can also see SabPaisa’s updated product catalogue </li>
               </ul>
             </div>
 
@@ -361,7 +361,7 @@ const Faq = () => {
               </a>
             </p>
             <div className="collapse ml-3" id="collapseExample20">
-              <p className={` ${classes.font_size}`}>For sales enquiries signup with your details at https://sabpaisa.in/sign-up/ and our Sales Team will get in touch with you.
+              <p className={` ${classes.font_size}`}>For sales enquiries, signup with your details at https://sabpaisa.in/sign-up/ and our Sales Team will get in touch with you.
 
               </p>
             </div>
