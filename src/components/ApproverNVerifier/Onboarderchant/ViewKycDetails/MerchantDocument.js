@@ -108,6 +108,7 @@ const MerchantDocument = (props) => {
       verified_by: loginId,
     };
     // setLoader(true)
+    setCloseModal(false)
 
 
     if (Allow_To_Do_Verify_Kyc_details === true || role?.verifier)
