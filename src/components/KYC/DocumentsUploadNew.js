@@ -19,8 +19,7 @@ import {
 
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
-// import $ from "jquery";
-// import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+
 import { isNull } from "lodash";
 import { isUndefined } from "lodash";
 import {
@@ -41,35 +40,22 @@ function DocumentsUpload(props) {
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [savedData, setSavedData] = useState([]);
-  const [requiredDocList, setRequiredDocList] = useState([1, 2, 5, 6, 11]);
-  // const [readOnly, setReadOnly] = useState(false);
-  const [buttonText, setButtonText] = useState("Upload Document");
+
+  // const [buttonText, setButtonText] = useState("Upload Document");
   const [imgAttr, setImgAttr] = useState("#");
 
-
-
-  const filteredList = isRequiredData?.filter((r) => r?.is_required === true);
+  const filteredList = isRequiredData?.filter((r) => r?.is_required === true); // required list
   const dropDownDocList = filteredList.map((r) => r?.id?.toString());  /// dropdown array
+  const uploadedDocList = Object.values(savedData)?.map((r) => r?.type) 
+  const optionalArray = isRequiredData?.filter((r) => r?.is_required === false); // not required doc list
+  const dropoptionalArray = optionalArray.map((r) => r?.id?.toString()); // optional doc dropdown
 
-  const uploadedDocList = Object.values(savedData)?.map((r) => r?.type)
-  const optionalArray = isRequiredData?.filter((r) => r?.is_required === false);
-  const dropoptionalArray = optionalArray.map((r) => r?.id?.toString());
-  let finalArray = uploadedDocList.filter((value) => !dropoptionalArray.includes(value));
-
-
-  // console.log("dropDownDocList",dropDownDocList)
-  // console.log("finalArray",finalArray)
-
+  let finalArray = uploadedDocList.filter((value) => !dropoptionalArray.includes(value)); // array of the final uploaded doc. where requied doc not included
 
   useEffect(() => {
 
     if (dropDownDocList?.length > 0 && finalArray?.length > 0) {
-
-
       dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
-      // console.log("dropDownDocList",dropDownDocList)
-      // console.log("finalArray",finalArray)
-
     }
   }, [props?.tabValue, isRequiredData]);
 
@@ -81,8 +67,8 @@ function DocumentsUpload(props) {
   // console.log("finalArray",finalArray)
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate, KycTabStatusStore } = kyc;
-  const BusinessOverviewStatus =
-    allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+
+  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const businessType = KycList?.businessType;
 
@@ -93,10 +79,13 @@ function DocumentsUpload(props) {
   const { KycDocUpload } = kyc;
 
   const documentListData = savedData?.filter((data) => ((data?.status).toLowerCase()) !== "rejected")?.map((data) => data?.type);
+
   const dropdownListData = docTypeList?.map((data) => data?.key);
+
   const alreadyUploadedData = dropdownListData?.filter((elem) =>
     documentListData?.includes(elem?.toString())
   );
+
   const newDocumentedOption = docTypeList?.map((obj, key) => {
     if (alreadyUploadedData.includes(obj.key)) {
       return { ...obj, disabled: true };
@@ -159,16 +148,13 @@ function DocumentsUpload(props) {
 
   const isrequired = savedData?.map((r) => r.type);
 
-  // const myFilter = (elm) => {
-  //   return elm != null && elm !== false && elm !== "";
-  // };
-  // let array1filtered = Array1.filter(myFilter);
   const handleChange = function (e, id) {
     // console.log("handle change")
     setSelectedFile(e.target.files[0]);
     // console.log(e.target)
     readURL(e.target, id);
   };
+
   const [disable, setDisable] = useState(false);
   const onSubmit = (values, action) => {
     // If merchant logged in
@@ -261,7 +247,7 @@ function DocumentsUpload(props) {
   let submitAction = undefined;
 
   let btn = false;
-  requiredDocList?.map((i) => {
+  isRequiredData?.map((i) => {
     if (required.every((elem) => isrequired.includes(elem.toString()))) {
       btn = true;
     } else {
@@ -275,8 +261,6 @@ function DocumentsUpload(props) {
         return obj;
       }
     });
-
-    // console.log("data",data)
     return data[0]?.value;
   };
 
@@ -289,6 +273,7 @@ function DocumentsUpload(props) {
     let str1 = str.substring(0, 15);
     return `${str1}...`;
   };
+
 
   return (
     <>
@@ -428,7 +413,7 @@ function DocumentsUpload(props) {
                           formik.handleSubmit();
                         }}
                       >
-                        {buttonText}
+                        Upload Document
                       </button>
 
                       {/* add function go to the next step */}
@@ -462,24 +447,6 @@ function DocumentsUpload(props) {
                   {savedData?.length ? (
                     <>
                       <hr />
-                      {/* {savedData?.length > 0 ? (
-                        <div className="container">
-                          <div className="row">
-                            <div className="col p-0 mt-2">
-                              <h3
-                                style={{
-                                  fontWeight: "500",
-                                  textDecoration: "underline",
-                                }}
-                              >
-                                Preview Documents
-                              </h3>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <></>
-                      )} */}
                       <div className="col-lg-12 mt-4">
                         <h5>Preview Documents</h5>
                         <table className="table table-bordered">
