@@ -11,9 +11,11 @@ import CustomLoader from "../../../_components/loader";
 function TransactionEnquirey() {
   const initialValues = {
     transaction_id: "",
+    transaction_from: "1"
   };
   const validationSchema = Yup.object({
-    transaction_id: Yup.number().required("Required"),
+    transaction_id: Yup.string().max(30, "Transaction ID length exceed").required("Required"),
+    transaction_from: Yup.string().nullable().required("Required")
   });
 
   const [show, setIsShow] = useState(false);
@@ -33,39 +35,37 @@ function TransactionEnquirey() {
     setLoadingState(true)
     setData({});
     setIsDisable(true)
-    const transaction_id = input.transaction_id;
 
-    axios.get(API_URL.VIEW_TXN + `/${transaction_id}/0`)
+    let spTxnId = 0
+    let clientTxnId = 0
+
+    if (input.transaction_from === "1") {
+      spTxnId = input.transaction_id
+    } else {
+      clientTxnId = input.transaction_id
+    }
+    let endPoint = `/${spTxnId}/${clientTxnId}`
+
+
+    axios.get(API_URL.VIEW_TXN + endPoint)
       .then((response) => {
-        if (response?.data.length > 0) {
-
+        if(response?.data?.length>0){
           setLoadingState(false)
-
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
           setIsDisable(false)
-        } else {
-          axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
-            if (r?.data.length > 0) {
-              setIsShow(true);
-              setIsDisable(false)
-              setData(r?.data[0]);
-              setErrMessage(false);
-            } else {
-              setIsShow(false);
-              setErrMessage(true);
-              setIsDisable(false)
-
-            }
-          }).catch((err) => {
-            setIsShow(false);
-            setErrMessage(true);
-            setIsDisable(false)
-          });
+        }else{
+          setLoadingState(false)
+          setIsShow(false);
+          setErrMessage(true);
+          setIsDisable(false)
         }
+     
+
       })
       .catch((e) => {
+        setLoadingState(false)
         setIsShow(false);
         setErrMessage(true);
         setIsDisable(false)
@@ -111,6 +111,12 @@ function TransactionEnquirey() {
   };
 
 
+  const txnOption = [
+    { key: "Sabpaisa Transaction ID", value: "1" },
+    { key: "Client Transaction ID", value: "2" }
+  ];
+
+
   return (
     <section className="">
 
@@ -130,15 +136,21 @@ function TransactionEnquirey() {
                 >
                   {(formik) => (
                     <Form className="col-lg-12">
+
                       <div className="form-row mt-4 ml-1">
                         <div className="form-group col-md-4 col-sm-12 col-lg-4">
                           <FormikController
+                            control="radio"
+                            className="form-check-input"
+                            options={txnOption}
+                            name="transaction_from"
+                          />
+                          <FormikController
                             control="input"
-                            type="text"
-                            label="Transaction ID  *"
+                            // label="Transaction ID  *"
                             lableClassName="font-weight-bold"
                             name="transaction_id"
-                            placeholder="Enter Sabpaisa Transaction ID"
+                            placeholder="Enter Transaction ID"
                             className="form-control"
                           />
 
@@ -183,9 +195,9 @@ function TransactionEnquirey() {
 
                 {errMessage && (
                   <div className="col">
-                    <h3 className="text-danger text-center">
+                    <h5 className="text-danger text-center">
                       Record Not Found!
-                    </h3>
+                    </h5>
                   </div>
 
                 )}

@@ -7,7 +7,8 @@ import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 
-import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import { KYC_STATUS_APPROVED, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import { toLower } from "lodash";
 
 function SubmitKyc(props) {
   const history = useHistory();
@@ -22,7 +23,7 @@ function SubmitKyc(props) {
 
   const { loginId } = user;
 
-  const { kycUserList, compareDocListArray } = kyc;
+  const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
   const { dropDownDocList, finalArray } = compareDocListArray
 
 
@@ -45,36 +46,43 @@ function SubmitKyc(props) {
 
  
 
-
+  const rejectedDocList = KycDocUpload?.filter(item=> toLower(item.status)=== toLower(KYC_STATUS_REJECTED)  )
+  
 
   const onSubmit = (value) => {
     setIsDisable(true);
-    if (dropDownDocList.length === finalArray.length) {
-      dispatch(
-        saveKycConsent({
-          term_condition: value.term_condition,
-          login_id: loginId,
-          submitted_by: loginId,
-        })
-      ).then((res) => {
-        if (
-          res?.meta?.requestStatus === "fulfilled" &&
-          res?.payload?.status === true
-        ) {
-          toast.success(res?.payload?.message);
-          setIsDisable(false);
-          dispatch(UpdateModalStatus(true));
-          history.push("/dashboard");
-        } else {
-          toast.error(res?.payload?.detail);
-          setIsDisable(false);
-        }
-      });
 
-    } else {
-      alert("Alert! Kindly check the list of the required documents");
+    if(rejectedDocList?.length>0 ){
+        toast.error("Kindly Remove / Update the rejected document from the document list.")
+    }else{
+      if (dropDownDocList.length === finalArray.length) {
+        dispatch(
+          saveKycConsent({
+            term_condition: value.term_condition,
+            login_id: loginId,
+            submitted_by: loginId,
+          })
+        ).then((res) => {
+          if (
+            res?.meta?.requestStatus === "fulfilled" &&
+            res?.payload?.status === true
+          ) {
+            toast.success(res?.payload?.message);
+            setIsDisable(false);
+            dispatch(UpdateModalStatus(true));
+            history.push("/dashboard");
+          } else {
+            toast.error(res?.payload?.detail);
+            setIsDisable(false);
+          }
+        });
+  
+      } else {
+        alert("Alert! Kindly check the list of the required documents");
+      }
+  
     }
-
+ 
 
   };
 
