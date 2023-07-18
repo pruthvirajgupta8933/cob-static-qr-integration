@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, register, udpateRegistrationStatus } from "../../../slices/auth";
 import { useHistory, Link } from "react-router-dom";
-import { toast, Zoom } from "react-toastify";
+
 import API_URL from "../../../config";
 import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import AfterSignUp from "../../../components/social-login/AfterSignup";
@@ -14,6 +14,9 @@ import Header from '../header/Header'
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
 import signupBnr from "../../../assets/images/sb-front-bnrr.png"
+// import { toast, Zoom } from "react-toastify";
+// import 'react-toastify/dist/ReactToastify.css';
+import toastConfig from "../../../utilities/toastTypes";
 
 
 const phoneRegExp =
@@ -143,6 +146,7 @@ function Signup() {
                 resetForm();
             })
             .catch((err) => {
+                console.log("err",err)
                 setBtnDisable(false);
             });
     };
@@ -164,26 +168,18 @@ function Signup() {
 
     useEffect(() => {
         if (isUserRegistered === true) {
-            toast.success(message.message, {
-                position: "top-right",
-                autoClose: 5000,
-                limit: 1,
-                transition: Zoom,
-            });
+            toastConfig.successToast(message.message);
             setTimeout(() => {
                 history.push("/login-page");
             }, 2000);
         }
 
         if (isUserRegistered === false) {
-            toast.error(message.message, {
-                position: "top-right",
-                autoClose: 5000,
-                limit: 2,
-                transition: Zoom,
-            });
+            console.log("toast err")
+            toastConfig.errorToast(message.message);
         }
         return () => {
+            console.log("clear state")
             dispatch(udpateRegistrationStatus());
         };
     }, [isUserRegistered, dispatch, history, message]);
@@ -191,7 +187,7 @@ function Signup() {
 
     const enableSocialLogin = (flag, response) => {
         setIsModalOpen(true);
-        toast.warning("Please add mobile number & bussiness category.")
+        toastConfig.warningToast("Please add mobile number & bussiness category.")
         setFullName(response?.profileObj?.name);
         setEmail(response?.profileObj?.email)
     }
@@ -400,7 +396,7 @@ function Signup() {
 
                                             </div>
                                             <div className="form-group col-lg-6 col-md-6 col-sm-12 p-2">
-                                                <label className="label" htmlFor="user-pw" >Create Password</label>
+                                                <label className="label" htmlFor="user-pw" >Confirm Password</label>
                                                 <div className="input-group">
                                                     <Field
                                                         className="form-control"
