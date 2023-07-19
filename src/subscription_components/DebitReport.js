@@ -302,7 +302,7 @@ const DebitReport = () => {
           <Form>
             <div className="container">
               <div className="row">
-                <div className="form-group col-lg-4">
+                <div className="form-group col-lg-3">
                   <FormikController
                     control="select"
                     label="Registration Status"
@@ -312,7 +312,7 @@ const DebitReport = () => {
                   />
                 </div>
 
-                <div className="form-group col-lg-4">
+                <div className="form-group col-lg-3">
                   <FormikController
                     control="input"
                     type="date"
@@ -324,7 +324,7 @@ const DebitReport = () => {
                   />
                 </div>
 
-                <div className="form-group col-lg-4">
+                <div className="form-group col-lg-3">
                   <FormikController
                     control="input"
                     type="date"
@@ -333,6 +333,7 @@ const DebitReport = () => {
                     className="form-control rounded-0"
                   />
                 </div>
+                
 
                 <div className=" col-lg-4">
                   <button
@@ -345,8 +346,9 @@ const DebitReport = () => {
                 </div>
 
                 {showData === true ? (
-                  <div className="container-fluid flleft">
-                    <div className="form-group col-lg-4 col-md-12 mt-2">
+                  <div className="form-row mt-2">
+                  {/* <div className="container-fluid flleft"> */}
+                    <div className="form-group col-md-3">
                       <label>Search</label>
                       <input
                         className="form-control"
@@ -356,7 +358,7 @@ const DebitReport = () => {
                       />
                     </div>
                     <div></div>
-                    <div className="form-group col-lg-4 col-md-12 mt-2">
+                    <div className="form-group col-md-3">
                       <CountPerPageFilter
                         pageSize={pageSize}
                         dataCount={dataCount}
@@ -364,7 +366,7 @@ const DebitReport = () => {
                       />
                     </div>
 
-                    <div className="form-group col-lg-4 col-md-12 mt-5">
+                    <div className="form-group col-md-3 mt-4">
                       <button
                         className="btn btn-sm text-white  "
                         type="button"
@@ -376,6 +378,7 @@ const DebitReport = () => {
                       </button>
                     </div>
                   </div>
+                  // </div>
                 ) : (
                   <></>
                 )}

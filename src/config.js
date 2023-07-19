@@ -306,7 +306,7 @@ const API_LIVE = {
   mandateType: `${subAPIURL}/REST/GetCommonData/0/MandateType`,
   requestType: `${subAPIURL}/REST/GetCommonData/0/RequestType`,
   bankName: `${subAPIURL}/REST/GetCommonData/0/nb`,
-  mandateRegistration: `${subAPIURL}/mandateRegistration`,
+  // mandateRegistration: `${subAPIURL}/mandateRegistration`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReportCob`,
 
   // Debit Report

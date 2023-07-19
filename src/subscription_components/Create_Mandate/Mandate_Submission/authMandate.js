@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import EmandateSummary from "./mandateDetails/emandateSummary";
 import MandateSummary from "./mandateDetails/mandateSummary";
 import PersonalDetails from "./mandateDetails/personalDetails";
@@ -8,27 +8,48 @@ import npciLogo from "../../../assets/images/npci.png";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import FormikController from "../../../_components/formik/FormikController";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
 import subAPIURL from "../../../config";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import "../Mandate_Submission/mandateDetails/mandateSubmission.css";
 import CustomModal from "../../../_components/custom_modal";
 import { useHistory } from "react-router-dom";
+import API_URL from "../../../config";
 
-const AuthMandate = ({ updatedData }) => {
+const AuthMandate = () => {
   const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState();
-  const [showLoader,setShowLoader] = useState(false)
-  const [isModalOpen, setIsModalOpen ] =  useState(false);
+  const [showLoader, setShowLoader] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postData, setPostData] = useState({})
   const history = useHistory()
+  const form = useRef()
+
+  const { createMandate } = useSelector((state) => state);
+  // console.log(createMandate.createMandate
+  //   ?.mergedForm?.firstForm ,"this is createmen")
+
+
+  // console.log("firstForm",firstForm)
+  // console.log("secondForm",secondForm)
+  // console.log("thirdForm",thirdForm)
+
+// console.log(createMandate?.createMandate?.formData)
+  const { firstForm, secondForm, thirdForm } = createMandate?.createMandate?.formData;
+  const mergedForm = {
+    ...firstForm,
+    ...secondForm,
+    ...thirdForm
+  };
 
 
   const initialValues = {
     term_condition: "",
     sourcing_code:
-      updatedData?.authenticationMode === "Debit Card"
+      mergedForm?.authenticationMode === "Debit Card"
         ? "Debit Card"
-        : updatedData?.authenticationMode === "Netbanking"
-        ? "Netbanking"
-        : "",
+        : mergedForm?.authenticationMode === "Netbanking"
+          ? "Netbanking"
+          : "",
   };
 
   const validationSchema = Yup.object({
@@ -53,7 +74,7 @@ const AuthMandate = ({ updatedData }) => {
 
   const randomNumber = generateRandomNumber();
 
-  // console.log("updatedData :  :", updatedData);
+  // console.log("mergedForm :  :", mergedForm);
 
   const onSubmit = (values) => {
     // console.log(values)
@@ -62,45 +83,39 @@ const AuthMandate = ({ updatedData }) => {
     const mandateSubmissionDetails = {
       clientCode: 3,
       clientRegistrationId: Number(randomNumber),
-      consumerReferenceNumber: updatedData?.consumerReferenceNumber,
-      mandatePurpose: updatedData?.mandatePurpose,
+      consumerReferenceNumber: mergedForm?.consumerReferenceNumber,
+      mandatePurpose: mergedForm?.mandatePurpose,
       payerUtilitityCode: "NACH00000000022341",
-      mandateEndDate: updatedData?.untilCancelled === true ? null : updatedData?.mandateEndDate,
-      payerName: updatedData?.payerName,
-      mandateMaxAmount: updatedData?.emiamount,
+      mandateEndDate: mergedForm?.untilCancelled === true ? null : mergedForm?.mandateEndDate,
+      payerName: mergedForm?.payerName,
+      mandateMaxAmount: mergedForm?.emiamount,
       mandateType: "ONLINE",
-      mandateStartDate: updatedData?.mandateStartDate,
-      panNo: updatedData?.panNo ? updatedData?.panNo : "",
-      mandateCategory: updatedData?.mandateCategory,
-      payerAccountNumber: updatedData?.payerAccountNumber,
-      payerAccountType: updatedData?.payerAccountType,
-      payerBank: updatedData?.payerBank,
-      payerEmail: updatedData?.payerEmail,
-      payerMobile: `+91-${updatedData?.payerMobile}`,
-      telePhone:  updatedData?.telePhone !== "" ? `+91-011-${updatedData?.telePhone}` : "",
-      payerBankIfscCode: updatedData?.payerBankIfscCode,
+      mandateStartDate: mergedForm?.mandateStartDate,
+      panNo: mergedForm?.panNo ? mergedForm?.panNo : "",
+      mandateCategory: mergedForm?.mandateCategory,
+      payerAccountNumber: mergedForm?.payerAccountNumber,
+      payerAccountType: mergedForm?.payerAccountType,
+      payerBank: mergedForm?.payerBank,
+      payerEmail: mergedForm?.payerEmail,
+      payerMobile: `+91-${mergedForm?.payerMobile}`,
+      telePhone: mergedForm?.telePhone !== "" ? `+91-011-${mergedForm?.telePhone}` : "",
+      payerBankIfscCode: mergedForm?.payerBankIfscCode,
       authenticationMode: values?.sourcing_code,
-      frequency: updatedData?.frequency,
-      requestType: updatedData?.requestType,
-      npciPaymentBankCode: updatedData?.payerBank,
-      schemeReferenceNumber: updatedData?.schemeReferenceNumber,
-      untilCancelled: updatedData?.untilCancelled,
+      frequency: mergedForm?.frequency,
+      requestType: mergedForm?.requestType,
+      npciPaymentBankCode: mergedForm?.payerBank,
+      schemeReferenceNumber: mergedForm?.schemeReferenceNumber,
+      untilCancelled: mergedForm?.untilCancelled,
       userType: "merchant",
-      emiamount: "",
+      emiamount: mergedForm?.emiamount,
     };
+    setPostData(mandateSubmissionDetails)
 
-    axiosInstance
-      .post(subAPIURL.mandateSubmit, mandateSubmissionDetails)
-      .then((res) => {
-        // console.log("API Submission Response", res);
-        setMandateSubmissionResponse(res.data);
-        setShowLoader(true)
-        document.getElementById("mandate_form").submit();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+     form.current.submit()
+    
   };
+  console.log("postData", postData)
 
 
   const pushToDashboard = () => {
@@ -108,12 +123,12 @@ const AuthMandate = ({ updatedData }) => {
 
   }
 
-  const modalBody =  () => {
+  const modalBody = () => {
     return (
       <>
-      <div className="text-centre">
-      <h5>Do you really want to Cancel this Mandate Request ?</h5>
-      </div>
+        <div className="text-centre">
+          <h5>Do you really want to Cancel this Mandate Request ?</h5>
+        </div>
       </>
     )
   }
@@ -121,11 +136,11 @@ const AuthMandate = ({ updatedData }) => {
 
   const modalFooter = () => {
     return (
-   <>
-    <button type="button" className="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
-    <button type="button" className="btn approve text-white btn-sm" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
-    </>
- 
+      <>
+        <button type="button" className="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
+        <button type="button" className="btn approve text-white btn-sm" data-dismiss="modal" onClick={() => { setIsModalOpen(false) }}>Agree</button>
+      </>
+
     )
 
   }
@@ -133,7 +148,7 @@ const AuthMandate = ({ updatedData }) => {
   return (
     <div className="row">
       <div className="col-lg-6 mand">
-      <CustomModal modalBody={modalBody} headerTitle={"Manadate Cancellation"} modalFooter={modalFooter} modalToggle={isModalOpen} fnSetModalToggle={setIsModalOpen} />
+        <CustomModal modalBody={modalBody} headerTitle={"Manadate Cancellation"} modalFooter={modalFooter} modalToggle={isModalOpen} fnSetModalToggle={setIsModalOpen} />
         <div id="accordion" style={{ marginTop: "50px" }}>
           <div
             className="card-header mandateCard"
@@ -164,7 +179,7 @@ const AuthMandate = ({ updatedData }) => {
             data-parent="#accordion"
           >
             <div className="card-body">
-              <EmandateSummary updatedData={updatedData} />
+              <EmandateSummary mergedForm={mergedForm} />
             </div>
           </div>
 
@@ -192,7 +207,7 @@ const AuthMandate = ({ updatedData }) => {
             data-parent="#accordion"
           >
             <div className="card-body">
-              <MandateSummary updatedData={updatedData} />
+              <MandateSummary mergedForm={mergedForm} />
             </div>
           </div>
 
@@ -220,7 +235,7 @@ const AuthMandate = ({ updatedData }) => {
             data-parent="#accordion"
           >
             <div className="card-body">
-              <PersonalDetails updatedData={updatedData} />
+              <PersonalDetails mergedForm={mergedForm} />
             </div>
           </div>
           <div className="card-header mandateCard" id="headingFour">
@@ -247,7 +262,7 @@ const AuthMandate = ({ updatedData }) => {
             data-parent="#accordion"
           >
             <div className="card-body">
-              <MandateBankDetails updatedData={updatedData} />
+              <MandateBankDetails mergedForm={mergedForm} />
             </div>
           </div>
         </div>
@@ -321,7 +336,7 @@ const AuthMandate = ({ updatedData }) => {
                         <button
                           type="button"
                           className="btn btn-danger btn-sm text-white"
-                          onClick={() => {setIsModalOpen(true)}}
+                          onClick={() => { setIsModalOpen(true) }}
                         >
                           Cancel
                         </button>
@@ -337,13 +352,13 @@ const AuthMandate = ({ updatedData }) => {
                         >
                           {showLoader === true ? (
                             <>
-                           
+
                               <span
                                 className="spinner-border spinner-border-sm"
                                 role="status"
                                 aria-hidden="true"
                               ></span>
-                            &nbsp;  Please wait...
+                              &nbsp;  Please wait...
                             </>
                           ) : (
                             "Proceed"
@@ -411,6 +426,47 @@ const AuthMandate = ({ updatedData }) => {
             />
           </form>
         )}
+      </div>
+
+      <div>
+        <form
+          ref={form}
+          id="mandateRegForm"
+          action={API_URL.MANDATE_REGISTRATION}
+          method="POST"
+          name="mandateRegForm"
+
+        >
+          <div style={{ display: "block" }}>
+            <input name="authenticationMode" value={postData?.authenticationMode} />
+            <input type="text" name="clientCode" value={postData?.clientCode} />
+            <input type="text" name="clientRegistrationId" value={postData?.clientRegistrationId} />
+            <input type="text" name="consumerReferenceNumber" value={postData?.consumerReferenceNumber} />
+            <input type="text" name="emiamount" value={postData?.emiamount} />
+            <input type="text" name="frequency" value={postData?.frequency} />
+            <input type="text" name="mandateCategory" value={postData?.mandateCategory} />
+            <input type="text" name="mandateEndDate" value={postData?.mandateEndDate} />
+            <input type="text" name="mandateMaxAmount" value={postData?.mandateMaxAmount} />
+            <input type="text" name="mandatePurpose" value={postData?.mandatePurpose} />
+            <input type="text" name="mandateStartDate" value={"2023-11-15T15:16:13.673Z"} />
+            <input type="text" name="mandateType" value={postData?.mandateType} />
+            <input type="text" name="npciPaymentBankCode" value={postData?.npciPaymentBankCode} />
+            <input type="text" name="panNo" value={postData?.panNo} />
+            <input type="text" name="payerAccountNumber" value={postData?.payerAccountNumber} />
+            <input type="text" name="payerAccountType" value={postData?.payerAccountType} />
+            <input type="text" name="payerBank" value={postData?.payerBank} />
+            <input type="text" name="payerBankIfscCode" value={postData?.payerBankIfscCode} />
+            <input type="text" name="payerEmail" value={postData?.payerEmail} />
+            <input type="text" name="payerMobile" value={postData?.payerMobile} />
+            <input type="text" name="payerName" value={postData?.payerName} />
+            <input type="text" name="payerUtilitityCode" value={postData?.payerUtilitityCode} />
+            <input type="text" name="requestType" value={postData?.requestType} />
+            <input type="text" name="schemeReferenceNumber" value={postData?.schemeReferenceNumber} />
+            <input type="text" name="telePhone" value={postData?.telePhone} />
+            <input type="text" name="untilCancelled" value={postData?.untilCancelled} />
+            <input type="text" name="userType" value={postData?.userType} />
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -2,9 +2,14 @@ import React from "react";
 import { Formik,Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
 import * as Yup from "yup";
+import { useDispatch,useSelector} from "react-redux";
+import {saveFormSecondData } from "../../slices/subscription-slice/createMandateSlice";
 const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
   const handleSubmitPersonal = (values) => {
     showBankDetails("showPersonalDetails",values);
+    dispatch(saveFormSecondData({ values }))
+
+
     // console.log(values,'values');
   };
   
@@ -25,20 +30,27 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
     .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN Number')
     .notRequired(),
   });
+  const { createMandate } = useSelector((state) => state);
+  const {secondForm} = createMandate.createMandate.formData;
+
+  const initialValues={
+    payerName: secondForm.payerName ? secondForm.payerName :"",
+    payerEmail:secondForm.payerEmail ? secondForm.payerEmail :"",
+    payerMobile:secondForm.payerMobile ? secondForm.payerMobile :"",
+    panNo:secondForm.panNo ? secondForm.panNo :"",
+    telePhone:secondForm.telePhone ? secondForm.telePhone :""
+  }
+  const dispatch = useDispatch();
+  
 
 
 
   return (
     <div>
       <Formik
-            initialValues={{
-              payerName: "",
-              payerEmail:"",
-              payerMobile:"",
-              panNo:"",
-              telePhone:""
-            }}
+            initialValues={initialValues}
             validationSchema={FORM_VALIDATION}
+            enableReinitialize={true}
             onSubmit={handleSubmitPersonal}
       >
         <Form>

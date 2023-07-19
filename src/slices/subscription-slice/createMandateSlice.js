@@ -9,7 +9,16 @@ import subAPIURL from "../../config";
 const initialState = {
   fetchFrequencyData : [],
   isLoading : false,
-  mandateType:[]
+  mandateType:[],
+  createMandate: {
+    formData: {
+      firstForm : {},
+      secondForm: {},
+      thirdForm: {},
+
+    }
+
+  }
 };
 
 // 1)----------------------------------------------------------------------------------||
@@ -19,6 +28,7 @@ export const fetchFrequency = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await createMandateService.fetchFrequency();
+      
       return response;
     } catch (error) {
       const message =
@@ -34,10 +44,74 @@ export const fetchFrequency = createAsyncThunk(
 );
 
 export const fetchMandateType = createAsyncThunk(
-  "subcription/fetchFrequency",
+  "subcription/fetchMandateType",
   async (thunkAPI) => {
     try {
-      const response = await createMandateService.fetchFrequency();
+      const response = await createMandateService.fetchMandateType();
+      
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+export const fetchMandatePurpose = createAsyncThunk(
+  "subcription/fetchMandatePurpose ",
+  async (thunkAPI) => {
+    try {
+      const response = await createMandateService.fetchMandatePurpose();
+     
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+export const fetchRequestType = createAsyncThunk(
+  "subcription/fetchMandatePurpose ",
+  async (thunkAPI) => {
+    try {
+      const response = await createMandateService.fetchrequestType();
+     
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+export const fetchMandateBankName = createAsyncThunk(
+  "subcription/fetchBankName ",
+  async (thunkAPI) => {
+    try {
+      const response = await createMandateService.fetchBankName();
+     
       return response;
     } catch (error) {
       const message =
@@ -64,16 +138,23 @@ const createMandateSlice = createSlice({
   name: "subcription",
   initialState,
   reducers: {
-    // // 1)
-    // changeTheMandateTableView: (reportsData, action) => {
-    //   reportsData.uiState.allMandatesViewMaterialtable.tableShouldBeShown =
-    //     action.payload;
-    // },
-    // // 2)
-    // clearAllMandateListFiltered: (reportsData, action) => {
-    //   reportsData.allMandateListFiltered = { records: [], count: 0 };
-    // },
-    // -----------------------------------------------------------------------||
+    saveFormFirstData: (state, action) => {
+      
+      state.createMandate.formData.firstForm = action?.payload?.newValues;
+     
+       },
+
+       saveFormSecondData: (state, action) => {
+       
+        state.createMandate.formData.secondForm = action?.payload?.values;
+       
+         },
+        saveFormThirdData: (state, action) => {
+          
+          state.createMandate.formData.thirdForm = action?.payload?.values;
+         
+           },
+       
 
   },
   extraReducers: {
@@ -116,4 +197,12 @@ const createMandateSlice = createSlice({
 // Exporting slice reducer
 // export default reportsDataSlice.reducer;
 
-export const createMandateReducer = createMandateSlice.reducer
+// export const createMandateReducer = createMandateSlice.reducer
+
+export const {
+  saveFormFirstData,
+  saveFormSecondData,
+  saveFormThirdData
+  
+} = createMandateSlice.actions;
+export const createMandateReducer = createMandateSlice.reducer;

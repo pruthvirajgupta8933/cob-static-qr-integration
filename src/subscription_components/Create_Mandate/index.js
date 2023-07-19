@@ -1,27 +1,33 @@
-import React, { Component, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { connect } from "react-redux";
+// import {
+//   fetchFrequency,
+//   fetchMandateType,
+//   fetchMandatePurpose,
+//   fetchRequestType,
+//   fetchBankName,
+// } from "../../slices/subscription-slice/createMandateSlice";
+import { createMandateService } from "../../services/subscription-service/create.mandate.service";
+// import fetchMandateType from "../../slices/subscription-slice/createMandateSlice"
 import NavBar from "../../components/dashboard/NavBar/NavBar";
 import FormikController from "../../_components/formik/FormikController";
 import Progress from "../../_components/progress_bar/Progress";
-import { Formik, Form, Field } from "formik";
-import { connect } from "react-redux";
-import "./index.css";
-import { fetchFrequency } from "../../slices/subscription-slice/createMandateSlice";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
-import { createMandateService } from "../../services/subscription-service/create.mandate.service";
 import PersonalDetails from "./personalDetails";
 import BankDetails from "./bankDetails";
-import * as Yup from "yup";
 import AuthMandate from "./Mandate_Submission/authMandate";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFrequency, fetchMandatePurpose, fetchMandateType, fetchRequestType, saveFormFirstData } from "../../slices/subscription-slice/createMandateSlice";
 
-let options1 = [
+const options1 = [
   { key: "Select", value: "Select" },
   { key: "Fixed", value: "Fixed" },
 ];
 
 const FORM_VALIDATION = Yup.object().shape({
-  mandateType: Yup.string()
-    // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-    .required("Required"),
+  mandateType: Yup.string().required("Required"),
   mandateMaxAmount: Yup.string().required("Required"),
   mandateCategory: Yup.string().required("Required"),
   frequency: Yup.string().required("Required"),
@@ -41,77 +47,143 @@ const FORM_VALIDATION = Yup.object().shape({
   requestType: Yup.string().required("Required"),
 });
 
-class MandateForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {},
-      mandateType: [],
-      mandateCategory: [],
-      requestType: [],
-      mandateScreen: true,
-      personalScreen: false,
-      bankScreen: false,
-      mandateSubmission: false,
-      progressWidth: "0%",
-      progressBar: true,
-      bankName: [],
-      updatedData: [],
-      // disableEndDate:false,
-      // isChecked:false
-    };
+
+
+const MandateForm = ({
+  // fetchFrequency,
+  //  fetchMandateType,
+  // fetchMandatePurpose,
+  // fetchRequestType,
+  fetchBankName,
+  frequencyData,
+  // mandateType,
+  mandateCategory,
+  requestType,
+  bankName,
+}) => {
+
+
+  const [data, setData] = useState({});
+  const [mandateScreen, setMandateScreen] = useState(true);
+  const [mandatePurpose, setMandatePurpose] = useState([])
+  const [mandateRequestType, setMandateRequestType] = useState([])
+  const [manDateFrequency, setMandateFrequency] = useState([])
+  const [mandateType, setMandateType] = useState([])
+  const [personalScreen, setPersonalScreen] = useState(false);
+  const [bankScreen, setBankScreen] = useState(false);
+  const [mandateSubmission, setMandateSubmission] = useState(false);
+  const [progressWidth, setProgressWidth] = useState("0%");
+  const [progressBar, setProgressBar] = useState(true);
+  const [updatedData, setUpdatedData] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+  const [disableEndDate, setDisableEndDate] = useState(false);
+  const [radioButtonValue, setRadioButtonValue] = useState("");
+  const now = new Date();
+  const dispatch = useDispatch();
+  const { createMandate } = useSelector((state) => state);
+  const { firstForm } = createMandate.createMandate.formData;
+  console.log(firstForm,"this is firstForm")
+
+ console.log("firstForm.mandateType",firstForm.mandateType)
+
+
+
+  const initialValues = {
+    radioButtonValue: "",
+    mandateType: firstForm.mandateType ? firstForm.mandateType : "",
+    mandateMaxAmount: firstForm.mandateMaxAmount ? firstForm.mandateMaxAmount : "",
+    frequency: firstForm.frequency ? firstForm.frequency : "",
+    mandateEndDate: firstForm.mandateEndDate ? firstForm.mandateEndDate : "",
+    mandateStartDate: firstForm.mandateStartDate ? firstForm.mandateStartDate : "",
+    schemeReferenceNumber: firstForm.schemeReferenceNumber ? firstForm.schemeReferenceNumber : "",
+    consumerReferenceNumber: firstForm.consumerReferenceNumber ? firstForm.consumerReferenceNumber : "",
+    emiamount: firstForm.emiamount ? firstForm.emiamount : "",
+    requestType: firstForm.requestType ? firstForm.requestType : "",
+    mandateCategory: firstForm.mandateCategory ? firstForm.mandateCategory : "",
+    untilCancelled: false,
   }
 
-  componentDidMount() {
-    this.props.fetchFrequency();
-    createMandateService.fetchMandateType().then((resp) => {
-      if (resp?.status === 200) {
-        this.setState({
-          mandateType: resp?.data,
-        });
-      }
-    });
-    createMandateService.fetchMandatePurpose().then((resp) => {
-      // console.log(resp, "-----------");
-      if (resp?.status === 200) {
-        this.setState({
-          mandateCategory: resp?.data,
-        });
-      }
-    });
 
-    createMandateService.fetchrequestType().then((resp) => {
-      if (resp.status === 200) {
-        this.setState({
-          requestType: resp.data,
-        });
-      }
-    });
-    createMandateService.fetchBankName().then((resp) => {
-      if (resp.status === 200) {
-        this.setState({
-          bankName: resp.data,
-        });
-      }
-    });
-  }
 
-  handleSubmit = (values) => {
+
+  useEffect(() => {
+
+
+    fetchManDateData();
+    fetchManDatePurpose();
+    fetchManDateFrequency();
+    fetchMandateRequestType();
+  }, []);
+
+  const fetchManDateData = async () => {
+    try {
+      const resp = await dispatch(fetchMandateType());
+
+      const data = convertToFormikSelectJson("id", "description", resp.payload.data);
+      setMandateType(data);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+  const fetchManDatePurpose = async () => {
+    try {
+      const resp = await dispatch(fetchMandatePurpose());
+
+      const data = convertToFormikSelectJson("code", "description", resp.payload.data);
+      setMandatePurpose(data);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+
+  const fetchManDateFrequency = async () => {
+    try {
+      const resp = await dispatch(fetchFrequency());
+
+
+      const data = convertToFormikSelectJson("code", "description", resp.payload);
+      setMandateFrequency(data);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+  const fetchMandateRequestType = async () => {
+    try {
+      const resp = await dispatch(fetchRequestType());
+
+
+      const data = convertToFormikSelectJson("code", "description", resp.payload?.data);
+      setMandateRequestType(data);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+
+
+
+
+
+
+
+  const handleSubmit = (values) => {
+
+    
+    setPersonalScreen(true);
+    setProgressWidth("50%")
+    setMandateScreen(false);
+    setProgressBar(true);
+
+
     const getDescriptionById = (code) => {
-      // Find an item in the `mandateCategory` array that matches the `code` parameter
-      const result = this.state.mandateCategory.filter(
-        (item) => item.code === code
-      );
-      // If a matching item is found, return its `description` field, otherwise return an empty string
+      const result = mandateCategory.filter((item) => item.code === code);
       return result.length > 0 ? result[0].description : "";
     };
 
-    // console.log(getDescriptionById(values.mandateCategory).toString());
-    // // e.preventDefault();
-    // console.log(values,"values")
-
-    const now = new Date();
-    const startDate = values.mandateStartDate.split("-").map(Number); // Convert the startDate string to an array of numbers
+    const startDate = values.mandateStartDate.split("-").map(Number);
     const startDateObj = new Date(
       Date.UTC(
         startDate[0],
@@ -123,7 +195,7 @@ class MandateForm extends Component {
         now.getUTCMilliseconds()
       )
     );
-    const startIsoDate = startDateObj.toISOString(); // "2023-04-24T16:53:52.960Z"
+    const startIsoDate = startDateObj.toISOString();
 
     const endDate = values.mandateEndDate.split("-").map(Number);
     const endDateObj = new Date(
@@ -137,15 +209,17 @@ class MandateForm extends Component {
         now.getUTCMilliseconds()
       )
     );
+
+  
     const endIsoDate =
       values.untilCancelled === true ? "" : endDateObj.toISOString();
-
+      // console.log(getDescriptionById(values.mandateCategory).toString())
     const newValues = {
       consumerReferenceNumber: values.consumerReferenceNumber,
       emiamount: values.emiamount,
       frequency: values.frequency,
       mandateCategory: values.mandateCategory,
-      mandatePurpose: getDescriptionById(values.mandateCategory).toString(),
+      mandatePurpose: "bank manadate", // need to fix
       mandateEndDate: endIsoDate,
       mandateMaxAmount: values.mandateMaxAmount,
       mandateStartDate: startIsoDate,
@@ -155,295 +229,291 @@ class MandateForm extends Component {
       untilCancelled: values.untilCancelled,
     };
 
-    this.setState({
-      personalScreen: true,
-      mandateScreen: false,
-      progressWidth: "50%",
-      data: newValues,
-      progressBar: true,
-    });
+    console.log(
+      newValues,"newValues is this"
+    )
 
-    // console.log("running");
+    
+    dispatch(saveFormFirstData({ newValues }))
+    // console.log("this----- is new values", newValues)
 
-    // Do something with the form data
+
+
+
+    setProgressWidth("50%");
+    setData(newValues);
+    setProgressBar(true);
   };
 
-  showBankDetails = (e, values) => {
-    // console.log(values, "kkk");
-    const updatedData = { ...this.state.data, ...values };
+  const showBankDetails = (e, values) => {
+    const updatedData = { ...data, ...values };
 
-    if (e == "showPersonalDetails") {
-      this.setState({
-        personalScreen: false,
-        bankScreen: true,
-        progressWidth: "100%",
-        data: updatedData,
-        progressBar: true,
-      });
+    if (e === "showPersonalDetails") {
+      setPersonalScreen(false);
+      setBankScreen(true);
+      setProgressWidth("100%");
+      setData(updatedData);
+      setProgressBar(true);
     }
   };
-  showbankData = (val, validStatus, verifiedStatus) => {
-    const updatedData = { ...this.state.data, ...val };
+
+  const showbankData = (val, validStatus, verifiedStatus) => {
+    const updatedData = { ...data, ...val };
     if (verifiedStatus && validStatus) {
-      this.setState({
-        personalScreen: false,
-        bankScreen: false,
-        mandateSubmission: true,
-        mandateScreen: false,
-        progressBar: false,
-        updatedData: updatedData,
-      });
-    }
-    // console.log(updatedData, "updated");
-    // console.log(validStatus, verifiedStatus, "state-------");
-  };
+      setMandateSubmission(true);
+      setPersonalScreen(false);
+      setBankScreen(false);
 
-  backToPreviousScreen = (e) => {
-    if (e == "personalScreen") {
-      this.setState({
-        personalScreen: true,
-        bankScreen: false,
-        mandateScreen: false,
-        progressWidth: "50%",
-        progressBar: true,
-      });
-    } else if (e == "mandateScreen") {
-      this.setState({
-        personalScreen: false,
-        bankScreen: false,
-        mandateScreen: true,
-        progressWidth: "0%",
-        progressBar: true,
-      });
+      setMandateScreen(false);
+      setProgressBar(false);
+      setUpdatedData(updatedData);
     }
   };
 
-  handleCheckboxClick = () => {
-    this.setState((prevState) => ({
-      isChecked: !prevState.isChecked,
-      disableEndDate: !prevState.disableEndDate,
-    }));
+  const backToPreviousScreen = (e) => {
+    if (e === "personalScreen") {
+      setPersonalScreen(true);
+      setBankScreen(false);
+      setMandateScreen(false);
+      setProgressWidth("50%");
+      setProgressBar(true);
+    } else if (e === "mandateScreen") {
+      setPersonalScreen(false);
+      setBankScreen(false);
+      setMandateScreen(true);
+      setProgressWidth("0%");
+      setProgressBar(true);
+    }
   };
 
-  render() {
-    const frequencyData = this.props.createMandate?.fetchFrequencyData;
-    const frequencyOptionsData = convertToFormikSelectJson(
-      "code",
-      "description",
-      frequencyData
-    );
-    const mandateTypeOptions = convertToFormikSelectJson(
-      "id",
-      "description",
-      this.state.mandateType
-    );
-    const mandateTypeCategory = convertToFormikSelectJson(
-      "code",
-      "description",
-      this.state.mandateCategory
-    );
-    const requestTypeOptions = convertToFormikSelectJson(
-      "code",
-      "description",
-      this.state.requestType
-    );
-    const bankNameOptions = convertToFormikSelectJson(
-      "code",
-      "description",
-      this.state.bankName
-    );
-    // console.log(frequencyOptionsData);
+  const handleCheckboxClick = () => {
+    setIsChecked((prevIsChecked) => !prevIsChecked);
+    setDisableEndDate((prevDisableEndDate) => !prevDisableEndDate);
+  };
 
-    return (
-      <>
-        <section className="ant-layout">
-          <div>
-            
+
+
+  return (
+    <>
+      <section className="ant-layout">
+        <div></div>
+        {progressBar && (
+          <div className="progress_bar_container">
+            <Progress progressWidth={progressWidth} />
           </div>
-          {this.state.progressBar && (
-            <div className="progress_bar_container">
-              <Progress progressWidth={this.state.progressWidth} />
-            </div>
-          )}
-          <div className="container">
-            {this.state.personalScreen && (
-              <PersonalDetails
-                showBankDetails={this.showBankDetails}
-                backToPreviousScreen={this.backToPreviousScreen}
-              />
-            )}
-            {this.state.bankScreen && (
-              <BankDetails
-                backToPersonalScreen={this.backToPreviousScreen}
-                bankNameOptions={bankNameOptions}
-                showbankData={this.showbankData}
-              />
-            )}
-            {this.state.mandateSubmission && (
-              <AuthMandate updatedData={this.state.updatedData} />
-            )}
-            <div className="inner-container ">
-              <Formik
-                initialValues={{
-                  mandateType: "",
-                  mandateMaxAmount: "",
-                  frequency: "",
-                  mandateEndDate: "",
-                  mandateStartDate: "",
-                  schemeReferenceNumber: "",
-                  consumerReferenceNumber: "",
-                  emiamount: "",
-                  requestType: "",
-                  mandateCategory: "",
-                  untilCancelled: false,
-                }}
-                validationSchema={FORM_VALIDATION}
-                onSubmit={this.handleSubmit}
-                validateOnChange={false}
-                validateOnBlur={false}
-              >
-                {({ errors, touched, values, setFieldValue }) => (
-                  <Form>
-                    {this.state.mandateScreen && (
+        )}
+        <div className="container">
+        <div className="inner-container d-flex justify-content-center align-items-center">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={FORM_VALIDATION}
+              enableReinitialize={true}
+              // onSubmit={handleSubmit}
+              onSubmit={(values) => {
+                handleSubmit(values)
+
+              }}
+            // validateOnChange={false}
+            // validateOnBlur={false}
+            >
+              {({ values, setFieldValue }) => (
+                <Form>
+                  {mandateScreen && (
+                    <div>
                       <div>
-                        <div className="row">
-                          <div className="col-lg-4 form-group">
-                            <FormikController
-                              control="select"
-                              label="Mandate Variant *"
-                              name="mandateType"
-                              className="form-control rounded-0 mt-0"
-                              options={mandateTypeOptions}
-                            />
-                          </div>
-                          <div className="col-lg-4 form-group ">
-                            <FormikController
-                              control="select"
-                              label="Mandate Purpose *"
-                              name="mandateCategory"
-                              className="form-control rounded-0 mt-0"
-                              options={mandateTypeCategory}
-                            />
-                          </div>
+                        <label htmlFor="radioButtonValue" className="d-block">
+                          Requested By
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <Field
+                          type="radio"
+                          id="radioButtonValue"
+                          name="radioButtonValue"
+                          value="merchant"
+                          checked={values.radioButtonValue === "merchant"}
+                          onChange={() =>
+                            setFieldValue("radioButtonValue", "merchant")
+                          }
+                          className="form-check-input"
+                        />
+                        <label
+                          htmlFor="Merchant"
+                          className="form-check-label mr-3"
+                        >
+                          Merchant
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <Field
+                          type="radio"
+                          name="radioButtonValue"
+                          value="customer"
+                          checked={values.radioButtonValue === "customer"}
+                          onChange={() =>
+                            setFieldValue("radioButtonValue", "customer")
+                          }
+                          className="form-check-input"
+                        />
+                        <label htmlFor="customer" className="form-check-label">
+                          Customer
+                        </label>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-6 form-group">
+                          <FormikController
+                            control="select"
+                            label="Mandate Variant *"
+                            name="mandateType"
+                            className="form-control form-select rounded-0 mt-0"
+                            options={mandateType}
+                          />
                         </div>
-                        <div className="row">
-                          <div className="col-lg-4 form-group">
-                            <label htmlFor="emiAmount">EMI Amount *</label>
-                            <FormikController
-                              control="input"
-                              label="EMI Amount *"
-                              name="emiamount"
-                              className="form-control rounded-0 mt-0"
-                            />
-                          </div>
-                          <div className="col-lg-4 form-group">
-                            <FormikController
-                              control="select"
-                              label="Frequency"
-                              name="frequency"
-                              className="form-control rounded-0 mt-0"
-                              options={frequencyOptionsData}
-                            />
-                          </div>
+                        <div className="col-lg-6 form-group ">
+                          <FormikController
+                            control="select"
+                            label="Mandate Purpose *"
+                            name="mandateCategory"
+                            className="form-control form-select rounded-0 mt-0"
+                            options={mandatePurpose}
+                          />
                         </div>
-                        <div className="row">
-                          <div className="col-lg-4 form-group">
-                            <FormikController
-                              control="select"
-                              label="Fixed/Maximum Amount"
-                              name="mandateMaxAmount"
-                              className="form-control rounded-0 mt-0"
-                              options={options1}
-                            />
-                          </div>
-                          <div className="col-lg-4 form-group">
-                            <FormikController
-                              control="select"
-                              label="Request Type"
-                              name="requestType"
-                              className="form-control rounded-0 mt-0"
-                              options={requestTypeOptions}
-                            />
-                          </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-6 form-group">
+                          <FormikController
+                            control="input"
+                            label="EMI Amount *"
+                            name="emiamount"
+                            className="form-control rounded-0 mt-0"
+                          />
                         </div>
-                        <div className="row">
-                          <div className="col-lg-4">
-                            <FormikController
-                              control="input"
-                              label="Consumer Reference Number"
-                              name="consumerReferenceNumber"
-                              className="form-control rounded-0"
-                            />
-                          </div>
-                          <div className="col-lg-4">
-                            <FormikController
-                              control="input"
-                              label="Scheme Reference Number"
-                              name="schemeReferenceNumber"
-                              className="form-control rounded-0"
-                            />
-                          </div>
+                        <div className="col-lg-6 form-group">
+                          <FormikController
+                            control="select"
+                            label="Frequency"
+                            name="frequency"
+                            className="form-control form-select rounded-0 mt-0"
+                            options={manDateFrequency}
+                          />
                         </div>
-                        <div className="row">
-                          <div className="col-lg-4">
-                            <FormikController
-                              control="input"
-                              type="date"
-                              label="Start Date"
-                              name="mandateStartDate"
-                              className="form-control rounded-0"
-                            />
-                          </div>
-                          <div className="col-lg-1 mr-3">
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-6 form-group">
+                          <FormikController
+                            control="select"
+                            label="Fixed/Maximum Amount"
+                            name="mandateMaxAmount"
+                            className="form-control form-select rounded-0 mt-0"
+                            options={options1}
+                          />
+                        </div>
+                        <div className="col-lg-6 form-group">
+                          <FormikController
+                            control="select"
+                            label="Request Type"
+                            name="requestType"
+                            className="form-control form-select rounded-0 mt-0"
+                            options={mandateRequestType}
+                          />
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-6">
+                          <FormikController
+                            control="input"
+                            label="Consumer Reference Number"
+                            name="consumerReferenceNumber"
+                            className="form-control rounded-0"
+                          />
+                        </div>
+                        <div className="col-lg-6">
+                          <FormikController
+                            control="input"
+                            label="Scheme Reference Number"
+                            name="schemeReferenceNumber"
+                            className="form-control rounded-0"
+                          />
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-6">
+                          <FormikController
+                            control="input"
+                            type="date"
+                            label="Start Date"
+                            name="mandateStartDate"
+                            className="form-control rounded-0"
+                          />
+                        </div>
+                        <div className="col-lg-3">
+                          <div className="form-check">
                             <Field
                               type="checkbox"
                               name="untilCancelled"
-                              className="mr-0"
+                              className="form-check-input "
                               checked={values.untilCancelled}
                               onChange={() => {
-                                setFieldValue("untilCancelled", !values.untilCancelled);
-                                setFieldValue("mandateEndDate", ""); // clear value of end date when checkbox is checked
+                                setFieldValue(
+                                  "untilCancelled",
+                                  !values.untilCancelled
+                                );
+                                setFieldValue("mandateEndDate", "");
                               }}
                             />
-                            Until Cancelled
-                          </div>
-
-                          <div className="col-lg-4">
-                            <FormikController
-                              control="input"
-                              type="date"
-                              label="End Date"
-                              name="mandateEndDate"
-                              className="form-control rounded-0"
-                              disabled={values.untilCancelled}
-                            />
-                          
+                            <label
+                              htmlFor="untilCancelled"
+                              className="form-check-label ml-1"
+                            >
+                              Until Cancelled
+                            </label>
                           </div>
                         </div>
-                        <button
-                          className="btn bttn cob-btn-primary"
-                          type="submit"
-                        >
-                          Next
-                        </button>
+                        <div className="col-lg-3">
+                          <FormikController
+                            control="input"
+                            type="date"
+                            label="End Date"
+                            name="mandateEndDate"
+                            className="form-control rounded-0"
+                            disabled={values.untilCancelled}
+                          />
+                        </div>
                       </div>
-                    )}
-                  </Form>
-                )}
-              </Formik>
-            </div>
+                      <button className="btn bttn cob-btn-primary" type="submit">
+                        Next
+                      </button>
+                    </div>
+                  )}
+                </Form>
+              )}
+            </Formik>
           </div>
-        </section>
-      </>
-    );
-  }
-}
-const mapStateToProps = (state) => {
-  return {
-    createMandate: state.createMandate,
-  };
+
+          {personalScreen && (
+            <PersonalDetails
+              showBankDetails={showBankDetails}
+              backToPreviousScreen={backToPreviousScreen}
+            />
+          )}
+          {bankScreen && (
+            <BankDetails
+              backToPersonalScreen={backToPreviousScreen}
+              showbankData={showbankData}
+              setMandateSubmission={setMandateSubmission}
+              setBankScreen={setBankScreen}
+              setProgressBar={setProgressBar}
+            />
+          )}
+            {mandateSubmission && <AuthMandate  />}
+          
+        </div>
+      </section>
+    </>
+  );
 };
-const mapDispatchToProps = (dispatch) => ({
-  fetchFrequency: () => dispatch(fetchFrequency()),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(MandateForm);
+
+export default MandateForm
+
+
+
