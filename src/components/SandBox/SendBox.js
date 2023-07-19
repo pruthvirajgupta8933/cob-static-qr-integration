@@ -138,9 +138,8 @@ function Sandbox() {
                           <input
                             type="text"
                             className="form-control"
-                            
                             disabled="true"
-                            value="P8c3WQ7ei@sp"
+                            value="P8c3WQ7ei"
                           />
                         </div>
 
@@ -157,24 +156,10 @@ function Sandbox() {
                           className="form-control"
                           
                           disabled="true"
-                          value="P8c3WQ7ei"
-                        />
-                      </div>
-                      <div className="col-lg-4">
-                        <label
-                          htmlFor="inputPassword3"
-                          className="col-form-label"
-                        >
-                          Password
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="inputPassword3"
-                          disabled="true"
                           value="x0xzPnXsgTq0QqXx"
                         />
                       </div>
+
                       <div className="col-lg-4">
                         <label
                           
@@ -185,7 +170,6 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
                           disabled="true"
                           value="oLA38cwT6IYNGqb3"
                         />
