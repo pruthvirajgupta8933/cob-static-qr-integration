@@ -161,7 +161,7 @@ const handleVerifyClick = () => {
       
       <div className="col-sm-3 col-md-3 col-lg-3">
         <label className="">
-          Platform
+          Platform Type
         </label>
 
         <input

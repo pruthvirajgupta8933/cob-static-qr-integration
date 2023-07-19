@@ -107,27 +107,6 @@ const TransactionHistory = () => {
     payment_mode: Yup.string().required("Required"),
   });
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-
-  //     if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
-  //       setDataFound(true)
-  //     }else{
-  //       setDataFound(false)
-  //     }
-  //   });
-
-  // }, [showData, updateTxnList])
-
-  // function dayDiff(dateFrom, dateTo) {
-  //   const date1 = new Date(dateFrom);
-  //   const date2 = new Date(dateTo);
-  //   const diffTime = Math.abs(date2 - date1);
-  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  //   // console.log(diffDays,"diffDays")
-  //   return diffDays;
-  //  }
-
   const getPaymentStatusList = async () => {
     await axiosInstance
       .get(API_URL.GET_PAYMENT_STATUS_LIST)
@@ -479,7 +458,7 @@ const TransactionHistory = () => {
                 {(formik) => (
                   <Form>
                     <div className="form-row mt-5">
-                      {roles?.merchant === true && (
+                      {roles?.bank === true && (
                         <div className="form-group col-lg-3">
                           <FormikController
                             control="select"
