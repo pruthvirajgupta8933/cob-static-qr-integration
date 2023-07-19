@@ -49,19 +49,19 @@ function TransactionEnquirey() {
 
     axios.get(API_URL.VIEW_TXN + endPoint)
       .then((response) => {
-        if(response?.data?.length>0){
+        if (response?.data?.length > 0) {
           setLoadingState(false)
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
           setIsDisable(false)
-        }else{
+        } else {
           setLoadingState(false)
           setIsShow(false);
           setErrMessage(true);
           setIsDisable(false)
         }
-     
+
 
       })
       .catch((e) => {
@@ -138,13 +138,18 @@ function TransactionEnquirey() {
                     <Form className="col-lg-12">
 
                       <div className="form-row mt-4 ml-1">
-                        <div className="form-group col-md-4 col-sm-12 col-lg-4">
-                          <FormikController
-                            control="radio"
-                            className="form-check-input"
-                            options={txnOption}
-                            name="transaction_from"
-                          />
+                        <div className="col-lg-12">
+                          <div className="form-group col-md-12 col-sm-12 p-0 col-lg-5 d-flex justify-content-between">
+                            <FormikController
+                              control="radio"
+                              className="form-check-input"
+                              options={txnOption}
+                              name="transaction_from"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group col-md-12 col-sm-12 col-lg-5">
                           <FormikController
                             control="input"
                             // label="Transaction ID  *"
