@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory, Link } from "react-router-dom";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 // import FormikController from "../../../_components/formik/FormikController";
 
 import { login, logout } from "../../../slices/auth";
@@ -14,6 +14,7 @@ import Header from '../header/Header'
 import classes from "./login.module.css"
 
 // import api from './api';
+import toastConfig from "../../../utilities/toastTypes";
 
 const INITIAL_FORM_STATE = {
     clientUserId: "",
@@ -84,13 +85,13 @@ function Login() {
                     setLoading(false);
                 } else {
                     if (loginMessage === "Pending") {
-                        toast.error(loginMessage);
+                        toastConfig.errorToast(loginMessage);
                     }
                     setLoading(false);
                 }
             } else {
                 setLoading(false);
-                toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+                toastConfig.errorToast(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
             }
         });
     };
@@ -114,14 +115,14 @@ function Login() {
                         setLoading(false);
                     } else {
                         if (loginMessage === "Pending") {
-                            toast.error(loginMessage);
+                            toastConfig.errorToast(loginMessage);
                         }
                         setLoading(false);
                     }
                 } else {
                     history.push(`/Registration/${queryString}`);
                     setLoading(false);
-                    toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+                    toastConfig.errorToast(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
                 }
             })
         }
