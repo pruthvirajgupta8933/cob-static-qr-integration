@@ -12,10 +12,13 @@ import toastConfig from '../../utilities/toastTypes';
 
 
   const initialValues = {
-    transaction_id: ""
+    transaction_id: "",
+    transaction_from: "1"
   }
   const validationSchema = Yup.object({
-    transaction_id: Yup.number().required("Required")
+    transaction_id: Yup.string().max(30, "Transaction ID length exceed").required("Required"),
+    transaction_from: Yup.string().nullable().required("Required")
+
   })
 
   const [show, setIsShow] = useState(false);
@@ -23,12 +26,27 @@ import toastConfig from '../../utilities/toastTypes';
   const [data, setData] = useState([])
   const [btnDisable, setBtnDisable] = useState(false)
 
+  
+  const txnOption = [
+    { key: "Sabpaisa Transaction ID", value: "1" },
+    { key: "Client Transaction ID", value: "2" }
+  ];
+
   const onSubmit = (input) => {
     setData({});
     setBtnDisable(true)
-    const transaction_id = input.transaction_id;
-    axios
-      .get(API_URL.VIEW_TXN + `/${transaction_id}/0`)
+    
+    let spTxnId = 0
+    let clientTxnId = 0
+
+    if (input.transaction_from === "1") {
+      spTxnId = input.transaction_id
+    } else {
+      clientTxnId = input.transaction_id
+    }
+    let endPoint = `/${spTxnId}/${clientTxnId}`
+
+    axios.get(API_URL.VIEW_TXN + endPoint)
       .then((response) => {
         let res = response.data
         if (res?.length === 0 || null) {
@@ -42,23 +60,11 @@ import toastConfig from '../../utilities/toastTypes';
           toastConfig.successToast("Data Found")
           setBtnDisable(false)
           //  setErrMessage(false);
-        } else {
-          axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
-            if (r?.data.length > 0) {
-              toastConfig.successToast("Data Found")
-              setBtnDisable(false)
-              setIsShow(true);
-              setData(r?.data[0]);
-              // setErrMessage(false);
-            } else {
-              // setErrMessage(true);
-            }
-          });
-        }
+        } 
       })
       .catch((e) => {
         setIsShow(false);
-        // setErrMessage(true);
+        toastConfig.successToast("Data Found")
         setBtnDisable(false)
       });
   };
@@ -95,10 +101,16 @@ import toastConfig from '../../utilities/toastTypes';
                     <Form>
                       <div className="form-row">
                         <div className="form-group col-md-12 col-sm-12 col-lg-12">
+                        <FormikController
+                            control="radio"
+                            className="form-check-input"
+                            options={txnOption}
+                            name="transaction_from"
+                          />
                           <FormikController
                             control="input"
                             type="text"
-                            label="Transaction ID  *"
+                            // label="Transaction ID  *"
                             name="transaction_id"
                             placeholder="Enter Sabpaisa Transaction ID"
                             className="form-control"

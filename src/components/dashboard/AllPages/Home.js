@@ -122,79 +122,69 @@ function Home() {
       <hr />
       {/* Dashboard Update  */}
       {roles?.merchant &&
-          <div className="row mt-3">
-            <div className="col-lg-7 col-sm-12 col-md-3">
-              {/* chart */}
-              <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />
-            </div>
-
-            <div className="col-lg-5 col-sm-12 col-md-5">
-              <h6 className="bg-secondary p-2 text-white">Dasboard Update</h6>
-
-              {/* KYC alert */}
-              <KycAlert />
-
-              {/* payment alert */}
-              {unPaidProduct?.length > 0 && (
-                <AlertBox
-                  cardData={unPaidProduct}
-                  heading={`Payment Alert`}
-                  text1={`Kindly pay the amount of the subscribed product`}
-                  linkName={"Make Payment"}
-                  bgColor={"alert-danger"}
-                />
-              )}
-
-
-              {/* KYC Status -Update Message */}
-              <div className="row kyc-link">
-                {roles?.merchant === true &&
-                  kyc?.kycUserList?.status !== "Approved" && (
-
-                    <div className="col-lg-12 col-md-12">
-                      <div className="card col-lg-12- cardkyc pull-left">
-                        <div className="card-body ">
-                          <span className="font-weight-bold">
-                            You can accept payments upto ₹10,000 for now. To extend
-                            the limit complete your KYC and get it approved.
-                          </span>
-                          <Link
-                            to={`/dashboard/kyc`}
-                            data-toggle="modal"
-                            data-target="#exampleModalCenter"
-                          >
-                            <button
-                              className="text-white  kycbtns"
-                              style={{
-                                backgroundColor: "#0156B3",
-                                paddingLeft: "10px",
-                              }}
-                            >
-                              Complete KYC
-                            </button>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                {roles?.merchant === true &&
-                  kyc?.kycUserList?.status === "Approved" && (
-
-                    <div className="col-lg-12 col-md-12">
-                      <div className="card col-lg-12- cardkyc pull-left">
-                        <div className="font-weight-bold card-body ">
-                          <span>
-                            Congratulations! Your KYC documents have been approved.
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-              </div>
-
-            </div>
+        <div className="row mt-3">
+          <div className="col-lg-7 col-sm-12 col-md-3">
+            {/* chart */}
+            <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />
           </div>
+
+          <div className="col-lg-5 col-sm-12 col-md-5">
+            <h6 className="bg-secondary p-2 text-white">Dasboard Update</h6>
+
+            {/* KYC alert */}
+            <KycAlert />
+
+            {/* payment alert */}
+            {unPaidProduct?.length > 0 && (
+              <AlertBox
+                cardData={unPaidProduct}
+                heading={`Payment Alert`}
+                text1={`Kindly pay the amount of the subscribed product`}
+                linkName={"Make Payment"}
+                bgColor={"alert-danger"}
+              />
+            )}
+
+
+            {/* KYC Status -Update Message */}
+            <div className="row kyc-link mt-2">
+              {roles?.merchant === true &&
+                kyc?.kycUserList?.status !== "Approved" && (
+
+                  <div className="col-lg-12 col-md-12">
+                    <div className="card col-lg-12- cardkyc pull-left">
+                      <div className="card-body ">
+                        <span className="">
+                          You can accept payments upto ₹10,000 for now. To extend
+                          the limit complete your KYC and get it approved.
+                        </span>
+                        <Link to={`/dashboard/kyc`}>
+                          <button className="text-white cob-btn-primary btn-sm ml-1">
+                            Complete KYC
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              {roles?.merchant === true &&
+                kyc?.kycUserList?.status === "Approved" && (
+
+                  <div className="col-lg-12 col-md-12">
+                    <div className="card col-lg-12- cardkyc pull-left">
+                      <div className="font-weight-bold card-body ">
+                        <span>
+                          Congratulations! Your KYC documents have been approved.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+            </div>
+
+          </div>
+        </div>
       }
       <hr />
       <br />
@@ -552,8 +542,8 @@ function Home() {
       {/* need to fix this modal on condition */}
       <div
         className={
-          "modal fade mymodals " +
-          (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
+          "modal fade mymodals" +
+          (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : "d-none")
         }
         role="dialog"
       >
@@ -575,45 +565,23 @@ function Home() {
                   aria-label="Close"
                 > X </button></div>
                 <div className="row justify-content-md-center">
-                  <div className="col-md-auto">
-                    <ul>
-                      <h1
-                        className="text-centre"
-                        style={{
-                          color: "#4BB543",
-                          fontWeight: "700",
-                          fontStyle: "normal",
-                          fontSize: "32px",
-                          justifyContent: "center",
-                          display: "flex",
-                        }}
-                      >
+                  <div className="col-md-auto text-centre">
+                    <ul className="p-0 m-0">
+                      <h5 style={{ color: "#4BB543" }} className="text-center">
                         Congratulations!
-                      </h1>
+                      </h5>
 
-                      <p className="modalscolrsfortextapprv m-0 text-center">
-                        You can accept payments upto INR 10,000
-                      </p>
-                      <p className="modalscolrsfortextapprv m-0 text-center">
+                      <p className="text-center">
                         Your KYC is currently under review.
-                        <br />
-                        <br />
-                        <p className="modalscolrsfortextapprv m-0 text-center">
-                          The KYC review process usually takes 3-4 working days.
-                        </p>
-                        <p className="modalscolrsfortextapprv m-0 text-center">
-                          We will notify you in case we want any clarification
-                          on your KYC.
-                        </p>
+                        You can accept payments upto INR 10,000.
                       </p>
-                      <span
-                        className="modalscolrsfortextapprv text-center"
-                        style={{
-                          display: "table-footer-group",
-                          justifyContent: "center",
-                          whiteSpace: "nowrap",
-                        }}
-                      ></span>
+
+                      <p className="text-center">
+                        The KYC review process usually takes 3-4 working days.  We will notify you in case we want any clarification
+                        on your KYC.
+                      </p>
+
+
                     </ul>
                   </div>
 
@@ -622,14 +590,15 @@ function Home() {
                       src={congratsImg}
                       alt="SabPaisa"
                       title="SabPaisa"
+                      className="w-50"
                     />
                   </div>
                 </div>
               </div>
               <div className="hrForCard"></div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <div className="text-center">
                 <button
-                  className="modalbtnsuccess text-white mt-3 ml-5"
+                  className="btn cob-btn-primary text-white mt-2 text-center"
                   onClick={() => handleClose()}
                 >
                   Continue

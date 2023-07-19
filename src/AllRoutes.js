@@ -18,7 +18,11 @@ const ForgetPassword = React.lazy(() => import('./components/forgetpassword/Forg
 
 function AllRoutes() {
 
-  const fallbackMsg = (<div> Please Wait... </div>);
+  const fallbackMsg = (<div className="d-flex justify-content-center">
+    <div className="spinner-border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  </div>);
   return (
 
     <Switch>
