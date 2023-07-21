@@ -96,7 +96,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h6 className="">Test Credentials (PHP5 | JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter) </h6>
+                    <h6 className="">Test Credentials ( PHP7 | JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -202,7 +202,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample3"
                   >
-                    <h6 className="">Test Credentials (PHP7 | OpenCart | WooCommerce) </h6>
+                    <h6 className="">Test Credentials ( OpenCart | WooCommerce) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -293,7 +293,7 @@ function Sandbox() {
                           className="form-control"
                           
                           disabled="true"
-                          value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
+                          value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit"
                         />
                       </div>
                     </div>
