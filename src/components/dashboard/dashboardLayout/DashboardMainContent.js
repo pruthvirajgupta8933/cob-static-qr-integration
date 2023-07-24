@@ -81,15 +81,15 @@ import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
 function DashboardMainContent() {
     let history = useHistory();
     let { path } = useRouteMatch();
- 
-    const { menuListReducer, auth  } = useSelector((state) => state);
+
+    const { menuListReducer, auth } = useSelector((state) => state);
     const { user } = auth;
     const roles = roleBasedAccess();
     const dispatch = useDispatch();
     const location = useLocation();
 
 
-    
+
     // create new client code
     useEffect(() => {
         //  check the role and clientcode should be null
@@ -442,6 +442,8 @@ function DashboardMainContent() {
                                     <SignupData />
 
                                 </VerifierRoute>
+
+
                             ) : roles?.approver === true ? (
                                 <ApproverRoute
                                     exact
@@ -467,14 +469,15 @@ function DashboardMainContent() {
                             >
                                 <RateMapping />
                             </ApproverRoute>
-
-                            <ApproverRoute
-                                exact
-                                path={`${path}/additional-kyc`}
-                                Component={AdditionalKYC}
-                            >
+                            {roles?.approver === true && (<ApproverRoute exact path={`${path}/additional-kyc`} Component={AdditionalKYC}>
                                 <AdditionalKYC />
-                            </ApproverRoute>
+                            </ApproverRoute>)}
+
+
+                            {roles?.verifier === true && (<VerifierRoute exact path={`${path}/additional-kyc`} Component={AdditionalKYC}>
+                                <AdditionalKYC />
+                            </VerifierRoute>)}
+
 
                             <Route exact path={`${path}/thanks`}>
                                 <ThanksPage />
@@ -509,8 +512,8 @@ function DashboardMainContent() {
 
                             {/* Routing for Faq */}
 
-                            <AllowedForAll  exact path={`${path}/faq`} Component={Faq}>
-                                <Faq/>
+                            <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
+                                <Faq />
 
                             </AllowedForAll>
                             {/* <All  exact path={`${path}/faq`} Component={Faq}>
