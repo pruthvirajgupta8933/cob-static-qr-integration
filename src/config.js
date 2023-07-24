@@ -324,6 +324,11 @@ const B2B_API_LIVE = {
   challanTransactionExport: `${b2b_url}/e-collection/challan/get_mis`,
 };
 
+
+export const webSocketURL = {
+  connectionURL : "ws://192.168.34.26:5000"
+}
+
 const API_URL = API_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
