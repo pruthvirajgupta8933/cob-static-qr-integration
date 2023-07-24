@@ -11,7 +11,7 @@ import CountPerPageFilter from "../../../src/_components/table_components/filter
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
-import { onboardedReportExport } from "../../services/kyc/export-data.service";
+import { exportToExcelOnboard } from "../../services/kyc/export-data.service";
 
 
 
@@ -22,7 +22,7 @@ const OnboardedReport = () => {
   // const [dataCount, setDataCount] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [loadingState, setLoadingState] = useState(false);
+  // const [loadingState, setLoadingState] = useState(false);
   // eslint-disable-next-line no-unused-vars
 
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
@@ -30,14 +30,14 @@ const OnboardedReport = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedvalue, setSelectedvalue] = useState(KYC_STATUS_APPROVED);
   const [disabled, setDisabled] = useState(false);
-  const [dataClick, setDataClick] = useState(false);
+  // const [dataClick, setDataClick] = useState(false);
 
 
 
   const dispatch = useDispatch();
   const { kyc } = useSelector(state => state)
   const { allKycData } = kyc
-  const { result, loading, error, message, count, next, previous } = allKycData
+  const { result, loading, count } = allKycData
 
   useEffect(() => {
     setSearchingData(result)
@@ -187,23 +187,14 @@ const OnboardedReport = () => {
 
 
   const exportToExcelFn = () => {
-    onboardedReportExport({
+    exportToExcelOnboard({
       status: onboardValue.status,
       from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
-    }).then((res) => {
-      const blob = new Blob([res?.payload], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `Onboard-report_.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
+    })
   };
 
+    
 
   return (
 
