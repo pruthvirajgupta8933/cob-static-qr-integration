@@ -298,6 +298,8 @@ const API_LIVE = {
   menuListByLoginId: `${url}/menu-loginwise`,
 
   // -------------------------------------------------------------------------Subscription APIS-------------------------------------------||
+
+  HANDLE_RESPONSE:`${subAPIURL}/npci/registration/status/`,
   // Mandate Report
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EmandateSummary from "./mandateDetails/emandateSummary";
 import MandateSummary from "./mandateDetails/mandateSummary";
 import PersonalDetails from "./mandateDetails/personalDetails";
@@ -9,12 +9,13 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import FormikController from "../../../_components/formik/FormikController";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import subAPIURL from "../../../config";
+import subAPIURL from "../../../config"
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import "../Mandate_Submission/mandateDetails/mandateSubmission.css";
 import CustomModal from "../../../_components/custom_modal";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../config";
+
 
 const AuthMandate = () => {
   const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState();
@@ -23,8 +24,10 @@ const AuthMandate = () => {
   const [postData, setPostData] = useState({})
   const history = useHistory()
   const form = useRef()
+  
 
   const { createMandate } = useSelector((state) => state);
+  
   // console.log(createMandate.createMandate
   //   ?.mergedForm?.firstForm ,"this is createmen")
 
@@ -33,7 +36,7 @@ const AuthMandate = () => {
   // console.log("secondForm",secondForm)
   // console.log("thirdForm",thirdForm)
 
-// console.log(createMandate?.createMandate?.formData)
+  // console.log(createMandate?.createMandate?.formData)
   const { firstForm, secondForm, thirdForm } = createMandate?.createMandate?.formData;
   const mergedForm = {
     ...firstForm,
@@ -88,7 +91,7 @@ const AuthMandate = () => {
       payerUtilitityCode: "NACH00000000022341",
       mandateEndDate: mergedForm?.untilCancelled === true ? null : mergedForm?.mandateEndDate,
       payerName: mergedForm?.payerName,
-      mandateMaxAmount: mergedForm?.emiamount,
+      mandateMaxAmount: mergedForm?.mandateMaxAmount,
       mandateType: "ONLINE",
       mandateStartDate: mergedForm?.mandateStartDate,
       panNo: mergedForm?.panNo ? mergedForm?.panNo : "",
@@ -109,13 +112,16 @@ const AuthMandate = () => {
       userType: "merchant",
       emiamount: mergedForm?.emiamount,
     };
-    setPostData(mandateSubmissionDetails)
-
-
-     form.current.submit()
+    setPostData(mandateSubmissionDetails);
     
+    // history.push("/")
+
+    form.current.submit();
+   
+    // history.push("/dashboard/subscription/mandate-reg-response")
+
   };
-  console.log("postData", postData)
+ 
 
 
   const pushToDashboard = () => {
@@ -147,7 +153,7 @@ const AuthMandate = () => {
 
   return (
     <div className="row">
-      <div className="col-lg-6 mand">
+      <div className="col-lg-6">
         <CustomModal modalBody={modalBody} headerTitle={"Manadate Cancellation"} modalFooter={modalFooter} modalToggle={isModalOpen} fnSetModalToggle={setIsModalOpen} />
         <div id="accordion" style={{ marginTop: "50px" }}>
           <div
@@ -155,17 +161,17 @@ const AuthMandate = () => {
             id="headingOne"
             style={{ borderRadius: "20px" }}
           >
-            <h3 className="mb-0">
+            <h3>
               <button
-                className="btn btn-link"
+                className="btn btn-link collapsed text-decoration-none"
                 data-toggle="collapse"
                 data-target="#collapseOne"
-                aria-expanded="true"
+                aria-expanded="false"
                 aria-controls="collapseOne"
               >
-                E-Mandate Summary &nbsp;
+                E-Mandate Summary
                 <i
-                  className="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down "
                   aria-hidden="true"
                 ></i>
               </button>
@@ -174,7 +180,7 @@ const AuthMandate = () => {
 
           <div
             id="collapseOne"
-            className="collapse show"
+            className="collapse"
             aria-labelledby="headingOne"
             data-parent="#accordion"
           >
@@ -186,15 +192,15 @@ const AuthMandate = () => {
           <div className="card-header mandateCard" id="headingTwo">
             <h3 className="mb-0">
               <button
-                className="btn btn-link collapsed"
+                className="btn btn-link collapsed text-decoration-none"
                 data-toggle="collapse"
                 data-target="#collapseTwo"
                 aria-expanded="false"
                 aria-controls="collapseTwo"
               >
-                Mandate Summary &nbsp; &nbsp; &nbsp;
+                Mandate Summary
                 <i
-                  className="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -214,15 +220,15 @@ const AuthMandate = () => {
           <div className="card-header mandateCard" id="headingThree">
             <h3 className="mb-0">
               <button
-                className="btn btn-link collapsed"
+                className="btn btn-link collapsed text-decoration-none"
                 data-toggle="collapse"
                 data-target="#collapseThree"
                 aria-expanded="false"
                 aria-controls="collapseThree"
               >
-                Personal Details &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                Personal Details
                 <i
-                  className="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -241,15 +247,15 @@ const AuthMandate = () => {
           <div className="card-header mandateCard" id="headingFour">
             <h3 className="mb-0">
               <button
-                className="btn btn-link collapsed"
+                className="btn btn-link collapsed text-decoration-none"
                 data-toggle="collapse"
                 data-target="#collapseFour"
                 aria-expanded="false"
                 aria-controls="collapseFour"
               >
-                Bank Details &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                Bank Details
                 <i
-                  className="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -267,6 +273,7 @@ const AuthMandate = () => {
           </div>
         </div>
       </div>
+
       <div className="col-lg-6">
         <div className="card">
           <div className="card-header text-center font-weight-bold">
@@ -281,7 +288,7 @@ const AuthMandate = () => {
             >
               {(formik) => (
                 <Form>
-                  <div style={{ display: "inline-flex" }}>
+                  <div className="form-check form-check-inline">
                     <FormikController
                       control="radio"
                       name="sourcing_code"
@@ -289,10 +296,7 @@ const AuthMandate = () => {
                       className="form-check-input"
                     />
 
-                    {formik.handleChange(
-                      "sourcing_code",
-                      setValue(formik?.values?.sourcing_point)
-                    )}
+                    {formik.handleChange("sourcing_code", setValue(formik?.values?.sourcing_point))}
                   </div>
                   <div style={{ marginTop: "20px" }}>
                     1. I confirm that the contents have been carefully read,
@@ -306,6 +310,7 @@ const AuthMandate = () => {
                       name="term_condition"
                       className="mr-0"
                     />
+                    &nbsp;
                     3. I am authorizing the user entity to debit my account
                     based on the instructions as agreed.
                   </div>
@@ -400,6 +405,10 @@ const AuthMandate = () => {
           </div>
         </div>
       </div>
+
+
+
+
       <div className="col-lg-12 d-none">
         {mandateSubmissionResponse?.merchantID && (
           <form
@@ -435,9 +444,10 @@ const AuthMandate = () => {
           action={API_URL.MANDATE_REGISTRATION}
           method="POST"
           name="mandateRegForm"
+          // target="_blank"
 
         >
-          <div style={{ display: "block" }}>
+          <div style={{ display: "none" }}>
             <input name="authenticationMode" value={postData?.authenticationMode} />
             <input type="text" name="clientCode" value={postData?.clientCode} />
             <input type="text" name="clientRegistrationId" value={postData?.clientRegistrationId} />
@@ -448,7 +458,7 @@ const AuthMandate = () => {
             <input type="text" name="mandateEndDate" value={postData?.mandateEndDate} />
             <input type="text" name="mandateMaxAmount" value={postData?.mandateMaxAmount} />
             <input type="text" name="mandatePurpose" value={postData?.mandatePurpose} />
-            <input type="text" name="mandateStartDate" value={"2023-11-15T15:16:13.673Z"} />
+            <input type="text" name="mandateStartDate" value={postData?.mandateStartDate} />
             <input type="text" name="mandateType" value={postData?.mandateType} />
             <input type="text" name="npciPaymentBankCode" value={postData?.npciPaymentBankCode} />
             <input type="text" name="panNo" value={postData?.panNo} />
@@ -465,6 +475,8 @@ const AuthMandate = () => {
             <input type="text" name="telePhone" value={postData?.telePhone} />
             <input type="text" name="untilCancelled" value={postData?.untilCancelled} />
             <input type="text" name="userType" value={postData?.userType} />
+            <input type="submit"  value="submit" />
+           
           </div>
         </form>
       </div>
