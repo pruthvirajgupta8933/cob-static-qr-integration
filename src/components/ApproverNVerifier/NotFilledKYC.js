@@ -180,7 +180,7 @@ const NotFilledKYC = () => {
           <SkeletonTable/>
         }
         {data?.length == 0 && !loadingState && (
-          <h2 className="text-center">No data Found</h2>
+          <h6 className="text-center">No data Found</h6>
         )}
       </div>
     </div>
