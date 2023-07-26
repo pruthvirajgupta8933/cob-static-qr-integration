@@ -202,7 +202,7 @@ const handleVerifyClick = () => {
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Pincode<span style={{ color: "red" }}>*</span>
+            Pin Code<span style={{ color: "red" }}>*</span>
           </label>
           <input
             type="text"
