@@ -92,7 +92,7 @@ function MerchantContactInfo(props) {
       <div className="form-row g-3">
         <div className="col-sm-6 col-md-6 col-lg-6">
           <label className="">
-            Contact Name<span className="text-danger">*</span>
+          Contact Person Name
           </label>
           <input
             type="text"
@@ -105,7 +105,7 @@ function MerchantContactInfo(props) {
 
         <div className="col-sm-6 col-md-6 col-lg-6 ">
           <label className="">
-            Aadhaar Number <span className="text-danger">*</span>
+            Aadhaar Number
           </label>
           <input
             type="text"
@@ -121,7 +121,7 @@ function MerchantContactInfo(props) {
       <div className="form-row g-3">
         <div className="col-sm-6 col-md-6 col-lg-6 ">
           <label className="">
-            Contact Number<span style={{ color: "red" }}>*</span>
+            Contact Number
           </label>
           <input
             type="text"

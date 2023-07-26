@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Yup from "../../_components/formik/Yup"
 import FormikController from "../../_components/formik/FormikController";
@@ -96,15 +96,15 @@ function ContactInfo(props) {
       .nullable(),
     aadhar_number: Yup.string()
       .trim()
-      .max(18,"Exceeds the limit")
+      .max(18, "Exceeds the limit")
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .matches(aadhaarRegex, "Aadhaar Number is Invalid")
       .required("Required")
       .nullable(),
   });
 
-  $(document).ready(function() {
-    $("#txtNoSpaces").keydown(function(event) {
+  $(document).ready(function () {
+    $("#txtNoSpaces").keydown(function (event) {
       if (event.keyCode == 32) {
         event.preventDefault();
       }
@@ -237,7 +237,7 @@ function ContactInfo(props) {
           setFieldValue,
           errors,
           setFieldError,
-  
+
         }) => (
           <Form>
             <div className="row">
@@ -258,7 +258,7 @@ function ContactInfo(props) {
 
               <div className="col-sm-6 col-md-6 col-lg-6" >
                 <label className="col-form-label mt-0 p-2 " >
-                  Aadhaar No.<span style={{ color: "red" }}>*</span>
+                  Aadhaar Number<span style={{ color: "red" }}>*</span>
                 </label>
 
                 <FormikController
@@ -268,7 +268,7 @@ function ContactInfo(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   className="form-control maskedInput"
                   readOnly={readOnly}
-                  
+
                 />
               </div>
             </div>
@@ -293,9 +293,9 @@ function ContactInfo(props) {
                   />
 
                   {KycList?.contactNumber !== null &&
-                  KycList?.isContactNumberVerified === 1 &&
-                  !errors.hasOwnProperty("contact_number") &&
-                  !errors.hasOwnProperty("oldContactNumber") ? (
+                    KycList?.isContactNumberVerified === 1 &&
+                    !errors.hasOwnProperty("contact_number") &&
+                    !errors.hasOwnProperty("oldContactNumber") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -359,32 +359,32 @@ function ContactInfo(props) {
                   />
 
                   {
-                  KycList?.emailId !== null &&
-                  KycList?.isEmailVerified === 1 && (
-                    <span className="success input-group-append">
-                      <img
-                        src={gotVerified}
-                        alt=""
-                        title=""
-                        width={"20px"}
-                        height={"20px"}
-                        className="btn-outline-secondary"
-                      />
-                    </span>
-                  )}
-                </div>
-                
-                {<ErrorMessage name="email_id">
-                    {(msg) => (
-                      <span className="abhitest- errortxt- text-danger">
-                        {msg}
+                    KycList?.emailId !== null &&
+                    KycList?.isEmailVerified === 1 && (
+                      <span className="success input-group-append">
+                        <img
+                          src={gotVerified}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
                       </span>
                     )}
-                  </ErrorMessage>
+                </div>
+
+                {<ErrorMessage name="email_id">
+                  {(msg) => (
+                    <span className="abhitest- errortxt- text-danger">
+                      {msg}
+                    </span>
+                  )}
+                </ErrorMessage>
                 }
 
               </div>
-              
+
               {/*  Modal Popup for Otp Verification */}
               <PhoneVerficationModal
                 show={showOtpVerifyModalPhone}
@@ -393,20 +393,20 @@ function ContactInfo(props) {
               {/*  Modal Popup for Otp Verification Mobile */}
             </div>
             <div className="row">
-                <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
+              <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                 {VerifyKycStatus === KYC_STATUS_VERIFIED ? (
-                    <></>
-                  ) : (
-                    <button
-                      disabled={disable}
-                      type="submit"
-                      className="save-next-btn float-lg-right cob-btn-primary text-white"
-                    >
-                      {buttonText}
-                    </button>
-                  )}
-                </div>
+                  <></>
+                ) : (
+                  <button
+                    disabled={disable}
+                    type="submit"
+                    className="save-next-btn float-lg-right cob-btn-primary text-white"
+                  >
+                    {buttonText}
+                  </button>
+                )}
               </div>
+            </div>
           </Form>
         )}
       </Formik>
