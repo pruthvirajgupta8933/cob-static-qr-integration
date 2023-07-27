@@ -4,6 +4,7 @@ let url,
   b2b_url,
   kyc_validate,
   payout_url,
+  webSocketUrl,
   payLinkAPIURL = "";
   
 
@@ -14,6 +15,8 @@ if (ENV_PROD) {
   payout_url = "https://payout.sabpaisa.in";
   b2b_url = "https://b2becollect.sabpaisa.in";
   payLinkAPIURL="https://paybylink.sabpaisa.in/paymentlink";
+  webSocketUrl = "wss://stage-notification.sabpaisa.in";
+
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -21,6 +24,7 @@ if (ENV_PROD) {
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
   payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
+  webSocketUrl = "wss://stage-notification.sabpaisa.in";
 
 }
 
@@ -325,8 +329,9 @@ const B2B_API_LIVE = {
 };
 
 
-export const webSocketURL = {
-  connectionURL : "ws://192.168.34.26:5000"
+export const wsConnectUrl = {
+  connectionURL : webSocketUrl,
+  readNotification : `${kyc_url}/kyc/notification/fetch_all/` //?page_size=5&page=1
 }
 
 const API_URL = API_LIVE;

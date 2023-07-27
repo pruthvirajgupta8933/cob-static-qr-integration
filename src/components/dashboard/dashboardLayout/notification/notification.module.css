@@ -5,18 +5,18 @@
     top: 40px;
     box-shadow: black 0px 6px 14px -4px;
     height: 380px;
+    width: 450px;
 }
 
 .notify_container {
-    width: 60px;
     height: 60px;
     display: flex;
     align-items: center;
-    /* Vertical alignment */
     justify-content: center;
-    /* Horizontal alignment */
     border: 1px solid #ccc;
     border-radius: 50%;
+    width: max-content;
+    min-width: 60px;
 }
 
 .notify_ul {
@@ -42,6 +42,10 @@
 }
 
 
+.content_wrap{
+    /* white-space: normal; */
+    /* word-wrap: break-word; */
+}
 
 /* button toggle */
 

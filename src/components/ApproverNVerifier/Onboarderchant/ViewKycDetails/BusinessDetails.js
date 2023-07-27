@@ -8,13 +8,13 @@ import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 const BusinessDetails = (props) => {
   const { merchantKycId, KycTabStatus } = props;
   const dispatch = useDispatch();
-   const { auth } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
 
   const { user } = auth;
   const { loginId } = user;
 
 
-const handleVerifyClick = () => {
+  const handleVerifyClick = () => {
 
     const veriferDetails = {
       login_id: merchantKycId.loginMasterId,
@@ -84,7 +84,7 @@ const handleVerifyClick = () => {
             )}
           </span>
         </div>
-        <div className="col-sm-12 col-md-6 col-lg-6">
+        <div className="col-sm-12 col-md-3 col-lg-3">
           <label className="">
             Business PAN<span style={{ color: "red" }}>*</span>
           </label>
@@ -96,10 +96,7 @@ const handleVerifyClick = () => {
             value={merchantKycId?.panCard}
           />
         </div>
-      </div>
-
-      <div className="form-row g-3">
-        <div className="col-sm-12 col-md-6 col-lg-6">
+        <div className="col-sm-12 col-md-3 col-lg-3">
           <label className="">
             Authorized Signatory PAN
             <span style={{ color: "red" }}>*</span>
@@ -120,6 +117,35 @@ const handleVerifyClick = () => {
               <p className="text-success">Verified</p>
             )}
           </span>
+        </div>
+      </div>
+
+      <div className="form-row g-3">
+        <div className="col-sm-12 col-md-6 col-lg-6">
+
+          <div className="accordion accordion-flush" id="accordionFlushExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="flush-headingOne">
+                <button className="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  <p className="fs-6">Udyam Aadhar Details</p>
+                </button>
+              </h2>
+              <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div className="accordion-body p-0">
+                {merchantKycId?.is_udyam ? <ul className="list-group">
+                    <li className="list-group-item">Reg. Number : {merchantKycId?.udyam_data?.reg_number}</li>
+                    <li className="list-group-item">entity : {merchantKycId?.udyam_data?.entity}</li>
+                    <li className="list-group-item">type : {merchantKycId?.udyam_data?.type}</li>
+                    <li className="list-group-item">incorporated_date : {merchantKycId?.udyam_data?.incorporated_date}</li>
+                    <li className="list-group-item">commenced_date : {merchantKycId?.udyam_data?.commenced_date}</li>
+                    <li className="list-group-item">registered_date : {merchantKycId?.udyam_data?.registered_date}</li>
+                  </ul> : <p>Udyam number not available</p>}
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
@@ -215,19 +241,19 @@ const handleVerifyClick = () => {
       </div>
 
       <div className="form-row g-3">
-      <div className="col-lg-6 font-weight-bold">
-        <p>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
-        <p>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
-      </div>
+        <div className="col-lg-6 font-weight-bold">
+          <p>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
+          <p>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
+        </div>
 
-      <div className="col-lg-6">
-        <VerifyRejectBtn
-          KycTabStatus={KycTabStatus?.merchant_info_status}
-          KycVerifyStatus={{ handleVerifyClick }}
-          KycRejectStatus={{ handleRejectClick }}
-          btnText={{ verify: "Verify", Reject: "Reject" }}
-        />
-      </div>
+        <div className="col-lg-6">
+          <VerifyRejectBtn
+            KycTabStatus={KycTabStatus?.merchant_info_status}
+            KycVerifyStatus={{ handleVerifyClick }}
+            KycRejectStatus={{ handleRejectClick }}
+            btnText={{ verify: "Verify", Reject: "Reject" }}
+          />
+        </div>
       </div>
 
 
