@@ -61,9 +61,7 @@ function TransactionEnquirey() {
           setErrMessage(true);
           setIsDisable(false)
         }
-
-
-      })
+ })
       .catch((e) => {
         setLoadingState(false)
         setIsShow(false);

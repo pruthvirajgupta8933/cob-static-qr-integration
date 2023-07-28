@@ -33,7 +33,9 @@ const options1 = [
 
 const FORM_VALIDATION = Yup.object().shape({
   mandateType: Yup.string().required("Required"),
-  mandateMaxAmount: Yup.number().required("Required"),
+  mandateMaxAmount: Yup.string()
+  .required('Required')
+  .matches(/^[0-9]+$/, 'Only numbers are allowed'),
   mandateCategory: Yup.string().required("Required"),
   frequency: Yup.string().required("Required"),
   emiamount: Yup.string().required("Required"),
@@ -52,6 +54,8 @@ const FORM_VALIDATION = Yup.object().shape({
   emiamount: Yup.string().required("Required"),
   requestType: Yup.string().required("Required"),
 });
+
+
 
 
 
@@ -76,7 +80,7 @@ const MandateForm = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [handelResponseData, setHandleResponseData] = useState({})
   const [disableEndDate, setDisableEndDate] = useState(false);
-  const [radioButtonValue, setRadioButtonValue] = useState("");
+  // const [radioButtonValue, setRadioButtonValue] = useState("");
   const now = new Date();
   const dispatch = useDispatch();
   const { createMandate } = useSelector((state) => state);
@@ -90,14 +94,6 @@ const MandateForm = () => {
     const max = 9999999999;
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-
-  const randomNumber = generateRandomNumber();
-
-
-
-
-
-
 
   const initialValues = {
     radioButtonValue: "",
@@ -122,12 +118,8 @@ const MandateForm = () => {
   const location = useLocation();
   const { search } = location;
   const mendateRegId = search.split("?mendateRegId=")[1];
-  console.log(mendateRegId);
-
-
-
-
-  useEffect(() => {
+  
+ useEffect(() => {
     handleResponseApi()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mendateRegId])
@@ -201,8 +193,7 @@ const MandateForm = () => {
     axiosInstance
       .get(subAPIURL.HANDLE_RESPONSE + mendateRegId)
       .then((response) => {
-
-        setHandleResponseData(response.data)
+      setHandleResponseData(response.data)
         if (response.status === 200) {
           setShowMandateModal(true)
         }
@@ -216,8 +207,6 @@ const MandateForm = () => {
 
 
   const handleSubmit = (values) => {
-
-
     setPersonalScreen(true);
     setProgressWidth("50%")
     setMandateScreen(false);

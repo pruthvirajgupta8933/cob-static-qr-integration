@@ -87,7 +87,7 @@ const DebitReport = () => {
         fromDate: saveData?.from_date,
         toDate: saveData?.to_date,
         status: saveData?.status,
-        m_id:loginId,
+        m_id:"2",
       })
     )
       .then((resp) => {
@@ -134,7 +134,7 @@ const DebitReport = () => {
         fromDate: values?.fromDate,
         toDate: values?.toDate,
         status: values?.status,
-        m_id:loginId
+        m_id:"2"
     };
 
     setSaveData(values);
@@ -287,9 +287,9 @@ const DebitReport = () => {
       </div>
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
-          <h1 className="m-b-sm gx-float-left mt-3">
+          <h5 className="ml-2">
             Debit Report
-          </h1>
+          </h5>
         </div>
         <Formik
           initialValues={initialValues}
@@ -307,7 +307,7 @@ const DebitReport = () => {
                     control="select"
                     label="Registration Status"
                     name="status"
-                    className="form-control rounded-0 mt-0"
+                    className="form-control form-select rounded-0 mt-0"
                     options={options1}
                   />
                 </div>
@@ -337,15 +337,15 @@ const DebitReport = () => {
 
                 <div className=" col-lg-4">
                   <button
-                    type="subbmit"
+                    type="submit"
                     disabled={disable}
-                    className="btn approve text-white  btn-sm"
+                    className="btn approve  cob-btn-primary text-white  btn-sm"
                   >
                     Submit
                   </button>
                 </div>
 
-                {showData === true ? (
+                {showData === true  ? data.length===0 ? ""  : (
                   <div className="form-row mt-2">
                   {/* <div className="container-fluid flleft"> */}
                     <div className="form-group col-md-3">
@@ -387,8 +387,8 @@ const DebitReport = () => {
           </Form>
         </Formik>
         {showData === true ? (
-          <div className="col-md-12 col-md-offset-4">
-            <h5 className="font-weight-bold">Total Records: {data?.length}</h5>
+          <div className="col-md-12 col-md-offset-4 mt-4">
+            <p className="font-weight-bold">Total Records: {data?.length}</p>
             <div className="scroll overflow-auto">
               <Table
                 row={rowData}

@@ -1,40 +1,17 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import FormikController from "../../_components/formik/FormikController";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import FormikController from "../../_components/formik/FormikController";
 import {
   authPanValidation,
   gstValidation,
   bankAccountVerification,
 } from "../../slices/kycSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
-// import "./kyc-style.css";
-
 const AdditionalKYC = () => {
-  const dispatch = useDispatch();
-  const { kyc } = useSelector((state) => state);
-
-  
-
-  const documentTypeList = [
-    { documentType: "PAN", value: "1" },
-    { documentType: "GSTIN", value: "2" },
-    { documentType: "BANK ACCOUNT", value: "3" },
-  ];
-
-  const initialValuesForPAN = {
-    pan_card: "",
-  };
-
-  const initialValuesForGSTIN = {
-    gst_number: "",
-    fetchFilings: false,
-    fy: "2018-19",
-  };
 
   const initialValuesForBankAccount = {
     ifsc_code: "",
@@ -46,14 +23,6 @@ const AdditionalKYC = () => {
   const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
-  
- const validationSchemaForPAN = Yup.object({
-    pan_card: Yup.string()
-      .trim()
-      .matches(reqexPAN, "PAN number is Invalid")
-      .required("Required")
-      .nullable(),
-  });
 
   const validationSchemaForBankAccount = Yup.object({
     ifsc_code: Yup.string()
@@ -71,69 +40,98 @@ const AdditionalKYC = () => {
 
 
   });
+  const dispatch = useDispatch();
+  const { kyc } = useSelector((state) => state);
+  const [initialValuesForPAN, setInitialValuesForPAN] = useState({
+    pan_card: "",
+  });
+  const [initialValuesForGSTIN, setInitialValuesForGSTIN] = useState({
+    gst_number: "",
 
-  const validationSchemaForGSTIN = Yup.object({
-    gst_number: Yup.string()
-      .trim()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(regexGSTN, "GSTIN Number is Invalid")
-      .required("Required")
-      .nullable(),
   });
 
+  //   const handleSubmitForBankAccount = (values) => {
+  //     setButtonDisable(true)
+  //     dispatch(
+  //       bankAccountVerification({
+  //         account_number: values.account_number,
+  //         ifsc: values.ifsc_code,
+  //       })
+  //     ).then((res) => {
+  //       if (
+  //         setButtonDisable(false),
+  //         // setBankaccount(res?payload),
+  //         setBankaccount(res?.payload),
+
+  //         res?.meta?.requestStatus === "fulfilled" &&
+  //         res?.payload?.status === true &&
+  //         res?.payload?.valid === true
+  //       ) {
+  //         // toast.success(res?.payload?.message);
+  //         setBankStatus(res?.payload?.status);
+  //       } else {
+  //         toast.error(res?.payload?.message);
+  //       }
+  //     });
+  //   };
+
+  const [initialValuesForIfsc, setInitialValuesForIfsc] = useState({ ifsc_code: "", })
+  //   const[initialValuesForBankAccount,setInitialValuesForBankAccount]=useState({account_number:"",ifsc_code:""})
+
+  console.log("initialValuesForBankAccount", initialValuesForBankAccount)
+
+  const documentTypeList = [
+    { documentType: "PAN", value: "1" },
+    { documentType: "GSTIN", value: "2" },
+    { documentType: "BANK ACCOUNT", value: "3" },
+  ];
+
+
+
+
+  // State variables
   const [selectedDocType, setSelectedDocType] = useState("");
   const [panStatus, setPanStatus] = useState(false);
-  const [gstinData, setGstinData] = useState([])
-  const[bankAccount,setBankaccount]=useState([])
+  const [gstinData, setGstinData] = useState([]);
+  const [bankAccount, setBankAccount] = useState([]);
+
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
-  const [buttonDisable, setButtonDisable] = useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPanInfo, setShowPanInfo] = useState([])
+  const [showPanInfo, setShowPanInfo] = useState([]);
   const objArray = Object.entries(gstinData);
-  const panInfodata = Object.entries(showPanInfo);
-  const banckAccountInfo=Object.entries(bankAccount)
-  
+  const panInfoData = Object.entries(showPanInfo);
+  const bankAccountInfo = Object.entries(bankAccount);
+
+
+
+  // Helper functions
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
   };
 
-  
-  useEffect(() => {
-    setPanStatus(false);
-    setGstStatus(false);
-    setBankStatus(false);
-  }, [selectedDocType]);
-
-  const handleSubmitForPAN = (values) => {
-    setButtonDisable(true)
-    setIsLoading(true)
-    dispatch(
-      authPanValidation({
-        pan_number: values.pan_card,
-      })
-    ).then((res) => {
+  const handlePanSubmit = (values) => {
+    setButtonDisable(true);
+    setIsLoading(true);
+    dispatch(authPanValidation({ pan_number: values.pan_card })).then((res) => {
+      setButtonDisable(false);
+      setShowPanInfo(res?.payload);
+      setIsLoading(false);
       if (
-        setButtonDisable(false),
-        setShowPanInfo(res?.payload),
-        setIsLoading(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
-
       ) {
-        // toast.success(res.payload.message);
         setPanStatus(res.payload.status);
-        // console.log("PAN Data",res.payload)
       } else {
         toast.error(res?.payload?.message);
       }
     });
   };
 
-  const handleSubmitForGSTIN = (values) => {
-    setIsLoading(true)
-
+  const handleGstinSubmit = (values) => {
+    setIsLoading(true);
     dispatch(
       gstValidation({
         gst_number: values.gst_number,
@@ -141,14 +139,13 @@ const AdditionalKYC = () => {
         fy: "2018-19",
       })
     ).then((res) => {
-    if (
-        setIsLoading(false),
-        setGstinData(res?.payload),
+      setIsLoading(false);
+      setGstinData(res?.payload);
+      if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-        // toast.success(res?.payload?.message);
         setGstStatus(res.payload.status);
       } else {
         toast.error(res?.payload?.message);
@@ -156,30 +153,34 @@ const AdditionalKYC = () => {
     });
   };
 
-  const handleSubmitForBankAccount = (values) => {
-    setButtonDisable(true)
+  const handleBankAccountSubmit = (values) => {
+    setButtonDisable(true);
     dispatch(
       bankAccountVerification({
         account_number: values.account_number,
         ifsc: values.ifsc_code,
       })
     ).then((res) => {
+      setButtonDisable(false);
+      setBankAccount(res?.payload);
       if (
-        setButtonDisable(false),
-        // setBankaccount(res?payload),
-        setBankaccount(res?.payload),
-
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
         res?.payload?.valid === true
       ) {
-        // toast.success(res?.payload?.message);
         setBankStatus(res?.payload?.status);
       } else {
         toast.error(res?.payload?.message);
       }
     });
   };
+
+  // Reset status on document type change
+  useEffect(() => {
+    setPanStatus(false);
+    setGstStatus(false);
+    setBankStatus(false);
+  }, [selectedDocType]);
 
   return (
     <section className="">
@@ -200,110 +201,98 @@ const AdditionalKYC = () => {
                   >
                     <option value="Select a Document">Select a Document</option>
                     {documentTypeList.map((data) => (
-                      <option value={data.value}>{data.documentType}</option>
+                      <option value={data.value} key={data.value}>
+                        {data.documentType}
+                      </option>
                     ))}
                   </select>
                 </div>
               </div>
             </div>
-            {selectedDocType === "1" ? (
-              <Formik
-                initialValues={initialValuesForPAN}
-                validationSchema={validationSchemaForPAN}
-                onSubmit={handleSubmitForPAN}
-                enableReinitialize={true}
-              >
-                <Form className="form">
-                  <div className="container">
-                    <div className="row">
-                      <div className="col-lg-3">
-                        <FormikController
-                          control="input"
-                          type="text"
-                          name="pan_card"
-                          className="form-control"
-                          placeholder="Enter your PAN"
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-3 mr-2">
-                        <button
-                          type="submit"
-                          className="btn cob-btn-primary text-white"
-                       
-                        >
-                          
-                          {
-                            isLoading &&
-                            <>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 
-                            </>
-                          }
-                          Verify
-                        </button>
-                      </div>
+            {selectedDocType === "1" && (
+              <div className="form">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-lg-3">
+                      <input
+                        type="text"
+                        name="pan_card"
+                        className="form-control"
+                        placeholder="Enter your PAN"
+                        value={initialValuesForPAN.pan_card}
+                        onChange={(e) =>
+                          setInitialValuesForPAN({ pan_card: e.target.value })
+                        }
+                      />
                     </div>
-
+                    <div className="col-lg-3">
+                      <button
+                        type="button"
+                        className="btn cob-btn-primary text-white"
+                        onClick={() => handlePanSubmit(initialValuesForPAN)}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : (
+                          "Verify"
+                        )}
+                      </button>
+                    </div>
                   </div>
-                </Form>
-              </Formik>
-            ) : (
-              ""
+                </div>
+              </div>
             )}
 
-            {selectedDocType === "2" ? (
-              <Formik
-                initialValues={initialValuesForGSTIN}
-                validationSchema={validationSchemaForGSTIN}
-                onSubmit={handleSubmitForGSTIN}
-                enableReinitialize={true}
-              >
-                <Form className="form">
-                  <div className="container">
-                    <div className="row">
-                      <div className="col-lg-3">
-                        <FormikController
-                          control="input"
-                          type="text"
-                          name="gst_number"
-                          className="form-control"
-                          placeholder="Enter your GSTIN Number"
-                        />
-                      </div>
+            {selectedDocType === "2" && (
+              <div className="form">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-lg-3">
+                      <input
+                        type="text"
+                        name="gst_number"
+                        className="form-control"
+                        placeholder="Enter your GSTIN Number"
+                        value={initialValuesForGSTIN.gst_number}
+                        onChange={(e) =>
+                          setInitialValuesForGSTIN({ gst_number: e.target.value })
+                        }
+                      />
                     </div>
-                    <div className="row">
-                      <div className="col-lg-3 mr-5">
-                        <button
-                          type="submit"
-                          className="btn cob-btn-primary  text-white"
-                          disabled={buttonDisable}
-                        >
-                          {
-                            isLoading &&
-                            <>
-                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-
-                            </>
-                          }
-                          Verify
-                        </button>
-                      </div>
+                    <div className="col-lg-3">
+                      <button
+                        type="button"
+                        className="btn cob-btn-primary text-white"
+                        onClick={() => handleGstinSubmit(initialValuesForGSTIN)}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : (
+                          "Verify"
+                        )}
+                      </button>
                     </div>
-
                   </div>
-                </Form>
-              </Formik>
-            ) : (
-              ""
+                </div>
+              </div>
             )}
 
             {selectedDocType === "3" ? (
               <Formik
                 initialValues={initialValuesForBankAccount}
                 validationSchema={validationSchemaForBankAccount}
-                onSubmit={handleSubmitForBankAccount}
+                onSubmit={handleBankAccountSubmit}
                 enableReinitialize={true}
               >
                 <Form className="form">
@@ -353,14 +342,15 @@ const AdditionalKYC = () => {
               ""
             )}
 
-        {panStatus === true && selectedDocType === "1" && (
+            {/* Render additional details after verification */}
+            {panStatus && selectedDocType === "1" && (
               <div className="container mt-5">
                 <h5 className="">PAN Details</h5>
                 <div className="row">
-                  {panInfodata.map(([key, value]) => (
+                  {panInfoData.map(([key, value]) => (
                     <div className="col-md-6 p-2 text-uppercase" key={key}>
                       <span className="font-weight-bold mb-1">
-                        {key.replace('_', ' ')}:
+                        {key.replace("_", " ")}:
                       </span>
                       {typeof value === "boolean" ? (
                         <span>{value.toString()}</span>
@@ -373,14 +363,14 @@ const AdditionalKYC = () => {
               </div>
             )}
 
-        {gstStatus === true && selectedDocType === "2" &&
+            {gstStatus && selectedDocType === "2" && (
               <div className="container mt-5">
                 <h5 className="">GSTIN Information</h5>
                 <div className="row">
                   {objArray.map(([key, value]) => (
                     <div className="col-md-6 p-2 text-uppercase" key={key}>
                       <span className="font-weight-bold mb-1">
-                        {key.replace('_', ' ')}:
+                        {key.replace("_", " ")}:
                       </span>
                       {typeof value === "boolean" ? (
                         <span>{value.toString()}</span>
@@ -391,16 +381,16 @@ const AdditionalKYC = () => {
                   ))}
                 </div>
               </div>
-            }
+            )}
 
-            {bankStatus === true && selectedDocType === "3" ? (
+            {bankStatus && selectedDocType === "3" && (
               <div className="container" style={{ marginTop: "32px" }}>
                 <h5 className="font-weight-bold">Bank Account Information</h5>
                 <div className="row">
-                  {banckAccountInfo.map(([key, value]) => (
+                  {bankAccountInfo.map(([key, value]) => (
                     <div className="col-md-6 p-2 text-uppercase" key={key}>
                       <span className="font-weight-bold mb-1">
-                        {key.replace('_', ' ')}:
+                        {key.replace("_", " ")}:
                       </span>
                       {typeof value === "boolean" ? (
                         <span>{value.toString()}</span>
@@ -410,10 +400,7 @@ const AdditionalKYC = () => {
                     </div>
                   ))}
                 </div>
-                
               </div>
-            ) : (
-              ""
             )}
           </div>
         </div>
@@ -421,5 +408,8 @@ const AdditionalKYC = () => {
     </section>
   );
 };
+
+  
+
 
 export default AdditionalKYC;
