@@ -44,8 +44,11 @@ function Home() {
 
   useEffect(() => {
     // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
-    dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
-    roles.merchant && dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
+    if(roles.merchant){
+      dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
+      dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
+    } 
+    
   }, []);
 
   useEffect(() => {
@@ -153,15 +156,13 @@ function Home() {
 
                   <div className="col-lg-12 col-md-12">
                     <div className="card col-lg-12- cardkyc pull-left">
-                      <div className="card-body ">
+                      <div className="">
                         <span className="">
                           You can accept payments upto ₹10,000 for now. To extend
                           the limit complete your KYC and get it approved.
                         </span>
-                        <Link to={`/dashboard/kyc`}>
-                          <button className="text-white cob-btn-primary btn-sm ml-1">
+                        <Link to={`/dashboard/kyc`} className="ml-1">
                             Complete KYC
-                          </button>
                         </Link>
                       </div>
                     </div>

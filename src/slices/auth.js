@@ -3,7 +3,7 @@ import { setMessage } from "./message";
 import { axiosInstance } from "../utilities/axiosInstance";
 import AuthService from "../services/auth.service";
 import TokenService from "../services/token.service";
-import { socketConnection } from "../services/notification-service/notification.service";
+// import { socketConnection } from "../services/notification-service/notification.service";
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 // console.log("user",user)
@@ -136,7 +136,7 @@ export const OTPVerificationApi = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-   socketConnection.disconnect();
+  //  socketConnection.disconnect();
   await AuthService.logout();
 });
 

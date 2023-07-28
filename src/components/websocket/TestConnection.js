@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { socketConnection } from '../../services/notification-service/notification.service';
+// import { socketConnection } from '../../services/notification-service/notification.service';
 
 // import socketIOClient from 'socket.io-client';
 
@@ -17,20 +17,20 @@ const TestConnection = () => {
 
   const handleClick = () => {
     // Emit a 'message' event to the server with the current timestamp
-    socketConnection.emit('mark_as_read', { text: `Message sent at ${new Date().toLocaleTimeString()}` });
+    // socketConnection.emit('mark_as_read', { text: `Message sent at ${new Date().toLocaleTimeString()}` });
   };
 
   useEffect(() => {
     console.log("dfdf")
     // Listen for 'message' events from the server
-    socketConnection.on('notify', (data) => {
-        console.log("notify-", data)
-    //   setMessage(data.text);
-    });
+    // socketConnection.on('notify', (data) => {
+    //     console.log("notify-", data)
+    // //   setMessage(data.text);
+    // });
 
     // Clean up the socket connection when the component unmounts
     return () => {
-        socketConnection.disconnect();
+        // socketConnection.disconnect();
         console.log("socket disconnect")
     };
   }, []);

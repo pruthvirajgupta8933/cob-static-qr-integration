@@ -6,7 +6,7 @@ import moment from 'moment/moment';
 // import io from 'socket.io-client';
 // import { wsConnectUrl } from '../../config';
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
-import { socketConnection } from '../../../../services/notification-service/notification.service';
+// import { socketConnection } from '../../../../services/notification-service/notification.service';
 import { useDispatch } from 'react-redux';
 import { fetchReadNotification } from '../../../../slices/notification-slice/notificationSlice';
 // import { wsConnectUrl } from '../../../../config';
@@ -39,16 +39,15 @@ function Notification() {
     useEffect(() => {
         console.log("dfdf")
         // Listen for 'message' events from the server
-        socketConnection.on('notify', (data) => {
-            console.log("notify-", data)
-            setObjectArray((prevArray) => [...prevArray, data]);
-        //   setMessage(data.text);
-        });
+        // socketConnection.on('notify', (data) => {
+        //     console.log("notify-", data)
+        //     setObjectArray((prevArray) => [...prevArray, data]);
+        // });
 
 
-        socketConnection.on('error', (data) => {
-            console.log("error", data)
-        });
+        // socketConnection.on('error', (data) => {
+        //     console.log("error", data)
+        // });
     
         // Clean up the socket connection when the component unmounts
         return () => {
@@ -173,7 +172,7 @@ function Notification() {
     const markAsRead = (obj) => {
         setToggleRead(!toggleRead)
         console.log(obj)
-        socketConnection.emit('mark_as_read', obj)
+        // socketConnection.emit('mark_as_read', obj)
     }
 
 

@@ -142,20 +142,20 @@ function BusinessDetails(props) {
   };
 
 
-  const udyamValidation = (values, key, setFieldValue)=>{
+  const udyamValidation = (values, key, setFieldValue) => {
     // const dd = {"reg_number":"UDYAM-RJ-17-0045151"}
-    udyamValidate({"reg_number": values}).then(
-      resp=>{
-        if(resp?.data?.valid===true){
+    udyamValidate({ "reg_number": values }).then(
+      resp => {
+        if (resp?.data?.valid === true) {
           setudyamAadharByState(values)
           setUdyamResponseData(resp?.data)
           toast.success(resp?.data?.message)
-        }else{
+        } else {
           setFieldValue(key, "")
 
-              toast.error("Not Valid ");
+          toast.error("Not Valid ");
         }
-      }).catch(err=>toast.error(err.response?.data?.detail))
+      }).catch(err => toast.error(err.response?.data?.detail))
 
     // dispatch(
     //   gstValidation({
@@ -184,7 +184,7 @@ function BusinessDetails(props) {
     //   }
     // });
     // setRegisterWithGstState('true')
-    
+
   }
 
   const authValidation = (values) => {
@@ -228,7 +228,7 @@ function BusinessDetails(props) {
   const initialValues = {
     company_name: latestCompanyNameFromResp,
     registerd_with_gst: registerWithGstState,
-    
+
     name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
@@ -287,7 +287,7 @@ function BusinessDetails(props) {
       is: true,
       then: Yup.string()
         .trim()
-        .max(25,"Invalid Format")
+        .max(25, "Invalid Format")
         .required("Required")
         .nullable(),
       otherwise: Yup.string()
@@ -411,47 +411,47 @@ function BusinessDetails(props) {
   };
 
   const onSubmit = (values) => {
-    
-      setIsDisable(true);
-      const postData = {
-        "company_name": values.company_name,
-        "registerd_with_gst": JSON.parse(values.registerd_with_gst),
-        "gst_number": values.gst_number,
-        "pan_card": values.pan_card,
-        "signatory_pan": values.signatory_pan,
-        "name_on_pancard": values.name_on_pancard,
-        "pin_code": values.pin_code,
-        "city_id": values.city_id,
-        "state_id": values.state_id,
-        "operational_address": values.operational_address,
-        "registered_business_address":values.registered_business_address,
-        "files":null,
-        "modified_by": loginId,
-        "login_id": loginId,
-        "is_udyam": JSON.parse(values.registerd_with_udyam),
-        "udyam_data": udyamResponseData
+
+    setIsDisable(true);
+    const postData = {
+      "company_name": values.company_name,
+      "registerd_with_gst": JSON.parse(values.registerd_with_gst),
+      "gst_number": values.gst_number,
+      "pan_card": values.pan_card,
+      "signatory_pan": values.signatory_pan,
+      "name_on_pancard": values.name_on_pancard,
+      "pin_code": values.pin_code,
+      "city_id": values.city_id,
+      "state_id": values.state_id,
+      "operational_address": values.operational_address,
+      "registered_business_address": values.registered_business_address,
+      "files": null,
+      "modified_by": loginId,
+      "login_id": loginId,
+      "is_udyam": JSON.parse(values.registerd_with_udyam),
+      "udyam_data": udyamResponseData
+    }
+
+    console.log("postData", postData)
+
+    dispatch(saveMerchantInfo(postData)).then((res) => {
+      if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true
+      ) {
+        toast.success(res?.payload?.message);
+        setTab(4);
+        setTitle("BANK DETAILS");
+        dispatch(kycUserList({ login_id: loginId }));
+        dispatch(GetKycTabsStatus({ login_id: loginId }));
+
+        setIsDisable(false);
+      } else {
+        toast.error(res?.payload?.message);
+        setIsDisable(false);
       }
+    });
 
-      console.log("postData",postData)
-
-      dispatch(saveMerchantInfo(postData)).then((res) => {
-        if (
-          res?.meta?.requestStatus === "fulfilled" &&
-          res?.payload?.status === true
-        ) {
-          toast.success(res?.payload?.message);
-          setTab(4);
-          setTitle("BANK DETAILS");
-          dispatch(kycUserList({ login_id: loginId }));
-          dispatch(GetKycTabsStatus({ login_id: loginId }));
-
-          setIsDisable(false);
-        } else {
-          toast.error(res?.payload?.message);
-          setIsDisable(false);
-        }
-      });
-    
   };
 
 
@@ -472,8 +472,8 @@ function BusinessDetails(props) {
           setFieldTouched,
         }) => (
           <Form>
-          {console.log("values",values)}
-          {console.log("initialValues",initialValues)}
+            {console.log("values", values)}
+            {console.log("initialValues", initialValues)}
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="input-group">
@@ -498,27 +498,28 @@ function BusinessDetails(props) {
                     />
                   </div>
                 </div>
+                {values.registerd_with_gst === 'false' &&
+                  <div className="input-group mt-2">
+                    <lable>Do you have a Udyam Number?</lable>
+                    <div className="d-flex d-flex justify-content-between w-50">
+                      <FormikController
+                        control="radio"
+                        name="registerd_with_udyam"
+                        options={radioBtnOptions}
+                        className="form-check-input"
+                        onChange={(e) => {
+                          setFieldValue("registerd_with_udyam", e.target.value?.toString())
+                        }}
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                        readOnly={readOnly}
+                      />
+                    </div>
+                  </div>}
 
-                <div className="input-group mt-2">
-                  <lable>Do you have a Udyam Number?</lable>
-                  <div className="d-flex d-flex justify-content-between w-50">
-                    <FormikController
-                      control="radio"
-                      name="registerd_with_udyam"
-                      options={radioBtnOptions}
-                      className="form-check-input"
-                      onChange={(e) => {
-                        setFieldValue("registerd_with_udyam", e.target.value?.toString())
-                      }}
-                      disabled={VerifyKycStatus === "Verified" ? true : false}
-                      readOnly={readOnly}
-                    />
-                  </div>
-                </div>
               </div>
 
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b pb-3">
-                {values?.registerd_with_gst === "true" ?
+                {values?.registerd_with_gst === "true" &&
                   <React.Fragment>
                     <label className="col-form-label pt-0 p-2 ">
                       GSTIN<span className="text-danger">*</span>
@@ -574,7 +575,10 @@ function BusinessDetails(props) {
                         {errors?.prevGstNumber}
                       </p>
                     )}
-                  </React.Fragment> :
+                  </React.Fragment> }
+                  
+                  {console.log(values?.registerd_with_udyam)}
+                  { (values?.registerd_with_udyam == 'false' && values?.registerd_with_gst=='false')&&
                   <div className="input-group">
                     <label>
                       Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
@@ -583,8 +587,8 @@ function BusinessDetails(props) {
                   </div>
 
                 }
-                {console.log(values?.registerd_with_udyam)}
-                {JSON.parse(values?.registerd_with_udyam) === true &&
+
+                {(JSON.parse(values?.registerd_with_udyam) === true && JSON.parse(values?.registerd_with_gst) === true) &&
                   <React.Fragment >
                     <label className="col-form-label pt-0 p-2 mt-4">
                       Udyam Aadhar Number<span className="text-danger">*</span>

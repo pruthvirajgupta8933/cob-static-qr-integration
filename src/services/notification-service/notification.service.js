@@ -19,11 +19,11 @@ if (role.approver) {
 // const ENDPOINT = 'ws://192.168.34.26:5000'; // Replace with your server's endpoint
 const ENDPOINT = wsConnectUrl.connectionURL; // Replace with your server's endpoint
 
-export const socketConnection = socketIOClient(ENDPOINT ,{
-    extraHeaders: {
-        token: token,
-    },
-});
+// export const socketConnection = socketIOClient(ENDPOINT ,{
+//     extraHeaders: {
+//         token: token,
+//     },
+// });
 
 
 export const readNotification = (obj)=>{
