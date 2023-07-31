@@ -168,11 +168,13 @@ const BizzAppForm = (props) => {
             .post(API_URL.BizzAPPForm, values)
             .then((response) => {
                 if (response.status === 200) {
+                    resetForm(initialValues)
                     toastConfig.successToast(response.data.message);
                 } else {
+                    resetForm(initialValues)
                     toastConfig.errorToast(response.data.message);
                 }
-                resetForm(initialValues)
+                
             }).catch((error) => {
                 toastConfig.errorToast("Data not saved");
             })
@@ -206,7 +208,7 @@ const BizzAppForm = (props) => {
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-sm-12 mx-auto">
+                <div className="col-sm-12 col-md-10 col-lg-8 mx-auto">
                     <div className="card ">
                         <div className="card-header text-center"><h3>SabPaisa Biz App Form</h3></div>
                         <div className="card-body mt-3">

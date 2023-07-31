@@ -18,62 +18,45 @@ import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
 import { isNull, values } from "lodash";
 import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.service";
+import toastConfig from "../../utilities/toastTypes";
 
 function BusinessDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-  const { role, kycid } = props;
-
-  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{1}[0-9A-Z]{1}$/;
   const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
   const reqexPinCode = /^[1-9][0-9]{5}$/;
 
   const { auth, kyc } = useSelector((state) => state);
-
   const { user } = auth;
   const { allTabsValidate, KycTabStatusStore } = kyc;
   const VerifyKycStatus = KycTabStatusStore?.merchant_info_status;
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
   const KycList = kyc?.kycUserList;
-
-  // console.log("BusinessDetailsStatus",BusinessDetailsStatus)
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
-  // const [gstin, setGstin] = useState("");
-  // const [fieldValue, setFieldValue] = useState("");
-  const [checked, setChecked] = useState(false);
+
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
   const [disable, setIsDisable] = useState(false);
-
   const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
   const [bussinessPanFromGST, setBussinessPanFromGST] = useState("")
 
   const [gstNumberByState, setGstNumberByState] = useState("")
   const [udyamAadharByState, setudyamAadharByState] = useState("")
-
-
-  const [registerWithGstState, setRegisterWithGstState] = useState('true')
-  const [registerWithUdyam, setRegisterWithUdyam] = useState('true')
+  const [registerWithGstState, setRegisterWithGstState] = useState(true)
+  const [registerWithUdyam, setRegisterWithUdyam] = useState(true)
   const [udyamResponseData, setUdyamResponseData] = useState({})
 
 
 
   const dispatch = useDispatch();
-
-  // const notValid = useSelector((state) => state.kyc.allTabsValidate.BusinessDetailsStatus.AuthPanValidation.message);
-
-  const busiFirstName = BusinessDetailsStatus?.PanValidation?.first_name === null ? "" : BusinessDetailsStatus?.PanValidation?.first_name;
-
-  const busiLastName = BusinessDetailsStatus?.PanValidation?.last_name === null ? "" : BusinessDetailsStatus?.PanValidation?.last_name;
-
   const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
-
   const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  let businessName = `${busiFirstName} ${busiLastName}`;
+  // let businessName = `${busiFirstName} ${busiLastName}`;
   let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
     } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
@@ -96,18 +79,25 @@ function BusinessDetails(props) {
       ) {
 
         const fullNameByPan = trimFullName(res?.payload?.first_name, res?.payload?.last_name)
-        // setFieldValue(key, fullNameByPan)
-        setLatestCompanyNameFromResp(fullNameByPan)
-        setBussinessPanFromGST(values)
-        setGstNumberByState("")
+        console.log("fullNameByPan",fullNameByPan)
+        console.log("values",values)
+        console.log("key",key)
+
+        setFieldValue(key, fullNameByPan)
+        setFieldValue("pan_card", values)
+        setFieldValue("prev_pan_card", values)
+
+        // setLatestCompanyNameFromResp(fullNameByPan)
+        // setBussinessPanFromGST(values)
+        // setGstNumberByState("")
         toast.success(res?.payload?.message);
 
       } else {
-        setFieldValue(key, "")
+        // setFieldValue(key, "")
         toast.error(res?.payload?.message);
       }
     });
-    setRegisterWithGstState('false')
+    // setRegisterWithGstState(false)
   };
 
 
@@ -124,67 +114,43 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-        const fullNameByAuthPan = trimFullName(res?.payload?.trade_name, "")
-        // console.log(key, fullNameByAuthPan)
-        // setFieldValue(key, fullNameByAuthPan)
-        setLatestCompanyNameFromResp(fullNameByAuthPan)
-        setBussinessPanFromGST(res?.payload?.pan)
-        setGstNumberByState(values)
+        const fullName = trimFullName(res?.payload?.trade_name, "")
+        setFieldValue(key,fullName)
+        setFieldValue("gst_number",values)
+        setFieldValue("prevGstNumber",values)
+        
+        setFieldValue("pan_card",res?.payload?.pan)
+        setFieldValue("prev_pan_card",res?.payload?.pan)
+        // setLatestCompanyNameFromResp(fullNameByAuthPan)
+        // setBussinessPanFromGST(res?.payload?.pan)
+        // setGstNumberByState(values)
 
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "")
-
         toast.error(res?.payload?.message);
       }
     });
-    setRegisterWithGstState('true')
+    // setRegisterWithGstState('true')
   };
 
 
   const udyamValidation = (values, key, setFieldValue) => {
-    // const dd = {"reg_number":"UDYAM-RJ-17-0045151"}
     udyamValidate({ "reg_number": values }).then(
       resp => {
         if (resp?.data?.valid === true) {
-          setudyamAadharByState(values)
+          setFieldValue(key, values)
+          setFieldValue("prevUdyamNumber", values)
+          // setudyamAadharByState(values)
           setUdyamResponseData(resp?.data)
-          toast.success(resp?.data?.message)
+          toastConfig.successToast(resp?.data?.message)
         } else {
           setFieldValue(key, "")
-
-          toast.error("Not Valid ");
+          setUdyamResponseData({})
+          // console.log("call check 1")
+          toastConfig.errorToast("Detail is not valid");
         }
-      }).catch(err => toast.error(err.response?.data?.detail))
-
-    // dispatch(
-    //   gstValidation({
-    //     gst_number: values,
-    //     fetchFilings: false,
-    //     fy: "2018-19",
-    //   })
-    // ).then((res) => {
-    //   if (
-    //     res.meta.requestStatus === "fulfilled" &&
-    //     res.payload.status === true &&
-    //     res.payload.valid === true
-    //   ) {
-    //     const fullNameByAuthPan = trimFullName(res?.payload?.trade_name, "")
-    //     // console.log(key, fullNameByAuthPan)
-    //     // setFieldValue(key, fullNameByAuthPan)
-    //     setLatestCompanyNameFromResp(fullNameByAuthPan)
-    //     setBussinessPanFromGST(res?.payload?.pan)
-    //     setGstNumberByState(values)
-
-    //     toast.success(res?.payload?.message);
-    //   } else {
-    //     setFieldValue(key, "")
-
-    //     toast.error(res?.payload?.message);
-    //   }
-    // });
-    // setRegisterWithGstState('true')
-
+      }).catch(err => toastConfig.errorToast(err.response?.data?.detail))
   }
 
   const authValidation = (values) => {
@@ -205,29 +171,16 @@ function BusinessDetails(props) {
     });
   };
 
-  // udyamValidation()
-
-  // const gstinData = BusinessDetailsStatus?.GSTINValidation;
 
   const radioBtnOptions = [
     { "value": true, "key": "Yes" },
     { "value": false, "key": "No" },
   ]
 
-  // get company name from GST and Business pan 
-  // let companyNameFromResponse = ""
-  // if (gstinData?.trade_name?.length > 3) {
-  //   companyNameFromResponse = gstinData?.trade_name
-  // } else if (businessName?.length > 3) {
-  //   companyNameFromResponse = businessName
-  // } else {
-  //   companyNameFromResponse = KycList?.companyName
-  // }
-  // console.log("gstNumberByState",gstNumberByState)
 
   const initialValues = {
-    company_name: latestCompanyNameFromResp,
-    registerd_with_gst: registerWithGstState,
+    company_name: KycList?.companyName,
+    registerd_with_gst: KycList?.registerdWithGST,
 
     name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
@@ -236,23 +189,16 @@ function BusinessDetails(props) {
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
 
-    gst_number: gstNumberByState,
+    gst_number: KycList?.gstNumber,
     prevGstNumber: gstNumberByState === "" ? gstNumberByState : gstNumberByState?.length > 2 ? gstNumberByState : KycList?.gstNumber,
 
-    registerd_with_udyam: KycList?.is_udyam,
-    udyam_number: udyamAadharByState,
+    registerd_with_udyam: JSON.parse(KycList?.is_udyam),
+    udyam_number: KycList?.udyam_data?.reg_number,
     prevUdyamNumber: udyamAadharByState === "" ? udyamAadharByState : udyamAadharByState?.length > 2 ? udyamAadharByState : KycList?.udyamAadhar,
-
-    // pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
     pan_card: bussinessPanFromGST,
     prev_pan_card: bussinessPanFromGST === "" ? bussinessPanFromGST : bussinessPanFromGST?.length > 2 ? bussinessPanFromGST : KycList?.panCard,
-
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
-    prevSignatoryPan: KycList?.signatoryPAN,
-
-    // isGSTINVerified: KycList?.gstNumber !== null ? "1" : "",
-    // isPANVerified: KycList?.panCard !== null ? "1" : "",
-    // isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
+    prevSignatoryPan: KycList?.signatoryPAN
   };
 
 
@@ -282,7 +228,6 @@ function BusinessDetails(props) {
         .nullable(),
       otherwise: Yup.string().notRequired().nullable()
     }),
-
     udyam_number: Yup.string().when(["registerd_with_udyam"], {
       is: true,
       then: Yup.string()
@@ -302,9 +247,6 @@ function BusinessDetails(props) {
         .nullable(),
       otherwise: Yup.string().notRequired().nullable()
     }),
-
-
-
     pan_card: Yup.string()
       .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
@@ -355,6 +297,7 @@ function BusinessDetails(props) {
     [["registerd_with_gst", "registerd_with_udyam"]]
   );
 
+
   useEffect(() => {
     dispatch(businessOverviewState())
       .then((resp) => {
@@ -366,52 +309,48 @@ function BusinessDetails(props) {
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
-
     // set initial value
     setLatestCompanyNameFromResp(KycList?.companyName)
     setBussinessPanFromGST(KycList?.panCard)
-    setRegisterWithGstState(KycList?.registerdWithGST?.toString() ?? 'true')
+    // setRegisterWithGstState(JSON.parse(KycList?.registerdWithGST))
     // setRegisterWithUdyam(KycList?.is_udyam?.toString() ?? 'true')
     setGstNumberByState(KycList?.gstNumber)
-    setRegisterWithUdyam(KycList?.is_udyam)
+    // setRegisterWithUdyam(JSON.parse(KycList?.is_udyam))
     setudyamAadharByState(KycList?.udyam_data?.reg_number)
+    console.log("useEffect call")
   }, []);
+
 
   const checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = () => { }) => {
     const hasErr = err.hasOwnProperty(key);
     // console.log("hasErr-"+key ,err.hasOwnProperty(key))
-
     const fieldVal = val[key];
     let isValidVal = true;
-
     if (fieldVal === null || fieldVal === undefined) {
       isValidVal = false;
       setFieldTouched(key, true);
     }
     // console.log("isValidVal",isValidVal);
-
     if (hasErr) {
       if (val[key] === "") {
         setErr(key, true);
       }
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
-      // console.log("check 2")
-      await panValidate(val[key], "company_name", setFieldValue);
+      panValidate(val[key], "company_name", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
-      await authValidation(val[key]);
+      authValidation(val[key]);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
-      await gstinValidate(val[key], "company_name", setFieldValue);
+      gstinValidate(val[key], "company_name", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "udyam_number") {
-      await udyamValidation(val[key], "company_name", setFieldValue);
+      udyamValidation(val[key], "udyam_number", setFieldValue);
     }
   };
 
   const onSubmit = (values) => {
-
     setIsDisable(true);
     const postData = {
       "company_name": values.company_name,
@@ -432,7 +371,7 @@ function BusinessDetails(props) {
       "udyam_data": udyamResponseData
     }
 
-    console.log("postData", postData)
+    // console.log("postData", postData)
 
     dispatch(saveMerchantInfo(postData)).then((res) => {
       if (
@@ -455,6 +394,36 @@ function BusinessDetails(props) {
   };
 
 
+  const registeredWithGstHandler = (value, setFieldValue) => {
+    const valueGst = JSON.parse(value)
+    setFieldValue("registerd_with_gst", valueGst)
+    setFieldValue("gst_number", "")
+    setFieldValue("prevGstNumber", "")
+
+    setFieldValue("company_name", "")
+    setFieldValue("pan_card", "")
+    setFieldValue("prev_pan_card", "")
+
+    setFieldValue("registerd_with_udyam", false)
+    setFieldValue("udyam_number", "")
+    setFieldValue("prevUdyamNumber", "")
+  }
+
+
+  const registeredWithUdyamHandler = (value, setFieldValue) => {
+    const valueUdyam = JSON.parse(value)
+    setFieldValue("registerd_with_udyam", valueUdyam)
+    setFieldValue("udyam_number", "")
+    setFieldValue("prevUdyamNumber", "")
+
+    setFieldValue("gst_number", "")
+    setFieldValue("company_name", "")
+    setFieldValue("pan_card", "")
+    setFieldValue("prev_pan_card", "")
+
+    setUdyamResponseData({})
+  }
+
   return (
     <div className="col-lg-12 p-0">
       <Formik
@@ -472,8 +441,9 @@ function BusinessDetails(props) {
           setFieldTouched,
         }) => (
           <Form>
+          {console.log("initialValues", initialValues)}
             {console.log("values", values)}
-            {console.log("initialValues", initialValues)}
+            
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="input-group">
@@ -486,11 +456,7 @@ function BusinessDetails(props) {
                       options={radioBtnOptions}
                       className="form-check-input"
                       onChange={(e) => {
-                        setFieldValue("registerd_with_gst", e.target.value)
-                        setFieldValue("company_name", "")
-                        setFieldValue("pan_card", "")
-                        setFieldValue("prev_pan_card", "")
-                        setFieldValue("prevGstNumber", "")
+                        registeredWithGstHandler(e.target.value, setFieldValue)
                       }}
 
                       disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -498,7 +464,7 @@ function BusinessDetails(props) {
                     />
                   </div>
                 </div>
-                {values.registerd_with_gst === 'false' &&
+                {JSON.parse(values.registerd_with_gst) === false &&
                   <div className="input-group mt-2">
                     <lable>Do you have a Udyam Number?</lable>
                     <div className="d-flex d-flex justify-content-between w-50">
@@ -507,19 +473,16 @@ function BusinessDetails(props) {
                         name="registerd_with_udyam"
                         options={radioBtnOptions}
                         className="form-check-input"
-                        onChange={(e) => {
-                          setFieldValue("registerd_with_udyam", e.target.value?.toString())
-                        }}
+                        onChange={(e) => {registeredWithUdyamHandler(e.target.value, setFieldValue)}}
                         disabled={VerifyKycStatus === "Verified" ? true : false}
                         readOnly={readOnly}
                       />
                     </div>
                   </div>}
-
               </div>
 
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b pb-3">
-                {values?.registerd_with_gst === "true" &&
+                {JSON.parse(values?.registerd_with_gst) === true &&
                   <React.Fragment>
                     <label className="col-form-label pt-0 p-2 ">
                       GSTIN<span className="text-danger">*</span>
@@ -575,10 +538,12 @@ function BusinessDetails(props) {
                         {errors?.prevGstNumber}
                       </p>
                     )}
-                  </React.Fragment> }
-                  
-                  {console.log(values?.registerd_with_udyam)}
-                  { (values?.registerd_with_udyam == 'false' && values?.registerd_with_gst=='false')&&
+                  </React.Fragment>}
+
+                {/* {console.log("registerd_with_gst",JSON.parse(values?.registerd_with_gst))}
+                {console.log("registerd_with_udyam", JSON.parse(values?.registerd_with_udyam))} */}
+
+                {(values?.registerd_with_udyam === false && values?.registerd_with_gst === false) &&
                   <div className="input-group">
                     <label>
                       Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
@@ -587,10 +552,11 @@ function BusinessDetails(props) {
                   </div>
 
                 }
-
-                {(JSON.parse(values?.registerd_with_udyam) === true && JSON.parse(values?.registerd_with_gst) === true) &&
+                {console.log("registerd_with_udyam",values?.registerd_with_udyam)}
+                {console.log("registerd_with_gst",values?.registerd_with_gst)}
+                {(values?.registerd_with_udyam === true && values?.registerd_with_gst === false) &&
                   <React.Fragment >
-                    <label className="col-form-label pt-0 p-2 mt-4">
+                    <label className="col-form-label pt-0 p-2">
                       Udyam Aadhar Number<span className="text-danger">*</span>
                     </label>
                     <div className="input-group">
@@ -646,22 +612,10 @@ function BusinessDetails(props) {
                   </React.Fragment>
                 }
               </div>
-
-              {/* <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
-                {values?.registerd_with_gst === "false" &&
-                  <div className="input-group">
-                    <label>
-                      Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
-                    </label>
-                    <a className="btn cob-btn-primary text-white btn-sm mb-1" href="https://sp2-partner.sabpaisa.in/SRS+GST+Declaration.pdf" target="_blank" rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
-                  </div>
-                  }
-              </div> */}
             </div>
 
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
-
                 <label className="col-form-label mt-0 p-2">
                   Business PAN <span className="text-danger">*</span>
                 </label>
@@ -671,9 +625,8 @@ function BusinessDetails(props) {
                     name="pan_card"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={values?.registerd_with_gst === 'true' ? true : false}
+                    readOnly={JSON.parse(values?.registerd_with_gst)}
                   />
-
                   {(values?.pan_card !== null &&
                     values?.pan_card !== "" &&
                     values?.pan_card !== undefined &&
