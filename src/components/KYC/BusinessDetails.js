@@ -53,7 +53,7 @@ function BusinessDetails(props) {
 
 
   const dispatch = useDispatch();
-  const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
+  const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation?.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
   const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
   // let businessName = `${busiFirstName} ${busiLastName}`;
@@ -121,6 +121,12 @@ function BusinessDetails(props) {
         
         setFieldValue("pan_card",res?.payload?.pan)
         setFieldValue("prev_pan_card",res?.payload?.pan)
+
+        setFieldValue("registerd_with_gst",true)
+        setFieldValue("registerd_with_udyam",false)
+        setFieldValue("udyam_number","")
+
+
         // setLatestCompanyNameFromResp(fullNameByAuthPan)
         // setBussinessPanFromGST(res?.payload?.pan)
         // setGstNumberByState(values)
@@ -190,13 +196,14 @@ function BusinessDetails(props) {
     operational_address: KycList?.merchant_address_details?.address,
 
     gst_number: KycList?.gstNumber,
-    prevGstNumber: gstNumberByState === "" ? gstNumberByState : gstNumberByState?.length > 2 ? gstNumberByState : KycList?.gstNumber,
+    prevGstNumber: KycList?.gstNumber?.length > 2 ? KycList?.gstNumber : "00" ,
 
     registerd_with_udyam: JSON.parse(KycList?.is_udyam),
     udyam_number: KycList?.udyam_data?.reg_number,
-    prevUdyamNumber: udyamAadharByState === "" ? udyamAadharByState : udyamAadharByState?.length > 2 ? udyamAadharByState : KycList?.udyamAadhar,
-    pan_card: bussinessPanFromGST,
-    prev_pan_card: bussinessPanFromGST === "" ? bussinessPanFromGST : bussinessPanFromGST?.length > 2 ? bussinessPanFromGST : KycList?.panCard,
+    prevUdyamNumber: KycList?.udyamAadhar?.length > 2 ? KycList?.udyamAadhar : "0000",
+    pan_card: KycList?.panCard,
+    prev_pan_card: KycList?.panCard?.length > 2 ? KycList?.panCard : "pan",
+    
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN
   };
@@ -310,13 +317,13 @@ function BusinessDetails(props) {
       })
       .catch((err) => console.log(err));
     // set initial value
-    setLatestCompanyNameFromResp(KycList?.companyName)
-    setBussinessPanFromGST(KycList?.panCard)
+    // setLatestCompanyNameFromResp(KycList?.companyName)
+    // setBussinessPanFromGST(KycList?.panCard)
     // setRegisterWithGstState(JSON.parse(KycList?.registerdWithGST))
     // setRegisterWithUdyam(KycList?.is_udyam?.toString() ?? 'true')
-    setGstNumberByState(KycList?.gstNumber)
+    // setGstNumberByState(KycList?.gstNumber)
     // setRegisterWithUdyam(JSON.parse(KycList?.is_udyam))
-    setudyamAadharByState(KycList?.udyam_data?.reg_number)
+    // setudyamAadharByState(KycList?.udyam_data?.reg_number)
     console.log("useEffect call")
   }, []);
 
