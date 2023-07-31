@@ -258,6 +258,11 @@ const API_LIVE = {
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
   VALIDATE_KYC: `${kyc_validate}/validator`,
+
+  UDYAM_REGISTRATION:`${kyc_validate}/validator`,
+  
+
+
   // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,
   // OnBoard Merchant Role URL

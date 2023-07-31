@@ -18,9 +18,12 @@ const DebitReport = () => {
 
   const rowData = DebitReportData;
   const { auth } = useSelector((state) => state);
+ 
+ 
    
   const { user } = auth;
-  const { loginId } = user;
+  const subscription_merchant_id= user?.subscription_details?.subscription_merchant_id
+ 
   const loadingState = useSelector((state) => state.DebitReports.isLoadingDebitHistory);
 
 
@@ -87,7 +90,7 @@ const DebitReport = () => {
         fromDate: saveData?.from_date,
         toDate: saveData?.to_date,
         status: saveData?.status,
-        m_id:"2",
+        m_id:subscription_merchant_id,
       })
     )
       .then((resp) => {
@@ -134,7 +137,7 @@ const DebitReport = () => {
         fromDate: values?.fromDate,
         toDate: values?.toDate,
         status: values?.status,
-        m_id:"2"
+        m_id:subscription_merchant_id
     };
 
     setSaveData(values);

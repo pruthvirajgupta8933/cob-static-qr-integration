@@ -871,6 +871,21 @@ export const gstValidation = createAsyncThunk(
   }
 );
 
+
+
+export const udyamRegistration = createAsyncThunk(
+  "kyc/gstValidation",
+  async (requestParam) => {
+    const response = await kycValidatorAuth
+      .post(`${API_URL.UDYAM_REGISTRATION}/validate-udyam/`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
 export const ifscValidation = createAsyncThunk(
   "kyc/ifscValidation",
   async (requestParam) => {

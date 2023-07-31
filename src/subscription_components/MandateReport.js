@@ -15,6 +15,8 @@ import { fetchFilterForAllMandatesReportsSlice } from "../slices/subscription-sl
 import CountPerPageFilter from "../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../_components/loader";
 
+
+
 const MandateReport = () => {
   const dispatch = useDispatch();
 
@@ -47,10 +49,8 @@ const MandateReport = () => {
 
   // To get m_id
   const { user } = useSelector((state) => state.auth);
-
-  const loginId = user.loginId;
-
-  const [todayDate, setTodayDate] = useState(splitDate);
+  const subscription_merchant_id= user?.subscription_details?.subscription_merchant_id
+const [todayDate, setTodayDate] = useState(splitDate);
 
 
   // Hardcoded value for Registration status dropdown
@@ -128,7 +128,7 @@ const MandateReport = () => {
         status: saveData?.status,
         fromDate: saveData?.fromDate,
         toDate: saveData?.endDate,
-        m_id: "2",
+        m_id: subscription_merchant_id,
         page: currentPage,
         size: pageSize,
       })
@@ -406,7 +406,7 @@ const MandateReport = () => {
         status: status,
         fromDate: fromDate,
         toDate: endDate,
-        m_id: "2",
+        m_id: subscription_merchant_id,
         page: currentPage,
         size: pageSize,
       };

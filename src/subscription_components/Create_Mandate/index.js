@@ -190,6 +190,7 @@ const MandateForm = () => {
 
 
   const handleResponseApi = () => {
+    if(mendateRegId){
     axiosInstance
       .get(subAPIURL.HANDLE_RESPONSE + mendateRegId)
       .then((response) => {
@@ -199,6 +200,8 @@ const MandateForm = () => {
         }
         // console.log(response.data,"this is response");
       })
+    }
+    
 
   };
 
