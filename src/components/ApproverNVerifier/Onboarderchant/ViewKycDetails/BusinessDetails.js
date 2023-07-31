@@ -257,8 +257,8 @@ const BusinessDetails = (props) => {
 
     <div className="row mt-4">
       <div className="col-md-12">
-        <h6 className="font-weight-bold">Official address of Enterprise</h6>
-        <table className="table-responsive">
+        <h6 className="font-weight-bold">Official Address Of Enterprise</h6>
+        <table className="table-responsive table table-bordered">
           <thead>
             <tr>
               <th>Block</th>
