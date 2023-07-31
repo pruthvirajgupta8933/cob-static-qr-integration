@@ -226,7 +226,7 @@ const AdditionalKYC = () => {
   return (
     <section className="">
       <main className="">
-        <div className="">
+       
           <div className="">
             <h5 className="ml-4">Additional KYC</h5>
           </div>
@@ -398,6 +398,7 @@ const AdditionalKYC = () => {
               </div>
             </div>
           )}
+          </div>
 
          
        {/* Render additional details after verification */}
@@ -464,42 +465,32 @@ const AdditionalKYC = () => {
             )}
 
 {udyamRegstatus && selectedDocType === "4" && (
-  <div className="container "  style={{ marginTop: "32px" }}>
+  <div className="container" style={{ marginTop: "32px" }}>
     <div className="row">
       <div className="col-md-12">
-        {/* <h6 className="font-weight-bold mt-3">Enterprise Type</h6> */}
         <table className="table table-bordered mt-3">
           <thead>
             <tr>
-              
               <th>Name of Enterprise</th>
               <th>Organisation Type</th>
               <th>Date of Incorporation</th>
               <th>Udyam Registration Number</th>
-
             </tr>
           </thead>
           <tbody>
-          {/* {Array.isArray(udyamRegistrationData) && udyamRegistrationData.map((data, index) => ( */}
-  <tr >
-    
-    <td>{udyamRegistrationData?.entity}</td>
-    <td>{udyamRegistrationData?.type}</td>
-    <td>{udyamRegistrationData?.incorporated_date}</td>
-    <td>{udyamRegistrationData?.reg_number}</td>
-  </tr>
-{/* ))} */}
+            <tr>
+              <td>{udyamRegistrationData?.entity}</td>
+              <td>{udyamRegistrationData?.type}</td>
+              <td>{udyamRegistrationData?.incorporated_date}</td>
+              <td>{udyamRegistrationData?.reg_number}</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-
-
-
-
     <div className="row mt-4">
-      <div className="col-md-9">
+      <div className="col-md-12">
         <h6 className="font-weight-bold">Official address of Enterprise</h6>
         <table className="table table-bordered">
           <thead>
@@ -593,10 +584,11 @@ const AdditionalKYC = () => {
     </div>
   </div>
 )}
+
 </div>
+      
        </div>
-       </div>
-       </div>
+       
       </main>
     </section>
   );
