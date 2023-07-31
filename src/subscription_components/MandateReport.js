@@ -15,6 +15,8 @@ import { fetchFilterForAllMandatesReportsSlice } from "../slices/subscription-sl
 import CountPerPageFilter from "../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../_components/loader";
 
+
+
 const MandateReport = () => {
   const dispatch = useDispatch();
 
@@ -47,10 +49,8 @@ const MandateReport = () => {
 
   // To get m_id
   const { user } = useSelector((state) => state.auth);
-
-  const loginId = user.loginId;
-
-  const [todayDate, setTodayDate] = useState(splitDate);
+  const subscription_merchant_id= user?.subscription_details?.subscription_merchant_id
+const [todayDate, setTodayDate] = useState(splitDate);
 
 
   // Hardcoded value for Registration status dropdown
@@ -128,7 +128,7 @@ const MandateReport = () => {
         status: saveData?.status,
         fromDate: saveData?.fromDate,
         toDate: saveData?.endDate,
-        m_id: loginId,
+        m_id: subscription_merchant_id,
         page: currentPage,
         size: pageSize,
       })
@@ -406,7 +406,7 @@ const MandateReport = () => {
         status: status,
         fromDate: fromDate,
         toDate: endDate,
-        m_id: loginId,
+        m_id: subscription_merchant_id,
         page: currentPage,
         size: pageSize,
       };
@@ -435,10 +435,7 @@ const MandateReport = () => {
     }
   }
 
-
-
-
-  return (
+return (
     <section className="ant-layout">
     <div>
       
@@ -446,9 +443,9 @@ const MandateReport = () => {
 
     <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
       <div className="gx-main-content-wrapper">
-        <div className="right_layout my_account_wrapper right_side_heading">
-          <h1 className="m-b-sm gx-float-left">Registered Mandate Reports</h1>
-        </div>
+        
+          <h5 className="ml-4">Registered Mandate Reports</h5>
+       
 
         <section className="features8 cid-sg6XYTl25a flleft w-100">
           <div className="container-fluid">
@@ -465,7 +462,7 @@ const MandateReport = () => {
                         control="select"
                         label="Registration Status"
                         name="status"
-                        className="form-control rounded-0 mt-0"
+                        className="form-control form-select rounded-0 mt-0"
                         options={options1}
                       />
                     </div>
@@ -475,7 +472,7 @@ const MandateReport = () => {
                         control="select"
                         label="Mandate Category"
                         name="mandatecategorycode"
-                        className="form-control rounded-0 mt-0"
+                        className="form-control form-select rounded-0 mt-0"
                         options={tempMandateCategory}
                       />
                     </div>
@@ -485,7 +482,7 @@ const MandateReport = () => {
                         control="select"
                         label="Frequency"
                         name="pfrequency"
-                        className="form-control rounded-0 mt-0"
+                        className="form-control form-select rounded-0 mt-0"
                         options={tempFrequency}
                       />
                     </div>
@@ -523,9 +520,10 @@ const MandateReport = () => {
                       </button>
                     </div>
 
-                    {showData === true ? (
+                    {showData === true  ? mandateData?.length===0 ? "" :  (
                        <div className="container-fluid flleft">
-                    <div className="form-group col-lg-3 col-md-12 mt-2">
+                        <div className="row">
+                    <div className="form-group col-md-3 mt-2 ml-3 mt-4">
                       <label>Search</label>
                       <input
                         className="form-control"
@@ -534,8 +532,8 @@ const MandateReport = () => {
                         placeholder="Search Here"
                       />
                     </div>
-                    <div></div>
-                    <div className="form-group col-lg-3 col-md-12 mt-2">
+                   
+                    <div className="form-group col-md-3 mt-4">
                       <CountPerPageFilter
                         pageSize={pageSize}
                         dataCount={dataCount}
@@ -543,9 +541,9 @@ const MandateReport = () => {
                       />
                     </div>
 
-                    <div className="form-group col-lg-3 col-md-12 mt-5">
+                    <div className="form-group col-md-3 mt-5 ">
                       <button
-                        className="btn btn-sm text-white  "
+                        className="btn btn-sm text-white"
                         type="button"
                         disabled={isexcelDataLoaded}
                         onClick={() => exportToExcelFn()}
@@ -554,6 +552,7 @@ const MandateReport = () => {
                         Export
                       </button>
                     </div>
+                  </div>
                   </div>
 
                        
@@ -572,9 +571,14 @@ const MandateReport = () => {
             {/* To search specific data and count total number of records */}
             
 
-          {showData === true ? (
+          {showData === true  ? (
+
+            
           <div className="col-md-12 col-md-offset-4">
-            <h5 className="font-weight-bold">Total Records: {mandateData?.length}</h5>
+           
+            <p className="font-weight-bold">Total Records: {mandateData?.length}</p>
+            
+          
             <div className="scroll overflow-auto">
               <Table
                 row={rowData}
@@ -586,12 +590,17 @@ const MandateReport = () => {
                
               />
             </div>
+
+
             <CustomLoader loadingState={loadingState} />
             {/* {data?.length == 0 && !loadingState && (
               <h2 className="text-center font-weight-bold">No Data Found</h2>
             )} */}
-          </div>
-        ) : (
+          
+            </div>
+          
+
+          ) : (
           <></>
         )}
 

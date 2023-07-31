@@ -1,42 +1,50 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const PersonalDetails = ({ updatedData }) => {
+const PersonalDetails = () => {
 
+const { createMandate } = useSelector((state) => state);
+   const { firstForm, secondForm, thirdForm } = createMandate.createMandate.formData;
+        const mergedForm = {
+          ...firstForm,
+          ...secondForm,
+          ...thirdForm
+        };
 
-  // console.log(updatedData,"Updated Data")
+  // console.log(mergedForm,"Updated Data")
   return (
     <div>
       <div className="container">
         <div className="row">
           <div className="col-sm">
-            <h4>Name</h4>
+            <p className="text-strong">Name</p>
             <span>
-              <p className="text-secondary">{updatedData?.payerName}</p>
+              <p className="text-secondary">{mergedForm?.payerName}</p>
             </span>
           </div>
           <div className="col-sm">
-            <h4>Email</h4>
-            <p className="text-secondary">{updatedData?.payerEmail}</p>
+            <p className="text-strong">Email</p>
+            <p className="text-secondary">{mergedForm?.payerEmail}</p>
           </div>
           <div className="col-sm">
-            <h4>Moblie Number</h4>
-            <p className="text-secondary">{updatedData?.payerMobile}</p>
+            <p className="text-strong">Moblie Number</p>
+            <p className="text-secondary">{mergedForm?.payerMobile}</p>
           </div>
         </div>
         <div className="row">
-        {updatedData?.telePhone === "" ? <></> :
+        {mergedForm?.telePhone === "" ? <></> :
           <div className="col-lg-4">
-            <h4>Telephone Number</h4>
+            <p className="text-strong">Telephone Number</p>
             <span>
-              <p className="text-secondary">{`91-011-${updatedData?.telePhone}`}</p>
+              <p className="text-secondary">{`91-011-${mergedForm?.telePhone}`}</p>
             </span>
           </div>
             }
-             {updatedData?.panNo === "" ? <></> :
+             {mergedForm?.panNo === "" ? <></> :
                 <div className="col-lg-4">
-            <h4>PAN Number</h4>
+            <p className="text-strong">PAN Number</p>
             <span>
-              <p className="text-secondary">{`91-${updatedData?.panNo}`}</p>
+              <p className="text-secondary">{`91-${mergedForm?.panNo}`}</p>
             </span>
           </div>
           }

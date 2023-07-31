@@ -11,8 +11,13 @@ import {
 } from "../../_components/formik/ValidationRegex";
 import FormikController from '../../_components/formik/FormikController'
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import toastConfig from "../../utilities/toastTypes";
+import { useEffect } from "react";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
+
+    
+
     const validationSchema = Yup.object().shape({
         merchant_business_name: Yup.string()
             .required("Required"),
@@ -156,18 +161,21 @@ const BizzAppForm = (props) => {
         { key: 'New Cob', value: 'New Cob' },
     ]
 
+
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        const res = await axiosInstanceAuth
+        await axiosInstanceAuth
             .post(API_URL.BizzAPPForm, values)
             .then((response) => {
                 if (response.status === 200) {
-                    toast.success(response.data.message);
+                    resetForm(initialValues)
+                    toastConfig.successToast(response.data.message);
                 } else {
-                    toast.error(response.data.message);
+                    resetForm(initialValues)
+                    toastConfig.errorToast(response.data.message);
                 }
-                resetForm(initialValues)
+                
             }).catch((error) => {
-                toast.error("Data not saved");
+                toastConfig.errorToast("Data not saved");
             })
     };
     const InputArray =
@@ -199,7 +207,7 @@ const BizzAppForm = (props) => {
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-sm-12 mx-auto">
+                <div className="col-sm-12 col-md-10 col-lg-8 mx-auto">
                     <div className="card ">
                         <div className="card-header text-center"><h3>SabPaisa Biz App Form</h3></div>
                         <div className="card-body mt-3">

@@ -75,6 +75,7 @@ import DebitReport from "../../../subscription_components/DebitReport";
 import Faq from "../../../components/Faq/Faq"
 import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
 import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
+import HandleResponseModal from "../../../subscription_components/Create_Mandate/HandleResponseModal";
 
 
 
@@ -87,6 +88,11 @@ function DashboardMainContent() {
     const roles = roleBasedAccess();
     const dispatch = useDispatch();
     const location = useLocation();
+   
+  const queryParams = new URLSearchParams(location.search);
+  const mendateRegId = queryParams.get("mendateRegId");
+
+    
 
 
 
@@ -535,7 +541,9 @@ function DashboardMainContent() {
                             <MerchantRoute exact path={`${path}/subscription/mandate_registration`} Component={CreateMandate}>
                                 <SpPg />
                             </MerchantRoute>
-
+                            {/* <Route exact path={`${path}/subscription/mandate-reg-response`} Component={HandleResponseModal}>
+                                <HandleResponseModal mendateRegId={mendateRegId} />
+                            </Route> */}
                             {/* -----------------------------------------------------------------------------------------------------|| */}
 
 

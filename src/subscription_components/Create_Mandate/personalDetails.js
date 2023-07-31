@@ -1,13 +1,21 @@
 import React from "react";
-import { Formik,Form } from "formik";
+import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
 import * as Yup from "yup";
-const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { saveFormSecondData } from "../../slices/subscription-slice/createMandateSlice";
+import { useParams } from "react-router-dom";
+const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
   const handleSubmitPersonal = (values) => {
-    showBankDetails("showPersonalDetails",values);
+    showBankDetails("showPersonalDetails", values);
+    dispatch(saveFormSecondData({ values }))
+
+
     // console.log(values,'values');
   };
-  
+ 
+
+
 
 
   const FORM_VALIDATION = Yup.object().shape({
@@ -16,54 +24,61 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
       .required("Required"),
     payerEmail: Yup.string().required("Required"),
     payerMobile: Yup.string()
-    .matches(/^(?!0)\d{10}$/, 'Phone number must not start with 0 and be 10 digits long')
-    .required("Required"),
+      .matches(/^(?!0)\d{10}$/, 'Phone number must not start with 0 and be 10 digits long')
+      .required("Required"),
     telePhone: Yup.string()
-    .matches(/^[0-9]{8}$/, 'Invalid telphone Number')
-    .notRequired(),
+      .matches(/^[0-9]{8}$/, 'Invalid telphone Number')
+      .notRequired(),
     panNo: Yup.string()
-    .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN Number')
-    .notRequired(),
+      .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN Number')
+      .notRequired(),
   });
+  const { createMandate } = useSelector((state) => state);
+  const { secondForm } = createMandate.createMandate.formData;
+
+  const initialValues = {
+    payerName: secondForm.payerName ? secondForm.payerName : "",
+    payerEmail: secondForm.payerEmail ? secondForm.payerEmail : "",
+    payerMobile: secondForm.payerMobile ? secondForm.payerMobile : "",
+    panNo: secondForm.panNo ? secondForm.panNo : "",
+    telePhone: secondForm.telePhone ? secondForm.telePhone : ""
+  }
+  const dispatch = useDispatch();
+
 
 
 
   return (
-    <div>
+    <div className="col-lg-8">
       <Formik
-            initialValues={{
-              payerName: "",
-              payerEmail:"",
-              payerMobile:"",
-              panNo:"",
-              telePhone:""
-            }}
-            validationSchema={FORM_VALIDATION}
-            onSubmit={handleSubmitPersonal}
+        initialValues={initialValues}
+        validationSchema={FORM_VALIDATION}
+        enableReinitialize={true}
+        onSubmit={handleSubmitPersonal}
       >
         <Form>
           <div className="row">
-            <div className="col-lg-4 form-group">
+            <div className="col-lg-6 form-group">
               <FormikController
                 control="input"
                 label="Name"
                 name="payerName"
                 className="form-control rounded-0 mt-0"
-                // options={mandateTypeOptions}
+              // options={mandateTypeOptions}
               />
             </div>
-            <div className="col-lg-4 form-group">
+            <div className="col-lg-6 form-group">
               <FormikController
                 control="input"
                 label="Email"
                 name="payerEmail"
                 className="form-control rounded-0 mt-0"
-                // options={mandateTypeCategory}
+              // options={mandateTypeCategory}
               />
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-4 form-group">
+            <div className="col-lg-6 form-group">
               <FormikController
                 control="input"
                 label="Mobile Number"
@@ -71,24 +86,24 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
                 className="form-control rounded-0 mt-0"
               />
             </div>
-            <div className="col-lg-4 form-group">
+            <div className="col-lg-6 form-group">
               <FormikController
                 control="input"
                 label="PAN Number ( Optional ) "
                 name="panNo"
                 className="form-control rounded-0 mt-0"
-                // options={frequencyOptionsData}
+              // options={frequencyOptionsData}
               />
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-4 form-group">
+            <div className="col-lg-6 form-group">
               <FormikController
                 control="input"
                 label="Telephone Number ( Optional )"
                 name="telePhone"
                 className="form-control rounded-0 mt-0"
-                // options={options1}
+              // options={options1}
               />
             </div>
             {/* <div className="col-lg-4 form-group">
@@ -108,7 +123,7 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
           >
             Back
           </button>
-          <button className="btn bttn cob-btn-primary" type="submit">
+          <button className="btn bttn cob-btn-primary ml-2" type="submit">
             Next
           </button>
         </Form>

@@ -75,7 +75,7 @@ const OnboardMerchant = () => {
     });
   };
 
- useEffect(() => {
+  useEffect(() => {
 
     axiosInstanceJWT
       .get(API_URL.Business_Category_CODE)
@@ -142,7 +142,7 @@ const OnboardMerchant = () => {
       });
   };
 
-  
+
 
   const handleClickShowPassword = () => {
     setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
@@ -181,48 +181,78 @@ const OnboardMerchant = () => {
   })
   return (
     <>
-      
-
-        
-        <div className="logmod__heading">
-          <span className="fontfigma">
-            Onboard Merchant
-          </span>
-
-        </div>
-        <Formik
-          initialValues={{
-            fullname: "",
-            mobilenumber: "",
-            emaill: "",
-            passwordd: "",
-            business_cat_code: "",
-            confirmpasswordd: "",
-            roleId: "",
-            // termsAndConditions: false,
-            terms_and_condition: false,
-          }}
-          validationSchema={FORM_VALIDATION}
-          onSubmit={handleRegistration}
-        >
-
-          {(formik) => (
 
 
-            <Form class="row g-3 mt-4">
-              <div className="col-md-10"></div>
-              <div class="col-md-6">
-                <label htmlFor="full-name" class="form-label font-weight-bold">Full Name</label>
-                < Field
-                  class="form-control"
-                  maxLength={230}
-                  id="fullname"
-                  placeholder="Full Name"
-                  type="text"
-                  name="fullname"
-                  size={50}
-                />
-                <ErrorMessage name="fullname">
+
+      <div className="logmod__heading">
+        <span className="fontfigma">
+          Onboard Merchant
+        </span>
+
+      </div>
+      <Formik
+        initialValues={{
+          fullname: "",
+          mobilenumber: "",
+          emaill: "",
+          passwordd: "",
+          business_cat_code: "",
+          confirmpasswordd: "",
+          roleId: "",
+          // termsAndConditions: false,
+          terms_and_condition: false,
+        }}
+        validationSchema={FORM_VALIDATION}
+        onSubmit={handleRegistration}
+      >
+
+        {(formik) => (
+
+
+          <Form class="row g-3 mt-4">
+            <div className="col-md-10"></div>
+            <div class="col-md-6">
+              <label htmlFor="full-name" class="form-label font-weight-bold">Full Name</label>
+              < Field
+                class="form-control"
+                maxLength={230}
+                id="fullname"
+                placeholder="Full Name"
+                type="text"
+                name="fullname"
+                size={50}
+              />
+              <ErrorMessage name="fullname">
+                {(msg) => (
+                  <p
+                    className="text-danger"
+
+                  >
+                    {msg}
+                  </p>
+                )}
+              </ErrorMessage>
+            </div>
+            <div class="col-md-6">
+              <label htmlFor="mobile" class="form-label font-weight-bold">Mobile Number</label>
+
+              <Field
+                className="form-control"
+                maxLength={10}
+                id="mobilenumber"
+                placeholder="Mobile Number"
+                name="mobilenumber"
+                type="text"
+                pattern="\d{10}"
+                size={10}
+                onKeyDown={(e) =>
+                  ["e", "E", "+", "-", "."].includes(
+                    e.key
+                  ) && e.preventDefault()
+                }
+              />
+              {
+                <ErrorMessage name="mobilenumber">
                   {(msg) => (
                     <p
                       className="text-danger"
@@ -232,246 +262,216 @@ const OnboardMerchant = () => {
                     </p>
                   )}
                 </ErrorMessage>
-              </div>
-              <div class="col-md-6">
-                <label htmlFor="mobile" class="form-label font-weight-bold">Enter Mobile Number</label>
+              }
+              {/* <input type="password" class="form-control" id="inputPassword4" /> */}
+            </div>
+            <div class="col-md-6">
+              <label htmlFor="user-email" class="form-label font-weight-bold">Email ID</label>
+              <Field
+                className="form-control"
+                maxLength={255}
+                id="email"
+                placeholder="Enter your email"
+                type="email"
+                name="emaill"
+                size={50}
+              />
+              {
+                <ErrorMessage name="emaill">
+                  {(msg) => (
+                    <p
+                      className="text-danger"
+                    >
+                      {msg}
+                    </p>
+                  )}
+                </ErrorMessage>
+              }
+            </div>
+            <div class="col-md-3">
+              <label htmlFor="business_category" className="form-label font-weight-bold">Business Category</label>
+              <Field
+                name="business_cat_code"
+                className="form-select"
+                component="select"
 
-                <Field
-                  className="form-control"
-                  maxLength={10}
-                  id="mobilenumber"
-                  placeholder="Mobile Number"
-                  name="mobilenumber"
+
+              >
+                <option
                   type="text"
-                  pattern="\d{10}"
-                  size={10}
-                  onKeyDown={(e) =>
-                    ["e", "E", "+", "-", "."].includes(
-                      e.key
-                    ) && e.preventDefault()
-                  }
-                />
-                {
-                  <ErrorMessage name="mobilenumber">
-                    {(msg) => (
-                      <p
-                        className="text-danger"
+                  className="form-control"
+                  id="businesscode"
 
-                      >
-                        {msg}
-                      </p>
-                    )}
-                  </ErrorMessage>
-                }
-                {/* <input type="password" class="form-control" id="inputPassword4" /> */}
-              </div>
-              <div class="col-md-6">
-                <label htmlFor="user-email" class="form-label font-weight-bold">Enter Email id</label>
+                >
+                  Select Business
+                </option>
+                {businessCode?.map((business, i) => (
+                  <option
+                    value={business.category_id}
+                    key={i}
+
+                  >
+                    {business.category_name}
+                  </option>
+                ))}
+              </Field>
+              {
+                <ErrorMessage name="business_cat_code">
+                  {(msg) => (
+                    <p
+                      className="text-danger"
+
+                    >
+                      {msg}
+                    </p>
+                  )}
+                </ErrorMessage>
+              }
+            </div>
+
+            <div class="col-md-3">
+              <label htmlFor="roles" className="form-label font-weight-bold">Roles</label>
+              <Field
+                name="roleId"
+                className="form-select"
+                component="select"
+              >
+                <option
+                  type="text"
+                  className="form-control"
+                  value={""}
+                >
+                  Select Roles
+                </option>
+                {roles.map((role, i) => (
+                  <option
+                    value={role.roleId}
+                    key={i}
+                  >
+                    {role.roleName.toUpperCase()}
+                  </option>
+                ))}
+              </Field>
+              {
+                <ErrorMessage name="roleId">
+                  {(msg) => (
+                    <p
+                      className="text-danger"
+
+                    >
+                      {msg}
+                    </p>
+                  )}
+                </ErrorMessage>
+              }
+            </div>
+
+            <div class="col-md-6">
+              <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password</label>
+              <div class="input-group mb-3">
                 <Field
                   className="form-control"
                   maxLength={255}
-                  id="email"
-                  placeholder="email"
-                  type="email"
-                  name="emaill"
+                  id="user-pws"
+                  placeholder="Password"
+
+                  name="passwordd"
+                  type={
+                    passwordType.showPasswords
+                      ? "text"
+                      : "password"
+                  }
+                  size={50}
+                  autoComplete="off"
+                />
+
+                <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
+                  {passwordType.showPasswords ? (<i className="fa fa-eye" aria-hidden="true" ></i>) : (<i className="fa fa-eye-slash" aria-hidden="true"></i>
+                  )}</span>
+              </div>
+              {
+                <ErrorMessage name="passwordd">
+                  {(msg) => (
+                    <p
+                      className="text-danger"
+
+                    >
+                      {msg}
+                    </p>
+                  )}
+                </ErrorMessage>
+              }
+            </div>
+
+            <div class="col-md-6">
+              <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password</label>
+              <div class="input-group mb-3">
+                <Field
+                  className="form-control"
+                  maxLength={255}
+                  id="user-cpw"
+                  placeholder="Re-enter the password"
+                  type={
+                    valuesIn.showPassword
+                      ? "text"
+                      : "password"
+                  }
+                  name="confirmpasswordd"
                   size={50}
                 />
-                {
-                  <ErrorMessage name="emaill">
-                    {(msg) => (
-                      <p
-                        className="text-danger"
-                      >
-                        {msg}
-                      </p>
-                    )}
-                  </ErrorMessage>
-                }
+
+                <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">
+                  {valuesIn.showPassword ? (<i className="fa fa-eye" aria-hidden="true" ></i>) : (<i className="fa fa-eye-slash" aria-hidden="true"></i>
+                  )}</span>
               </div>
-              <div class="col-md-3">
-                <label htmlFor="business_category" className="form-label font-weight-bold">Business Category</label>
-                <Field
-                  name="business_cat_code"
-                  className="form-select"
-                  component="select"
 
-
-                >
-                  <option
-                    type="text"
-                    className="form-control"
-                    id="businesscode"
-
-                  >
-                    Select Business Category
-                  </option>
-                  {businessCode?.map((business, i) => (
-                    <option
-                      value={business.category_id}
-                      key={i}
+              {
+                <ErrorMessage name="confirmpasswordd">
+                  {(msg) => (
+                    <p
+                      className="text-danger"
 
                     >
-                      {business.category_name}
-                    </option>
-                  ))}
-                </Field>
-                {
-                  <ErrorMessage name="business_cat_code">
-                    {(msg) => (
-                      <p
-                        className="text-danger"
+                      {msg}
+                    </p>
+                  )}
+                </ErrorMessage>
+              }
 
-                      >
-                        {msg}
-                      </p>
-                    )}
-                  </ErrorMessage>
+            </div>
+            <div className="col-md-3">
+
+            </div>
+            <div className="col-md-9">
+              <button className="figmabtn  text-white  disabled1 w-50"
+                name="commit"
+                type="submit"
+                width={50}
+                defaultValue="Create Account"
+                disabled={btnDisable ||
+                  !(formik.isValid && formik.dirty)
+                  ? true
+                  : false
                 }
-              </div>
+                data-rel={btnDisable}
+              >Sign in</button>
 
-              <div class="col-md-3">
-                <label htmlFor="roles" className="form-label font-weight-bold">Roles</label>
-                <Field
-                  name="roleId"
-                  className="form-select"
-                  component="select"
-                >
-                  <option
-                    type="text"
-                    className="form-control"
-                    value={""}
-                  >
-                    Select Roles
-                  </option>
-                  {roles.map((role, i) => (
-                    <option
-                      value={role.roleId}
-                      key={i}
-                    >
-                      {role.roleName.toUpperCase()}
-                    </option>
-                  ))}
-                </Field>
-                {
-                  <ErrorMessage name="roleId">
-                    {(msg) => (
-                      <p
-                        className="text-danger"
-
-                      >
-                        {msg}
-                      </p>
-                    )}
-                  </ErrorMessage>
-                }
-              </div>
-
-              <div class="col-md-6">
-                <label htmlFor="user-pw" class="form-label font-weight-bold">Enter Password</label>
-                <div class="input-group mb-3">
-                  <Field
-                    className="form-control"
-                    maxLength={255}
-                    id="user-pws"
-                    placeholder="Type your password here"
-                    
-                    name="passwordd"
-                    type={
-                      passwordType.showPasswords
-                          ? "text"
-                          : "password"
-                  }
-                    size={50}
-                    autoComplete="off"
-                  />
-
-                  <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
-                    {passwordType.showPasswords ? (<i className="fa fa-eye" aria-hidden="true" ></i>) : (<i className="fa fa-eye-slash" aria-hidden="true"></i>
-                    )}</span>
-                </div>
-                {
-                  <ErrorMessage name="passwordd">
-                    {(msg) => (
-                      <p
-                        className="text-danger"
-
-                      >
-                        {msg}
-                      </p>
-                    )}
-                  </ErrorMessage>
-                }
-              </div>
-
-              <div class="col-md-6">
-                <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password</label>
-                <div class="input-group mb-3">
-                  <Field
-                    className="form-control"
-                    maxLength={255}
-                    id="user-cpw"
-                    placeholder="Confirm password"
-                    type={
-                      valuesIn.showPassword
-                        ? "text"
-                        : "password"
-                    }
-                    name="confirmpasswordd"
-                    size={50}
-                  />
-
-                  <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">
-                    {valuesIn.showPassword ? (<i className="fa fa-eye" aria-hidden="true" ></i>) : (<i className="fa fa-eye-slash" aria-hidden="true"></i>
-                    )}</span>
-                </div>
-
-                {
-                  <ErrorMessage name="confirmpasswordd">
-                    {(msg) => (
-                      <p
-                        className="text-danger"
-
-                      >
-                        {msg}
-                      </p>
-                    )}
-                  </ErrorMessage>
-                }
-
-              </div>
-              <div className="col-md-3">
-
-              </div>
-              <div className="col-md-9">
-                <button className="figmabtn  text-white  disabled1 w-50"
-                  name="commit"
-                  type="submit"
-                  width={50}
-                  defaultValue="Create Account"
-                  disabled={btnDisable ||
-                    !(formik.isValid && formik.dirty)
-                    ? true
-                    : false
-                  }
-                  data-rel={btnDisable}
-                >Sign in</button>
-
-              </div>
+            </div>
 
 
 
 
 
 
-            </Form>
-          )}
+          </Form>
+        )}
 
 
-        </Formik>
+      </Formik>
 
 
-      
-      
+
+
     </>
   )
 }

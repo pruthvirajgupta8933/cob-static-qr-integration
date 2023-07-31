@@ -7,7 +7,12 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import headerClasses from "./dashboard-header.module.css"
 // import themeClasses from "../../../../theme.module.scss"
 import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
-import Notification from '../notification/Notification';
+// import Notification from '../notification/Notification';
+
+const Notification = React.lazy(() => import('../notification/Notification'));
+
+
+// import Connection from '../../../websocket/Connection';
 
 function DashboardHeader() {
     const dispatch = useDispatch();
@@ -23,6 +28,7 @@ function DashboardHeader() {
 
     return (
         <header className={`navbar sticky-top flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}  headerBg`}>
+          {/* <Connection /> */}
             <a className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`} href={false}>
                 <button className={`d-md-none collapsed navbar-toggler `} type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     {/* <span className="navbar-toggler-icon" /> */}
@@ -40,7 +46,8 @@ function DashboardHeader() {
                 <div>
                     <div className={`navbar-nav ${headerClasses.navbar_nav_cob}`}>
                         <div className="d-flex">
-                            {/* <Notification /> */}
+                      
+                            <Notification />
                             <div className="dropdown">
                                 <button className="btn cob-primary-btn-bg btn-sm dropdown-toggle text-uppercase text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i className="fa fa-user" /> {username}
