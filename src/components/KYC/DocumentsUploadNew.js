@@ -71,6 +71,7 @@ function DocumentsUpload(props) {
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const businessType = KycList?.businessType;
+  console.log("KycList",KycList)
 
   const documentStatus = KycTabStatusStore?.document_status;
 
@@ -120,7 +121,8 @@ function DocumentsUpload(props) {
   });
 
   useEffect(() => {
-    dispatch(documentsUpload({ businessType }))
+    // console.log("KycList?.is_udyam",KycList?.is_udyam)
+    dispatch(documentsUpload({ businessType , is_udyam:KycList?.is_udyam}))
       .then((resp) => {
         setIsRequiredData(resp?.payload)
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
@@ -368,6 +370,7 @@ function DocumentsUpload(props) {
                             {imgAttr !== "#" &&
                               imgAttr.startsWith("data:application/pdf") ? (
                               <iframe
+                                title="document"
                                 src={imgAttr + "#toolbar=0"}
                                 height={155}
                                 width={150}

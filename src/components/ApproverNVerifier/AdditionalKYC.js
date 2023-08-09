@@ -82,7 +82,7 @@ const AdditionalKYC = () => {
   const [initialValuesForIfsc, setInitialValuesForIfsc] = useState({ ifsc_code: "", })
   //   const[initialValuesForBankAccount,setInitialValuesForBankAccount]=useState({account_number:"",ifsc_code:""})
 
-  console.log("initialValuesForBankAccount", initialValuesForBankAccount)
+  // console.log("initialValuesForBankAccount", initialValuesForBankAccount)
 
   const documentTypeList = [
     { documentType: "PAN", value: "1" },
@@ -110,12 +110,10 @@ const AdditionalKYC = () => {
   const objArray = Object.entries(gstinData);
   const panInfoData = Object.entries(showPanInfo);
   const bankAccountInfo = Object.entries(bankAccount);
-  console.log("udyamRegistrationData",udyamRegistrationData.nic_codes
-  )
+  // console.log("udyamRegistrationData",udyamRegistrationData.nic_codes)
 
   const nicCodes = udyamRegistrationData?.nic_codes ?? [];
-  console.log(udyamRegistrationData.classifications
-    ,"classifications")
+  // console.log(udyamRegistrationData.classifications,"classifications")
 
  const classifications=udyamRegistrationData.classifications
 

@@ -9,7 +9,7 @@ import headerClasses from "./dashboard-header.module.css"
 import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
 // import Notification from '../notification/Notification';
 
-const Notification = React.lazy(() => import('../notification/Notification'));
+// const Notification = React.lazy(() => import('../notification/Notification'));
 
 
 // import Connection from '../../../websocket/Connection';
@@ -47,7 +47,7 @@ function DashboardHeader() {
                     <div className={`navbar-nav ${headerClasses.navbar_nav_cob}`}>
                         <div className="d-flex">
                       
-                            <Notification />
+                            {/* <Notification /> */}
                             <div className="dropdown">
                                 <button className="btn cob-primary-btn-bg btn-sm dropdown-toggle text-uppercase text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i className="fa fa-user" /> {username}
