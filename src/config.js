@@ -20,6 +20,9 @@ if (ENV_PROD) {
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
+  // kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
+  // url = "http://192.168.34.26:8001";
+  // kyc_url = "http://192.168.34.26:8000";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";

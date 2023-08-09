@@ -18,43 +18,38 @@
  }
 
  /* Add general styling to the accordion */
-#accordion {
+/* #accordion {
   margin-top: 50px;
-}
+} */
 
 /* Add spacing between collapse items */
-.card-header {
+/* .card-header {
   margin-bottom: 10px;
-}
+} */
 
 /* Styling for each card header */
-.card-header {
+/* .card-header {
   border-radius: 20px;
   background-color: #f2f2f2;
   border: none;
-}
+} */
 
 /* Styling for the button inside card header */
-.card-header button {
+/* .card-header button {
   color: #333;
   font-weight: bold;
-}
+} */
 
 /* Styling for the expanded button */
-.card-header button[aria-expanded="true"] {
+/* .card-header button[aria-expanded="true"] {
   color: #007bff;
-}
+} */
 
 /* Styling for the chevron icon */
-.card-header i {
+/* .card-header i {
   float: right;
   margin-top: 5px;
-}
+} */
 
 /* Styling for the card body */
-.card-body {
-  background-color: #fff;
-  border-radius: 0 0 20px 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-}
+

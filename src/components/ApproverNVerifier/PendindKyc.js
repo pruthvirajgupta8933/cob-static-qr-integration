@@ -202,7 +202,7 @@ const PendindKyc = () => {
       })
 
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         toastConfig.errorToast("Data not loaded");
       });
   };

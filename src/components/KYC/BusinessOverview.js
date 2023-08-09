@@ -120,7 +120,7 @@ function BusinessOverview(props) {
           .nullable(),
         otherwise: Yup.string().notRequired().nullable(),
       }),
-      expected_transactions: Yup.string().trim().required("Required"),
+      expected_transactions: Yup.string().trim().required("Required").nullable(),
       // .matches(Regex.digit, RegexMsg.digit)
       // .test("IntergerRequired", "Value should be more then 1", (val) => {
       //   return val > 0;
@@ -137,7 +137,7 @@ function BusinessOverview(props) {
         // .test("IntergerRequired", "Value should be more then 1", (val) => {
         //   return val > 0;
         // })
-        .required("Required"),
+        .required("Required").nullable(),
       // .nullable(),
     },
     [["seletcted_website_app_url"]]
