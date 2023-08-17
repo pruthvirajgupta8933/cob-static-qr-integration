@@ -168,10 +168,14 @@ function SubmitKyc(props) {
                     kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></> : (
                     <button
                       disabled={disable}
-                      className="save-next-btn float-lg-right cob-btn-primary text-white"
+                      className="btn btn-sm float-lg-right cob-btn-primary text-white"
                       type="submit"
 
                     >
+                     {disable && <>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </>}
                       Submit
                     </button>
                   )}

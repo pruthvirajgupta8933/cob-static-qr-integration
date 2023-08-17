@@ -503,6 +503,10 @@ function BankDetails(props) {
                       className="save-next-btn float-lg-right cob-btn-primary text-white btn-sm"
                       type="submit"
                     >
+                     {disable && <>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </>}
                       {buttonText}
                     </button>
                   )}
