@@ -261,11 +261,7 @@ function BusinessOverview(props) {
             dispatch(GetKycTabsStatus({ login_id: loginId }));
             setIsDisabled(false);
           } else {
-            toast.error(
-              res?.payload?.message
-                ? res?.payload?.message
-                : "Something Went Wrong! Please try again after some time."
-            );
+            toast.error(res?.payload?.detail);
             setIsDisabled(false);
           }
         });

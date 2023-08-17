@@ -71,7 +71,7 @@ function DocumentsUpload(props) {
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const businessType = KycList?.businessType;
-  console.log("KycList",KycList)
+  // console.log("KycList",KycList)
 
   const documentStatus = KycTabStatusStore?.document_status;
 
@@ -519,10 +519,9 @@ function DocumentsUpload(props) {
           </Formik>
         </div>
       ) : (
-        <h4 className="text-danger mb-4">
-          * Please fill the Business Overview form for uploading the document,
-          before submitting the KYC form.
-        </h4>
+        <h6 className="text-danger mb-4">
+          * Kindly complete the Business Overview form to upload the document before proceeding with the submission of the KYC form.
+        </h6>
       )}
     </>
   );

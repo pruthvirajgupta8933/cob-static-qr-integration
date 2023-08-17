@@ -239,7 +239,8 @@ function Login() {
                             </div>
 
                             <div className="text-center mt-2">
-                                <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa?  <Link className="text-primary text-decoration-underline" to={`/Registration/${queryString}`}>Sign Up</Link></p>
+                                <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa? 
+                                <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a></p>
                             </div>
                         </div>
                         <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a></p></div>

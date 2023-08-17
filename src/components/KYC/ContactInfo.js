@@ -273,11 +273,6 @@ function ContactInfo(props) {
               </div>
             </div>
             {/*  Modal Popup for Otp Verification Email*/}
-            {/* <MailVerificationModal
-              show={showOtpVerifyModalEmail}
-              setShow={handlerModal}
-            /> */}
-            {/*  Modal Popup for Otp Verification Email*/}
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_phone}>
