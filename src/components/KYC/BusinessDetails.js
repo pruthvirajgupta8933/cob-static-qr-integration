@@ -92,8 +92,8 @@ function BusinessDetails(props) {
     prevGstNumber: KycList?.gstNumber?.length > 2 ? KycList?.gstNumber : "00",
 
     registerd_with_udyam: JSON.parse(KycList?.is_udyam),
-    udyam_number: KycList?.udyam_data?.reg_number ?? true,
-    prevUdyamNumber: KycList?.udyamAadhar?.length > 2 ? KycList?.udyamAadhar : "0000",
+    udyam_number: KycList?.udyam_data?.reg_number ?? "",
+    prevUdyamNumber: KycList?.udyam_data?.reg_number?.length > 2 ? KycList?.udyam_data?.reg_number : "0000",
     pan_card: KycList?.panCard,
     prev_pan_card: KycList?.panCard?.length > 2 ? KycList?.panCard : "pan",
 
@@ -425,6 +425,12 @@ function BusinessDetails(props) {
     setUdyamResponseData({})
   }
 
+
+  useEffect(() => {
+    setUdyamResponseData(KycList?.udyam_data)
+  }, [KycList])
+  
+
   return (
     <div className="col-lg-12 p-0">
       <Formik
@@ -443,6 +449,9 @@ function BusinessDetails(props) {
         }) => (
           <Form>
             <div className="row">
+            {/* {console.log("initialValues",initialValues)}
+            {console.log("values",values)}
+            {console.log("errors",errors)} */}
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="input-group">
                   <lable>Do you have a GST number?</lable>
@@ -818,6 +827,11 @@ function BusinessDetails(props) {
                     disabled={disable}
                     className="float-lg-right cob-btn-primary text-white btn-sm btn"
                   >
+                    {disable && <>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </>}
+
                     {buttonText}
                   </button>
                 )}

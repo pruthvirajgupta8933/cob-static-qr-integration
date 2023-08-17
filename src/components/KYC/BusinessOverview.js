@@ -216,6 +216,7 @@ function BusinessOverview(props) {
   }, []);
 
   const onSubmit = (values) => {
+    setIsDisabled(true)
     const expectedTxn = values.expected_transactions.split("-");
     const numbers = expectedTxn.map(part => parseInt(part));
     const maxValueTxn = Math.max(...numbers);
@@ -225,7 +226,7 @@ function BusinessOverview(props) {
     const avgCount = maxValueTxn * maxTicketSize;
 
     if (role.merchant) {
-      // setIsDisabled(true)
+
       if (
         window.confirm(
           `Are you sure for the Expected Transaction : ${avgCount}`
@@ -341,7 +342,7 @@ function BusinessOverview(props) {
 
   const tooltipData = {
     "expected_transaction_yr": "Expected transaction/year refers to the estimated number of transactions that are anticipated to occur within a specific time frame, typically a year",
-    "avg_ticket_amount":"Average ticket amount refers to the average value or amount spent per transaction or customer."
+    "avg_ticket_amount": "Average ticket amount refers to the average value or amount spent per transaction or customer."
   }
 
 
@@ -462,7 +463,7 @@ function BusinessOverview(props) {
             </div>
 
             <div className="row">
-            <div className="col-sm-12 col-md-12 col-lg-4">
+              <div className="col-sm-12 col-md-12 col-lg-4">
                 <label className="col-form-label p-2 mt-0">
                   Platform Type<span className="text-danger">*</span>
                 </label>
@@ -475,14 +476,14 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={platform}
-                
+
                 />
               </div>
 
-              
+
 
               <div className="col-sm-12 col-md-12 col-lg-4">
-                <label className="col-form-label p-2 mt-0"  data-tip={tooltipData.expected_transaction_yr}>
+                <label className="col-form-label p-2 mt-0" data-tip={tooltipData.expected_transaction_yr}>
                   Expected Trans./Year
                   <span className="text-danger">*</span>
                 </label>
@@ -516,11 +517,11 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={ticketOptions}
-                  // onClick={() => getExpectedTransactions(2)}
+                // onClick={() => getExpectedTransactions(2)}
                 />
               </div>
 
-           
+
             </div>
 
             <div className="row">
@@ -533,6 +534,10 @@ function BusinessOverview(props) {
                     type="submit"
                     disabled={disabled}
                   >
+                    {disabled && <>
+                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </>}
                     {buttonText}
                   </button>
                 )}

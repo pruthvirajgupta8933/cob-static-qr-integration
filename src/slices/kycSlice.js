@@ -1157,7 +1157,7 @@ export const kycSlice = createSlice({
       state.allKycData.loading = false;
       state.allKycData.error = true;
       state.allKycData.result = [];
-      console.log(action.error)
+      // console.log(action.error)
       state.allKycData.message = action.error.message;
     },
     //-------------------------------------------

@@ -46,7 +46,7 @@ function DocumentsUpload(props) {
 
   const filteredList = isRequiredData?.filter((r) => r?.is_required === true); // required list
   const dropDownDocList = filteredList.map((r) => r?.id?.toString());  /// dropdown array
-  const uploadedDocList = Object.values(savedData)?.map((r) => r?.type) 
+  const uploadedDocList = Object.values(savedData)?.map((r) => r?.type)
   const optionalArray = isRequiredData?.filter((r) => r?.is_required === false); // not required doc list
   const dropoptionalArray = optionalArray.map((r) => r?.id?.toString()); // optional doc dropdown
 
@@ -122,7 +122,7 @@ function DocumentsUpload(props) {
 
   useEffect(() => {
     // console.log("KycList?.is_udyam",KycList?.is_udyam)
-    dispatch(documentsUpload({ businessType , is_udyam:KycList?.is_udyam}))
+    dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
       .then((resp) => {
         setIsRequiredData(resp?.payload)
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
@@ -416,6 +416,10 @@ function DocumentsUpload(props) {
                           formik.handleSubmit();
                         }}
                       >
+                        {disable && <>
+                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                          <span className="sr-only">Loading...</span>
+                        </>}
                         Upload Document
                       </button>
 
