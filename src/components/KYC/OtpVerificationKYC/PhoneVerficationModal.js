@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { otpVerificationForContactForPhone } from "../../../slices/kycSlice";
 import OtpInput from "react-otp-input";
+import { useEffect } from "react";
 
 
 const PhoneVerficationModal = ({ show, setShow }) => {
@@ -54,6 +55,11 @@ const PhoneVerficationModal = ({ show, setShow }) => {
 
   }
 
+
+  useEffect(() => {
+    setOtpForPhone({otp:""})
+  }, [show])
+  
 
   //---------------------------------------------------------
 

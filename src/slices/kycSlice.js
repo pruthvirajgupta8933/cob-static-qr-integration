@@ -1363,10 +1363,10 @@ export const kycSlice = createSlice({
 
     //-----------------Saving Bank Details by sending bank id -----------------//
 
-    [getBankId.fulfilled]: (state, action) => {
-      state.GetBankid = action.payload;
-      //  console.log("Action Bank id ===>122",action.payload)
-    },
+    // [getBankId.fulfilled]: (state, action) => {
+    //   state.GetBankid = action.payload;
+    //   //  console.log("Action Bank id ===>122",action.payload)
+    // },
     //-----------------Saving Bank Details by sending bank id -----------------//
 
     //All Kyc Tabs status stored in redux as false
