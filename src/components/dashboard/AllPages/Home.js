@@ -458,7 +458,7 @@ function Home() {
             "modal fade mymodals " +
             (modalState === "Not-Filled" ? " show d-block" : " d-none")
           }
-          role="dialog"
+          // role="dialog"
         >
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">
@@ -546,7 +546,7 @@ function Home() {
           "modal fade mymodals" +
           (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : "d-none")
         }
-        role="dialog"
+        // role="dialog"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div
@@ -567,7 +567,7 @@ function Home() {
                 > X </button></div>
                 <div className="row justify-content-md-center">
                   <div className="col-md-auto text-centre">
-                    <ul className="p-0 m-0">
+                    <div className="p-0 m-0">
                       <h5 style={{ color: "#4BB543" }} className="text-center">
                         Congratulations!
                       </h5>
@@ -583,7 +583,7 @@ function Home() {
                       </p>
 
 
-                    </ul>
+                    </div>
                   </div>
 
                   <div className="rounded mx-auto d-block text-center">

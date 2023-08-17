@@ -815,6 +815,8 @@ export const approveDoc = createAsyncThunk(
     return response.data;
   }
 );
+
+
 //----- GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 export const panValidation = createAsyncThunk(
   "kyc/panValidation",
@@ -899,6 +901,7 @@ export const ifscValidation = createAsyncThunk(
     return response.data;
   }
 );
+
 
 export const bankAccountVerification = createAsyncThunk(
   "kyc/bankAccountVerification",
@@ -1304,57 +1307,57 @@ export const kycSlice = createSlice({
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
-    [panValidation.fulfilled]: (state, action) => {
-      // console.log("panValidation")
-      state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
-      if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.kycUserList.panCard = action?.meta?.arg?.pan_number
-      }
-    },
+    // [panValidation.fulfilled]: (state, action) => {
+    //   // console.log("panValidation")
+    //   state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
+    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
+    //     state.kycUserList.panCard = action?.meta?.arg?.pan_number
+    //   }
+    // },
 
     //-----------------------------------
 
-    [authPanValidation.fulfilled]: (state, action) => {
-      if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation =
-          action.payload;
-        state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number;
-      }
+    // [authPanValidation.fulfilled]: (state, action) => {
+    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
+    //     state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation =
+    //       action.payload;
+    //     state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number;
+    //   }
 
-      // console.log(action.payload,"Action ===> 12")
-    },
+    //   // console.log(action.payload,"Action ===> 12")
+    // },
 
     // ------------------------------------
 
-    [gstValidation.fulfilled]: (state, action) => {
-      if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BusinessDetailsStatus.GSTINValidation =
-          action.payload;
-        state.kycUserList.gstNumber = action?.meta?.arg?.gst_number;
-      }
+    // [gstValidation.fulfilled]: (state, action) => {
+    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
+    //     state.allTabsValidate.BusinessDetailsStatus.GSTINValidation =
+    //       action.payload;
+    //     state.kycUserList.gstNumber = action?.meta?.arg?.gst_number;
+    //   }
 
-      // console.log(action.payload,"Action ===> 12")
-    },
+    //   // console.log(action.payload,"Action ===> 12")
+    // },
 
     //-----------------------------------
 
-    [ifscValidation.fulfilled]: (state, action) => {
-      if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BankDetails.IfscValidation = action.payload;
-        state.kycUserList.ifscCode = action?.meta?.arg?.ifsc_number;
-      }
-    },
+    // [ifscValidation.fulfilled]: (state, action) => {
+    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
+    //     state.allTabsValidate.BankDetails.IfscValidation = action.payload;
+    //     state.kycUserList.ifscCode = action?.meta?.arg?.ifsc_number;
+    //   }
+    // },
 
     //---------------------------------------
 
-    [bankAccountVerification.fulfilled]: (state, action) => {
-      if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BankDetails.accountValidation = action.payload;
+    // [bankAccountVerification.fulfilled]: (state, action) => {
+    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
+    //     state.allTabsValidate.BankDetails.accountValidation = action.payload;
 
-        state.kycUserList.accountNumber = action?.meta?.arg?.account_number;
-      }
-      // console.log(action.payload,"Action Account Number ===> 1222222222")
-    },
+    //     state.kycUserList.accountNumber = action?.meta?.arg?.account_number;
+    //   }
+    //   // console.log(action.payload,"Action Account Number ===> 1222222222")
+    // },
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 

@@ -65,7 +65,8 @@ const PhoneVerficationModal = ({ show, setShow }) => {
         role="dialog"
         aria-labelledby="phoneModal"
         aria-hidden="true"
-        style={{ display: show ? "block" : "none" }}
+        
+        style={{ display: show ? "block" : "none" , backgroundColor:"#000000a8"} }
        
       >
         <div className="modal-dialog" role="document">
@@ -85,22 +86,22 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="mx-auto py-3">
-                <h1 className="subHeaderForModal">
+              <div className="mx-auto p-3">
+                <h5 className="">
                   Please enter the verification code sent to your
                   Phone !
-                </h1>
+                </h5>
               </div>
-              <div className="modal-body">
+              <div className="modal-body justify-content-center d-flex-inline">
 
-                <div className="form-group mx-auto py-3" style={{ width: "506px" }}>
+                <div className=" justify-content-center d-flex-inline" >
                   <OtpInput
                     separator={
                       <span>
-                        <strong>.</strong>
+                        <strong>-</strong>
                       </span>
                     }
-
+                    containerStyle="d-flex justify-content-center"
                     isInputNum={true}
                     value={otpForPhone.otp}
                     onChange={handleChangeForOtpPhone}
@@ -108,19 +109,20 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                       align: "centre",
                       width: "3rem",
                       height: "3rem",
-                      margin: "0px 1rem",
+                      // margin: "0px 1rem",
                       fontSize: "2rem",
                       borderRadius: 4,
                       border: "1px solid rgba(0,0,0,0.3)",
                     }}
                     numInputs={6}
+                    
                   />
                 </div>
-                <div className="col-md-11 text-center">
-                <button className="btn" type="button" style={{backgroundColor:"#0156B3"}}
+                <div className="m-4 text-center">
+                <button className="btn btn cob-btn-primary" type="button" 
                     onClick={handleVerificationOfPhone}
                   >
-                       <h4 className="text-white text-kyc-sumit">Verify</h4>
+                       Verify
                   </button>
                 </div>
 
