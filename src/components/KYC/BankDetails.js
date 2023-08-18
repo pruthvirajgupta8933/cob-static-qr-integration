@@ -141,7 +141,11 @@ function BankDetails(props) {
           setLoading(false)
           const postData = { bank_name: res?.payload?.bank };
           dispatch(getBankId(postData)).then(resp=>{
-            setFieldValue("bank_id",resp?.payload?.bankId)
+            
+            if(resp?.payload?.length>0){
+              setFieldValue("bank_id",resp?.payload[0]?.bankId)
+            }
+
             // console.log(resp?.payload?.bankId)
           }).catch(err=>{
             // console.log(err?.payload?.bankName)
@@ -273,9 +277,6 @@ function BankDetails(props) {
     }
   };
 
-  console.log("initialVal",initialValues)
-
-
   return (
     <div className="col-lg-12 p-0">
       <Formik
@@ -294,8 +295,6 @@ function BankDetails(props) {
         }) => (
           <Form>
             <div className="row">
-            {console.log("values",values)}
-            {console.log("errors",errors)}
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
                   IFSC Code<span className="text-danger">*</span>
