@@ -22,6 +22,16 @@ import toastConfig from "../../../utilities/toastTypes";
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
+const initialValues = {
+    fullname: "",
+    mobilenumber: "",
+    emaill: "",
+    passwordd: "",
+    business_cat_code: "",
+    confirmpasswordd: "",
+    terms_and_condition: false,
+}
+
 const FORM_VALIDATION = Yup.object().shape({
     fullname: Yup.string()
         .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
@@ -45,6 +55,7 @@ const FORM_VALIDATION = Yup.object().shape({
         .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
         .required("Confirm Password"),
     business_cat_code: Yup.string().required("Required"),
+    terms_and_condition: Yup.boolean().oneOf([true], 'Please accept the terms & conditions and privacy policy to proceed further')
 });
 
 
@@ -85,6 +96,14 @@ function Signup() {
             showPasswords: !passwordType.showPasswords,
         });
     };
+
+    const checkBoxHandler = (value, setFormikValue) => {
+        // if(value){
+        setFormikValue("terms_and_condition", value)
+        // }else{
+        //     setFormikValue("terms_and_condition","")
+        // }
+    }
 
     useEffect(() => {
         axiosInstanceJWT
@@ -146,7 +165,7 @@ function Signup() {
                 resetForm();
             })
             .catch((err) => {
-                console.log("err",err)
+                console.log("err", err)
                 setBtnDisable(false);
             });
     };
@@ -258,15 +277,7 @@ function Signup() {
                             <h4 className="text-center">Welcome to SabPaisa</h4>
                             <p className="text-center">Sign up  to Create New Account</p>
                             <Formik
-                                initialValues={{
-                                    fullname: "",
-                                    mobilenumber: "",
-                                    emaill: "",
-                                    passwordd: "",
-                                    business_cat_code: "",
-                                    confirmpasswordd: "",
-                                    terms_and_condition: false,
-                                }}
+                                initialValues={initialValues}
                                 validationSchema={FORM_VALIDATION}
                                 onSubmit={(values, { resetForm }) => {
                                     handleRegistration(values, { resetForm });
@@ -425,7 +436,23 @@ function Signup() {
 
                                             </div>
                                         </div>
+                                        <div className="bd-highlight text-center sp-font-12">
+                                            <div className="form-check p-0">
+                                                <Field
+                                                    className="form-check-input border border-primary"
+                                                    name="terms_and_condition"
+                                                    type="checkbox"
+                                                    id="flexCheckDefault"
+                                                // onChange={(e)=>checkBoxHandler(e, formik.setFieldValue)}
+                                                />
 
+                                                <lable>
+                                                    I have read the <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank" className="text-primary">Terms &amp; Conditions </a> and <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank" className="text-primary">Privacy Policy</a> and hereby grant my consent for utilization and processing of data accordingly
+                                                </lable>
+                                                <p className="text-danger">{formik?.errors?.terms_and_condition}</p>
+                                            </div>
+
+                                        </div>
                                         <div className={`form-row ${classes.form_row_cob}`}>
                                             <div className="form-group col-lg-6 col-md-6 col-sm-12 p-2 m-2 justify-content-center d-flex">
 
@@ -452,7 +479,7 @@ function Signup() {
                                         </div>
                                         <p className="text-center">OR</p>
                                         <div className="d-flex justify-content-center m-2">
-                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} btnText={"Sign up with Google"}  />
+                                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} btnText={"Sign up with Google"} />
 
                                         </div>
                                     </Form>
@@ -469,7 +496,7 @@ function Signup() {
                                 </Link></p>
                             </div>
                         </div>
-                        <div className="bd-highlight text-center sp-font-12"><p>By signing up, you agree to our <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer"  target="_blank">Terms &amp; Conditions </a> and <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer"  target="_blank">Privacy Policy</a></p></div>
+
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-4">
