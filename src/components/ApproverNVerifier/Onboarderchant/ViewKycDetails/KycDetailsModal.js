@@ -74,7 +74,6 @@ const KycDetailsModal = (props) => {
       );
 
       
-      console.log("merchantKycId",merchantKycId)
       const businessType = merchantKycId?.businessType;
       if (businessType !== "" && businessType !== null && businessType !== undefined) {
         // console.log(busiType,"Business TYPE==========>")
