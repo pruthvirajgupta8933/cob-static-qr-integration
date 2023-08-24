@@ -221,11 +221,11 @@ const BusinessDetails = (props) => {
 
 
       </div>
-      <div className="accordion accordion-flush mt-3" id="accordionFlushExample">
+      {merchantKycId?.is_udyam === true ? <div className="accordion accordion-flush mt-3" id="accordionFlushExample">
         <div className="accordion-item">
           <h2 className="accordion-header" id="flush-headingOne">
             <button className="collapsed btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-              <p className="fs-6 m-0">Merchant Udyam Aadhar Details <i className="fa fa-arrow-circle-o-down" /></p>
+              <p className="fs-6 m-0 text-success" >Merchant Udyam Aadhar Details <i className="fa fa-arrow-circle-o-down" /></p>
               <p className="fs-6 m-0">{merchantKycId?.udyam_data?.reg_number}</p>
             </button>
           </h2>
@@ -362,7 +362,8 @@ const BusinessDetails = (props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> : <div><h5 className="text-danger mt-4 p-0">Udyam Details not available</h5></div>}
+
 
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">

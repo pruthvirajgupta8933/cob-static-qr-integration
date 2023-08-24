@@ -73,11 +73,12 @@ const KycDetailsModal = (props) => {
         })
       );
 
-
+      
+      console.log("merchantKycId",merchantKycId)
       const businessType = merchantKycId?.businessType;
       if (businessType !== "" && businessType !== null && businessType !== undefined) {
         // console.log(busiType,"Business TYPE==========>")
-        dispatch(documentsUpload({ businessType })).then((resp) => {
+        dispatch(documentsUpload({ businessType, is_udyam: merchantKycId?.is_udyam })).then((resp) => {
           const data = convertToFormikSelectJson("id", "name", resp?.payload);
           setDocTypeList(data);
         });
