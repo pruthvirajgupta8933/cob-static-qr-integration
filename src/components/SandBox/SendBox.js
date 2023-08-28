@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 // import NavBar from "../dashboard/NavBar/NavBar";
 import StepProgressBar from "../../_components/reuseable_components/StepProgressBar/StepProgressBar";
@@ -96,7 +97,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h6 className="">Test Credentials ( PHP7 | JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter) </h6>
+                    <h6 className="">Test Credentials ( PHP7 | JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -349,23 +350,7 @@ function Sandbox() {
                           
                           className="col-form-label"
                         >
-                          Authentication Key
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          
-                          disabled="true"
-                          value={data && data?.authKey}
-                        />
-                      </div>
-
-                      <div className="col-lg-4">
-                        <label
-                          
-                          className="col-form-label"
-                        >
-                          Client Password
+                          Password
                         </label>
                         <div className="input-group">
                           <input type={
@@ -396,43 +381,25 @@ function Sandbox() {
                             </span>
                           </div>
                         </div>
+                      </div>
 
-                        {/* <label
+                      <div className="col-lg-4">
+                        <label
                           
                           className="col-form-label"
                         >
-                          Client Password
+                          Authentication Key
                         </label>
                         <input
-                          type={
-                            values.showPassword
-                              ? "text"
-                              : "password"
-                          }
+                          type="text"
                           className="form-control"
                           
-                          name="passwordd"
-                          readOnly="true"
-                          value={data && data?.clientPassword}
+                          disabled="true"
+                          value={data && data?.authKey}
                         />
-                        <div className="input-group-addon eye__Icon">
-                          <a onClick={handleClickShowPassword} href={() => false}>
-                            {" "}
-                            {values.showPassword ? (
-                              <i
-                                className="fa fa-eye"
-                                aria-hidden="true"
-                              ></i>
-                            ) : (
-                              <i
-                                className="fa fa-eye-slash"
-                                aria-hidden="true"
-                              ></i>
-                            )}
-                          </a>
-                        </div> */}
-
                       </div>
+
+                   
                       <div className="col-lg-4">
                         <label
                           
