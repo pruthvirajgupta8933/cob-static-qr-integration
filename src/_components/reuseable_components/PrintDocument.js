@@ -70,7 +70,7 @@ function PrintDocument(props) {
                                                                 color: "#000000"
                                                             }}
                                                         >
-                                                            <strong>TRANSACTION ENQUIERY</strong>
+                                                            <strong>TRANSACTION ENQUIRY</strong>
                                                         </th>
                                                     </tr>
                                                     {firstCol.map((d, i) => (

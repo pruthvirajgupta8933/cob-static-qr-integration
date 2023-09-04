@@ -18,6 +18,12 @@
     overflow: scroll;
     /* background-color: #140633; */
   }
+
+  .selected_memu{
+    border: 1px solid white;
+    border-radius: 100px;
+    margin: 0 8px 0 8px;
+  }
   
   @media (max-width: 767.98px) {
     .sidebar_cob {

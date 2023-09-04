@@ -7,7 +7,6 @@ const ChartContainer = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTit
     //     values: [10, 20, 30, 25, 35, 30,10, 20, 30, 25, 35, 30],
     //     extraValues: [5, 10, 15, 12, 20, 18, 5, 10, 15, 12, 20, 18],
     //   };
-
     //   console.log("chartjs",chartData)
 
   return (

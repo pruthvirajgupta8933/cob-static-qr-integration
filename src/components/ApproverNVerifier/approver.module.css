@@ -2,3 +2,8 @@
     cursor: pointer;
 }
 
+
+
+.active_tab {
+    background-color: rgb(219, 215, 210) !important;
+}

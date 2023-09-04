@@ -286,7 +286,7 @@ useEffect(() => {
                 {(formik) => (
                   <Form>
                     <div className="form-row mt-4">
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="select"
                           label="Client Code"
@@ -296,7 +296,7 @@ useEffect(() => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-lg-3">
                       <FormikController
                           control="date"
                           label="From Date"
@@ -313,7 +313,7 @@ useEffect(() => {
                         
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-lg-3">
                       <FormikController
                           control="date"
                           label="End Date"
