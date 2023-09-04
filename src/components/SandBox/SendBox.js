@@ -4,16 +4,16 @@ import React, { useEffect, useState } from "react";
 import StepProgressBar from "../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
-import API_URL, { APP_ENV } from "../../config";
+import API_URL from "../../config";
 
-import { axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 
 function Sandbox() {
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const [data, setData] = useState([])
-  const [selectedPlan, setSelectedPlan] = useState([])
+  // const [selectedPlan, setSelectedPlan] = useState([])
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
@@ -53,20 +53,20 @@ function Sandbox() {
 
 
 
-  const getSubscribedPlan = (clientId, id) => {
-    axiosInstanceJWT
-      .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
-      .then((resp) => {
+  // const getSubscribedPlan = (clientId, id) => {
+  //   axiosInstanceJWT
+  //     .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
+  //     .then((resp) => {
 
-        setSelectedPlan({ planId: resp?.data?.data?.planId === null ? "" : resp?.data?.data?.planId })
-      })
-  }
+  //       // setSelectedPlan({ planId: resp?.data?.data?.planId === null ? "" : resp?.data?.data?.planId })
+  //     })
+  // }
 
 
 
   useEffect(() => {
     clientDetailRequest()
-    getSubscribedPlan(clientId, 10)
+    // getSubscribedPlan(clientId, 10)
 
   }, [clientId, user])
 
@@ -126,28 +126,29 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value="Abh789@sp"
                         />
                       </div>
-                      
-                        <div className="col-lg-4">
-                          <label className="col-form-label">
-                            Password
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            disabled="true"
-                            value="P8c3WQ7ei"
-                          />
-                        </div>
+
+                      <div className="col-lg-4">
+                        <label className="col-form-label">
+                          Password
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+
+                          disabled="true"
+                          value="P8c3WQ7ei@sp"
+                        />
+                      </div>
 
 
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Authentication Key
@@ -155,7 +156,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value="x0xzPnXsgTq0QqXx"
                         />
@@ -163,7 +164,7 @@ function Sandbox() {
 
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Authentication IV
@@ -177,7 +178,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-6">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Environment Base URL
@@ -185,7 +186,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
                         />
@@ -223,7 +224,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           User Name
@@ -235,26 +236,26 @@ function Sandbox() {
                           value="Ish988@sp"
                         />
                       </div>
-                    
-                        <div className="col-lg-4">
-                          <label
-                            
-                            className="col-form-label"
-                          >
-                            Password
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            disabled="true"
-                            value="wF2F0io7gdNj"
-                          />
-                        </div>
+
+                      <div className="col-lg-4">
+                        <label
+
+                          className="col-form-label"
+                        >
+                          Password
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          disabled="true"
+                          value="wF2F0io7gdNj"
+                        />
+                      </div>
 
 
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Authentication Key
@@ -268,7 +269,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Authentication IV
@@ -276,14 +277,14 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value="iFwrtsCSw3j7HG15"
                         />
                       </div>
                       <div className="col-lg-6">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Environment Base URL
@@ -291,7 +292,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit"
                         />
@@ -331,7 +332,7 @@ function Sandbox() {
                       </div>
                       <div className="col-lg-4">
                         <label
-                          
+
                           className=" col-form-label"
                         >
                           User Name
@@ -339,7 +340,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value={data && data?.clientUserName}
                         />
@@ -347,7 +348,7 @@ function Sandbox() {
 
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Password
@@ -359,7 +360,7 @@ function Sandbox() {
                               : "password"
                           }
                             className="form-control"
-                            
+
                             name="passwordd"
                             readOnly="true"
                             value={data && data?.clientPassword} />
@@ -385,7 +386,7 @@ function Sandbox() {
 
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Authentication Key
@@ -393,16 +394,16 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value={data && data?.authKey}
                         />
                       </div>
 
-                   
+
                       <div className="col-lg-4">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           Authentication IV{" "}
@@ -410,7 +411,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value={data && data?.authIV}
                         />
@@ -418,7 +419,7 @@ function Sandbox() {
 
                       <div className="col-lg-6">
                         <label
-                          
+
                           className="col-form-label"
                         >
                           SabPaisa Domain/Environment Base URL
@@ -427,7 +428,7 @@ function Sandbox() {
                         <input
                           type="text"
                           className="form-control"
-                          
+
                           disabled="true"
                           value={`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`}
                         />

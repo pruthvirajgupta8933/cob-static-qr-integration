@@ -78,7 +78,7 @@ const Approver = () => {
                   <li className="nav-item ">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 1 ? "active" : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 1 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(1)}
                     >
                       Not Filled KYC
@@ -87,7 +87,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 2 ? "active" : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 2 ? `${classes.active_tab} active`  : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(2)}
                     >
@@ -97,7 +97,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 3 ? "active" : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 3 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(3)}
                     >
@@ -107,7 +107,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 4 ? "active" : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 4 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(4)}
                     >
@@ -117,7 +117,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 5 ? "active" : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 5 ? `${classes.active_tab} active`  : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(5)}
                     >
@@ -127,7 +127,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 6 ? "active" : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 6 ? classes.active_tab  : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(6)}
                     >

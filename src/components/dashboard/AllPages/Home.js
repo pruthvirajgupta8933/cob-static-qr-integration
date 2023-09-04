@@ -132,7 +132,7 @@ function Home() {
           </div>
 
           <div className="col-lg-5 col-sm-12 col-md-5">
-            <h6 className="bg-secondary p-2 text-white">Dasboard Update</h6>
+            <h6 className="bg-secondary p-2 text-white">Dashboard Update</h6>
 
             {/* KYC alert */}
             <KycAlert />

@@ -4,11 +4,8 @@ import { logout } from "./slices/auth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import "./theme.scss"
-
 import AllRoutes from "./AllRoutes";
 import IdleTimerContainer from "./utilities/IdleTimer";
-
-
 
 
 const App = () => {

@@ -6,9 +6,9 @@ import sideNavClasses from "./sidenavbar.module.css"
 
 
 function SideNavbar() {
-
     const { menuListReducer, auth } = useSelector((state) => state);
     const [renderMenuList, setRenderMenuList] = useState(<></>);
+    const [selectedMenu, setSelectedMenu] = useState("dasboard");
     const { url } = useRouteMatch();
     const [menuToggleItem, setMenuToggleItem] = useState({
         checked: false,
@@ -16,12 +16,14 @@ function SideNavbar() {
     });
 
 
-
     const toggleMenu = (e) => {
         e.currentTarget.nextSibling.classList.toggle("hide-menu-nav")
     }
 
 
+    const handleItemClick = (item) => {
+        setSelectedMenu(item);
+    };
 
     useEffect(() => {
 
@@ -37,19 +39,16 @@ function SideNavbar() {
             return (
                 m?.is_active === true && (
                     <React.Fragment key={m?.app_name}>
-
                         <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`} onClick={(e) => toggleMenu(e)}>
                             <span> {m?.app_name}</span>
                             <a className="link-secondary" href={false} aria-label="Add a new report">
                                 <i className="fa fa-plus"></i>
                             </a>
                         </h6>
-
                         <ul
                             id={`menulist_${m?.app_code}`}
                             className="nav flex-column mb-2"
-                            role="menu"
-                        >
+                            role="menu" >
                             {m?.submenu?.map((sm) =>
                                 sm?.is_active &&
                                     auth?.user?.loginId.toString() === "11235" ? (
@@ -64,8 +63,9 @@ function SideNavbar() {
                                         >
                                             <Link
                                                 to={`${url}/${sm?.url}`}
-                                                className={`nav-link ${sideNavClasses.nav_link}`}
-                                            >
+                                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === sm?.id ? sideNavClasses.selected_memu : ''}`}
+                                                onClick={() => handleItemClick(sm?.id)}>
+
                                                 <i className={sm?.sub_menu_icon}></i>
                                                 &nbsp;{sm?.submenu_name}
                                             </Link>
@@ -75,7 +75,8 @@ function SideNavbar() {
                                     <li className="nav-item" role="menuitem" key={sm?.id}>
                                         <Link
                                             to={`${url}/${sm?.url}`}
-                                            className={`nav-link ${sideNavClasses.nav_link}`}
+                                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === sm?.id ? sideNavClasses.selected_memu : ''}`}
+                                            onClick={() => handleItemClick(sm?.id)}
                                         >
                                             <i className={sm?.sub_menu_icon}></i>
                                             &nbsp;{sm?.submenu_name}
@@ -92,10 +93,7 @@ function SideNavbar() {
 
         setRenderMenuList(displayMenu);
 
-    }, [menuListReducer]);
-
-
-    // console.log("itemRef", itemRef)
+    }, [menuListReducer, selectedMenu]);
 
     const roleBasedShowTab = roleBasedAccess();
 
@@ -103,14 +101,17 @@ function SideNavbar() {
     const enableSettlementReport = ["5208", "5207", "4304", "795"];
 
     return (
-        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob}`}>
+        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob}`} >
             <div className="position-sticky pt-3">
                 {(roleBasedShowTab?.merchant === true ||
                     roleBasedShowTab?.bank === true ||
                     roleBasedShowTab?.b2b === true) && (
                         <ul className="nav flex-column">
                             <li className="nav-item">
-                                <Link to={url} className={`nav-link ${sideNavClasses.nav_link} active`}>
+                                <Link to={url}
+                                    className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "dasboard" ? sideNavClasses.selected_memu : ''}`}
+                                    onClick={() => handleItemClick("dasboard")}
+                                >
                                     <i className="fa fa-home"></i>&nbsp;
                                     Dashboard
                                 </Link>
@@ -130,7 +131,8 @@ function SideNavbar() {
                         <li className="nav-item" role="menuitem">
                             <Link
                                 to={`${url}/transaction-history-merchant`}
-                                className={`nav-link ${sideNavClasses.nav_link}`}
+                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "txnHistCustom" ? sideNavClasses.selected_memu : ''}`}
+                                onClick={() => handleItemClick("txnHistCustom")}
                             >
                                 <i className="fa fa-bank"></i>
                                 Transactions History
@@ -139,7 +141,8 @@ function SideNavbar() {
                         <li className="nav-item" role="menuitem">
                             <Link
                                 to={`${url}/settled-transaction-merchant`}
-                                className={`nav-link ${sideNavClasses.nav_link}`}
+                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settlementReport" ? sideNavClasses.selected_memu : ''}`}
+                                onClick={() => handleItemClick("settlementReport")}
                             >
                                 <i className="fa fa-bank"></i>
                                 Settlement Report
@@ -157,7 +160,8 @@ function SideNavbar() {
                         <li className="nav-item" role="menuitem">
                             <Link
                                 to={`${url}/settlement-report`}
-                                className={`nav-link ${sideNavClasses.nav_link}`}
+                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settlementReportFile" ? sideNavClasses.selected_memu : ''}`}
+                                onClick={() => handleItemClick("settlementReportFile")}
                             >
                                 <i className="fa fa-bank mr-1"></i>
                                 Settlement Report (Files)
@@ -166,12 +170,13 @@ function SideNavbar() {
                     </ul>
                 )}
 
-                <ul  className="nav flex-column"
-                        role="menu">
+                <ul className="nav flex-column"
+                    role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
                             to={`${url}/faq`}
-                            className={`nav-link ${sideNavClasses.nav_link}`}
+                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "faqHelp" ? sideNavClasses.selected_memu : ''}`}
+                            onClick={() => handleItemClick("faqHelp")}
                         >
                             <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
                             FAQ/Help

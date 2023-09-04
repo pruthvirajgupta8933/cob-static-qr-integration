@@ -375,16 +375,16 @@ const SettlementReportNew = () => {
                 {(formik) => (
                   <Form>
                     <div className="form-row">
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="date"
                           label="From Date"
@@ -399,7 +399,7 @@ const SettlementReportNew = () => {
                           errorMsg={formik.errors["fromDate"]}
                         />
                       </div>
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="date"
                           label="End Date"
