@@ -31,13 +31,13 @@ const AuthorizedRoute = (props) => {
 
     const isValid = isAuth(arr, brr);
 
-    // useEffect(() => {
-    //     if (isValid === false) {
-    //         history.push('/login-page')
-    //     }
-    // })
+    useEffect(() => {
+        if (isValid === false) {
+            history.push('/login-page')
+        }
+    })
 
-    console.log("isValid", isValid);
+    // console.log("isValid", isValid);
 
     return (
         <>

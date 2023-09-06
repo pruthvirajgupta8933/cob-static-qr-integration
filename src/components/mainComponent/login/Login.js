@@ -120,7 +120,7 @@ function Login() {
                         setLoading(false);
                     }
                 } else {
-                    history.push(`/Registration/${queryString}`);
+                    window.location.href = `https://sabpaisa.in/pricing/`;
                     setLoading(false);
                     toastConfig.errorToast(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
                 }
