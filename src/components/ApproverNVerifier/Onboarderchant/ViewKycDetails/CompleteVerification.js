@@ -4,14 +4,11 @@ import { toast } from "react-toastify";
 import {
   completeVerification,
   completeVerificationRejectKyc,
-  reverseToPendingVerification,
-  reverseToPendingApproval,
-  reverseToPendingkyc
+  
 } from "../../../../slices/kycOperationSlice"
-import { approvekyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
+import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
-import { DefaultRateMapping } from '../../../../utilities/DefaultRateMapping';
+
 import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
 import { ratemapping } from '../../../../slices/approver-dashboard/rateMappingSlice';
 import toastConfig from '../../../../utilities/toastTypes';
@@ -53,8 +50,7 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  const [pushedButton, setPushedButton] = useState("")
-  const [pushButtonClick, setPushButtonClick] = useState()
+  
 
   useEffect(() => {
     dispatch(generalFormData({

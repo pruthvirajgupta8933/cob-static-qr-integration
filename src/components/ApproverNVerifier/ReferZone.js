@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAllByKycStatus, clearFetchAllByKycStatus, kycForPending } from "../../slices/kycSlice";
+import { FetchAllByKycStatus, clearFetchAllByKycStatus} from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal";
 import Table from "../../_components/table_components/table/Table";
@@ -9,7 +9,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 const ReferZone = () => {

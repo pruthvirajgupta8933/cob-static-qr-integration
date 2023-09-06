@@ -19,30 +19,11 @@ const AdditionalKYC = () => {
     account_number: "",
   };
 
-  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
-  const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-  const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-  const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
+ 
 
-
-  const validationSchemaForBankAccount = Yup.object({
-    ifsc_code: Yup.string()
-      .trim()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(IFSCRegex, "Your IFSC Number is Invalid")
-      .min(6, "Username must be at least 6 characters")
-      .max(20, "Username must not exceed 20 characters")
-      .required("Required"),
-    account_number: Yup.string()
-      .trim()
-      .matches(AccountNoRgex, "Your Account Number is Invalid")
-      .required("Required")
-      .nullable(),
-
-
-  });
+  
   const dispatch = useDispatch();
-  const { kyc } = useSelector((state) => state);
+  
   const [initialValuesForPAN, setInitialValuesForPAN] = useState({
     pan_card: "",
   });
@@ -54,35 +35,7 @@ const AdditionalKYC = () => {
     reg_number:""
   })
 
-  //   const handleSubmitForBankAccount = (values) => {
-  //     setButtonDisable(true)
-  //     dispatch(
-  //       bankAccountVerification({
-  //         account_number: values.account_number,
-  //         ifsc: values.ifsc_code,
-  //       })
-  //     ).then((res) => {
-  //       if (
-  //         setButtonDisable(false),
-  //         // setBankaccount(res?payload),
-  //         setBankaccount(res?.payload),
-
-  //         res?.meta?.requestStatus === "fulfilled" &&
-  //         res?.payload?.status === true &&
-  //         res?.payload?.valid === true
-  //       ) {
-  //         // toast.success(res?.payload?.message);
-  //         setBankStatus(res?.payload?.status);
-  //       } else {
-  //         toast.error(res?.payload?.message);
-  //       }
-  //     });
-  //   };
-
-  const [initialValuesForIfsc, setInitialValuesForIfsc] = useState({ ifsc_code: "", })
-  //   const[initialValuesForBankAccount,setInitialValuesForBankAccount]=useState({account_number:"",ifsc_code:""})
-
-  // console.log("initialValuesForBankAccount", initialValuesForBankAccount)
+  
 
   const documentTypeList = [
     { documentType: "PAN", value: "1" },
@@ -311,7 +264,7 @@ const AdditionalKYC = () => {
                       aria-hidden="true"
                     ></span>
                   ) : (
-                    "Verify"
+                    "Verify" ? "Verify" :""
                   )}
                 </button>
               </div>
