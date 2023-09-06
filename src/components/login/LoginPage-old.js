@@ -118,7 +118,7 @@ function LoginPage() {
           setLoading(false);
         }
       } else {
-        history.push("/Registration");
+        window.location.href="https://sabpaisa.in/pricing/"
         setLoading(false);
         toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
       }
@@ -312,7 +312,7 @@ function LoginPage() {
                             <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                             <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
                               <div className="col text-center">
-                                <h4>Don’t have an account with SabPaisa? <Link className="text-primary text-decoration-underline" to="/Registration">Signup</Link>
+                                <h4>Don’t have an account with SabPaisa? <a className="text-primary text-decoration-underline" href="https://sabpaisa.in/pricing/">Signup</a>
                                 </h4>
                               </div>
                               <p className="fs-6">
