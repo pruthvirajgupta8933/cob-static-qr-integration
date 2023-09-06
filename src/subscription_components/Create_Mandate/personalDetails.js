@@ -61,6 +61,7 @@ const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
             <div className="col-lg-6 form-group">
               <FormikController
                 control="input"
+                placeholder="Enter Name"
                 label="Name"
                 name="payerName"
                 className="form-control rounded-0 mt-0"
@@ -71,6 +72,7 @@ const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
               <FormikController
                 control="input"
                 label="Email"
+                placeholder="Enter Email"
                 name="payerEmail"
                 className="form-control rounded-0 mt-0"
               // options={mandateTypeCategory}
@@ -82,6 +84,7 @@ const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
               <FormikController
                 control="input"
                 label="Mobile Number"
+                placeholder="Enter Mobile Number"
                 name="payerMobile"
                 className="form-control rounded-0 mt-0"
               />
@@ -90,6 +93,7 @@ const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
               <FormikController
                 control="input"
                 label="PAN Number ( Optional ) "
+                placeholder="Enter PAN Number"
                 name="panNo"
                 className="form-control rounded-0 mt-0"
               // options={frequencyOptionsData}
@@ -101,6 +105,7 @@ const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
               <FormikController
                 control="input"
                 label="Telephone Number ( Optional )"
+                placeholder="Enter Telephone Number"
                 name="telePhone"
                 className="form-control rounded-0 mt-0"
               // options={options1}

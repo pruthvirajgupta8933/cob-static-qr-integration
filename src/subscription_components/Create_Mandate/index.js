@@ -487,7 +487,7 @@ const MandateForm = () => {
                         <div className="col-lg-6 form-group">
                           <FormikController
                             control="select"
-                            label="Frequency"
+                            label="Frequency *"
                             name="frequency"
                             className="form-control form-select rounded-0 mt-0"
                             options={manDateFrequency}
@@ -498,7 +498,7 @@ const MandateForm = () => {
                         <div className="col-lg-6 form-group">
                           <FormikController
                             control="select"
-                            label="Fixed/Maximum Amount"
+                            label="Fixed/Maximum Amount *"
                             name="fixedmaxAmount"
                             className="form-control form-select rounded-0 mt-0"
                             options={options1}
@@ -507,7 +507,7 @@ const MandateForm = () => {
                         <div className="col-lg-6 form-group">
                           <FormikController
                             control="select"
-                            label="Request Type"
+                            label="Request Type *"
                             name="requestType"
                             className="form-control form-select rounded-0 mt-0"
                             options={mandateRequestType}
@@ -518,7 +518,7 @@ const MandateForm = () => {
                         <div className="col-lg-6">
                           <FormikController
                             control="input"
-                            label="Consumer Reference Number"
+                            label="Consumer Reference Number *"
                             name="consumerReferenceNumber"
                             className="form-control rounded-0"
                           />
@@ -526,7 +526,7 @@ const MandateForm = () => {
                         <div className="col-lg-6">
                           <FormikController
                             control="input"
-                            label="Scheme Reference Number"
+                            label="Scheme Reference Number *"
                             name="schemeReferenceNumber"
                             className="form-control rounded-0"
                           />
@@ -537,7 +537,7 @@ const MandateForm = () => {
                           <FormikController
                             control="input"
                             type="date"
-                            label="Start Date"
+                            label="Start Date *"
                             name="mandateStartDate"
                             className="form-control rounded-0"
                           />
@@ -546,7 +546,7 @@ const MandateForm = () => {
                           <div className="form-check">
                             <Field
                               type="checkbox"
-                              name="untilCancelled"
+                              name="untilCancelled *"
                               className="form-check-input "
                               checked={values.untilCancelled}
                               onChange={() => {
