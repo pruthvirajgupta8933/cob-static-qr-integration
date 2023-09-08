@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import FormikController from '../../_components/formik/FormikController'
@@ -20,14 +20,8 @@ const RegisteredAddress = (props) => {
   const [check,setCheck] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
+    const { user } = useSelector((state) => state.auth);
   
-
-
-  const [data, setData] = useState([]);
-
-
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 

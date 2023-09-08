@@ -16,7 +16,7 @@ import {
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
-import { isNull, values } from "lodash";
+import { isNull} from "lodash";
 import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.service";
 import toastConfig from "../../utilities/toastTypes";
 

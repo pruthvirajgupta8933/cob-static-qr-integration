@@ -27,19 +27,13 @@ function BankDetails(props) {
 
   const { kyc, auth } = useSelector((state) => state);
 
-  const { KycTabStatusStore, GetBankid, allTabsValidate } = kyc;
+  const { KycTabStatusStore} = kyc;
   const KycList = kyc?.kycUserList;
   const VerifyKycStatus = KycTabStatusStore?.settlement_info_status;
-  const bankDetailsById = GetBankid;
+ 
 
   const { user } = auth;
-  const AccfirstName =
-    allTabsValidate?.BankDetails?.accountValidation?.first_name;
-  const AcclastName =
-    allTabsValidate?.BankDetails?.accountValidation?.last_name;
-  const branch = allTabsValidate?.BankDetails?.IfscValidation?.branch;
-
-  let accHolderName = `${AccfirstName} ${AcclastName}`;
+  
 
   const [readOnly, setReadOnly] = useState(false);
 

@@ -89,6 +89,114 @@ function Sandbox() {
               </div>
 
               <div className="row">
+
+              <div className="col-lg-12 border m-1 p-2">
+                  <a
+                    data-toggle="collapse"
+                    href="#multiCollapseExample122"
+                    role="button"
+                    aria-expanded="true"
+                    aria-controls="multiCollapseExample122"
+                  >
+                    <h6 className="">Test Credentials ( PHP ) </h6>
+                  </a>
+                  {/* <h2>Test Credentials</h2> */}
+                  <form
+                    className="collapse multi-collapse show"
+                    id="multiCollapseExample122"
+                  >
+                    <div className="form-group row">
+                      <div className="col-lg-4">
+                        <label htmlFor="inputEmail3" className="col-form-label">
+                          Client Code
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="inputEmail3"
+                          disabled="true"
+                          value="DCRBP"
+                        />
+                      </div>
+                      <div className="col-lg-4">
+                        <label
+                          className="col-form-label"
+                        >
+                          User Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+
+                          disabled="true"
+                          value="userph.jha_3036"
+                        />
+                      </div>
+
+                      <div className="col-lg-4">
+                        <label className="col-form-label">
+                          Password
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+
+                          disabled="true"
+                          value="DBOI1_SP3036"
+                        />
+                      </div>
+
+
+                      <div className="col-lg-4">
+                        <label
+
+                          className="col-form-label"
+                        >
+                          Authentication Key
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+
+                          disabled="true"
+                          value="0jeOYcu3UnfmWyLC"
+                        />
+                      </div>
+                      <div className="col-lg-4">
+                        <label
+
+                          className="col-form-label"
+                        >
+                          Authentication IV
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+
+                          disabled="true"
+                          value="C28LAmGxXTqmK0QJ"
+                        />
+                      </div>
+                      <div className="col-lg-6">
+                        <label
+
+                          className="col-form-label"
+                        >
+                          Environment Base URL
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+
+                          disabled="true"
+                          value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+
                 <div className="col-lg-12 border m-1 p-2">
                   <a
                     data-toggle="collapse"
@@ -97,7 +205,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h6 className="">Test Credentials ( PHP7 | JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS) </h6>
+                    <h6 className="">Test Credentials (| JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -194,6 +302,8 @@ function Sandbox() {
                     </div>
                   </form>
                 </div>
+
+
 
                 <div className="col-lg-12 border m-1 p-2">
                   <a
@@ -300,6 +410,8 @@ function Sandbox() {
                     </div>
                   </form>
                 </div>
+
+
 
                 <div className="col-lg-12 border m-1 p-2">
                   <a

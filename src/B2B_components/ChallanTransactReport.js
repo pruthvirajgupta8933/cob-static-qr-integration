@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import moment from "moment";
 import * as Yup from "yup";
@@ -135,27 +134,11 @@ const ChallanTransactReport = () => {
     }
   }, [searchText]);
 
-  const colData = () => {
-    return data?.map((user, i) => (
-      <tr key={i}>
-        <td>{i + 1}</td>
-        <td>{user?.client_code}</td>
-        <td>{user?.bank_code}</td>
-        <td>{user?.amount}</td>
-        <td>{user?.bank_reference_number}</td>
-        <td>{user?.challan_number}</td>
-        <td>{user?.ifsc}</td>
-        <td>{user?.gl}</td>
-        <td>{user?.sp_igl_ind}</td>
-        <td>{user?.type}</td>
-        <td>{user?.created_on}</td>
-      </tr>
-    ));
-  };
+  
 
   
 
-  // console.log(pageSize,"page Size")
+
 
   const handleSubmit = (values) => {
     // console.log(values);

@@ -25,13 +25,13 @@ const validationSchema = Yup.object({
 
 const ViewRateMapping = (props) => {
 
-    // const [template, setTemplate] = useState([])
+    
     const [businessTemplate, setBusinessTemplate] = useState("")
     const [businessTemplates, setBusinessTemplates] = useState([])
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
-    // const [riskCode, setRiskCode] = useState("")
+    
 
     const [disable, setDisable] = useState(false)
 
@@ -55,27 +55,8 @@ const ViewRateMapping = (props) => {
         // .catch((err) => console.log(err));
     }, []);
 
-    // useEffect(() => {
-    //     if (riskCode !== "") {
-    //         const postData = {
-    //             risk_category_code: riskCode
-    //         };
-
-    //         dispatch(businessCategory(postData)).then((resp) => {
-
-    //             const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
-
-    //             setTemplate(data)
-    //         }).catch((err) => {
-
-    //         })
-    //     }
-    // }, [riskCode]);
-
-
-
-
-    ///////////////////////////////////////////////////////////new Work
+   
+///////////////////////////////////////////////////////////new Work
     useEffect(() => {
 
         if (businessTemplate !== "") {
@@ -95,33 +76,7 @@ const ViewRateMapping = (props) => {
     //////////////////////////////////////////////////////////////////
 
 
-
-
-    // useEffect(() => {
-    //     axiosInstanceJWT
-    //         .get(API_URL.Business_Category_CODE)
-    //         .then((resp) => {
-    //             const data =
-    //                 convertToFormikSelectJson("category_id", "category_name", resp?.data);
-
-    //             // const sortAlpha = data?.sort((a, b) =>
-    //             //   a.category_name
-    //             //     .toLowerCase()
-    //             //     .localeCompare(b.category_name.toLowerCase())
-    //             // );
-
-    //             setBusinessCode(data);
-    //         })
-    //         .catch((err) => console.log(err));
-    // }, []);
-
-
-
-
-
-
-
- const handleSubmit = (values) => {
+const handleSubmit = (values) => {
         setDisable(true)
         const postData = {
             "rate_template_code": values?.business_category,
@@ -149,14 +104,14 @@ const ViewRateMapping = (props) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
-                            // onSubmit={(values)=>handleSubmit(values)}
+                           
                             onSubmit={(values, { resetForm }) => {
                                 handleSubmit(values)
 
                             }}
                             enableReinitialize={true}
                         >
-                            {(formik, resetForm) => (
+                            {(formik) => (
 
                                 <>
 
@@ -197,37 +152,11 @@ const ViewRateMapping = (props) => {
                                                                 setBusinessTemplate(formik?.values?.business_category),
 
                                                             )}
-                                                            {/* {formik.handleChange(
-                                                                "category_name",
-                                                                setRiskCode(formik?.values?.category_name)
-                                                            )} */}
+                                                            
 
                                                         </div>
                                                     </div>
-                                                    {/* <div className="col-lg-4">
-                                                        <div className="input full- optional">
-                                                            <label
-                                                                className="string optional"
-                                                                htmlFor="rate_template_name"
-                                                            >
-                                                                Business Category
-                                                            </label>
-                                                            <FormikController
-                                                                control="select"
-                                                                name="rate_template_name"
-                                                                options={template}
-                                                                className="form-control"
-
-                                                            />
-                                                            {formik.handleChange(
-                                                                "rate_template_name",
-                                                                setBusinessTemplate(formik?.values?.rate_template_name)
-                                                            )}
-
-
-                                                        </div>
-                                                    </div> */}
-                                                    <div className="col-lg-6">
+                                                                                                        <div className="col-lg-6">
                                                         <div className="">
                                                             <label
                                                                 className="string optional"
