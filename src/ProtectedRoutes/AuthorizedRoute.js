@@ -33,7 +33,7 @@ const AuthorizedRoute = (props) => {
 
     useEffect(() => {
         if (isValid === false) {
-            history.push('/login-page')
+            // history.push('/login-page')
         }
     })
 

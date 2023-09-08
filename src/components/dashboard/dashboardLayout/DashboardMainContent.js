@@ -187,7 +187,7 @@ function DashboardMainContent() {
         return <Redirect to="/login-page" />;
     }
 
-    console.log("roles", roles)
+    // console.log("roles", roles)
     return (
         <React.Fragment>
             <DashboardHeader />
@@ -601,12 +601,14 @@ function DashboardMainContent() {
                                 <RateMapping />
                             </AuthorizedRoute>
 
-                            <ApproverRoute
+                            <AuthorizedRoute
                                 exact
                                 path={`${path}/additional-kyc`}
-                                Component={AdditionalKYC} roleList={{ approver: true, verifier: true }}>
+                                Component={AdditionalKYC} 
+                                roleList={{ approver: true, verifier: true }}
+                                >
                                 <AdditionalKYC />
-                            </ApproverRoute>
+                            </AuthorizedRoute>
 
                             {/* {roles?.approver === true && (
                                 <ApproverRoute exact path={`${path}/additional-kyc`} Component={AdditionalKYC} roleList={{ approver: true, verifier: true }}>
