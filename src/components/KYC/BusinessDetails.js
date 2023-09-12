@@ -796,10 +796,13 @@ function BusinessDetails(props) {
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-3 col-lg-3">
+              <label className="col-form-label mt-0 p-2">
+                  State<span className="text-danger">*</span>
+                </label>
                 <FormikController
                   control="select"
                   name="state_id"
-                  label="State"
+                 
                   options={BusinessOverview}
                   className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -808,10 +811,12 @@ function BusinessDetails(props) {
               </div>
 
               <div className="col-sm-12 col-md-3 col-lg-3">
+              <label className="col-form-label mt-0 p-2">
+                  Pin Code<span className="text-danger">*</span>
+                </label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Pin Code"
                   name="pin_code"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}

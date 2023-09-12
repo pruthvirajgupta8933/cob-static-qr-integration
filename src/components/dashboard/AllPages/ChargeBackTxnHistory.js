@@ -129,6 +129,7 @@ useEffect(() => {
 
     // console.log(values,"values")
     setIsDisable(true)
+    isButtonClicked(true)
     dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {
     const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
@@ -140,7 +141,7 @@ useEffect(() => {
         setIsDisable(false)
       }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
-        toast.error("No Data Found");
+        
         setIsDisable(false)
       }
     });
@@ -526,8 +527,10 @@ useEffect(() => {
                       </div>
                     </div>
                   </div>
-                ) : buttonClicked && dataFound ? (
-                  <div className="showMsg">Data Not Found</div>
+                ) : buttonClicked && dataFound && txnList?.length===0 ? (
+                  <div>
+                  <h5 className="d-flex justify-content-center align-items-center">Data Not Found</h5>
+                </div>
                 ) : (
                   <></>
                 )}

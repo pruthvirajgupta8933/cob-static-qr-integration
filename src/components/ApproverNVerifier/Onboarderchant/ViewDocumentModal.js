@@ -13,7 +13,7 @@ import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 
 const ViewDocumentModal = (props) => {
-  // console.log("This is props ::",props);
+  
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -38,7 +38,7 @@ const ViewDocumentModal = (props) => {
       })
     )
       .then((resp) => {
-        // console.log("This is muy respo", resp.payload);
+       
         setCommentsList(resp.payload);
       })
       .catch((err) => {
@@ -356,10 +356,7 @@ const ViewDocumentModal = (props) => {
     )
   }
 
-
-
-
-  return (
+return (
     <>
       <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
     </>

@@ -52,7 +52,7 @@ const EnterUserID = (props) => {
           <div className="card mt-5 ">
             <div className="card-header text-center">Forgot Password</div>
             <div className="card-body NunitoSans-Regular">
-              <h5 className="card-title">Please Enter the details. </h5>
+              <h5 className="card-title">Please enter the details. </h5>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}

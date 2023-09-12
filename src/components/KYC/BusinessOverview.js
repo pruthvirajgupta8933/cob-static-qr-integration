@@ -218,12 +218,17 @@ function BusinessOverview(props) {
   const onSubmit = (values) => {
     setIsDisabled(true)
     const expectedTxn = values.expected_transactions.split("-");
+    console.log("expectedTxn",expectedTxn)
     const numbers = expectedTxn.map(part => parseInt(part));
+    console.log("numbers",numbers)
     const maxValueTxn = Math.max(...numbers);
+    console.log("maxValueTxn",maxValueTxn)
     const ticketSize = values.avg_ticket_size.split("-");
     const avgTicket = ticketSize.map(part => parseInt(part))
     const maxTicketSize = Math.max(...avgTicket);
+    console.log("maxTicketSize",maxTicketSize)
     const avgCount = maxValueTxn * maxTicketSize;
+    console.log("avgCount",avgCount)
 
     if (role.merchant) {
 
