@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import sideNavClasses from "./sidenavbar.module.css"
 
@@ -8,8 +8,11 @@ import sideNavClasses from "./sidenavbar.module.css"
 function SideNavbar() {
     const { menuListReducer, auth } = useSelector((state) => state);
     const [renderMenuList, setRenderMenuList] = useState(<></>);
-    const [selectedMenu, setSelectedMenu] = useState("dasboard");
+
+    const [selectedMenu, setSelectedMenu] = useState("dashboard");
     const { url } = useRouteMatch();
+    const location = useLocation()
+
     const [menuToggleItem, setMenuToggleItem] = useState({
         checked: false,
         items: [],
@@ -25,6 +28,21 @@ function SideNavbar() {
         setSelectedMenu(item);
     };
 
+    useEffect(() => {
+        
+        const pathName = location?.pathname
+        if(pathName==="/dashboard"){
+            setSelectedMenu('dashboard')
+        }
+
+        // console.log(location)
+        if(pathName==="/dashboard/approver"){
+            setSelectedMenu(10)
+        }
+    
+    }, [location])
+    
+    
     useEffect(() => {
 
         let tempArrayOfItems = [];
@@ -109,8 +127,8 @@ function SideNavbar() {
                         <ul className="nav flex-column">
                             <li className="nav-item">
                                 <Link to={url}
-                                    className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "dasboard" ? sideNavClasses.selected_memu : ''}`}
-                                    onClick={() => handleItemClick("dasboard")}
+                                    className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "dashboard" ? sideNavClasses.selected_memu : ''}`}
+                                    onClick={() => handleItemClick("dashboard")}
                                 >
                                     <i className="fa fa-home"></i>&nbsp;
                                     Dashboard
