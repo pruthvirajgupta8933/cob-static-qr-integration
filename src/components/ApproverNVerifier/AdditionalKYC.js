@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+
 import FormikController from "../../_components/formik/FormikController";
 import {
   authPanValidation,
@@ -10,7 +10,6 @@ import {
   bankAccountVerification,
   udyamRegistration
 } from "../../slices/kycSlice";
-import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 const AdditionalKYC = () => {
 

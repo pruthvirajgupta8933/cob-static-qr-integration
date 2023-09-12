@@ -288,10 +288,12 @@ function VerifiedMerchant() {
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <CountPerPageFilter
+        <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
+            currentPage={currentPage}
             changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
           />
         </div>
         {/* <KycDetailsModal kycId={kycIdClick} /> */}
