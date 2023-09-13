@@ -1,6 +1,5 @@
 /* eslint-disable no-empty-pattern */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import {kycOperationService} from "../services/kycOperation.service"
 import kycOperationService from "../services/kycOperation.service";
 import { setMessage } from "./message";
 
@@ -25,8 +24,7 @@ export const rejectKycOperation = createAsyncThunk(
         error.message ||
         error.toString() || error.request.toString();
       thunkAPI.dispatch(setMessage(message));
-      
-      return thunkAPI.rejectWithValue(message); 
+return thunkAPI.rejectWithValue(message); 
       
       }
     }
