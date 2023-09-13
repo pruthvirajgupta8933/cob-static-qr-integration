@@ -10,18 +10,11 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 
 const ViewReferZoneModal = (props) => {
   const [selectedValue, setSelectedvalue] = useState("");
-
   const [refferalList, setRefferalList] = useState([])
-
   const dispatch = useDispatch();
-
-
-
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
-
-
-  const initialValues = {
+   const initialValues = {
     sourcing_point: "",
     sourcing_code: ""
   };
@@ -57,7 +50,7 @@ const ViewReferZoneModal = (props) => {
 
 
   const handleSubmit = (values) => {
-    // console.log(props)
+
 
     let saveRefData = {
       login_id: props.userData.loginMasterId,
@@ -69,10 +62,10 @@ const ViewReferZoneModal = (props) => {
 
     dispatch(saveReferingMerchant(saveRefData))
       .then((resp) => {
-        // console.log("API RESPONSE : :", resp);
+
         toastConfig.successToast(resp.payload.message);
         props.setOpenModal(false)
-       
+
         props.refreshAfterRefer(true)
       })
       .catch((err) => {
@@ -96,7 +89,6 @@ const ViewReferZoneModal = (props) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            // onSubmit={(values)=>handleSubmit(values)}
             onSubmit={handleSubmit}
             enableReinitialize={true}
           >
@@ -130,26 +122,26 @@ const ViewReferZoneModal = (props) => {
                     <p className="m-1">ClientCode: {props?.userData?.clientCode}</p>
                   </div>
 
-                    <Form>
-                      <div className="container-fluid">
-                        <div className="row">
-                          <div className="col-lg-12">
-                            <FormikController
-                              control="radio"
-                              onChange={(e) => {
-                                setSelectedvalue(e.target.value);
-                                formik.setFieldValue(
-                                  "sourcing_point",
-                                  e.target.value
-                                );
-                              }}
-                              checked=""
-                              name="sourcing_point"
-                              options={referingMode}
-                              className="form-check-input"
-                              placeholder="Enter Source Code"
-                            />
-                          </div>
+                  <Form>
+                    <div className="container-fluid">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <FormikController
+                            control="radio"
+                            onChange={(e) => {
+                              setSelectedvalue(e.target.value);
+                              formik.setFieldValue(
+                                "sourcing_point",
+                                e.target.value
+                              );
+                            }}
+                            checked=""
+                            name="sourcing_point"
+                            options={referingMode}
+                            className="form-check-input"
+                            placeholder="Enter Source Code"
+                          />
+                        </div>
 
 
                         {formik.values.sourcing_point === "For Zone" &&
@@ -173,11 +165,11 @@ const ViewReferZoneModal = (props) => {
                               placeHolder="Enter Source Code"
                             />
                           </div>}
-                            </div>
-                         </div>
-                      <div className="modal-footer">
-                     
-                          <div className="col-lg-12">
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+
+                      <div className="col-lg-12">
 
                         <button
                           type="subbmit"

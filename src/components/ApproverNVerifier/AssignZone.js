@@ -194,11 +194,13 @@ function AssignZone() {
               />
             </div>
             <div className="col-lg-3">
-              <CountPerPageFilter
-                pageSize={pageSize}
-                dataCount={dataCount}
-                changePageSize={changePageSize}
-              />
+            <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          /> 
             </div>
             <div className="col-lg-3">
               <SearchbyDropDown

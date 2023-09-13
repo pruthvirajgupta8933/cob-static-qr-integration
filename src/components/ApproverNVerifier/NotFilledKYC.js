@@ -20,7 +20,7 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  
+
   const [onboardType, setOnboardType] = useState("")
 
   const dispatch = useDispatch();
@@ -29,16 +29,16 @@ const NotFilledKYC = () => {
   // console.log(loadingState,"my loading")
 
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
+    if (fieldType === "text") {
       setSearchByDropDown(false)
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
+    if (fieldType === "dropdown") {
       setSearchByDropDown(true)
       setOnboardType(e)
     }
-    
-  
+
+
   };
 
   const mappedData = data?.map((item) => {
@@ -76,7 +76,7 @@ const NotFilledKYC = () => {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Not-Filled",
-        isDirect:onboardType
+        isDirect: onboardType
       })
     )
       .then((resp) => {
@@ -138,7 +138,9 @@ const NotFilledKYC = () => {
           <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
+            currentPage={currentPage}
             changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
           />
         </div>
 
@@ -176,8 +178,8 @@ const NotFilledKYC = () => {
           )}
         </div>
         {/* <CustomLoader loadingState={loadingState} /> */}
-        { loadingState &&
-          <SkeletonTable/>
+        {loadingState &&
+          <SkeletonTable />
         }
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center">No data Found</h6>

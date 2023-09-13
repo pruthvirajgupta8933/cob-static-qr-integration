@@ -9,7 +9,6 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
-
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 const ReferZone = () => {
@@ -287,11 +286,13 @@ const ReferZone = () => {
               </div>
 
               <div className="col-lg-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={dataCount}
-                  changePageSize={changePageSize}
-                />
+              <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          />
               </div>
 
               <div className="col-lg-3">

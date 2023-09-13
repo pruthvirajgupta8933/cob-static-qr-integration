@@ -89,6 +89,14 @@ function BusinessOverview(props) {
     form_build: "Yes",
   };
 
+  const Regex = {
+    acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
+  };
+  
+  const RegexMsg = {
+    acceptAlphabet: 'Please enter valid characters.',
+  };
+
   const validationSchema = Yup.object(
     {
       business_type: Yup.string().required("Select Business Type").nullable(),
@@ -98,13 +106,12 @@ function BusinessOverview(props) {
       platform_id: Yup.string()
         .required("Select the platform")
         .nullable(),
-      billing_label: Yup.string()
+        billing_label: Yup.string()
         .trim()
-        .min(1, "Please enter more than 1 character")
-        .max(250, "Please do not enter more than 250 characters")
+        .min(1, 'Please enter more than 1 character')
+        .max(250, 'Please do not enter more than 250 characters')
         .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
-        .required("Required")
-        .wordLength("Word character length exceeded")
+        .required('Required')
         .nullable(),
       // company_website: Yup.string().trim()
       //   .matches(urlRegex, "Website Url is not Valid")
@@ -218,12 +225,17 @@ function BusinessOverview(props) {
   const onSubmit = (values) => {
     setIsDisabled(true)
     const expectedTxn = values.expected_transactions.split("-");
+    console.log("expectedTxn",expectedTxn)
     const numbers = expectedTxn.map(part => parseInt(part));
+    console.log("numbers",numbers)
     const maxValueTxn = Math.max(...numbers);
+    console.log("maxValueTxn",maxValueTxn)
     const ticketSize = values.avg_ticket_size.split("-");
     const avgTicket = ticketSize.map(part => parseInt(part))
     const maxTicketSize = Math.max(...avgTicket);
+    console.log("maxTicketSize",maxTicketSize)
     const avgCount = maxValueTxn * maxTicketSize;
+    console.log("avgCount",avgCount)
 
     if (role.merchant) {
 

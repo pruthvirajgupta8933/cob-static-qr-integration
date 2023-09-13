@@ -124,6 +124,7 @@ const SettlementReportNew = () => {
       noOfClient: values.noOfClient,
       rpttype: values.rpttype,
     }
+    isButtonClicked(true);
 
     setIsDisable(true)
     dispatch(fetchSettlementReportSlice(paramData)).then((res) => {
@@ -138,7 +139,7 @@ const SettlementReportNew = () => {
         setIsDisable(false)
       }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
-        toast.error("No Data Found");
+       
         setIsDisable(false)
       }
     });
@@ -350,6 +351,8 @@ const SettlementReportNew = () => {
     exportToSpreadsheet(excelArr, fileName);
   };
 
+  console.log(txnList.length)
+
 
 
   return (
@@ -429,7 +432,7 @@ const SettlementReportNew = () => {
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1 ml-1">
                           <button
-                            className="btn cob-btn-primary  ml-3 text-white"
+                            className="btn cob-btn-primary text-white btn-sm"
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
                             type="button"
                             onClick={() => exportToExcelFn()}
@@ -513,6 +516,7 @@ const SettlementReportNew = () => {
                   <tbody>
                     {txnList.length > 0 &&
                       paginatedata.map((item, i) => {
+                        {console.log("txnList.length",txnList.length)}
                         return (
                           <tr key={i}>
                             <td>{i + 1}</td>
@@ -608,8 +612,10 @@ const SettlementReportNew = () => {
                       </div>
                     </div>
                   </div>
-                ) : buttonClicked && dataFound ? (
-                  <div className="showMsg">Data Not Found</div>
+                ) : buttonClicked  && txnList.length === 0 ? (
+                  <div>
+                  <h5 className="d-flex justify-content-center align-items-center">Data Not Found</h5>
+                </div>
                 ) : (
                   <></>
                 )}

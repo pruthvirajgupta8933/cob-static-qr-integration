@@ -101,7 +101,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
                                     name="refer_by"
                                     options={clientCodeOption}
                                     className="form-select"
-                                    label="Refer By (if any)"
+                                    label="Referred By (if any)"
                                     disabled={!role?.approver}
                                     onChange={(e) => {
                                         formik.setFieldValue("refer_by",e.target.value)
