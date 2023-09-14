@@ -43,10 +43,6 @@ const OnboardedReport = () => {
     setSearchingData(result)
   }, [result])
 
-  // let noResultsFound = data;
-
-  // console.log(noResultsFound, "noResultsFound");
-
   const rowSignUpData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
     {
@@ -291,11 +287,13 @@ const OnboardedReport = () => {
               </div>
 
               <div className="form-group col-lg-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={count}
-                  changePageSize={changePageSize}
-                />
+              <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={count}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          />
               </div>
               <div className="form-group col-lg-3">
                 <button

@@ -4,11 +4,10 @@ import { useSelector } from "react-redux";
 import _ from 'lodash';
 import FormPaymentLink from "./FormPaymentLink";
 import API_URL from "../../../../config";
-import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
-import Spinner from "../../../ApproverNVerifier/Spinner";
+
 import moment from "moment";
 
 const PaymentLinkDetail = () => {

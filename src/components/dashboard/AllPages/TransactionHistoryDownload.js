@@ -6,12 +6,10 @@ import { useHistory } from 'react-router-dom'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import axios from "axios"
 import _ from 'lodash';
 import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
-import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
 import { axiosInstance } from '../../../utilities/axiosInstance';
 
@@ -25,13 +23,9 @@ function TransactionHistoryDownload() {
   const { isLoadingTxnHistory } = dashboard
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
-  // const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
-  const [startDate, setStartDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  // const [txnStatus,SetTxnStatus] = useState("All");
-  // const [payModeId,SetPayModeId] = useState("All")
+ 
   const [txnList, SetTxnList] = useState([])
-  // const [filterList,SetFilterList] = useState([])
+  
   const [searchText, SetSearchText] = useState('')
   const [show, setShow] = useState('')
   const [pageSize, setPageSize] = useState(10);

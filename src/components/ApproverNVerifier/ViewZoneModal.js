@@ -21,7 +21,7 @@ const ViewZoneModal = (props) => {
   const [employeeName, setEmployeeName] = useState([])
   const [mccCode, setMccCode] = useState([])
   const[buttonDisable,setButtonDisable]=useState(false)
-  // const [show, setShow] = useState(false)
+ 
 
   const [zoneInfo, setZoneinfo] = useState([])
   const dispatch = useDispatch();
