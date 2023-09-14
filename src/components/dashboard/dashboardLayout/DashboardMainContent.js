@@ -77,6 +77,7 @@ import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
 import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
 import HandleResponseModal from "../../../subscription_components/Create_Mandate/HandleResponseModal";
 import AuthorizedRoute from "../../../ProtectedRoutes/AuthorizedRoute";
+import MerchantReferralOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
 
 
 
@@ -245,24 +246,6 @@ function DashboardMainContent() {
                                 <TransactionSummery />
                             </AuthorizedRoute>
 
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exact
-                                    path={`${path}/transaction-summery`}
-                                    Component={TransactionSummery}
-                                >
-                                    <TransactionSummery />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exact
-                                    path={`${path}/transaction-summery`}
-                                    Component={TransactionSummery}
-                                >
-                                    <TransactionSummery />
-                                </BankRoute>
-                            )} */}
-
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-enquiry`}
@@ -272,27 +255,6 @@ function DashboardMainContent() {
                                 <TransactionEnquirey />
                             </AuthorizedRoute>
 
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exact
-                                    path={`${path}/transaction-enquiry`}
-                                    Component={TransactionEnquirey}
-                                    roleList={{ merchant: true, bank :true }}
-                                >
-                                    <TransactionEnquirey />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exact
-                                    path={`${path}/transaction-enquiry`}
-                                    Component={TransactionEnquirey}
-                                >
-                                    <TransactionEnquirey />
-                                </BankRoute>
-                            )} */}
-
-
-
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-history`}
@@ -301,24 +263,6 @@ function DashboardMainContent() {
                             >
                                 <TransactionHistory />
                             </AuthorizedRoute>
-
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exact
-                                    path={`${path}/transaction-history`}
-                                    Component={TransactionHistory}
-                                >
-                                    <TransactionHistory />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exact
-                                    path={`${path}/transaction-history`}
-                                    Component={TransactionHistory}
-                                >
-                                    <TransactionHistory />
-                                </BankRoute>
-                            )} */}
 
                             <AuthorizedRoute
                                 exact
@@ -330,10 +274,6 @@ function DashboardMainContent() {
                                 <ClientList />
                             </AuthorizedRoute>
 
-                            {/* <BankRoute exact path={`${path}/client-list`} Component={ClientList}>
-                                <ClientList />
-                            </BankRoute> */}
-
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/settlement-report`}
@@ -342,24 +282,6 @@ function DashboardMainContent() {
                             >
                                 <SettlementReport />
                             </AuthorizedRoute>
-
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exaxt
-                                    path={`${path}/settlement-report`}
-                                    Component={SettlementReport}
-                                >
-                                    <SettlementReport />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exaxt
-                                    path={`${path}/settlement-report`}
-                                    Component={SettlementReport}
-                                >
-                                    <SettlementReport />
-                                </BankRoute>
-                            )} */}
 
                             <AuthorizedRoute
                                 exaxt
@@ -370,25 +292,6 @@ function DashboardMainContent() {
                                 <RefundTransactionHistory />
                             </AuthorizedRoute>
 
-                            {/* 
-                            {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exaxt
-                                    path={`${path}/refund-transaction-history`}
-                                    Component={RefundTransactionHistory}
-                                >
-                                    <RefundTransactionHistory />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exaxt
-                                    path={`${path}/refund-transaction-history`}
-                                    Component={RefundTransactionHistory}
-                                >
-                                    <RefundTransactionHistory />
-                                </BankRoute>
-                            )} */}
-
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/chargeback-transaction-history`}
@@ -397,24 +300,6 @@ function DashboardMainContent() {
                             >
                                 <ChargeBackTxnHistory />
                             </AuthorizedRoute>
-
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exaxt
-                                    path={`${path}/chargeback-transaction-history`}
-                                    Component={ChargeBackTxnHistory}
-                                >
-                                    <ChargeBackTxnHistory />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exaxt
-                                    path={`${path}/chargeback-transaction-history`}
-                                    Component={ChargeBackTxnHistory}
-                                >
-                                    <ChargeBackTxnHistory />
-                                </BankRoute>
-                            )} */}
 
                             <AuthorizedRoute
                                 exaxt
@@ -457,13 +342,6 @@ function DashboardMainContent() {
                                 <PaymentResponse />
                             </AuthorizedRoute>
 
-                            {/* <MerchantRoute exact path={`${path}/test/`}>
-                                <Test />
-                            </MerchantRoute> */}
-
-                            {/* <Route exact path={`${path}/view-transaction-with-filter`}>
-          <ViewTransactionWithFilter />
-        </Route> */}
 
                             <AuthorizedRoute
                                 exact
@@ -474,24 +352,6 @@ function DashboardMainContent() {
                                 <SettlementReportNew />
                             </AuthorizedRoute>
 
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exact
-                                    path={`${path}/settlement-report-new`}
-                                    Component={SettlementReportNew}
-                                >
-                                    <SettlementReportNew />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exact
-                                    path={`${path}/settlement-report-new`}
-                                    Component={SettlementReportNew}
-                                >
-                                    <SettlementReportNew />
-                                </BankRoute>
-                            )} */}
-
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-history-new`}
@@ -500,24 +360,6 @@ function DashboardMainContent() {
                             >
                                 <TransactionHistoryDownload />
                             </AuthorizedRoute>
-
-                            {/* {roles?.merchant === true ? (
-                                <MerchantRoute
-                                    exact
-                                    path={`${path}/transaction-history-new`}
-                                    Component={TransactionHistoryDownload}
-                                >
-                                    <TransactionHistoryDownload />
-                                </MerchantRoute>
-                            ) : (
-                                <BankRoute
-                                    exact
-                                    path={`${path}/transaction-history-new`}
-                                    Component={TransactionHistoryDownload}
-                                >
-                                    <TransactionHistoryDownload />
-                                </BankRoute>
-                            )} */}
 
                             <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
                                 {/* getting issue to get query param in protected route */}
@@ -535,53 +377,16 @@ function DashboardMainContent() {
                                 <Approver />
                             </AuthorizedRoute>
 
-                            {/* {roles?.verifier === true ? (
-                                <VerifierRoute exact path={`${path}/approver`} Component={Approver}>
-                                    <Approver />
-                                </VerifierRoute>
-                            ) : roles?.approver === true ? (
-                                <ApproverRoute exact path={`${path}/approver`} Component={Approver}>
-                                    <Approver />
-                                </ApproverRoute>
-                            ) : (
-                                <ViewerRoute exact path={`${path}/approver`} Component={Approver}>
-                                    <Approver />
-                                </ViewerRoute>
-                            )} */}
+
+                            <AuthorizedRoute exact path={`${path}/approver`} Component={Approver}
+                                roleList={{ approver: true, verifier: true, viewer: true }}
+                            >
+                                <Approver />
+                            </AuthorizedRoute>
 
                             <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone} roleList={{ approver: true }}>
                                 <AssignZone />
                             </AuthorizedRoute>
-
-                            {/* {roles?.verifier === true ? (
-                                <VerifierRoute
-                                    exact
-                                    path={`${path}/signup-data`}
-                                    Component={SignupData}
-                                >
-                                    <SignupData />
-
-                                </VerifierRoute>
-
-
-                            ) : roles?.approver === true ? (
-                                <ApproverRoute
-                                    exact
-                                    path={`${path}/signup-data`}
-                                    Component={SignupData}
-                                >
-                                    <SignupData />
-                                </ApproverRoute>
-                            ) : (
-                                <AuthorizedRoute
-                                    exact
-                                    path={`${path}/signup-data`}
-                                    Component={SignupData}
-                                    roleList={{ approver: true, verifier: true, viewer: true }}
-                                >
-                                    <SignupData />
-                                </AuthorizedRoute>
-                            )} */}
 
                             <AuthorizedRoute
                                 exact
@@ -609,18 +414,6 @@ function DashboardMainContent() {
                                 >
                                 <AdditionalKYC />
                             </AuthorizedRoute>
-
-                            {/* {roles?.approver === true && (
-                                <ApproverRoute exact path={`${path}/additional-kyc`} Component={AdditionalKYC} roleList={{ approver: true, verifier: true }}>
-                                    <AdditionalKYC />
-                                </ApproverRoute>
-                            )}
-
-
-                            {roles?.verifier === true && (<VerifierRoute exact path={`${path}/additional-kyc`} Component={AdditionalKYC}>
-                                <AdditionalKYC />
-                            </VerifierRoute>)} */}
-
 
                             <Route exact path={`${path}/thanks`}>
                                 <ThanksPage />
@@ -660,12 +453,6 @@ function DashboardMainContent() {
                             <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
                                 <Faq />
                             </AllowedForAll>
-                            {/* <All  exact path={`${path}/faq`} Component={Faq}>
-                                <Faq/>
-
-                            </AllowedRoute> */}
-
-
 
 
                             {/* Routing for subscription */}
@@ -683,27 +470,6 @@ function DashboardMainContent() {
                             </AuthorizedRoute>
 
                             {/* -----------------------------------------------------------------------------------------------------|| */}
-
-
-                            {/* {roles?.verifier && (
-                                <VerifierRoute
-                                    exact
-                                    path={`${path}/onboarded-report`}
-                                    Component={OnboardedReport}
-
-                                >
-                                    <OnboardedReport />
-                                </VerifierRoute>
-                            )}
-                            {roles?.approver && (
-                                <ApproverRoute
-                                    exact
-                                    path={`${path}/onboarded-report`}
-                                    Component={OnboardedReport}
-                                >
-                                    <OnboardedReport />
-                                </ApproverRoute>
-                            )} */}
 
                             <AuthorizedRoute
                                 exact
@@ -723,27 +489,6 @@ function DashboardMainContent() {
                                 <ReferZone />
                             </AuthorizedRoute>
 
-                            {/* 
-                            {roles?.approver && (
-                                <ApproverRoute
-                                    exact
-                                    path={`${path}/referzone`}
-                                    Component={ReferZone}
-                                >
-                                    <ReferZone />
-                                </ApproverRoute>
-                            )}
-
-                            {roles?.verifier && (
-                                <VerifierRoute
-                                    exact
-                                    path={`${path}/referzone`}
-                                    Component={ReferZone}
-                                >
-                                    <ReferZone />
-                                </VerifierRoute>
-                            )} */}
-
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/generatemid`}
@@ -753,6 +498,12 @@ function DashboardMainContent() {
                                 <GenerateMid />
                             </AuthorizedRoute>
 
+                            <AuthorizedRoute
+                                exact
+                                path={`${path}/merchant-referral-onboarding`}
+                                Component={MerchantReferralOnboard}
+                                roleList={{ approver: true }}
+                            />
 
                             {roles?.approver && (
                                 <Route
@@ -778,22 +529,6 @@ function DashboardMainContent() {
                                 roleList={{ approver: true, verifier: true, viewer: true }}>
                                 <BizzAppData />
                             </AuthorizedRoute>
-
-
-                            {/* {roles?.verifier === true ? */}
-                            {/* <AuthorizedRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData} roleList={{ verifier: true }}>
-                                <BizzAppData />
-                            </AuthorizedRoute> :  */}
-
-                            {/* roles?.approver === true ?
-                                <ApproverRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
-                                    < BizzAppData />
-                                </ApproverRoute> : roles.viewer === true && (
-
-                                    <ViewerRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
-                                        < BizzAppData />
-                                    </ViewerRoute>)} */}
-
 
                             <Route path={`${path}/*`} component={UrlNotFound} >
                                 <UrlNotFound />
