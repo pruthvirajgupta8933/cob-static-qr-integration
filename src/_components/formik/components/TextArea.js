@@ -7,7 +7,7 @@ function TextArea(props) {
     <React.Fragment>
      {typeof(label)!=="undefined"?<label htmlFor={name}> {label}</label> : <></>}
       <Field as="textarea" id={name} name={name} {...rest} />
-      <p className="text-danger"><ErrorMessage name={name} /></p>
+      <ErrorMessage name={name}>{msg => <p className="text-danger">{msg}</p>}</ErrorMessage>
     </React.Fragment>
   )
 }

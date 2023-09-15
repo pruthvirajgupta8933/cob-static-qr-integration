@@ -26,7 +26,7 @@ function Checkboxes(props) {
           })
         }}
       </Field>
-      <p className="text-danger"> <ErrorMessage name={name} /></p>
+      <ErrorMessage name={name}>{msg => <p className="text-danger">{msg}</p>}</ErrorMessage>
     </React.Fragment>
   )
 }
