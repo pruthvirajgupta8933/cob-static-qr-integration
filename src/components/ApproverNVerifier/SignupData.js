@@ -123,7 +123,7 @@ useEffect(() => {
       });
   };
 
-  const exportToExcelFn = () => {
+  const exportToExcelFn = () => {      
     const excelHeaderRow = [
       "S.No",
       "Name",

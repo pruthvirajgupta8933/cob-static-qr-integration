@@ -17,9 +17,8 @@ import DateFormatter from "../../utilities/DateConvert";
 
 
 function ApprovedMerchant() {
-  const [data, setData] = useState([]);
-  const [approvedMerchantData, setApprovedMerchantData] = useState([]);
-  const [dataCount, setDataCount] = useState("");
+ 
+  // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
@@ -30,6 +29,29 @@ function ApprovedMerchant() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [onboardType, setOnboardType] = useState("")
+
+ 
+
+  const approvedMerchantList = useSelector(
+    (state) => state.kyc.kycApprovedList
+  );
+
+  
+  const [data, setData] = useState([]);
+  const [approvedMerchantData, setApprovedMerchantData] = useState([]);
+  const [dataCount,setDataCount]=useState("")
+
+  useEffect(() => {
+    const approvedList=approvedMerchantList?.results
+    const dataCount=approvedMerchantList?.count
+
+    if (approvedList) {
+      setData(approvedList);
+      setApprovedMerchantData(approvedList);
+      setKycIdClick(approvedList);
+      setDataCount(dataCount)
+    }
+  }, [approvedMerchantList]); //
 
 
   function capitalizeFirstLetter(param) {
@@ -248,18 +270,18 @@ function ApprovedMerchant() {
         isDirect: onboardType
       })
     )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setApprovedMerchantData(data);
-      })
+      // .then((resp) => {
+      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      //   const data = resp?.payload?.results;
+      //   const dataCoun = resp?.payload?.count;
+      //   // setData(data);
+      //   // setDataCount(dataCoun);
+      //   // setApprovedMerchantData(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   };
 
   /////////////////////////////////////Search filter

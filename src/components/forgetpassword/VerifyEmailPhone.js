@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+
 import API_URL from "../../config";
-// import { Formik, Field, Form, ErrorMessage } from "formik";
-// import * as Yup from "yup";
+
 import validation from "../validation";
 
-// import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { axiosInstanceJWT,axiosInstanceAuth } from "../../utilities/axiosInstance";
+
+import {axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 const VerifyEmailPhone = (props) => {
   // const dispatch = useDispatch();
@@ -46,11 +44,7 @@ const VerifyEmailPhone = (props) => {
       // e.preventDefault();
 
       errors?.emailotp === false ? setverify(true) : setverify(false);
-      // alert(verify);
-      // props.props('a3');
-
-      //dispatch(verifyOtpOnForgotPwdSlice())
-      // if(verify){
+     
       const sendOtp = JSON.stringify({
         verification_token: verification_token,
         otp: emailotp,

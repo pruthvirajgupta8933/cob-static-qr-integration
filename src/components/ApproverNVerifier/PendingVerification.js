@@ -16,7 +16,7 @@ import DateFormatter from "../../utilities/DateConvert";
 
 function PendingVerification() {
   const roles = roleBasedAccess();
-  const [data, setData] = useState([]);
+  
   const [onboardType, setOnboardType] = useState("");
 
   function capitalizeFirstLetter(param) {
@@ -172,18 +172,47 @@ function PendingVerification() {
   const Allow_To_Do_Verify_Kyc_details =
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
     
-   const [dataCount, setDataCount] = useState("");
-  const [newRegistrationData, setNewRegistrationData] = useState([]);
+  //  const [dataCount, setDataCount] = useState("");
+  
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(100);
-  const [kycIdClick, setKycIdClick] = useState(null);
+
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   const currenTab = parseInt(verifierApproverTab?.currenTab);
+
+
+  const pendindVerificationList = useSelector(
+    (state) => state.kyc.pendingVerificationKycList 
+  );
+
+  
+
+  const [data, setData] = useState([]);
+  const [newRegistrationData, setNewRegistrationData] = useState([]);
+  const [kycIdClick, setKycIdClick] = useState([]);
+  const[dataCount,setDataCount]=useState("")
+  
+ 
+
+  useEffect(() => {
+    const pendingVerificationDataList = pendindVerificationList?.results;
+    const dataCount = pendindVerificationList?.count;
+
+    if (pendingVerificationDataList ) {
+      setData(pendingVerificationDataList );
+      setNewRegistrationData(pendingVerificationDataList);
+      setKycIdClick(pendingVerificationDataList );
+      setDataCount(dataCount)
+    }
+  }, [pendindVerificationList]); //
+
+
+
 
   const dispatch = useDispatch();
 
@@ -230,19 +259,19 @@ function PendingVerification() {
         isDirect: onboardType,
       })
     )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setKycIdClick(data);
-        setData(data);
-        setDataCount(dataCoun);
-        setNewRegistrationData(data);
-      })
+      // .then((resp) => {
+      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      //   // const data = resp?.payload?.results;
+      //   // const dataCoun = resp?.payload?.count;
+      //   // setKycIdClick(data);
+      //   // setData(data);
+      //   // setDataCount(dataCoun);
+      //   // setNewRegistrationData(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   };
 
   //function for change current page
@@ -320,12 +349,10 @@ function PendingVerification() {
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
-            currentPage={currentPage}
             changePageSize={changePageSize}
-            changeCurrentPage={changeCurrentPage}
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">

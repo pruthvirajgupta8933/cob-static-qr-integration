@@ -212,7 +212,7 @@ const [data, setData] = useState([]);
               
             </div>
             <div className="col-lg-3 mt-2">
-            <CountPerPageFilter
+               <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             currentPage={currentPage}

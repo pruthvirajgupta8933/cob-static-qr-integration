@@ -24,6 +24,29 @@ const initialState = {
     results: null,
   },
   kycUserList: {},
+  notFilledUserList:{},
+  pendingVerificationKycList:{
+    results:[],
+    count:0
+
+  },
+kycApprovedList:{
+    results:[],
+    count:0
+  },
+  pendingKycuserList:{
+    results:[],
+    count:0
+  },
+  rejectedKycList:{
+    results:[],
+    count:0
+  },
+  kycVerifiedList:{
+    results:[],
+    count:0
+  },
+  rateMappingData:{},
   KycDocUpload: {
     documentId: "",
     name: "",
@@ -1090,7 +1113,7 @@ export const kycSlice = createSlice({
       state.isLoading = true;
     },
     [kycForNotFilled.fulfilled]: (state, action) => {
-      // state.kycUserList = action.payload;
+       state.notFilledUserList = action.payload 
       state.isLoading = false;
     },
     [kycForNotFilled.rejected]: (state, action) => {
@@ -1100,24 +1123,31 @@ export const kycSlice = createSlice({
     },
     //--------------------------------------------
     [kycForPendingMerchants.pending]: (state, action) => {
+
       state.status = "pending";
       state.isLoadingForPending = true;
+      // state.pendingKycuserList={}
     },
     [kycForPendingMerchants.fulfilled]: (state, action) => {
-      // state.kycUserList = action.payload;
+     
+      state.pendingKycuserList = action.payload;
       state.isLoadingForPending = false;
     },
     [kycForPendingMerchants.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
       state.isLoadingForPending = false;
+      // state.pendingKycuserList={}
     },
     //------------------------------------------------
     [kycForPending.pending]: (state, action) => {
+      console.log("action",action)
+      
       state.status = "pending";
       state.isLoadingForPendingVerification = true;
     },
     [kycForPending.fulfilled]: (state, action) => {
+      state.pendingVerificationKycList=action.payload
       // state.kycUserList = action.payload;
       state.isLoadingForPendingVerification = false;
     },
@@ -1132,6 +1162,7 @@ export const kycSlice = createSlice({
       state.isLoadingForPendingApproval = true;
     },
     [kycForVerified.fulfilled]: (state, action) => {
+      state.kycVerifiedList=action.payload
       // state.kycUserList = action.payload;
       state.isLoadingForPendingApproval = false;
     },
@@ -1185,7 +1216,10 @@ export const kycSlice = createSlice({
       state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
+      console.log("action",action)
       // state.kycUserList = action.payload;
+      state.rateMappingData=action.payload
+      
       state.isLoadingForApproved = false;
     },
     [kycForApproved.rejected]: (state, action) => {
@@ -1195,10 +1229,12 @@ export const kycSlice = createSlice({
     },
     //-------------------------------------------------
     [kycForRejectedMerchants.pending]: (state, action) => {
+      
       state.status = "pending";
       state.isLoadingForRejected = true;
     },
     [kycForRejectedMerchants.fulfilled]: (state, action) => {
+      state.rejectedKycList=action.payload
       // state.kycUserList = action.payload;
       state.isLoadingForRejected = false;
     },
@@ -1226,8 +1262,8 @@ export const kycSlice = createSlice({
       state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
-      // console.log("action-11 ====>",action.payload)
-      state.kycApproved = action.payload;
+       console.log("action-11 ====>",action.payload)
+      state.kycApprovedList = action.payload;
       state.isLoadingForApproved = false;
     },
     [kycForApproved.rejected]: (state, action) => {

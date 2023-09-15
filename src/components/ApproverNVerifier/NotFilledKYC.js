@@ -13,35 +13,43 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
-  const [data, setData] = useState([]);
-  const [notFilledData, setNotFilledData] = useState([]);
-  const [dataCount, setDataCount] = useState("");
+  const loadingState = useSelector((state) => state.kyc.isLoading);
+  
+ 
+  // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-
+  
   const [onboardType, setOnboardType] = useState("")
 
   const dispatch = useDispatch();
-  const loadingState = useSelector((state) => state.kyc.isLoading);
+  
+  const { results: notFilledKycData, count: dataCount } = useSelector(
+    (state) => state.kyc.notFilledUserList
+  );
+  
+  
+  const [notFilledData, setNotFilledData] = useState(notFilledKycData);
+  const [data, setData] = useState(notFilledKycData);
 
   // console.log(loadingState,"my loading")
 
   const kycSearch = (e, fieldType) => {
-    if (fieldType === "text") {
+    if(fieldType === "text"){
       setSearchByDropDown(false)
       setSearchText(e);
     }
-    if (fieldType === "dropdown") {
+    if(fieldType === "dropdown"){
       setSearchByDropDown(true)
       setOnboardType(e)
     }
-
-
+    
+  
   };
 
-  const mappedData = data?.map((item) => {
+  const mappedData = notFilledKycData?.map((item) => {
     return {
       sno: item.sno,
       name: item.name,
@@ -59,7 +67,7 @@ const NotFilledKYC = () => {
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   const searchByText = () => {
-    setData(
+  const filterData=  setData(
       notFilledData?.filter((item) =>
         Object.values(item)
           .join(" ")
@@ -67,6 +75,7 @@ const NotFilledKYC = () => {
           .includes(searchText?.toLocaleLowerCase())
       )
     );
+    setNotFilledData(filterData)
   };
 
   const fetchData = () => {
@@ -76,21 +85,21 @@ const NotFilledKYC = () => {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Not-Filled",
-        isDirect: onboardType
+        isDirect:onboardType
       })
     )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const totalData = resp?.payload?.count;
-        setDataCount(totalData);
-        setNotFilledData(data);
-        setData(data);
-      })
+      // .then((resp) => {
+      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      //   const data = resp?.payload?.results;
+      //   const totalData = resp?.payload?.count;
+      //   // setDataCount(totalData);
+      //   // setNotFilledData(data);
+      //   // setData(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   };
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -178,8 +187,8 @@ const NotFilledKYC = () => {
           )}
         </div>
         {/* <CustomLoader loadingState={loadingState} /> */}
-        {loadingState &&
-          <SkeletonTable />
+        { loadingState &&
+          <SkeletonTable/>
         }
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center">No data Found</h6>
