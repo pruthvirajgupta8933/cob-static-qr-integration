@@ -2,6 +2,7 @@
 
 // $primaryColor: #29205d;
 $primaryColor: #154280;
+$secondaryColor: #FF8F00;
 
 // $buttonPrimary:
 // $buttonOnHover:
@@ -42,6 +43,20 @@ $primaryColor: #154280;
 .cob-primary-btn-bg{
     background-color: $primaryColor;
 }
+.cob-secondary-btn{
+    background-color: $secondaryColor;
+}
+
+.active-secondary{
+    color: white !important;
+    background-color: $secondaryColor !important;
+}
+.active-tab{
+    color: #000000 !important;
+    background-color: #ADD1F4 !important;
+}
+
+
 
 
 // global tag

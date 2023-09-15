@@ -250,7 +250,7 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-           {openCommentModal && <CommentModal
+            {openCommentModal && <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}

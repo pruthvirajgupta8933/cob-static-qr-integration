@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classes from "../../approver.module.css"
 import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
-import { useState } from 'react';
+import MerchantProductSubscription from './merchant-product-subscription/MerchantProductSubscription';
 
 
 function MerchantReferralOnboard() {
@@ -9,11 +9,9 @@ function MerchantReferralOnboard() {
   const [currentTab, setCurrentTab] = useState(1)
 
     const handleTabClick = (currenTab) => {
+      setCurrentTab(currenTab)
         // dispatch(merchantTab(currenTab));
     };
-
-    const currenTab = ""
-
 
     return (
         <section>
@@ -25,84 +23,31 @@ function MerchantReferralOnboard() {
                                 Merchant Referral Onboard
                             </h5>
                         </div>
-                        {/* <div className="col-6 d-flex justify-content-end">
-            {roles?.viewer === true ? (
-              <></>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-sm cob-btn-primary "
-                onClick={() => redirect()}
-              >
-                Onboard Merchant
-              </button>
-            )}
-          </div> */}
                     </div>
 
                     <section>
                         <div className="row mt-5">
                             <div className="col-lg-12 mb-4">
                                 <ul className="nav nav-tabs approv">
-                                    {/* <li className="nav-item ">
+                                    <li className="nav-item ">
                                         <a
                                             href={() => false}
-                                            className={`nav-link  ${currenTab === 1 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                                            className={`nav-link ${currentTab === 1 &&  'active-tab'} ${classes.cursor_pointer}`}
                                             onClick={() => handleTabClick(1)}
                                         >
                                             Add Bank Merchant
                                         </a>
-                                    </li> */}
-                                    {/* <li className="nav-item">
+                                    </li>
+                                    <li className="nav-item">
                                         <a
                                             href={() => false}
-                                            className={`nav-link  ${currenTab === 2 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                                            className={`nav-link  ${currentTab === 2 &&  'active-tab'} ${classes.cursor_pointer}`}
 
                                             onClick={() => handleTabClick(2)}
                                         >
-                                            Pending KYC
+                                            Product Subscription
                                         </a>
-                                    </li> */}
-                                    {/* <li className="nav-item">
-                  <a
-                    href={() => false}
-                    className={`nav-link  ${currenTab === 3 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
-
-                    onClick={() => handleTabClick(3)}
-                  >
-                    Pending Verification
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href={() => false}
-                    className={`nav-link  ${currenTab === 4 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
-
-                    onClick={() => handleTabClick(4)}
-                  >
-                    Pending Approval
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href={() => false}
-                    className={`nav-link  ${currenTab === 5 ? `${classes.active_tab} active`  : "inactive"} ${classes.cursor_pointer}`}
-
-                    onClick={() => handleTabClick(5)}
-                  >
-                    Approved
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href={() => false}
-                    className={`nav-link  ${currenTab === 6 ? classes.active_tab  : "inactive"} ${classes.cursor_pointer}`}
-
-                    onClick={() => handleTabClick(6)}
-                  >
-                    Rejected
-                  </a>
-                </li> */}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -112,7 +57,8 @@ function MerchantReferralOnboard() {
                     <section>
 
                         <div className="row">
-                        <OperationKycModalForOnboard />
+                        {currentTab === 1 && <OperationKycModalForOnboard />}
+                        {currentTab === 2 && <MerchantProductSubscription />}
                             {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
               lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
 
