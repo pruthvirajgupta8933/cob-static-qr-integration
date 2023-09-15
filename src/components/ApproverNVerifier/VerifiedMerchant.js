@@ -16,6 +16,11 @@ import DateFormatter from "../../utilities/DateConvert";
 function VerifiedMerchant() {
 
   const dispatch = useDispatch();
+  const verifiedList = useSelector(
+    (state) => state.kyc.kycVerifiedList 
+  );
+
+  
 
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
@@ -29,6 +34,18 @@ function VerifiedMerchant() {
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("")
+
+  useEffect(() => {
+    const verifiedDataList =verifiedList?.results;
+    const dataCount =verifiedList?.count;
+
+    if (verifiedDataList ) {
+      setData(verifiedDataList );
+      setVerifiedMerchant(verifiedDataList);
+      setKycIdClick(verifiedDataList );
+      setDataCount(dataCount)
+    }
+  }, [verifiedList]); //
 
 
   function capitalizeFirstLetter(param) {
@@ -230,19 +247,19 @@ function VerifiedMerchant() {
         isDirect: onboardType
       })
     )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setKycIdClick(data);
-        setDataCount(dataCoun);
-        setVerifiedMerchant(data);
-      })
+      // .then((resp) => {
+      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      //   const data = resp?.payload?.results;
+      //   const dataCoun = resp?.payload?.count;
+      //   setData(data);
+      //   setKycIdClick(data);
+      //   setDataCount(dataCoun);
+      //   setVerifiedMerchant(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   };
 
   //function for change current page
