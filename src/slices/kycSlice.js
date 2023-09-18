@@ -46,7 +46,10 @@ kycApprovedList:{
     results:[],
     count:0
   },
-  rateMappingData:{},
+  configurationData:{
+    results:[],
+    count:0
+},
   KycDocUpload: {
     documentId: "",
     name: "",
@@ -1216,7 +1219,7 @@ export const kycSlice = createSlice({
       state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
-      console.log("action",action)
+      console.log("action==================>",action)
       // state.kycUserList = action.payload;
       state.rateMappingData=action.payload
       

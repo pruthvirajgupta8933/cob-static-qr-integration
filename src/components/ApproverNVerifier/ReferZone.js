@@ -16,7 +16,6 @@ const ReferZone = () => {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
-
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -187,49 +186,6 @@ const ReferZone = () => {
   }, [allKycData])
 
 
-
-
-  //   kycForPending({
-  //     page: currentPage,
-  //     page_size: pageSize,
-  //     searchquery: "",
-  //     merchantStatus: "Processing",
-  //     isDirect: ""
-  //   })
-  // )
-  //   .then((resp) => {
-  //     const data = resp?.payload?.results;
-  //     const dataCoun = resp?.payload?.count;
-  //     setData(data);
-  //     setDataCount(dataCoun);
-  //     setAssignzone(data);
-  //   })
-
-  //   .catch((err) => { });
-
-
-  // useEffect(() => {
-  //   dispatch(
-  //     kycForPending({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: "",
-  //       merchantStatus: "Processing",
-  //       isDirect: ""
-  //     })
-  //   )
-  //     .then((resp) => {
-  //       const data = resp?.payload?.results;
-  //       const dataCoun = resp?.payload?.count;
-  //       setData(data);
-  //       setDataCount(dataCoun);
-  //       setAssignzone(data);
-  //     })
-
-  //     .catch((err) => {
-  //       toastConfig.errorToast("Data not loaded");
-  //     });
-  // }, [currentPage, pageSize]);
 
 
 

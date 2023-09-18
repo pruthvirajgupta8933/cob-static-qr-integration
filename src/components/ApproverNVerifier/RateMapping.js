@@ -12,20 +12,39 @@ import DateFormatter from "../../utilities/DateConvert";
 
 function RateMapping() {
   const dispatch = useDispatch();
-const [data, setData] = useState([]);
-  const [assignZone, setAssignzone] = useState([]);
+
+  const approvedMerchantList = useSelector(
+    (state) => state.kyc.kycApprovedList
+  );
+
+  const [data, setData] = useState([]);
+  const [rateMappingList, setRateMappingList] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
-   const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
- 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
- 
+  useEffect(() => {
+    const approvedList=approvedMerchantList?.results
+    const dataCount=approvedMerchantList?.count
+
+    if (approvedList) {
+      setData(approvedList);
+      setRateMappingList(approvedList);
+    
+      setDataCount(dataCount)
+    }
+  }, [approvedMerchantList]); //
+
+
+
+
 
   useEffect(() => {
     dispatch(
@@ -36,22 +55,22 @@ const [data, setData] = useState([]);
         merchantStatus: "Approved",
       })
     )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
-        const dataCoun = resp?.payload?.count;
-        setAssignzone(data);
-        setDataCount(dataCoun);
-        setData(data);
-      })
+      // .then((resp) => {
+      //   const data = resp?.payload?.results;
+      //   //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
+      //   const dataCoun = resp?.payload?.count;
+      //   setAssignzone(data);
+      //   setDataCount(dataCoun);
+      //   setData(data);
+      // })
 
-      .catch((err) => {});
+      // .catch((err) => { });
   }, [currentPage, pageSize]);
 
   useEffect(() => {
     if (searchText.length > 0) {
       setData(
-        assignZone.filter((item) =>
+        rateMappingList.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -59,15 +78,15 @@ const [data, setData] = useState([]);
         )
       );
     } else {
-      setData(assignZone);
+      setData(rateMappingList);
     }
   }, [searchText]);
 
-  
+
 
   const searchByText = (text) => {
     setData(
-      assignZone?.filter((item) =>
+      rateMappingList?.filter((item) =>
         Object.values(item)
           .join(" ")
           .toLowerCase()
@@ -117,7 +136,7 @@ const [data, setData] = useState([]);
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
 
-  
+
 
   const AssignZoneData = [
     {
@@ -209,23 +228,23 @@ const [data, setData] = useState([]);
                 setSearchByDropDown={setSearchByDropDown}
                 searchTextByApiCall={true}
               />
-              
+
             </div>
             <div className="col-lg-3 mt-2">
-               <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            currentPage={currentPage}
-            changePageSize={changePageSize}
-            changeCurrentPage={changeCurrentPage}
-          /> 
+              <CountPerPageFilter
+                pageSize={pageSize}
+                dataCount={dataCount}
+                currentPage={currentPage}
+                changePageSize={changePageSize}
+                changeCurrentPage={changeCurrentPage}
+              />
             </div>
             <div className="form-group col-lg-3 col-md-12 mt-2">
               <SearchbyDropDown
                 kycSearch={kycSearch}
                 searchText={searchText}
                 isSearchByDropDown={isSearchByDropDown}
-                notFilledData={assignZone}
+                notFilledData={rateMappingList}
                 setData={setData}
                 setSearchByDropDown={setSearchByDropDown}
                 optionSearchData={optionSearchData}
@@ -234,32 +253,32 @@ const [data, setData] = useState([]);
           </div>
 
           <div className="">
-              <div className="scroll overflow-auto">
-                
-                {!loadingState && data?.length !== 0 && (
-                  <Table
-                    row={AssignZoneData}
-                    data={data}
-                    dataCount={dataCount}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                  />
-                )}
-              </div>
-              <CustomLoader loadingState={loadingState} />
-              {data?.length == 0 && !loadingState && (
-                <h2 className="text-center font-weight-bold">No Data Found</h2>
+            <div className="scroll overflow-auto">
+
+              {!loadingState && data?.length !== 0 && (
+                <Table
+                  row={AssignZoneData}
+                  data={data}
+                  dataCount={dataCount}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={changeCurrentPage}
+                />
               )}
             </div>
+            <CustomLoader loadingState={loadingState} />
+            {data?.length == 0 && !loadingState && (
+              <h2 className="text-center font-weight-bold">No Data Found</h2>
+            )}
+          </div>
         </div>
         <div>
-                {openZoneModal === true ? (
-                  <ViewRateMapping userData={modalDisplayData} />
-                ) : (
-                  <></>
-                )}
-              </div>
+          {openZoneModal === true ? (
+            <ViewRateMapping userData={modalDisplayData} />
+          ) : (
+            <></>
+          )}
+        </div>
       </main>
     </section>
   );
