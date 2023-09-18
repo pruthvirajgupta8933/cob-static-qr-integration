@@ -21,19 +21,55 @@ const PendindKyc = () => {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
-  const [data, setData] = useState([]);
-  const [dataCount, setDataCount] = useState("");
-  const [pendingKycData, setPendingKycData] = useState([]);
+  
+  // const [dataCount, setDataCount] = useState("");
+ 
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [kycIdClick, setKycIdClick] = useState(null);
+
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("");
 
+  // const { results: pendingKycDataList, count: dataCount } = useSelector(
+  //   (state) => state.kyc.pendingKycuserList 
+
+
+  const pendindKycList = useSelector(
+    (state) => state.kyc.pendingKycuserList 
+  );
+
+ 
+
+ 
+  // );
+  const [data, setData] = useState([]);
+  const [pendingKycData, setPendingKycData] = useState([]);
+  const [kycIdClick, setKycIdClick] = useState(null);
+  const [dataCount,setDataCount]=useState("")
+
+  useEffect(() => {
+    const pendingKycDataList=pendindKycList?.results
+  const dataCount=pendindKycList?.count
+
+    if (pendingKycDataList) {
+      setData(pendingKycDataList);
+      setPendingKycData(pendingKycDataList);
+      setKycIdClick(pendingKycDataList);
+      setDataCount(dataCount)
+    }
+  }, [pendindKycList]); //
+
+
+
+
+
+
+
+  
   const PendindKycRowData = [
     {
       id: "1",
@@ -191,20 +227,7 @@ const PendindKyc = () => {
         isDirect: onboardType,
       })
     )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setPendingKycData(data);
-      })
-
-      .catch((err) => {
-        // console.log(err);
-        toastConfig.errorToast("Data not loaded");
-      });
+      
   };
 
   const searchByText = () => {
@@ -250,7 +273,7 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-           {openCommentModal && <CommentModal
+            {openCommentModal && <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}

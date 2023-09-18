@@ -27,13 +27,13 @@ function BankDetails(props) {
 
   const { kyc, auth } = useSelector((state) => state);
 
-  const { KycTabStatusStore} = kyc;
+  const { KycTabStatusStore } = kyc;
   const KycList = kyc?.kycUserList;
   const VerifyKycStatus = KycTabStatusStore?.settlement_info_status;
- 
+
 
   const { user } = auth;
-  
+
 
   const [readOnly, setReadOnly] = useState(false);
 
@@ -134,19 +134,19 @@ function BankDetails(props) {
           // console.log(res?.payload)
           setLoading(false)
           const postData = { bank_name: res?.payload?.bank };
-          dispatch(getBankId(postData)).then(resp=>{
-            
-            if(resp?.payload?.length>0){
-              setFieldValue("bank_id",resp?.payload[0]?.bankId)
+          dispatch(getBankId(postData)).then(resp => {
+
+            if (resp?.payload?.length > 0) {
+              setFieldValue("bank_id", resp?.payload[0]?.bankId)
             }
 
             // console.log(resp?.payload?.bankId)
-          }).catch(err=>{
+          }).catch(err => {
             // console.log(err?.payload?.bankName)
           })
-          setFieldValue("branch",res?.payload?.branch)
-          setFieldValue("ifsc_code",values)
-          setFieldValue("oldIfscCode",values)
+          setFieldValue("branch", res?.payload?.branch)
+          setFieldValue("ifsc_code", values)
+          setFieldValue("oldIfscCode", values)
           // toast.success(res?.payload?.message);
         } else {
           setLoading(false)
@@ -172,12 +172,12 @@ function BankDetails(props) {
         setLoading(false)
         // console.log(res?.payload)
         // setFieldValue()
-        const fullName = res?.payload?.first_name+' '+res?.payload?.last_name;
-        setFieldValue("account_holder_name",fullName);
+        const fullName = res?.payload?.first_name + ' ' + res?.payload?.last_name;
+        setFieldValue("account_holder_name", fullName);
 
-        setFieldValue("account_number",values);
-        setFieldValue("oldAccountNumber",values);
-        setFieldValue("isAccountNumberVerified",1);
+        setFieldValue("account_number", values);
+        setFieldValue("oldAccountNumber", values);
+        setFieldValue("isAccountNumberVerified", 1);
         toast.success(res?.payload?.message);
 
         ifscValidationNo(ifscCode, setFieldValue);
@@ -443,7 +443,7 @@ function BankDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </label>
-                
+
 
                 <FormikController
                   control="select"
@@ -489,22 +489,22 @@ function BankDetails(props) {
               </div>
             </div>
             <div className="row">
-                <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                  {VerifyKycStatus === "Verified" ? <></> : (
-                    <button
-                      disabled={disable}
-                      className="save-next-btn float-lg-right cob-btn-primary text-white btn-sm"
-                      type="submit"
-                    >
-                     {disable && <>
+              <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
+                {VerifyKycStatus === "Verified" ? <></> : (
+                  <button
+                    disabled={disable}
+                    className="save-next-btn float-lg-right cob-btn-primary text-white btn-sm"
+                    type="submit"
+                  >
+                    {disable && <>
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
                       <span className="sr-only">Loading...</span>
                     </>}
-                      {buttonText}
-                    </button>
-                  )}
-                </div>
+                    {buttonText}
+                  </button>
+                )}
               </div>
+            </div>
           </Form>
         )}
       </Formik>

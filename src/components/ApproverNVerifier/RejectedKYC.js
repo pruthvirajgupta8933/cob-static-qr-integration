@@ -17,10 +17,10 @@ const RejectedKYC = () => {
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoadingForRejected);
 
-  const [data, setData] = useState([]);
-  const [dataCount, setDataCount] = useState("");
-  const [kycIdClick, setKycIdClick] = useState(null);
-  const [rejectedMerchants, setRejectedMerchants] = useState([]);
+ 
+  // const [dataCount, setDataCount] = useState("");
+  
+  
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -29,6 +29,28 @@ const RejectedKYC = () => {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("");
+
+  const rejectedKycList = useSelector((state) => state.kyc.rejectedKycList);
+
+  // Initialize data state with an empty array
+  const [data, setData] = useState([]);
+  const [rejectedMerchants, setRejectedMerchants] = useState([]);
+  const [kycIdClick, setKycIdClick] = useState([]);
+  const [dataCount,setDataCount]=useState("")
+
+  // Watch for changes in rejectedKycList and update the state when data is available
+  useEffect(() => {
+    const rejectedDataList = rejectedKycList?.results;
+    const dataCount = rejectedKycList?.count;
+
+    if (rejectedDataList) {
+      setData(rejectedDataList);
+      setRejectedMerchants(rejectedDataList);
+      setKycIdClick(rejectedDataList);
+      setDataCount(dataCount)
+    }
+  }, [rejectedKycList]); //
+
 
   const dispatch = useDispatch();
 
@@ -196,19 +218,19 @@ const RejectedKYC = () => {
         isDirect: onboardType,
       })
     )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setKycIdClick(data);
-        setDataCount(dataCoun);
-        setRejectedMerchants(data);
-      })
+      // .then((resp) => {
+      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      //   const data = resp?.payload?.results;
+      //   const dataCoun = resp?.payload?.count;
+      //   // setData(data);
+      //   // setKycIdClick(data);
+      //   // setDataCount(dataCoun);
+      //   // setRejectedMerchants(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   };
 
   useEffect(() => {

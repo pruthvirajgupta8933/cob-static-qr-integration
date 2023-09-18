@@ -7,12 +7,15 @@ import CheckBoxes from "./components/CheckBoxes.js"
 import ReactDatePicker from "./components/ReactDatePicker.js"
 
 import File from "./components/File.js"
+import InputWithButton from "./components/InputWithButton.js"
 
 function FormikController(props) {
   const { control, ...rest } = props
   switch (control) {
     case "input":
       return <Input {...rest} />
+    case "inputButton":
+      return <InputWithButton {...rest} />
     case "textArea":
       return <TextArea {...rest} />
     case "file":

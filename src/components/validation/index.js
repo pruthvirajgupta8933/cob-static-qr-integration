@@ -84,7 +84,7 @@ export default function validation(values) {
     }
 
  else if (values.smsotp.length > 6) {
-         errors.smsotp = 'OTP needs to 6 only'
+         errors.smsotp = 'OTP should be of 6 characters only'
      }
 
      else if(regex.test(values.smsotp)) {

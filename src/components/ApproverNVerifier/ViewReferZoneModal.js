@@ -50,17 +50,14 @@ const ViewReferZoneModal = (props) => {
 
 
   const handleSubmit = (values) => {
-
-
-    let saveRefData = {
+  let saveRefData = {
       login_id: props.userData.loginMasterId,
       approver_id: loginId,
       sourcing_point: selectedValue,
       sourcing_code: values.sourcing_code,
       emp_code: values.sourcing_code
     };
-
-    dispatch(saveReferingMerchant(saveRefData))
+   dispatch(saveReferingMerchant(saveRefData))
       .then((resp) => {
 
         toastConfig.successToast(resp.payload.message);

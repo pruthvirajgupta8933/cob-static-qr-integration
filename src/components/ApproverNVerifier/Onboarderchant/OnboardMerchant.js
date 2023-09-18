@@ -378,8 +378,8 @@ const OnboardMerchant = () => {
                   name="passwordd"
                   type={
                     passwordType.showPasswords
-                      ? "text"
-                      : "password"
+                      ? "password"
+                      : "text"
                   }
                   size={50}
                   autoComplete="off"
