@@ -166,10 +166,12 @@ const NotFilledKYC = () => {
         </div>
 
         <div className="">
+          {!loadingState &&
           <MerchnatListExportToxl
             URL={"export-excel/?search=Not-Filled"}
             filename={"Not-Filled-KYC"}
           />
+}
         </div>
       </div>
 

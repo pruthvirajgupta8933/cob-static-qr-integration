@@ -326,12 +326,14 @@ function VerifiedMerchant() {
           />
         </div>
         <div className="">
+        {!loadingState &&
           <MerchnatListExportToxl
             URL={
               "export-excel/?search=Verified"
             }
             filename={"Pending-Approval"}
           />
+}
         </div>
         <div>
         </div>

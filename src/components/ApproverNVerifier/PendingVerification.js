@@ -367,10 +367,12 @@ function PendingVerification() {
           />
         </div>
         <div className="">
+        {!loadingState &&
           <MerchnatListExportToxl
             URL={"export-excel/?search=processing"}
             filename={"Pending-Verification"}
           />
+        }
         </div>
       </div>
 

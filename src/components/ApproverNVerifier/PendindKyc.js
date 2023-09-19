@@ -308,10 +308,12 @@ const PendindKyc = () => {
           />
         </div>
         <div className="">
+        {!loadingState &&
           <MerchnatListExportToxl
             URL={"export-excel/?search=Pending"}
             filename={"Pending-KYC"}
           />
+        }
         </div>
       </div>
 

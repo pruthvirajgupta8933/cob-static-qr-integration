@@ -31,44 +31,43 @@ function TransactionEnquirey() {
     return date;
   };
 
-  const onSubmit = (input) => {
-    setLoadingState(true)
+  const onSubmit = async (input) => {
+    setLoadingState(true);
     setData({});
-    setIsDisable(true)
-
-    let spTxnId = 0
-    let clientTxnId = 0
-
+    setIsDisable(true);
+  
+    let spTxnId = 0;
+    let clientTxnId = 0;
+  
     if (input.transaction_from === "1") {
-      spTxnId = input.transaction_id
+      spTxnId = input.transaction_id;
     } else {
-      clientTxnId = input.transaction_id
+      clientTxnId = input.transaction_id;
     }
-    let endPoint = `/${spTxnId}/${clientTxnId}`
-
-
-    axios.get(API_URL.VIEW_TXN + endPoint)
-      .then((response) => {
-        if (response?.data?.length > 0) {
-          setLoadingState(false)
-          setIsShow(true);
-          setData(response?.data[0]);
-          setErrMessage(false);
-          setIsDisable(false)
-        } else {
-          setLoadingState(false)
-          setIsShow(false);
-          setErrMessage(true);
-          setIsDisable(false)
-        }
- })
-      .catch((e) => {
-        setLoadingState(false)
+    let endPoint = `/${spTxnId}/${clientTxnId}`;
+  
+    try {
+      const response = await axios.get(API_URL.VIEW_TXN + endPoint);
+  
+      if (response?.data?.length > 0) {
+        setLoadingState(false);
+        setIsShow(true);
+        setData(response?.data[0]);
+        setErrMessage(false);
+      } else {
+        setLoadingState(false);
         setIsShow(false);
         setErrMessage(true);
-        setIsDisable(false)
-      });
+      }
+    } catch (e) {
+      setLoadingState(false);
+      setIsShow(false);
+      setErrMessage(true);
+    }
+  
+    setIsDisable(false);
   };
+  
 
 
   useEffect(() => {
