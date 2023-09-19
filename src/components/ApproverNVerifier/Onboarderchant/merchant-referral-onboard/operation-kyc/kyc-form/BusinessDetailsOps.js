@@ -5,19 +5,34 @@ import FormikController from '../../../../../../_components/formik/FormikControl
 import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { useDispatch, useSelector } from 'react-redux';
+import { businessDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 
 function BusinessDetailsOps() {
+    const dispatch = useDispatch()
+    const {auth, merchantReferralOnboardReducer} = useSelector(state=>state)
+    const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
 
 
     const initialValues = {
-        pan_number:"",
-        website:""
+        pan_number: "",
+        website: ""
 
     }
-    const validationSchema = {
-
+    const validationSchema = Yup.object({
+        pan_number: Yup.string().required(),
+        website: Yup.string().required()
+    })
+    const handleSubmit = (value) => {
+        console.log(value)
+        const postData = {
+            website_app_url: value.website,
+            pan_card: value.pan_number,
+            login_id: merchantLoginId,
+            updated_by: auth?.user?.loginId
+        
+        }
+        dispatch(businessDetails(postData))
     }
-    const handleSubmit = () => { }
 
 
 
