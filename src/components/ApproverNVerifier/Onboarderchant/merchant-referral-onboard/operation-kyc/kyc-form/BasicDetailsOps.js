@@ -7,19 +7,21 @@ import { Regex, RegexMsg } from '../../../../../../_components/formik/Validation
 import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import { register } from '../../../../../../slices/auth';
-import { useDispatch } from 'react-redux';
+// import { register } from '../../../../../../slices/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveMerchantBasicDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 // import { useState } from 'react';
 
 
 function BasicDetailsOps() {
 
     const [businessCode, setBusinessCode] = useState([]);
-    const [passwordType, setPasswordType] = useState({
-        showPasswords: false
-    });
-    const dispatch = useDispatch()
+    const [passwordType, setPasswordType] = useState({showPasswords: false});
 
+
+    const dispatch = useDispatch()
+    const {auth} = useSelector(state=>state)
+    // console.log(auth?.user?.loginId)
 
     const initialValues = {
         fullname: "",
@@ -66,17 +68,14 @@ function BasicDetailsOps() {
             password } = value
 
             dispatch(
-                register({
+                saveMerchantBasicDetails({
                     fullname: fullname,
                     mobileNumber: mobilenumber,
                     email: email_id,
                     business_cat_code: business_cat_code,
                     password: password,
-                    businessType:1,
-                    isDirect: false,
-                    requestId: null,
-                    plan_details: {},
-                    is_social: false
+                    created_by: auth?.user?.loginId,
+                    updated_by: auth?.user?.loginId
                 })
             )
 

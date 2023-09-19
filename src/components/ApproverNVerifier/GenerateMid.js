@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
 import ViewGenerateMidModal from "./ViewGenerateMidModal";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
@@ -98,10 +96,14 @@ function AssignZone() {
 
   const rowData = AssignZoneData;
 
+  const approvedMerchantList = useSelector(
+    (state) => state.kyc.kycApprovedList
+  );
+
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
   const [data, setData] = useState([]);
-  const [assignZone, setAssignzone] = useState([]);
+  const [midList, setMidList]= useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -110,6 +112,18 @@ function AssignZone() {
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
+  useEffect(() => {
+    const approvedList=approvedMerchantList?.results
+    const dataCount=approvedMerchantList?.count
+
+    if (approvedList) {
+      setData(approvedList);
+      setMidList(approvedList);
+    
+      setDataCount(dataCount)
+    }
+  }, [approvedMerchantList]); //
 
   const afterGeneratingMid = () => {
     dispatch(
@@ -120,17 +134,17 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setAssignzone(data);
-      })
+      // .then((resp) => {
+      //   const data = resp?.payload?.results;
+      //   const dataCoun = resp?.payload?.count;
+      //   setData(data);
+      //   setDataCount(dataCoun);
+      //   setAssignzone(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   };
 
   useEffect(() => {
@@ -142,17 +156,17 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setAssignzone(data);
-      })
+      // .then((resp) => {
+      //   const data = resp?.payload?.results;
+      //   const dataCoun = resp?.payload?.count;
+      //   setData(data);
+      //   setDataCount(dataCoun);
+      //   setAssignzone(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   }, [currentPage, pageSize]);
 
   ////////////////////////////////////////////////// Search filter start here
@@ -166,7 +180,7 @@ function AssignZone() {
 
   const searchByText = (text) => {
     setData(
-      assignZone?.filter((item) =>
+    midList?.filter((item) =>
         Object.values(item)
           .join(" ")
           .toLowerCase()

@@ -8,7 +8,9 @@ export const Regex = {
     address: /^[a-zA-Z0-9\s,.'-]{3,}$/,
     addressForSpecific: /^[#.0-9a-zA-Z\s,-/]+$/,
     phoneNumber : /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-    password:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+    password:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    ifscRegex : /^[A-Z]{4}0[A-Z0-9]{6}$/,
+    accountNoRgex : /^[a-zA-Z0-9]{2,25}$/
 }
 
 export const RegexMsg = {
@@ -20,7 +22,9 @@ export const RegexMsg = {
     addressForSpecific:"Address is not in valid format, Only '-', '/' , '.' special chracters are allowed",
     address : "Address is not in valid format, Special Characters are not allowed (#,$,@ etc)",
     phoneNumber : "Phone number is not valid",
-    password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character",
+    ifscRegex:"Your IFSC code is Invalid and must be in capital letters",
+    accountNoRgex:"Account Number format is invalid",
 }
 
 

@@ -24,7 +24,7 @@ function ManualRateMapping() {
         setRateMappingSuccess(false)
         setErrorRm(true)
         setErrorMsg(error?.message)
-        console.log("error-found")
+        
       })
 
     return () => {

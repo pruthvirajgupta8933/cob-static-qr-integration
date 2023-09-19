@@ -12,9 +12,15 @@ import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 
 function AssignZone() {
+
+  const approvedMerchantList = useSelector(
+    (state) => state.kyc.kycApprovedList
+  );
+
+ 
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
-  const [dataCount, setDataCount] = useState(0);
+  const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,6 +28,18 @@ function AssignZone() {
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
+  useEffect(() => {
+    const approvedList=approvedMerchantList?.results
+    const dataCount=approvedMerchantList?.count
+
+    if (approvedList) {
+      setData(approvedList);
+      setAssignzone(approvedList);
+    
+      setDataCount(dataCount)
+    }
+  }, [approvedMerchantList]); //
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
@@ -45,17 +63,17 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setAssignzone(data);
-      })
+      // .then((resp) => {
+      //   const data = resp?.payload?.results;
+      //   const dataCoun = resp?.payload?.count;
+      //   setData(data);
+      //   setDataCount(dataCoun);
+      //   setAssignzone(data);
+      // })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+      // .catch((err) => {
+      //   toastConfig.errorToast("Data not loaded");
+      // });
   }, [currentPage, pageSize]);
 
   const searchByText = (text) => {
