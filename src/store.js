@@ -18,6 +18,8 @@ import { DebitReportsDataReducer } from "./slices/subscription-slice/debitSlice"
 import { createMandateReducer } from "./slices/subscription-slice/createMandateSlice";
 import  approverDashboardSlice  from "./slices/approver-dashboard/approverDashboardSlice"
 import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice"
+import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice"
+
 
 const reducer = {
   auth: authReducer,
@@ -42,7 +44,10 @@ const reducer = {
 
   // approver
   approverDashboard: approverDashboardSlice,
-  rateMappingSlice:rateMappingSlice
+  rateMappingSlice:rateMappingSlice,
+
+  //merchantOnboardByOps
+  merchantReferralOnboardReducer:merchantReferralOnboardReducer
 };
 
 const store = configureStore({

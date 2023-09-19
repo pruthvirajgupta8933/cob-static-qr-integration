@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import API_URL from "../config";
+import API_URL, { APP_ENV } from "../config";
 import {
   axiosInstanceJWT,
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
 
-import { APP_ENV } from "../config";
+// import { APP_ENV } from "../config";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 
@@ -24,29 +24,29 @@ const initialState = {
     results: null,
   },
   kycUserList: {},
-  notFilledUserList:{},
-  pendingVerificationKycList:{
-    results:[],
-    count:0
+  notFilledUserList: {},
+  pendingVerificationKycList: {
+    results: [],
+    count: 0
 
   },
-kycApprovedList:{
-    results:[],
-    count:0
+  kycApprovedList: {
+    results: [],
+    count: 0
   },
-  pendingKycuserList:{
-    results:[],
-    count:0
+  pendingKycuserList: {
+    results: [],
+    count: 0
   },
-  rejectedKycList:{
-    results:[],
-    count:0
+  rejectedKycList: {
+    results: [],
+    count: 0
   },
-  kycVerifiedList:{
-    results:[],
-    count:0
+  kycVerifiedList: {
+    results: [],
+    count: 0
   },
-  rateMappingData:{},
+  rateMappingData: {},
   KycDocUpload: {
     documentId: "",
     name: "",
@@ -64,7 +64,7 @@ kycApprovedList:{
     merchant: "",
     type: "",
   },
-  compareDocListArray:{
+  compareDocListArray: {
     finalArray: [],
     dropDownDocList: [],
   },
@@ -187,15 +187,15 @@ kycApprovedList:{
   OpenModalForKycSubmit: {
     isOpen: false
   },
-  approveKyc:{
-    isApproved:false,
-    isError:false,
-    logs:{},
+  approveKyc: {
+    isApproved: false,
+    isError: false,
+    logs: {},
 
   }
 
-  
-  
+
+
 };
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
@@ -318,7 +318,7 @@ export const collectionFrequency = createAsyncThunk(
       .catch((error) => {
         return error.response;
       });
-   
+
     return response.data;
   }
 );
@@ -506,7 +506,7 @@ export const kycBankNames = createAsyncThunk(
 );
 /////////////////////////////////////// Payment Mode
 export const kycpaymentModeType = createAsyncThunk(
-  "kyc/kycBankNames",
+  "kyc/kycpaymentModeType",
   async (requestParam) => {
     const response = await axiosInstanceJWT
       .get(`${API_URL.GET_PAYMENT_MODE}`, {
@@ -675,7 +675,7 @@ export const onboardedReport = createAsyncThunk(
     const kyc_status = data?.kyc_status;
 
     let order_by = kyc_status.toLowerCase() + "_date"
-    if(!kyc_status===KYC_STATUS_APPROVED || !kyc_status===KYC_STATUS_VERIFIED){
+    if (!kyc_status === KYC_STATUS_APPROVED || !kyc_status === KYC_STATUS_VERIFIED) {
       order_by = "id"
     }
 
@@ -988,7 +988,7 @@ export const businessCategoryById = createAsyncThunk(
 
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
-  async (requestParam,thunkAPI) => {
+  async (requestParam, thunkAPI) => {
     try {
       const response = await approverDashboardService.approveKyc(requestParam);
       return response;
@@ -1085,13 +1085,13 @@ export const kycSlice = createSlice({
     clearKycState: (state) => {
       state.kycUserList = {};
     },
-    
+
 
     saveDropDownAndFinalArray: (state, action) => {
-      
-     state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
-     state.compareDocListArray.finalArray = action?.payload?.finalArray;
-      },
+
+      state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
+      state.compareDocListArray.finalArray = action?.payload?.finalArray;
+    },
     UpdateModalStatus: (state, action) => {
       state.OpenModalForKycSubmit.isOpen = action?.payload
     },
@@ -1101,7 +1101,7 @@ export const kycSlice = createSlice({
       state.allKycData.result = []
       state.allKycData.message = ""
     },
-    clearApproveKyc:(state)=>{
+    clearApproveKyc: (state) => {
       state.approveKyc.isApproved = false
       state.approveKyc.isError = false
       state.approveKyc.logs = {}
@@ -1113,7 +1113,7 @@ export const kycSlice = createSlice({
       state.isLoading = true;
     },
     [kycForNotFilled.fulfilled]: (state, action) => {
-       state.notFilledUserList = action.payload 
+      state.notFilledUserList = action.payload
       state.isLoading = false;
     },
     [kycForNotFilled.rejected]: (state, action) => {
@@ -1129,7 +1129,7 @@ export const kycSlice = createSlice({
       // state.pendingKycuserList={}
     },
     [kycForPendingMerchants.fulfilled]: (state, action) => {
-     
+
       state.pendingKycuserList = action.payload;
       state.isLoadingForPending = false;
     },
@@ -1141,13 +1141,13 @@ export const kycSlice = createSlice({
     },
     //------------------------------------------------
     [kycForPending.pending]: (state, action) => {
-      console.log("action",action)
-      
+      console.log("action", action)
+
       state.status = "pending";
       state.isLoadingForPendingVerification = true;
     },
     [kycForPending.fulfilled]: (state, action) => {
-      state.pendingVerificationKycList=action.payload
+      state.pendingVerificationKycList = action.payload
       // state.kycUserList = action.payload;
       state.isLoadingForPendingVerification = false;
     },
@@ -1162,7 +1162,7 @@ export const kycSlice = createSlice({
       state.isLoadingForPendingApproval = true;
     },
     [kycForVerified.fulfilled]: (state, action) => {
-      state.kycVerifiedList=action.payload
+      state.kycVerifiedList = action.payload
       // state.kycUserList = action.payload;
       state.isLoadingForPendingApproval = false;
     },
@@ -1216,10 +1216,10 @@ export const kycSlice = createSlice({
       state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
-      console.log("action",action)
+      console.log("action", action)
       // state.kycUserList = action.payload;
-      state.rateMappingData=action.payload
-      
+      state.rateMappingData = action.payload
+
       state.isLoadingForApproved = false;
     },
     [kycForApproved.rejected]: (state, action) => {
@@ -1229,12 +1229,12 @@ export const kycSlice = createSlice({
     },
     //-------------------------------------------------
     [kycForRejectedMerchants.pending]: (state, action) => {
-      
+
       state.status = "pending";
       state.isLoadingForRejected = true;
     },
     [kycForRejectedMerchants.fulfilled]: (state, action) => {
-      state.rejectedKycList=action.payload
+      state.rejectedKycList = action.payload
       // state.kycUserList = action.payload;
       state.isLoadingForRejected = false;
     },
@@ -1262,7 +1262,7 @@ export const kycSlice = createSlice({
       state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
-       console.log("action-11 ====>",action.payload)
+      console.log("action-11 ====>", action.payload)
       state.kycApprovedList = action.payload;
       state.isLoadingForApproved = false;
     },
@@ -1503,7 +1503,7 @@ export const kycSlice = createSlice({
       state.KycTabStatusStore = action.payload;
     },
 
-// when kyc approve
+    // when kyc approve
     [approvekyc.pending]: (state) => {
       state.approveKyc.isApproved = false
       state.approveKyc.isError = false
