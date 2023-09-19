@@ -1,8 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { bankDetails, saveBasicDetails } from "../../services/approver-dashboard/merchantReferralOnboard.service";
+import { bankDetails, saveBasicDetails, saveBusinessDetails } from "../../services/approver-dashboard/merchantReferralOnboard.service";
 
 const initialState = {
-    merchantRegister: {},
+    merchantOnboardingProcess: {
+        isOnboardStart: false,
+        isOnboardComplete: false,
+        merchantLoginId: ""
+
+    },
+    merchantBasicDetails: {},
     bankDetails: {},
     bussinessDetails: {},
     documentCenter: {}
@@ -32,6 +38,16 @@ export const saveBankDetails = createAsyncThunk(
         return response.data;
     }
 );
+export const businessDetails = createAsyncThunk(
+    "merchantReferralOnboardSlice/saveBusinessDetails",
+    async (requestParam) => {
+        const response = await saveBusinessDetails(requestParam)
+            .catch((error) => {
+                return error.response;
+            });
+        return response.data;
+    }
+);
 
 
 
@@ -41,13 +57,27 @@ export const merchantReferralOnboardSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(saveMerchantBasicDetails.pending, (state) => {
+                state.loading = 'loading';
+                // console.log("pending")
+            })
+            .addCase(saveMerchantBasicDetails.fulfilled, (state, action) => {
+                state.merchantBasicDetails = action.payload.merchant_data
+                state.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
+                state.merchantOnboardingProcess.isOnboardStart = true
+            })
+            .addCase(saveMerchantBasicDetails.rejected, (state, action) => {
+                state.loading = 'failed';
+                state.error = action.error.message;
+                console.log("fail")
+            })
             .addCase(saveBankDetails.pending, (state) => {
                 state.loading = 'loading';
                 console.log("pending")
             })
             .addCase(saveBankDetails.fulfilled, (state, action) => {
                 state.loading = 'succeeded';
-                state.entities = action.payload;
+                state.bankDetails = action.payload;
                 state.error = null;
                 console.log("success")
             })
@@ -57,21 +87,21 @@ export const merchantReferralOnboardSlice = createSlice({
                 console.log("fail")
 
             })
-            .addCase(saveMerchantBasicDetails.pending, (state) => {
+
+            .addCase(businessDetails.pending, (state) => {
                 state.loading = 'loading';
                 console.log("pending")
             })
-            .addCase(saveMerchantBasicDetails.fulfilled, (state, action) => {
+            .addCase(businessDetails.fulfilled, (state, action) => {
                 state.loading = 'succeeded';
                 state.entities = action.payload;
                 state.error = null;
                 console.log("success")
             })
-            .addCase(saveMerchantBasicDetails.rejected, (state, action) => {
+            .addCase(businessDetails.rejected, (state, action) => {
                 state.loading = 'failed';
                 state.error = action.error.message;
                 console.log("fail")
-
             })
 
     }

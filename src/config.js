@@ -21,8 +21,8 @@ if (ENV_PROD) {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   // kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
-  // url = "http://192.168.34.26:8001";
-  // kyc_url = "http://192.168.34.26:8000";
+  // url = "http://192.168.34.91:8000";
+  // kyc_url = "http://192.168.34.91:8000";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
@@ -330,7 +330,16 @@ const API_LIVE = {
 
 
   // for chart
-  GET_TRANSACTION_DATA_CHART : reportAPIURL+"/REST/getSuccessGraph"
+  GET_TRANSACTION_DATA_CHART : reportAPIURL+"/REST/getSuccessGraph",
+
+
+
+  // bank merchant onboard API's // kyc_url 'http://192.168.34.91:8000'
+  saveBasicDetails : `${kyc_url}/kyc/bank-merchant/basic-detail/`,
+  saveBankDetails : `${kyc_url}/kyc/bank-merchant/bank-detail/`,
+  saveBusinesDetails : `${kyc_url}/kyc/bank-merchant/business-detail/`,
+  uploadDocuement : `${kyc_url}/kyc/bank-merchant/upload-doc/`,
+  // `{{url}}/kyc/bank-merchant/basic-detail/`
 };
 
 const B2B_API_LIVE = {

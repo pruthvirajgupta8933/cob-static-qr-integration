@@ -69,11 +69,12 @@ function BasicDetailsOps() {
 
             dispatch(
                 saveMerchantBasicDetails({
-                    fullname: fullname,
+                    name: fullname,
                     mobileNumber: mobilenumber,
                     email: email_id,
                     business_cat_code: business_cat_code,
                     password: password,
+                    isDirect: false,
                     created_by: auth?.user?.loginId,
                     updated_by: auth?.user?.loginId
                 })

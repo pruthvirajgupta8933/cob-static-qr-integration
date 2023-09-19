@@ -127,7 +127,6 @@ useEffect(() => {
       rpttype: values.rpttype,
     }
 
-    // console.log(values,"values")
     setIsDisable(true)
     isButtonClicked(true)
     dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {

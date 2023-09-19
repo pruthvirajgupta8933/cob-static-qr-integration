@@ -10,7 +10,8 @@ export const roleBasedAccess = () => {
         bank: false,
         merchant: false,
         viewer:false,
-        b2b:false
+        b2b:false,
+        accountManager:false
     };
 
     let roleAccessObj = roleBasedTab;
@@ -39,6 +40,10 @@ export const roleBasedAccess = () => {
     else if (roleId === 100 ) {
         // b2b - emammi
         roleAccessObj = { ...roleAccessObj, b2b: true };
+    }
+    else if (roleId === 101 ) {
+        // b2b - emammi
+        roleAccessObj = { ...roleAccessObj, accountManager: true };
     } else {
         // console.log("Permission not match with these roles");
     }

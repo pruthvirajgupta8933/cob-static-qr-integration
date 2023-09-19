@@ -115,36 +115,40 @@ const SettlementReportNew = () => {
   };
 
 
-  const onSubmitHandler = (values) => {
-
+  const onSubmitHandler = async (values) => {
     const paramData = {
       clientCode: values.clientCode,
       fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
       endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
       noOfClient: values.noOfClient,
       rpttype: values.rpttype,
-    }
+    };
+  
     isButtonClicked(true);
-
-    setIsDisable(true)
-    dispatch(fetchSettlementReportSlice(paramData)).then((res) => {
-
+    setIsDisable(true);
+  
+    try {
+      const res = await dispatch(fetchSettlementReportSlice(paramData));
+      
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
+  
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
-        setIsDisable(false)
       }
-      if (ApiStatus === "fulfilled") {
-        setIsDisable(false)
+  
+      if (ApiStatus === "fulfilled" && ApiPayload?.length < 1) {
+        toast.info("No data found");
       }
-      if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
-       
-        setIsDisable(false)
-      }
-    });
+    } catch (error) {
+     
+      
+      toast.error("An error occurred");
+    }
+  
+    setIsDisable(false);
   };
-
+  
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
@@ -351,9 +355,7 @@ const SettlementReportNew = () => {
     exportToSpreadsheet(excelArr, fileName);
   };
 
-  console.log(txnList.length)
-
-
+  
 
   return (
     <section className="ant-layout NunitoSans-Regular">

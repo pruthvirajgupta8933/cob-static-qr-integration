@@ -1,6 +1,5 @@
 /* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
-import NavBar from "../../NavBar/NavBar";
 import rafiki from "../../../../assets/images/rafiki.png";
 import { productSubscribeState } from "../../../../slices/dashboardSlice";
 import { useDispatch, useSelector } from "react-redux";

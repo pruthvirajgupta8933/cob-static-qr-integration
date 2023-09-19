@@ -23,9 +23,9 @@ function BankDetailsOps() {
 
     const [bankList, setBankList] = useState([]);
     const dispatch = useDispatch();
-    const {auth} = useSelector(state=>state)
+    const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
 
-
+    const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
 
 
     const initialValues = {
@@ -87,38 +87,22 @@ function BankDetailsOps() {
             .required("You need to verify Your Account Number")
             .nullable(),
     });
-    const handleSubmit= (values) => {
+    const handleSubmit = (values) => {
         let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
-        
-        //   setIsDisable(true);
-          dispatch(
+
+   
+        dispatch(
             saveBankDetails({
-              account_holder_name: values.account_holder_name,
-              account_number: values.account_number,
-              ifsc_code: values.ifsc_code,
-              bank_id: values.bank_id,
-              account_type: selectedChoice,
-              branch: values.branch,
-              login_id: auth?.user?.loginId,
-              modified_by: auth?.user?.loginId,
+                account_holder_name: values.account_holder_name,
+                account_number: values.account_number,
+                ifsc_code: values.ifsc_code,
+                bank_id: values.bank_id,
+                account_type: selectedChoice,
+                branch: values.branch,
+                login_id: merchantLoginId,
+                modified_by: auth?.user?.loginId,
             })
-          ).then((res) => {
-            if (
-              res.meta.requestStatus === "fulfilled" &&
-              res.payload.status === true
-            ) {
-              toast.success(res?.payload?.message);
-            //   setTab(5);
-            //   setIsDisable(false);
-            //   setTitle("DOCUMENTS UPLOAD");
-            //   dispatch(kycUserList({ login_id: loginId }));
-            //   dispatch(GetKycTabsStatus({ login_id: loginId }));
-    
-            } else {
-              toast.error(res?.payload?.detail);
-            //   setIsDisable(false);
-            }
-          });
+        )
 
     }
 
@@ -168,16 +152,16 @@ function BankDetailsOps() {
     //---------------GET ALL BANK NAMES DROPDOWN--------------------
 
     useEffect(() => {
-        fetchBankList().then(resp=>{
+        fetchBankList().then(resp => {
             console.log(resp.data)
-            const convertResp =  convertToFormikSelectJson(
-                            "bankId",
-                            "bankName",
-                            resp.data
-                        );
-                setBankList(convertResp)
+            const convertResp = convertToFormikSelectJson(
+                "bankId",
+                "bankName",
+                resp.data
+            );
+            setBankList(convertResp)
 
-        }).catch(err=>console.log(err))
+        }).catch(err => console.log(err))
         // dispatch(kycBankNames())
         //     .then((resp) => {
         //         const data = convertToFormikSelectJson(
