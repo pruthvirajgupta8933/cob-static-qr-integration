@@ -36,54 +36,50 @@ function MerchantContactInfo(props) {
     }
   }, [role]);
 
-  const handleVerifyClick = () => {
+  const handleVerifyClick = async () => {
+    try {
+      const verifierDetails = {
+        login_id: merchantKycId.loginMasterId,
+        general_info_verified_by: loginId,
+      };
 
-    const veriferDetails = {
-      login_id: merchantKycId.loginMasterId,
-      general_info_verified_by: loginId,
-    };
+      const resp = await dispatch(verifyKycEachTab(verifierDetails));
 
-    dispatch(verifyKycEachTab(veriferDetails))
-      .then((resp) => {
-        resp?.payload?.general_info_status &&
-          toast.success(resp?.payload?.general_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
-      })
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
-  }
-
-  const handleRejectClick = (general_info_reject_comments = "") => {
+      if (resp?.payload?.general_info_status) {
+        toast.success(resp.payload.general_info_status);
+      } else if (resp?.payload?.detail) {
+        toast.error(resp.payload.detail);
+      }
+    } catch (error) {
+      toast.error("Try Again Network Error");
+    }
+  };
 
 
+  const handleRejectClick = async (general_info_reject_comments = "") => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       general_info_rejected_by: loginId,
-      general_info_reject_comments: general_info_reject_comments
-
-
+      general_info_reject_comments: general_info_reject_comments,
     };
+
     if (window.confirm("Reject Merchant Contact Info?")) {
-      dispatch(rejectKycOperation(rejectDetails))
-        .then((resp) => {
-          // console.log(resp)
+      try {
+        const resp = await dispatch(rejectKycOperation(rejectDetails));
+        // console.log(resp)
+        if (resp?.payload?.merchant_info_status) {
+          toast.success(resp.payload.general_info_status);
+        } else if (resp?.payload) {
+          toast.error(resp.payload);
+        }
 
-
-
-          resp?.payload?.merchant_info_status &&
-            toast.success(resp?.payload?.general_info_status);
-          resp?.payload && toast.error(resp?.payload);
-
-          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })) // used to remove kyc button beacuse updated in redux store
-        })
-
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
+        dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because updated in redux store
+      } catch (error) {
+        toast.error("Try Again Network Error");
+      }
     }
+  };
 
-  }
 
 
   return (
@@ -92,7 +88,7 @@ function MerchantContactInfo(props) {
       <div className="form-row g-3">
         <div className="col-sm-6 col-md-6 col-lg-6">
           <label className="">
-          Contact Person Name
+            Contact Person Name
           </label>
           <input
             type="text"

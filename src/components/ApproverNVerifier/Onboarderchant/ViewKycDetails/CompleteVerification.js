@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
   completeVerification,
   completeVerificationRejectKyc,
-  
+
 } from "../../../../slices/kycOperationSlice"
 import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
@@ -50,7 +50,7 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  
+
 
   useEffect(() => {
     dispatch(generalFormData({
@@ -78,41 +78,35 @@ const CompleteVerification = (props) => {
 
 
 
-  const handleVerifyClick = () => {
+  const handleVerifyClick = async () => {
     const veriferDetails = {
       login_id: merchantKycId?.loginMasterId,
       verified_by: loginId,
     };
+    if (currenTab === 3 && !isverified) {
+      if ((roles?.approver && Allow_To_Do_Verify_Kyc_details) || roles?.verifier) {
+        if (window.confirm("Verify kyc")) {
+          try {
+            const resp = await dispatch(completeVerification(veriferDetails));
 
+            if (resp?.payload?.status_code === 200) {
+              toast.success(resp.payload.message);
+              dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }));
+              pendingVerfyTable();
+              closeVerificationModal(false);
+            } else {
+              toast.error(resp?.payload);
+            }
 
-
-
-    if (currenTab === 3) {
-      if (isverified === false) {
-        if ((roles?.approver === true && Allow_To_Do_Verify_Kyc_details === true) || roles?.verifier === true) {
-          if (window.confirm("Verify kyc")) {
-            dispatch(completeVerification(veriferDetails))
-              .then((resp) => {
-
-                resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
-                if (resp?.payload?.status_code === 200) {
-                  dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-                  pendingVerfyTable()
-                  closeVerificationModal(false)
-
-                }
-                setDisable(false)
-
-              })
-              .catch((e) => {
-                setDisable(false)
-                toast.error("Something went wrong, Please Try Again later")
-              });
+            setDisable(false);
+          } catch (error) {
+            setDisable(false);
+            toast.error("Something went wrong, Please Try Again later");
           }
-
         }
       }
     }
+
 
 
 
@@ -160,39 +154,41 @@ const CompleteVerification = (props) => {
 
   }
 
-  const handleRejectClick = (commetText) => {
-
+  const handleRejectClick = async (commetText) => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       rejected_by: loginId,
-      comments: commetText
+      comments: commetText,
     };
+
     if (window.confirm("Reject kyc")) {
-      dispatch(completeVerificationRejectKyc(rejectDetails))
-        .then((resp) => {
-          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
-          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-          setButtonClick(false)
+      try {
+        const resp = await dispatch(completeVerificationRejectKyc(rejectDetails));
+
+        if (resp?.payload?.status_code === 200) {
+          toast.success(resp.payload.message);
+          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }));
+          setButtonClick(false);
           setCommetText("");
+
           if (currenTab === 4) {
-            return pendingApporvalTable()
+            pendingApporvalTable();
           } else if (currenTab === 3) {
-            return pendingVerfyTable()
+            pendingVerfyTable();
           } else if (currenTab === 5) {
-            return approvedTable()
+            approvedTable();
           }
-
-        })
-        .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later")
-        });
+        } else {
+          toast.error(resp?.payload);
+        }
+      } catch (error) {
+        toast.error("Something went wrong, Please Try Again later");
+      }
     }
-  }
+  };
 
 
-
-
-  useEffect(() => {
+useEffect(() => {
 
     ////////////////////////////////////////////////////// Button enable for approver
     const approver = () => {
@@ -295,9 +291,7 @@ const CompleteVerification = (props) => {
         }
       </div>
 
-
-
-      <div className="col-lg-12">
+     <div className="col-lg-12">
         {buttonClick === true ?
 
           <>

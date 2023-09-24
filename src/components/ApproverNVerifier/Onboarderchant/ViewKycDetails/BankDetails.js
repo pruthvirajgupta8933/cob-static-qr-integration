@@ -14,48 +14,48 @@ const BankDetails = (props) => {
   const { user } = auth;
   const { loginId } = user;
 
-  const handleVerifyClick = () => {
-    const veriferDetails = {
-      login_id: merchantKycId.loginMasterId,
-      settlement_info_verified_by: loginId,
-    };
-    dispatch(verifyKycEachTab(veriferDetails))
-      .then((resp) => {
-        resp?.payload?.settlement_info_status &&
-          toast.success(resp?.payload?.settlement_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
-      })
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
-  }
+  const handleVerifyClick = async () => {
+    try {
+      const verifierDetails = {
+        login_id: merchantKycId.loginMasterId,
+        settlement_info_verified_by: loginId,
+      };
+  
+      const resp = await dispatch(verifyKycEachTab(verifierDetails));
+  
+      if (resp?.payload?.settlement_info_status) {
+        toast.success(resp.payload.settlement_info_status);
+      } else if (resp?.payload?.detail) {
+        toast.error(resp.payload.detail);
+      }
+    } catch (error) {
+      toast.error("Try Again Network Error");
+    }
+  };
+  
 
-  const handleRejectClick = (settlement_info_reject_comments = "") => {
+  const handleRejectClick = async (settlement_info_reject_comments = "") => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       settlement_info_rejected_by: loginId,
-      settlement_info_reject_comments: settlement_info_reject_comments
-
+      settlement_info_reject_comments: settlement_info_reject_comments,
     };
-    if (window.confirm("Reject Bank Details?")) {
-      dispatch(rejectKycOperation(rejectDetails))
-        .then((resp) => {
-          resp?.payload?.merchant_info_status &&
-            toast.success(resp?.payload?.merchant_info_status);
-          resp?.payload && toast.error(resp?.payload);
-          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })) // used to remove kyc button beacuse updated in redux store
-
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
+  if (window.confirm("Reject Bank Details?")) {
+      try {
+        const resp = await dispatch(rejectKycOperation(rejectDetails));
+      if (resp?.payload?.merchant_info_status) {
+          toast.success(resp.payload.merchant_info_status);
+        } else if (resp?.payload) {
+          toast.error(resp.payload);
+        }
+        dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because it's updated in the redux store
+      } catch (error) {
+        toast.error("Try Again Network Error");
+      }
     }
-
-  }
-
-
-
-  return (
+  };
+  
+return (
     <div className="row mb-4 border p-1">
       <h5 className="">Bank Details</h5>
 
