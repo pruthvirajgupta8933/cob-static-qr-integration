@@ -27,6 +27,11 @@ const ChallanTransactReport = () => {
   const { auth } = useSelector((state) => state);
   const loadingState = useSelector((state) => state.challanReducer.isLoading);
 
+  const challanTransactionList = useSelector(
+    (state) => state?.challanReducer?.challanTransactionData?.results
+  );
+  
+
   
 
   const { user } = auth;
@@ -34,6 +39,7 @@ const ChallanTransactReport = () => {
   const [spinner, setSpinner] = useState(false);
   const [showData, setShowData] = useState(false);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
+  const [loadingData,setLoadingData]=useState(true)
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +48,7 @@ const ChallanTransactReport = () => {
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  console.log("datat",data)
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -118,6 +125,7 @@ const ChallanTransactReport = () => {
   };
 
   useEffect(() => {
+
     dispatch(
       challanTransactions({
         page: currentPage,
@@ -129,6 +137,7 @@ const ChallanTransactReport = () => {
       .then((resp) => {
         // resp?.payload?.status_code && toastConfig.errorToast("");
         setSpinner(false);
+        setLoadingData(true)
 
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -457,9 +466,11 @@ const ChallanTransactReport = () => {
 
                 <div className="form-group col-lg-3">
                 <CountPerPageFilter
-                    pageSize={pageSize}
-                    dataCount={dataCount}
-                    changePageSize={changePageSize}
+                     pageSize={pageSize}
+                     dataCount={dataCount}
+                     currentPage={currentPage}
+                     changePageSize={changePageSize}
+                     changeCurrentPage={changeCurrentPage}
                   />
                 </div>
               </div>
@@ -468,7 +479,7 @@ const ChallanTransactReport = () => {
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
-                      data={data}
+                      data={challanTransactionList}
                       dataCount={dataCount}
                       pageSize={pageSize}
                       currentPage={currentPage}

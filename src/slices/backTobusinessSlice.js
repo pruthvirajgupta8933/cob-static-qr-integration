@@ -7,6 +7,11 @@ import { B2B_URL } from "../config";
 const initialState = { 
   isLoading:false,
 
+  challanTransactionData:{
+    results:[],
+    count:0
+  }
+
 
 }
 
@@ -70,6 +75,7 @@ export const challanTransactions = createAsyncThunk(
       },
       [challanTransactions.fulfilled]: (state, action) => {
         state.isLoading = false;
+        state.challanTransactionData=action.payload
        
 
       },
