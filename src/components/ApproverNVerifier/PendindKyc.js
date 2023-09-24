@@ -22,9 +22,8 @@ const PendindKyc = () => {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   
-  // const [dataCount, setDataCount] = useState("");
- 
-  const [commentId, setCommentId] = useState({});
+  
+const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,8 +33,7 @@ const PendindKyc = () => {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("");
 
-  // const { results: pendingKycDataList, count: dataCount } = useSelector(
-  //   (state) => state.kyc.pendingKycuserList 
+  
 
 
   const pendindKycList = useSelector(

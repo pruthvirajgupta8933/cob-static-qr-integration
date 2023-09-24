@@ -295,6 +295,8 @@ export const busiCategory = createAsyncThunk(
     return response.data;
   }
 );
+
+
 ////////////////////////////////////////////////// For platform
 export const platformType = createAsyncThunk(
   "kyc/platformType",
@@ -312,6 +314,8 @@ export const platformType = createAsyncThunk(
 );
 
 /////////////////////////////////////////////// For collection frequency
+
+
 export const collectionFrequency = createAsyncThunk(
   "kyc/platformType",
   async (requestParam) => {
@@ -379,8 +383,6 @@ export const businessOverviewState = createAsyncThunk(
           return error.response;
         });
     }
-
-
     return response?.data;
   }
 );
@@ -714,11 +716,11 @@ export const kycForApproved = createAsyncThunk(
       .catch((error) => {
         return error.response;
       });
-
-    return response.data;
+     return response.data;
   }
 );
 ///////////////////////////////////////////
+
 export const kycForCompleted = createAsyncThunk(
   "kyc/kycForCompleted",
   async (requestParam) => {

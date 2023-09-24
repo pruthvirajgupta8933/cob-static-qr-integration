@@ -12,7 +12,6 @@ const BusinessOverview = (props) => {
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
-
   let isVerified = KycTabStatus?.business_info_status === "Verified" ? true : false;
   let isRejected = KycTabStatus?.business_info_status === "Verified" ? true : false;
 
@@ -28,45 +27,51 @@ useEffect(() => {
 }, [])
 
 
-const handleVerifyClick = () => {
-    const veriferDetails = {
+const handleVerifyClick = async () => {
+  try {
+    const verifierDetails = {
       login_id: merchantKycId.loginMasterId,
       business_info_verified_by: loginId,
     };
-    dispatch(verifyKycEachTab(veriferDetails))
-      .then((resp) => {
-        resp?.payload?.business_info_status &&
-          toast.success(resp?.payload?.business_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
-      })
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
 
+    const resp = await dispatch(verifyKycEachTab(verifierDetails));
 
-  }
-
-
-  const handleRejectClick = (business_info_reject_comments = "") => {
-    const rejectDetails = {
-      login_id: merchantKycId.loginMasterId,
-      business_info_rejected_by: loginId,
-      business_info_reject_comments: business_info_reject_comments
-    };
-    if (window.confirm("Reject Business Overview?")) {
-      dispatch(rejectKycOperation(rejectDetails))
-        .then((resp) => {
-          resp?.payload?.merchant_info_status &&
-            toast.success(resp?.payload?.business_info_status);
-          resp?.payload && toast.error(resp?.payload);
-          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })) // used to remove kyc button beacuse updated in redux store
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
+    if (resp?.payload?.business_info_status) {
+      toast.success(resp.payload.business_info_status);
+    } else if (resp?.payload?.detail) {
+      toast.error(resp.payload.detail);
     }
-
+  } catch (error) {
+    toast.error("Try Again Network Error");
   }
+};
+
+
+
+const handleRejectClick = async (business_info_reject_comments = "") => {
+  const rejectDetails = {
+    login_id: merchantKycId.loginMasterId,
+    business_info_rejected_by: loginId,
+    business_info_reject_comments: business_info_reject_comments,
+  };
+
+  if (window.confirm("Reject Business Overview?")) {
+    try {
+      const resp = await dispatch(rejectKycOperation(rejectDetails));
+      
+      if (resp?.payload?.merchant_info_status) {
+        toast.success(resp.payload.business_info_status);
+      } else if (resp?.payload) {
+        toast.error(resp.payload);
+      }
+
+      dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because updated in redux store
+    } catch (error) {
+      toast.error("Try Again Network Error");
+    }
+  }
+};
+
 
 
 

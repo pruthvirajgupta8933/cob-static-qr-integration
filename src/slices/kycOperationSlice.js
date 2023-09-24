@@ -67,9 +67,7 @@ return thunkAPI.rejectWithValue(message);
         error.toString() || error.request.toString();
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message); 
-        
-        
-      }
+        }
     }
   );
 
