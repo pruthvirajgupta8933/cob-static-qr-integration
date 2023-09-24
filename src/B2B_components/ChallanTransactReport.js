@@ -430,7 +430,7 @@ const ChallanTransactReport = () => {
                         className="btn cob-btn-primary approve text-white">
                         Submit
                       </button>
-                      {data?.length > 0 ? (
+                      {challanTransactionList?.length > 0 ? (
                         <button
                           className="btn cob-btn-primary  approve  text-white ml-3"
                           type="button"
