@@ -30,16 +30,17 @@ const ChallanTransactReport = () => {
   const challanTransactionList = useSelector(
     (state) => state?.challanReducer?.challanTransactionData?.results
   );
-  
 
-  
+
+
 
   const { user } = auth;
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(false);
   const [showData, setShowData] = useState(false);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
-  const [loadingData,setLoadingData]=useState(true)
+  const [loadState,setLoadState]=useState(false)
+  const [loadingData, setLoadingData] = useState(true)
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +49,7 @@ const ChallanTransactReport = () => {
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  console.log("datat",data)
+  console.log("datat", data)
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -125,6 +126,7 @@ const ChallanTransactReport = () => {
   };
 
   useEffect(() => {
+    setLoadState(true);
 
     dispatch(
       challanTransactions({
@@ -143,6 +145,7 @@ const ChallanTransactReport = () => {
         const dataCoun = resp?.payload?.count;
         setData(data);
         setDataCount(dataCoun);
+        setLoadState(false);
         setVerifiedMerchant(data);
       })
 
@@ -380,23 +383,23 @@ const ChallanTransactReport = () => {
 
           <Formik
             initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={(values) => {
-                    handleSubmit(values);
-                  }}
-                  enableReinitialize={true}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              handleSubmit(values);
+            }}
+            enableReinitialize={true}
           >
             {(formik) => (
               <Form>
                 <div className="row">
                   <div className="form-group  col-md-3 ">
-                  <FormikController
-                    control="select"
-                    label="Client Code"
-                    name="clientCode"
-                    className="form-control rounded-0 mt-0"
-                    options={clientCodeOption}
-                  />
+                    <FormikController
+                      control="select"
+                      label="Client Code"
+                      name="clientCode"
+                      className="form-select mr-4 mb-3"
+                      options={clientCodeOption}
+                    />
                   </div>
                   <div className="form-group col-md-3 ml-3">
                     <FormikController
@@ -404,7 +407,7 @@ const ChallanTransactReport = () => {
                       type="date"
                       label="From Date"
                       name="from_date"
-                      className="form-control rounded-0"
+                      className="form-control mr-4 mb-3"
                     // value={startDate}
                     // onChange={(e)=>setStartDate(e.target.value)}
                     />
@@ -418,7 +421,7 @@ const ChallanTransactReport = () => {
                       type="date"
                       label="End Date"
                       name="to_date"
-                      className="form-control rounded-0"
+                      className="form-control mr-4 mb-3"
                     />
                   </div>
 
@@ -465,12 +468,12 @@ const ChallanTransactReport = () => {
                 </div>
 
                 <div className="form-group col-lg-3">
-                <CountPerPageFilter
-                     pageSize={pageSize}
-                     dataCount={dataCount}
-                     currentPage={currentPage}
-                     changePageSize={changePageSize}
-                     changeCurrentPage={changeCurrentPage}
+                  <CountPerPageFilter
+                    pageSize={pageSize}
+                    dataCount={dataCount}
+                    currentPage={currentPage}
+                    changePageSize={changePageSize}
+                    changeCurrentPage={changeCurrentPage}
                   />
                 </div>
               </div>
@@ -487,8 +490,19 @@ const ChallanTransactReport = () => {
 
                     />
                   )}
+
+                  {loadState && (
+                    <div
+                      className="d-flex justify-content-center align-items-center"
+                      style={{ minHeight: "200px" }}
+                    >
+                      <CustomLoader loadingState={loadState} />
+                    </div>
+                  )}
+
+
                 </div>
-                <CustomLoader loadingState={loadingState} />
+
               </div>
             </>
           )}
