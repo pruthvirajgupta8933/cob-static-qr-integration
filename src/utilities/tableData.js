@@ -118,34 +118,35 @@ export const ChallanReportData = [
     ),
     width: "200px",
   },
+  // {
+  //   id: "7",
+  //   name: "IFSC Code",
+  //   selector: (row) => row.ifsc,
+  // },
   {
     id: "7",
-    name: "IFSC Code",
-    selector: (row) => row.ifsc,
-  },
-  {
-    id: "8",
     name: "GL",
     selector: (row) => row.gl,
     cell: (row) => <div className="removeWhiteSpace">{row?.gl}</div>,
   },
+  // {
+  //   id: "9",
+  //   name: "SplGLInd",
+  //   selector: (row) => row.sp_igl_ind,
+  //   cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div>,
+  // },
   {
-    id: "9",
-    name: "SplGLInd",
-    selector: (row) => row.sp_igl_ind,
-    cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div>,
-  },
-  {
-    id: "10",
+    id: "8",
     name: "Status",
     selector: (row) => row.type,
   },
   {
-    id: "11",
+    id: "9",
     name: "Created On",
     selector: (row) => row.created_on,
     cell: (row) => covertDate(row.created_on),
     sortable: true,
+    width: "200px",
   },
 ];
 
