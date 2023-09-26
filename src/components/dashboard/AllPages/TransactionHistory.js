@@ -63,7 +63,12 @@ const TransactionHistory = () => {
   splitDate = splitDate.join("-");
 
   const convertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date;
+    if(yourDate===null){
+      date = "N/A"
+    }else{
+      date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    }
     return date;
   };
 
