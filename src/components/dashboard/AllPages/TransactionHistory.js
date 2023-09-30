@@ -385,7 +385,7 @@ const TransactionHistory = () => {
           item.payee_amount === null
             ? ""
             : Number.parseFloat(item.payee_amount),
-        trans_complete_date: item.trans_complete_date === null ? "" : item.trans_complete_date,
+        trans_complete_date: item.trans_date === null ? "" : item.trans_date,
         status: item.status === null ? "" : item.status,
         payee_first_name:
           item.payee_first_name === null ? "" : item.payee_first_name,
@@ -659,7 +659,7 @@ const TransactionHistory = () => {
                             <td>
                               {Number.parseFloat(item.payee_amount).toFixed(2)}
                             </td>
-                            <td>{convertDate(item.trans_complete_date)}</td>
+                            <td>{convertDate(item.trans_date)}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_lst_name}</td>
