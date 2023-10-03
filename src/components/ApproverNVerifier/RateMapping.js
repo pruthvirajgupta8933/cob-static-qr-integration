@@ -55,16 +55,7 @@ function RateMapping() {
         merchantStatus: "Approved",
       })
     )
-      // .then((resp) => {
-      //   const data = resp?.payload?.results;
-      //   //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
-      //   const dataCoun = resp?.payload?.count;
-      //   setAssignzone(data);
-      //   setDataCount(dataCoun);
-      //   setData(data);
-      // })
-
-      // .catch((err) => { });
+     
   }, [currentPage, pageSize]);
 
   useEffect(() => {

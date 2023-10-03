@@ -218,19 +218,7 @@ const RejectedKYC = () => {
         isDirect: onboardType,
       })
     )
-      // .then((resp) => {
-      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-      //   const data = resp?.payload?.results;
-      //   const dataCoun = resp?.payload?.count;
-      //   // setData(data);
-      //   // setKycIdClick(data);
-      //   // setDataCount(dataCoun);
-      //   // setRejectedMerchants(data);
-      // })
-
-      // .catch((err) => {
-      //   toastConfig.errorToast("Data not loaded");
-      // });
+      
   };
 
   useEffect(() => {

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
-import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "./Onboarderchant/CommentModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";

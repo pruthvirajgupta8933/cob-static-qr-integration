@@ -76,25 +76,26 @@ const ViewRateMapping = (props) => {
     //////////////////////////////////////////////////////////////////
 
 
-const handleSubmit = (values) => {
-        setDisable(true)
+    const handleSubmit = async (values) => {
+        setDisable(true);
         const postData = {
-            "rate_template_code": values?.business_category,
-            "business_cat_code": values?.risk_category_name,
-            // "risk_cat_code": values.rate_template_name
-
+          "rate_template_code": values?.business_category,
+          "business_cat_code": values?.risk_category_name,
+          // "risk_cat_code": values.rate_template_name
         };
-        dispatch(viewRateMap(postData)).then((resp) => {
-            setRisktemplate(resp?.payload)
-            setDisable(true)
-            // toast.success(resp?.data?.message);
-
-            setShow(true)
-        }).catch(() => {
-            setDisable(true)
-
-        })
-    }
+      
+        try {
+          const resp = await dispatch(viewRateMap(postData));
+          setRisktemplate(resp?.payload);
+          setDisable(true);
+          // toast.success(resp?.data?.message);
+          setShow(true);
+        } catch (error) {
+          setDisable(true);
+         
+        }
+      };
+      
     return (
         <div>
 
@@ -179,7 +180,7 @@ const handleSubmit = (values) => {
                                                 </div>
 
                                                     <div >
-                                                    <button disabled={disable} type="submit" className="btn cob-btn-primary  text-white">View</button>
+                                                    <button disabled={disable} type="submit" className="btn cob-btn-primary mt-2  text-white">View</button>
 
                                                     </div>
                                             </Form>

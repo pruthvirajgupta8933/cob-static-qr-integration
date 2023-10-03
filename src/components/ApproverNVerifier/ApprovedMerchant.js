@@ -270,18 +270,7 @@ function ApprovedMerchant() {
         isDirect: onboardType
       })
     )
-      // .then((resp) => {
-      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-      //   const data = resp?.payload?.results;
-      //   const dataCoun = resp?.payload?.count;
-      //   // setData(data);
-      //   // setDataCount(dataCoun);
-      //   // setApprovedMerchantData(data);
-      // })
-
-      // .catch((err) => {
-      //   toastConfig.errorToast("Data not loaded");
-      // });
+      
   };
 
   /////////////////////////////////////Search filter

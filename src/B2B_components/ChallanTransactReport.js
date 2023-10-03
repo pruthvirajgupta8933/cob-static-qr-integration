@@ -134,6 +134,8 @@ const ChallanTransactReport = () => {
         page_size: pageSize,
         from_date: saveData?.from_date,
         to_date: saveData?.to_date,
+        client_code:saveData?.clientCode,
+
       })
     )
       .then((resp) => {
@@ -471,7 +473,8 @@ const ChallanTransactReport = () => {
                   <CountPerPageFilter
                     pageSize={pageSize}
                     dataCount={dataCount}
-                    currentPage={currentPage}
+                    clientCode={saveData?.clientCode}
+                      currentPage={currentPage}
                     changePageSize={changePageSize}
                     changeCurrentPage={changeCurrentPage}
                   />

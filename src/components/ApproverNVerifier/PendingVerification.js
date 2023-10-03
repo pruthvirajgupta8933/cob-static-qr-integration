@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
@@ -112,7 +111,7 @@ function PendingVerification() {
     {
       id: "13",
       name: "View Status",
-      // selector: (row) => row.viewStatus,
+    
       cell: (row) => (
         <div>
           <button
@@ -136,7 +135,7 @@ function PendingVerification() {
     {
       id: "14",
       name: "Action",
-      // selector: (row) => row.actionStatus,
+      
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
@@ -229,18 +228,7 @@ function PendingVerification() {
 
   const pendingVerify = () => {
     fetchData();
-    // dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
-    //   .then((resp) => {
-    //     const data = resp?.payload?.results;
-    //     const dataCoun = resp?.payload?.count;
-    //     setData(data);
-    //     setDataCount(dataCoun);
-    //     setNewRegistrationData(data);
-    //   })
-
-    //   .catch((err) => {
-    //     toastConfig.errorToast("Data not loaded");
-    //   });
+    
   };
 
   //---------------GET Api for KycPending-------------------
@@ -259,19 +247,7 @@ function PendingVerification() {
         isDirect: onboardType,
       })
     )
-      // .then((resp) => {
-      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-      //   // const data = resp?.payload?.results;
-      //   // const dataCoun = resp?.payload?.count;
-      //   // setKycIdClick(data);
-      //   // setData(data);
-      //   // setDataCount(dataCoun);
-      //   // setNewRegistrationData(data);
-      // })
-
-      // .catch((err) => {
-      //   toastConfig.errorToast("Data not loaded");
-      // });
+      
   };
 
   //function for change current page

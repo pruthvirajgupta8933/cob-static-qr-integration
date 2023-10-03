@@ -247,19 +247,7 @@ function VerifiedMerchant() {
         isDirect: onboardType
       })
     )
-      // .then((resp) => {
-      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-      //   const data = resp?.payload?.results;
-      //   const dataCoun = resp?.payload?.count;
-      //   setData(data);
-      //   setKycIdClick(data);
-      //   setDataCount(dataCoun);
-      //   setVerifiedMerchant(data);
-      // })
-
-      // .catch((err) => {
-      //   toastConfig.errorToast("Data not loaded");
-      // });
+      
   };
 
   //function for change current page
