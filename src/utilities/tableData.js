@@ -98,8 +98,14 @@ export const ChallanReportData = [
     id: "4",
     name: "Amount",
     selector: (row) => row.amount,
-    cell: (row) => <div className="removeWhiteSpace">{row?.amount}</div>,
+    cell: (row) => (
+      <div className="removeWhiteSpace">
+        {parseFloat(row?.amount).toLocaleString()}
+      </div>
+    ),
   },
+  
+  
   {
     id: "5",
     name: "Bank Reference No.",

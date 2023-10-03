@@ -115,9 +115,7 @@ const midData = {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              // onSubmit={(values)=>handleSubmit(values)}
-              // onSubmit={handleSubmit}
-              // enableReinitialize={true}
+              
               onSubmit={(values, { resetForm }) => {
                 handleSubmit(values);
                 resetForm();

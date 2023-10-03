@@ -88,18 +88,7 @@ const NotFilledKYC = () => {
         isDirect:onboardType
       })
     )
-      // .then((resp) => {
-      //   resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-      //   const data = resp?.payload?.results;
-      //   const totalData = resp?.payload?.count;
-      //   // setDataCount(totalData);
-      //   // setNotFilledData(data);
-      //   // setData(data);
-      // })
-
-      // .catch((err) => {
-      //   toastConfig.errorToast("Data not loaded");
-      // });
+      
   };
   //function for change current page
   const changeCurrentPage = (page) => {
