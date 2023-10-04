@@ -49,7 +49,7 @@ const ChallanTransactReport = () => {
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  console.log("datat", data)
+
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -468,7 +468,7 @@ const ChallanTransactReport = () => {
                   <div></div>
                 </div>
 
-                <div className="form-group col-lg-3">
+                <div className="form-group col-lg-3"> 
                   <CountPerPageFilter 
                     pageSize={pageSize}
                     dataCount={dataCount}
@@ -479,7 +479,7 @@ const ChallanTransactReport = () => {
                   />
                 </div>
               </div>
-              <div className="container-fluid ">
+              <div className="container-fluid "> 
                 <div className="scroll overflow-auto">
                   {!loadingState && data?.length !== 0 && (
                     <Table
