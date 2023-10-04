@@ -461,7 +461,7 @@ const ChallanTransactReport = () => {
           {!loadingState && data?.length !== 0 && (
             <>
               <div className="row mt-4">
-              <h6>Total Record(s):{dataCount}</h6>
+             
                 <div className="form-group col-lg-3 mr-3">
                   <SearchFilter
                     kycSearch={kycSearch}
@@ -485,6 +485,7 @@ const ChallanTransactReport = () => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
+                <h6>Total Record(s):{dataCount}</h6>
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
