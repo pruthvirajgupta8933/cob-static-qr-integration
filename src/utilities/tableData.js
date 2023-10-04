@@ -37,6 +37,9 @@ export const NotFilledKYCData = [
     ),
     width: "200px",
   },
+
+
+  
   {
     id: "4",
     name: "Email",

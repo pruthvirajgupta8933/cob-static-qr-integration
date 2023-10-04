@@ -142,7 +142,6 @@ const ChallanTransactReport = () => {
         // resp?.payload?.status_code && toastConfig.errorToast("");
         setSpinner(false);
         setLoadingData(true)
-
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
@@ -470,7 +469,7 @@ const ChallanTransactReport = () => {
                 </div>
 
                 <div className="form-group col-lg-3">
-                  <CountPerPageFilter
+                  <CountPerPageFilter 
                     pageSize={pageSize}
                     dataCount={dataCount}
                     clientCode={saveData?.clientCode}
