@@ -49,7 +49,7 @@ const ChallanTransactReport = () => {
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-
+  // console.log("datat", data)
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -127,7 +127,7 @@ const ChallanTransactReport = () => {
 
   useEffect(() => {
     setLoadState(true);
-
+    // console.log("ct", pageSize)
     dispatch(
       challanTransactions({
         page: currentPage,
@@ -142,6 +142,7 @@ const ChallanTransactReport = () => {
         // resp?.payload?.status_code && toastConfig.errorToast("");
         setSpinner(false);
         setLoadingData(true)
+
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
@@ -217,8 +218,9 @@ const ChallanTransactReport = () => {
   };
 
   //function for change page size
-  const changePageSize = (pageSize) => {
-    setPageSize(pageSize);
+  const changePageSize = (ps) => {
+    // console.log("ct2", ps)
+    setPageSize(ps);
   };
 
   const exportToExcelFn = () => {
@@ -468,8 +470,8 @@ const ChallanTransactReport = () => {
                   <div></div>
                 </div>
 
-                <div className="form-group col-lg-3"> 
-                  <CountPerPageFilter 
+                <div className="form-group col-lg-3">
+                  <CountPerPageFilter
                     pageSize={pageSize}
                     dataCount={dataCount}
                     clientCode={saveData?.clientCode}
@@ -479,7 +481,7 @@ const ChallanTransactReport = () => {
                   />
                 </div>
               </div>
-              <div className="container-fluid "> 
+              <div className="container-fluid ">
                 <div className="scroll overflow-auto">
                   {!loadingState && data?.length !== 0 && (
                     <Table
