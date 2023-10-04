@@ -49,7 +49,7 @@ const ChallanTransactReport = () => {
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  console.log("datat", data)
+  // console.log("datat", data)
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -127,7 +127,7 @@ const ChallanTransactReport = () => {
 
   useEffect(() => {
     setLoadState(true);
-
+    // console.log("ct", pageSize)
     dispatch(
       challanTransactions({
         page: currentPage,
@@ -218,8 +218,9 @@ const ChallanTransactReport = () => {
   };
 
   //function for change page size
-  const changePageSize = (pageSize) => {
-    setPageSize(pageSize);
+  const changePageSize = (ps) => {
+    // console.log("ct2", ps)
+    setPageSize(ps);
   };
 
   const exportToExcelFn = () => {
