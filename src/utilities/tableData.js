@@ -89,28 +89,29 @@ export const ChallanReportData = [
     width: "130px",
   },
 
+  // {
+  //   id: "3",
+  //   name: "Bank Name",
+  //   selector: (row) => row.bank_code,
+  //   cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
+  //   sortable: true,
+  //   width: "150px",
+  // },
   {
     id: "3",
-    name: "Bank Name",
-    selector: (row) => row.bank_code,
-    cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
-    sortable: true,
-    width: "150px",
-  },
-  {
-    id: "4",
     name: "Amount",
     selector: (row) => row.amount,
     cell: (row) => (
       <div className="removeWhiteSpace">
-        {parseFloat(row?.amount).toLocaleString()}
+        {new Intl.NumberFormat('en-IN').format(row?.amount)}
       </div>
     ),
   },
   
   
+  
   {
-    id: "5",
+    id: "4",
     name: "Bank Reference No.",
     selector: (row) => row.bank_reference_number,
     cell: (row) => (
@@ -119,7 +120,7 @@ export const ChallanReportData = [
     width: "200px",
   },
   {
-    id: "6",
+    id: "5",
     name: "Challan No.",
     selector: (row) => row.challan_number,
     cell: (row) => (
@@ -133,7 +134,7 @@ export const ChallanReportData = [
   //   selector: (row) => row.ifsc,
   // },
   {
-    id: "7",
+    id: "6",
     name: "GL",
     selector: (row) => row.gl,
     cell: (row) => <div className="removeWhiteSpace">{row?.gl}</div>,
@@ -144,13 +145,13 @@ export const ChallanReportData = [
   //   selector: (row) => row.sp_igl_ind,
   //   cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div>,
   // },
+  // {
+  //   id: "8",
+  //   name: "Status",
+  //   selector: (row) => row.type,
+  // },
   {
-    id: "8",
-    name: "Status",
-    selector: (row) => row.type,
-  },
-  {
-    id: "9",
+    id: "7",
     name: "Created On",
     selector: (row) => row.created_on,
     cell: (row) => covertDate(row.created_on),
