@@ -28,7 +28,7 @@ const ChallanTransactReport = () => {
   const loadingState = useSelector((state) => state.challanReducer.isLoading);
 
   const challanTransactionList = useSelector(
-    (state) => state?.challanReducer?.challanTransactionData?.results
+    (state) => state?.challanReducer?.challanTransactionData
   );
 
 
@@ -39,7 +39,7 @@ const ChallanTransactReport = () => {
   const [spinner, setSpinner] = useState(false);
   const [showData, setShowData] = useState(false);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
-  const [loadState,setLoadState]=useState(false)
+  const [loadState, setLoadState] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -49,7 +49,18 @@ const ChallanTransactReport = () => {
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  // console.log("datat", data)
+
+useEffect(() => {
+    const challanDataList = challanTransactionList?.results;
+    const dataCount = challanTransactionList?.count;
+
+    if (challanDataList) {
+      setData(challanDataList);
+      setVerifiedMerchant(challanDataList);
+
+      setDataCount(dataCount)
+    }
+  }, [challanTransactionList]); //
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -104,6 +115,7 @@ const ChallanTransactReport = () => {
 
 
   const kycSearch = (e, fieldType) => {
+    console.log("e is here", e)
     fieldType === "text"
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
@@ -111,6 +123,7 @@ const ChallanTransactReport = () => {
   };
 
   const searchByText = (text) => {
+    console.log("text", text)
     setData(
       verfiedMerchant?.filter((item) =>
         Object.values(item)
@@ -134,7 +147,7 @@ const ChallanTransactReport = () => {
         page_size: pageSize,
         from_date: saveData?.from_date,
         to_date: saveData?.to_date,
-        client_code:saveData?.clientCode,
+        client_code: saveData?.clientCode,
 
       })
     )
@@ -154,26 +167,7 @@ const ChallanTransactReport = () => {
       .catch((err) => { });
   }, [currentPage, pageSize]);
 
-  useEffect(() => {
-    if (searchText.length > 0) {
-      setData(
-        verfiedMerchant.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
-    } else {
-      setData(verfiedMerchant);
-    }
-  }, [searchText]);
-
-
-
-
-
-
+ 
 
   const handleSubmit = (values) => {
     // console.log(values);
@@ -190,8 +184,7 @@ const ChallanTransactReport = () => {
 
     dispatch(challanTransactions(formData))
       .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
+
 
         if (data?.length === 0 && data !== null) {
           // Return null value
@@ -201,9 +194,9 @@ const ChallanTransactReport = () => {
 
         setData(data);
         setSpinner(true);
-        setDataCount(dataCoun);
+
         setShowData(true);
-        setVerifiedMerchant(data);
+
         setDisable(false);
       })
 
@@ -249,136 +242,10 @@ const ChallanTransactReport = () => {
   };
 
   return (
-    // <section className="ant-layout">
-    //   <div>
-
-    //   </div>
-    //   <div className="gx-main-content-wrapper">
-    //     <div className="right_layout my_account_wrapper right_side_heading">
-    //       <h6 className="m-b-sm gx-float-left mt-3">
-    //       Transaction History
-    //       </h6>
-    //     </div>
-    //     <Formik
-    //       initialValues={initialValues}
-    //       validationSchema={validationSchema}
-    //       onSubmit={(values) => {
-    //         handleSubmit(values);
-    //       }}
-    //       enableReinitialize={true}
-    //     >
-    //       <Form>
-    //         <div className="container">
-    //           <div className="row">
-    //             <div className="form-group col-lg-4">
-    //               <FormikController
-    //                 control="select"
-    //                 label="Client Code"
-    //                 name="clientCode"
-    //                 className="form-control rounded-0 mt-0"
-    //                 options={clientCodeOption}
-    //               />
-    //             </div>
-
-    //             <div className="form-group col-lg-4">
-    //               <FormikController
-    //                 control="input"
-    //                 type="date"
-    //                 label="From Date"
-    //                 name="from_date"
-    //                 className="form-control rounded-0"
-    //                 // value={startDate}
-    //                 // onChange={(e)=>setStartDate(e.target.value)}
-    //               />
-    //             </div>
-
-    //             <div className="form-group col-lg-4">
-    //               <FormikController
-    //                 control="input"
-    //                 type="date"
-    //                 label="End Date"
-    //                 name="to_date"
-    //                 className="form-control rounded-0"
-    //               />
-    //             </div>
-
-    //             <div className=" col-lg-4">
-    //               <button
-    //                 type="subbmit"
-    //                 disabled={disable}
-    //                 className="btn approve text-white  cob-btn-primary  btn-sm"
-    //               >
-    //                 Submit
-    //               </button>
-    //             </div>
-
-    //             {showData === true ? (
-    //               <div className="container-fluid flleft">
-    //                 <div className="form-group col-lg-4 col-md-12 mt-2">
-    //                   <label>Search</label>
-    //                   <input
-    //                     className="form-control"
-    //                     onChange={challanSearch}
-    //                     type="text"
-    //                     placeholder="Search Here"
-    //                   />
-    //                 </div>
-    //                 <div></div>
-    //                 <div className="form-group col-lg-4 col-md-12 mt-2">
-    //                   <CountPerPageFilter
-    //                     pageSize={pageSize}
-    //                     dataCount={dataCount}
-    //                     changePageSize={changePageSize}
-    //                   />
-    //                 </div>
-
-    //                 <div className="form-group col-lg-4 col-md-12 mt-5">
-    //                   <button
-    //                     className="btn btn-sm text-white  cob-btn-primary"
-    //                     type="button"
-    //                     disabled={isexcelDataLoaded}
-    //                     onClick={() => exportToExcelFn()}
-    //                     style={{ backgroundColor: "rgb(1, 86, 179)" }}
-    //                   >
-    //                     Export
-    //                   </button>
-    //                 </div>
-    //               </div>
-    //             ) : (
-    //               <></>
-    //             )}
-    //           </div>
-    //         </div>
-    //       </Form>
-    //     </Formik>
-    //     {showData === true ? (
-    //       <div className="col-md-12 col-md-offset-4">
-    //         <h5 className="font-weight-bold">Total Records: {data?.length}</h5>
-    //         <div className="scroll overflow-auto">
-    //           <Table
-    //             row={rowData}
-    //             data={data}
-    //             dataCount={dataCount}
-    //             pageSize={pageSize}
-    //             currentPage={currentPage}
-    //             changeCurrentPage={changeCurrentPage}
-
-    //           />
-    //         </div>
-    //         <CustomLoader loadingState={loadingState} />
-    //         {data?.length == 0 && !loadingState && (
-    //           <h2 className="text-center font-weight-bold">No Data Found</h2>
-    //         )}
-    //       </div>
-    //     ) : (
-    //       <></>
-    //     )}
-    //   </div>
-    // </section>
 
 
     <section className="">
-        
+
       <main className="">
         <div className="">
           <div className="mb-5">
@@ -437,7 +304,7 @@ const ChallanTransactReport = () => {
                         className="btn cob-btn-primary approve text-white">
                         Search
                       </button>
-                      {challanTransactionList?.length > 0 ? (
+                      {data?.length > 0 ? (
                         <button
                           className="btn cob-btn-primary  approve  text-white ml-3"
                           type="button"
@@ -461,7 +328,7 @@ const ChallanTransactReport = () => {
           {!loadingState && data?.length !== 0 && (
             <>
               <div className="row mt-4">
-             
+
                 <div className="form-group col-lg-3 mr-3">
                   <SearchFilter
                     kycSearch={kycSearch}
@@ -477,7 +344,7 @@ const ChallanTransactReport = () => {
                     pageSize={pageSize}
                     dataCount={dataCount}
                     clientCode={saveData?.clientCode}
-                      currentPage={currentPage}
+                    currentPage={currentPage}
                     changePageSize={changePageSize}
                     changeCurrentPage={changeCurrentPage}
                   />
@@ -485,11 +352,11 @@ const ChallanTransactReport = () => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
-                <h6>Total Record(s):{dataCount}</h6>
+                  <h6>Total Record(s):{dataCount}</h6>
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
-                      data={challanTransactionList}
+                      data={data}
                       dataCount={dataCount}
                       pageSize={pageSize}
                       currentPage={currentPage}
@@ -503,7 +370,7 @@ const ChallanTransactReport = () => {
                       className="d-flex justify-content-center align-items-center"
                       style={{ minHeight: "200px" }}
                     >
-                      <CustomLoader loadingState={loadState} />
+                      {/* <CustomLoader loadingState={loadState} /> */}
                     </div>
                   )}
 
