@@ -1050,12 +1050,7 @@ export const saveKycConsent = createAsyncThunk(
     const response = await axiosInstanceJWT
       .post(
         `${API_URL.Kyc_Consent}`,
-        requestParam,
-
-        {
-          headers: {},
-        }
-      )
+        requestParam)
       .catch((error) => {
         return error.response;
       });

@@ -24,10 +24,9 @@ function BankDetailsOps() {
     const [bankList, setBankList] = useState([]);
     const dispatch = useDispatch();
     const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
-
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
 
-
+    console.log(merchantReferralOnboardReducer)
     const initialValues = {
         account_holder_name: "",
         account_number: "",
@@ -153,7 +152,7 @@ function BankDetailsOps() {
 
     useEffect(() => {
         fetchBankList().then(resp => {
-            console.log(resp.data)
+            // console.log(resp.data)
             const convertResp = convertToFormikSelectJson(
                 "bankId",
                 "bankName",
@@ -453,7 +452,7 @@ function BankDetailsOps() {
                                     control="select"
                                     name="account_type"
                                     options={selectedType}
-                                    className="form-control"
+                                    className="form-select"
 
                                 />
                             </div>

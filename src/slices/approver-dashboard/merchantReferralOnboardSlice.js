@@ -9,13 +9,11 @@ const initialState = {
         merchantLoginId: ""
 
     },
-    bank: {
-        merchantBasicDetails: {},
-        bankDetails: {},
-        bussinessDetails: {},
-        documentCenter: {}
-    },
-    referral:{}
+    merchantBasicDetails: {},
+    bankDetails: {},
+    bussinessDetails: {},
+    documentCenter: {},
+    referral: {}
 }
 
 
@@ -66,9 +64,11 @@ export const merchantReferralOnboardSlice = createSlice({
                 // console.log("pending")
             })
             .addCase(saveMerchantBasicDetails.fulfilled, (state, action) => {
-                state.bank.merchantBasicDetails = action.payload.merchant_data
-                state.bank.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
-                state.bank.merchantOnboardingProcess.isOnboardStart = true
+                // BMO - bank merchant onboard basic details
+                sessionStorage.setItem("BMO-basic-details", JSON.stringify(action.payload.merchant_data))
+                state.merchantBasicDetails = action.payload.merchant_data
+                state.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
+                state.merchantOnboardingProcess.isOnboardStart = true
             })
             .addCase(saveMerchantBasicDetails.rejected, (state, action) => {
                 state.loading = 'failed';
@@ -77,13 +77,13 @@ export const merchantReferralOnboardSlice = createSlice({
             })
             .addCase(saveBankDetails.pending, (state) => {
                 state.loading = 'loading';
-                console.log("pending")
             })
             .addCase(saveBankDetails.fulfilled, (state, action) => {
+                sessionStorage.setItem("BMO-bank-details", JSON.stringify(action.payload))
                 state.loading = 'succeeded';
-                state.bank.bankDetails = action.payload;
+                state.bankDetails = action.payload;
                 state.error = null;
-                console.log("success")
+                // console.log("success")
             })
             .addCase(saveBankDetails.rejected, (state, action) => {
                 state.loading = 'failed';
@@ -97,6 +97,7 @@ export const merchantReferralOnboardSlice = createSlice({
                 console.log("pending")
             })
             .addCase(businessDetails.fulfilled, (state, action) => {
+                sessionStorage.setItem("BMO-business-details", JSON.stringify(action.payload))
                 state.loading = 'succeeded';
                 state.entities = action.payload;
                 state.error = null;

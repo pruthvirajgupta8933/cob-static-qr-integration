@@ -18,7 +18,7 @@ function OperationKycModalForOnboard() {
 
     return (
         <div className="row">
-         <div className="d-flex bg-light justify-content-between m-2">
+         <div className="d-flex bg-light justify-content-between px-0 my-2">
                         <p className="p-2 m-0">Session Start : Abhishek Verma</p>
                         <p className="p-2 m-0">Merhcant Onboard Login ID : 12333</p>
                     </div>

@@ -1,9 +1,10 @@
 import React from 'react'
-import PendindKyc from '../../../PendindKyc'
+// import PendindKyc from '../../../PendindKyc'
+import PendingVerification from '../../../PendingVerification'
 
 function MerchantProductSubscription() {
   return (
-    <PendindKyc />
+    <PendingVerification />
   )
 }
 
