@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { saveKycConsent, UpdateModalStatus } from "../../../../../../slices/kycSlice";
+import {kycUserList, saveKycConsent, UpdateModalStatus} from "../../../../../../slices/kycSlice";
 import { KYC_STATUS_APPROVED, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../../../../../utilities/enums";
 import { isNull, toLower } from "lodash";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
@@ -28,9 +28,10 @@ function SubmitKyc() {
 
   const { user } = auth;
   const { loginId } = user;
-  const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
+  const {  compareDocListArray, KycDocUpload } = kyc;
+  console.log("kycUserList",kyc?.kycUserList)
   const { dropDownDocList, finalArray } = compareDocListArray
-  const merchant_consent = kycUserList?.merchant_consent?.term_condition;
+  const merchant_consent = kyc?.kycUserList?.merchant_consent?.term_condition;
   const kyc_status = kycUserList?.status;
 
   const [disable, setIsDisable] = useState(false);
@@ -48,6 +49,10 @@ function SubmitKyc() {
     ),
   });
 
+    useEffect(() => {
+        // dispatch(kycUserList({ login_id: merchantLoginId }));
+        dispatch(kycUserList({ login_id: 10832 }));
+    }, []);
 
 
   // const rejectedDocList = KycDocUpload?.filter(item=> toLower(item.status)=== toLower(KYC_STATUS_REJECTED)  )
@@ -55,38 +60,38 @@ function SubmitKyc() {
 
   const onSubmit = (value) => {
     setIsDisable(true);
-  //   if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+    if (kyc?.kycUserList?.clientCode === null) {
 
-  //     const clientFullName = user?.clientContactPersonName
-  //     const clientMobileNo = user?.clientMobileNo
-  //     const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+      const clientFullName = kyc?.kycUserList?.name
+      const clientMobileNo = kyc?.kycUserList?.contactNumber
+      const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
-  //     dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
+      dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
 
-  //         let newClientCode = ""
-  //         // if client code available return status true, then make request with the given client
-  //         if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-  //             newClientCode = res?.payload?.clientCode
+          let newClientCode = ""
+          // if client code available return status true, then make request with the given client
+          if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
+              newClientCode = res?.payload?.clientCode
 
-  //         } else {
-  //             newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-  //         }
+          } else {
+              newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+          }
 
-  //         // update new client code
-  //         const data = {
-  //             loginId: user?.loginId,
-  //             clientName: user?.clientContactPersonName,
-  //             clientCode: newClientCode,
-  //         };
+          // update new client code
+          const data = {
+              loginId: kyc?.kycUserList?.loginMasterId,
+              clientName: kyc?.kycUserList?.name,
+              clientCode: newClientCode,
+          };
 
 
-  //         dispatch(createClientProfile(data)).then(clientProfileRes => {
-  //             // after create the client update the subscribe product
-  //             console.log("clientProfileRes",clientProfileRes)
-  //         }).catch(err => console.log(err));
-  //     })
+          dispatch(createClientProfile(data)).then(clientProfileRes => {
+              // after create the client update the subscribe product
+              console.log("clientProfileRes",clientProfileRes)
+          }).catch(err => console.log(err));
+      })
 
-  // }
+  }
 
       dispatch(
         saveKycConsent({

@@ -25,19 +25,34 @@ function BankDetailsOps() {
     const dispatch = useDispatch();
     const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
-
+    const { bankDetails } = merchantReferralOnboardReducer
     console.log(merchantReferralOnboardReducer)
+
     const initialValues = {
-        account_holder_name: "",
-        account_number: "",
-        oldAccountNumber: "",
-        ifsc_code: "",
-        oldIfscCode: "",
-        bank_id: "",
-        account_type: "",
-        branch: "",
+        account_holder_name: bankDetails?.account_holder_name ?? "",
+        account_number: bankDetails?.account_number ?? "",
+        oldAccountNumber: bankDetails?.account_number ?? "",
+        ifsc_code: bankDetails?.ifsc_code ?? "",
+        oldIfscCode: bankDetails?.ifsc_code ?? "",
+        bank_id: bankDetails?.bank_id ?? "",
+        account_type: bankDetails?.account_type?.toString().toLowerCase() === "saving" ? "2" : "1",
+        branch: bankDetails?.branch ?? "",
         isAccountNumberVerified: ""
     };
+    // {
+    //     "account_holder_name": "ABHISHEK VERMA SO RAJENDRA VERMA",
+    //     "account_number": "520101234655697",
+    //     "ifsc_code": "UBIN0916684",
+    //     "bank_id": 1,
+    //     "account_type": "Saving",
+    //     "branch": "AALI",
+    //     "login_id": 10835,
+    //     "modified_by": 10424,
+    //     "resp": {
+    //         "message": "Bank details saved",
+    //         "status": true
+    //     }
+    // }
 
 
     const validationSchema = Yup.object({
@@ -87,9 +102,9 @@ function BankDetailsOps() {
             .nullable(),
     });
     const handleSubmit = (values) => {
-        let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
+        let selectedChoice = values.account_type?.toString() === "1" ? "Current" : values.account_type?.toString() === "2" ? "Saving" : "";
 
-   
+
         dispatch(
             saveBankDetails({
                 account_holder_name: values.account_holder_name,
@@ -362,7 +377,6 @@ function BankDetailsOps() {
                                     <span style={{ color: "red" }}>*</span>
                                 </label>
                                 <div className="input-group">
-
                                     <Field
                                         type="text"
                                         name="account_number"

@@ -85,6 +85,13 @@ function DashboardMainContent() {
     let history = useHistory();
     let { path } = useRouteMatch();
 
+    const testFn = (v)=>{
+        console.log(v)
+    }
+
+
+
+    testFn("hello")
     const { menuListReducer, auth } = useSelector((state) => state);
     const { user } = auth;
     const roles = roleBasedAccess();

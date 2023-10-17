@@ -16,19 +16,43 @@ import { saveMerchantBasicDetails } from '../../../../../../slices/approver-dash
 function BasicDetailsOps() {
 
     const [businessCode, setBusinessCode] = useState([]);
-    const [passwordType, setPasswordType] = useState({showPasswords: false});
+    const [passwordType, setPasswordType] = useState({ showPasswords: false });
 
 
     const dispatch = useDispatch()
-    const {auth} = useSelector(state=>state)
-    // console.log(auth?.user?.loginId)
-
+    const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
+    // {
+    //     "loginMasterId": 10833,
+    //     "name": "Abhishek verma",
+    //     "email": "test102@gmail.com",
+    //     "mobileNumber": "1231221232",
+    //     "password": "Abhi@123",
+    //     "username": "test102@gmail.com",
+    //     "createdDate": "2023-10-17T11:07:51.406189",
+    //     "modifiedDate": "2023-10-17T11:07:51.406011",
+    //     "modifiedBy": 10424,
+    //     "status": "Activate",
+    //     "reason": null,
+    //     "lastLoginTime": null,
+    //     "requestId": null,
+    //     "requestedClientType": "Individual",
+    //     "requestedParentClientId": null,
+    //     "isDirect": false,
+    //     "is_social": false,
+    //     "business_cat_code": "5",
+    //     "account_details_client_account_id": null,
+    //     "master_client_id": null,
+    //     "roleId": 4,
+    //     "created_by": 10424
+    // }
+    // console.log(merchantReferralOnboardReducer)
+    const { merchantBasicDetails } = merchantReferralOnboardReducer
     const initialValues = {
-        fullname: "",
-        mobilenumber: "",
-        email_id: "",
-        business_cat_code: "",
-        password: ""
+        fullname: merchantBasicDetails?.name ?? "",
+        mobilenumber: merchantBasicDetails?.mobileNumber ?? "",
+        email_id: merchantBasicDetails?.email ?? "",
+        business_cat_code: merchantBasicDetails?.business_cat_code ?? "",
+        password: merchantBasicDetails?.password ?? ""
 
     };
 
@@ -67,18 +91,18 @@ function BasicDetailsOps() {
             business_cat_code,
             password } = value
 
-            dispatch(
-                saveMerchantBasicDetails({
-                    name: fullname,
-                    mobileNumber: mobilenumber,
-                    email: email_id,
-                    business_cat_code: business_cat_code,
-                    password: password,
-                    isDirect: false,
-                    created_by: auth?.user?.loginId,
-                    updated_by: auth?.user?.loginId
-                })
-            )
+        dispatch(
+            saveMerchantBasicDetails({
+                name: fullname,
+                mobileNumber: mobilenumber,
+                email: email_id,
+                business_cat_code: business_cat_code,
+                password: password,
+                isDirect: false,
+                created_by: auth?.user?.loginId,
+                updated_by: auth?.user?.loginId
+            })
+        )
 
     }
 
