@@ -1,35 +1,52 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { bankDetails, saveBasicDetails, saveBusinessDetails } from "../../services/approver-dashboard/merchantReferralOnboard.service";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {
+    bankDetails,
+    saveBasicDetails,
+    saveBusinessDetails
+} from "../../services/approver-dashboard/merchantReferralOnboard.service";
+
+
+const sessionDataI = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
 
 const initialState = {
-
     merchantOnboardingProcess: {
-        isOnboardStart: false,
-        isOnboardComplete: false,
-        merchantLoginId: ""
+        isOnboardStart: sessionDataI?.isOnboardStart ?? false,
+        isOnboardComplete: sessionDataI?.isOnboardComplete ?? false,
+        merchantLoginId: sessionDataI?.merchantLoginId ?? ""
 
     },
-    bank: {
-        merchantBasicDetails: {},
-        bankDetails: {},
-        bussinessDetails: {},
-        documentCenter: {}
+    merchantBasicDetails: {
+        resp: {}
     },
-    referral:{}
+    bankDetails: {
+        resp: {}
+    },
+    businessDetails: {
+        resp: {}
+    },
+    documentCenter: {
+        resp: {}
+    },
+    referral: {}
 }
 
 
 export const saveMerchantBasicDetails = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/saveMerchantBasicDetails",
-    async (requestParam) => {
+    async (requestParam, thunkAPI) => {
         const response = await saveBasicDetails(requestParam)
             .catch((error) => {
                 return error.response;
             });
-        return response.data;
+
+        if(response.status!==200){
+            return thunkAPI.rejectWithValue(response.data.detail)
+        }else{
+            return response.data;
+        }
+
     }
 );
-
 
 
 export const saveBankDetails = createAsyncThunk(
@@ -42,7 +59,7 @@ export const saveBankDetails = createAsyncThunk(
         return response.data;
     }
 );
-export const businessDetails = createAsyncThunk(
+export const businessDetailsSlice = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/saveBusinessDetails",
     async (requestParam) => {
         const response = await saveBusinessDetails(requestParam)
@@ -54,62 +71,70 @@ export const businessDetails = createAsyncThunk(
 );
 
 
-
 export const merchantReferralOnboardSlice = createSlice({
     name: "merchantReferralOnboardSlice",
     initialState,
-    reducers: {},
+    reducers: {
+        clearErrorMerchantReferralOnboardSlice : (state)=>{
+            state.merchantBasicDetails.resp.error = false
+            state.bankDetails.resp.error = false
+            state.businessDetails.resp.error = false
+        },
+        updateOnboardingStatus : (state)=>{
+            state.merchantOnboardingProcess.isOnboardComplete = true
+            const sessionDataC = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
+            const onboardingStatusComplete = {
+                merchantLoginId : sessionDataC?.merchantLoginId,
+                isOnboardStart : sessionDataC?.isOnboardStart,
+                isOnboardComplete:true
+            }
+            sessionStorage.setItem("onboardingStatusByAdmin",JSON.stringify(onboardingStatusComplete))
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(saveMerchantBasicDetails.pending, (state) => {
-                state.loading = 'loading';
-                // console.log("pending")
+                // state.loading = 'loading';
             })
             .addCase(saveMerchantBasicDetails.fulfilled, (state, action) => {
-                state.bank.merchantBasicDetails = action.payload.merchant_data
-                state.bank.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
-                state.bank.merchantOnboardingProcess.isOnboardStart = true
+                state.merchantBasicDetails.resp = action.payload.merchant_data
+                if (action.payload.merchant_data?.status === "Activate") {
+                    state.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
+                    state.merchantOnboardingProcess.isOnboardStart = true
+                    const onboardingStatusByAdmin = {
+                        merchantLoginId : action.payload.merchant_data?.loginMasterId,
+                        isOnboardStart : true
+                    }
+                    sessionStorage.setItem("onboardingStatusByAdmin",JSON.stringify(onboardingStatusByAdmin))
+                }
             })
             .addCase(saveMerchantBasicDetails.rejected, (state, action) => {
-                state.loading = 'failed';
-                state.error = action.error.message;
-                console.log("fail")
+                // console.log("action",action)
+                state.merchantBasicDetails.resp.error = true
+                state.merchantBasicDetails.resp.errorMsg = action.payload
             })
+
             .addCase(saveBankDetails.pending, (state) => {
                 state.loading = 'loading';
-                console.log("pending")
             })
             .addCase(saveBankDetails.fulfilled, (state, action) => {
-                state.loading = 'succeeded';
-                state.bank.bankDetails = action.payload;
-                state.error = null;
-                console.log("success")
+                state.bankDetails.resp = action.payload;
             })
             .addCase(saveBankDetails.rejected, (state, action) => {
                 state.loading = 'failed';
-                state.error = action.error.message;
-                console.log("fail")
-
             })
 
-            .addCase(businessDetails.pending, (state) => {
+            .addCase(businessDetailsSlice.pending, (state) => {
                 state.loading = 'loading';
-                console.log("pending")
             })
-            .addCase(businessDetails.fulfilled, (state, action) => {
-                state.loading = 'succeeded';
-                state.entities = action.payload;
-                state.error = null;
-                console.log("success")
+            .addCase(businessDetailsSlice.fulfilled, (state, action) => {
+                state.businessDetails.resp = action.payload;
             })
-            .addCase(businessDetails.rejected, (state, action) => {
+            .addCase(businessDetailsSlice.rejected, (state, action) => {
                 state.loading = 'failed';
-                state.error = action.error.message;
-                console.log("fail")
             })
-
     }
 })
 
-
+export const {clearErrorMerchantReferralOnboardSlice, updateOnboardingStatus } = merchantReferralOnboardSlice.actions
 export default merchantReferralOnboardSlice.reducer

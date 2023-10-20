@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import classes from "../../approver.module.css"
 import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
-import MerchantProductSubscription from './merchant-product-subscription/MerchantProductSubscription';
+import BankRefMerchantList from './merchant-product-subscription/BankRefMerchantList';
 
 
 function MerchantReferralOnboard() {
-
   const [currentTab, setCurrentTab] = useState(1)
-
     const handleTabClick = (currenTab) => {
       setCurrentTab(currenTab)
         // dispatch(merchantTab(currenTab));
@@ -51,25 +49,12 @@ function MerchantReferralOnboard() {
                                 </ul>
                             </div>
                         </div>
-
                     </section>
 
                     <section>
-
                         <div className="row">
                         {currentTab === 1 && <OperationKycModalForOnboard />}
-                        {currentTab === 2 && <MerchantProductSubscription />}
-                            {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-              lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
-
-                            {/* {(currenTab === 1 && <NotFilledKYC />) ||
-              (currenTab === 2 && <PendindKyc />) ||
-              (currenTab === 3 && <PendingVerification />) ||
-              (currenTab === 4 && <VerifiedMerchant />) ||
-              (currenTab === 5 && <ApprovedMerchant />) ||
-              (currenTab === 6 && <RejectedKYC />) || (
-                <NotFilledKYC />
-              )} */}
+                        {currentTab === 2 && <BankRefMerchantList />}
                         </div>
                     </section>
                 </div>
@@ -77,5 +62,4 @@ function MerchantReferralOnboard() {
         </section>
     )
 }
-
 export default MerchantReferralOnboard
