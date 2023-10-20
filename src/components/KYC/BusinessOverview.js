@@ -366,7 +366,7 @@ function BusinessOverview(props) {
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Business Type<span style={{ color: "red" }}>*</span>
+                  Business Type<span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -380,7 +380,7 @@ function BusinessOverview(props) {
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
-                  Business Category<span style={{ color: "red" }}>*</span>
+                  Business Category<span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -397,7 +397,7 @@ function BusinessOverview(props) {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
-                  Business Description <span style={{ color: "red" }}>*</span>
+                  Business Description <span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -427,7 +427,7 @@ function BusinessOverview(props) {
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   How do you wish to accept payments?
-                  <span style={{ color: "red" }}>*</span>
+                  <span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -452,7 +452,7 @@ function BusinessOverview(props) {
                     <div className="col-lg-10">
                       <label className="col-form-label p-2 mt-0">
                         Company Website / App URL
-                        <span style={{ color: "red" }}>*</span>
+                        <span className="text-danger">*</span>
                       </label>
                       <FormikController
                         control="input"

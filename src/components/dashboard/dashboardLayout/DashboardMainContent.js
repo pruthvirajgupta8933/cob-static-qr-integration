@@ -384,7 +384,7 @@ function DashboardMainContent() {
                                 <Approver />
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone} roleList={{ approver: true }}>
+                            <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone} roleList={{ approver: true ,verifier: true }}>
                                 <AssignZone />
                             </AuthorizedRoute>
 
