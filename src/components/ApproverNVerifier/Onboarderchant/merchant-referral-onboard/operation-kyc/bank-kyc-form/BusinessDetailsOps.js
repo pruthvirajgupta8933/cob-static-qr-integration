@@ -5,37 +5,112 @@ import FormikController from '../../../../../../_components/formik/FormikControl
 import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { useDispatch, useSelector } from 'react-redux';
-import { businessDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { businessDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 
-function BusinessDetailsOps() {
+// import verifiedIcon from "../../../../../assets/images/verified.png";
+import verifiedIcon from "../../../../../../assets/images/verified.png" 
+import {kycDetailsByMerchantLoginId, panValidation} from '../../../../../../slices/kycSlice';
+import { isNull } from 'lodash';
+import { toast } from 'react-toastify';
+
+function BusinessDetailsOps({setCurrentTab}) {
     const dispatch = useDispatch()
-    const {auth, merchantReferralOnboardReducer} = useSelector(state=>state)
+    const [submitLoader, setSubmitLoader] = useState(false);
+    const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
+    const {businessDetails} = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
-
+    const {merchantKycData} = kyc
 
     const initialValues = {
-        pan_number: "",
-        website: ""
-
+        pan_card: merchantKycData?.signatoryPAN ?? "",
+        is_pan_verified: merchantKycData?.signatoryPAN ?? "",
+        website: merchantKycData?.website_app_url ?? "",
+        pan_name:""
     }
+
     const validationSchema = Yup.object({
-        pan_number: Yup.string().required(),
-        website: Yup.string().required()
+        pan_card: Yup.string().required(),
+        website: Yup.string().required(),
+        is_pan_verified:Yup.string().required("Pan verification is Required")
     })
+
+    // const tabHandler = (val) => {
+    //     console.log("status", businessDetails)
+    //     if (businessDetails?.resp?.status === true) {
+    //         setCurrentTab(val)
+    //     }
+    // }
+
     const handleSubmit = (value) => {
-        console.log(value)
+        setSubmitLoader(true)
         const postData = {
             website_app_url: value.website,
-            pan_card: value.pan_number,
+            pan_card: value.pan_card,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId
-        
         }
-        dispatch(businessDetails(postData))
+        dispatch(businessDetailsSlice(postData))
+        setSubmitLoader(false)
+        // tabHandler(4)
     }
 
+    const trimFullName = (strOne, strTwo) => {
+        let fullStr = isNull(strOne) ? "" : strOne
+        fullStr += isNull(strTwo) ? "" : strTwo
+        return fullStr
+      }
 
+    const panValidate = (values, key, setFieldValue) => {
+        dispatch(
+            panValidation({
+                pan_number: values,
+            })
+        ).then((res) => {
+            if (
+                res.meta.requestStatus === "fulfilled" &&
+                res.payload.status === true &&
+                res.payload.valid === true
+            ) {
+                const fullNameByPan = trimFullName(res?.payload?.first_name, res?.payload?.last_name)
+                setFieldValue(key, fullNameByPan)
+                setFieldValue("pan_card", values)
+                setFieldValue("is_pan_verified", 1)
+                toast.success(res?.payload?.message);
+            } else {
+                setFieldValue(key, "")
+                setFieldValue("is_pan_verified", "")
+                toast.error(res?.payload?.message);
+            }
+        }).catch(err => { console.log("err", err) })
+        // setRegisterWithGstState(false)
+    };
 
+    const checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = () => { }) => {
+        const hasErr = err.hasOwnProperty(key);
+        const fieldVal = val[key];
+        let isValidVal = true;
+        if (fieldVal === null || fieldVal === undefined) {
+            isValidVal = false;
+            setFieldTouched(key, true);
+        }
+        if (hasErr) {
+            if (val[key] === "") {
+                setErr(key, true);
+            }
+        }
+        if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
+            // for  -Business PAN 
+            panValidate(val[key], "pan_name", setFieldValue);
+        }
+    };
+
+    useEffect(() => {
+        if(merchantLoginId!==""){
+            dispatch(kycDetailsByMerchantLoginId({login_id: merchantLoginId}))
+        }
+    }, [merchantLoginId]);
+
+    console.log("businessDetails",businessDetails)
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">
             <Formik
@@ -48,19 +123,77 @@ function BusinessDetailsOps() {
                     values,
                     setFieldValue,
                     errors,
-                    setFieldError
+                    setFieldError,
+                    setFieldTouched
                 }) => (
                     <Form>
+                    {/*{console.log("values",values)}*/}
                         <div className="row g-3">
-                            <div className="col-md-6">
-                                <FormikController
-                                    control="input"
-                                    type="text"
-                                    name="pan_number"
-                                    className="form-control"
-                                    label="PAN"
-                                    placeholder="Enter PAN"
-                                />
+                            <div className="col-sm-12 col-md-6 col-lg-6">
+                                <label className="col-form-label mt-0 py-1">
+                                    PAN <span className="text-danger">*</span>
+                                </label>
+                                <div className="input-group">
+                                    <Field
+                                        type="text"
+                                        name="pan_card"
+                                        className="form-control"
+                                        onChange={(e)=> {
+                                            setFieldValue("pan_card", e.target.value?.toString().toUpperCase())
+                                            setFieldValue("is_pan_verified", "")
+                                            setFieldValue("pan_name", "")
+                                        }}
+                                    // disabled={VerifyKycStatus === "Verified"}
+                                    // readOnly={JSON.parse(values?.registerd_with_gst)}
+                                    />
+
+
+                                    {(values?.pan_card !== null &&
+                                        values?.pan_card !== "" &&
+                                        values?.pan_card !== undefined &&
+                                        !errors.hasOwnProperty("pan_card") &&
+                                        !errors.hasOwnProperty("is_pan_verified") &&
+
+                                        (values?.is_pan_verified!=="")) ?
+                                        <span className="success input-group-append">
+                                            <img src={verifiedIcon} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                                        </span>
+                                        : <div className="input-group-append">
+                                            <a
+                                                href={() => false}
+                                                className="btn cob-btn-primary text-white btn btn-sm"
+                                                onClick={() => {
+                                                    checkInputIsValid(
+                                                        errors,
+                                                        values,
+                                                        setFieldError,
+                                                        setFieldTouched,
+                                                        "pan_card",
+                                                        setFieldValue
+                                                    );
+                                                }}
+                                            >
+                                                Verify
+                                            </a>
+                                        </div>}
+                                </div>
+
+                                {errors?.pan_card && (
+                                    <p className="notVerifiedtext- text-danger mb-0">
+                                        {errors?.pan_card}
+                                    </p>
+                                )}
+
+                                {errors?.is_pan_verified && (
+                                    <p className="notVerifiedtext- text-danger mb-0">
+                                        {errors?.is_pan_verified}
+                                    </p>
+                                )}
+                                {values?.pan_name && (
+                                    <p className="text-success mb-0">
+                                        {values?.pan_name}
+                                    </p>
+                                )}
                             </div>
                             <div className="col-md-6">
                                 <FormikController
@@ -73,7 +206,17 @@ function BusinessDetailsOps() {
                                 />
                             </div>
                             <div className="col-12">
-                                <button type="submit" className="btn cob-btn-primary btn-sm">Save</button>
+
+                                    <button type="submit" className="btn cob-btn-primary btn-sm">Save
+                                        {submitLoader && <>
+                                            <span className="spinner-border spinner-border-sm" role="status"
+                                                  aria-hidden="true"/>
+                                            <span className="sr-only">Loading...</span>
+                                        </>}
+                                    </button>
+                                {businessDetails?.resp?.status === true &&
+                                    <a className="btn active-secondary btn-sm m-2" onClick={()=>setCurrentTab(4)}>Next</a>
+                                }
                             </div>
                         </div>
                     </Form>

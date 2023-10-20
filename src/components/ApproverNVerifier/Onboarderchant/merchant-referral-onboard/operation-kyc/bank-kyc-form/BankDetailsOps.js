@@ -1,43 +1,45 @@
-import React, { useEffect } from 'react'
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import React, {useEffect} from 'react'
+import {Formik, Field, Form, ErrorMessage} from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
-import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
-// import gotVerified from "../../assets/images/verified.png";
-import gotVerified from "../../../../../../assets/images/verified.png";
-import { useState } from 'react';
-import { bankAccountVerification, getBankId, ifscValidation } from '../../../../../../slices/kycSlice';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBankList } from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
-import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import { saveBankDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRegex';
+// import verifiedIcon from "../../assets/images/verified.png";
+import verifiedIcon from "../../../../../../assets/images/verified.png";
+import {useState} from 'react';
+import {
+    bankAccountVerification,
+    getBankId,
+    ifscValidation,
+    kycDetailsByMerchantLoginId
+} from '../../../../../../slices/kycSlice';
+import {toast} from 'react-toastify';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchBankList} from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
+import {convertToFormikSelectJson} from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
+import {saveBankDetails} from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 
 
-function BankDetailsOps() {
+function BankDetailsOps({setCurrentTab}) {
 
-    const [accountNumberVerified, setAccountNumberVerified] = useState(false)
-    const [ifscCodeVerified, setIfscCodeVerified] = useState(false)
     const [loading, setLoading] = useState(false);
-
-
+    const [submitLoader, setSubmitLoader] = useState(false);
     const [bankList, setBankList] = useState([]);
     const dispatch = useDispatch();
-    const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
+    const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
 
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
-
+    const {bankDetails} = merchantReferralOnboardReducer
+    const {merchantKycData} = kyc
 
     const initialValues = {
-        account_holder_name: "",
-        account_number: "",
-        oldAccountNumber: "",
-        ifsc_code: "",
-        oldIfscCode: "",
-        bank_id: "",
-        account_type: "",
-        branch: "",
-        isAccountNumberVerified: ""
+        account_holder_name: merchantKycData?.merchant_account_details?.account_holder_name ?? "",
+        account_number: merchantKycData?.merchant_account_details?.account_number ?? "",
+        ifsc_code: merchantKycData?.merchant_account_details?.ifsc_code ?? "",
+        bank_id: merchantKycData?.merchant_account_details?.bankId ?? "",
+        account_type: merchantKycData?.merchant_account_details?.accountType?.toString().toLowerCase() === "saving" ? "2" : "1",
+        branch: merchantKycData?.merchant_account_details?.branch ?? "",
+        isAccountNumberVerified: merchantKycData?.merchant_account_details?.account_number ?? "",
+        isIfscVerified: merchantKycData?.merchant_account_details?.ifsc_code ?? ""
     };
 
 
@@ -75,85 +77,52 @@ function BankDetailsOps() {
         isAccountNumberVerified: Yup.string().required(
             "You need to verify Your Account Number"
         ),
-        oldIfscCode: Yup.string()
-            .oneOf([Yup.ref("ifsc_code"), null], "IFSC code is not verified")
-            .required("IFSC code is not verified")
-            .nullable(),
-        oldAccountNumber: Yup.string()
-            .oneOf(
-                [Yup.ref("account_number"), null],
-                "You need to verify Your Account Number"
-            )
-            .required("You need to verify Your Account Number")
-            .nullable(),
+        isIfscVerified: Yup.string().required(
+            "You need to verify Your IFSC Code"
+        )
     });
-    const handleSubmit = (values) => {
-        let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
 
-   
+    // change tabs
+    // const tabHandler = (val) => {
+    //     console.log("status", bankDetails)
+    //     if (bankDetails?.resp?.status === true) {
+    //         setCurrentTab(val)
+    //     }
+    // }
+
+    const handleSubmit = (values) => {
+        setSubmitLoader(true)
+        let selectedAccType = values.account_type?.toString() === "1" ? "Current" : values.account_type?.toString() === "2" ? "Saving" : "";
+        // console.log('dfd')
         dispatch(
             saveBankDetails({
                 account_holder_name: values.account_holder_name,
                 account_number: values.account_number,
                 ifsc_code: values.ifsc_code,
                 bank_id: values.bank_id,
-                account_type: selectedChoice,
+                account_type: selectedAccType,
                 branch: values.branch,
                 login_id: merchantLoginId,
                 modified_by: auth?.user?.loginId,
             })
         )
 
-    }
-
-
-    // account button attr
-    const accountButtonComponent = <button class="btn cob-btn-primary btn-sm" type="button" id="button-addon2" onClick={(vdd) => { console.log(vdd) }}>verify</button>
-    const accountIcon = <span className="success input-group-append">
-        <img
-            src={gotVerified}
-            alt=""
-            title=""
-            width={"20px"}
-            height={"20px"}
-            className="btn-outline-secondary"
-        />
-    </span>
-    const accountNumberVerification = (val) => {
-        console.log("val", val)
-        setAccountNumberVerified(true)
-    }
-
-    // ifsc button attr
-    const ifscButtonComponent = <button class="btn cob-btn-primary btn-sm" type="button" id="button-addon2" onClick={(vdd) => { console.log(vdd) }}>verify</button>
-    const ifscIcon = <span className="success input-group-append">
-        <img
-            src={gotVerified}
-            alt=""
-            title=""
-            width={"20px"}
-            height={"20px"}
-            className="btn-outline-secondary"
-        />
-    </span>
-
-    const ifscCodeVerification = (val) => {
+        setSubmitLoader(false)
+        // tabHandler(3)
 
     }
 
 
     const selectedType = [
-        { key: "", value: "Select" },
-        { key: "1", value: "Current" },
-        { key: "2", value: "Saving" },
+        {key: "", value: "Select"},
+        {key: "1", value: "Current"},
+        {key: "2", value: "Saving"},
     ];
 
 
     //---------------GET ALL BANK NAMES DROPDOWN--------------------
-
     useEffect(() => {
         fetchBankList().then(resp => {
-            console.log(resp.data)
             const convertResp = convertToFormikSelectJson(
                 "bankId",
                 "bankName",
@@ -162,23 +131,14 @@ function BankDetailsOps() {
             setBankList(convertResp)
 
         }).catch(err => console.log(err))
-        // dispatch(kycBankNames())
-        //     .then((resp) => {
-        //         const data = convertToFormikSelectJson(
-        //             "bankId",
-        //             "bankName",
-        //             resp.payload
-        //         );
-        //         setData(data);
-        //     })
 
-        //     .catch((err) => console.log(err));
-
-        // KycList?.ifscCode ? isIfscVerifed("1") : isIfscVerifed("");
     }, []);
 
-
-
+    useEffect(() => {
+        if(merchantLoginId!==""){
+            dispatch(kycDetailsByMerchantLoginId({login_id: merchantLoginId}))
+        }
+    }, [merchantLoginId]);
 
     const ifscValidationNo = (values, setFieldValue) => {
         setLoading(true)
@@ -195,11 +155,12 @@ function BankDetailsOps() {
                 ) {
                     // console.log(res?.payload)
                     setLoading(false)
-                    const postData = { bank_name: res?.payload?.bank };
+                    const postData = {bank_name: res?.payload?.bank};
                     dispatch(getBankId(postData)).then(resp => {
 
                         if (resp?.payload?.length > 0) {
                             setFieldValue("bank_id", resp?.payload[0]?.bankId)
+
                         }
 
                         // console.log(resp?.payload?.bankId)
@@ -208,10 +169,12 @@ function BankDetailsOps() {
                     })
                     setFieldValue("branch", res?.payload?.branch)
                     setFieldValue("ifsc_code", values)
-                    setFieldValue("oldIfscCode", values)
+                    setFieldValue("isIfscVerified", 1)
+                    // setFieldValue("oldIfscCode", values)
                     // toast.success(res?.payload?.message);
                 } else {
                     setLoading(false)
+                    setFieldValue("isIfscVerified", "")
                     toast.error(res?.payload?.message);
                 }
             });
@@ -245,16 +208,16 @@ function BankDetailsOps() {
                 ifscValidationNo(ifscCode, setFieldValue);
             } else {
                 setLoading(false)
+                setFieldValue("isAccountNumberVerified", "");
                 toast.error(res?.payload?.message);
             }
         });
     };
 
-
     const checkInputIsValid = (err, val, setErr, setFieldTouched, key, setFieldValue) => {
         const hasErr = err.hasOwnProperty(key);
-
         const fieldVal = val[key];
+
         let isValidVal = true;
         if (fieldVal === null || fieldVal === undefined) {
             isValidVal = false;
@@ -280,7 +243,8 @@ function BankDetailsOps() {
 
     return (
         // create html bootstrap from with for the bank details eg: account number / ifce / account holder name/ bank name/ account type
-        <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">
+        <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
+             aria-labelledby="v-pills-link1-tab">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -288,13 +252,13 @@ function BankDetailsOps() {
                 enableReinitialize={true}
             >
                 {({
-                    values,
-                    errors,
-                    setFieldError,
-                    setFieldValue,
-                    setFieldTouched,
-                    handleChange,
-                }) => (
+                      values,
+                      errors,
+                      setFieldError,
+                      setFieldValue,
+                      setFieldTouched,
+                      handleChange,
+                  }) => (
                     <Form>
                         <div className="row">
                             <div className="col-sm-12 col-md-12 col-lg-6 ">
@@ -306,14 +270,16 @@ function BankDetailsOps() {
                                         text="text"
                                         name="ifsc_code"
                                         className="form-control"
+                                        onChange={(e) => {
+                                            setFieldValue("ifsc_code", e.target.value)
+                                            setFieldValue("isIfscVerified", "")
+                                        }}
                                     />
 
                                     {(values?.ifsc_code !== null && loading) &&
                                         <div className="input-group-append">
                                             <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
-                                                disabled={loading}
-                                            >
-
+                                                    disabled={loading}>
                                                 <span className="spinner-border spinner-border-sm" role="status">
                                                     <span className="sr-only">Loading...</span>
                                                 </span>
@@ -324,10 +290,10 @@ function BankDetailsOps() {
 
                                     {/* if found any error in validation */}
                                     {/* {console.log("errors",errors)} */}
-                                    {(values?.ifsc_code !== null && values?.ifsc_code !== "" && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
+                                    {(values?.ifsc_code !== null && values?.ifsc_code !== "" && !errors.hasOwnProperty("isAccountNumberVerified") && !errors.hasOwnProperty("isIfscVerified")) &&
                                         <span className="success input-group-append">
                                             <img
-                                                src={gotVerified}
+                                                src={verifiedIcon}
                                                 alt=""
                                                 title=""
                                                 width={"20px"}
@@ -341,40 +307,39 @@ function BankDetailsOps() {
                                 {
                                     <ErrorMessage name="ifsc_code">
                                         {(msg) => (
-                                            <span className="errortxt- text-danger">
+                                            <span className="text-danger">
                                                 {msg}
                                             </span>
                                         )}
                                     </ErrorMessage>
                                 }
-                                {errors?.oldIfscCode && (
-                                    <span className="notVerifiedtext- text-danger imp_css">
-                                        {errors?.oldIfscCode}
+                                {errors?.isIfscVerified && (
+                                    <span className="text-danger imp_css">
+                                        {errors?.isIfscVerified}
                                     </span>
                                 )}
                             </div>
 
-
-
-
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Business Account Number{" "}
-                                    <span style={{ color: "red" }}>*</span>
+                                    Business Account Number
+                                    <span className="text-danger">*</span>
                                 </label>
                                 <div className="input-group">
-
                                     <Field
                                         type="text"
                                         name="account_number"
                                         className="form-control"
-
+                                        onChange={(e) => {
+                                            setFieldValue("account_number", e.target.value)
+                                            setFieldValue("isAccountNumberVerified", "")
+                                        }}
                                     />
-
                                     {/* if both values are same then display verified icon */}
-                                    {(values?.account_number !== null && values?.account_number !== "" && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
+                                    {(values?.account_number !== null && values?.account_number !== "" && !errors.hasOwnProperty("isAccountNumberVerified") && !errors.hasOwnProperty("isIfscVerified")) &&
+                                        <span className="success input-group-append">
                                         <img
-                                            src={gotVerified}
+                                            src={verifiedIcon}
                                             alt=""
                                             title=""
                                             width={"20px"}
@@ -386,20 +351,20 @@ function BankDetailsOps() {
 
                                     {/* if found any error in validation */}
                                     {/* {console.log("values",values)} */}
-                                    {(values?.ifsc_code !== null && (errors.hasOwnProperty("oldAccountNumber") || errors.hasOwnProperty("oldIfscCode"))) &&
+                                    {(values?.ifsc_code !== null && (errors.hasOwnProperty("isAccountNumberVerified") || errors.hasOwnProperty("isIfscVerified"))) &&
                                         <div className="input-group-append">
                                             <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
-                                                disabled={loading}
-                                                onClick={() => {
-                                                    checkInputIsValid(
-                                                        errors,
-                                                        values,
-                                                        setFieldError,
-                                                        setFieldTouched,
-                                                        "account_number",
-                                                        setFieldValue
-                                                    );
-                                                }}>
+                                                    disabled={loading}
+                                                    onClick={() => {
+                                                        checkInputIsValid(
+                                                            errors,
+                                                            values,
+                                                            setFieldError,
+                                                            setFieldTouched,
+                                                            "account_number",
+                                                            setFieldValue
+                                                        );
+                                                    }}>
                                                 {loading ?
                                                     <span className="spinner-border spinner-border-sm" role="status">
                                                         <span className="sr-only">Loading...</span>
@@ -415,16 +380,16 @@ function BankDetailsOps() {
                                 {
                                     <ErrorMessage name="account_number">
                                         {(msg) => (
-                                            <p className="abhitest- errortxt- text-danger">
+                                            <p className="text-danger">
                                                 {msg}
                                             </p>
                                         )}
                                     </ErrorMessage>
                                 }
 
-                                {errors?.oldAccountNumber && (
+                                {errors?.isAccountNumberVerified && (
                                     <p className="notVerifiedtext- text-danger">
-                                        {errors?.oldAccountNumber}
+                                        {errors?.isAccountNumberVerified}
                                     </p>
                                 )}
                             </div>
@@ -432,7 +397,7 @@ function BankDetailsOps() {
                         <div className="row">
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Account Holder Name<span style={{ color: "red" }}>*</span>
+                                    Account Holder Name<span style={{color: "red"}}>*</span>
                                 </label>
                                 <FormikController
                                     control="input"
@@ -445,7 +410,7 @@ function BankDetailsOps() {
 
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Account Type<span style={{ color: "red" }}>*</span>
+                                    Account Type<span style={{color: "red"}}>*</span>
                                 </label>
 
 
@@ -453,7 +418,7 @@ function BankDetailsOps() {
                                     control="select"
                                     name="account_type"
                                     options={selectedType}
-                                    className="form-control"
+                                    className="form-select"
 
                                 />
                             </div>
@@ -474,7 +439,7 @@ function BankDetailsOps() {
 
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Branch <span className="text-danger">*</span>
+                                    Branch<span className="text-danger">*</span>
                                 </label>
                                 <FormikController
                                     control="input"
@@ -486,19 +451,23 @@ function BankDetailsOps() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                                {/* {VerifyKycStatus === "Verified" ? <></> : ( */}
-                                <button
-                                    className="save-next-btn float-lg-right cob-btn-primary text-white btn-sm"
-                                    type="submit"
-                                >
-                                    {/* {disable && <>
-                                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                            <div className="col-lg-6">
+                                {/*{console.log(submitLoader)}*/}
+                                    <button
+                                        className="cob-btn-primary btn text-white btn-sm"
+                                        type="submit" >
+                                        {submitLoader && <>
+                                            <span className="spinner-border spinner-border-sm" role="status"
+                                                  aria-hidden="true"/>
                                             <span className="sr-only">Loading...</span>
-                                        </>} */}
-                                    save
-                                </button>
-                                {/* )} */}
+                                        </>}
+                                        Save
+                                    </button>
+
+                                {bankDetails?.resp?.status === true &&
+                                    <a className="btn active-secondary btn-sm m-2" onClick={()=>setCurrentTab(3)}>Next</a>
+                                }
+
                             </div>
                         </div>
                     </Form>
