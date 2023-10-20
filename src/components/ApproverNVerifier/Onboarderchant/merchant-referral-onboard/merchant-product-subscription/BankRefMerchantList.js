@@ -64,12 +64,13 @@ function BankRefMerchantList() {
 
             cell: (row) => (
                 <div>
+                    {/*{JSON.stringify(row?.subscribed_plans[0])}*/}
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "pg")}
-                        className={`btn-sm ${row?.subscribed_plans[0]?.["Payment Gateway"].status === "Unsubscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}>
-
-                        {(row?.subscribed_plans[0]?.["Payment Gateway"].status==="Unsubscribed") ? "Subscribed" : "Subscribe" }
+                        className={`btn-sm ${row?.subscribed_plans[0]?.Payment_Gateway?.status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
+                    >
+                        {(row?.subscribed_plans[0]?.Payment_Gateway?.status==="Subscribed") ? "Subscribed" : "Subscribe" }
                     </button>
                 </div>
             ),
@@ -83,8 +84,9 @@ function BankRefMerchantList() {
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "qf")}
-                        className="approve text-white cob-btn-primary btn-sm">
-                        Subscribe
+                        className={`btn-sm ${row?.subscribed_plans[1]?.QwikForm?.status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
+                    >
+                        {(row?.subscribed_plans[1]?.QwikForm?.status==="Subscribed") ? "Subscribed" : "Subscribe" }
                     </button>
                 </div>
             ),

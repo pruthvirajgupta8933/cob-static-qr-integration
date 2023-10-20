@@ -67,8 +67,7 @@ const API_LIVE = {
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:
-    adminAPIURL + "/REST/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE: adminAPIURL + "/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
