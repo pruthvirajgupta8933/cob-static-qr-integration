@@ -5,47 +5,53 @@ import FormikController from '../../../../../../_components/formik/FormikControl
 import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { useDispatch, useSelector } from 'react-redux';
-import { businessDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { businessDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 
 // import verifiedIcon from "../../../../../assets/images/verified.png";
 import verifiedIcon from "../../../../../../assets/images/verified.png" 
-import { panValidation } from '../../../../../../slices/kycSlice';
+import {kycDetailsByMerchantLoginId, panValidation} from '../../../../../../slices/kycSlice';
 import { isNull } from 'lodash';
 import { toast } from 'react-toastify';
 
-function BusinessDetailsOps() {
+function BusinessDetailsOps({setCurrentTab}) {
     const dispatch = useDispatch()
-    const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
-    const {bussinessDetails} = merchantReferralOnboardReducer
+    const [submitLoader, setSubmitLoader] = useState(false);
+    const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
+    const {businessDetails} = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
-
-    console.log(bussinessDetails)
-    // prev_pan_card: KycList?.panCard?.length > 2 ? KycList?.panCard : "pan",
+    const {merchantKycData} = kyc
 
     const initialValues = {
-        pan_card: "",
-        prev_pan_card:"",
-        is_pan_verified:"",
-        website: "",
+        pan_card: merchantKycData?.signatoryPAN ?? "",
+        is_pan_verified: merchantKycData?.signatoryPAN ?? "",
+        website: merchantKycData?.website_app_url ?? "",
         pan_name:""
-
     }
+
     const validationSchema = Yup.object({
         pan_card: Yup.string().required(),
         website: Yup.string().required(),
         is_pan_verified:Yup.string().required("Pan verification is Required")
     })
 
+    // const tabHandler = (val) => {
+    //     console.log("status", businessDetails)
+    //     if (businessDetails?.resp?.status === true) {
+    //         setCurrentTab(val)
+    //     }
+    // }
 
     const handleSubmit = (value) => {
+        setSubmitLoader(true)
         const postData = {
             website_app_url: value.website,
             pan_card: value.pan_card,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId
-
         }
-        dispatch(businessDetails(postData))
+        dispatch(businessDetailsSlice(postData))
+        setSubmitLoader(false)
+        // tabHandler(4)
     }
 
     const trimFullName = (strOne, strTwo) => {
@@ -79,8 +85,6 @@ function BusinessDetailsOps() {
         // setRegisterWithGstState(false)
     };
 
-
-
     const checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = () => { }) => {
         const hasErr = err.hasOwnProperty(key);
         const fieldVal = val[key];
@@ -100,7 +104,13 @@ function BusinessDetailsOps() {
         }
     };
 
+    useEffect(() => {
+        if(merchantLoginId!==""){
+            dispatch(kycDetailsByMerchantLoginId({login_id: merchantLoginId}))
+        }
+    }, [merchantLoginId]);
 
+    console.log("businessDetails",businessDetails)
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">
             <Formik
@@ -117,7 +127,7 @@ function BusinessDetailsOps() {
                     setFieldTouched
                 }) => (
                     <Form>
-                    {console.log("values",values)}
+                    {/*{console.log("values",values)}*/}
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label mt-0 py-1">
@@ -144,7 +154,7 @@ function BusinessDetailsOps() {
                                         !errors.hasOwnProperty("pan_card") &&
                                         !errors.hasOwnProperty("is_pan_verified") &&
 
-                                        (values?.is_pan_verified===1)) ?
+                                        (values?.is_pan_verified!=="")) ?
                                         <span className="success input-group-append">
                                             <img src={verifiedIcon} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                                         </span>
@@ -173,11 +183,7 @@ function BusinessDetailsOps() {
                                         {errors?.pan_card}
                                     </p>
                                 )}
-                                {errors?.prev_pan_card && (
-                                    <p className="notVerifiedtext- text-danger mb-0">
-                                        {errors?.prev_pan_card}
-                                    </p>
-                                )}
+
                                 {errors?.is_pan_verified && (
                                     <p className="notVerifiedtext- text-danger mb-0">
                                         {errors?.is_pan_verified}
@@ -200,7 +206,17 @@ function BusinessDetailsOps() {
                                 />
                             </div>
                             <div className="col-12">
-                                <button type="submit" className="btn cob-btn-primary btn-sm">Save</button>
+
+                                    <button type="submit" className="btn cob-btn-primary btn-sm">Save
+                                        {submitLoader && <>
+                                            <span className="spinner-border spinner-border-sm" role="status"
+                                                  aria-hidden="true"/>
+                                            <span className="sr-only">Loading...</span>
+                                        </>}
+                                    </button>
+                                {businessDetails?.resp?.status === true &&
+                                    <a className="btn active-secondary btn-sm m-2" onClick={()=>setCurrentTab(4)}>Next</a>
+                                }
                             </div>
                         </div>
                     </Form>

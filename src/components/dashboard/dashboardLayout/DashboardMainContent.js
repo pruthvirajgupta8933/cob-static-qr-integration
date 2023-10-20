@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 
 import DashboardHeader from './header/DashboardHeader'
 import SideNavbar from './side-navbar/SideNavbar'
@@ -9,18 +9,13 @@ import TransactionEnquirey from "../AllPages/TransactionEnquirey";
 import SettlementReport from "../AllPages/SettlementReport";
 import TransactionHistory from "../AllPages/TransactionHistory";
 import {
-    useRouteMatch,
-    Switch,
-    Route,
-    Redirect,
-    useHistory,
-    useLocation,
+    useRouteMatch, Switch, Route, Redirect, useHistory, useLocation,
 } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ClientList from "../AllPages/ClientList";
 import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
 import Paylink from "../AllPages/Paylink";
-import { Profile } from "../AllPages/Profile";
+import {Profile} from "../AllPages/Profile";
 import Emandate from "../AllPages/Emandate";
 import PaymentResponse from "../AllPages/PaymentResponse";
 import KycForm from "../../KYC/KycForm";
@@ -36,8 +31,8 @@ import TransactionSummery from "../AllPages/TransactionSummery";
 import OnboardMerchant from "../../ApproverNVerifier/Onboarderchant/OnboardMerchant";
 import RefundTransactionHistory from "../AllPages/RefundTransactionHistory";
 import ChargeBackTxnHistory from "../AllPages/ChargeBackTxnHistory";
-import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { checkClientCodeSlice, createClientProfile } from "../../../slices/auth";
+import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
+import {checkClientCodeSlice, createClientProfile} from "../../../slices/auth";
 import Sandbox from "../../SandBox/SendBox";
 import AssignZone from "../../ApproverNVerifier/AssignZone";
 import AdditionalKYC from "../../ApproverNVerifier/AdditionalKYC";
@@ -50,7 +45,7 @@ import ApproverRoute from "../../../ProtectedRoutes/ApproverRoute";
 import ViewerRoute from "../../../ProtectedRoutes/ViewerRoute";
 import SpPg from "../../sabpaisa-pg/SpPg";
 import UrlNotFound from "../UrlNotFound";
-import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
+import {axiosInstanceJWT} from "../../../utilities/axiosInstance";
 import API_URL from "../../../config";
 import PayoutTransaction from "../../../payout/Ledger";
 import TransactionsPayoutHistory from "../../../payout/Transactions";
@@ -60,12 +55,12 @@ import MakePayment from '../../../payout/MakePayment';
 import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../../B2B_components/ChallanTransactReport";
 import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
-import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
-import { isNull } from "lodash";
-import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
+import {fetchMenuList} from "../../../slices/cob-dashboard/menulistSlice";
+import {isNull} from "lodash";
+import {merchantSubscribedPlanData} from "../../../slices/merchant-slice/productCatalogueSlice";
 import ReferZone from "../../ApproverNVerifier/ReferZone";
 import GenerateMid from "../../ApproverNVerifier/GenerateMid";
-import { generateWord } from "../../../utilities/generateClientCode";
+import {generateWord} from "../../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "../AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "../AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../../subscription_components/MandateReport";
@@ -77,32 +72,22 @@ import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
 import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
 import HandleResponseModal from "../../../subscription_components/Create_Mandate/HandleResponseModal";
 import AuthorizedRoute from "../../../ProtectedRoutes/AuthorizedRoute";
-import MerchantReferralOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
-
+import MerchantReferralOnboard
+    from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
 
 
 function DashboardMainContent() {
     let history = useHistory();
-    let { path } = useRouteMatch();
+    let {path} = useRouteMatch();
 
-    const testFn = (v)=>{
-        console.log(v)
-    }
-
-
-
-    testFn("hello")
-    const { menuListReducer, auth } = useSelector((state) => state);
-    const { user } = auth;
+    const {menuListReducer, auth} = useSelector((state) => state);
+    const {user} = auth;
     const roles = roleBasedAccess();
     const dispatch = useDispatch();
     const location = useLocation();
 
     const queryParams = new URLSearchParams(location.search);
     const mendateRegId = queryParams.get("mendateRegId");
-
-
-
 
 
     // create new client code
@@ -114,7 +99,7 @@ function DashboardMainContent() {
             const clientMobileNo = user?.clientMobileNo
             const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
-            dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
+            dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
 
                 let newClientCode = ""
                 // if client code available return status true, then make request with the given client
@@ -127,9 +112,7 @@ function DashboardMainContent() {
 
                 // update new client code
                 const data = {
-                    loginId: user?.loginId,
-                    clientName: user?.clientContactPersonName,
-                    clientCode: newClientCode,
+                    loginId: user?.loginId, clientName: user?.clientContactPersonName, clientCode: newClientCode,
                 };
 
 
@@ -140,36 +123,30 @@ function DashboardMainContent() {
                     }
 
                     // fetch details of the user registraion
-                    axiosInstanceJWT.post(API_URL.website_plan_details, postData).then(
-                        res => {
-                            const webData = res?.data?.data[0]?.plan_details
+                    axiosInstanceJWT.post(API_URL.website_plan_details, postData).then(res => {
+                        const webData = res?.data?.data[0]?.plan_details
 
-                            // if business catagory code is gaming then not subscribed the plan
-                            if (user?.clientMerchantDetailsList[0]?.business_cat_code !== "37") {
-                                const postData = {
-                                    clientId: clientProfileRes?.payload?.clientId,
-                                    applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
-                                    planId: !isNull(webData?.planid) ? webData?.planid : "1",
-                                    planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
-                                    applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
-                                };
+                        // if business catagory code is gaming then not subscribed the plan
+                        if (user?.clientMerchantDetailsList[0]?.business_cat_code !== "37") {
+                            const postData = {
+                                clientId: clientProfileRes?.payload?.clientId,
+                                applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                                planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                                planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                                applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
+                            };
 
-                                axiosInstanceJWT.post(
-                                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                                    postData
-                                ).then((res) => {
-                                    dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+                            axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData).then((res) => {
+                                dispatch(merchantSubscribedPlanData({"clientId": clientProfileRes?.payload?.clientId}))
 
-                                })
-                            } // end subscribe
-                        }
-                    )
+                            })
+                        } // end subscribe
+                    })
                 }).catch(err => console.log(err));
             })
 
         }
     }, []);
-
 
 
     useEffect(() => {
@@ -184,36 +161,35 @@ function DashboardMainContent() {
     useEffect(() => {
         // fetch subscribe product data
         if (location?.pathname === "/dashboard") {
-            dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+            dispatch(merchantSubscribedPlanData({"clientId": user?.clientMerchantDetailsList[0]?.clientId}))
         }
     }, [location])
 
     if (user !== null && user.userAlreadyLoggedIn) {
         history.push("/login-page");
-        return <Redirect to="/login-page" />;
+        return <Redirect to="/login-page"/>;
     } else if (user === null) {
-        return <Redirect to="/login-page" />;
+        return <Redirect to="/login-page"/>;
     }
 
     // console.log("roles", roles)
-    return (
-        <React.Fragment>
-            <DashboardHeader />
+    return (<React.Fragment>
+            <DashboardHeader/>
 
             <div className="container-fluid">
                 <div className="row">
-                    <SideNavbar />
+                    <SideNavbar/>
 
                     <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob}`}>
                         <Switch>
-                            <Route exact path={path} >
-                                <Home />
+                            <Route exact path={path}>
+                                <Home/>
                             </Route>
                             <Route exact path={`${path}/profile`}>
-                                <Profile />
+                                <Profile/>
                             </Route>
                             <Route exact path={`${path}/onboard-merchant`}>
-                                <OnboardMerchant />
+                                <OnboardMerchant/>
                             </Route>
 
 
@@ -221,100 +197,100 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/change-password`}
                                 Component={ChangePassword}
-                                roleList={{ merchant: true }}
+                                roleList={{merchant: true}}
                             >
-                                <ChangePassword />
+                                <ChangePassword/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/settled-transaction-merchant`}
                                 Component={SettlementReportDoitc}
-                                roleList={{ merchant: true }}
+                                roleList={{merchant: true}}
                             >
-                                <SettlementReportDoitc />
+                                <SettlementReportDoitc/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-history-merchant`}
                                 Component={TransactionHistoryDoitc}
-                                roleList={{ merchant: true }}
+                                roleList={{merchant: true}}
                             >
-                                <TransactionHistoryDoitc />
+                                <TransactionHistoryDoitc/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-summery`}
                                 Component={TransactionSummery}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <TransactionSummery />
+                                <TransactionSummery/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-enquiry`}
                                 Component={TransactionEnquirey}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <TransactionEnquirey />
+                                <TransactionEnquirey/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-history`}
                                 Component={TransactionHistory}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <TransactionHistory />
+                                <TransactionHistory/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/client-list`}
                                 Component={ClientList}
-                                roleList={{ bank: true }}
+                                roleList={{bank: true}}
 
                             >
-                                <ClientList />
+                                <ClientList/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/settlement-report`}
                                 Component={SettlementReport}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <SettlementReport />
+                                <SettlementReport/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/refund-transaction-history`}
                                 Component={RefundTransactionHistory}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <RefundTransactionHistory />
+                                <RefundTransactionHistory/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/chargeback-transaction-history`}
                                 Component={ChargeBackTxnHistory}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <ChargeBackTxnHistory />
+                                <ChargeBackTxnHistory/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/product-catalogue`}
                                 Component={Products}
-                                roleList={{ merchant: true }}
+                                roleList={{merchant: true}}
                             >
-                                <Products />
+                                <Products/>
                             </AuthorizedRoute>
 
 
@@ -322,31 +298,32 @@ function DashboardMainContent() {
                                 exaxt
                                 path={`${path}/paylink`}
                                 Component={Paylink}
-                                roleList={{ merchant: true }}
+                                roleList={{merchant: true}}
                             >
-                                <Paylink />
+                                <Paylink/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exaxt
                                 path={`${path}/paylinkdetail`}
                                 Component={PaymentLinkDetail}
-                                roleList={{ merchant: true }}
+                                roleList={{merchant: true}}
                             >
-                                <PaymentLinkDetail />
+                                <PaymentLinkDetail/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/Sandbox`} Component={Sandbox} roleList={{ merchant: true }}>
-                                <Sandbox />
+                            <AuthorizedRoute exact path={`${path}/Sandbox`} Component={Sandbox}
+                                             roleList={{merchant: true}}>
+                                <Sandbox/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exaxt path={`${path}/emandate/`} roleList={{ merchant: true }}>
-                                <Emandate />
+                            <AuthorizedRoute exaxt path={`${path}/emandate/`} roleList={{merchant: true}}>
+                                <Emandate/>
                             </AuthorizedRoute>
 
 
-                            <AuthorizedRoute exaxt path={`${path}/payment-response/`} roleList={{ merchant: true }}>
-                                <PaymentResponse />
+                            <AuthorizedRoute exaxt path={`${path}/payment-response/`} roleList={{merchant: true}}>
+                                <PaymentResponse/>
                             </AuthorizedRoute>
 
 
@@ -354,76 +331,77 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/settlement-report-new`}
                                 Component={SettlementReportNew}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <SettlementReportNew />
+                                <SettlementReportNew/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/transaction-history-new`}
                                 Component={TransactionHistoryDownload}
-                                roleList={{ merchant: true, bank: true }}
+                                roleList={{merchant: true, bank: true}}
                             >
-                                <TransactionHistoryDownload />
+                                <TransactionHistoryDownload/>
                             </AuthorizedRoute>
 
                             <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
                                 {/* getting issue to get query param in protected route */}
-                                <SabPaisaPricing />
+                                <SabPaisaPricing/>
                             </Route>
 
-                            <AuthorizedRoute exact path={`${path}/kyc`} Component={KycForm} roleList={{ merchant: true }}>
-                                <KycForm />
+                            <AuthorizedRoute exact path={`${path}/kyc`} Component={KycForm} roleList={{merchant: true}}>
+                                <KycForm/>
                             </AuthorizedRoute>
 
 
                             <AuthorizedRoute exact path={`${path}/approver`} Component={Approver}
-                                roleList={{ approver: true, verifier: true, viewer: true }}
+                                             roleList={{approver: true, verifier: true, viewer: true}}
                             >
-                                <Approver />
+                                <Approver/>
                             </AuthorizedRoute>
 
 
                             <AuthorizedRoute exact path={`${path}/approver`} Component={Approver}
-                                roleList={{ approver: true, verifier: true, viewer: true }}
+                                             roleList={{approver: true, verifier: true, viewer: true}}
                             >
-                                <Approver />
+                                <Approver/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone} roleList={{ approver: true }}>
-                                <AssignZone />
+                            <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone}
+                                             roleList={{approver: true}}>
+                                <AssignZone/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/signup-data`}
                                 Component={SignupData}
-                                roleList={{ approver: true, verifier: true, viewer: true }}
+                                roleList={{approver: true, verifier: true, viewer: true}}
                             >
-                                <SignupData />
+                                <SignupData/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/ratemapping`}
                                 Component={RateMapping}
-                                roleList={{ approver: true }}
+                                roleList={{approver: true}}
                             >
-                                <RateMapping />
+                                <RateMapping/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/additional-kyc`}
-                                Component={AdditionalKYC} 
-                                roleList={{ approver: true, verifier: true }}
-                                >
-                                <AdditionalKYC />
+                                Component={AdditionalKYC}
+                                roleList={{approver: true, verifier: true}}
+                            >
+                                <AdditionalKYC/>
                             </AuthorizedRoute>
 
                             <Route exact path={`${path}/thanks`}>
-                                <ThanksPage />
+                                <ThanksPage/>
                             </Route>
 
                             {/* <Route exact path={`${path}/pg-response`} >
@@ -431,49 +409,57 @@ function DashboardMainContent() {
                                 </Route> */}
 
                             <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
-                                <SpPg />
+                                <SpPg/>
                             </Route>
 
-                            <AuthorizedRoute exact path={`${path}/payout/ledger`} Component={PayoutTransaction} roleList={{ merchant: true }}>
-                                <PayoutTransaction />
+                            <AuthorizedRoute exact path={`${path}/payout/ledger`} Component={PayoutTransaction}
+                                             roleList={{merchant: true}}>
+                                <PayoutTransaction/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/payout/transactions`} Component={TransactionsPayoutHistory} roleList={{ merchant: true }}>
-                                <PayoutTransaction />
+                            <AuthorizedRoute exact path={`${path}/payout/transactions`}
+                                             Component={TransactionsPayoutHistory} roleList={{merchant: true}}>
+                                <PayoutTransaction/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/payout/beneficiary`} Component={Beneficiary} roleList={{ merchant: true }}>
-                                <PayoutTransaction />
+                            <AuthorizedRoute exact path={`${path}/payout/beneficiary`} Component={Beneficiary}
+                                             roleList={{merchant: true}}>
+                                <PayoutTransaction/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/payout/mis_report`} Component={MISReport} roleList={{ merchant: true }}>
-                                <PayoutTransaction />
+                            <AuthorizedRoute exact path={`${path}/payout/mis_report`} Component={MISReport}
+                                             roleList={{merchant: true}}>
+                                <PayoutTransaction/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/payout/payment_status`} Component={MakePayment} roleList={{ merchant: true }}>
-                                <PayoutTransaction />
+                            <AuthorizedRoute exact path={`${path}/payout/payment_status`} Component={MakePayment}
+                                             roleList={{merchant: true}}>
+                                <PayoutTransaction/>
                             </AuthorizedRoute>
 
 
                             {/* Routing for Faq */}
 
                             <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
-                                <Faq />
+                                <Faq/>
                             </AllowedForAll>
 
 
                             {/* Routing for subscription */}
                             {/* ----------------------------------------------------------------------------------------------------|| */}
-                            <AuthorizedRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport} roleList={{ merchant: true }}>
-                                <MandateReport />
+                            <AuthorizedRoute exact path={`${path}/subscription/mandateReports`}
+                                             Component={MandateReport} roleList={{merchant: true}}>
+                                <MandateReport/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport} roleList={{ merchant: true }}>
-                                <DebitReport />
+                            <AuthorizedRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport}
+                                             roleList={{merchant: true}}>
+                                <DebitReport/>
                             </AuthorizedRoute>
 
-                            <AuthorizedRoute exact path={`${path}/subscription/mandate_registration`} Component={CreateMandate} roleList={{ merchant: true }}>
-                                <CreateMandate />
+                            <AuthorizedRoute exact path={`${path}/subscription/mandate_registration`}
+                                             Component={CreateMandate} roleList={{merchant: true}}>
+                                <CreateMandate/>
                             </AuthorizedRoute>
 
                             {/* -----------------------------------------------------------------------------------------------------|| */}
@@ -482,71 +468,68 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/onboarded-report`}
                                 Component={OnboardedReport}
-                                roleList={{ approver: true, verifier: true }}
+                                roleList={{approver: true, verifier: true}}
                             >
-                                <OnboardedReport />
+                                <OnboardedReport/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/referzone`}
                                 Component={ReferZone}
-                                roleList={{ approver: true, verifier: true }}
+                                roleList={{approver: true, verifier: true}}
                             >
-                                <ReferZone />
+                                <ReferZone/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/generatemid`}
                                 Component={GenerateMid}
-                                roleList={{ approver: true }}
+                                roleList={{approver: true}}
                             >
-                                <GenerateMid />
+                                <GenerateMid/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/merchant-referral-onboarding`}
                                 Component={MerchantReferralOnboard}
-                                roleList={{ approver: true }}
+                                roleList={{approver: true}}
                             />
 
-                            {roles?.approver && (
-                                <Route
+                            {roles?.approver && (<Route
                                     exact
                                     path={`${path}/ratemapping/:loginid`}
                                     Component={ManualRateMapping}
                                 >
-                                    <ManualRateMapping />
-                                </Route>
-                            )}
+                                    <ManualRateMapping/>
+                                </Route>)}
 
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/emami/challan-transactions`}
                                 Component={ChallanTransactReport}
-                                roleList={{ b2b: true }}>
-                                <ChallanTransactReport />
+                                roleList={{b2b: true}}>
+                                <ChallanTransactReport/>
                             </AuthorizedRoute>
 
                             <AuthorizedRoute
                                 exact path={`${path}/bizz-appdata`}
                                 Component={BizzAppData}
-                                roleList={{ approver: true, verifier: true, viewer: true }}>
-                                <BizzAppData />
+                                roleList={{approver: true, verifier: true, viewer: true}}>
+                                <BizzAppData/>
                             </AuthorizedRoute>
 
-                            <Route path={`${path}/*`} component={UrlNotFound} >
-                                <UrlNotFound />
+                            <Route path={`${path}/*`} component={UrlNotFound}>
+                                <UrlNotFound/>
                             </Route>
                         </Switch>
                     </main>
                 </div>
             </div>
 
-        </React.Fragment>
-    )
+        </React.Fragment>)
 }
 
 export default DashboardMainContent
