@@ -492,7 +492,7 @@ function DashboardMainContent() {
 
                             <AuthorizedRoute
                                 exact
-                                path={`${path}/merchant-referral-onboarding`}
+                                path={`${path}/bank-onboarding`}
                                 Component={MerchantReferralOnboard}
                                 roleList={{approver: true}}
                             />
