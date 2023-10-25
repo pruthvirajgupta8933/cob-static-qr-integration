@@ -12,6 +12,7 @@ import verifiedIcon from "../../../../../../assets/images/verified.png"
 import {kycDetailsByMerchantLoginId, panValidation} from '../../../../../../slices/kycSlice';
 import { isNull } from 'lodash';
 import { toast } from 'react-toastify';
+import toastConfig from "../../../../../../utilities/toastTypes";
 
 function BusinessDetailsOps({setCurrentTab}) {
     const dispatch = useDispatch()
@@ -34,13 +35,6 @@ function BusinessDetailsOps({setCurrentTab}) {
         is_pan_verified:Yup.string().required("Pan verification is Required")
     })
 
-    // const tabHandler = (val) => {
-    //     console.log("status", businessDetails)
-    //     if (businessDetails?.resp?.status === true) {
-    //         setCurrentTab(val)
-    //     }
-    // }
-
     const handleSubmit = (value) => {
         setSubmitLoader(true)
         const postData = {
@@ -49,7 +43,16 @@ function BusinessDetailsOps({setCurrentTab}) {
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId
         }
-        dispatch(businessDetailsSlice(postData))
+        dispatch(businessDetailsSlice(postData)).then((resp)=>{
+            if(resp?.error?.message){
+                toastConfig.errorToast(resp?.error?.message)
+                toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+            }
+
+            if(resp?.payload?.status===true){
+                toastConfig.successToast(resp?.payload?.message)
+            }
+        }).catch(err=>toastConfig.errorToast("Something went wrong!"))
         setSubmitLoader(false)
         // tabHandler(4)
     }
@@ -110,7 +113,6 @@ function BusinessDetailsOps({setCurrentTab}) {
         }
     }, [merchantLoginId]);
 
-    console.log("businessDetails",businessDetails)
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">
             <Formik
@@ -127,7 +129,6 @@ function BusinessDetailsOps({setCurrentTab}) {
                     setFieldTouched
                 }) => (
                     <Form>
-                    {/*{console.log("values",values)}*/}
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label mt-0 py-1">
@@ -143,8 +144,6 @@ function BusinessDetailsOps({setCurrentTab}) {
                                             setFieldValue("is_pan_verified", "")
                                             setFieldValue("pan_name", "")
                                         }}
-                                    // disabled={VerifyKycStatus === "Verified"}
-                                    // readOnly={JSON.parse(values?.registerd_with_gst)}
                                     />
 
 

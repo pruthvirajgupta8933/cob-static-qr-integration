@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchBankList} from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
 import {convertToFormikSelectJson} from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import {saveBankDetails} from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import toastConfig from "../../../../../../utilities/toastTypes";
 
 
 function BankDetailsOps({setCurrentTab}) {
@@ -91,6 +92,7 @@ function BankDetailsOps({setCurrentTab}) {
     // }
 
     const handleSubmit = (values) => {
+        // console.log("hekki")
         setSubmitLoader(true)
         let selectedAccType = values.account_type?.toString() === "1" ? "Current" : values.account_type?.toString() === "2" ? "Saving" : "";
         // console.log('dfd')
@@ -104,9 +106,18 @@ function BankDetailsOps({setCurrentTab}) {
                 branch: values.branch,
                 login_id: merchantLoginId,
                 modified_by: auth?.user?.loginId,
-            })
-        )
+            })).then((resp)=>{
+            if(resp?.error?.message){
+                toastConfig.errorToast(resp?.error?.message)
+                toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+            }
 
+            if(resp?.payload?.status===true){
+                toastConfig.successToast(resp?.payload?.message)
+            }
+        }).catch(err=>toastConfig.errorToast("Something went wrong!"))
+
+        // console.log("23432")
         setSubmitLoader(false)
         // tabHandler(3)
 
@@ -451,7 +462,7 @@ function BankDetailsOps({setCurrentTab}) {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-lg-6">
+                            <div className="col-lg-6 mt-2">
                                 {/*{console.log(submitLoader)}*/}
                                     <button
                                         className="cob-btn-primary btn text-white btn-sm"

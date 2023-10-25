@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, {useState, useContext, createContext} from 'react'
 import classes from "../../approver.module.css"
 import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
 import BankRefMerchantList from './merchant-product-subscription/BankRefMerchantList';
 
 
 function MerchantReferralOnboard() {
-  const [currentTab, setCurrentTab] = useState(1)
+    const [currentTab, setCurrentTab] = useState(1)
+    // const MroContext = createContext(null)
+    // const ThemeContext = createContext(null);
     const handleTabClick = (currenTab) => {
       setCurrentTab(currenTab)
-        // dispatch(merchantTab(currenTab));
     };
 
+
     return (
+        // <ThemeContext.Provider value="dark">
         <section>
             <main >
                 <div className="container-fluid">
@@ -53,13 +56,14 @@ function MerchantReferralOnboard() {
 
                     <section>
                         <div className="row">
-                        {currentTab === 1 && <OperationKycModalForOnboard />}
-                        {currentTab === 2 && <BankRefMerchantList />}
+                                {currentTab === 1 && <OperationKycModalForOnboard />}
+                                {currentTab === 2 && <BankRefMerchantList />}
                         </div>
                     </section>
                 </div>
             </main>
         </section>
+        // </ThemeContext.Provider>
     )
 }
 export default MerchantReferralOnboard

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 
 import {Formik, Field, Form, ErrorMessage} from "formik";
@@ -9,7 +9,7 @@ import API_URL from '../../../../../../config';
 import {axiosInstanceJWT} from '../../../../../../utilities/axiosInstance';
 import {convertToFormikSelectJson} from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import {
-    clearErrorMerchantReferralOnboardSlice, saveMerchantBasicDetails
+    clearErrorMerchantReferralOnboardSlice, resetStateMfo, saveMerchantBasicDetails
 } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import {
     businessType, clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId
@@ -19,6 +19,10 @@ import toastConfig from "../../../../../../utilities/toastTypes";
 
 function BasicDetailsOps({setCurrentTab}) {
     const dispatch = useDispatch()
+    // const theme = useContext("MroContext")
+    // const theme = useContext(ThemeContext);
+
+    // console.log("theme",theme)
 
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -72,8 +76,8 @@ function BasicDetailsOps({setCurrentTab}) {
         const {
             fullName, mobileNumber, email_id, business_category, password, business_type
         } = value
-        try{
-            await dispatch(saveMerchantBasicDetails({
+
+            dispatch(saveMerchantBasicDetails({
                 name: fullName,
                 mobileNumber: mobileNumber,
                 email: email_id,
@@ -83,18 +87,28 @@ function BasicDetailsOps({setCurrentTab}) {
                 isDirect: false,
                 created_by: auth?.user?.loginId,
                 updated_by: auth?.user?.loginId
-            }))
-            setSubmitLoader(false)
-            toastConfig.successToast("Submitted Successfully")
-        }catch (error){
-            toastConfig.errorToast("Error", error)
-        }
+            })).then((resp)=>{
+                setSubmitLoader(false)
+                if(resp?.error?.message){
+                    toastConfig.errorToast(resp?.error?.message)
+                    toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+                }
 
-        setSubmitLoader(false)
+                if(resp?.payload?.status===true){
+                    toastConfig.successToast(resp?.payload?.message)
+                }
+            }).catch(err=> {
+                toastConfig.errorToast("Something went wrong!")
+                setSubmitLoader(false)
+            })
+
+
+
     }
 
 
     useEffect(() => {
+        // dispatch(resetStateMfo())
         axiosInstanceJWT
             .get(API_URL.Business_Category_CODE)
             .then((resp) => {
@@ -124,12 +138,12 @@ function BasicDetailsOps({setCurrentTab}) {
             dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
         }
 
-        if (merchantBasicDetails.resp.error === true) {
-            toastConfig.errorToast(merchantBasicDetails.resp.errorMsg)
-        }
-        return () => {
-            dispatch(clearErrorMerchantReferralOnboardSlice())
-        }
+        // if (merchantBasicDetails.resp.error === true) {
+        //     toastConfig.errorToast(merchantBasicDetails.resp.errorMsg)
+        // }
+        // return () => {
+        //     dispatch(clearErrorMerchantReferralOnboardSlice())
+        // }
     }, [merchantOnboardingProcess, merchantBasicDetails]);
 
     const togglePassword = () => {
