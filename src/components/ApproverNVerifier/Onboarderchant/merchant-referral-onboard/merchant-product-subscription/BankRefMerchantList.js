@@ -64,11 +64,10 @@ function BankRefMerchantList() {
 
             cell: (row) => (
                 <div>
-                    {/*{JSON.stringify(row?.subscribed_plans[0])}*/}
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "pg")}
-                        className={`btn-sm ${row?.payment_gateway?.subscription_status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
+                        className={`btn-sm ${row?.payment_gateway?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
                     >
                         {(row?.payment_gateway?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
                     </button>
@@ -84,18 +83,19 @@ function BankRefMerchantList() {
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "qf")}
-                        className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
+                        className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
                     >
                         {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
                     </button>
                     {(row?.qwik_form?.subscription_status === "Subscribed") &&
-                        <button
+                        <a
                             type="button"
-                            className={`btn-sm mx-1 btn-secondary`}
-                            onClick={() => qwickFormHandler()}
+                            className={`btn-sm mx-1 btn-outline-secondary`}
+                            target="_blank"
+                            href={`https://qwikforms.in/QwikForms/saLogin?clientId=${row?.client_id}&&cobUserName=opsuser2@sp&&password=wkVc1iUwAn5tn1V1K&&requestType=COB`}
                         >
                             Config
-                        </button>
+                        </a>
                     }
                 </div>
             ),

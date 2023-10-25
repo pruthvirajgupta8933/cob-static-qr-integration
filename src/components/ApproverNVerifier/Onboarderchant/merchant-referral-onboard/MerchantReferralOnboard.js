@@ -21,7 +21,7 @@ function MerchantReferralOnboard() {
                     <div className="row">
                         <div className="col-6">
                             <h5>
-                                Merchant Referral Onboard
+                                Bank Onboarding
                             </h5>
                         </div>
                     </div>
