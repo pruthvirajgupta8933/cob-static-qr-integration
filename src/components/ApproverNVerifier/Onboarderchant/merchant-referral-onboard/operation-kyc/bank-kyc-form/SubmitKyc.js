@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {Formik, Form, Field, ErrorMessage} from "formik";
@@ -6,22 +6,22 @@ import * as Yup from "yup";
 import {useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import {
     kycDetailsByMerchantLoginId,
-    kycUserList,
+    // kycUserList,
     saveKycConsent,
-    UpdateModalStatus
+
+    // UpdateModalStatus
 } from "../../../../../../slices/kycSlice";
-import {KYC_STATUS_APPROVED, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED} from "../../../../../../utilities/enums";
-import {isNull, toLower} from "lodash";
+// import {isNull, toLower} from "lodash";
 import {checkClientCodeSlice, createClientProfile} from "../../../../../../slices/auth";
 import {generateWord} from "../../../../../../utilities/generateClientCode";
-import {axiosInstanceJWT} from "../../../../../../utilities/axiosInstance";
-import API_URL from "../../../../../../config";
+import {resetStateMfo} from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// resetStateMfo
+// import {resetState} from "react-modal/lib/helpers/bodyTrap";
 
 
 function SubmitKyc() {
     const history = useHistory();
     const dispatch = useDispatch();
-    // const { role } = props;
 
 
     const {auth, kyc, merchantReferralOnboardReducer} = useSelector((state) => state);
@@ -100,8 +100,10 @@ function SubmitKyc() {
             if (res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
                 toast.success(res?.payload?.message);
                 setIsDisable(false);
-                // dispatch(UpdateModalStatus(true));
-                // history.push("/dashboard");
+                // reset the state
+                sessionStorage.removeItem("onboardingStatusByAdmin")
+                dispatch(resetStateMfo())
+                // dispatch(resetState())
             } else {
                 toast.error(res?.payload?.detail);
                 setIsDisable(false);
