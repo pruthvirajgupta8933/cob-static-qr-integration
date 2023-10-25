@@ -68,9 +68,9 @@ function BankRefMerchantList() {
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "pg")}
-                        className={`btn-sm ${row?.subscribed_plans[0]?.Payment_Gateway?.subscription_status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
+                        className={`btn-sm ${row?.payment_gateway?.subscription_status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
                     >
-                        {(row?.subscribed_plans[0]?.Payment_Gateway?.subscription_status==="Subscribed") ? "Subscribed" : "Subscribe" }
+                        {(row?.payment_gateway?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
                     </button>
                 </div>
             ),
@@ -80,16 +80,26 @@ function BankRefMerchantList() {
             name: "Quick Form",
 
             cell: (row) => (
-                <div>
+                <div className="d-flex justify-content-between w-100">
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "qf")}
-                        className={`btn-sm ${row?.subscribed_plans[1]?.QwikForm?.subscription_status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
+                        className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-secondary" : "cob-btn-primary text-white"}`}
                     >
-                        {(row?.subscribed_plans[1]?.QwikForm?.subscription_status==="Subscribed") ? "Subscribed" : "Subscribe" }
+                        {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
                     </button>
+                    {(row?.qwik_form?.subscription_status === "Subscribed") &&
+                        <button
+                            type="button"
+                            className={`btn-sm mx-1 btn-secondary`}
+                            onClick={() => qwickFormHandler()}
+                        >
+                            Config
+                        </button>
+                    }
                 </div>
             ),
+            width: "220px",
         },
 
     ];
@@ -97,12 +107,9 @@ function BankRefMerchantList() {
     const productSubscriptionHandler = async (data, appBtn) => {
         // payment gateway = pg
         // Qwik form = qf
-
         let subscribeReqData = {
             clientId: data.client_id
         }
-
-
 
 
         if (appBtn === "pg") {
@@ -118,24 +125,21 @@ function BankRefMerchantList() {
             subscribeReqData.planName = "Enterprise"
         }
 
-
-
-
-
-            console.log("subscribeReqData",subscribeReqData)
-            console.log("appBtn",appBtn)
-            axiosInstanceJWT.post(
-                API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                subscribeReqData
-            ).then(res => {
-              if (res?.status === 200) {
+        axiosInstanceJWT.post(
+            API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+            subscribeReqData
+        ).then(res => {
+            if (res?.status === 200) {
                 toastConfig.successToast("Subscribed Successfully")
-                  fetchData()
-              }
-            }).catch(error => toastConfig.errorToast(error.response?.data?.detail))
-
-
+                fetchData()
+            }
+        }).catch(error => toastConfig.errorToast(error.response?.data?.detail))
     };
+
+
+    const qwickFormHandler = ()=>{
+            console.log("fn call")
+    }
 
 
     //  const { user } = useSelector((state) => state.auth);
