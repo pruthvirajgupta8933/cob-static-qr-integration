@@ -5,6 +5,8 @@ import {uniqueId} from 'lodash';
 import CustomModal from "../../../_components/custom_modal";
 import ReferralOnboardForm
     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
+import BasicDetailsOps
+    from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/bank-kyc-form/BasicDetailsOps";
 
 function ClientList() {
 
@@ -31,8 +33,9 @@ function ClientList() {
         SetSearch(e);
     }
 
+    // console.log(user?.roleId)
     const modalBody = () => {
-        return (<ReferralOnboardForm/>)}
+        return (<ReferralOnboardForm referralChild={true}/>)}
     return (
         <section className="">
 
@@ -56,7 +59,12 @@ function ClientList() {
 
                                 <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
                                     <div><h6>Number of Record: {clientListData.length}</h6></div>
-                                    <div><button className="btn btn-sm cob-btn-primary" onClick={()=>setModalToggle(true)}>Add Child Client</button></div>
+
+                                    <div>
+                                        {user?.roleId === 13 && <button className="btn btn-sm cob-btn-primary"
+                                                                        onClick={() => setModalToggle(true)}>Add Child
+                                            Client</button>}
+                                    </div>
 
                                 </div>
                                 <div className="overflow-scroll">

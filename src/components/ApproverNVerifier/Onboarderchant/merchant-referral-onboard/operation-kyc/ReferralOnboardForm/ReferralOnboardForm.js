@@ -12,8 +12,9 @@ import {convertToFormikSelectJson} from "../../../../../../_components/reuseable
 import {kycDetailsByMerchantLoginId} from "../../../../../../slices/kycSlice";
 import {generateWord} from "../../../../../../utilities/generateClientCode";
 import {checkClientCodeSlice, createClientProfile} from "../../../../../../slices/auth";
+import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 
-function ReferralOnboardForm(props) {
+function ReferralOnboardForm({referralChild}) {
     const dispatch = useDispatch()
     // const theme = useContext("MroContext")
     // const theme = useContext(ThemeContext);
@@ -63,32 +64,66 @@ function ReferralOnboardForm(props) {
             fullName, mobileNumber, email_id
         } = value
 
-        // if (merchantKycData?.clientCode === null) {
-        //     const clientFullName = merchantKycData?.name
-        //     const clientMobileNo = merchantKycData?.contactNumber
-        //     const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-        //     dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
-        //         let newClientCode = ""
-        //         // if client code available return status true, then make request with the given client
-        //         if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-        //             newClientCode = res?.payload?.clientCode
-        //         } else {
-        //             newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-        //         }
-        //         // update new client code
-        //         const data = {
-        //             loginId: merchantKycData?.loginMasterId,
-        //             clientName: merchantKycData?.name,
-        //             clientCode: newClientCode,
-        //         };
-        //
-        //         dispatch(createClientProfile(data)).then(clientProfileRes => {
-        //             // after create the client update the subscribe product
-        //             // console.log("clientProfileRes", clientProfileRes)
-        //         }).catch(err => console.log(err));
-        //     })
-        //
-        // }
+        let postData = {}
+        if(referralChild===true){
+            postData ={
+                name: fullName,
+                email: email_id,
+                phone: mobileNumber,
+                password: "Pass@123",
+                referrer_login_id: auth?.user?.loginId
+            }
+
+        }else{
+            postData = {
+                referrer_name: fullName,
+                referrer_email: email_id,
+                referrer_phone: mobileNumber,
+                created_by: auth?.user?.loginId
+            }
+        }
+
+        await addReferralService(postData, referralChild).then((resp) => {
+            console.log("resp", resp)
+
+            toastConfig.successToast(resp?.data?.message)
+            const loginMasterId = resp?.data?.data?.loginMasterId
+            const clientFullName = resp?.data?.data?.name
+            const clientMobileNo = resp?.data?.data?.mobileNumber
+            // const clientFullName = merchantKycData?.name
+            // const clientMobileNo = merchantKycData?.contactNumber
+            const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+            dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
+                let newClientCode = ""
+                // if client code available return status true, then make request with the given client
+                if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
+                    newClientCode = res?.payload?.clientCode
+                } else {
+                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+                }
+                // update new client code
+                const data = {
+                    loginId: loginMasterId,
+                    clientName: clientFullName,
+                    clientCode: newClientCode,
+                };
+
+                dispatch(createClientProfile(data)).then(clientProfileRes => {
+                    // after create the client update the subscribe product
+                    console.log("clientProfileRes", clientProfileRes)
+                    setSubmitLoader(false)
+                }).catch(err => {
+                    console.log(err)
+                    setSubmitLoader(false)
+                });
+            })
+
+
+        }).catch(err => {
+            toastConfig.errorToast(err.response.data.detail)
+            setSubmitLoader(false)
+        })
+
         // dispatch(saveMerchantBasicDetails({
         //     name: fullName,
         //     mobileNumber: mobileNumber,
@@ -115,16 +150,17 @@ function ReferralOnboardForm(props) {
     }
 
 
-
-
-
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
              aria-labelledby="v-pills-link1-tab">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmitContact}
+                // onSubmit={handleSubmitContact}
+                onSubmit={async (values, {resetForm}) => {
+                    await handleSubmitContact(values)
+                    resetForm()
+                }}
                 enableReinitialize={true}
             >
                 {({
@@ -159,7 +195,8 @@ function ReferralOnboardForm(props) {
                                 label="Email ID"
                             />
                         </div>
-
+                    </div>
+                    <div className="row g-3">
                         <div className="col-6">
                             {merchantBasicDetails?.resp?.status !== "Activate" &&
                                 <button type="submit" className="btn cob-btn-primary btn-sm m-2">
@@ -170,10 +207,15 @@ function ReferralOnboardForm(props) {
                                     </>}
                                     Save
                                 </button>}
+                        </div>
+                    </div>
+
+                    <div className="row g-3">
+                        <div className="col-lg-12">
 
                         </div>
-
                     </div>
+
                 </Form>)}
             </Formik>
         </div>);
