@@ -77,31 +77,30 @@ function BasicDetailsOps({setCurrentTab}) {
             fullName, mobileNumber, email_id, business_category, password, business_type
         } = value
 
-            dispatch(saveMerchantBasicDetails({
-                name: fullName,
-                mobileNumber: mobileNumber,
-                email: email_id,
-                business_category: business_category,
-                business_type: business_type,
-                password: password,
-                isDirect: false,
-                created_by: auth?.user?.loginId,
-                updated_by: auth?.user?.loginId
-            })).then((resp)=>{
-                setSubmitLoader(false)
-                if(resp?.error?.message){
-                    toastConfig.errorToast(resp?.error?.message)
-                    toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
-                }
+        dispatch(saveMerchantBasicDetails({
+            name: fullName,
+            mobileNumber: mobileNumber,
+            email: email_id,
+            business_category: business_category,
+            business_type: business_type,
+            password: password,
+            isDirect: false,
+            created_by: auth?.user?.loginId,
+            updated_by: auth?.user?.loginId
+        })).then((resp) => {
+            setSubmitLoader(false)
+            if (resp?.error?.message) {
+                toastConfig.errorToast(resp?.error?.message)
+                toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+            }
 
-                if(resp?.payload?.status===true){
-                    toastConfig.successToast(resp?.payload?.message)
-                }
-            }).catch(err=> {
-                toastConfig.errorToast("Something went wrong!")
-                setSubmitLoader(false)
-            })
-
+            if (resp?.payload?.status === true) {
+                toastConfig.successToast(resp?.payload?.message)
+            }
+        }).catch(err => {
+            toastConfig.errorToast("Something went wrong!")
+            setSubmitLoader(false)
+        })
 
 
     }
@@ -137,13 +136,6 @@ function BasicDetailsOps({setCurrentTab}) {
         if (merchantOnboardingProcess.merchantLoginId !== "") {
             dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
         }
-
-        // if (merchantBasicDetails.resp.error === true) {
-        //     toastConfig.errorToast(merchantBasicDetails.resp.errorMsg)
-        // }
-        // return () => {
-        //     dispatch(clearErrorMerchantReferralOnboardSlice())
-        // }
     }, [merchantOnboardingProcess, merchantBasicDetails]);
 
     const togglePassword = () => {
