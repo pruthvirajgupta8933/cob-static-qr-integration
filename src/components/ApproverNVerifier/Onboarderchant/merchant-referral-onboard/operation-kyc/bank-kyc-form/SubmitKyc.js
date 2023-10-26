@@ -62,22 +62,17 @@ function SubmitKyc() {
     const onSubmit = (value) => {
         setIsDisable(true);
         if (merchantKycData?.clientCode === null) {
-
             const clientFullName = merchantKycData?.name
             const clientMobileNo = merchantKycData?.contactNumber
             const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-
             dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
-
                 let newClientCode = ""
                 // if client code available return status true, then make request with the given client
                 if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
                     newClientCode = res?.payload?.clientCode
-
                 } else {
                     newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
                 }
-
                 // update new client code
                 const data = {
                     loginId: merchantKycData?.loginMasterId,
@@ -85,10 +80,9 @@ function SubmitKyc() {
                     clientCode: newClientCode,
                 };
 
-
                 dispatch(createClientProfile(data)).then(clientProfileRes => {
                     // after create the client update the subscribe product
-                    console.log("clientProfileRes", clientProfileRes)
+                    // console.log("clientProfileRes", clientProfileRes)
                 }).catch(err => console.log(err));
             })
 
