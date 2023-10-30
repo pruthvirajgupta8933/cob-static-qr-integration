@@ -554,6 +554,7 @@ export const saveMerchantBankDetais = createAsyncThunk(
 export const kycForNotFilled = createAsyncThunk(
   "kyc/kycForNotFilled",
   async (data) => {
+    
     const requestParam = data?.page;
     const requestParam1 = data?.page_size;
     const isDirect = data?.isDirect

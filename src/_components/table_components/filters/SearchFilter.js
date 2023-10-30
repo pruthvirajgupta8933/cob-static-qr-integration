@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SearchService } from "../../../services/search.service/search.service";
+
 import "./index.css";
 const SearchFilter = ({
   searchText,
