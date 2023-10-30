@@ -98,6 +98,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             toastConfig.successToast(resp?.data?.message)
 
             fetchData()
+            setSubmitLoader(false)
             // fn call
             // const loginMasterId = resp?.data?.data?.loginMasterId
             // const clientFullName = resp?.data?.data?.name
