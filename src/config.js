@@ -67,8 +67,7 @@ const API_LIVE = {
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:
-    adminAPIURL + "/REST/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE: adminAPIURL + "/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
@@ -340,6 +339,17 @@ const API_LIVE = {
   saveBusinesDetails : `${kyc_url}/kyc/bank-merchant/business-detail/`,
   uploadDocuement : `${kyc_url}/kyc/bank-merchant/upload-doc/`,
   // `{{url}}/kyc/bank-merchant/basic-detail/`
+
+
+//   merchant list with the subscription data
+  fetchAllMerchantListWithSubscriptionData : `${url}/subscription/?order_by=-id`,
+  unsubscribeProductPlan: `${url}/subscription/unsubscribe-plan/`,
+
+
+  // adding referral merchant
+  addReferral : `${kyc_url}/kyc/referrer/add-referrer/`,
+  addReferralChild : `${kyc_url}/kyc/referrer/add-referrer-child/`,
+  fetchReferralChild : `${kyc_url}/kyc/get-merchant-data/offline-merchant/?page=1&page_size=100&type=referrer&referrer_login_id=10858`,
 };
 
 const B2B_API_LIVE = {

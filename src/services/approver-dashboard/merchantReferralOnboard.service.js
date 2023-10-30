@@ -35,3 +35,14 @@ export const saveDocumentDetails = (obj) => {
     }
     )
 }
+
+export const addReferralService = (obj, isChild=false)=>{
+    let apiUrl;
+    // console.log("isChild",isChild)
+    if(isChild===true){
+        apiUrl = API_URL.addReferralChild
+    }else{
+        apiUrl = API_URL.addReferral
+    }
+    return axiosInstanceJWT.post(apiUrl,obj)
+}

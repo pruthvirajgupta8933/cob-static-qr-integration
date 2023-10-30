@@ -434,8 +434,8 @@ function BankDetails(props) {
                   type="text"
                   name="account_holder_name"
                   className="form-control"
-                  readOnly={readOnly}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={true}
+                  disabled={true}
                 />
               </div>
 
@@ -449,7 +449,7 @@ function BankDetails(props) {
                   control="select"
                   name="account_type"
                   options={selectedType}
-                  className="form-control"
+                  className="form-select"
                   readOnly={readOnly}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
@@ -469,8 +469,8 @@ function BankDetails(props) {
                   name="bank_id"
                   className="form-control"
                   options={data}
-                  readOnly={readOnly}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={true}
+                  disabled={true}
                 />
               </div>
 
@@ -483,8 +483,8 @@ function BankDetails(props) {
                   type="text"
                   name="branch"
                   className="form-control"
-                  readOnly={readOnly}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={true}
+                  disabled={true}
                 />
               </div>
             </div>

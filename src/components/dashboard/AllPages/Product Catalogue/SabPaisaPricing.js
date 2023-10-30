@@ -67,7 +67,6 @@ const SabPaisaPricing = () => {
 
 
   const handleClick = async (plan_id, plan_name, plan_code) => {
-
     const postData = {
       clientId: clientId,
       applicationName: param?.name,

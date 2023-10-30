@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useDropzone } from 'react-dropzone';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import './FileUploader.css'; // Import the CSS file for styling
-import { saveDocumentDetails } from '../../../services/approver-dashboard/merchantReferralOnboard.service';
-import { useSelector } from 'react-redux';
+import {saveDocumentDetails} from '../../../services/approver-dashboard/merchantReferralOnboard.service';
+import {useDropzone} from 'react-dropzone';
+import {kycDocumentUploadList} from "../../../slices/kycSlice";
+import toastConfig from "../../../utilities/toastTypes";
+
 
 const FileUploader = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
+    const [submitLoader, setSubmitLoader] = useState(false);
+
+    const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
+
+    const dispatch = useDispatch()
+    const {  KycDocUpload } = kyc;
+
+    const fetchDocList = ()=>{
+        dispatch(kycDocumentUploadList({login_id: merchantLoginId}))
+    }
+
+    useEffect(() => {
+        fetchDocList(merchantLoginId)
+    }, []);
+
+    console.log(KycDocUpload)
 
     const onDrop = (acceptedFiles) => {
         // Add the uploaded files to the state
@@ -16,6 +33,7 @@ const FileUploader = () => {
     };
 
     const uploadFiles = async () => {
+            setSubmitLoader(true)
         const formData = new FormData();
         // setUploadedFiles()
         // Append each uploaded file to the FormData object
@@ -28,31 +46,53 @@ const FileUploader = () => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for uploading files
             const response = await saveDocumentDetails(formData)
-
-            console.log('Files uploaded successfully:', response.data);
+            fetchDocList(merchantLoginId)
+            toastConfig.successToast(response.data?.message)
+            setSubmitLoader(false)
+            // console.log('Files uploaded successfully:', response.data?.message);
         } catch (error) {
-            console.error('Error uploading files:', error);
+            // toastConfig.errorToast(response.data?.message)
+            toastConfig.errorToast('Error uploading files');
+            setSubmitLoader(false)
         }
     };
 
-    const { getRootProps, getInputProps } = useDropzone({
+    const {getRootProps, getInputProps} = useDropzone({
         accept: '.pdf',
         onDrop,
     });
 
-    console.log(uploadedFiles[0]?.name ?? "")
     return (
+        <div>
         <div className="file-uploader">
             {uploadedFiles[0]?.name ?
-                <p>{uploadedFiles[0]?.name} <span className='ml-5' onClick={() => { setUploadedFiles([]) }}>X</span></p> : null
+                <p>{uploadedFiles[0]?.name} <span className='ml-5' onClick={() => {
+                    setUploadedFiles([])
+                }}>X</span></p> : null
             }
             <div {...getRootProps()} className="dropzone">
                 <input {...getInputProps()} />
-                <p>Drag 'n' drop some PDF files here, or click to select files</p>
+                <p>Drag 'n' drop some PDF files here, or click to select files 5MB</p>
             </div>
-            <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm">
-                Upload Files
-            </button>
+            {uploadedFiles?.length > 0 &&
+                <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm">
+                    {submitLoader && <>
+                                            <span className="spinner-border spinner-border-sm" role="status"
+                                                  aria-hidden="true"/>
+                        <span className="sr-only">Loading...</span>
+                    </>} Upload Files
+                </button>}
+
+        </div>
+
+            {KycDocUpload?.length > 0 && <div className="row p-2">
+                <h6>Uploaded Document</h6>
+                <ul>
+                    {KycDocUpload?.map((d, i) => (
+                        <li><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
+                    ))}
+                </ul>
+            </div>}
         </div>
     );
 };

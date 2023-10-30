@@ -19,6 +19,9 @@ import { createMandateReducer } from "./slices/subscription-slice/createMandateS
 import  approverDashboardSlice  from "./slices/approver-dashboard/approverDashboardSlice"
 import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice"
 import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice"
+import notificationSlice from "./slices/notification-slice/notificationSlice"
+import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice"
+
 
 
 const reducer = {
@@ -47,7 +50,13 @@ const reducer = {
   rateMappingSlice:rateMappingSlice,
 
   //merchantOnboardByOps
-  merchantReferralOnboardReducer:merchantReferralOnboardReducer
+  merchantReferralOnboardReducer:merchantReferralOnboardReducer,
+
+  //notification
+  notificationSlice:notificationSlice,
+
+//   product subscription
+  productSubscriptionServiceAdminReducer:productSubscriptionServiceAdminReducer
 };
 
 const store = configureStore({

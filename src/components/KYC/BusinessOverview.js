@@ -92,7 +92,7 @@ function BusinessOverview(props) {
   const Regex = {
     acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
   };
-  
+
   const RegexMsg = {
     acceptAlphabet: 'Please enter valid characters.',
   };
@@ -106,7 +106,7 @@ function BusinessOverview(props) {
       platform_id: Yup.string()
         .required("Select the platform")
         .nullable(),
-        billing_label: Yup.string()
+      billing_label: Yup.string()
         .trim()
         .min(1, 'Please enter more than 1 character')
         .max(250, 'Please do not enter more than 250 characters')
@@ -223,63 +223,58 @@ function BusinessOverview(props) {
   }, []);
 
   const onSubmit = (values) => {
-    setIsDisabled(true)
+
     const expectedTxn = values.expected_transactions.split("-");
-    console.log("expectedTxn",expectedTxn)
     const numbers = expectedTxn.map(part => parseInt(part));
-    console.log("numbers",numbers)
     const maxValueTxn = Math.max(...numbers);
-    console.log("maxValueTxn",maxValueTxn)
     const ticketSize = values.avg_ticket_size.split("-");
     const avgTicket = ticketSize.map(part => parseInt(part))
     const maxTicketSize = Math.max(...avgTicket);
-    console.log("maxTicketSize",maxTicketSize)
     const avgCount = maxValueTxn * maxTicketSize;
-    console.log("avgCount",avgCount)
 
-    if (role.merchant) {
 
-      if (
-        window.confirm(
-          `Are you sure for the Expected Transaction : ${avgCount}`
-        )
-      ) {
-        dispatch(
-          saveBusinessInfo({
-            business_type: values.business_type,
-            business_category: values.business_category,
-            business_model: values.business_model,
-            billing_label: values.billing_label,
-            company_website: "NA",
-            erp_check: values.erp_check,
-            platform_id: values.platform_id,
-            collection_type_id: values.collection_type_id,
-            collection_frequency_id: values.collection_frequency_id,
-            expected_transactions: values.expected_transactions,
-            form_build: values.form_build,
-            avg_ticket_size: values.avg_ticket_size,
-            ticket_size: values.ticket_size,
-            modified_by: loginId,
-            login_id: loginId,
-            is_website_url:
-              values.seletcted_website_app_url === "Yes" ? "True" : "False",
-            website_app_url: values.website_app_url,
-          })
-        ).then((res) => {
-          if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
-            toast.success(res.payload.message);
-            setTab(3);
-            setTitle("BUSINESS DETAILS");
-            dispatch(kycUserList({ login_id: loginId }));
-            dispatch(GetKycTabsStatus({ login_id: loginId }));
-            setIsDisabled(false);
-          } else {
-            toast.error(res?.payload?.detail);
-            setIsDisabled(false);
-          }
-        });
-      }
+    if (
+      window.confirm(
+        `Are you sure for the Expected Transaction : ${avgCount}`
+      )
+    ) {
+      setIsDisabled(true)
+      dispatch(
+        saveBusinessInfo({
+          business_type: values.business_type,
+          business_category: values.business_category,
+          business_model: values.business_model,
+          billing_label: values.billing_label,
+          company_website: "NA",
+          erp_check: values.erp_check,
+          platform_id: values.platform_id,
+          collection_type_id: values.collection_type_id,
+          collection_frequency_id: values.collection_frequency_id,
+          expected_transactions: values.expected_transactions,
+          form_build: values.form_build,
+          avg_ticket_size: values.avg_ticket_size,
+          ticket_size: values.ticket_size,
+          modified_by: loginId,
+          login_id: loginId,
+          is_website_url:
+          values.seletcted_website_app_url === "Yes" ? "True" : "False",
+          website_app_url: values.website_app_url,
+        })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
+          toast.success(res.payload.message);
+          setTab(3);
+          setTitle("BUSINESS DETAILS");
+          dispatch(kycUserList({ login_id: loginId }));
+          dispatch(GetKycTabsStatus({ login_id: loginId }));
+          setIsDisabled(false);
+        } else {
+          toast.error(res?.payload?.detail);
+          setIsDisabled(false);
+        }
+      });
     }
+
   };
 
   // let converter = require('number-to-words');
@@ -371,7 +366,7 @@ function BusinessOverview(props) {
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Business Type<span style={{ color: "red" }}>*</span>
+                  Business Type<span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -385,7 +380,7 @@ function BusinessOverview(props) {
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
-                  Business Category<span style={{ color: "red" }}>*</span>
+                  Business Category<span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -402,7 +397,7 @@ function BusinessOverview(props) {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
-                  Business Description <span style={{ color: "red" }}>*</span>
+                  Business Description <span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -432,7 +427,7 @@ function BusinessOverview(props) {
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   How do you wish to accept payments?
-                  <span style={{ color: "red" }}>*</span>
+                  <span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -457,7 +452,7 @@ function BusinessOverview(props) {
                     <div className="col-lg-10">
                       <label className="col-form-label p-2 mt-0">
                         Company Website / App URL
-                        <span style={{ color: "red" }}>*</span>
+                        <span className="text-danger">*</span>
                       </label>
                       <FormikController
                         control="input"
