@@ -14,7 +14,7 @@ import {generateWord} from "../../../../../../utilities/generateClientCode";
 import {checkClientCodeSlice, createClientProfile} from "../../../../../../slices/auth";
 import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 
-function ReferralOnboardForm({referralChild}) {
+function ReferralOnboardForm({referralChild,fetchData}) {
     const dispatch = useDispatch()
     // const theme = useContext("MroContext")
     // const theme = useContext(ThemeContext);
@@ -32,7 +32,8 @@ function ReferralOnboardForm({referralChild}) {
     const initialValues = {
         fullName: "",
         mobileNumber: "",
-        email_id: ""
+        email_id: "",
+        password:""
     };
 
 
@@ -54,6 +55,11 @@ function ReferralOnboardForm({referralChild}) {
             .trim()
             .email("Invalid email")
             .required("Required")
+            .nullable(),
+
+            password:Yup.string()
+            .trim()
+            .required("Required")
             .nullable()
     });
 
@@ -61,7 +67,7 @@ function ReferralOnboardForm({referralChild}) {
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
         const {
-            fullName, mobileNumber, email_id
+            fullName, mobileNumber, email_id,password
         } = value
 
         let postData = {}
@@ -70,7 +76,7 @@ function ReferralOnboardForm({referralChild}) {
                 name: fullName,
                 email: email_id,
                 phone: mobileNumber,
-                password: "Pass@123",
+                password: password,
                 referrer_login_id: auth?.user?.loginId
             }
 
@@ -84,39 +90,43 @@ function ReferralOnboardForm({referralChild}) {
         }
 
         await addReferralService(postData, referralChild).then((resp) => {
-            console.log("resp", resp)
+           
 
             toastConfig.successToast(resp?.data?.message)
-            const loginMasterId = resp?.data?.data?.loginMasterId
-            const clientFullName = resp?.data?.data?.name
-            const clientMobileNo = resp?.data?.data?.mobileNumber
+
+            fetchData()
+            // fn call
+            // const loginMasterId = resp?.data?.data?.loginMasterId
+            // const clientFullName = resp?.data?.data?.name
+            // const clientMobileNo = resp?.data?.data?.mobileNumber
             // const clientFullName = merchantKycData?.name
             // const clientMobileNo = merchantKycData?.contactNumber
-            const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-            dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
-                let newClientCode = ""
-                // if client code available return status true, then make request with the given client
-                if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-                    newClientCode = res?.payload?.clientCode
-                } else {
-                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-                }
-                // update new client code
-                const data = {
-                    loginId: loginMasterId,
-                    clientName: clientFullName,
-                    clientCode: newClientCode,
-                };
+            // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+            // dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
+            //     let newClientCode = ""
+            //     // if client code available return status true, then make request with the given client
+            //     if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
+            //         newClientCode = res?.payload?.clientCode
+                   
+            //     } else {
+            //         newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+            //     }
+            //     // update new client code
+            //     const data = {
+            //         loginId: loginMasterId,
+            //         clientName: clientFullName,
+            //         clientCode: newClientCode,
+            //     };
 
-                dispatch(createClientProfile(data)).then(clientProfileRes => {
-                    // after create the client update the subscribe product
-                    console.log("clientProfileRes", clientProfileRes)
-                    setSubmitLoader(false)
-                }).catch(err => {
-                    console.log(err)
-                    setSubmitLoader(false)
-                });
-            })
+            //     dispatch(createClientProfile(data)).then(clientProfileRes => {
+            //         // after create the client update the subscribe product
+            //         console.log("clientProfileRes", clientProfileRes)
+            //         setSubmitLoader(false)
+            //     }).catch(err => {
+            //         console.log(err)
+            //         setSubmitLoader(false)
+            //     });
+            // })
 
 
         }).catch(err => {
@@ -167,7 +177,7 @@ function ReferralOnboardForm({referralChild}) {
                       values, setFieldValue, errors, setFieldError
                   }) => (<Form>
                     <div className="row g-3">
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                             <FormikController
                                 control="input"
                                 type="text"
@@ -177,7 +187,7 @@ function ReferralOnboardForm({referralChild}) {
                             />
                         </div>
 
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                             <FormikController
                                 control="input"
                                 type="text"
@@ -186,13 +196,23 @@ function ReferralOnboardForm({referralChild}) {
                                 label="Contact Number"
                             />
                         </div>
-                        <div className="col-lg-4">
+                        <div className="col-lg-6">
                             <FormikController
                                 control="input"
                                 type="email"
                                 name="email_id"
                                 className="form-control"
                                 label="Email ID"
+                            />
+                        </div>
+
+                        <div className="col-lg-6">
+                            <FormikController
+                                control="input"
+                                type="password"
+                                name="password"
+                                className="form-control"
+                                label="Password"
                             />
                         </div>
                     </div>
