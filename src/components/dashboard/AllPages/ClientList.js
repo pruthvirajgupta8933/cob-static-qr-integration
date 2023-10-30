@@ -12,7 +12,13 @@ import Table from '../../../_components/table_components/table/Table';
 import { RefrerChiledList } from '../../../utilities/tableData';
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
+import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
+
+
+
 function ClientList() {
+
+    
 
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -22,14 +28,15 @@ function ClientList() {
 
     const RefrerChiledList = [
 
-        // {
-        //   id: "1",
-        //   name: "S.No",
-        //   selector: (row) => row.s_no,
-        //   sortable: true,
-        //   // width: "86px",
-        //   cell: (row) => <div className="removeWhiteSpace">{row?.s_no}</div>,
-        // },
+        {
+            id: "1",
+            name: "S.No",
+            selector: (row) => row.s_no,
+            sortable: true,
+            width: "120px",
+            cell: (row) => <div className="removeWhiteSpace">{row?.s_no}</div>,
+        },
+
 
         {
             key: "name",
@@ -42,10 +49,22 @@ function ClientList() {
                     {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
                 </div>
             ),
-            // width: "200px",
+            width: "200px",
         },
 
-
+        {
+            key: "client_code",
+            // id: "3",P
+            name: "Client Code",
+            selector: (row) => row?.client_code,
+            sortable: true,
+            cell: (row) => (
+                <div className="removeWhiteSpace">
+                    {row?.client_code}
+                </div>
+            ),
+            // width: "200px",
+        },
 
         {
             id: "4",
@@ -56,10 +75,24 @@ function ClientList() {
         },
         {
             id: "5",
-            name: "createdDate",
+            name: "Create Date",
             selector: (row) => row.createdDate,
             cell: (row) => <div className="removeWhiteSpace">{row?.createdDate}</div>,
-            // width: "130px",
+            width: "180px",
+        },
+
+        {
+            key: "email",
+            // id: "3",P
+            name: "User Name",
+            selector: (row) => row?.name,
+            sortable: true,
+            cell: (row) => (
+                <div className="removeWhiteSpace">
+                    {row?.email}
+                </div>
+            ),
+            width: "200px",
         },
         {
             id: "6",
@@ -68,8 +101,36 @@ function ClientList() {
             cell: (row) => (
                 <PasswordCell password={row.password} />
             ),
-            // width: "150px",
+            width: "170px",
         },
+
+
+        {
+            id: "14",
+            name: "Action",
+
+            cell: (row) => (
+                <div>
+
+                    <button
+                        type="button"
+                        className="approve text-white  cob-btn-primary   btn-sm"
+                        data-toggle="modal"
+                        onClick={() => {
+
+                            setModalTogalforMessage(true);
+                        }}
+                        data-target="#exampleModal"
+                    // disabled={row?.clientCode === null ? true : false}
+                    >
+                        Kyc Complete
+                    </button>
+
+                </div>
+            ),
+        },
+
+
 
 
     ]
@@ -102,6 +163,7 @@ function ClientList() {
     const [search, SetSearch] = useState("");
 
     const [modalToggle, setModalToggle] = useState(false)
+    const [modalToggleFormessage, setModalTogalforMessage] = useState(false)
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(100);
     const [searchText, setSearchText] = useState("");
@@ -159,31 +221,27 @@ function ClientList() {
     };
 
 
-    const mappedData = data?.map((item) => {
-        return {
-            sno: item.sno,
-            name: item.name,
-            password: item.password,
-            mobileNumber: item.mobileNumber,
-            createdDate: item.createdDate
-        };
-    });
 
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = () => {
-        dispatch(
-            fetchChiledDataList({
-                page: currentPage,
-                page_size: pageSize,
-                referrer_login_id: auth?.user?.loginId,
-                type: "referrer",
-                // searchquery: searchText,
 
-            })
-        )
+   
+        // Determine the type based on the result of roleBasedAccess()
+        const roleType = roleBasedAccess();
+        const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+        let postObj = {
+            page: currentPage,
+            page_size: pageSize,
+            type: type,  // Set the type based on roleType
+            login_id: auth?.user?.loginId
+        }
+      
+        //  console.log(postObj)
+        dispatch(fetchChiledDataList(postObj));
+
 
     };
 
@@ -199,9 +257,22 @@ function ClientList() {
         SetSearch(e);
     }
 
+
+
     // console.log(user?.roleId)
     const modalBody = () => {
         return (<ReferralOnboardForm referralChild={true} fetchData={fetchData} />)
+
+
+    }
+
+    const modalBodyForMessage = () => {
+
+        return <div>
+            <h6>To complete the KYC process, please use the provided username and password to log in to the partner dashboard. Once logged in, proceed with the KYC verification.</h6>
+
+        </div>
+
     }
     return (
         <section className="">
@@ -288,6 +359,9 @@ function ClientList() {
             </main>
 
             <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle} fnSetModalToggle={() => setModalToggle()} />
+
+
+            <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage} fnSetModalToggle={() => setModalTogalforMessage()} />
         </section>
     )
 }

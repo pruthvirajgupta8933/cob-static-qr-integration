@@ -88,11 +88,19 @@ export const fetchChiledDataList = createAsyncThunk(
 
         const requestParam = data?.page;
         const requestParam1 = data?.page_size;
-        const refrerId=data?.referrer_login_id
+        const login_id=data?.login_id
         const refrerType=data?.type
+        let param = ""
+        if(refrerType==="bank"){
+            param = `&bank_login_id=${login_id}`
+        }
+        if(refrerType==="referrer"){
+            param = `&referrer_login_id=${login_id}`
+        }
+// type=referrer&referrer_login_id=10858
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.fetchReferralChild}?page=${requestParam}&page_size=${requestParam1}&type=${refrerType}&referrer_login_id=${refrerId}`)
+                `${API_URL.fetchReferralChild}?page=${requestParam}&page_size=${requestParam1}&type=${refrerType}${param}`)
             .catch((error) => {
                 return error.response;
             });
