@@ -27,6 +27,13 @@ export const saveBusinessDetails = (obj) => {
     return axiosInstanceJWT.post(API_URL.saveBusinesDetails, obj)
 }
 
+// export const fetchReferralChildList = (obj) => {
+//     return axiosInstanceJWT.post(API_URL.fetchReferralChild, obj)
+// }
+
+
+
+
 export const saveDocumentDetails = (obj) => {
     return axiosInstanceJWT.post(API_URL.uploadDocuement, obj, {
         headers: {
@@ -35,6 +42,9 @@ export const saveDocumentDetails = (obj) => {
     }
     )
 }
+
+
+
 
 export const addReferralService = (obj, isChild=false)=>{
     let apiUrl;

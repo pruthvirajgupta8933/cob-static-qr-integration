@@ -349,7 +349,8 @@ const API_LIVE = {
   // adding referral merchant
   addReferral : `${kyc_url}/kyc/referrer/add-referrer/`,
   addReferralChild : `${kyc_url}/kyc/referrer/add-referrer-child/`,
-  fetchReferralChild : `${kyc_url}/kyc/get-merchant-data/offline-merchant/?page=1&page_size=100&type=referrer&referrer_login_id=10858`,
+  fetchReferralChild : `${kyc_url}/kyc/get-merchant-data/offline-merchant/`,
+  
 };
 
 const B2B_API_LIVE = {
