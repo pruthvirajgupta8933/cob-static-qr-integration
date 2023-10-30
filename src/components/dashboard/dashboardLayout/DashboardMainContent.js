@@ -93,7 +93,7 @@ function DashboardMainContent() {
     // create new client code
     useEffect(() => {
         //  check the role and clientcode should be null
-        if (roles?.merchant && user?.clientMerchantDetailsList[0]?.clientCode === null) {
+        if ((roles?.merchant || roles?.referral) && user?.clientMerchantDetailsList[0]?.clientCode === null) {
 
             const clientFullName = user?.clientContactPersonName
             const clientMobileNo = user?.clientMobileNo
