@@ -33,7 +33,8 @@ function ReferralOnboardForm({referralChild,fetchData}) {
         fullName: "",
         mobileNumber: "",
         email_id: "",
-        password:""
+        password:"",
+        isPasswordReq: referralChild 
     };
 
 
@@ -57,10 +58,12 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             .required("Required")
             .nullable(),
 
-            password:Yup.string()
+           password:Yup.string()
             .trim()
-            .required("Required")
-            .nullable()
+            .when("isPasswordReq", {
+                is:true,
+                then:Yup.string().required("Required")
+            }).nullable()
     });
 
 
@@ -205,7 +208,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 label="Email ID"
                             />
                         </div>
-
+                        {referralChild===true &&
                         <div className="col-lg-6">
                             <FormikController
                                 control="input"
@@ -214,7 +217,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 className="form-control"
                                 label="Password"
                             />
-                        </div>
+                        </div>}
                     </div>
                     <div className="row g-3">
                         <div className="col-6">
