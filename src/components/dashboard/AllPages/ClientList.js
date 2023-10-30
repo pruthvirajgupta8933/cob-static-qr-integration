@@ -5,8 +5,8 @@ import {uniqueId} from 'lodash';
 import CustomModal from "../../../_components/custom_modal";
 import ReferralOnboardForm
     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
-import BasicDetailsOps
-    from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/bank-kyc-form/BasicDetailsOps";
+// import BasicDetailsOps
+//     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/bank-kyc-form/BasicDetailsOps";
 
 function ClientList() {
 
