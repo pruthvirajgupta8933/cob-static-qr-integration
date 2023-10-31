@@ -93,7 +93,7 @@ function DashboardMainContent() {
     // create new client code
     useEffect(() => {
         //  check the role and clientcode should be null
-        if (roles?.merchant && user?.clientMerchantDetailsList[0]?.clientCode === null) {
+        if ((roles?.merchant || roles?.referral) && user?.clientMerchantDetailsList[0]?.clientCode === null) {
 
             const clientFullName = user?.clientContactPersonName
             const clientMobileNo = user?.clientMobileNo
@@ -224,7 +224,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/transaction-summery`}
                                 Component={TransactionSummery}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <TransactionSummery/>
                             </AuthorizedRoute>
@@ -233,7 +233,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/transaction-enquiry`}
                                 Component={TransactionEnquirey}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <TransactionEnquirey/>
                             </AuthorizedRoute>
@@ -242,7 +242,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/transaction-history`}
                                 Component={TransactionHistory}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <TransactionHistory/>
                             </AuthorizedRoute>
@@ -251,7 +251,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/client-list`}
                                 Component={ClientList}
-                                roleList={{bank: true}}
+                                roleList={{bank: true, referral: true}}
 
                             >
                                 <ClientList/>
@@ -261,7 +261,7 @@ function DashboardMainContent() {
                                 exaxt
                                 path={`${path}/settlement-report`}
                                 Component={SettlementReport}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <SettlementReport/>
                             </AuthorizedRoute>
@@ -270,7 +270,7 @@ function DashboardMainContent() {
                                 exaxt
                                 path={`${path}/refund-transaction-history`}
                                 Component={RefundTransactionHistory}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <RefundTransactionHistory/>
                             </AuthorizedRoute>
@@ -279,7 +279,7 @@ function DashboardMainContent() {
                                 exaxt
                                 path={`${path}/chargeback-transaction-history`}
                                 Component={ChargeBackTxnHistory}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <ChargeBackTxnHistory/>
                             </AuthorizedRoute>
@@ -331,7 +331,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/settlement-report-new`}
                                 Component={SettlementReportNew}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <SettlementReportNew/>
                             </AuthorizedRoute>
@@ -340,7 +340,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/transaction-history-new`}
                                 Component={TransactionHistoryDownload}
-                                roleList={{merchant: true, bank: true}}
+                                roleList={{merchant: true, bank: true, referral: true}}
                             >
                                 <TransactionHistoryDownload/>
                             </AuthorizedRoute>

@@ -2,8 +2,12 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import {
     bankDetails,
     saveBasicDetails,
-    saveBusinessDetails
+    saveBusinessDetails,
+    fetchReferralChildList 
 } from "../../services/approver-dashboard/merchantReferralOnboard.service";
+
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import API_URL from "../../config";
 
 
 const sessionDataI = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
@@ -26,6 +30,10 @@ const initialState = {
     },
     documentCenter: {
         resp: {}
+    },
+
+  refrerChiledList: {
+    resp: {}
     },
     referral: {}
 }
@@ -66,6 +74,37 @@ export const businessDetailsSlice = createAsyncThunk(
             .catch((error) => {
                 return error.response;
             });
+        return response.data;
+    }
+);
+
+
+
+
+
+export const fetchChiledDataList = createAsyncThunk(
+    "merchantReferralOnboardSlice/bank/fetchChiledDataList",
+    async (data) => {
+
+        const requestParam = data?.page;
+        const requestParam1 = data?.page_size;
+        const login_id=data?.login_id
+        const refrerType=data?.type
+        let param = ""
+        if(refrerType==="bank"){
+            param = `&bank_login_id=${login_id}`
+        }
+        if(refrerType==="referrer"){
+            param = `&referrer_login_id=${login_id}`
+        }
+// type=referrer&referrer_login_id=10858
+        const response = await axiosInstanceJWT
+            .get(
+                `${API_URL.fetchReferralChild}?page=${requestParam}&page_size=${requestParam1}&type=${refrerType}${param}`)
+            .catch((error) => {
+                return error.response;
+            });
+
         return response.data;
     }
 );
@@ -134,6 +173,21 @@ export const merchantReferralOnboardSlice = createSlice({
             .addCase(businessDetailsSlice.rejected, (state, action) => {
                 state.loading = 'failed';
             })
+
+            .addCase(fetchChiledDataList.pending, (state) => {
+                state.loading = 'loading';
+            })
+            .addCase(fetchChiledDataList.fulfilled, (state, action) => {
+
+                console.log("action",action.payload)
+                state.refrerChiledList.resp = action.payload;
+            })
+            .addCase(fetchChiledDataList.rejected, (state, action) => {
+                state.loading = 'failed';
+            })
+
+
+        
     }
 })
 

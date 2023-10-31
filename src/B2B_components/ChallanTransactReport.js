@@ -50,6 +50,8 @@ const ChallanTransactReport = () => {
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
+  
+
 useEffect(() => {
     const challanDataList = challanTransactionList?.results;
     const dataCount = challanTransactionList?.count;

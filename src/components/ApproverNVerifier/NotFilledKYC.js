@@ -28,7 +28,11 @@ const NotFilledKYC = () => {
   
   const { results: notFilledKycData, count: dataCount } = useSelector(
     (state) => state.kyc.notFilledUserList
+    
   );
+ 
+
+ 
   
   
   const [notFilledData, setNotFilledData] = useState(notFilledKycData);
@@ -63,6 +67,7 @@ const NotFilledKYC = () => {
   });
 
   useEffect(() => {
+    
     fetchData();
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
@@ -78,7 +83,7 @@ const NotFilledKYC = () => {
     setNotFilledData(filterData)
   };
 
-  const fetchData = () => {
+  const fetchData = (startingSerialNumber) => {
     dispatch(
       kycForNotFilled({
         page: currentPage,
