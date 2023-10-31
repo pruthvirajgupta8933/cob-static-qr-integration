@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, createContext} from 'react'
 import classes from "../../approver.module.css"
-// import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
+import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
 import BankRefMerchantList from './merchant-product-subscription/BankRefMerchantList';
 import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard";
 
 
-function MerchantReferralOnboard() {
-    const [currentTab, setCurrentTab] = useState(2)
+function BankMerchantOnboard() {
+    const [currentTab, setCurrentTab] = useState(1)
+    // const MroContext = createContext(null)
+    // const ThemeContext = createContext(null);
     const handleTabClick = (currenTab) => {
       setCurrentTab(currenTab)
     };
@@ -20,7 +22,7 @@ function MerchantReferralOnboard() {
                     <div className="row">
                         <div className="col-6">
                             <h5>
-                                Referral Onboarding
+                                Bank Onboarding
                             </h5>
                         </div>
                     </div>
@@ -32,20 +34,10 @@ function MerchantReferralOnboard() {
                                     <li className="nav-item ">
                                         <a
                                             href={() => false}
-                                            className={`nav-link ${currentTab === 2 && 'active-tab'} ${classes.cursor_pointer}`}
-                                            onClick={() => handleTabClick(2)}
+                                            className={`nav-link ${currentTab === 1 && 'active-tab'} ${classes.cursor_pointer}`}
+                                            onClick={() => handleTabClick(1)}
                                         >
-                                            Add Referral
-                                        </a>
-                                    </li>
-
-                                    <li className="nav-item">
-                                        <a
-                                            href={() => false}
-                                            className={`nav-link  ${currentTab === 3 && 'active-tab'} ${classes.cursor_pointer}`}
-                                            onClick={() => handleTabClick(3)}
-                                        >
-                                            Product Subscription
+                                            Add Bank Merchant
                                         </a>
                                     </li>
                                 </ul>
@@ -55,9 +47,7 @@ function MerchantReferralOnboard() {
 
                     <section>
                         <div className="row">
-                            {currentTab === 2 && <ReferralOnboard/>}
-                            {currentTab === 3 && <BankRefMerchantList/>}
-
+                            {currentTab === 1 && <OperationKycModalForOnboard/>}
                         </div>
                     </section>
                 </div>
@@ -66,4 +56,4 @@ function MerchantReferralOnboard() {
         // </ThemeContext.Provider>
     )
 }
-export default MerchantReferralOnboard
+export default BankMerchantOnboard
