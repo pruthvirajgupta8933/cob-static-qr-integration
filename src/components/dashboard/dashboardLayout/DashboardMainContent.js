@@ -74,6 +74,7 @@ import HandleResponseModal from "../../../subscription_components/Create_Mandate
 import AuthorizedRoute from "../../../ProtectedRoutes/AuthorizedRoute";
 import MerchantReferralOnboard
     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
+import BankMerchantOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
 
 
 function DashboardMainContent() {
@@ -494,6 +495,13 @@ function DashboardMainContent() {
                             <AuthorizedRoute
                                 exact
                                 path={`${path}/bank-onboarding`}
+                                Component={BankMerchantOnboard}
+                                roleList={{bank: true}}
+                            />
+
+                            <AuthorizedRoute
+                                exact
+                                path={`${path}/referral-onboarding`}
                                 Component={MerchantReferralOnboard}
                                 roleList={{approver: true}}
                             />
