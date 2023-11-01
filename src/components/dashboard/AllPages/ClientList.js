@@ -209,7 +209,6 @@ function ClientList() {
 
 
     };
-    
     const searchByText = (text) => {
         setData(
             clientListData?.filter((item) =>

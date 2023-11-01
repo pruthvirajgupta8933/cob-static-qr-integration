@@ -76,7 +76,7 @@ function BankRefMerchantList() {
         },
         {
             id: "7",
-            name: "Qwick Form",
+            name: "QwikForm",
 
             cell: (row) => (
                 <div className="d-flex justify-content-between w-100">
