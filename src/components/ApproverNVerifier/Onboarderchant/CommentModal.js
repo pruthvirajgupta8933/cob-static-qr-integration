@@ -20,8 +20,6 @@ const CommentModal = (props) => {
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
 
-  // console.log(props,"Comment Modal Props")
-
   const initialValues = {
     comments: "",
   };

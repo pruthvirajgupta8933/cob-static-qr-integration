@@ -137,11 +137,6 @@ function BankRefMerchantList() {
     };
 
 
-    const qwickFormHandler = ()=>{
-            console.log("fn call")
-    }
-
-
     //  const { user } = useSelector((state) => state.auth);
     const roleBasePermissions = roleBasedAccess();
 
