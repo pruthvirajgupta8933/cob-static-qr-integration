@@ -45,7 +45,7 @@ export const roleBasedAccess = () => {
         // b2b - emammi
         roleAccessObj = {...roleAccessObj, b2b: true};
     } else if (roleId === 101) {
-        // b2b - emammi
+        // accountManager
         roleAccessObj = {...roleAccessObj, accountManager: true};
     } else {
         // console.log("Permission not match with these roles");
