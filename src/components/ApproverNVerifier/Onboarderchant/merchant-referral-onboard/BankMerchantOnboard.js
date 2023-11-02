@@ -7,8 +7,6 @@ import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard
 
 function BankMerchantOnboard() {
     const [currentTab, setCurrentTab] = useState(1)
-    // const MroContext = createContext(null)
-    // const ThemeContext = createContext(null);
     const handleTabClick = (currenTab) => {
       setCurrentTab(currenTab)
     };

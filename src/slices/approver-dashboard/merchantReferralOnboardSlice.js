@@ -8,10 +8,8 @@ import {
 
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
-
-
+ 
 const sessionDataI = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
-
 const initialState = {
     merchantOnboardingProcess: {
         isOnboardStart: sessionDataI?.isOnboardStart ?? false,
@@ -23,7 +21,7 @@ const initialState = {
         resp: {}
     },
     bankDetails: {
-        resp: {}
+        resp: {} 
     },
     businessDetails: {
         resp: {}
@@ -32,7 +30,7 @@ const initialState = {
         resp: {}
     },
 
-  refrerChiledList: {
+    refrerChiledList: {
     resp: {}
     },
     referral: {}
@@ -78,10 +76,6 @@ export const businessDetailsSlice = createAsyncThunk(
     }
 );
 
-
-
-
-
 export const fetchChiledDataList = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/fetchChiledDataList",
     async (data) => {
@@ -97,7 +91,6 @@ export const fetchChiledDataList = createAsyncThunk(
         if(refrerType==="referrer"){
             param = `&referrer_login_id=${login_id}`
         }
-// type=referrer&referrer_login_id=10858
         const response = await axiosInstanceJWT
             .get(
                 `${API_URL.fetchReferralChild}?page=${requestParam}&page_size=${requestParam1}&type=${refrerType}${param}`)
@@ -178,8 +171,6 @@ export const merchantReferralOnboardSlice = createSlice({
                 state.loading = 'loading';
             })
             .addCase(fetchChiledDataList.fulfilled, (state, action) => {
-
-                console.log("action",action.payload)
                 state.refrerChiledList.resp = action.payload;
             })
             .addCase(fetchChiledDataList.rejected, (state, action) => {

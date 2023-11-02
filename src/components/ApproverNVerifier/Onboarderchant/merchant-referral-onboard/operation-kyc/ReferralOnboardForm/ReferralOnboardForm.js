@@ -66,6 +66,12 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             }).nullable()
     });
 
+    const togglePassword = () => {
+        setPasswordType({
+            ...passwordType, showPasswords: !passwordType.showPasswords,
+        });
+    };
+
 
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
@@ -210,15 +216,37 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                             />
                         </div>
                         {referralChild===true &&
-                        <div className="col-lg-6">
+                        // <div className="col-lg-6">
+                        //     <FormikController
+                        //         control="input"
+                        //         type="password"
+                        //         name="password"
+                        //         className="form-control"
+                        //         label="Password"
+                        //     />
+                        // </div>
+                        <div className="col-md-6">
+                        <label>Create Password</label>
+                        <div className="input-group">
                             <FormikController
                                 control="input"
-                                type="password"
+                                type={passwordType.showPasswords ? "text" : "password"}
                                 name="password"
                                 className="form-control"
-                                label="Password"
+                                displayMsgOutside={true}
                             />
-                        </div>}
+                            <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
+                                        {passwordType.showPasswords ? (
+                                            <i className="fa fa-eye" aria-hidden="true"></i>) : (
+                                            <i className="fa fa-eye-slash" aria-hidden="true"></i>)}
+                                    </span>
+                        </div>
+                        <ErrorMessage name={"password"}>{msg => <p
+                            className="text-danger m-0">{msg}</p>}</ErrorMessage>
+                    </div>
+                        
+                        
+                        }
                     </div>
                     <div className="row g-3">
                         <div className="col-6">

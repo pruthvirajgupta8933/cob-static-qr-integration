@@ -76,7 +76,7 @@ function BankRefMerchantList() {
         },
         {
             id: "7",
-            name: "Qwick Form",
+            name: "QwikForm",
 
             cell: (row) => (
                 <div className="d-flex justify-content-between w-100">
@@ -135,11 +135,6 @@ function BankRefMerchantList() {
             }
         }).catch(error => toastConfig.errorToast(error.response?.data?.detail))
     };
-
-
-    const qwickFormHandler = ()=>{
-            console.log("fn call")
-    }
 
 
     //  const { user } = useSelector((state) => state.auth);

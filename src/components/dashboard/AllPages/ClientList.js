@@ -285,8 +285,8 @@ function ClientList() {
                     <section className="">
                         <div className="container">
                             <div className="row mt-4">
-
-                                <div className='row'>
+                                {data.length===0 ? ""  : (
+                                 <div className='row'>
                                     <div className="col-lg-3 p-0 mr-3">
                                         <SearchFilter
                                             kycSearch={kycSearch}
@@ -309,6 +309,7 @@ function ClientList() {
                                     </div>
 
                                 </div>
+                                )}
 
                                 <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
                                     <div><h6>Number of Record: {dataCount}</h6></div>
