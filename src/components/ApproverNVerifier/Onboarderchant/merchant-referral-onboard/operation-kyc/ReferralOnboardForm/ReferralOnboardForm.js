@@ -75,6 +75,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
 
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
+      
         const {
             fullName, mobileNumber, email_id,password
         } = value
@@ -100,72 +101,15 @@ function ReferralOnboardForm({referralChild,fetchData}) {
 
         await addReferralService(postData, referralChild).then((resp) => {
            
-
             toastConfig.successToast(resp?.data?.message)
-
             fetchData()
             setSubmitLoader(false)
-            // fn call
-            // const loginMasterId = resp?.data?.data?.loginMasterId
-            // const clientFullName = resp?.data?.data?.name
-            // const clientMobileNo = resp?.data?.data?.mobileNumber
-            // const clientFullName = merchantKycData?.name
-            // const clientMobileNo = merchantKycData?.contactNumber
-            // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-            // dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
-            //     let newClientCode = ""
-            //     // if client code available return status true, then make request with the given client
-            //     if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-            //         newClientCode = res?.payload?.clientCode
-                   
-            //     } else {
-            //         newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-            //     }
-            //     // update new client code
-            //     const data = {
-            //         loginId: loginMasterId,
-            //         clientName: clientFullName,
-            //         clientCode: newClientCode,
-            //     };
-
-            //     dispatch(createClientProfile(data)).then(clientProfileRes => {
-            //         // after create the client update the subscribe product
-            //         console.log("clientProfileRes", clientProfileRes)
-            //         setSubmitLoader(false)
-            //     }).catch(err => {
-            //         console.log(err)
-            //         setSubmitLoader(false)
-            //     });
-            // })
-
+            
 
         }).catch(err => {
             toastConfig.errorToast(err.response.data.detail)
             setSubmitLoader(false)
         })
-
-        // dispatch(saveMerchantBasicDetails({
-        //     name: fullName,
-        //     mobileNumber: mobileNumber,
-        //     email: email_id,
-        //     isDirect: false,
-        //     created_by: auth?.user?.loginId,
-        //     updated_by: auth?.user?.loginId
-        // })).then((resp) => {
-        //     setSubmitLoader(false)
-        //     if (resp?.error?.message) {
-        //         toastConfig.errorToast(resp?.error?.message)
-        //         toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
-        //     }
-        //
-        //     if (resp?.payload?.status === true) {
-        //         toastConfig.successToast(resp?.payload?.message)
-        //     }
-        // }).catch(err => {
-        //     toastConfig.errorToast("Something went wrong!")
-        //     setSubmitLoader(false)
-        // })
-
 
     }
 
@@ -187,7 +131,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                       values, setFieldValue, errors, setFieldError
                   }) => (<Form>
                     <div className="row g-3">
-                        <div className="col-lg-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
@@ -197,7 +141,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                             />
                         </div>
 
-                        <div className="col-lg-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
@@ -206,7 +150,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 label="Contact Number"
                             />
                         </div>
-                        <div className="col-lg-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="email"
@@ -225,7 +169,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                         //         label="Password"
                         //     />
                         // </div>
-                        <div className="col-md-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                         <label>Create Password</label>
                         <div className="input-group">
                             <FormikController
