@@ -84,12 +84,27 @@ function ClientList() {
         {
             key: "email",
             // id: "3",P
-            name: "User Name",
-            selector: (row) => row?.name,
+            name: "Email",
+            selector: (row) => row?.email,
             sortable: true,
             cell: (row) => (
                 <div className="removeWhiteSpace">
                     {row?.email}
+                </div>
+            ),
+            width: "200px",
+        },
+
+
+        {
+            key: "User Name",
+            // id: "3",P
+            name: "username",
+            selector: (row) => row?.username,
+            sortable: true,
+            cell: (row) => (
+                <div className="removeWhiteSpace">
+                    {row?.username}
                 </div>
             ),
             width: "200px",
