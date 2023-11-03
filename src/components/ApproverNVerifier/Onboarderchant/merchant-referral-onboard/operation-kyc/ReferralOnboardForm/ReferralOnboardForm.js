@@ -97,7 +97,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
 
 
     const handleSubmitContact = async (value) => {
-        setSubmitLoader(true)
+         setSubmitLoader(true)
       
         const {
             fullName, mobileNumber, email_id,password
