@@ -227,8 +227,6 @@ function ClientList() {
     }, []);
 
     const fetchData = () => {
-
-   
         // Determine the type based on the result of roleBasedAccess()
         const roleType = roleBasedAccess();
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
@@ -238,11 +236,8 @@ function ClientList() {
             type: type,  // Set the type based on roleType
             login_id: auth?.user?.loginId
         }
-      
         //  console.log(postObj)
         dispatch(fetchChiledDataList(postObj));
-
-
     };
 
     const changeCurrentPage = (page) => {
