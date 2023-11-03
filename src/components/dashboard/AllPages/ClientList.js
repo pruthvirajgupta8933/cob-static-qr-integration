@@ -97,9 +97,9 @@ function ClientList() {
 
 
         {
-            key: "User Name",
+            key: "username",
             // id: "3",P
-            name: "username",
+            name: "User Name",
             selector: (row) => row?.username,
             sortable: true,
             cell: (row) => (
