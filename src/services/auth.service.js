@@ -108,10 +108,16 @@ const checkPermission = (object) => {
   return axiosInstance.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
 }
 
+
+const emailVerification = async (loginId)=>{
+  return axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
+}
+
 const authService = {
   register,
   login,
   logout,
+  emailVerification,
   // sendEmail,
   createClintCode,
   // updateClientProfile,

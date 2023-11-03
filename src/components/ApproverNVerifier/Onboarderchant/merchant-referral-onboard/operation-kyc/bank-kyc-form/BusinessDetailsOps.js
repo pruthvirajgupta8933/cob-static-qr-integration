@@ -30,9 +30,10 @@ function BusinessDetailsOps({setCurrentTab}) {
     }
 
     const validationSchema = Yup.object({
-        pan_card: Yup.string().required(),
-        website: Yup.string().required(),
-        is_pan_verified:Yup.string().required("Pan verification is Required")
+        pan_card: Yup.string().nullable(),
+        website: Yup.string().nullable(),
+        is_pan_verified:Yup.string().nullable()
+            // .required("Pan verification is Required")
     })
 
     const handleSubmit = (value) => {

@@ -13,8 +13,11 @@ import {kycDetailsByMerchantLoginId} from "../../../../../../slices/kycSlice";
 import {generateWord} from "../../../../../../utilities/generateClientCode";
 import {checkClientCodeSlice, createClientProfile} from "../../../../../../slices/auth";
 import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
+// import authService from
+import authService from "../../../../../../services/auth.service";
+import AuthService from "../../../../../../services/auth.service";
 
-function ReferralOnboardForm({referralChild,fetchData}) {
+function ReferralOnboardForm({referralChild, fetchData}) {
     const dispatch = useDispatch()
     // const theme = useContext("MroContext")
     // const theme = useContext(ThemeContext);
@@ -26,15 +29,38 @@ function ReferralOnboardForm({referralChild,fetchData}) {
     const [businessTypeData, setBusinessTypeData] = useState([]);
     const [passwordType, setPasswordType] = useState({showPasswords: false});
     const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
-    // const {merchantKycData} = kyc
+    const {merchantKycData} = kyc
     const {merchantBasicDetails, merchantOnboardingProcess} = merchantReferralOnboardReducer
+
+    const generateRandomPassword = () => {
+        const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+        const numberChars = '0123456789';
+        const specialChars = '@';
+        const passwordLength = 8;
+        let password = '';
+        password += upperChars.charAt(Math.floor(Math.random() * upperChars.length));  // For uppercase letter
+        password += lowerChars.charAt(Math.floor(Math.random() * lowerChars.length));   // For lowercase letter
+        password += numberChars.charAt(Math.floor(Math.random() * numberChars.length));  // For exactly one number
+        password += specialChars.charAt(Math.floor(Math.random() * specialChars.length)); // Ensure exactly one special character
+        for (let i = password.length; i < passwordLength; i++) {
+            const randomChars = upperChars + lowerChars + numberChars + specialChars;
+            const randomIndex = Math.floor(Math.random() * randomChars.length);
+            password += randomChars.charAt(randomIndex);
+        }
+        password = password.split('').sort(() => Math.random() - 0.5).join('');
+
+        return password;
+    };
+
 
     const initialValues = {
         fullName: "",
         mobileNumber: "",
         email_id: "",
-        password:"",
-        isPasswordReq: referralChild 
+        username: "",
+        password: generateRandomPassword(),
+        isPasswordReq: referralChild
     };
 
 
@@ -43,6 +69,11 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             .trim()
             .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
             .required("Required").wordLength("Word character length exceeded", 100)
+            .max(100, "Maximum 100 characters are allowed")
+            .nullable(),
+        username: Yup.string()
+            .trim()
+            .required("Required")
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
         mobileNumber: Yup.string()
@@ -57,13 +88,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             .email("Invalid email")
             .required("Required")
             .nullable(),
-
-           password:Yup.string()
-            .trim()
-            .when("isPasswordReq", {
-                is:true,
-                then:Yup.string().required("Required")
-            }).nullable()
+        password: Yup.string(),
     });
 
     const togglePassword = () => {
@@ -73,98 +98,79 @@ function ReferralOnboardForm({referralChild,fetchData}) {
     };
 
 
-    const handleSubmitContact = async (value) => {
-        setSubmitLoader(true)
-        const {
-            fullName, mobileNumber, email_id,password
-        } = value
+    const handleSubmitContact = async (value, resetForm) => {
+        try {
+            setSubmitLoader(true)
+            const {fullName, mobileNumber, email_id, password, username} = value
+            let postData = {}
+            if (referralChild === true) {
+                postData = {
+                    name: fullName,
+                    email: email_id,
+                    phone: mobileNumber,
+                    password: password,
+                    username: username,
+                    referrer_login_id: auth?.user?.loginId
+                }
 
-        let postData = {}
-        if(referralChild===true){
-            postData ={
-                name: fullName,
-                email: email_id,
-                phone: mobileNumber,
-                password: password,
-                referrer_login_id: auth?.user?.loginId
+            } else {
+                postData = {
+                    referrer_name: fullName,
+                    referrer_email: email_id,
+                    referrer_phone: mobileNumber,
+                    created_by: auth?.user?.loginId
+                }
             }
 
-        }else{
-            postData = {
-                referrer_name: fullName,
-                referrer_email: email_id,
-                referrer_phone: mobileNumber,
-                created_by: auth?.user?.loginId
+            const resp1 = await addReferralService(postData, referralChild);
+            // console.log("resp1",resp1)
+            resp1?.data?.status && toastConfig.successToast("Data Saved")
+            // create user
+            const refLoginId = resp1?.data?.data?.loginMasterId
+            // user account activation
+            const resp2 = await authService.emailVerification(refLoginId)
+            // const resp
+            resp2?.data && toastConfig.successToast("Account Activate")
+            if (merchantKycData?.clientCode === null || merchantKycData?.clientCode === undefined) {
+                // console.log("1.4")
+                const clientFullName = fullName
+                const clientMobileNo = mobileNumber
+                const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+
+                // check client code is existing
+                const resp3 = await AuthService.checkClintCode({"client_code": arrayOfClientCode})
+                let newClientCode
+                // if client code available return status true, then make request with the given client
+                if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {
+                    newClientCode = resp3?.data?.clientCode
+                } else {
+                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+                }
+
+                const data = {
+                    loginId: refLoginId,
+                    clientName: merchantKycData?.name,
+                    clientCode: newClientCode,
+                };
+                // console.log(3)
+                await dispatch(createClientProfile(data)).then(clientProfileRes => {
+                    toastConfig.successToast("Client Code Created")
+                    setSubmitLoader(false)
+                    // after create the client update the subscribe product
+                    // console.log("clientProfileRes", clientProfileRes)
+                }).catch(err => {
+                    toastConfig.errorToast("Error : Client Code not Create")
+                    setSubmitLoader(false)
+                });
+
+                if (referralChild) {
+                    await fetchData()
+                }
             }
+        } catch (error) {
+            console.log("catch-error", error.response)
+            setSubmitLoader(false)
         }
-
-        await addReferralService(postData, referralChild).then((resp) => {
-           
-
-            toastConfig.successToast(resp?.data?.message)
-
-            fetchData()
-            setSubmitLoader(false)
-            // fn call
-            // const loginMasterId = resp?.data?.data?.loginMasterId
-            // const clientFullName = resp?.data?.data?.name
-            // const clientMobileNo = resp?.data?.data?.mobileNumber
-            // const clientFullName = merchantKycData?.name
-            // const clientMobileNo = merchantKycData?.contactNumber
-            // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-            // dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
-            //     let newClientCode = ""
-            //     // if client code available return status true, then make request with the given client
-            //     if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-            //         newClientCode = res?.payload?.clientCode
-                   
-            //     } else {
-            //         newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-            //     }
-            //     // update new client code
-            //     const data = {
-            //         loginId: loginMasterId,
-            //         clientName: clientFullName,
-            //         clientCode: newClientCode,
-            //     };
-
-            //     dispatch(createClientProfile(data)).then(clientProfileRes => {
-            //         // after create the client update the subscribe product
-            //         console.log("clientProfileRes", clientProfileRes)
-            //         setSubmitLoader(false)
-            //     }).catch(err => {
-            //         console.log(err)
-            //         setSubmitLoader(false)
-            //     });
-            // })
-
-
-        }).catch(err => {
-            toastConfig.errorToast(err.response.data.detail)
-            setSubmitLoader(false)
-        })
-
-        // dispatch(saveMerchantBasicDetails({
-        //     name: fullName,
-        //     mobileNumber: mobileNumber,
-        //     email: email_id,
-        //     isDirect: false,
-        //     created_by: auth?.user?.loginId,
-        //     updated_by: auth?.user?.loginId
-        // })).then((resp) => {
-        //     setSubmitLoader(false)
-        //     if (resp?.error?.message) {
-        //         toastConfig.errorToast(resp?.error?.message)
-        //         toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
-        //     }
-        //
-        //     if (resp?.payload?.status === true) {
-        //         toastConfig.successToast(resp?.payload?.message)
-        //     }
-        // }).catch(err => {
-        //     toastConfig.errorToast("Something went wrong!")
-        //     setSubmitLoader(false)
-        // })
 
 
     }
@@ -176,18 +182,18 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                // onSubmit={handleSubmitContact}
-                onSubmit={async (values, {resetForm}) => {
-                    await handleSubmitContact(values)
-                    resetForm()
-                }}
+                onSubmit={(values) => handleSubmitContact(values)}
+                // onSubmit={async (values, {resetForm}) => {
+                //     await handleSubmitContact(values)
+                //
+                // }}
                 enableReinitialize={true}
             >
                 {({
                       values, setFieldValue, errors, setFieldError
                   }) => (<Form>
                     <div className="row g-3">
-                        <div className="col-lg-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
@@ -197,7 +203,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                             />
                         </div>
 
-                        <div className="col-lg-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
@@ -206,7 +212,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 label="Contact Number"
                             />
                         </div>
-                        <div className="col-lg-6">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="email"
@@ -215,37 +221,16 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 label="Email ID"
                             />
                         </div>
-                        {referralChild===true &&
-                        // <div className="col-lg-6">
-                        //     <FormikController
-                        //         control="input"
-                        //         type="password"
-                        //         name="password"
-                        //         className="form-control"
-                        //         label="Password"
-                        //     />
-                        // </div>
-                        <div className="col-md-6">
-                        <label>Create Password</label>
-                        <div className="input-group">
-                            <FormikController
-                                control="input"
-                                type={passwordType.showPasswords ? "text" : "password"}
-                                name="password"
-                                className="form-control"
-                                displayMsgOutside={true}
-                            />
-                            <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
-                                        {passwordType.showPasswords ? (
-                                            <i className="fa fa-eye" aria-hidden="true"></i>) : (
-                                            <i className="fa fa-eye-slash" aria-hidden="true"></i>)}
-                                    </span>
-                        </div>
-                        <ErrorMessage name={"password"}>{msg => <p
-                            className="text-danger m-0">{msg}</p>}</ErrorMessage>
-                    </div>
-                        
-                        
+                        {referralChild === true &&
+                            <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="username"
+                                    className="form-control"
+                                    label="Username"
+                                />
+                            </div>
                         }
                     </div>
                     <div className="row g-3">
