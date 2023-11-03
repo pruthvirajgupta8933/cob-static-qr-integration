@@ -29,11 +29,33 @@ function ReferralOnboardForm({referralChild,fetchData}) {
     // const {merchantKycData} = kyc
     const {merchantBasicDetails, merchantOnboardingProcess} = merchantReferralOnboardReducer
 
+    const generateRandomPassword = () => {
+        const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+        const numberChars = '0123456789';
+        const specialChars = '@';
+        const passwordLength = 8;
+        let password = '';
+       password += upperChars.charAt(Math.floor(Math.random() * upperChars.length));  // For uppercase letter
+      password += lowerChars.charAt(Math.floor(Math.random() * lowerChars.length));   // For lowercase letter
+     password += numberChars.charAt(Math.floor(Math.random() * numberChars.length));  // For exactly one number
+      password += specialChars.charAt(Math.floor(Math.random() * specialChars.length)); // Ensure exactly one special character
+      for (let i = password.length; i < passwordLength; i++) {
+          const randomChars = upperChars + lowerChars + numberChars + specialChars;
+          const randomIndex = Math.floor(Math.random() * randomChars.length);
+          password += randomChars.charAt(randomIndex);
+        }
+      password = password.split('').sort(() => Math.random() - 0.5).join('');
+      
+        return password;
+      };
+      
+
     const initialValues = {
         fullName: "",
         mobileNumber: "",
         email_id: "",
-        password:"",
+        password:generateRandomPassword(),
         isPasswordReq: referralChild 
     };
 
@@ -57,13 +79,14 @@ function ReferralOnboardForm({referralChild,fetchData}) {
             .email("Invalid email")
             .required("Required")
             .nullable(),
+            password:Yup.string(),
 
-           password:Yup.string()
-            .trim()
-            .when("isPasswordReq", {
-                is:true,
-                then:Yup.string().required("Required")
-            }).nullable()
+        //    password:Yup.string()
+        //     .trim()
+        //     .when("isPasswordReq", {
+        //         is:true,
+        //         then:Yup.string().required("Required")
+        //     }).nullable()
     });
 
     const togglePassword = () => {
@@ -131,7 +154,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                       values, setFieldValue, errors, setFieldError
                   }) => (<Form>
                     <div className="row g-3">
-                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                        <div className="col-lg-4">
                             <FormikController
                                 control="input"
                                 type="text"
@@ -141,7 +164,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                             />
                         </div>
 
-                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                        <div className="col-lg-4">
                             <FormikController
                                 control="input"
                                 type="text"
@@ -150,7 +173,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 label="Contact Number"
                             />
                         </div>
-                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                        <div className="col-lg-4">
                             <FormikController
                                 control="input"
                                 type="email"
@@ -159,16 +182,8 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                                 label="Email ID"
                             />
                         </div>
-                        {referralChild===true &&
-                        // <div className="col-lg-6">
-                        //     <FormikController
-                        //         control="input"
-                        //         type="password"
-                        //         name="password"
-                        //         className="form-control"
-                        //         label="Password"
-                        //     />
-                        // </div>
+                        {/* {referralChild===true &&
+                       
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                         <label>Create Password</label>
                         <div className="input-group">
@@ -190,7 +205,7 @@ function ReferralOnboardForm({referralChild,fetchData}) {
                     </div>
                         
                         
-                        }
+                        } */}
                     </div>
                     <div className="row g-3">
                         <div className="col-6">
