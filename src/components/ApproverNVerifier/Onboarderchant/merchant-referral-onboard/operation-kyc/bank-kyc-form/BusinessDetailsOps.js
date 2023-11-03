@@ -30,9 +30,10 @@ function BusinessDetailsOps({setCurrentTab}) {
     }
 
     const validationSchema = Yup.object({
-        pan_card: Yup.string().required(),
-        website: Yup.string().required(),
-        is_pan_verified:Yup.string().required("Pan verification is Required")
+        pan_card: Yup.string().nullable(),
+        website: Yup.string().nullable(),
+        is_pan_verified:Yup.string().nullable()
+            // .required("Pan verification is Required")
     })
 
     const handleSubmit = (value) => {
@@ -132,7 +133,7 @@ function BusinessDetailsOps({setCurrentTab}) {
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label mt-0 py-1">
-                                    PAN <span className="text-danger">*</span>
+                                    PAN <span className="text-danger"></span>
                                 </label>
                                 <div className="input-group">
                                     <Field

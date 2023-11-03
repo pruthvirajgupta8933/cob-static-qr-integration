@@ -107,7 +107,12 @@ export const merchantReferralOnboardSlice = createSlice({
     name: "merchantReferralOnboardSlice",
     initialState,
     reducers: {
-        resetStateMfo: () => initialState,
+      resetStateMfo: (state) => {
+            state.merchantBasicDetails.resp = {};
+            state.bankDetails.resp = {};
+            state.businessDetails.resp = {};
+            state.documentCenter.resp = {};
+          },
         clearErrorMerchantReferralOnboardSlice : (state)=>{
             state.merchantBasicDetails.resp.error = false
             state.bankDetails.resp.error = false

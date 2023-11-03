@@ -84,12 +84,27 @@ function ClientList() {
         {
             key: "email",
             // id: "3",P
-            name: "User Name",
-            selector: (row) => row?.name,
+            name: "Email",
+            selector: (row) => row?.email,
             sortable: true,
             cell: (row) => (
                 <div className="removeWhiteSpace">
                     {row?.email}
+                </div>
+            ),
+            width: "200px",
+        },
+
+
+        {
+            key: "User Name",
+            // id: "3",P
+            name: "username",
+            selector: (row) => row?.username,
+            sortable: true,
+            cell: (row) => (
+                <div className="removeWhiteSpace">
+                    {row?.username}
                 </div>
             ),
             width: "200px",
@@ -227,8 +242,6 @@ function ClientList() {
     }, []);
 
     const fetchData = () => {
-
-   
         // Determine the type based on the result of roleBasedAccess()
         const roleType = roleBasedAccess();
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
@@ -238,11 +251,8 @@ function ClientList() {
             type: type,  // Set the type based on roleType
             login_id: auth?.user?.loginId
         }
-      
         //  console.log(postObj)
         dispatch(fetchChiledDataList(postObj));
-
-
     };
 
     const changeCurrentPage = (page) => {

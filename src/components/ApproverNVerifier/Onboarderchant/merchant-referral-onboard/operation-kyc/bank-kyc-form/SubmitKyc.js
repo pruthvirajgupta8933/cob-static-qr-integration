@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {toast} from "react-toastify";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import React, { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {useHistory} from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import {
     kycDetailsByMerchantLoginId,
     // kycUserList,
@@ -12,9 +12,10 @@ import {
     // UpdateModalStatus
 } from "../../../../../../slices/kycSlice";
 // import {isNull, toLower} from "lodash";
-import {checkClientCodeSlice, createClientProfile} from "../../../../../../slices/auth";
-import {generateWord} from "../../../../../../utilities/generateClientCode";
-import {resetStateMfo} from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
+import { generateWord } from "../../../../../../utilities/generateClientCode";
+import { resetStateMfo } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+
 // resetStateMfo
 // import {resetState} from "react-modal/lib/helpers/bodyTrap";
 
@@ -24,17 +25,17 @@ function SubmitKyc() {
     const dispatch = useDispatch();
 
 
-    const {auth, kyc, merchantReferralOnboardReducer} = useSelector((state) => state);
-    const {merchantKycData} = kyc
+    const { auth, kyc, merchantReferralOnboardReducer } = useSelector((state) => state);
+    const { merchantKycData } = kyc
     // const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
 
 
-    const {user} = auth;
-    const {loginId} = user;
-    const {compareDocListArray, KycDocUpload} = kyc;
+    const { user } = auth;
+    const { loginId } = user;
+    const { compareDocListArray, KycDocUpload } = kyc;
     // console.log("kycUserList", kyc?.kycUserList)
-    const {dropDownDocList, finalArray} = compareDocListArray
+    const { dropDownDocList, finalArray } = compareDocListArray
     const merchant_consent = merchantKycData?.merchant_consent?.term_condition;
     const kyc_status = merchantKycData?.status;
 
@@ -51,7 +52,7 @@ function SubmitKyc() {
 
     useEffect(() => {
         if (merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({login_id: merchantLoginId}))
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
         }
     }, [merchantLoginId]);
 
@@ -65,7 +66,7 @@ function SubmitKyc() {
             const clientFullName = merchantKycData?.name
             const clientMobileNo = merchantKycData?.contactNumber
             const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-            dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
+            dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
                 let newClientCode = ""
                 // if client code available return status true, then make request with the given client
                 if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
@@ -81,6 +82,7 @@ function SubmitKyc() {
                 };
 
                 dispatch(createClientProfile(data)).then(clientProfileRes => {
+                    console.log("clientProfileRes", clientProfileRes)
                     // after create the client update the subscribe product
                     // console.log("clientProfileRes", clientProfileRes)
                 }).catch(err => console.log(err));
@@ -95,9 +97,10 @@ function SubmitKyc() {
                 toast.success(res?.payload?.message);
                 setIsDisable(false);
                 // reset the state
-                sessionStorage.removeItem("onboardingStatusByAdmin")
-                dispatch(resetStateMfo())
-                // dispatch(resetState())
+                console.log('Before resetting state');
+                sessionStorage.removeItem("onboardingStatusByAdmin");
+                dispatch(resetStateMfo());
+
             } else {
                 toast.error(res?.payload?.detail);
                 setIsDisable(false);
@@ -132,8 +135,8 @@ function SubmitKyc() {
                                     target="_blank"
                                     title="Term & Conditions"
                                 >
-                      Terms & Conditions
-                    </a>,{" "}
+                                    Terms & Conditions
+                                </a>,{" "}
                                 <a
                                     href="https://sabpaisa.in/privacy-policy/"
                                     alt="Privacy Policy"
@@ -142,20 +145,20 @@ function SubmitKyc() {
                                     rel="noreferrer"
                                     className="text-decoration-none text-primary"
                                 >
-                      Privacy Policy
-                    </a>
-                    ,
-                    <a
-                        href="https://sabpaisa.in/service-agreement"
-                        alt="Service Agreement"
-                        target="_blank"
-                        title="Service Agreement"
-                        rel="noreferrer"
-                        className="text-decoration-none text-primary"
-                    >&nbsp;Service Agreement.
-                    </a>&nbsp;By submitting the form, I agree to abide by the rules at
-                    all times.
-                  </span>
+                                    Privacy Policy
+                                </a>
+                                ,
+                                <a
+                                    href="https://sabpaisa.in/service-agreement"
+                                    alt="Service Agreement"
+                                    target="_blank"
+                                    title="Service Agreement"
+                                    rel="noreferrer"
+                                    className="text-decoration-none text-primary"
+                                >&nbsp;Service Agreement.
+                                </a>&nbsp;By submitting the form, I agree to abide by the rules at
+                                all times.
+                            </span>
                         </div>
                         <div className="col-lg-11 para-style2 ">
 
@@ -167,8 +170,8 @@ function SubmitKyc() {
                 </div>
 
 
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div className="row">
                     <div className="col-12">
                         <button
@@ -178,8 +181,8 @@ function SubmitKyc() {
 
                         >
                             {disable && <>
-                                        <span className="spinner-border spinner-border-sm" role="status"
-                                              aria-hidden="true"/>
+                                <span className="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true" />
                                 <span className="sr-only">Loading...</span>
                             </>}
                             Submit
@@ -187,8 +190,8 @@ function SubmitKyc() {
 
                     </div>
                 </div>
-                <br/>
-                <br/>
+                <br />
+                <br />
 
             </Form>)}
         </Formik>
