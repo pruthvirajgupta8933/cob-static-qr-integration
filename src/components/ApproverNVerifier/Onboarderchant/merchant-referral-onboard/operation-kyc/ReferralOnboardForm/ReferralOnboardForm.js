@@ -15,6 +15,7 @@ import {checkClientCodeSlice, createClientProfile} from "../../../../../../slice
 import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 // import authService from
 import authService from "../../../../../../services/auth.service";
+import AuthService from "../../../../../../services/auth.service";
 
 function ReferralOnboardForm({referralChild, fetchData}) {
     const dispatch = useDispatch()
@@ -57,6 +58,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
         fullName: "",
         mobileNumber: "",
         email_id: "",
+        username: "",
         password: generateRandomPassword(),
         isPasswordReq: referralChild
     };
@@ -67,6 +69,11 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             .trim()
             .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
             .required("Required").wordLength("Word character length exceeded", 100)
+            .max(100, "Maximum 100 characters are allowed")
+            .nullable(),
+        username: Yup.string()
+            .trim()
+            .required("Required")
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
         mobileNumber: Yup.string()
@@ -81,7 +88,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             .email("Invalid email")
             .required("Required")
             .nullable(),
-        password: Yup.string()
+        password: Yup.string(),
     });
 
     const togglePassword = () => {
@@ -91,104 +98,83 @@ function ReferralOnboardForm({referralChild, fetchData}) {
     };
 
 
-
-
     const handleSubmitContact = async (value, resetForm) => {
-        setSubmitLoader(true)
-        console.log(1)
+        try {
+            setSubmitLoader(true)
+            const {fullName, mobileNumber, email_id, password, username} = value
+            let postData = {}
+            if (referralChild === true) {
+                postData = {
+                    name: fullName,
+                    email: email_id,
+                    phone: mobileNumber,
+                    password: password,
+                    username: username,
+                    referrer_login_id: auth?.user?.loginId
+                }
 
-        const {
-            fullName, mobileNumber, email_id, password
-        } = value
-
-        let postData = {}
-        if (referralChild === true) {
-            postData = {
-                name: fullName,
-                email: email_id,
-                phone: mobileNumber,
-                password: password,
-                referrer_login_id: auth?.user?.loginId
+            } else {
+                postData = {
+                    referrer_name: fullName,
+                    referrer_email: email_id,
+                    referrer_phone: mobileNumber,
+                    created_by: auth?.user?.loginId
+                }
             }
 
-        } else {
-            postData = {
-                referrer_name: fullName,
-                referrer_email: email_id,
-                referrer_phone: mobileNumber,
-                created_by: auth?.user?.loginId
+            const resp1 = await addReferralService(postData, referralChild);
+            // console.log("resp1",resp1)
+            resp1?.data?.status && toastConfig.successToast("Data Saved")
+            // create user
+            const refLoginId = resp1?.data?.data?.loginMasterId
+            // user account activation
+            const resp2 = await authService.emailVerification(refLoginId)
+            // const resp
+            resp2?.data && toastConfig.successToast("Account Activate")
+            if (merchantKycData?.clientCode === null || merchantKycData?.clientCode === undefined) {
+                // console.log("1.4")
+                const clientFullName = fullName
+                const clientMobileNo = mobileNumber
+                const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+
+                // check client code is existing
+                const resp3 = await AuthService.checkClintCode({"client_code": arrayOfClientCode})
+                let newClientCode
+                // if client code available return status true, then make request with the given client
+                if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {
+                    newClientCode = resp3?.data?.clientCode
+                } else {
+                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+                }
+
+                const data = {
+                    loginId: refLoginId,
+                    clientName: merchantKycData?.name,
+                    clientCode: newClientCode,
+                };
+                // console.log(3)
+                await dispatch(createClientProfile(data)).then(clientProfileRes => {
+                    toastConfig.successToast("Client Code Created")
+                    setSubmitLoader(false)
+                    // after create the client update the subscribe product
+                    // console.log("clientProfileRes", clientProfileRes)
+                }).catch(err => {
+                    toastConfig.errorToast("Error : Client Code not Create")
+                    setSubmitLoader(false)
+                });
+
+                if (referralChild) {
+                    await fetchData()
+                }
             }
+        } catch (error) {
+            console.log("catch-error", error.response)
+            setSubmitLoader(false)
         }
 
-        await addReferralService(postData, referralChild).then((resp) => {
-
-            toastConfig.successToast(resp?.data?.message)
-            console.log("1.0")
-            if(referralChild){
-                fetchData()
-            }
-
-
-            console.log("1.1")
-            authService.emailVerification(auth?.user?.loginId).then(resp=>{
-                toastConfig.successToast("Account Activated")
-                console.log("1.2")
-            }).catch(err=>{
-                console.log("1.3")
-                toastConfig.errorToast("Error : Account is not activate")
-            })
-
-
-            console.log(2,merchantKycData?.clientCode)
-            console.log("merchantKycData",merchantKycData)
-            if (merchantKycData?.clientCode === null || merchantKycData?.clientCode===undefined) {
-                console.log("1.4")
-                const clientFullName = merchantKycData?.name
-                const clientMobileNo = merchantKycData?.contactNumber
-                const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-                dispatch(checkClientCodeSlice({"client_code": arrayOfClientCode})).then(res => {
-                    console.log("1.5")
-                    let newClientCode = ""
-                    // if client code available return status true, then make request with the given client
-                    if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-                        newClientCode = res?.payload?.clientCode
-                    } else {
-                        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-                    }
-                    // update new client code
-                    const data = {
-                        loginId: merchantKycData?.loginMasterId,
-                        clientName: merchantKycData?.name,
-                        clientCode: newClientCode,
-                    };
-
-                    console.log(3)
-                    dispatch(createClientProfile(data)).then(clientProfileRes => {
-                        console.log("1.6")
-                        console.log("clientProfileRes",clientProfileRes)
-                        console.log(4)
-                        toastConfig.successToast("Client Code Created")
-                        setSubmitLoader(false)
-                        // after create the client update the subscribe product
-                        // console.log("clientProfileRes", clientProfileRes)
-                    }).catch(err => console.log(err));
-                })
-
-            }
-
-
-
-
-        }).catch(err => {
-            toastConfig.errorToast(err.response.data.detail)
-            setSubmitLoader(false)
-            console.log(5)
-        })
 
     }
 
-    console.log("submitLoader",submitLoader)
-    console.log(6)
 
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
@@ -196,7 +182,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={(values)=>handleSubmitContact(values)}
+                onSubmit={(values) => handleSubmitContact(values)}
                 // onSubmit={async (values, {resetForm}) => {
                 //     await handleSubmitContact(values)
                 //
@@ -207,7 +193,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                       values, setFieldValue, errors, setFieldError
                   }) => (<Form>
                     <div className="row g-3">
-                        <div className="col-lg-4">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
@@ -217,7 +203,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                             />
                         </div>
 
-                        <div className="col-lg-4">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
@@ -226,7 +212,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 label="Contact Number"
                             />
                         </div>
-                        <div className="col-lg-4">
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="email"
@@ -235,30 +221,17 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 label="Email ID"
                             />
                         </div>
-                        {/* {referralChild===true &&
-                       
-                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
-                        <label>Create Password</label>
-                        <div className="input-group">
-                            <FormikController
-                                control="input"
-                                type={passwordType.showPasswords ? "text" : "password"}
-                                name="password"
-                                className="form-control"
-                                displayMsgOutside={true}
-                            />
-                            <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
-                                        {passwordType.showPasswords ? (
-                                            <i className="fa fa-eye" aria-hidden="true"></i>) : (
-                                            <i className="fa fa-eye-slash" aria-hidden="true"></i>)}
-                                    </span>
-                        </div>
-                        <ErrorMessage name={"password"}>{msg => <p
-                            className="text-danger m-0">{msg}</p>}</ErrorMessage>
-                    </div>
-                        
-                        
-                        } */}
+                        {referralChild === true &&
+                            <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="username"
+                                    className="form-control"
+                                    label="Username"
+                                />
+                            </div>
+                        }
                     </div>
                     <div className="row g-3">
                         <div className="col-6">
