@@ -16,14 +16,13 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
+import {fetchChiledDataList} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
 
 const RefundTransactionHistory = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { auth, dashboard } = useSelector((state) => state);
-  const { user } = auth;
 
-  const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +36,13 @@ const RefundTransactionHistory = () => {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false);
+
+  const roles = roleBasedAccess();
+  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const { user } = auth;
+  const {refrerChiledList} = merchantReferralOnboardReducer
+  const clientCodeData = refrerChiledList?.resp?.results ?? []
+  const { isLoadingTxnHistory } = dashboard;
 
   var clientMerchantDetailsList = [];
   if (
@@ -81,13 +87,27 @@ const RefundTransactionHistory = () => {
   });
 
   const clientCodeOption = convertToFormikSelectJson(
-    "clientCode",
-    "clientName",
-    clientMerchantDetailsList,
+    "client_code",
+    "name",
+      clientCodeData,
     {},
     false,
     true
   );
+
+  const fetchData = () => {
+    const roleType = roles
+    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    let postObj = {
+      type: type,  // Set the type based on roleType
+      login_id: auth?.user?.loginId
+    }
+    dispatch(fetchChiledDataList(postObj));
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   useEffect(() => {
     setTimeout(() => {

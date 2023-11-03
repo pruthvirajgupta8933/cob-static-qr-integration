@@ -71,11 +71,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-        username: Yup.string()
-            .trim()
-            .required("Required")
-            .max(100, "Maximum 100 characters are allowed")
-            .nullable(),
+        username: Yup.string(),
         mobileNumber: Yup.string()
             .trim()
             .required("Required")
@@ -185,7 +181,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                 onSubmit={(values) => handleSubmitContact(values)}
                 // onSubmit={async (values, {resetForm}) => {
                 //     await handleSubmitContact(values)
-                //
+                //     resetForm()
                 // }}
                 enableReinitialize={true}
             >
@@ -244,12 +240,6 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                     </>}
                                     Save
                                 </button>}
-                        </div>
-                    </div>
-
-                    <div className="row g-3">
-                        <div className="col-lg-12">
-
                         </div>
                     </div>
 
