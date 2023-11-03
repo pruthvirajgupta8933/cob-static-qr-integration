@@ -85,15 +85,23 @@ export const fetchChiledDataList = createAsyncThunk(
         const login_id=data?.login_id
         const refrerType=data?.type
         let param = ""
+
+        if(data?.page){
+            param += `&page_size=${data?.page_size}`
+        }
+        if(data?.page_size){
+            param += `&page=${data?.page}`
+        }
         if(refrerType==="bank"){
-            param = `&bank_login_id=${login_id}`
+            param += `&bank_login_id=${login_id}`
         }
         if(refrerType==="referrer"){
-            param = `&referrer_login_id=${login_id}`
+            param += `&referrer_login_id=${login_id}`
         }
+
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.fetchReferralChild}?page=${requestParam}&page_size=${requestParam1}&type=${refrerType}${param}`)
+                `${API_URL.fetchReferralChild}?type=${refrerType}${param}`)
             .catch((error) => {
                 return error.response;
             });
@@ -107,7 +115,12 @@ export const merchantReferralOnboardSlice = createSlice({
     name: "merchantReferralOnboardSlice",
     initialState,
     reducers: {
-        resetStateMfo: () => initialState,
+      resetStateMfo: (state) => {
+            state.merchantBasicDetails.resp = {};
+            state.bankDetails.resp = {};
+            state.businessDetails.resp = {};
+            state.documentCenter.resp = {};
+          },
         clearErrorMerchantReferralOnboardSlice : (state)=>{
             state.merchantBasicDetails.resp.error = false
             state.bankDetails.resp.error = false
