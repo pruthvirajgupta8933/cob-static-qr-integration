@@ -40,7 +40,8 @@ function BasicDetailsOps({setCurrentTab}) {
         email_id: merchantKycData?.emailId ?? "",
         business_category: merchantKycData?.businessCategory ?? "",
         business_type: merchantKycData?.businessType ?? "",
-        password: merchantBasicDetails?.resp?.password ?? ""
+        password: merchantBasicDetails?.resp?.password ?? "",
+        username: merchantBasicDetails?.resp?.username ?? ""
     };
 
 
@@ -68,13 +69,18 @@ function BasicDetailsOps({setCurrentTab}) {
         password: Yup.string()
             .required("Password Required")
             .matches(Regex.password, RegexMsg.password),
+        username: Yup.string()
+            .trim()
+            .required("Required")
+            .max(100, "Maximum 100 characters are allowed")
+            .nullable(),
     });
 
 
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
         const {
-            fullName, mobileNumber, email_id, business_category, password, business_type
+            fullName, mobileNumber, email_id, business_category, password, business_type,username
         } = value
 
         dispatch(saveMerchantBasicDetails({
@@ -84,6 +90,7 @@ function BasicDetailsOps({setCurrentTab}) {
             business_category: business_category,
             business_type: business_type,
             password: password,
+            username:username,
             isDirect: false,
             created_by: auth?.user?.loginId,
             updated_by: auth?.user?.loginId
@@ -183,10 +190,21 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="email_id"
                             className="form-control"
                             label="Email ID"
+                            autoComplete="off"
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <FormikController
+                            control="input"
+                            type="text"
+                            name="username"
+                            className="form-control"
+                            label="Username"
+                            autoComplete="off"
                         />
                     </div>
 
-                    <div className="col-sm-6 col-md-6 col-lg-6">
+                    <div className="col-sm-6 col-md-3">
                         <FormikController
                             control="select"
                             name="business_type"
@@ -196,7 +214,7 @@ function BasicDetailsOps({setCurrentTab}) {
                         />
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-md-3">
                         <FormikController
                             control="select"
                             options={businessCode}
@@ -212,6 +230,7 @@ function BasicDetailsOps({setCurrentTab}) {
                                 control="input"
                                 type={passwordType.showPasswords ? "text" : "password"}
                                 name="password"
+                                autoComplete="off"
                                 className="form-control"
                                 displayMsgOutside={true}
                             />

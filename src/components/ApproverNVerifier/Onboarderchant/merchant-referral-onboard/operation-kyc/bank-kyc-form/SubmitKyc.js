@@ -81,6 +81,7 @@ function SubmitKyc() {
                 };
 
                 dispatch(createClientProfile(data)).then(clientProfileRes => {
+                    console.log("clientProfileRes",clientProfileRes)
                     // after create the client update the subscribe product
                     // console.log("clientProfileRes", clientProfileRes)
                 }).catch(err => console.log(err));
