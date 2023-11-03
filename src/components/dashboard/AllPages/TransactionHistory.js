@@ -71,17 +71,14 @@ const TransactionHistory = () => {
 
 
     const fetchData = () => {
-        // Determine the type based on the result of roleBasedAccess()
         const roleType = roles
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
         let postObj = {
             type: type,  // Set the type based on roleType
             login_id: auth?.user?.loginId
         }
-        //  console.log(postObj)
         dispatch(fetchChiledDataList(postObj));
     };
-
     useEffect(() => {
         fetchData();
     }, []);
@@ -478,7 +475,7 @@ const TransactionHistory = () => {
                                 {(formik) => (
                                     <Form>
                                         <div className="form-row mt-5">
-                                            {roles?.bank === true && (
+                                            {(roles?.bank || roles?.referral)&& (
                                                 <div className="form-group col-lg-3">
                                                     <FormikController
                                                         control="select"

@@ -71,11 +71,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-        username: Yup.string()
-            .trim()
-            .required("Required")
-            .max(100, "Maximum 100 characters are allowed")
-            .nullable(),
+        username: Yup.string(),
         mobileNumber: Yup.string()
             .trim()
             .required("Required")
