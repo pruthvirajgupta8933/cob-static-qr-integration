@@ -156,10 +156,22 @@ const TransactionHistory = () => {
     }
 
     const forClientCode = true;
+
+    let fnKey, fnVal = ""
+    let clientCodeListArr = []
+    if (roles?.merchant === true) {
+        fnKey = "clientCode"
+        fnVal = "clientName"
+        clientCodeListArr = clientMerchantDetailsList
+    } else {
+        fnKey = "client_code"
+        fnVal = "name"
+        clientCodeListArr = clientCodeData
+    }
     const clientCodeOption = convertToFormikSelectJson(
-        "client_code",
-        "name",
-        clientCodeData,
+        fnKey,
+        fnVal,
+        clientCodeListArr,
         extraDataObj,
         isExtraDataRequired,
         forClientCode

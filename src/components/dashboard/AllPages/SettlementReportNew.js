@@ -92,12 +92,23 @@ const SettlementReportNew = () => {
         clientMerchantDetailsList = user?.clientMerchantDetailsList;
     }
 
-    console.log("clientCodeData", clientCodeData)
-
+    // console.log("clientCodeData", clientCodeData)
+    let fnKey, fnVal = ""
+    let clientCodeListArr = []
+    if (roles?.merchant === true) {
+        fnKey = "clientCode"
+        fnVal = "clientName"
+        clientCodeListArr = clientMerchantDetailsList
+    } else {
+        fnKey = "client_code"
+        fnVal = "name"
+        clientCodeListArr = clientCodeData
+    }
+    // let clientCodeListArr = roles?.merchant ===true ? clientMerchantDetailsList : clientCodeData
     const clientCodeOption = convertToFormikSelectJson(
-        "client_code",
-        "name",
-        clientCodeData,
+        fnKey,
+        fnVal,
+        clientCodeListArr,
         {},
         false,
         true

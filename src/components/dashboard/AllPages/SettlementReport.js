@@ -93,9 +93,7 @@ const SettlementReport = () => {
   };
 
   return (
-    <>
       <section className="">
-
         <main className="">
           <div className="">
             <div className="">
@@ -214,7 +212,7 @@ const SettlementReport = () => {
           </div>
         </main>
       </section>
-    </>
+
   );
 }
 
