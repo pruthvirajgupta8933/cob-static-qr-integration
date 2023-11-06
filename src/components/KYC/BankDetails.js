@@ -74,7 +74,6 @@ function BankDetails(props) {
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
       .trim()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .required("Required")
       .nullable(),
     ifsc_code: Yup.string()
@@ -97,7 +96,6 @@ function BankDetails(props) {
     branch: Yup.string()
       .trim()
       .required("Required")
-      .matches(Regex.addressForSpecific, "Branch Name is not in valid format")
       .nullable(),
     bank_id: Yup.string()
       .required("Required")
