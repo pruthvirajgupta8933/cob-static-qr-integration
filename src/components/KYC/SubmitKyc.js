@@ -143,7 +143,7 @@ function SubmitKyc(props) {
                         title="Service Agreement"
                         rel="noreferrer"
                         className="text-decoration-none text-primary"
-                      >&nbsp;Service Agreement
+                      >&nbsp;Service Agreement.
                       </a>&nbsp;By submitting the form, I agree to abide by the rules at
                       all times.
                     </span>
