@@ -1,29 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../NavBar/NavBar';
-import { uniqueId } from 'lodash';
+import {uniqueId} from 'lodash';
 import CustomModal from "../../../_components/custom_modal";
-import { fetchChiledDataList } from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import {fetchChiledDataList} from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import ReferralOnboardForm
     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
 // import BasicDetailsOps
 //     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/bank-kyc-form/BasicDetailsOps";
 import Table from '../../../_components/table_components/table/Table';
-import { RefrerChiledList } from '../../../utilities/tableData';
+import {RefrerChiledList} from '../../../utilities/tableData';
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
-import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
-
+import {roleBasedAccess} from '../../../_components/reuseable_components/roleBasedAccess';
 
 
 function ClientList() {
 
-    
 
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
     }
-
 
 
     const RefrerChiledList = [
@@ -114,7 +111,7 @@ function ClientList() {
             name: "Password",
             selector: (row) => row.password,
             cell: (row) => (
-                <PasswordCell password={row.password} />
+                <PasswordCell password={row.password}/>
             ),
             width: "170px",
         },
@@ -136,7 +133,7 @@ function ClientList() {
                             setModalTogalforMessage(true);
                         }}
                         data-target="#exampleModal"
-                    // disabled={row?.clientCode === null ? true : false}
+                        // disabled={row?.clientCode === null ? true : false}
                     >
                         Kyc Complete
                     </button>
@@ -146,11 +143,9 @@ function ClientList() {
         },
 
 
-
-
     ]
 
-    const PasswordCell = ({ password }) => {
+    const PasswordCell = ({password}) => {
         const [visible, setVisible] = useState(false);
 
         const toggleVisibility = () => {
@@ -185,8 +180,8 @@ function ClientList() {
 
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
-    var { user } = useSelector((state) => state.auth);
-    const { auth } = useSelector(state => state)
+    var {user} = useSelector((state) => state.auth);
+    const {auth} = useSelector(state => state)
 
     const dispatch = useDispatch();
 
@@ -211,7 +206,6 @@ function ClientList() {
     }, [refrerDataList]);
 
 
-
     const kycSearch = (e, fieldType) => {
         if (fieldType === "text") {
             setSearchByDropDown(false)
@@ -234,7 +228,6 @@ function ClientList() {
             )
         );
     };
-
 
 
     useEffect(() => {
@@ -268,21 +261,18 @@ function ClientList() {
     }
 
 
-
     // console.log(user?.roleId)
     const modalBody = () => {
-        return (<ReferralOnboardForm referralChild={true} fetchData={fetchData} />)
+        return (<ReferralOnboardForm referralChild={true} fetchData={fetchData}/>)
 
 
     }
 
     const modalBodyForMessage = () => {
-
         return <div>
-            <h6>To complete the KYC process, please use the provided username and password to log in to the partner dashboard. Once logged in, proceed with the KYC verification.</h6>
-
-        </div>
-
+            <h6>To complete the KYC process, please use the provided username and password to log in to the partner
+                dashboard. Once logged in, proceed with the KYC verification.</h6>
+            </div>
     }
     return (
         <section className="">
@@ -295,30 +285,30 @@ function ClientList() {
                     <section className="">
                         <div className="container">
                             <div className="row mt-4">
-                                {data.length===0 ? ""  : (
-                                 <div className='row'>
-                                    <div className="col-lg-3 p-0 mr-3">
-                                        <SearchFilter
-                                            kycSearch={kycSearch}
-                                            searchText={searchText}
-                                            searchByText={searchByText}
-                                            setSearchByDropDown={setSearchByDropDown}
-                                        />
-                                        {/* <label>Search</label>
+                                {data.length === 0 ? "" : (
+                                    <div className='row'>
+                                        <div className="col-lg-3 p-0 mr-3">
+                                            <SearchFilter
+                                                kycSearch={kycSearch}
+                                                searchText={searchText}
+                                                searchByText={searchByText}
+                                                setSearchByDropDown={setSearchByDropDown}
+                                            />
+                                            {/* <label>Search</label>
                                         <input type="text" className="form-control" onChange={(e) => {
                                             handleChange(e.currentTarget.value)
                                         }} placeholder="Search from here" /> */}
-                                    </div>
+                                        </div>
 
-                                    <div className="col-lg-3 p-0">
-                                        <CountPerPageFilter
-                                            pageSize={pageSize}
-                                            dataCount={dataCount}
-                                            changePageSize={changePageSize}
-                                        />
-                                    </div>
+                                        <div className="col-lg-3 p-0">
+                                            <CountPerPageFilter
+                                                pageSize={pageSize}
+                                                dataCount={dataCount}
+                                                changePageSize={changePageSize}
+                                            />
+                                        </div>
 
-                                </div>
+                                    </div>
                                 )}
 
                                 <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
@@ -326,7 +316,7 @@ function ClientList() {
 
                                     <div>
                                         {user?.roleId === 13 && <button className="btn btn-sm cob-btn-primary"
-                                            onClick={() => setModalToggle(true)}>Add Child
+                                                                        onClick={() => setModalToggle(true)}>Add Child
                                             Client</button>}
                                     </div>
 
@@ -369,10 +359,12 @@ function ClientList() {
                 </div>
             </main>
 
-            <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle} fnSetModalToggle={() => setModalToggle()} />
+            <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle}
+                         fnSetModalToggle={() => setModalToggle()}/>
 
 
-            <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage} fnSetModalToggle={() => setModalTogalforMessage()} />
+            <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage}
+                         fnSetModalToggle={() => setModalTogalforMessage()}/>
         </section>
     )
 }

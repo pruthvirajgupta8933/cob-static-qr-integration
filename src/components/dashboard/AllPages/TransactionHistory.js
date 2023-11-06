@@ -199,7 +199,7 @@ const TransactionHistory = () => {
         setCurrentPage(pageNo);
     };
 
-    console.log("clientCodeList",clientCodeList)
+    // console.log("clientCodeList",clientCodeList)
     const submitHandler = (values) => {
         isButtonClicked(true);
         const {fromDate, endDate, transaction_status, payment_mode} = values;
@@ -219,8 +219,8 @@ const TransactionHistory = () => {
                 clientCodeArrLength = "1";
             }
 
-            console.log("values.clientCode",values.clientCode)
-            console.log("strClientCode",strClientCode)
+            // console.log("values.clientCode",values.clientCode)
+            // console.log("strClientCode",strClientCode)
             let paramData = {
                 clientCode: strClientCode,
                 paymentStatus: transaction_status,
