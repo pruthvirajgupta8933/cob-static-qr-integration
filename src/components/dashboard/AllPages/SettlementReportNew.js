@@ -46,7 +46,7 @@ const SettlementReportNew = () => {
     const {user} = auth;
     const {isLoadingTxnHistory} = dashboard;
     const {refrerChiledList} = merchantReferralOnboardReducer
-    console.log("refrerChiledList", refrerChiledList)
+    // console.log("refrerChiledList", refrerChiledList)
     const roles = roleBasedAccess();
     const clientCodeData = refrerChiledList?.resp?.results ?? []
 

@@ -5,22 +5,18 @@ function getChar(string, retry, position = 0, charLen = 2) {
     return string.toString().substr(start, charLength)
 }
 
-
 export const generateWord =  (name, mobile, retry = 7) => {
-    
     let newSuggestedClientCode = []
-    const fullName = name
-    const fullNameLength = name?.length
+    const fullName = name.replace(/[^a-zA-Z0-9]/g, '');
     const splitName = fullName.split(" ")
     let wordChar = ""
 
     for (let i = 0; i < retry; i++) {
-
-        if (splitName[0]?.length > 2) {
+        if (splitName[0]?.length >= 1) {
             wordChar += getChar(splitName[0], 0, 0, 2)
         }
 
-        if (splitName[1]?.length > 2) {
+        if (splitName[1]?.length >= 2) {
             wordChar += getChar(splitName[1], i, 0, 2)
         } else {
             wordChar += getChar(splitName[0], i, 2, 2)
@@ -33,13 +29,9 @@ export const generateWord =  (name, mobile, retry = 7) => {
             } else {
                 wordChar += getChar(mobile, i, 0, 2)
             }
-
         }
         newSuggestedClientCode.push(wordChar.toUpperCase())
         wordChar = ""
     }
-
     return newSuggestedClientCode
 }
-
-

@@ -31,8 +31,6 @@ const TransactionHistory = () => {
     const {user} = auth;
     const {refrerChiledList} = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    // console.log("clientCodeData",clientCodeData)
-
     const {isLoadingTxnHistory, isExportData} = dashboard;
 
     const [paymentStatusList, SetPaymentStatusList] = useState([]);
@@ -46,7 +44,7 @@ const TransactionHistory = () => {
     const [showData, setShowData] = useState([]);
     const [updateTxnList, setUpdateTxnList] = useState([]);
     const [pageCount, setPageCount] = useState(0);
-    const [dataFound, setDataFound] = useState(false);
+    const [clientCodeList, setClientCodeList] = useState([]);
     const [buttonClicked, isButtonClicked] = useState(false);
 
     let now = moment().format("YYYY-M-D");
@@ -177,6 +175,10 @@ const TransactionHistory = () => {
         forClientCode
     );
 
+    useEffect(() => {
+        setClientCodeList(clientCodeListArr)
+    }, [clientCodeListArr]);
+
     // console.log("clientCodeOption", clientCodeOption)
 
 
@@ -197,22 +199,18 @@ const TransactionHistory = () => {
         setCurrentPage(pageNo);
     };
 
+    console.log("clientCodeList",clientCodeList)
     const submitHandler = (values) => {
-        // console.log("values",values)
-
-
         isButtonClicked(true);
-
         const {fromDate, endDate, transaction_status, payment_mode} = values;
         const dateRangeValid = checkValidation(fromDate, endDate);
 
         if (dateRangeValid) {
             let strClientCode, clientCodeArrLength = "";
-
             if (values.clientCode === "All") {
                 const allClientCode = [];
-                clientCodeData?.map((item) => {
-                    allClientCode.push(item.clientCode);
+                clientCodeListArr?.map((item) => {
+                    allClientCode.push(item.client_code);
                 });
                 clientCodeArrLength = allClientCode.length.toString();
                 strClientCode = allClientCode.join().toString();
@@ -221,6 +219,8 @@ const TransactionHistory = () => {
                 clientCodeArrLength = "1";
             }
 
+            console.log("values.clientCode",values.clientCode)
+            console.log("strClientCode",strClientCode)
             let paramData = {
                 clientCode: strClientCode,
                 paymentStatus: transaction_status,
