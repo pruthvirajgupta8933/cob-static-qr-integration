@@ -36,41 +36,34 @@ function ClientList() {
 
 
         {
-            key: "name",
-            // id: "3",P
+            id: "2",
+            key: "name", // id: "3",P
             name: "Merchant Name",
             selector: (row) => row?.name,
             sortable: true,
-            cell: (row) => (
-                <div className="removeWhiteSpace">
+            cell: (row) => (<div className="removeWhiteSpace">
                     {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
-                </div>
-            ),
+                </div>),
             width: "200px",
         },
 
         {
-            key: "client_code",
-            // id: "3",P
+            id: "3",
+            key: "client_code", // id: "3",P
             name: "Client Code",
             selector: (row) => row?.client_code,
             sortable: true,
-            cell: (row) => (
-                <div className="removeWhiteSpace">
+            cell: (row) => (<div className="removeWhiteSpace">
                     {row?.client_code}
-                </div>
-            ),
-            // width: "200px",
+                </div>), // width: "200px",
         },
 
         {
             id: "4",
             name: "Mobile Number",
             selector: (row) => row?.mobileNumber,
-            cell: (row) => <div className="removeWhiteSpace">{row?.mobileNumber}</div>,
-            // width: "250px",
-        },
-        {
+            cell: (row) => <div className="removeWhiteSpace">{row?.mobileNumber}</div>, // width: "250px",
+        }, {
             id: "5",
             name: "Create Date",
             selector: (row) => row.createdDate,
@@ -79,67 +72,52 @@ function ClientList() {
         },
 
         {
-            key: "email",
-            // id: "3",P
+            id: "6",
+            key: "email", // id: "3",P
             name: "Email",
             selector: (row) => row?.email,
             sortable: true,
-            cell: (row) => (
-                <div className="removeWhiteSpace">
+            cell: (row) => (<div className="removeWhiteSpace">
                     {row?.email}
-                </div>
-            ),
+                </div>),
             width: "200px",
         },
 
 
         {
-            key: "username",
-            // id: "3",P
+            id: "7",
+            key: "username", // id: "3",P
             name: "User Name",
             selector: (row) => row?.username,
             sortable: true,
-            cell: (row) => (
-                <div className="removeWhiteSpace">
+            cell: (row) => (<div className="removeWhiteSpace">
                     {row?.username}
-                </div>
-            ),
+                </div>),
             width: "200px",
-        },
-        {
-            id: "6",
+        }, {
+            id: "8",
             name: "Password",
             selector: (row) => row.password,
-            cell: (row) => (
-                <PasswordCell password={row.password}/>
-            ),
+            cell: (row) => (<PasswordCell password={row.password}/>),
             width: "170px",
         },
 
 
         {
-            id: "14",
-            name: "Action",
-
-            cell: (row) => (
-                <div>
-
-                    <button
+            id: "9", name: "Action",
+            cell: (row) => (<div>
+                <button
                         type="button"
                         className="approve text-white  cob-btn-primary   btn-sm"
                         data-toggle="modal"
                         onClick={() => {
-
                             setModalTogalforMessage(true);
                         }}
                         data-target="#exampleModal"
-                        // disabled={row?.clientCode === null ? true : false}
                     >
                         Kyc Complete
                     </button>
-
-                </div>
-            ),
+                </div>),
         },
 
 
@@ -152,22 +130,12 @@ function ClientList() {
             setVisible((prevVisible) => !prevVisible);
         };
 
-        return (
-            <div className="removeWhiteSpace">
-                {visible ? (
-                    password
-                ) : (
-                    "*****"
-                )}
+        return (<div className="removeWhiteSpace">
+                {visible ? (password) : ("*****")}
                 <button className="btn btn-link" onClick={toggleVisibility}>
-                    {visible ? (
-                        <i className="fa fa-eye"></i>
-                    ) : (
-                        <i className="fa fa-eye-slash"></i>
-                    )}
+                    {visible ? (<i className="fa fa-eye"></i>) : (<i className="fa fa-eye-slash"></i>)}
                 </button>
-            </div>
-        );
+            </div>);
     };
     // const [isLoading,setIsLoading] = useState(false);
     const [search, SetSearch] = useState("");
@@ -188,9 +156,7 @@ function ClientList() {
     const rowData = RefrerChiledList;
 
 
-    const refrerDataList = useSelector(
-        (state) => state.merchantReferralOnboardReducer.refrerChiledList.resp
-    );
+    const refrerDataList = useSelector((state) => state.merchantReferralOnboardReducer.refrerChiledList.resp);
     const [clientListData, setClientListData] = useState([]);
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState("")
@@ -219,29 +185,23 @@ function ClientList() {
 
     };
     const searchByText = (text) => {
-        setData(
-            clientListData?.filter((item) =>
-                Object.values(item)
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(searchText?.toLocaleLowerCase())
-            )
-        );
+        setData(clientListData?.filter((item) => Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(searchText?.toLocaleLowerCase())));
     };
 
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [currentPage,pageSize]);
 
     const fetchData = () => {
         // Determine the type based on the result of roleBasedAccess()
         const roleType = roleBasedAccess();
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
         let postObj = {
-            page: currentPage,
-            page_size: pageSize,
-            type: type,  // Set the type based on roleType
+            page: currentPage, page_size: pageSize, type: type,  // Set the type based on roleType
             login_id: auth?.user?.loginId
         }
         //  console.log(postObj)
@@ -250,10 +210,12 @@ function ClientList() {
 
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
+        // alert("d")
     };
     //function for change page size
     const changePageSize = (pageSize) => {
         setPageSize(pageSize);
+        setCurrentPage(1);
     };
 
     const handleChange = (e) => {
@@ -272,10 +234,10 @@ function ClientList() {
         return <div>
             <h6>To complete the KYC process, please use the provided username and password to log in to the partner
                 dashboard. Once logged in, proceed with the KYC verification.</h6>
-            </div>
+        </div>
     }
-    return (
-        <section className="">
+
+    return (<section className="">
 
             <main className="">
                 <div className="">
@@ -285,8 +247,7 @@ function ClientList() {
                     <section className="">
                         <div className="container">
                             <div className="row mt-4">
-                                {data.length === 0 ? "" : (
-                                    <div className='row'>
+                                {data.length === 0 ? "" : (<div className='row'>
                                         <div className="col-lg-3 p-0 mr-3">
                                             <SearchFilter
                                                 kycSearch={kycSearch}
@@ -294,10 +255,6 @@ function ClientList() {
                                                 searchByText={searchByText}
                                                 setSearchByDropDown={setSearchByDropDown}
                                             />
-                                            {/* <label>Search</label>
-                                        <input type="text" className="form-control" onChange={(e) => {
-                                            handleChange(e.currentTarget.value)
-                                        }} placeholder="Search from here" /> */}
                                         </div>
 
                                         <div className="col-lg-3 p-0">
@@ -307,16 +264,15 @@ function ClientList() {
                                                 changePageSize={changePageSize}
                                             />
                                         </div>
-
-                                    </div>
-                                )}
+                                    </div>)}
 
                                 <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
                                     <div><h6>Number of Record: {dataCount}</h6></div>
 
                                     <div>
-                                        {user?.roleId === 13 && <button className="btn btn-sm cob-btn-primary"
-                                                                        onClick={() => setModalToggle(true)}>Add Child
+                                        {user?.roleId === 13 &&
+                                            <button className="btn btn-sm cob-btn-primary"
+                                                    onClick={() => setModalToggle(true)}>Add Child
                                             Client</button>}
                                     </div>
 
@@ -331,28 +287,6 @@ function ClientList() {
                                     changeCurrentPage={changeCurrentPage}
                                     data={data}
                                 />
-                                {/* )} */}
-                                {/* <div className="overflow-scroll">
-                                    <table cellspaccing={0} cellPadding={10} border={0} width="100%"
-                                        className="tables border">
-                                        <tbody>
-                                            <tr>
-                                                <th>Client Code</th>
-                                                <th>Client Name</th>
-                                                <th>Contact No.</th>
-                                            </tr>
-                                            {clientListData && clientListData.map((item, i) =>
-                                            (
-                                                <tr key={uniqueId()}>
-                                                    <td className='border'>{item.clientCode}</td>
-                                                    <td className='border'>{item.clientName}</td>
-                                                    <td className='border'>{item.clientContact}</td>
-                                                </tr>
-                                            )
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div> */}
                             </div>
                         </div>
                     </section>
@@ -365,8 +299,7 @@ function ClientList() {
 
             <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage}
                          fnSetModalToggle={() => setModalTogalforMessage()}/>
-        </section>
-    )
+        </section>)
 }
 
 export default ClientList

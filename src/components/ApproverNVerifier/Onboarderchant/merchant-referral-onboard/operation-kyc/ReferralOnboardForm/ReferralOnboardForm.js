@@ -19,15 +19,10 @@ import AuthService from "../../../../../../services/auth.service";
 
 function ReferralOnboardForm({referralChild, fetchData}) {
     const dispatch = useDispatch()
-    // const theme = useContext("MroContext")
-    // const theme = useContext(ThemeContext);
-
-    // console.log("theme",theme)
 
     const [submitLoader, setSubmitLoader] = useState(false);
-    const [businessCode, setBusinessCode] = useState([]);
-    const [businessTypeData, setBusinessTypeData] = useState([]);
     const [passwordType, setPasswordType] = useState({showPasswords: false});
+
     const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
     const {merchantKycData} = kyc
     const {merchantBasicDetails, merchantOnboardingProcess} = merchantReferralOnboardReducer
@@ -95,8 +90,8 @@ function ReferralOnboardForm({referralChild, fetchData}) {
 
 
     const handleSubmitContact = async (value, resetForm) => {
+        setSubmitLoader(true)
         try {
-            setSubmitLoader(true)
             const {fullName, mobileNumber, email_id, password, username} = value
             let postData = {}
             if (referralChild === true) {
@@ -161,10 +156,12 @@ function ReferralOnboardForm({referralChild, fetchData}) {
 
                 if (referralChild) {
                     await fetchData()
+                    setSubmitLoader(false)
                 }
             }
         } catch (error) {
-            console.log("catch-error", error.response)
+            // console.log("catch-error", error.response)
+            toastConfig.errorToast(error.response.data.detail)
             setSubmitLoader(false)
         }
 
@@ -178,16 +175,13 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={(values) => handleSubmitContact(values)}
-                // onSubmit={async (values, {resetForm}) => {
-                //     await handleSubmitContact(values)
-                //     resetForm()
-                // }}
-                enableReinitialize={true}
-            >
-                {({
-                      values, setFieldValue, errors, setFieldError
-                  }) => (<Form>
+                // onSubmit={(values) => handleSubmitContact(values)}
+                onSubmit={async (values, {resetForm}) => {
+                    await handleSubmitContact(values)
+                    resetForm()
+                }}
+                enableReinitialize={true}>
+                {({values}) => (<Form>
                     <div className="row g-3">
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController

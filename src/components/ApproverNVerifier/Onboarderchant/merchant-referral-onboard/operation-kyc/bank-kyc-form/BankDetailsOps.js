@@ -47,7 +47,6 @@ function BankDetailsOps({setCurrentTab}) {
     const validationSchema = Yup.object({
         account_holder_name: Yup.string()
             .trim()
-            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
             .required("Required")
             .nullable(),
         ifsc_code: Yup.string()
@@ -70,7 +69,6 @@ function BankDetailsOps({setCurrentTab}) {
         branch: Yup.string()
             .trim()
             .required("Required")
-            .matches(Regex.addressForSpecific, "Branch Name is not in valid format")
             .nullable(),
         bank_id: Yup.string()
             .required("Required")
@@ -82,14 +80,6 @@ function BankDetailsOps({setCurrentTab}) {
             "You need to verify Your IFSC Code"
         )
     });
-
-    // change tabs
-    // const tabHandler = (val) => {
-    //     console.log("status", bankDetails)
-    //     if (bankDetails?.resp?.status === true) {
-    //         setCurrentTab(val)
-    //     }
-    // }
 
     const handleSubmit = (values) => {
         // console.log("hekki")

@@ -495,7 +495,7 @@ function DashboardMainContent() {
                                 exact
                                 path={`${path}/bank-onboarding`}
                                 Component={BankMerchantOnboard}
-                                roleList={{bank: true}}
+                                roleList={{bank: true, approver:true}}
                             />
 
                             <AuthorizedRoute
