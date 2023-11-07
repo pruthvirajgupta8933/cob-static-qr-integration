@@ -1134,8 +1134,6 @@ export const kycSlice = createSlice({
         },
         //------------------------------------------------
         [kycForPending.pending]: (state, action) => {
-            console.log("action", action)
-
             state.status = "pending";
             state.isLoadingForPendingVerification = true;
         },
