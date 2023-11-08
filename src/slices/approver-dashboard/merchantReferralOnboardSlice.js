@@ -120,6 +120,9 @@ export const merchantReferralOnboardSlice = createSlice({
             state.bankDetails.resp = {};
             state.businessDetails.resp = {};
             state.documentCenter.resp = {};
+            state.merchantOnboardingProcess.isOnboardStart = false
+            state.merchantOnboardingProcess.isOnboardComplete = false
+            state.merchantOnboardingProcess.merchantLoginId = ""
           },
         clearErrorMerchantReferralOnboardSlice : (state)=>{
             state.merchantBasicDetails.resp.error = false

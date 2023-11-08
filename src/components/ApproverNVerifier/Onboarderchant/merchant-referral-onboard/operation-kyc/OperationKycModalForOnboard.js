@@ -4,14 +4,18 @@ import BusinessDetailsOps from './bank-kyc-form/BusinessDetailsOps'
 import DocumentCenter from './bank-kyc-form/DocumentCenter'
 import BasicDetailsOps from './bank-kyc-form/BasicDetailsOps'
 import SubmitKyc from './bank-kyc-form/SubmitKyc'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Prompt} from "react-router-dom";
+import {kycDetailsByMerchantLoginId} from "../../../../../slices/kycSlice";
+
 
 function OperationKycModalForOnboard() {
+    const dispatch = useDispatch()
     const [currentTab, setCurrentTab] = useState(1)
-    const {merchantReferralOnboardReducer} = useSelector(state => state)
+    const {merchantReferralOnboardReducer, kyc} = useSelector(state => state)
+    const {merchantKycData} = kyc
+    const {merchantOnboardingProcess, merchantBasicDetails} = merchantReferralOnboardReducer
 
-    const {merchantOnboardingProcess, merchantBasicDetails, kyc} = merchantReferralOnboardReducer
     const handleTabClick = (currenTabVal) => {
         setCurrentTab(currenTabVal)
     };
@@ -26,17 +30,18 @@ function OperationKycModalForOnboard() {
         e.preventDefault()
         e.returnValue = ''
     }
-
+    useEffect(() => {
+        dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess?.merchantLoginId}))
+    }, [merchantOnboardingProcess]);
 
     const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart;
 
     return (<div className="row">
             <Prompt
-                // when={isPrompt()}
                 message={() => 'Are you sure you want to leave this page?'}
             />
             {merchantOnboardingProcess?.isOnboardStart && <div className="d-flex bg-light justify-content-between px-0 my-2">
-                <p className="p-2 m-0">Session Start : {merchantBasicDetails?.resp?.name}</p>
+                <p className="p-2 m-0">Session Start : {merchantKycData?.name}</p>
                 <p className="p-2 m-0">Merchant Onboard Login ID : {merchantOnboardingProcess?.merchantLoginId}</p>
             </div>}
             <div className="col-2 bg-light p-1">
