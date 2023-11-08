@@ -154,7 +154,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             type="text"
                             name="fullName"
                             className="form-control"
-                            label="Full Name"
+                            label="Full Name *"
                             autoComplete='off'
                         />
                     </div>
@@ -165,7 +165,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             type="text"
                             name="mobileNumber"
                             className="form-control"
-                            label="Contact Number"
+                            label="Contact Number *"
                             autoComplete='off'
                         />
                     </div>
@@ -175,7 +175,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             type="email"
                             name="email_id"
                             className="form-control"
-                            label="Email ID"
+                            label="Email ID *"
                             autoComplete='off'
                         />
                     </div>
@@ -185,7 +185,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             type="text"
                             name="username"
                             className="form-control"
-                            label="Username"
+                            label="Username *"
                             plaseHolder="example@username"
                             autoComplete='off'
                         />
@@ -196,7 +196,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="business_type"
                             options={businessTypeData}
                             className="form-select"
-                            label="Business Type"
+                            label="Business Type *"
                             autoComplete='off'
                         />
                     </div>
@@ -206,12 +206,12 @@ function BasicDetailsOps({setCurrentTab}) {
                             options={businessCode}
                             name="business_category"
                             className="form-select"
-                            label="Business Category"
+                            label="Business Category *"
                             autoComplete='off'
                         />
                     </div>
                     <div className="col-md-6">
-                        <label>Create Password</label>
+                        <label>Create Password <span>*</span></label>
                         <div className="input-group">
                             <FormikController
                                 control="input"
