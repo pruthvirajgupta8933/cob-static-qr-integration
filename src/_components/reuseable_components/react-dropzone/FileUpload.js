@@ -12,7 +12,7 @@ const FileUploader = ({setCurrentTab}) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [submitLoader, setSubmitLoader] = useState(false);
     const [documentUploadResponse,setDocumentuploadResponse]=useState({})
-    console.log("documentUploadResponse",documentUploadResponse)
+    // console.log("documentUploadResponse",documentUploadResponse)
 
  
 
@@ -30,7 +30,7 @@ const FileUploader = ({setCurrentTab}) => {
         fetchDocList(merchantLoginId)
     }, []);
 
-    console.log(KycDocUpload)
+    // console.log(KycDocUpload)
 
     const onDrop = (acceptedFiles) => {
         // Add the uploaded files to the state
@@ -51,7 +51,7 @@ const FileUploader = ({setCurrentTab}) => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for uploading files
             const response = await saveDocumentDetails(formData)
-            console.log(response,"this is rcomplete response")
+            // console.log(response,"this is rcomplete response")
             setDocumentuploadResponse(response?.data?.status)
             fetchDocList(merchantLoginId)
             toastConfig.successToast(response.data?.message)

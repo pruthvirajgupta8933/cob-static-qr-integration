@@ -1,7 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
-
-import {Formik, Field, Form, ErrorMessage} from "formik";
+import {Formik, Form, ErrorMessage} from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
 import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRegex';
@@ -19,11 +18,6 @@ import toastConfig from "../../../../../../utilities/toastTypes";
 
 function BasicDetailsOps({setCurrentTab}) {
     const dispatch = useDispatch()
-    // const theme = useContext("MroContext")
-    // const theme = useContext(ThemeContext);
-
-    // console.log("theme",theme)
-
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
     const [businessTypeData, setBusinessTypeData] = useState([]);
@@ -31,9 +25,7 @@ function BasicDetailsOps({setCurrentTab}) {
     const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
     const {merchantKycData} = kyc
     const {merchantBasicDetails, merchantOnboardingProcess} = merchantReferralOnboardReducer
-
-    // console.log("merchantBasicDetails", merchantBasicDetails)
-
+    // console.log("merchantKycData", merchantKycData)
     const initialValues = {
         fullName: merchantKycData?.name ?? "",
         mobileNumber: merchantKycData?.contactNumber ?? "",
@@ -76,11 +68,10 @@ function BasicDetailsOps({setCurrentTab}) {
             .nullable(),
     });
 
-
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
         const {
-            fullName, mobileNumber, email_id, business_category, password, business_type,username
+            fullName, mobileNumber, email_id, business_category, password, business_type, username
         } = value
 
         dispatch(saveMerchantBasicDetails({
@@ -90,7 +81,7 @@ function BasicDetailsOps({setCurrentTab}) {
             business_category: business_category,
             business_type: business_type,
             password: password,
-            username:username,
+            username: username,
             isDirect: false,
             created_by: auth?.user?.loginId,
             updated_by: auth?.user?.loginId
@@ -108,13 +99,10 @@ function BasicDetailsOps({setCurrentTab}) {
             toastConfig.errorToast("Something went wrong!")
             setSubmitLoader(false)
         })
-
-
     }
 
 
     useEffect(() => {
-        // dispatch(resetStateMfo())
         axiosInstanceJWT
             .get(API_URL.Business_Category_CODE)
             .then((resp) => {
@@ -129,21 +117,17 @@ function BasicDetailsOps({setCurrentTab}) {
         axiosInstanceJWT
             .get(API_URL.Business_type)
             .then((resp) => {
-                // console.log("busType", resp)
                 const data = convertToFormikSelectJson("businessTypeId", "businessTypeText", resp.data);
                 setBusinessTypeData(data);
             })
             .catch((err) => {
                 console.error(err);
             });
-
     }, []);
 
     useEffect(() => {
-        if (merchantOnboardingProcess.merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
-        }
-    }, [merchantOnboardingProcess, merchantBasicDetails]);
+          dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
+    }, [merchantOnboardingProcess]);
 
     const togglePassword = () => {
         setPasswordType({
@@ -161,7 +145,7 @@ function BasicDetailsOps({setCurrentTab}) {
             enableReinitialize={true}
         >
             {({
-                  values, setFieldValue, errors, setFieldError
+                  values
               }) => (<Form>
                 <div className="row g-3">
                     <div className="col-md-6">
@@ -171,6 +155,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="fullName"
                             className="form-control"
                             label="Full Name"
+                            autoComplete='off'
                         />
                     </div>
 
@@ -181,6 +166,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="mobileNumber"
                             className="form-control"
                             label="Contact Number"
+                            autoComplete='off'
                         />
                     </div>
                     <div className="col-md-6">
@@ -190,7 +176,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="email_id"
                             className="form-control"
                             label="Email ID"
-                            autoComplete="off"
+                            autoComplete='off'
                         />
                     </div>
                     <div className="col-md-6">
@@ -200,10 +186,10 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="username"
                             className="form-control"
                             label="Username"
-                            autoComplete="off"
+                            plaseHolder="example@username"
+                            autoComplete='off'
                         />
                     </div>
-
                     <div className="col-sm-6 col-md-3">
                         <FormikController
                             control="select"
@@ -211,9 +197,9 @@ function BasicDetailsOps({setCurrentTab}) {
                             options={businessTypeData}
                             className="form-select"
                             label="Business Type"
+                            autoComplete='off'
                         />
                     </div>
-
                     <div className="col-md-3">
                         <FormikController
                             control="select"
@@ -221,6 +207,7 @@ function BasicDetailsOps({setCurrentTab}) {
                             name="business_category"
                             className="form-select"
                             label="Business Category"
+                            autoComplete='off'
                         />
                     </div>
                     <div className="col-md-6">
@@ -230,7 +217,7 @@ function BasicDetailsOps({setCurrentTab}) {
                                 control="input"
                                 type={passwordType.showPasswords ? "text" : "password"}
                                 name="password"
-                                autoComplete="off"
+                                autoComplete='off'
                                 className="form-control"
                                 displayMsgOutside={true}
                             />
@@ -244,7 +231,8 @@ function BasicDetailsOps({setCurrentTab}) {
                             className="text-danger m-0">{msg}</p>}</ErrorMessage>
                     </div>
                     <div className="col-6">
-                        {merchantBasicDetails?.resp?.status !== "Activate" &&
+                        {/*{merchantBasicDetails?.resp?.status !== "Activate" &&*/}
+                        {merchantKycData?.isContactNumberVerified !== 1 &&
                             <button type="submit" className="btn cob-btn-primary btn-sm m-2">
                                 {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
@@ -253,7 +241,8 @@ function BasicDetailsOps({setCurrentTab}) {
                                 </>}
                                 Save
                             </button>}
-                        {merchantBasicDetails?.resp?.status === "Activate" &&
+                        {/*{merchantBasicDetails?.resp?.status === "Activate" &&*/}
+                        {merchantKycData?.isContactNumberVerified === 1 &&
                             <a className="btn active-secondary btn-sm m-2"
                                onClick={() => setCurrentTab(2)}>Next</a>}
                     </div>
