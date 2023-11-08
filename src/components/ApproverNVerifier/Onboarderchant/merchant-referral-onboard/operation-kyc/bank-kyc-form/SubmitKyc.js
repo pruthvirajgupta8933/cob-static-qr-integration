@@ -3,19 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {
-    kycDetailsByMerchantLoginId,
-    saveKycConsent,
-} from "../../../../../../slices/kycSlice";
+import {kycDetailsByMerchantLoginId,saveKycConsent} from "../../../../../../slices/kycSlice";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { resetStateMfo } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
-function SubmitKyc() {
+function SubmitKyc({setCurrentTab}) {
     const dispatch = useDispatch();
     const { auth, kyc, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { merchantKycData } = kyc
-    // const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
 
 
@@ -38,9 +34,11 @@ function SubmitKyc() {
     });
 
     useEffect(() => {
-        if (merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
-        }
+            if(merchantLoginId===""){
+                setCurrentTab(1)
+            }else{
+                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+            }
     }, [merchantLoginId]);
 
     const onSubmit = (value) => {
@@ -77,7 +75,9 @@ function SubmitKyc() {
                 toast.success(res?.payload?.message);
                 setIsDisable(false);
                 sessionStorage.removeItem("onboardingStatusByAdmin");
-                // dispatch(resetStateMfo());
+                dispatch(resetStateMfo());
+                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+                setCurrentTab(1)
             } else {
                 toast.error(res?.payload?.detail);
                 setIsDisable(false);

@@ -7,12 +7,8 @@ import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRe
 import API_URL from '../../../../../../config';
 import {axiosInstanceJWT} from '../../../../../../utilities/axiosInstance';
 import {convertToFormikSelectJson} from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import {
-    clearErrorMerchantReferralOnboardSlice, resetStateMfo, saveMerchantBasicDetails
-} from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import {
-    businessType, clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId
-} from "../../../../../../slices/kycSlice";
+import {saveMerchantBasicDetails} from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import {kycDetailsByMerchantLoginId} from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
 
@@ -97,6 +93,7 @@ function BasicDetailsOps({setCurrentTab}) {
             }
         }).catch(err => {
             toastConfig.errorToast("Something went wrong!")
+            console.log(err)
             setSubmitLoader(false)
         })
     }
@@ -126,7 +123,10 @@ function BasicDetailsOps({setCurrentTab}) {
     }, []);
 
     useEffect(() => {
-          dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
+        if(merchantOnboardingProcess.merchantLoginId!==""){
+            dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
+        }
+
     }, [merchantOnboardingProcess]);
 
     const togglePassword = () => {
@@ -144,9 +144,7 @@ function BasicDetailsOps({setCurrentTab}) {
             onSubmit={handleSubmitContact}
             enableReinitialize={true}
         >
-            {({
-                  values
-              }) => (<Form>
+            {() => (<Form>
                 <div className="row g-3">
                     <div className="col-md-6">
                         <FormikController
