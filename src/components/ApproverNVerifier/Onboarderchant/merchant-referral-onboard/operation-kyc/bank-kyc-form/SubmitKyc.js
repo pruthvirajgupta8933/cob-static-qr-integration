@@ -3,38 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import {
-    kycDetailsByMerchantLoginId,
-    // kycUserList,
-    saveKycConsent,
-
-    // UpdateModalStatus
-} from "../../../../../../slices/kycSlice";
-// import {isNull, toLower} from "lodash";
+import {kycDetailsByMerchantLoginId,saveKycConsent} from "../../../../../../slices/kycSlice";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { resetStateMfo } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
-// resetStateMfo
-// import {resetState} from "react-modal/lib/helpers/bodyTrap";
-
-
-function SubmitKyc() {
-    const history = useHistory();
+function SubmitKyc({setCurrentTab}) {
     const dispatch = useDispatch();
-
-
     const { auth, kyc, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { merchantKycData } = kyc
-    // const { auth, merchantReferralOnboardReducer } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
 
 
     const { user } = auth;
     const { loginId } = user;
     const { compareDocListArray, KycDocUpload } = kyc;
-    // console.log("kycUserList", kyc?.kycUserList)
     const { dropDownDocList, finalArray } = compareDocListArray
     const merchant_consent = merchantKycData?.merchant_consent?.term_condition;
     const kyc_status = merchantKycData?.status;
@@ -51,14 +34,12 @@ function SubmitKyc() {
     });
 
     useEffect(() => {
-        if (merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
-        }
+            if(merchantLoginId===""){
+                setCurrentTab(1)
+            }else{
+                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+            }
     }, [merchantLoginId]);
-
-
-    // const rejectedDocList = KycDocUpload?.filter(item=> toLower(item.status)=== toLower(KYC_STATUS_REJECTED)  )
-
 
     const onSubmit = (value) => {
         setIsDisable(true);
@@ -74,17 +55,14 @@ function SubmitKyc() {
                 } else {
                     newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
                 }
+
                 // update new client code
                 const data = {
                     loginId: merchantKycData?.loginMasterId,
                     clientName: merchantKycData?.name,
                     clientCode: newClientCode,
                 };
-
                 dispatch(createClientProfile(data)).then(clientProfileRes => {
-                    console.log("clientProfileRes", clientProfileRes)
-                    // after create the client update the subscribe product
-                    // console.log("clientProfileRes", clientProfileRes)
                 }).catch(err => console.log(err));
             })
 
@@ -96,16 +74,16 @@ function SubmitKyc() {
             if (res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
                 toast.success(res?.payload?.message);
                 setIsDisable(false);
-                // reset the state
-                console.log('Before resetting state');
                 sessionStorage.removeItem("onboardingStatusByAdmin");
                 dispatch(resetStateMfo());
-
+                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+                setCurrentTab(1)
             } else {
                 toast.error(res?.payload?.detail);
                 setIsDisable(false);
             }
         });
+
     };
     return (<div className="col-md-12 p-3 NunitoSans-Regular">
         <Formik
