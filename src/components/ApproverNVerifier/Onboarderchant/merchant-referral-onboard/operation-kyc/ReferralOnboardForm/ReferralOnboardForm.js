@@ -189,7 +189,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 type="text"
                                 name="fullName"
                                 className="form-control"
-                                label="Client Name"
+                                label="Client Name *"
                             />
                         </div>
 
@@ -199,7 +199,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 type="text"
                                 name="mobileNumber"
                                 className="form-control"
-                                label="Contact Number"
+                                label="Contact Number *"
                             />
                         </div>
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
@@ -208,7 +208,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 type="email"
                                 name="email_id"
                                 className="form-control"
-                                label="Email ID"
+                                label="Email ID *"
                             />
                         </div>
                         {referralChild === true &&
@@ -218,7 +218,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                     type="text"
                                     name="username"
                                     className="form-control"
-                                    label="Username"
+                                    label="Username *"
                                 />
                             </div>
                         }
