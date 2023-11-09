@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Formik, Field, Form, ErrorMessage} from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
 import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRegex';
-// import verifiedIcon from "../../assets/images/verified.png";
 import verifiedIcon from "../../../../../../assets/images/verified.png";
-import {useState} from 'react';
+
 import {
     bankAccountVerification,
     getBankId,

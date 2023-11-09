@@ -1,31 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {ErrorMessage, Form, Formik} from "formik";
+import {Form, Formik} from "formik";
 import FormikController from "../../../../../../_components/formik/FormikController";
 import {useDispatch, useSelector} from "react-redux";
 import Yup from "../../../../../../_components/formik/Yup";
 import {Regex, RegexMsg} from "../../../../../../_components/formik/ValidationRegex";
-import {saveMerchantBasicDetails} from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
-import {axiosInstanceJWT} from "../../../../../../utilities/axiosInstance";
-import API_URL from "../../../../../../config";
-import {convertToFormikSelectJson} from "../../../../../../_components/reuseable_components/convertToFormikSelectJson";
-import {kycDetailsByMerchantLoginId} from "../../../../../../slices/kycSlice";
 import {generateWord} from "../../../../../../utilities/generateClientCode";
-import {checkClientCodeSlice, createClientProfile} from "../../../../../../slices/auth";
 import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
-// import authService from
 import authService from "../../../../../../services/auth.service";
-import AuthService from "../../../../../../services/auth.service";
 
 function ReferralOnboardForm({referralChild, fetchData}) {
     const dispatch = useDispatch()
-
     const [submitLoader, setSubmitLoader] = useState(false);
     const [passwordType, setPasswordType] = useState({showPasswords: false});
 
     const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
     const {merchantKycData} = kyc
-    const {merchantBasicDetails, merchantOnboardingProcess} = merchantReferralOnboardReducer
+    const {merchantBasicDetails} = merchantReferralOnboardReducer
 
     const generateRandomPassword = () => {
         const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -44,7 +35,6 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             password += randomChars.charAt(randomIndex);
         }
         password = password.split('').sort(() => Math.random() - 0.5).join('');
-
         return password;
     };
 
@@ -82,11 +72,11 @@ function ReferralOnboardForm({referralChild, fetchData}) {
         password: Yup.string(),
     });
 
-    const togglePassword = () => {
-        setPasswordType({
-            ...passwordType, showPasswords: !passwordType.showPasswords,
-        });
-    };
+    // const togglePassword = () => {
+    //     setPasswordType({
+    //         ...passwordType, showPasswords: !passwordType.showPasswords,
+    //     });
+    // };
 
 
     const handleSubmitContact = async (value, resetForm) => {
@@ -129,7 +119,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                 const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
                 // check client code is existing
-                const resp3 = await AuthService.checkClintCode({"client_code": arrayOfClientCode})
+                const resp3 = await authService.checkClintCode({"client_code": arrayOfClientCode})
                 let newClientCode
                 // if client code available return status true, then make request with the given client
                 if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {
@@ -228,8 +218,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                             {merchantBasicDetails?.resp?.status !== "Activate" &&
                                 <button type="submit" className="btn cob-btn-primary btn-sm m-2">
                                     {submitLoader && <>
-                                            <span className="spinner-border spinner-border-sm" role="status"
-                                                  aria-hidden="true"/>
+                                            <span className="spinner-border spinner-border-sm" aria-hidden="true"/>
                                         <span className="sr-only">Loading...</span>
                                     </>}
                                     Save
