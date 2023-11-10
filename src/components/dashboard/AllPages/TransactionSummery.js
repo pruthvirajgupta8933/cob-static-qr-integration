@@ -9,16 +9,15 @@ import {roleBasedAccess} from "../../../_components/reuseable_components/roleBas
 import {fetchChiledDataList} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 function TransactionSummery() {
-    // console.log("home page call");
-    const dispatch = useDispatch();
-    let {path} = useRouteMatch();
-    const userRole = roleBasedAccess()
 
+    const dispatch = useDispatch();
+    const {path} = useRouteMatch();
+    const userRole = roleBasedAccess()
 
     let currentDate = new Date().toJSON().slice(0, 10);
     let fromDate = currentDate;
     let toDate = currentDate;
-    // const [toDate, setToDate] = useState(currentDate);
+
     const [dttype, setDttype] = useState("1");
     const [search, SetSearch] = useState("");
     const [txnList, SetTxnList] = useState([]);
@@ -28,10 +27,9 @@ function TransactionSummery() {
 
     const {refrerChiledList} = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    // console.log("dashboard",dashboard)
     const {isLoading, successTxnsumry} = dashboard;
-    // console.log("successTxnsumry",successTxnsumry)
     const {user} = auth;
+
     var clientCodeArr = [];
     var totalSuccessTxn = 0;
     var totalAmt = 0;
@@ -40,19 +38,6 @@ function TransactionSummery() {
     useEffect(() => {
         // console.log("user", user)
         let strClientCode, clientCodeArrLength = "";
-
-        // let fnKey, fnVal = ""
-        // let clientCodeListArr = []
-        // if (roles?.merchant === true) {
-        //   fnKey = "clientCode"
-        //   fnVal = "clientName"
-        //   clientCodeListArr = clientMerchantDetailsList
-        // } else {
-        //   fnKey = "client_code"
-        //   fnVal = "name"
-        //   clientCodeListArr = clientCodeData
-        // }
-
 
         if (userRole.merchant !== true) {
             const allClientCode = [];
@@ -79,13 +64,8 @@ function TransactionSummery() {
 
         SetTxnList(DefaulttxnList);
         SetShowData(DefaulttxnList);
-        // console.log("objParam",objParam)
         dispatch(successTxnSummary(objParam));
     }, [dttype, merchantReferralOnboardReducer]);
-
-
-    // console.log('successTxnsumry',successTxnsumry );
-    // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
 
     //make client code array
     if (
@@ -96,7 +76,7 @@ function TransactionSummery() {
             return item.client_code;
         });
     } else {
-        clientCodeArr = [];
+        clientCodeArr = [user?.clientMerchantDetailsList[0]?.clientCode];
     }
 
 
@@ -116,7 +96,8 @@ function TransactionSummery() {
     // filter api response data with client code
     useEffect(() => {
         if (successTxnsumry?.length > 0) {
-            // console.log("clientCodeArr",clientCodeArr)
+            console.log("clientCodeArr",clientCodeArr)
+            console.log("successTxnsumry",successTxnsumry)
             var filterData = successTxnsumry?.filter((txnsummery) => {
                 if (clientCodeArr.includes(txnsummery.clientCode)) {
                     return clientCodeArr.includes(txnsummery.clientCode);
@@ -124,10 +105,7 @@ function TransactionSummery() {
             });
             SetTxnList(filterData);
             SetShowData(filterData);
-        } else {
-            //successTxnsumry=[];
         }
-
     }, [successTxnsumry]);
 
     useEffect(() => {
@@ -158,6 +136,9 @@ function TransactionSummery() {
         totalAmt += item.payeeamount;
     });
 
+    console.log("showData",showData)
+    console.log("txnList",txnList)
+
     return (
         <section className="">
             <main>
@@ -169,8 +150,6 @@ function TransactionSummery() {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="form-group col-md-3">
-                                    {/* <label>Successful Transaction Summary</label> */}
-                                    {/* <label>&nbsp;</label> */}
                                     <select
                                         className="form-select"
                                         value={dttype}
@@ -210,7 +189,6 @@ function TransactionSummery() {
                                     }
                                 </div>
                                 <table
-                                    cellspaccing={0}
                                     cellPadding={10}
                                     border={0}
                                     width="100%"
@@ -252,14 +230,6 @@ function TransactionSummery() {
                         </div>
                     </section>
                 </div>
-                {/* <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">
-            © 2021 Ippopay. All Rights Reserved.{" "}
-            <span className="pull-right">
-              Ippopay's GST Number : 33AADCF9175D1ZP
-            </span>
-          </div>
-        </footer> */}
             </main>
         </section>
     );

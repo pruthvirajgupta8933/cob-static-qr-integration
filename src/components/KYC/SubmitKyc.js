@@ -9,6 +9,7 @@ import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 
 import { KYC_STATUS_APPROVED, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import { toLower } from "lodash";
+import toastConfig from "../../utilities/toastTypes";
 
 function SubmitKyc(props) {
   const history = useHistory();
@@ -24,6 +25,7 @@ function SubmitKyc(props) {
   const { loginId } = user;
 
   const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
+  // console.log("compareDocListArray",compareDocListArray)
   const { dropDownDocList, finalArray } = compareDocListArray
 
 
@@ -51,9 +53,11 @@ function SubmitKyc(props) {
 
   const onSubmit = (value) => {
     setIsDisable(true);
-
+    // console.log("dropDownDocList",dropDownDocList)
+    // console.log("finalArray",finalArray)
     if(rejectedDocList?.length>0 ){
         toast.error("Kindly Remove / Update the rejected document from the document list.")
+      setIsDisable(false);
     }else{
       if (dropDownDocList.length === finalArray.length) {
         dispatch(
@@ -78,7 +82,8 @@ function SubmitKyc(props) {
         });
   
       } else {
-        alert("Alert! Kindly check the list of the required documents");
+        toastConfig.errorToast("Alert! Kindly check the list of the required documents");
+        setIsDisable(false)
       }
   
     }

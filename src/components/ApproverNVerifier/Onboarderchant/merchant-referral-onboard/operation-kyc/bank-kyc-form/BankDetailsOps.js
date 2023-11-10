@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Formik, Field, Form, ErrorMessage} from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
 import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRegex';
-// import verifiedIcon from "../../assets/images/verified.png";
 import verifiedIcon from "../../../../../../assets/images/verified.png";
-import {useState} from 'react';
+
 import {
     bankAccountVerification,
     getBankId,
@@ -398,7 +397,7 @@ function BankDetailsOps({setCurrentTab}) {
                         <div className="row">
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Account Holder Name<span style={{color: "red"}}>*</span>
+                                    Account Holder Name<span>*</span>
                                 </label>
                                 <FormikController
                                     control="input"
@@ -411,7 +410,7 @@ function BankDetailsOps({setCurrentTab}) {
 
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Account Type<span style={{color: "red"}}>*</span>
+                                    Account Type<span>*</span>
                                 </label>
 
 
@@ -427,7 +426,7 @@ function BankDetailsOps({setCurrentTab}) {
                         <div className="row">
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Bank Name<span className="text-danger">*</span>
+                                    Bank Name<span className="">*</span>
                                 </label>
                                 <FormikController
                                     control="select"
@@ -440,7 +439,7 @@ function BankDetailsOps({setCurrentTab}) {
 
                             <div className="col-sm-12 col-md-12 col-lg-6">
                                 <label className="col-form-label mt-0 p-2">
-                                    Branch<span className="text-danger">*</span>
+                                    Branch<span className="">*</span>
                                 </label>
                                 <FormikController
                                     control="input"
