@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import './FileUploader.css'; // Import the CSS file for styling
-import { saveDocumentDetails } from '../../../services/approver-dashboard/merchantReferralOnboard.service';
-import { useDropzone } from 'react-dropzone';
-import { kycDocumentUploadList } from "../../../slices/kycSlice";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {kycDocumentUploadList} from "../../../slices/kycSlice";
+import {saveDocumentDetails} from "../../../services/approver-dashboard/merchantReferralOnboard.service";
 import toastConfig from "../../../utilities/toastTypes";
+import {useDropzone} from "react-dropzone";
 
+const  MerchantKycDocument = () =>{
 
-const FileUploader = ({setCurrentTab}) => {
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [submitLoader, setSubmitLoader] = useState(false);
     const [documentUploadResponse,setDocumentUploadResponse]=useState({})
     // console.log("documentUploadResponse",documentUploadResponse)
 
- 
+
 
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
@@ -23,7 +22,7 @@ const FileUploader = ({setCurrentTab}) => {
     const { KycDocUpload } = kyc;
 
     const fetchDocList = () => {
-        dispatch(kycDocumentUploadList({ login_id: merchantLoginId }))
+        // dispatch(kycDocumentUploadList({ login_id: merchantLoginId }))
     }
 
     useEffect(() => {
@@ -50,22 +49,21 @@ const FileUploader = ({setCurrentTab}) => {
         formData.append('modified_by', auth?.user?.loginId);
         try {
             // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for uploading files
-            const response = await saveDocumentDetails(formData)
-            // console.log(response,"this is rcomplete response")
-            setDocumentUploadResponse(response?.data?.status)
-            fetchDocList(merchantLoginId)
-            toastConfig.successToast(response.data?.message)
-            setSubmitLoader(false)
+            // const response = await saveDocumentDetails(formData)
+            // setDocumentUploadResponse(response?.data?.status)
+            // fetchDocList(merchantLoginId)
+            // toastConfig.successToast(response.data?.message)
+            // setSubmitLoader(false)
             // console.log('Files uploaded successfully:', response.data?.message);
         } catch (error) {
             // toastConfig.errorToast(response.data?.message)
-            toastConfig.errorToast('Error uploading files');
-            setSubmitLoader(false)
+            // toastConfig.errorToast('Error uploading files');
+            // setSubmitLoader(false)
         }
     };
 
     const { getRootProps, getInputProps } = useDropzone({
-        accept: '.pdf',
+        accept: ['.pdf','image/*'],
         onDrop,
     });
 
@@ -85,12 +83,12 @@ const FileUploader = ({setCurrentTab}) => {
                     <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
                         {submitLoader && <>
                             <span className="spinner-border spinner-border-sm" role="status"
-                                aria-hidden="true" />
+                                  aria-hidden="true"/>
                             <span className="sr-only">Loading...</span>
                         </>} Upload Files
-                    </button>  } {documentUploadResponse === true &&
-                                    <a className="btn active-secondary btn-sm m-2" onClick={()=>setCurrentTab(5)}>Next</a>
-                                }
+                    </button>} {documentUploadResponse === true &&
+                <a className="btn active-secondary btn-sm m-2" onClick={() => console.log(5)}>Next</a>
+            }
             </div>
 
             {KycDocUpload?.length > 0 && <div className="row p-2">
@@ -103,6 +101,6 @@ const FileUploader = ({setCurrentTab}) => {
             </div>}
         </div>
     );
-};
+}
 
-export default FileUploader;
+export default MerchantKycDocument;

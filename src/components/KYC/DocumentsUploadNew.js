@@ -14,10 +14,8 @@ import {
   merchantInfo,
   removeDocument,
   saveDropDownAndFinalArray
-
 } from "../../slices/kycSlice";
-
-import plus from "../../assets/images/plus.png";
+import plusIcon from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 
 import { isNull } from "lodash";
@@ -26,6 +24,7 @@ import {
   KYC_STATUS_APPROVED,
   KYC_STATUS_VERIFIED,
 } from "../../utilities/enums";
+import MerchantKycDocument from "../../_components/reuseable_components/react-dropzone/merchantKycDocument";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
@@ -326,6 +325,8 @@ function DocumentsUpload(props) {
                       Document name should be unique.
                     </span>
                   </div>
+
+                  <MerchantKycDocument />
                 </div>
 
                 <div className="row">
@@ -344,7 +345,6 @@ function DocumentsUpload(props) {
                                   className="file-upload-input"
                                   id="3"
                                   onChange={(e) => handleChange(e, 3)}
-                                // onChange={(e) => console.log(e, 3)}
                                 />
                                 <div className="drag-text">
                                   <p className="p-2 font-9">
@@ -352,7 +352,7 @@ function DocumentsUpload(props) {
                                   </p>
                                   <img
                                     alt="Doc"
-                                    src={plus}
+                                    src={plusIcon}
                                     style={{ width: 15 }}
                                     className="mb-1 pb-3"
                                   />
@@ -365,8 +365,6 @@ function DocumentsUpload(props) {
                           </div>
 
                           <div className="col-lg-6 ">
-                            {/* uploaded document preview */}
-                            {/* {console.log("imgAttr",imgAttr)} */}
                             {imgAttr !== "#" &&
                               imgAttr.startsWith("data:application/pdf") ? (
                               <iframe
