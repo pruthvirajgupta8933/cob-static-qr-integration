@@ -8,6 +8,7 @@ import toastConfig from "../../../../../../utilities/toastTypes";
 import {generateWord} from "../../../../../../utilities/generateClientCode";
 import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 import authService from "../../../../../../services/auth.service";
+import {createClientProfile} from "../../../../../../slices/auth";
 
 function ReferralOnboardForm({referralChild, fetchData}) {
     const dispatch = useDispatch()
