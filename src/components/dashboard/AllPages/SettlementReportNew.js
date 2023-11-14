@@ -386,6 +386,7 @@ const SettlementReportNew = () => {
         });
 
         const fileName = "Settlement-Report";
+        
         let handleExportLoading = (state) => {
             // console.log(state)
             if (state) {

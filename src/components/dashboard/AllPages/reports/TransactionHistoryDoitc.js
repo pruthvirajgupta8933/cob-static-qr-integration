@@ -410,7 +410,7 @@ const TransactionHistoryDoitc = () => {
       if (state) {
           alert("Exporting Excel File, Please wait...")
       }
-      dispatch(exportTxnLoadingState(state))
+      // dispatch(exportTxnLoadingState(state))
       return state
   }
 
