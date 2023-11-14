@@ -286,8 +286,17 @@ const SettlementReportDoitc = () => {
     }
 
     const fileName = "Settlement-Report";
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      // dispatch(exportTxnLoadingState(state))
+      return state
+  }
+
     if (exportType === "xlxs") {
-      exportToSpreadsheet(excelArr, fileName + "-xlxs", exportType);
+      exportToSpreadsheet(excelArr, fileName + "-xlxs", handleExportLoading);
     } else if (exportType === "csv") {
       downloadCSV(excelArr, fileName + "-csv.csv", exportType);
     } else if (exportType === "csv-ms-excel") {

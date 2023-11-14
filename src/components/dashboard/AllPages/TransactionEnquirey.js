@@ -14,7 +14,7 @@ function TransactionEnquirey() {
     transaction_from: "1"
   };
   const validationSchema = Yup.object({
-    transaction_id: Yup.string().max(30, "Transaction ID length exceed").required("Required"),
+    transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required"),
     transaction_from: Yup.string().nullable().required("Required")
   });
 
