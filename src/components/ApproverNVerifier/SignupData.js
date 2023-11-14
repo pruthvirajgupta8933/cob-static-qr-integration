@@ -190,7 +190,14 @@ useEffect(() => {
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Signup-Data";
-    exportToSpreadsheet(excelArr, fileName);
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      return state
+  }
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
 

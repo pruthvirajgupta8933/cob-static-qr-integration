@@ -55,6 +55,7 @@ const initialState = {
     compareDocListArray: {
         finalArray: [],
         dropDownDocList: [],
+        isRequireDataUploaded: false
     },
 
     allKycData: {
@@ -1082,8 +1083,9 @@ export const kycSlice = createSlice({
 
         saveDropDownAndFinalArray: (state, action) => {
 
-            state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
-            state.compareDocListArray.finalArray = action?.payload?.finalArray;
+            // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
+            // state.compareDocListArray.finalArray = action?.payload?.finalArray;
+            state.compareDocListArray.isRequireDataUploaded = action?.payload;
         },
         UpdateModalStatus: (state, action) => {
             state.OpenModalForKycSubmit.isOpen = action?.payload

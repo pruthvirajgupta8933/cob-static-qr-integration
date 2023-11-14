@@ -262,7 +262,14 @@ useEffect(() => {
     });
 
     const fileName = "ChargeBackTxn-Report";
-    exportToSpreadsheet(excelArr, fileName);
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      return state
+  }
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
 

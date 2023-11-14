@@ -1,23 +1,23 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
-import {Formik, Form} from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import {
     clearSettlementReport,
     fetchRefundTransactionHistory,
 } from "../../../slices/dashboardSlice";
-import {exportToSpreadsheet} from "../../../utilities/exportToSpreadsheet";
+import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
-import {convertToFormikSelectJson} from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import {fetchChiledDataList} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
+import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 const RefundTransactionHistory = () => {
     const dispatch = useDispatch();
@@ -38,11 +38,11 @@ const RefundTransactionHistory = () => {
     const [disable, setIsDisable] = useState(false);
 
     const roles = roleBasedAccess();
-    const {auth, dashboard, merchantReferralOnboardReducer} = useSelector((state) => state);
-    const {user} = auth;
-    const {refrerChiledList} = merchantReferralOnboardReducer
+    const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+    const { user } = auth;
+    const { refrerChiledList } = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    const {isLoadingTxnHistory} = dashboard;
+    const { isLoadingTxnHistory } = dashboard;
 
     var clientMerchantDetailsList = [];
     if (
@@ -283,7 +283,14 @@ const RefundTransactionHistory = () => {
             excelArr.push(Object.values(allowDataToShow));
         });
         const fileName = "Refund-Txn-Report";
-        exportToSpreadsheet(excelArr, fileName);
+        let handleExportLoading = (state) => {
+            // console.log(state)
+            if (state) {
+                alert("Exporting Excel File, Please wait...")
+            }
+            return state
+        }
+        exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     };
 
     return (
@@ -378,7 +385,7 @@ const RefundTransactionHistory = () => {
                                     </Form>
                                 )}
                             </Formik>
-                            <hr className="hr"/>
+                            <hr className="hr" />
                             {txnList?.length > 0 ? (
                                 <div className="form-row">
                                     <div className="form-group col-md-3">
@@ -402,7 +409,7 @@ const RefundTransactionHistory = () => {
                                             className="form-control rounded-0"
                                             onChange={(e) => setPageSize(parseInt(e.target.value))}
                                         >
-                                            <DropDownCountPerPage datalength={txnList.length}/>
+                                            <DropDownCountPerPage datalength={txnList.length} />
                                         </select>
                                     </div>
                                 </div>
@@ -423,57 +430,57 @@ const RefundTransactionHistory = () => {
                             <div className="overflow-auto">
                                 <table className="table table-bordered">
                                     <thead>
-                                    {txnList.length > 0 ? (
-                                        <tr>
-                                            <th> S.No</th>
-                                            <th> Client Code</th>
-                                            <th> Client Name</th>
-                                            <th> SP Transaction ID</th>
-                                            <th> Client Transaction ID</th>
-                                            <th> Amount</th>
-                                            <th> amount_adjust_on</th>
-                                            <th> amount_available_to_adjust</th>
-                                            <th> bank_name</th>
-                                            <th> money_asked_from_merchant</th>
-                                            <th> Payment Mode</th>
-                                            <th> refund_initiated_on</th>
-                                            <th> refund_process_on</th>
-                                            <th> refund_reason</th>
-                                            <th> refund_track_id</th>
-                                            <th> refunded_amount</th>
-                                            <th> trans_date</th>
-                                        </tr>
-                                    ) : (
-                                        <></>
-                                    )}
+                                        {txnList.length > 0 ? (
+                                            <tr>
+                                                <th> S.No</th>
+                                                <th> Client Code</th>
+                                                <th> Client Name</th>
+                                                <th> SP Transaction ID</th>
+                                                <th> Client Transaction ID</th>
+                                                <th> Amount</th>
+                                                <th> amount_adjust_on</th>
+                                                <th> amount_available_to_adjust</th>
+                                                <th> bank_name</th>
+                                                <th> money_asked_from_merchant</th>
+                                                <th> Payment Mode</th>
+                                                <th> refund_initiated_on</th>
+                                                <th> refund_process_on</th>
+                                                <th> refund_reason</th>
+                                                <th> refund_track_id</th>
+                                                <th> refunded_amount</th>
+                                                <th> trans_date</th>
+                                            </tr>
+                                        ) : (
+                                            <></>
+                                        )}
                                     </thead>
                                     <tbody>
-                                    {txnList.length > 0 &&
-                                        paginatedata.map((item, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td>{i + 1}</td>
-                                                    <td>{item.client_code}</td>
-                                                    <td>{item.client_name}</td>
-                                                    <td>{item.txn_id}</td>
-                                                    <td>{item.client_txn_id}</td>
-                                                    <td>
-                                                        {Number.parseFloat(item.payee_amount).toFixed(2)}
-                                                    </td>
-                                                    <td>{item.amount_adjust_on}</td>
-                                                    <td>{item.amount_available_to_adjust}</td>
-                                                    <td>{item.bank_name}</td>
-                                                    <td>{item.money_asked_from_merchant}</td>
-                                                    <td>{item.payment_mode}</td>
-                                                    <td>{item.refund_initiated_on}</td>
-                                                    <td>{item.refund_process_on}</td>
-                                                    <td>{item.refund_reason}</td>
-                                                    <td>{item.refund_track_id}</td>
-                                                    <td>{Number.parseFloat(item.refunded_amount)}</td>
-                                                    <td>{item.trans_date}</td>
-                                                </tr>
-                                            );
-                                        })}
+                                        {txnList.length > 0 &&
+                                            paginatedata.map((item, i) => {
+                                                return (
+                                                    <tr key={i}>
+                                                        <td>{i + 1}</td>
+                                                        <td>{item.client_code}</td>
+                                                        <td>{item.client_name}</td>
+                                                        <td>{item.txn_id}</td>
+                                                        <td>{item.client_txn_id}</td>
+                                                        <td>
+                                                            {Number.parseFloat(item.payee_amount).toFixed(2)}
+                                                        </td>
+                                                        <td>{item.amount_adjust_on}</td>
+                                                        <td>{item.amount_available_to_adjust}</td>
+                                                        <td>{item.bank_name}</td>
+                                                        <td>{item.money_asked_from_merchant}</td>
+                                                        <td>{item.payment_mode}</td>
+                                                        <td>{item.refund_initiated_on}</td>
+                                                        <td>{item.refund_process_on}</td>
+                                                        <td>{item.refund_reason}</td>
+                                                        <td>{item.refund_track_id}</td>
+                                                        <td>{Number.parseFloat(item.refunded_amount)}</td>
+                                                        <td>{item.trans_date}</td>
+                                                    </tr>
+                                                );
+                                            })}
                                     </tbody>
                                 </table>
                             </div>

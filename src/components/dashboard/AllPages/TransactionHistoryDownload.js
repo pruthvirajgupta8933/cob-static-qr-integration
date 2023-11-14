@@ -349,7 +349,14 @@ function TransactionHistoryDownload() {
     })
     // console.log("excelArr",excelArr)
     const fileName = "Transactions-Report";
-    exportToSpreadsheet(excelArr, fileName);
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      return state
+  }
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
 
   }
 
