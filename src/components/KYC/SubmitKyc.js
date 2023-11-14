@@ -12,23 +12,16 @@ import { toLower } from "lodash";
 import toastConfig from "../../utilities/toastTypes";
 
 function SubmitKyc(props) {
-  const history = useHistory();
   const { role } = props;
 
+  const history = useHistory();
   const dispatch = useDispatch();
-
   const { auth, kyc } = useSelector((state) => state);
-
-
   const { user } = auth;
-
   const { loginId } = user;
 
   const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
-  // console.log("compareDocListArray",compareDocListArray)
-  const { dropDownDocList, finalArray } = compareDocListArray
-
-
+  const { dropDownDocList, finalArray, isRequireDataUploaded } = compareDocListArray
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
   const kyc_status = kycUserList?.status;
   const [disable, setIsDisable] = useState(false);
@@ -46,20 +39,19 @@ function SubmitKyc(props) {
     ),
   });
 
- 
 
-  const rejectedDocList = KycDocUpload?.filter(item=> toLower(item.status)=== toLower(KYC_STATUS_REJECTED)  )
-  
+
+  const rejectedDocList = KycDocUpload?.filter(item => toLower(item.status) === toLower(KYC_STATUS_REJECTED))
+
 
   const onSubmit = (value) => {
     setIsDisable(true);
-    // console.log("dropDownDocList",dropDownDocList)
-    // console.log("finalArray",finalArray)
-    if(rejectedDocList?.length>0 ){
-        toast.error("Kindly Remove / Update the rejected document from the document list.")
+  
+    if (rejectedDocList?.length > 0) {
+      toast.error("Kindly Remove / Update the rejected document from the document list.")
       setIsDisable(false);
-    }else{
-      if (dropDownDocList.length === finalArray.length) {
+    } else {
+      if (isRequireDataUploaded) {
         dispatch(
           saveKycConsent({
             term_condition: value.term_condition,
@@ -80,14 +72,14 @@ function SubmitKyc(props) {
             setIsDisable(false);
           }
         });
-  
+
       } else {
-        toastConfig.errorToast("Alert! Kindly check the list of the required documents");
+        toastConfig.errorToast("Required Document is missing. Kindly Upload the required documents");
         setIsDisable(false)
       }
-  
+
     }
- 
+
 
   };
 
@@ -177,10 +169,10 @@ function SubmitKyc(props) {
                       type="submit"
 
                     >
-                     {disable && <>
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      <span className="sr-only">Loading...</span>
-                    </>}
+                      {disable && <>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="sr-only">Loading...</span>
+                      </>}
                       Submit
                     </button>
                   )}

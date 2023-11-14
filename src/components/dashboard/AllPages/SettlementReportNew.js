@@ -1,27 +1,27 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
-import {Formik, Form} from "formik";
+import { Formik, Form } from "formik";
 
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import {
     clearSettlementReport,
     fetchSettlementReportSlice,
 } from "../../../slices/dashboardSlice";
 import Notification from "../../../_components/reuseable_components/Notification";
-import {exportToSpreadsheet} from "../../../utilities/exportToSpreadsheet";
+import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
-import {convertToFormikSelectJson} from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 
 import moment from "moment";
 
-import {fetchChiledDataList} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
+import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 const SettlementReportNew = () => {
     const dispatch = useDispatch();
@@ -42,10 +42,10 @@ const SettlementReportNew = () => {
     const [buttonClicked, isButtonClicked] = useState(false);
     const [disable, setIsDisable] = useState(false)
 
-    const {auth, dashboard, merchantReferralOnboardReducer} = useSelector((state) => state);
-    const {user} = auth;
-    const {isLoadingTxnHistory} = dashboard;
-    const {refrerChiledList} = merchantReferralOnboardReducer
+    const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+    const { user } = auth;
+    const { isLoadingTxnHistory } = dashboard;
+    const { refrerChiledList } = merchantReferralOnboardReducer
     // console.log("refrerChiledList", refrerChiledList)
     const roles = roleBasedAccess();
     const clientCodeData = refrerChiledList?.resp?.results ?? []
@@ -386,7 +386,14 @@ const SettlementReportNew = () => {
         });
 
         const fileName = "Settlement-Report";
-        exportToSpreadsheet(excelArr, fileName);
+        let handleExportLoading = (state) => {
+            // console.log(state)
+            if (state) {
+                alert("Exporting Excel File, Please wait...")
+            }
+            return state
+        }
+        exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     };
 
 
@@ -396,7 +403,7 @@ const SettlementReportNew = () => {
 
             </div>
             <div className="profileBarStatus">
-                <Notification/>
+                <Notification />
             </div>
             <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
                 <div className="gx-main-content-wrapper">
@@ -468,7 +475,7 @@ const SettlementReportNew = () => {
                                                 <div className="form-group col-md-1 ml-1">
                                                     <button
                                                         className="btn cob-btn-primary text-white btn-sm"
-                                                        style={{backgroundColor: "rgb(1, 86, 179)"}}
+                                                        style={{ backgroundColor: "rgb(1, 86, 179)" }}
                                                         type="button"
                                                         onClick={() => exportToExcelFn()}
                                                     >
@@ -482,7 +489,7 @@ const SettlementReportNew = () => {
                                     </Form>
                                 )}
                             </Formik>
-                            <hr className="hr"/>
+                            <hr className="hr" />
                             {txnList?.length > 0 ? (
                                 <div className="form-row">
                                     <div className="form-group col-md-3">
@@ -506,7 +513,7 @@ const SettlementReportNew = () => {
                                             className="form-control rounded-0"
                                             onChange={(e) => setPageSize(parseInt(e.target.value))}
                                         >
-                                            <DropDownCountPerPage datalength={txnList.length}/>
+                                            <DropDownCountPerPage datalength={txnList.length} />
                                         </select>
                                     </div>
                                 </div>
@@ -527,58 +534,58 @@ const SettlementReportNew = () => {
                             <div className="overflow-auto">
                                 <table className="table table-bordered">
                                     <thead>
-                                    {txnList.length > 0 ? (
-                                        <tr>
-                                            <th> S.No</th>
-                                            <th> Client Code</th>
-                                            <th> Client Name</th>
-                                            <th> SP Transaction ID</th>
-                                            <th> GR Number</th>
-                                            <th> Client Transaction ID</th>
-                                            <th> Amount</th>
-                                            <th> Settlement Amount</th>
-                                            <th> Transaction Date</th>
-                                            <th> Settlement Date</th>
-                                            <th> Settlement Bank Ref</th>
-                                            <th> Settlement UTR</th>
-                                            <th> Settlement Remarks</th>
-                                            {/* <th> Settlement By </th> */}
-                                        </tr>
-                                    ) : (
-                                        <></>
-                                    )}
+                                        {txnList.length > 0 ? (
+                                            <tr>
+                                                <th> S.No</th>
+                                                <th> Client Code</th>
+                                                <th> Client Name</th>
+                                                <th> SP Transaction ID</th>
+                                                <th> GR Number</th>
+                                                <th> Client Transaction ID</th>
+                                                <th> Amount</th>
+                                                <th> Settlement Amount</th>
+                                                <th> Transaction Date</th>
+                                                <th> Settlement Date</th>
+                                                <th> Settlement Bank Ref</th>
+                                                <th> Settlement UTR</th>
+                                                <th> Settlement Remarks</th>
+                                                {/* <th> Settlement By </th> */}
+                                            </tr>
+                                        ) : (
+                                            <></>
+                                        )}
                                     </thead>
                                     <tbody>
-                                    {txnList.length > 0 &&
-                                        paginatedata.map((item, i) => {
-                                            {
-                                                console.log("txnList.length", txnList.length)
-                                            }
-                                            return (
-                                                <tr key={i}>
-                                                    <td>{i + 1}</td>
-                                                    <td>{item.client_code}</td>
-                                                    <td>{item.client_name}</td>
-                                                    <td>{item.txn_id}</td>
-                                                    <td>{item?.gr_number}</td>
-                                                    <td>{item.client_txn_id}</td>
-                                                    <td>
-                                                        {Number.parseFloat(item.payee_amount).toFixed(2)}
-                                                    </td>
-                                                    <td>
-                                                        {Number.parseFloat(
-                                                            item.settlement_amount
-                                                        ).toFixed(2)}
-                                                    </td>
-                                                    <td>{convertDate(item.trans_date)}</td>
-                                                    <td>{convertDate(item.settlement_date)}</td>
-                                                    <td>{item.settlement_bank_ref}</td>
-                                                    <td>{item.settlement_utr}</td>
-                                                    <td>{item.settlement_remarks}</td>
-                                                    {/* <td>{item.settlement_by}</td> */}
-                                                </tr>
-                                            );
-                                        })}
+                                        {txnList.length > 0 &&
+                                            paginatedata.map((item, i) => {
+                                                {
+                                                    console.log("txnList.length", txnList.length)
+                                                }
+                                                return (
+                                                    <tr key={i}>
+                                                        <td>{i + 1}</td>
+                                                        <td>{item.client_code}</td>
+                                                        <td>{item.client_name}</td>
+                                                        <td>{item.txn_id}</td>
+                                                        <td>{item?.gr_number}</td>
+                                                        <td>{item.client_txn_id}</td>
+                                                        <td>
+                                                            {Number.parseFloat(item.payee_amount).toFixed(2)}
+                                                        </td>
+                                                        <td>
+                                                            {Number.parseFloat(
+                                                                item.settlement_amount
+                                                            ).toFixed(2)}
+                                                        </td>
+                                                        <td>{convertDate(item.trans_date)}</td>
+                                                        <td>{convertDate(item.settlement_date)}</td>
+                                                        <td>{item.settlement_bank_ref}</td>
+                                                        <td>{item.settlement_utr}</td>
+                                                        <td>{item.settlement_remarks}</td>
+                                                        {/* <td>{item.settlement_by}</td> */}
+                                                    </tr>
+                                                );
+                                            })}
                                     </tbody>
                                 </table>
                             </div>

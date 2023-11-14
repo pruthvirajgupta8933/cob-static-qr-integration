@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Formik, Form } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
@@ -17,74 +17,59 @@ import {
 } from "../../slices/kycSlice";
 import plusIcon from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
-
-import { isNull } from "lodash";
-import { isUndefined } from "lodash";
-import {
-  KYC_STATUS_APPROVED,
-  KYC_STATUS_VERIFIED,
-} from "../../utilities/enums";
-import MerchantKycDocument from "../../_components/reuseable_components/react-dropzone/merchantKycDocument";
+import { isNull, isUndefined } from "lodash";
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED, } from "../../utilities/enums";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
   const { role } = props;
 
-
   const dispatch = useDispatch();
+  const { auth, kyc } = useSelector((state) => state);
+
 
   const [docTypeList, setDocTypeList] = useState([]);
   const [isRequiredData, setIsRequiredData] = useState([])
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [savedData, setSavedData] = useState([]);
-
-  // const [buttonText, setButtonText] = useState("Upload Document");
   const [imgAttr, setImgAttr] = useState("#");
-
-  const filteredList = isRequiredData?.filter((r) => r?.is_required === true); // required list
-  const dropDownDocList = filteredList.map((r) => r?.id?.toString());  /// dropdown array
-  const uploadedDocList = Object.values(savedData)?.map((r) => r?.type)
-  const optionalArray = isRequiredData?.filter((r) => r?.is_required === false); // not required doc list
-  const dropoptionalArray = optionalArray.map((r) => r?.id?.toString()); // optional doc dropdown
-
-  let finalArray = uploadedDocList.filter((value) => !dropoptionalArray.includes(value)); // array of the final uploaded doc. where requied doc not included
-
-  useEffect(() => {
-
-    if (dropDownDocList?.length > 0 && finalArray?.length > 0) {
-      dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
-    }
-  }, [props?.tabValue, isRequiredData]);
+  const [isRequiredDocUpload, setIsRequiredDocUpload] = useState(true)
+  const [disable, setDisable] = useState(false);
 
 
+  const filteredRequirList = isRequiredData?.filter((r) => r?.is_required === true); // required list
+  const filteredRequirListId = filteredRequirList.map((r) => r?.id?.toString());  /// dropdown array
+  const uploadedReqDocList = Object.values(savedData)?.map((r) => r?.type)
 
 
-
-
-  // console.log("finalArray",finalArray)
-  const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate, KycTabStatusStore } = kyc;
-
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const businessType = KycList?.businessType;
-  // console.log("KycList",KycList)
-
   const documentStatus = KycTabStatusStore?.document_status;
-
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
   const documentListData = savedData?.filter((data) => ((data?.status).toLowerCase()) !== "rejected")?.map((data) => data?.type);
-
   const dropdownListData = docTypeList?.map((data) => data?.key);
+  const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
 
-  const alreadyUploadedData = dropdownListData?.filter((elem) =>
-    documentListData?.includes(elem?.toString())
-  );
+  let submitAction;
+  
+  // formik 
+  const initialValues = {
+    docType: savedData[0]?.type ? savedData[0]?.type : "",
+    document_img: "",
+  };
+
+  const validationSchema = Yup.object({
+    docType: Yup.string().required("Document Required").nullable(),
+    document_img: Yup.mixed().nullable(),
+  });
+
 
   const newDocumentedOption = docTypeList?.map((obj, key) => {
     if (alreadyUploadedData.includes(obj.key)) {
@@ -109,21 +94,13 @@ function DocumentsUpload(props) {
     setSavedData(KycDocUpload);
   }, [KycDocUpload]);
 
-  const initialValues = {
-    docType: savedData[0]?.type ? savedData[0]?.type : "",
-    document_img: "",
-  };
 
-  const validationSchema = Yup.object({
-    docType: Yup.string().required("Document Required").nullable(),
-    document_img: Yup.mixed().nullable(),
-  });
 
   useEffect(() => {
-    // console.log("KycList?.is_udyam",KycList?.is_udyam)
     dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
       .then((resp) => {
         setIsRequiredData(resp?.payload)
+
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
         setDocTypeList(data);
         setImgAttr("#");
@@ -150,59 +127,53 @@ function DocumentsUpload(props) {
   const isrequired = savedData?.map((r) => r.type);
 
   const handleChange = function (e, id) {
-    // console.log("handle change")
     setSelectedFile(e.target.files[0]);
-    // console.log(e.target)
     readURL(e.target, id);
   };
 
-  const [disable, setDisable] = useState(false);
+
   const onSubmit = (values, action) => {
-    // If merchant logged in
 
     setDisable(true);
-    if (role.merchant) {
-      // console.log("selectedFile",selectedFile)
-      if (!isNull(selectedFile) && !isUndefined(selectedFile)) {
-        const bodyFormData = new FormData();
-        let docType = values?.docType;
-        bodyFormData.append("files", selectedFile);
-        bodyFormData.append("login_id", loginId);
-        bodyFormData.append("modified_by", loginId);
-        bodyFormData.append("type", values?.docType);
+    if (!isNull(selectedFile) && !isUndefined(selectedFile)) {
+      const bodyFormData = new FormData();
+      let docType = values?.docType;
+      bodyFormData.append("files", selectedFile);
+      bodyFormData.append("login_id", loginId);
+      bodyFormData.append("modified_by", loginId);
+      bodyFormData.append("type", values?.docType);
 
-        const kycData = { bodyFormData, docType };
+      const kycData = { bodyFormData, docType };
 
-        dispatch(merchantInfo(kycData))
-          .then(function (response) {
-            dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
+      dispatch(merchantInfo(kycData))
+        .then(function (response) {
+          // dispatch(saveDropDownAndFinalArray(isRequiredDocUpload));
 
-            if (response?.payload?.status) {
-              setTitle("SUBMIT KYC");
-              dispatch(GetKycTabsStatus({ login_id: loginId }));
-
-              toast.success(response?.payload?.message);
-            } else {
-              const message =
-                response?.payload?.message ||
-                response?.payload?.message?.toString();
-              toast.error(message);
-            }
-            setDisable(false);
-          })
-          .catch(function (error) {
-            toast.error("Something went wrong while saving the document");
-            setDisable(false);
-          });
-      } else {
-        toast.error("Please select a document to upload");
-        setDisable(false);
-      }
+          if (response?.payload?.status) {
+            setTitle("SUBMIT KYC");
+            dispatch(GetKycTabsStatus({ login_id: loginId }));
+            toast.success(response?.payload?.message);
+          } else {
+            const message =
+              response?.payload?.message ||
+              response?.payload?.message?.toString();
+            toast.error(message);
+          }
+          setDisable(false);
+        })
+        .catch(function (error) {
+          toast.error("Something went wrong while saving the document");
+          setDisable(false);
+        });
+    } else {
+      toast.error("Please select a document to upload");
+      setDisable(false);
     }
+
 
     // update doc list after the upload the document
     setTimeout(() => {
-      getKycDocList(role);
+      getKycDocList();
     }, 2000);
   };
 
@@ -218,11 +189,11 @@ function DocumentsUpload(props) {
       dispatch(removeDocument(rejectDetails))
         .then((resp) => {
           setTimeout(() => {
-            getKycDocList(role);
+            getKycDocList();
           }, 1300);
 
-          finalArray = finalArray.filter((item) => item !== doc_type);
-          dispatch(saveDropDownAndFinalArray({ dropDownDocList, finalArray }));
+          // finalArray = finalArray.filter((item) => item !== doc_type);
+          // dispatch(saveDropDownAndFinalArray(isRequiredDocUpload));
           resp?.payload?.status
             ? toast.success(resp?.payload?.message)
             : toast.error(resp?.payload?.message);
@@ -233,7 +204,7 @@ function DocumentsUpload(props) {
     }
   };
 
-  const getKycDocList = (role) => {
+  const getKycDocList = () => {
     dispatch(
       kycDocumentUploadList({
         login_id: loginId,
@@ -242,19 +213,10 @@ function DocumentsUpload(props) {
   };
 
   useEffect(() => {
-    getKycDocList(role);
+    getKycDocList()
   }, []);
 
-  let submitAction = undefined;
 
-  let btn = false;
-  isRequiredData?.map((i) => {
-    if (required.every((elem) => isrequired.includes(elem.toString()))) {
-      btn = true;
-    } else {
-      btn = false;
-    }
-  });
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -265,15 +227,43 @@ function DocumentsUpload(props) {
     return data[0]?.value;
   };
 
+
   useEffect(() => {
     setImgAttr("#");
     setSelectedFile(null);
   }, [docTypeIdDropdown]);
 
+
+  // doc name shorting
   const stringManulate = (str) => {
     let str1 = str.substring(0, 15);
     return `${str1}...`;
   };
+
+
+
+  useEffect(() => {
+    filteredRequirListId.forEach((v, i) => {
+      if (!uploadedReqDocList.includes(v)) {
+        setIsRequiredDocUpload(false)
+      }
+    })
+
+    return () => {
+      setIsRequiredDocUpload(true)
+    }
+  }, [uploadedReqDocList, KycDocUpload])
+
+
+  
+  useEffect(() => {
+    if (isRequiredDocUpload) {
+      dispatch(saveDropDownAndFinalArray(true));
+    } else {
+      dispatch(saveDropDownAndFinalArray(false));
+    }
+  }, [isRequiredDocUpload, KycDocUpload])
+
 
 
   return (
@@ -296,21 +286,15 @@ function DocumentsUpload(props) {
                   <div className="col-sm-12 col-md-12 col-lg-6 mb-2">
                     <label className=" col-form-label mt-0">
                       Select Document Type
-                      <span style={{ color: "red" }}>*</span>
+                      <span className="text-danger">*</span>
                     </label>
-                    {/* {console.log("kyc_status",kyc_status)} */}
                     <FormikController
                       control="select"
                       name="docType"
                       className="form-select"
                       options={newDocumentedOption}
                       // readOnly={readOnly}
-                      disabled={
-                        documentStatus === KYC_STATUS_VERIFIED ||
-                          documentStatus === KYC_STATUS_APPROVED
-                          ? true
-                          : false
-                      }
+                      disabled={(documentStatus === KYC_STATUS_VERIFIED || documentStatus === KYC_STATUS_APPROVED)}
                     />
                     {formik.handleChange(
                       "docType",
@@ -326,79 +310,73 @@ function DocumentsUpload(props) {
                     </span>
                   </div>
 
-                  <MerchantKycDocument />
+                  {/*<MerchantKycDocument />*/}
                 </div>
 
                 <div className="row">
-                  {role?.merchant ? (
-                    documentStatus !== "Approved" &&
-                      documentStatus !== "Verified" ? (
-                      docTypeIdDropdown !== "" ? (
-                        <>
-                          <div className="col-lg-6 ">
-                            <div className="file-upload  border-dotted">
-                              <div className="image-upload-wrap ">
-                                <FormikController
-                                  control="file"
-                                  type="file"
-                                  name="document_img"
-                                  className="file-upload-input"
-                                  id="3"
-                                  onChange={(e) => handleChange(e, 3)}
+                  {documentStatus !== "Approved" &&
+                    documentStatus !== "Verified" ? (
+                    docTypeIdDropdown !== "" && (
+                      <>
+                        <div className="col-lg-6 ">
+                          <div className="file-upload  border-dotted">
+                            <div className="image-upload-wrap ">
+                              <FormikController
+                                control="file"
+                                type="file"
+                                name="document_img"
+                                className="file-upload-input"
+                                id="3"
+                                onChange={(e) => handleChange(e, 3)}
+                              />
+                              <div className="drag-text">
+                                <p className="p-2 font-9">
+                                  Add the selected document
+                                </p>
+                                <img
+                                  alt="Doc"
+                                  src={plusIcon}
+                                  style={{ width: 15 }}
+                                  className="mb-1 pb-3"
                                 />
-                                <div className="drag-text">
-                                  <p className="p-2 font-9">
-                                    Add the selected document
-                                  </p>
-                                  <img
-                                    alt="Doc"
-                                    src={plusIcon}
-                                    style={{ width: 15 }}
-                                    className="mb-1 pb-3"
-                                  />
-                                  <p className="card-text">
-                                    Upto 2 MB file size
-                                  </p>
-                                </div>
+                                <p className="card-text">
+                                  Upto 2 MB file size
+                                </p>
                               </div>
                             </div>
                           </div>
-
-                          <div className="col-lg-6 ">
-                            {imgAttr !== "#" &&
-                              imgAttr.startsWith("data:application/pdf") ? (
-                              <iframe
-                                title="document"
-                                src={imgAttr + "#toolbar=0"}
-                                height={155}
-                                width={150}
+                        </div>
+                        <div className="col-lg-6 ">
+                          {imgAttr !== "#" &&
+                            imgAttr.startsWith("data:application/pdf") ? (
+                            <iframe
+                              title="document"
+                              src={imgAttr + "#toolbar=0"}
+                              height={155}
+                              width={150}
+                            />
+                          ) : (
+                            ""
+                          )}
+                          {imgAttr === "#" ||
+                            imgAttr.startsWith("data:application/pdf") ? (
+                            <></>
+                          ) : (
+                            <div className="file-upload-content imagepre_3">
+                              <img
+                                className="file-upload-image imagepre_sub_3"
+                                src={imgAttr}
+                                alt="Document"
                               />
-                            ) : (
-                              ""
-                            )}
-                            {imgAttr === "#" ||
-                              imgAttr.startsWith("data:application/pdf") ? (
-                              <></>
-                            ) : (
-                              <div className="file-upload-content imagepre_3">
-                                <img
-                                  className="file-upload-image imagepre_sub_3"
-                                  src={imgAttr}
-                                  alt="Document"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )
-                    ) : (
-                      <></>
+                            </div>
+                          )}
+                        </div>
+                      </>
                     )
                   ) : (
                     <></>
-                  )}
+                  )
+                  }
                 </div>
 
                 <div className="row">
@@ -424,31 +402,28 @@ function DocumentsUpload(props) {
                       {/* add function go to the next step */}
                       {documentStatus !== "Approved" &&
                         documentStatus !== "Verified" &&
-                        role?.merchant &&
-                        btn ? (
-                        <button
-                          className="btn btn-sm cob-btn-primary  text-white m-1"
-                          type="button"
-                          onClick={() => {
-                            if (dropDownDocList.length === finalArray.length) {
-                              setTab(6);
-                            } else {
-                              alert("Alert! Kindly check the list of the required documents");
-                            }
-                          }}
-                        >
-                          Save & Next
-                        </button>
-                      ) : (
-                        <></>
-                      )}
+                        isRequiredDocUpload && (
+                          <button
+                            className="btn btn-sm cob-btn-primary  text-white m-1"
+                            type="button"
+                            onClick={() => {
+                              if (isRequiredDocUpload) {
+                                setTab(6);
+                              } else {
+                                alert("Alert! Kindly check the list of the required documents");
+                              }
+                            }}
+                          >
+                            Save & Next
+                          </button>
+                        )}
                     </div>
                   ) : (
                     <></>
                   )}
                 </div>
-                <div className="form-row">
 
+                <div className="form-row">
                   {savedData?.length ? (
                     <>
                       <hr />
@@ -463,13 +438,9 @@ function DocumentsUpload(props) {
                               <th>Document Status</th>
                               {role?.merchant &&
                                 documentStatus !== "Approved" &&
-                                documentStatus !== "Verified" ? (
-                                <th>Remove Item</th>
-                              ) : (
-                                <></>
-                              )}
-
-                              {/* {!role?.merchant ? <th>Action</th> : <></>} */}
+                                documentStatus !== "Verified" && (
+                                  <th>Remove Item</th>
+                                )}
                             </tr>
                           </thead>
                           <tbody>
@@ -491,20 +462,19 @@ function DocumentsUpload(props) {
                                 <td>{doc?.status}</td>
                                 {role?.merchant &&
                                   documentStatus !== "Approved" &&
-                                  documentStatus !== "Verified" ? (
-                                  <td>
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        removeDoc(doc?.documentId, doc?.type);
-                                      }}
-                                    >
-                                      <i className="fa fa-trash"></i>
-                                    </button>
-                                  </td>
-                                ) : (
-                                  <></>
-                                )}
+                                  documentStatus !== "Verified" && (
+                                    <td>
+                                      <button
+                                        aria-label="remove-doc"
+                                        type="button"
+                                        onClick={() => {
+                                          removeDoc(doc?.documentId, doc?.type);
+                                        }}
+                                      >
+                                        <i className="fa fa-trash"></i>
+                                      </button>
+                                    </td>
+                                  )}
                               </tr>
                             ))}
                           </tbody>

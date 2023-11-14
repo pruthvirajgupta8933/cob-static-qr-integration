@@ -70,7 +70,7 @@ function KycForm() {
 
 
   const kycStatusIcon = (tabStatus, currentTab, merchantConsent, isLastAction = false) => {
-
+    // console.log("tabStatus",tabStatus)
     if (tabStatus && merchantConsent === false && isLastAction) {
       return <i className={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
     }
@@ -99,6 +99,7 @@ function KycForm() {
     }
   }
 
+  // console.log("KycTabStatusStore?.document_status",KycTabStatusStore?.document_status)
 
   return (
     <section className="ant-layout NunitoSans-Regular">
@@ -107,7 +108,6 @@ function KycForm() {
           "mt-5 modal fade mymodals" +
           (kycPopUp === true ? " show d-block" : " d-none")
         }
-        role="dialog"
         style={{ overflow: "scroll" }}
       >
         <div className="modal-dialog modal-dialog-center modal-lg">

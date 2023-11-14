@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import FormikController from "../../_components/formik/FormikController";
+import { exportTxnLoadingState } from "../../slices/dashboardSlice";
 
 
 const validationSchema = Yup.object({
@@ -175,7 +176,17 @@ const BizzAppData = () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Bizz-App-Data";
-    exportToSpreadsheet(excelArr, fileName);
+
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      return state
+  }
+
+
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
   return (
