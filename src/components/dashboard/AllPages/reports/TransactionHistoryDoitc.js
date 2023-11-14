@@ -17,6 +17,7 @@ import NavBar from "../../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
+import { exportTxnLoadingState } from "../../../../slices/dashboardSlice";
 
 
 const TransactionHistoryDoitc = () => {
@@ -28,8 +29,8 @@ const TransactionHistoryDoitc = () => {
   const { user } = auth;
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
-  const [startDate, setStartDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  // const [startDate, setStartDate] = useState("");
+  // const [toDate, setToDate] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [show, setShow] = useState("");
@@ -368,7 +369,7 @@ const TransactionHistoryDoitc = () => {
       excelArr.push(Object.values(allowDataToShow));
     });
 
-  
+
 
     // Function to convert data to CSV format
     //exportType = csv/ csv-ms-excel
@@ -404,9 +405,18 @@ const TransactionHistoryDoitc = () => {
       document.body.removeChild(link);
     }
 
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      dispatch(exportTxnLoadingState(state))
+      return state
+  }
+
     const fileName = "Transactions-Report";
     if (exportType === "xlxs") {
-      exportToSpreadsheet(excelArr, fileName + "-xlxs", exportType);
+      exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     } else if (exportType === "csv") {
       downloadCSV(excelArr, fileName + "-csv.csv", exportType);
     } else if (exportType === "csv-ms-excel") {
@@ -523,9 +533,9 @@ const TransactionHistoryDoitc = () => {
                                 Export
                               </button>
                               <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("csv")}>CSV</button>
+                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv")}>CSV</button>
                                 <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv-ms-excel")}>CSV for MS-Excel</button>
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("xlxs")}>Excel</button>
+                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("xlxs")}>Excel</button>
                               </div>
                             </div>
                           </div>

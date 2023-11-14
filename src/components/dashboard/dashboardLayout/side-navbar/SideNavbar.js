@@ -90,6 +90,7 @@ function SideNavbar() {
                                         </li>
                                     )
                                 ) : (
+                                    sm?.is_active && 
                                     <li className="nav-item" role="menuitem" key={sm?.id}>
                                         <Link
                                             to={`${url}/${sm?.url}`}

@@ -280,7 +280,14 @@ const DebitReport = () => {
         excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Debit-Reports";
-    exportToSpreadsheet(excelArr, fileName);
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+          alert("Exporting Excel File, Please wait...")
+      }
+      return state
+  }
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
 };
 
   return (
