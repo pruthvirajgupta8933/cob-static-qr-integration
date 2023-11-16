@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {kycForPending} from "../../../../../slices/kycSlice";
-import {roleBasedAccess} from "../../../../../_components/reuseable_components/roleBasedAccess";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { kycForPending } from "../../../../../slices/kycSlice";
+import { roleBasedAccess } from "../../../../../_components/reuseable_components/roleBasedAccess";
 
 import Table from "../../../../../_components/table_components/table/Table";
 import SearchFilter from "../../../../../_components/table_components/filters/SearchFilter";
@@ -12,7 +12,7 @@ import DateFormatter from "../../../../../utilities/DateConvert";
 import {
     fetchMerchantProductSubscribeList
 } from "../../../../../slices/approver-dashboard/productSubscriptionServiceAdminSlice";
-import {axiosInstanceJWT} from "../../../../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../config";
 import toastConfig from "../../../../../utilities/toastTypes";
 
@@ -89,7 +89,7 @@ function BankRefMerchantList() {
                     </button>
                     {(row?.qwik_form?.subscription_status === "Subscribed") &&
                         <a
-                            type="button"
+                            rel="noreferrer"
                             className={`btn-sm mx-1 btn-outline-secondary`}
                             target="_blank"
                             href={`https://qwikforms.in/QwikForms/saLogin?clientId=${row?.client_id}&&cobUserName=opsuser2@sp&&password=wkVc1iUwAn5tn1V1K&&requestType=COB`}
@@ -151,18 +151,18 @@ function BankRefMerchantList() {
 
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [commentId, setCommentId] = useState({});
+    // const [commentId, setCommentId] = useState({});
     const [pageSize, setPageSize] = useState(100);
 
-    const [isOpenModal, setIsModalOpen] = useState(false);
-    const [openCommentModal, setOpenCommentModal] = useState(false);
+    // const [isOpenModal, setIsModalOpen] = useState(false);
+    // const [openCommentModal, setOpenCommentModal] = useState(false);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-    const currenTab = parseInt(verifierApproverTab?.currenTab);
+    // const currenTab = parseInt(verifierApproverTab?.currenTab);
 
 
-    const {productSubscriptionServiceAdminReducer} = useSelector((state) => state);
-    const {merchantProductSubscribeList} = productSubscriptionServiceAdminReducer
+    const { productSubscriptionServiceAdminReducer } = useSelector((state) => state);
+    const { merchantProductSubscribeList } = productSubscriptionServiceAdminReducer
 
 
     const [data, setData] = useState([]);
@@ -195,16 +195,16 @@ function BankRefMerchantList() {
         }
     };
 
-    const pendingVerify = () => {
-        fetchData();
+    // const pendingVerify = () => {
+    //     fetchData();
 
-    };
+    // };
 
     //---------------GET Api for KycPending-------------------
 
     useEffect(() => {
         fetchData();
-    }, [currentPage, searchText, searchText, pageSize, onboardType]);
+    }, [currentPage, pageSize, onboardType]);
 
     const fetchData = () => {
         dispatch(
@@ -240,24 +240,24 @@ function BankRefMerchantList() {
         );
     };
 
-    const optionSearchData = [
-        {
-            name: "Select Onboard Type",
-            value: "",
-        },
-        {
-            name: "All",
-            value: "",
-        },
-        {
-            name: "Online",
-            value: "online",
-        },
-        {
-            name: "Offline",
-            value: "offline",
-        },
-    ];
+    // const optionSearchData = [
+    //     {
+    //         name: "Select Onboard Type",
+    //         value: "",
+    //     },
+    //     {
+    //         name: "All",
+    //         value: "",
+    //     },
+    //     {
+    //         name: "Online",
+    //         value: "online",
+    //     },
+    //     {
+    //         name: "Offline",
+    //         value: "offline",
+    //     },
+    // ];
 
     return (
         <div className="container-fluid flleft">
@@ -268,7 +268,7 @@ function BankRefMerchantList() {
                         searchText={searchText}
                         searchByText={searchByText}
                         setSearchByDropDown={setSearchByDropDown}
-                        searchTextByApiCall={true}
+                        // searchTextByApiCall={false}
                     />
                 </div>
                 <div>
@@ -298,7 +298,7 @@ function BankRefMerchantList() {
                     )}
                 </div>
                 {/* <CustomLoader loadingState={loadingState} /> */}
-                {loadingState && <SkeletonTable/>}
+                {loadingState && <SkeletonTable />}
                 {data?.length == 0 && !loadingState && (
                     <h6 className="text-center font-weight-bold">No Data Found</h6>
                 )}
