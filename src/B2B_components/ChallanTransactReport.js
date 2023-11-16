@@ -15,7 +15,7 @@ import Blob from "blob";
 import { ChallanReportData } from "../utilities/tableData";
 import Table from "../_components/table_components/table/Table";
 import CountPerPageFilter from "../../src/_components/table_components/filters/CountPerPage";
-import CustomLoader from "../_components/loader";
+// import CustomLoader from "../_components/loader";
 import SearchFilter from "../_components/table_components/filters/SearchFilter";
 
 const ChallanTransactReport = () => {
@@ -136,9 +136,9 @@ useEffect(() => {
     );
   };
 
-  const challanSearch = (e) => {
-    setSearchText(e.target.value);
-  };
+  // const challanSearch = (e) => {
+  //   setSearchText(e.target.value);
+  // };
 
   useEffect(() => {
     setLoadState(true);
@@ -188,11 +188,11 @@ useEffect(() => {
       .then((resp) => {
 
 
-        if (data?.length === 0 && data !== null) {
-          // Return null value
-        } else {
-          // toastConfig.successToast("Data loaded");
-        }
+        // if (data?.length === 0 && data !== null) {
+        //   // Return null value
+        // } else {
+        //   // toastConfig.successToast("Data loaded");
+        // }
 
         setData(data);
         setSpinner(true);

@@ -1,10 +1,11 @@
 import React from 'react'
-import { verifyKycEachTab } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import VerifyRejectBtn from './VerifyRejectBtn';
-import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
+import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
+// import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+
 const BusinessDetails = (props) => {
   const { merchantKycId, KycTabStatus } = props;
 
@@ -25,9 +26,9 @@ const BusinessDetails = (props) => {
         login_id: merchantKycId.loginMasterId,
         merchant_info_verified_by: loginId,
       };
-  
+
       const resp = await dispatch(verifyKycEachTab(verifierDetails));
-  
+
       if (resp?.payload?.merchant_info_status) {
         toast.success(resp.payload.merchant_info_status);
       } else if (resp?.payload?.detail) {
@@ -37,7 +38,7 @@ const BusinessDetails = (props) => {
       toast.error("Try Again Network Error");
     }
   };
-  
+
 
   const handleRejectClick = async (merchant_info_reject_comments = "") => {
     const rejectDetails = {
@@ -45,11 +46,11 @@ const BusinessDetails = (props) => {
       merchant_info_rejected_by: loginId,
       merchant_info_reject_comments: merchant_info_reject_comments,
     };
-  
+
     if (window.confirm("Reject Business Details")) {
       try {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
-  
+
         if (resp?.payload?.merchant_info_status) {
           toast.success(resp.payload.merchant_info_status);
         } else if (resp?.payload) {
@@ -61,7 +62,7 @@ const BusinessDetails = (props) => {
       }
     }
   };
-  
+
   // console.log("merchantKycId",merchantKycId)
 
   return (
@@ -72,7 +73,7 @@ const BusinessDetails = (props) => {
         <div className="col-sm-12 col-md-6 col-lg-6">
 
           <label className="">
-            GSTIN<span style={{ color: "red" }}>*</span>
+            GSTIN<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -93,7 +94,7 @@ const BusinessDetails = (props) => {
         </div>
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Business PAN<span style={{ color: "red" }}>*</span>
+            Business PAN<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -102,6 +103,11 @@ const BusinessDetails = (props) => {
             disabled="true"
             value={merchantKycId?.panCard}
           />
+          {merchantKycId?.panCard === null || merchantKycId?.panCard === "" ? (
+            <p className="text-danger"> Not Verified</p>
+          ) : (
+            <p className="text-success">Verified</p>
+          )}
         </div>
 
       </div>
@@ -110,7 +116,7 @@ const BusinessDetails = (props) => {
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
             Authorized Signatory PAN
-            <span style={{ color: "red" }}>*</span>
+            <span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -131,7 +137,7 @@ const BusinessDetails = (props) => {
         </div>
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Business Name<span style={{ color: "red" }}>*</span>
+            Business Name<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -149,7 +155,7 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            PAN Owner's Name<span style={{ color: "red" }}>*</span>
+            PAN Owner's Name<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -164,7 +170,7 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Address<span style={{ color: "red" }}>*</span>
+            Address<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -182,7 +188,7 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-3 col-md-3 col-lg-3">
           <label className="">
-            City<span style={{ color: "red" }}>*</span>
+            City<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -195,7 +201,7 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-3 col-md-3 col-lg-3">
           <label className="">
-            State<span style={{ color: "red" }}>*</span>
+            State<span className="text-danger">*</span>
           </label>
           <input
             type="text"
@@ -210,7 +216,7 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Pin Code<span style={{ color: "red" }}>*</span>
+            Pin Code<span className="text-danger">*</span>
           </label>
           <input
             type="text"
