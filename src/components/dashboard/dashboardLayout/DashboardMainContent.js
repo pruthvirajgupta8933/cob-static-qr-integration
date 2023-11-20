@@ -189,9 +189,9 @@ function DashboardMainContent() {
                         <Route exact path={`${path}/profile`}>
                             <Profile />
                         </Route>
-                        <Route exact path={`${path}/onboard-merchant`}>
+                        <AuthorizedRoute exact path={`${path}/onboard-merchant`} Component={OnboardMerchant} roleList={{ approver: true,  accountManager: true }}>
                             <OnboardMerchant />
-                        </Route>
+                        </AuthorizedRoute>
 
 
                         <AuthorizedRoute
