@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../../login/css/home.css"
-import "../../login/css/homestyle.css"
-import "../../login/css/style-style.css"
-import "../../login/css/style.css"
-import {Formik, Field, Form, ErrorMessage} from "formik";
+// import "../../login/css/homestyle.css"
+// import "../../login/css/style-style.css"
+// import "../../login/css/style.css"
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {useDispatch, useSelector} from "react-redux";
-import {register} from "../../../slices/auth";
-import {useHistory} from "react-router-dom";
-import {toast, Zoom} from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../../slices/auth";
+import { useHistory } from "react-router-dom";
+import { toast, Zoom } from "react-toastify";
 import API_URL from "../../../config";
-import {axiosInstanceJWT} from "../../../utilities/axiosInstance";
-import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
-import {logout} from "../../../slices/auth";
+import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+// import {logout} from "../../../slices/auth";
 
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -50,9 +50,9 @@ const OnboardMerchant = () => {
     let roleShow = roleBasedAccess()
 
     const reduxState = useSelector((state) => state);
-    const {message, auth} = reduxState;
+    const { message, auth } = reduxState;
     const datar = auth;
-    const {isUserRegistered, user} = datar;
+    const { isUserRegistered, user } = datar;
     const [btnDisable, setBtnDisable] = useState(false);
 
     const [businessCode, setBusinessCode] = useState([]);
@@ -143,7 +143,7 @@ const OnboardMerchant = () => {
 
 
     const handleClickShowPassword = () => {
-        setValuesIn({...valuesIn, showPassword: !valuesIn.showPassword});
+        setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
     };
 
     useEffect(() => {
@@ -154,8 +154,11 @@ const OnboardMerchant = () => {
                 limit: 1,
                 transition: Zoom,
             });
+            setTimeout(function(){
+                window.location.href = ""
+            },1000)
 
-            history.push("/dashboard/approver");
+            // history.push("/dashboard/approver");
         }
 
         if (isUserRegistered === false) {
@@ -172,19 +175,17 @@ const OnboardMerchant = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isUserRegistered]);
 
-    useEffect(() => {
-        if (roleShow?.verifier !== true && roleShow?.approver !== true) {
-            dispatch(logout())
-        }
-    })
+    // useEffect(() => {
+    //     if (roleShow?.verifier !== true && roleShow?.approver !== true) {
+    //         dispatch(logout())
+    //     }
+    // })
     return (
         <>
-
-
             <div className="logmod__heading">
-        <span className="fontfigma">
-          Onboard Merchant
-        </span>
+                <span className="fontfigma">
+                    Onboard Merchant
+                </span>
 
             </div>
             <Formik
@@ -384,9 +385,9 @@ const OnboardMerchant = () => {
                                 />
 
                                 <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
-                  {passwordType.showPasswords ? (<i className="fa fa-eye" aria-hidden="true"></i>) : (
-                      <i className="fa fa-eye-slash" aria-hidden="true"></i>
-                  )}</span>
+                                    {passwordType.showPasswords ? (<i className="fa fa-eye" aria-hidden="true"></i>) : (
+                                        <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                                    )}</span>
                             </div>
                             {
                                 <ErrorMessage name="passwordd">
@@ -420,9 +421,9 @@ const OnboardMerchant = () => {
                                 />
 
                                 <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">
-                  {valuesIn.showPassword ? (<i className="fa fa-eye" aria-hidden="true"></i>) : (
-                      <i className="fa fa-eye-slash" aria-hidden="true"></i>
-                  )}</span>
+                                    {valuesIn.showPassword ? (<i className="fa fa-eye" aria-hidden="true"></i>) : (
+                                        <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                                    )}</span>
                             </div>
 
                             {
@@ -444,16 +445,16 @@ const OnboardMerchant = () => {
                         </div>
                         <div className="col-md-9">
                             <button className="figmabtn  text-white  disabled1 w-50"
-                                    name="commit"
-                                    type="submit"
-                                    width={50}
-                                    defaultValue="Create Account"
-                                    disabled={btnDisable ||
+                                name="commit"
+                                type="submit"
+                                width={50}
+                                defaultValue="Create Account"
+                                disabled={btnDisable ||
                                     !(formik.isValid && formik.dirty)
-                                        ? true
-                                        : false
-                                    }
-                                    data-rel={btnDisable}
+                                    ? true
+                                    : false
+                                }
+                                data-rel={btnDisable}
                             >Sign in
                             </button>
 
