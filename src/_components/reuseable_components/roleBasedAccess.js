@@ -36,7 +36,7 @@ export const roleBasedAccess = () => {
         // referral
         roleAccessObj = {...roleAccessObj, referral: true};
     } else if (roleId === 4 || roleId === 5) {
-        // merchant
+        // client and merchant
         roleAccessObj = {...roleAccessObj, merchant: true};
     } else if (roleId === 16) {
         // user is viewer
