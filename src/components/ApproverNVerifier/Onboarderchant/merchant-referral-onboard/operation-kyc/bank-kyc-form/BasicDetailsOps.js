@@ -1,26 +1,26 @@
-import React, {useEffect, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux';
-import {Formik, Form, ErrorMessage} from "formik";
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik, Form, ErrorMessage } from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
-import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRegex';
+import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
 import API_URL from '../../../../../../config';
-import {axiosInstanceJWT} from '../../../../../../utilities/axiosInstance';
-import {convertToFormikSelectJson} from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import {saveMerchantBasicDetails} from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import {kycDetailsByMerchantLoginId} from "../../../../../../slices/kycSlice";
+import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
+import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
+import { resetFormState, resetStateMfo, saveMerchantBasicDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
 
-function BasicDetailsOps({setCurrentTab}) {
+function BasicDetailsOps({ setCurrentTab }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
     const [businessTypeData, setBusinessTypeData] = useState([]);
-    const [passwordType, setPasswordType] = useState({showPasswords: false});
-    const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
-    const {merchantKycData} = kyc
-    const {merchantBasicDetails, merchantOnboardingProcess} = merchantReferralOnboardReducer
+    const [passwordType, setPasswordType] = useState({ showPasswords: false });
+    const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
+    const { merchantKycData } = kyc
+    const { merchantBasicDetails, merchantOnboardingProcess } = merchantReferralOnboardReducer
     // console.log("merchantKycData", merchantKycData)
     const initialValues = {
         fullName: merchantKycData?.name ?? "",
@@ -120,11 +120,13 @@ function BasicDetailsOps({setCurrentTab}) {
             .catch((err) => {
                 console.error(err);
             });
+
+
     }, []);
 
     useEffect(() => {
-        if(merchantOnboardingProcess.merchantLoginId!==""){
-            dispatch(kycDetailsByMerchantLoginId({login_id: merchantOnboardingProcess.merchantLoginId}))
+        if (merchantOnboardingProcess.merchantLoginId !== "") {
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
         }
 
     }, [merchantOnboardingProcess]);
@@ -136,8 +138,10 @@ function BasicDetailsOps({setCurrentTab}) {
     };
 
 
+
+
     return (<div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
-                 aria-labelledby="v-pills-link1-tab">
+        aria-labelledby="v-pills-link1-tab">
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -220,10 +224,10 @@ function BasicDetailsOps({setCurrentTab}) {
                                 displayMsgOutside={true}
                             />
                             <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
-                                        {passwordType.showPasswords ? (
-                                            <i className="fa fa-eye" aria-hidden="true"></i>) : (
-                                            <i className="fa fa-eye-slash" aria-hidden="true"></i>)}
-                                    </span>
+                                {passwordType.showPasswords ? (
+                                    <i className="fa fa-eye" aria-hidden="true"></i>) : (
+                                    <i className="fa fa-eye-slash" aria-hidden="true"></i>)}
+                            </span>
                         </div>
                         <ErrorMessage name={"password"}>{msg => <p
                             className="text-danger m-0">{msg}</p>}</ErrorMessage>
@@ -233,8 +237,8 @@ function BasicDetailsOps({setCurrentTab}) {
                         {merchantKycData?.isContactNumberVerified !== 1 &&
                             <button type="submit" className="btn cob-btn-primary btn-sm m-2">
                                 {submitLoader && <>
-                                            <span className="spinner-border spinner-border-sm" role="status"
-                                                  aria-hidden="true"/>
+                                    <span className="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true" />
                                     <span className="sr-only">Loading...</span>
                                 </>}
                                 Save
@@ -242,7 +246,7 @@ function BasicDetailsOps({setCurrentTab}) {
                         {/*{merchantBasicDetails?.resp?.status === "Activate" &&*/}
                         {merchantKycData?.isContactNumberVerified === 1 &&
                             <a className="btn active-secondary btn-sm m-2"
-                               onClick={() => setCurrentTab(2)}>Next</a>}
+                                onClick={() => setCurrentTab(2)}>Next</a>}
                     </div>
                 </div>
             </Form>)}
