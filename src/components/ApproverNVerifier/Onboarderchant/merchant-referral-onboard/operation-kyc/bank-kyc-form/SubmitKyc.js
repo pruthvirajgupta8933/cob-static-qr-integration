@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import {kycDetailsByMerchantLoginId,saveKycConsent} from "../../../../../../slices/kycSlice";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
-import { resetStateMfo } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { resetFormState, resetStateMfo } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 function SubmitKyc({setCurrentTab}) {
     const dispatch = useDispatch();
@@ -36,6 +36,7 @@ function SubmitKyc({setCurrentTab}) {
     useEffect(() => {
             if(merchantLoginId===""){
                 setCurrentTab(1)
+                // console.log("call to redirect")
             }else{
                 dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
             }
@@ -74,10 +75,7 @@ function SubmitKyc({setCurrentTab}) {
             if (res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
                 toast.success(res?.payload?.message);
                 setIsDisable(false);
-                sessionStorage.removeItem("onboardingStatusByAdmin");
-                dispatch(resetStateMfo());
-                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
-                setCurrentTab(1)
+                backToFirstScreen()
             } else {
                 toast.error(res?.payload?.detail);
                 setIsDisable(false);
@@ -85,6 +83,12 @@ function SubmitKyc({setCurrentTab}) {
         });
 
     };
+    const backToFirstScreen = async ()=>{
+        await sessionStorage.removeItem("onboardingStatusByAdmin");
+        await dispatch(resetFormState());
+        await setCurrentTab(1)
+    }
+
     return (<div className="col-md-12 p-3 NunitoSans-Regular">
         <Formik
             initialValues={initialValues}

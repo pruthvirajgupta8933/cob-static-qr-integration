@@ -1,14 +1,14 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     bankDetails,
     saveBasicDetails,
     saveBusinessDetails,
-    fetchReferralChildList 
+    fetchReferralChildList
 } from "../../services/approver-dashboard/merchantReferralOnboard.service";
 
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
- 
+
 const sessionDataI = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
 const initialState = {
     merchantOnboardingProcess: {
@@ -21,7 +21,7 @@ const initialState = {
         resp: {}
     },
     bankDetails: {
-        resp: {} 
+        resp: {}
     },
     businessDetails: {
         resp: {}
@@ -31,7 +31,7 @@ const initialState = {
     },
 
     refrerChiledList: {
-    resp: {}
+        resp: {}
     },
     referral: {}
 }
@@ -45,9 +45,9 @@ export const saveMerchantBasicDetails = createAsyncThunk(
                 return error.response;
             });
 
-        if(response.status!==200){
+        if (response.status !== 200) {
             return thunkAPI.rejectWithValue(response.data.detail)
-        }else{
+        } else {
             return response.data;
         }
 
@@ -82,20 +82,20 @@ export const fetchChiledDataList = createAsyncThunk(
 
         const requestParam = data?.page;
         const requestParam1 = data?.page_size;
-        const login_id=data?.login_id
-        const refrerType=data?.type
+        const login_id = data?.login_id
+        const refrerType = data?.type
         let param = ""
 
-        if(data?.page){
+        if (data?.page) {
             param += `&page_size=${data?.page_size}`
         }
-        if(data?.page_size){
+        if (data?.page_size) {
             param += `&page=${data?.page}`
         }
-        if(refrerType==="bank"){
+        if (refrerType === "bank") {
             param += `&bank_login_id=${login_id}`
         }
-        if(refrerType==="referrer"){
+        if (refrerType === "referrer") {
             param += `&referrer_login_id=${login_id}`
         }
 
@@ -111,11 +111,20 @@ export const fetchChiledDataList = createAsyncThunk(
 );
 
 
+export const resetFormState = createAsyncThunk(
+    "merchantReferralOnboardSlice/bank/resetFormState",
+    async () => {
+        return true;
+    }
+)
+
+
 export const merchantReferralOnboardSlice = createSlice({
     name: "merchantReferralOnboardSlice",
     initialState,
     reducers: {
-      resetStateMfo: (state) => {
+        resetStateMfo: (state) => {
+            console.log("dispatch cleaer function")
             state.merchantBasicDetails.resp = {};
             state.bankDetails.resp = {};
             state.businessDetails.resp = {};
@@ -123,21 +132,21 @@ export const merchantReferralOnboardSlice = createSlice({
             state.merchantOnboardingProcess.isOnboardStart = false
             state.merchantOnboardingProcess.isOnboardComplete = false
             state.merchantOnboardingProcess.merchantLoginId = ""
-          },
-        clearErrorMerchantReferralOnboardSlice : (state)=>{
+        },
+        clearErrorMerchantReferralOnboardSlice: (state) => {
             state.merchantBasicDetails.resp.error = false
             state.bankDetails.resp.error = false
             state.businessDetails.resp.error = false
         },
-        updateOnboardingStatus : (state)=>{
+        updateOnboardingStatus: (state) => {
             state.merchantOnboardingProcess.isOnboardComplete = true
             const sessionDataC = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
             const onboardingStatusComplete = {
-                merchantLoginId : sessionDataC?.merchantLoginId,
-                isOnboardStart : sessionDataC?.isOnboardStart,
-                isOnboardComplete:true
+                merchantLoginId: sessionDataC?.merchantLoginId,
+                isOnboardStart: sessionDataC?.isOnboardStart,
+                isOnboardComplete: true
             }
-            sessionStorage.setItem("onboardingStatusByAdmin",JSON.stringify(onboardingStatusComplete))
+            sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusComplete))
         }
     },
     extraReducers: (builder) => {
@@ -151,10 +160,10 @@ export const merchantReferralOnboardSlice = createSlice({
                     state.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
                     state.merchantOnboardingProcess.isOnboardStart = true
                     const onboardingStatusByAdmin = {
-                        merchantLoginId : action.payload.merchant_data?.loginMasterId,
-                        isOnboardStart : true
+                        merchantLoginId: action.payload.merchant_data?.loginMasterId,
+                        isOnboardStart: true
                     }
-                    sessionStorage.setItem("onboardingStatusByAdmin",JSON.stringify(onboardingStatusByAdmin))
+                    sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusByAdmin))
                 }
             })
             .addCase(saveMerchantBasicDetails.rejected, (state, action) => {
@@ -192,11 +201,20 @@ export const merchantReferralOnboardSlice = createSlice({
             .addCase(fetchChiledDataList.rejected, (state, action) => {
                 state.loading = 'failed';
             })
+            .addCase(resetFormState.fulfilled, (state,action)=>{
+                state.merchantBasicDetails.resp = {};
+                state.bankDetails.resp = {};
+                state.businessDetails.resp = {};
+                state.documentCenter.resp = {};
+                state.merchantOnboardingProcess.isOnboardStart = false
+                state.merchantOnboardingProcess.isOnboardComplete = false
+                state.merchantOnboardingProcess.merchantLoginId = ""
+            })
 
 
-        
+
     }
 })
 
-export const {clearErrorMerchantReferralOnboardSlice,resetStateMfo, updateOnboardingStatus } = merchantReferralOnboardSlice.actions
+export const { clearErrorMerchantReferralOnboardSlice, resetStateMfo, updateOnboardingStatus } = merchantReferralOnboardSlice.actions
 export default merchantReferralOnboardSlice.reducer
