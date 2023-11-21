@@ -17,10 +17,10 @@ const RejectedKYC = () => {
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoadingForRejected);
 
- 
+
   // const [dataCount, setDataCount] = useState("");
-  
-  
+
+
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -36,7 +36,7 @@ const RejectedKYC = () => {
   const [data, setData] = useState([]);
   const [rejectedMerchants, setRejectedMerchants] = useState([]);
   const [kycIdClick, setKycIdClick] = useState([]);
-  const [dataCount,setDataCount]=useState("")
+  const [dataCount, setDataCount] = useState("")
 
   // Watch for changes in rejectedKycList and update the state when data is available
   useEffect(() => {
@@ -174,8 +174,8 @@ const RejectedKYC = () => {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -218,7 +218,7 @@ const RejectedKYC = () => {
         isDirect: onboardType,
       })
     )
-      
+
   };
 
   useEffect(() => {
@@ -255,7 +255,7 @@ const RejectedKYC = () => {
     },
   ];
 
-  
+
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -280,24 +280,24 @@ const RejectedKYC = () => {
           />
         </div>
         {openCommentModal && <CommentModal
-            commentData={commentId}
-            isModalOpen={openCommentModal}
-            setModalState={setOpenCommentModal}
-            tabName={"Rejected Tab"}
-          />}
-          
-      
-      
-         {isOpenModal && <KycDetailsModal
-            kycId={kycIdClick}
-            handleModal={setIsModalOpen}
-            isOpenModal={isOpenModal}
-            renderToPendingKyc={kycForRejectedMerchnats}
-          />}
-        
+          commentData={commentId}
+          isModalOpen={openCommentModal}
+          setModalState={setOpenCommentModal}
+          tabName={"Rejected Tab"}
+        />}
+
+
+
+        {isOpenModal && <KycDetailsModal
+          kycId={kycIdClick}
+          handleModal={setIsModalOpen}
+          isOpenModal={isOpenModal}
+          renderToPendingKyc={kycForRejectedMerchnats}
+        />}
+
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             currentPage={currentPage}
@@ -317,17 +317,18 @@ const RejectedKYC = () => {
           />
         </div>
         <div className="">
-        {!loadingState &&
-          <MerchnatListExportToxl
-            URL={"export-excel/?search=Rejected"}
-            filename={"Rejected"}
-          />
-        }
+          {!loadingState &&
+            <MerchnatListExportToxl
+              URL={"export-excel/?search=Rejected"}
+              filename={"Rejected"}
+            />
+          }
         </div>
       </div>
 
       <div className="">
         <div className="scroll overflow-auto">
+          <h6>Total Count : {dataCount}</h6>
           {!loadingState && data?.length !== 0 && (
             <Table
               row={RejectedTableData}

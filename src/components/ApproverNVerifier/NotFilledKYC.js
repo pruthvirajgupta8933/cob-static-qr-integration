@@ -14,43 +14,43 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
   const loadingState = useSelector((state) => state.kyc.isLoading);
-  
- 
+
+
   // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  
+
   const [onboardType, setOnboardType] = useState("")
 
   const dispatch = useDispatch();
-  
+
   const { results: notFilledKycData, count: dataCount } = useSelector(
     (state) => state.kyc.notFilledUserList
-    
-  );
- 
 
- 
-  
-  
+  );
+
+
+
+
+
   const [notFilledData, setNotFilledData] = useState(notFilledKycData);
   const [data, setData] = useState(notFilledKycData);
 
   // console.log(loadingState,"my loading")
 
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
+    if (fieldType === "text") {
       setSearchByDropDown(false)
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
+    if (fieldType === "dropdown") {
       setSearchByDropDown(true)
       setOnboardType(e)
     }
-    
-  
+
+
   };
 
   const mappedData = notFilledKycData?.map((item) => {
@@ -67,12 +67,12 @@ const NotFilledKYC = () => {
   });
 
   useEffect(() => {
-    
+
     fetchData();
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   const searchByText = () => {
-  const filterData=  setData(
+    const filterData = setData(
       notFilledData?.filter((item) =>
         Object.values(item)
           .join(" ")
@@ -90,10 +90,10 @@ const NotFilledKYC = () => {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Not-Filled",
-        isDirect:onboardType
+        isDirect: onboardType
       })
     )
-      
+
   };
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -161,16 +161,18 @@ const NotFilledKYC = () => {
 
         <div className="">
           {!loadingState &&
-          <MerchnatListExportToxl
-            URL={"export-excel/?search=Not-Filled"}
-            filename={"Not-Filled-KYC"}
-          />
-}
+            <MerchnatListExportToxl
+              URL={"export-excel/?search=Not-Filled"}
+              filename={"Not-Filled-KYC"}
+            />
+          }
         </div>
       </div>
 
       <div>
+
         <div className="scroll overflow-auto">
+          <h6>Total Count : {dataCount}</h6>
           {!loadingState && data?.length !== 0 && (
             <Table
               row={rowData}
@@ -183,8 +185,8 @@ const NotFilledKYC = () => {
           )}
         </div>
         {/* <CustomLoader loadingState={loadingState} /> */}
-        { loadingState &&
-          <SkeletonTable/>
+        {loadingState &&
+          <SkeletonTable />
         }
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center">No data Found</h6>
