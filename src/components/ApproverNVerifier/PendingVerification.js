@@ -15,7 +15,7 @@ import DateFormatter from "../../utilities/DateConvert";
 
 function PendingVerification() {
   const roles = roleBasedAccess();
-  
+
   const [onboardType, setOnboardType] = useState("");
 
   function capitalizeFirstLetter(param) {
@@ -111,7 +111,7 @@ function PendingVerification() {
     {
       id: "13",
       name: "View Status",
-    
+
       cell: (row) => (
         <div>
           <button
@@ -125,7 +125,7 @@ function PendingVerification() {
             data-target="#kycmodaldetail"
           >
             {(roles?.verifier === true && currenTab === 3) ||
-            Allow_To_Do_Verify_Kyc_details === true
+              Allow_To_Do_Verify_Kyc_details === true
               ? "Verify KYC "
               : "View Status"}
           </button>
@@ -135,12 +135,12 @@ function PendingVerification() {
     {
       id: "14",
       name: "Action",
-      
+
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  cob-btn-primary   btn-sm"
@@ -162,7 +162,7 @@ function PendingVerification() {
     },
   ];
 
- 
+
   //  const { user } = useSelector((state) => state.auth);
   const roleBasePermissions = roleBasedAccess();
   const loadingState = useSelector(
@@ -170,9 +170,9 @@ function PendingVerification() {
   );
   const Allow_To_Do_Verify_Kyc_details =
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
-    
+
   //  const [dataCount, setDataCount] = useState("");
-  
+
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
@@ -186,26 +186,26 @@ function PendingVerification() {
 
 
   const pendindVerificationList = useSelector(
-    (state) => state.kyc.pendingVerificationKycList 
+    (state) => state.kyc.pendingVerificationKycList
   );
 
-  
+
 
   const [data, setData] = useState([]);
   const [newRegistrationData, setNewRegistrationData] = useState([]);
   const [kycIdClick, setKycIdClick] = useState([]);
-  const[dataCount,setDataCount]=useState("")
-  
- 
+  const [dataCount, setDataCount] = useState("")
+
+
 
   useEffect(() => {
     const pendingVerificationDataList = pendindVerificationList?.results;
     const dataCount = pendindVerificationList?.count;
 
-    if (pendingVerificationDataList ) {
-      setData(pendingVerificationDataList );
+    if (pendingVerificationDataList) {
+      setData(pendingVerificationDataList);
       setNewRegistrationData(pendingVerificationDataList);
-      setKycIdClick(pendingVerificationDataList );
+      setKycIdClick(pendingVerificationDataList);
       setDataCount(dataCount)
     }
   }, [pendindVerificationList]); //
@@ -228,7 +228,7 @@ function PendingVerification() {
 
   const pendingVerify = () => {
     fetchData();
-    
+
   };
 
   //---------------GET Api for KycPending-------------------
@@ -247,7 +247,7 @@ function PendingVerification() {
         isDirect: onboardType,
       })
     )
-      
+
   };
 
   //function for change current page
@@ -303,25 +303,25 @@ function PendingVerification() {
           />
         </div>
         <div>
-        
-         {openCommentModal && <CommentModal
-              commentData={commentId}
-              isModalOpen={openCommentModal}
-              setModalState={setOpenCommentModal}
-              tabName={"Pending Verification"}
-            />}
-            
-      
+
+          {openCommentModal && <CommentModal
+            commentData={commentId}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Pending Verification"}
+          />}
+
+
 
           {/* KYC Details Modal */}
 
-       {isOpenModal && <KycDetailsModal
-              kycId={kycIdClick}
-              handleModal={setIsModalOpen}
-              isOpenModal={isOpenModal}
-              renderPendingVerification={pendingVerify}
-            /> }
-            
+          {isOpenModal && <KycDetailsModal
+            kycId={kycIdClick}
+            handleModal={setIsModalOpen}
+            isOpenModal={isOpenModal}
+            renderPendingVerification={pendingVerify}
+          />}
+
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -343,17 +343,18 @@ function PendingVerification() {
           />
         </div>
         <div className="">
-        {!loadingState &&
-          <MerchnatListExportToxl
-            URL={"export-excel/?search=processing"}
-            filename={"Pending-Verification"}
-          />
-        }
+          {!loadingState &&
+            <MerchnatListExportToxl
+              URL={"export-excel/?search=processing"}
+              filename={"Pending-Verification"}
+            />
+          }
         </div>
       </div>
 
       <div>
         <div className="scroll overflow-auto">
+          <h6>Total Count : {dataCount}</h6>
           {!loadingState && data?.length !== 0 && (
             <Table
               row={PendingVerificationData}
