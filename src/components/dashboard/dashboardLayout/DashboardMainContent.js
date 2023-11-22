@@ -189,7 +189,7 @@ function DashboardMainContent() {
                         <Route exact path={`${path}/profile`}>
                             <Profile />
                         </Route>
-                        <AuthorizedRoute exact path={`${path}/onboard-merchant`} Component={OnboardMerchant} roleList={{ approver: true,  accountManager: true }}>
+                        <AuthorizedRoute exact path={`${path}/onboard-merchant`} Component={OnboardMerchant} roleList={{ approver: true,  viewer:true, accountManager: true }}>
                             <OnboardMerchant />
                         </AuthorizedRoute>
 
@@ -395,7 +395,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/additional-kyc`}
                             Component={AdditionalKYC}
-                            roleList={{ approver: true, verifier: true, accountManager: true }}
+                            roleList={{ approver: true, verifier: true, viewer:true, accountManager: true }}
                         >
                             <AdditionalKYC />
                         </AuthorizedRoute>
@@ -502,7 +502,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/referral-onboarding`}
                             Component={MerchantReferralOnboard}
-                            roleList={{ approver: true, accountManager: true }}
+                            roleList={{ approver: true, viewer:true, accountManager: true }}
                         />
 
                         {roles?.approver && (<Route

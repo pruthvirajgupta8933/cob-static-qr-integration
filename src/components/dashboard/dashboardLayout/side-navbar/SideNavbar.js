@@ -29,20 +29,20 @@ function SideNavbar() {
     };
 
     useEffect(() => {
-        
+
         const pathName = location?.pathname
-        if(pathName==="/dashboard"){
+        if (pathName === "/dashboard") {
             setSelectedMenu('dashboard')
         }
 
         // console.log(location)
-        if(pathName==="/dashboard/approver"){
+        if (pathName === "/dashboard/approver") {
             setSelectedMenu(10)
         }
-    
+
     }, [location])
-    
-    
+
+
     useEffect(() => {
 
         let tempArrayOfItems = [];
@@ -57,12 +57,15 @@ function SideNavbar() {
             return (
                 m?.is_active === true && (
                     <React.Fragment key={m?.app_name}>
-                        <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`} onClick={(e) => toggleMenu(e)}>
-                            <span> {m?.app_name}</span>
-                            <a className="link-secondary" href={false} aria-label="Add a new report">
-                                <i className="fa fa-plus"></i>
-                            </a>
-                        </h6>
+                        <div onClick={(e) => toggleMenu(e)}>
+                            <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`} >
+                                <span> {m?.app_name}</span>
+                                <a className="link-secondary" href={false} aria-label="Add a new report">
+                                    <i className="fa fa-plus"></i>
+                                </a>
+                            </h6>
+                        </div>
+
                         <ul
                             id={`menulist_${m?.app_code}`}
                             className="nav flex-column mb-2"
@@ -90,7 +93,7 @@ function SideNavbar() {
                                         </li>
                                     )
                                 ) : (
-                                    sm?.is_active && 
+                                    sm?.is_active &&
                                     <li className="nav-item" role="menuitem" key={sm?.id}>
                                         <Link
                                             to={`${url}/${sm?.url}`}
