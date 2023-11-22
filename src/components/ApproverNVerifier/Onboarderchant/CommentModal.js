@@ -67,7 +67,7 @@ const CommentModal = (props) => {
   const validationSchema = Yup.object({
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
-      .max(200, "Please do not  enter more than 200 characters")
+      .max(500, "Please do not  enter more than 500 characters")
       .required("Required")
       .nullable(),
   });
@@ -285,7 +285,6 @@ const CommentModal = (props) => {
 
   const modalFooter = () => {
     return (
-      <>
         <button
           type="button"
           className="btn btn-secondary text-white"
@@ -297,7 +296,7 @@ const CommentModal = (props) => {
         >
           Close
         </button>
-      </>
+      
     );
   };
 
