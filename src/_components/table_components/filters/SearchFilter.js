@@ -9,7 +9,7 @@ const SearchFilter = ({
   searchTextByApiCall,
   // clearFilter,
 }) => {
-  
+
   useEffect(() => {
     searchByText();
     setSearchByDropDown(false);
@@ -28,7 +28,7 @@ const SearchFilter = ({
   };
 
   return (
-      <React.Fragment>
+    <React.Fragment>
       <label>Search</label>
       <form onSubmit={handleSearchSubmit}>
         <div className="input-group mb-3 ">
@@ -53,7 +53,7 @@ const SearchFilter = ({
 
           {searchTextByApiCall && (
             <div onClick={() => showfilterbtn(true)} className="input-group-append">
-              <button className="search_butn" type="submit">
+              <button className="search_butn" type="submit" title="search">
                 <i className="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>

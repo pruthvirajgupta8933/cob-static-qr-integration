@@ -1,22 +1,18 @@
-import React, { useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import axios from "axios";
+import React from "react";
+import { Formik, Form } from "formik";
+// import axios from "axios";
 import API_URL from "../../config";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
-import {
-    Regex,
-    RegexMsg,
-    space,
-} from "../../_components/formik/ValidationRegex";
+// import { toast } from "react-toastify";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import FormikController from '../../_components/formik/FormikController'
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
 
-    
+
 
     const validationSchema = Yup.object().shape({
         merchant_business_name: Yup.string()
@@ -61,8 +57,8 @@ const BizzAppForm = (props) => {
                 (value) => value > 0
             ),
         question: Yup.string()
-            // .required("Required")
-            ,
+        // .required("Required")
+        ,
         authorized_contact_person_name: Yup.string()
             .required("Required"),
         authorized_contact_person_contact_number: Yup.string()
@@ -174,7 +170,7 @@ const BizzAppForm = (props) => {
                     resetForm(initialValues)
                     toastConfig.errorToast(response.data.message);
                 }
-                
+
             }).catch((error) => {
                 toastConfig.errorToast("Data not saved");
             })

@@ -33,7 +33,7 @@ function Login() {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [auth, setAuthData] = useState(authentication);
-    const [namee, setNamee] = useState("");
+    // const [namee, setNamee] = useState("");
 
     const [values, setValues] = useState({
         password: "",
@@ -167,7 +167,7 @@ function Login() {
                                             placeholder="Type your username"
                                             type="text"
                                             name="clientUserId"
-                                            onClick={() => setNamee("clientUserId")}
+                                        // onClick={() => setNamee("clientUserId")}
                                         />
                                         <ErrorMessage name="clientUserId">
                                             {(msg) => (<div className="text-danger">{msg}</div>
@@ -189,7 +189,7 @@ function Login() {
                                             }
                                             size={50}
                                             name="userPassword"
-                                            onClick={() => setNamee("userPassword")}
+                                        // onClick={() => setNamee("userPassword")}
                                         />
                                         <div className="input-group-append">
                                             <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">  {values.showPassword ? (
@@ -239,8 +239,8 @@ function Login() {
                             </div>
 
                             <div className="text-center mt-2">
-                                <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa? 
-                                <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a></p>
+                                <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa?
+                                    <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a></p>
                             </div>
                         </div>
                         <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a></p></div>
