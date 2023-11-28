@@ -7,11 +7,11 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../../slices/auth";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../../config";
-import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
-import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosInstance";
+// import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 // import {logout} from "../../../slices/auth";
 
 
@@ -45,9 +45,9 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 const OnboardMerchant = () => {
-    const history = useHistory();
+    // const history = useHistory();
 
-    let roleShow = roleBasedAccess()
+    // let roleShow = roleBasedAccess()
 
     const reduxState = useSelector((state) => state);
     const { message, auth } = reduxState;
@@ -134,6 +134,10 @@ const OnboardMerchant = () => {
         )
             .unwrap()
             .then((res) => {
+                console.log("res", res)
+                const resLoginId = res.login_id
+                axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${resLoginId}`)
+
                 setBtnDisable(false);
             })
             .catch((err) => {
@@ -154,9 +158,9 @@ const OnboardMerchant = () => {
                 limit: 1,
                 transition: Zoom,
             });
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.href = ""
-            },1000)
+            }, 3000)
 
             // history.push("/dashboard/approver");
         }

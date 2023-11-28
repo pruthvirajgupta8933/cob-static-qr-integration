@@ -19,12 +19,11 @@ const CompleteVerification = (props) => {
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
-  let renderToPendingKyc = props?.renderToPendingKyc
+  // let renderToPendingKyc = props?.renderToPendingKyc
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
-  // let is_verified=KycTabStatus.is_verified
 
   const { merchantKycId } = props;
 
@@ -188,7 +187,7 @@ const CompleteVerification = (props) => {
   };
 
 
-useEffect(() => {
+  useEffect(() => {
 
     ////////////////////////////////////////////////////// Button enable for approver
     const approver = () => {
@@ -291,7 +290,7 @@ useEffect(() => {
         }
       </div>
 
-     <div className="col-lg-12">
+      <div className="col-lg-12">
         {buttonClick === true ?
 
           <>
