@@ -44,7 +44,7 @@ const BankDetails = (props) => {
       try {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
       if (resp?.payload?.merchant_info_status) {
-          toast.success(resp.payload.merchant_info_status);
+          toast.success(resp.payload.settlement_info_status);
         } else if (resp?.payload) {
           toast.error(resp.payload);
         }

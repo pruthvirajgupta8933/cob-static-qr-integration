@@ -349,7 +349,7 @@ const AdditionalKYC = () => {
                       type="text"
                       name="reg_number"
                       className="form-control mr-4"
-                      placeholder="Enter your Registration Number"
+                      placeholder="Enter Registration Number"
                       value={intialValuesForRegistration.reg_number}
                       onChange={(e) =>
                         setIntialValuesForRegistration({ reg_number: e.target.value })
