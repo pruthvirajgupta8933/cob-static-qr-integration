@@ -22,7 +22,7 @@ const SabPaisaPricing = () => {
   const [modalToggle, setModalToggle] = useState(false);
 
 
-  console.log("selectedPlan", selectedPlan)
+  // console.log("selectedPlan", selectedPlan)
   const dispatch = useDispatch();
   const clickHandler = (value) => {
     history.push("/dashboard");
@@ -132,7 +132,7 @@ const SabPaisaPricing = () => {
     )
   }
 
-return (
+  return (
 
     <section className="ant-layout">
 
@@ -206,51 +206,51 @@ return (
                   </div>
                   :
                   <div className="col-lg-4 card mx-3">
-                      <div className="card-body">
-                        <div className="">
-                          <div className="col-lg-12 text-center">
-                            <h1 className="card-title- cardoneheadingcss pb-3-">
-                              {Products.plan_name}
-                            </h1>
-                            <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length == 2 ? 'fs-6' : ''}`}>
-                              {Products.plan_price === "Connect" && Products.plan_name === "Enterprise" ? <></> :
-                                <>{Products?.plan_price?.split("*")[0]} <span className="title2"> {Products?.plan_price?.split("*")[1]}</span></>
-                              }
-                            </span>
-                            <h3 className="paragraphcsss text-center">
+                    <div className="card-body">
+                      <div className="">
+                        <div className="col-lg-12 text-center">
+                          <h1 className="card-title- cardoneheadingcss pb-3-">
+                            {Products.plan_name}
+                          </h1>
+                          <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length == 2 ? 'fs-6' : ''}`}>
+                            {Products.plan_price === "Connect" && Products.plan_name === "Enterprise" ? <></> :
+                              <>{Products?.plan_price?.split("*")[0]} <span className="title2"> {Products?.plan_price?.split("*")[1]}</span></>
+                            }
+                          </span>
+                          <h3 className="paragraphcsss text-center">
 
-                              {Products?.plan_type}
-                            </h3>
-                            <button
-                              type="button"
-                              className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
-                              disabled={selectedPlan?.mandateStatus === "success" ? true : false}
-                              onClick={() => {
-                                if (selectedPlan?.planId !== Products?.plan_id) {
-                                  handleClick(
-                                    Products.plan_id,
-                                    Products.plan_name,
-                                    Products?.plan_code
-                                  )
-                                }
+                            {Products?.plan_type}
+                          </h3>
+                          <button
+                            type="button"
+                            className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
+                            disabled={selectedPlan?.mandateStatus === "success" ? true : false}
+                            onClick={() => {
+                              if (selectedPlan?.planId !== Products?.plan_id) {
+                                handleClick(
+                                  Products.plan_id,
+                                  Products.plan_name,
+                                  Products?.plan_code
+                                )
                               }
-                              }
-                            >
-                              {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
-                            </button>
+                            }
+                            }
+                          >
+                            {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
+                          </button>
 
-                          </div>
                         </div>
+                      </div>
 
-                        <span className="w-50 pxsolid text-center">&nbsp;</span>
-                        <h2 className="featurespricing">FEATURES INCLUDING</h2>
-                        <div className="text-center">
-                          {Products?.plan_description
-                            .split(",")
-                            .map((details, i) => (
-                              <p className="firstli1 mb-1">{details}</p>
-                            ))}
-                        </div>
+                      <span className="w-50 pxsolid text-center">&nbsp;</span>
+                      <h2 className="featurespricing">FEATURES INCLUDING</h2>
+                      <div className="text-center">
+                        {Products?.plan_description
+                          .split(",")
+                          .map((details, i) => (
+                            <p className="firstli1 mb-1">{details}</p>
+                          ))}
+                      </div>
                     </div>
                   </div>
             ))}

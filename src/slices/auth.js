@@ -57,7 +57,7 @@ const auth = {
     isNewPasswordCreated: null,
   },
   payLinkPermission: [],
-  avalabilityOfClientCode:{}
+  avalabilityOfClientCode: {}
 };
 
 
@@ -83,9 +83,9 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ username, password,is_social }, thunkAPI) => {
+  async ({ username, password, is_social }, thunkAPI) => {
     try {
-      const data = await AuthService.login(username, password,is_social);
+      const data = await AuthService.login(username, password, is_social);
       // console.log("data",data)
       TokenService.setUser(data)
       return { user: data };
@@ -172,48 +172,54 @@ export const createClientProfile = createAsyncThunk(
   "auth/createClientProfile",
   async (data, thunkAPI) => {
     try {
+      // console.log("try")
       const response = await AuthService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
 
-      const userLocalData = JSON.parse(localStorage?.getItem("user"));
-      const allData = Object.assign(userLocalData, response.data);
-      // first time need to assign all request data into temp data
-      const clientMerchantDetailsListObj = {
-        "clientId": null,
-        "lookupState": null,
-        "address": null,
-        "clientAuthenticationType": null,
-        "clientCode": null,
-        "clientContact": null,
-        "clientEmail": null,
-        "clientImagePath": null,
-        "clientLink": null,
-        "clientLogoPath": null,
-        "clientName": null,
-        "failedUrl": null,
-        "landingPage": null,
-        "service": null,
-        "successUrl": null,
-        "createdDate": null,
-        "modifiedDate": null,
-        "modifiedBy": null,
-        "status": null,
-        "reason": null,
-        "merchantId": null,
-        "requestId": null,
-        "clientType": null,
-        "parentClientId": null,
-        "businessType": null,
-        "pocAccountManager": null,
-        "business_cat_code": null
-      };
+      // const userLocalData = JSON.parse(sessionStorage?.getItem("user"));
+      // const allData = Object.assign(userLocalData, response.data);
+      // // first time need to assign all request data into temp data
+      // const clientMerchantDetailsListObj = {
+      //   "clientId": null,
+      //   "lookupState": null,
+      //   "address": null,
+      //   "clientAuthenticationType": null,
+      //   "clientCode": null,
+      //   "clientContact": null,
+      //   "clientEmail": null,
+      //   "clientImagePath": null,
+      //   "clientLink": null,
+      //   "clientLogoPath": null,
+      //   "clientName": null,
+      //   "failedUrl": null,
+      //   "landingPage": null,
+      //   "service": null,
+      //   "successUrl": null,
+      //   "createdDate": null,
+      //   "modifiedDate": null,
+      //   "modifiedBy": null,
+      //   "status": null,
+      //   "reason": null,
+      //   "merchantId": null,
+      //   "requestId": null,
+      //   "clientType": null,
+      //   "parentClientId": null,
+      //   "businessType": null,
+      //   "pocAccountManager": null,
+      //   "business_cat_code": null
+      // };
 
-      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
-      const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
-      allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      sessionStorage.setItem("user", JSON.stringify(allData))
-      sessionStorage.setItem("categoryId",1)
-      return allData;
+      // console.log("allData", allData)
+      // const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
+      // const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
+      // allData.clientMerchantDetailsList = clientMerchantDetailsList;
+
+      // console.log("allData-updated", allData)
+      // console.log(sessionStorage.setItem("user"))
+      // sessionStorage.setItem("user", JSON.stringify(allData))
+      // console.log("Profile update after :", JSON.stringify(allData))
+      // sessionStorage.setItem("categoryId", 1)
+      return response?.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -227,62 +233,7 @@ export const createClientProfile = createAsyncThunk(
   }
 );
 
-export const updateClientProfile = createAsyncThunk(
-  "auth/updateClientProfile",
-  async ({ data }, thunkAPI) => {
-    try {
-      const response = await AuthService.updateClientProfile(data);
-      thunkAPI.dispatch(setMessage(response.data.message));
-      const userLocalData = JSON.parse(localStorage?.getItem("user"));
-      const allData = Object.assign(userLocalData, data);
-      const clientMerchantDetailsListObj = {
-        "lookupState": null,
-        "address": null,
-        "clientAuthenticationType": null,
-        "clientCode": null,
-        "clientContact": null,
-        "clientEmail": null,
-        "clientImagePath": null,
-        "clientLink": null,
-        "clientLogoPath": null,
-        "clientName": null,
-        "failedUrl": null,
-        "landingPage": null,
-        "service": null,
-        "successUrl": null,
-        "createdDate": null,
-        "modifiedDate": null,
-        "modifiedBy": null,
-        "status": null,
-        "reason": null,
-        "merchantId": null,
-        "requestId": null,
-        "clientType": null,
-        "parentClientId": null,
-        "businessType": null,
-        "pocAccountManager": null,
-        "business_cat_code": null
-      };
 
-      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
-      const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
-      allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      sessionStorage.setItem("user", JSON.stringify(allData))
-      sessionStorage.setItem("categoryId",1)
-
-      return allData;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
-    }
-  }
-);
 
 
 
@@ -417,6 +368,10 @@ const authSlice = createSlice({
     isUserAlreadyLogin: (state, action) => {
       // console.log(action)
       // state.userAlreadyLoggedIn = 
+    },
+    updateClientDataInLocal: (state, action) => {
+      state.user = action.payload
+
     }
   },
   extraReducers: {
@@ -470,7 +425,7 @@ const authSlice = createSlice({
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
       sessionStorage.setItem("user", JSON.stringify(state.user))
-      sessionStorage.setItem("categoryId",1)
+      sessionStorage.setItem("categoryId", 1)
       state.isValidUser = isValidData;
     },
     [login.pending]: (state) => {
@@ -492,16 +447,10 @@ const authSlice = createSlice({
       state.user = null;
       state = {};
     },
-    
+
     [createClientProfile.fulfilled]: (state, action) => {
-      state.createClientProfile = action.payload
-      state.user = action.payload
-    },
-  
-    [updateClientProfile.fulfilled]: (state, action) => {
-      state.user = action.payload
-    },
-    [updateClientProfile.rejected]: () => {
+      // state.createClientProfile = action.payload
+      // state.user = action.payload
     },
     [changePasswordSlice.fulfilled]: (state, action) => {
       state.passwordChange = true;
@@ -526,9 +475,9 @@ const authSlice = createSlice({
       state.forgotPassword.sendUserName.isValid = false;
     },
 
- 
+
     [checkPermissionSlice.fulfilled]: (state, action) => {
-       
+
       // state.passwordChange = false;
       state.payLinkPermission = action.payload
     }
@@ -540,6 +489,6 @@ const authSlice = createSlice({
 });
 
 
-export const { isUserAlreadyLogin } = authSlice.actions
+export const { isUserAlreadyLogin, updateClientDataInLocal } = authSlice.actions
 const { reducer } = authSlice;
 export default reducer;
