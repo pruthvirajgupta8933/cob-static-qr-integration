@@ -127,14 +127,14 @@ const OnboardMerchant = () => {
                 password: passwordd,
                 businessType: businessType,
                 isDirect: false,
-                requestId: user?.loginId,
+                created_by: user?.loginId,
                 roleId: roleId,
                 is_social: false
             })
         )
             .unwrap()
             .then((res) => {
-                console.log("res", res)
+                // console.log("res", res)
                 const resLoginId = res.login_id
                 axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${resLoginId}`)
 
