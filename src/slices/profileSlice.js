@@ -8,7 +8,7 @@ export const createClientProfile = createAsyncThunk(
   async (object, thunkAPI) => {
     try {
       // console.log({ fromdate, todate, clientcode });
-      const response = await ProfileService.createClintCode(object );
+      const response = await ProfileService.createClintCode(object);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -24,14 +24,14 @@ export const createClientProfile = createAsyncThunk(
   }
 );
 
-const initialState = { createClientProfile: {},updateClientProfile:{} ,isLoading:false }
+const initialState = { createClientProfile: {}, isLoading: false }
 const profileSlice = createSlice({
   name: "profile",
   initialState,
   extraReducers: {
     [createClientProfile.pending]: (state, action) => {
-        state.isLoading = true;
-      },
+      state.isLoading = true;
+    },
     [createClientProfile.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.createClientProfile = action.payload.data;
@@ -39,7 +39,7 @@ const profileSlice = createSlice({
     [createClientProfile.rejected]: (state, action) => {
       state.isLoading = false;
     },
-   
+
   },
 });
 

@@ -165,7 +165,7 @@ function Signup() {
                 resetForm();
             })
             .catch((err) => {
-                console.log("err", err)
+                // console.log("err", err)
                 setBtnDisable(false);
             });
     };
@@ -194,11 +194,11 @@ function Signup() {
         }
 
         if (isUserRegistered === false) {
-            console.log("toast err")
+            // console.log("toast err")
             toastConfig.errorToast(message.message);
         }
         return () => {
-            console.log("clear state")
+            // console.log("clear state")
             dispatch(udpateRegistrationStatus());
         };
     }, [isUserRegistered, dispatch, history, message]);
@@ -437,7 +437,7 @@ function Signup() {
                                             </div>
                                         </div>
                                         <div className="bd-highlight text-center sp-font-12">
-                                            <div className="form-check p-0">
+                                            <div className="form-check">
                                                 <Field
                                                     className="form-check-input border border-primary"
                                                     name="terms_and_condition"
