@@ -61,7 +61,6 @@ function BankRefMerchantList() {
         {
             id: "6",
             name: "Payment Gateway",
-
             cell: (row) => (
                 <div>
                     <button
@@ -77,12 +76,18 @@ function BankRefMerchantList() {
         {
             id: "7",
             name: "QwikForm",
-
             cell: (row) => (
                 <div className="d-flex justify-content-between w-100">
                     <button
                         type="button"
-                        onClick={() => productSubscriptionHandler(row, "qf")}
+                        onClick={() => {
+                            if (row?.payment_gateway?.subscription_status !== "Subscribed") {
+                                // Display an alert or toaster message indicating that Payment Gateway needs to be subscribed first.
+                                alert("Please subscribe to Payment Gateway before subscribing to QwikForm.");
+                                return;
+                            }
+                            productSubscriptionHandler(row, "qf");
+                        }}
                         className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
                     >
                         {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
@@ -100,7 +105,8 @@ function BankRefMerchantList() {
                 </div>
             ),
             width: "220px",
-        },
+        }
+        
 
     ];
 

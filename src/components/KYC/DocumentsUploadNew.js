@@ -340,7 +340,7 @@ function DocumentsUpload(props) {
                                   className="mb-1 pb-3"
                                 />
                                 <p className="card-text">
-                                  Upto 2 MB file size
+                                  Upto 5 MB file size
                                 </p>
                               </div>
                             </div>
