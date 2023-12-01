@@ -1,14 +1,17 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {kycDetailsByMerchantLoginId,saveKycConsent} from "../../../../../../slices/kycSlice";
+import { kycDetailsByMerchantLoginId, saveKycConsent } from "../../../../../../slices/kycSlice";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
-import { resetFormState} from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { resetFormState } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { axiosInstanceJWT } from "../../../../../../utilities/axiosInstance";
+import API_URL from "../../../../../../config";
+import authService from "../../../../../../services/auth.service";
 
-function SubmitKyc({setCurrentTab}) {
+function SubmitKyc({ setCurrentTab }) {
     const dispatch = useDispatch();
     const { auth, kyc, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { merchantKycData } = kyc
@@ -18,7 +21,7 @@ function SubmitKyc({setCurrentTab}) {
     const { user } = auth;
     const { loginId } = user;
     const merchant_consent = merchantKycData?.merchant_consent?.term_condition;
-    
+
 
     const [disable, setIsDisable] = useState(false);
 
@@ -32,38 +35,71 @@ function SubmitKyc({setCurrentTab}) {
     });
 
     useEffect(() => {
-            if(merchantLoginId===""){
-                setCurrentTab(1)
-                
-            }else{
-                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
-            }
+        if (merchantLoginId === "") {
+            setCurrentTab(1)
+
+        } else {
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+        }
     }, [merchantLoginId]);
 
-    const onSubmit = (value) => {
+    const onSubmit = async (value) => {
         setIsDisable(true);
         if (merchantKycData?.clientCode === null) {
             const clientFullName = merchantKycData?.name
             const clientMobileNo = merchantKycData?.contactNumber
             const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
-            dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
-                let newClientCode = ""
-                // if client code available return status true, then make request with the given client
-                if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-                    newClientCode = res?.payload?.clientCode
-                } else {
-                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-                }
 
-                // update new client code
-                const data = {
-                    loginId: merchantKycData?.loginMasterId,
-                    clientName: merchantKycData?.name,
-                    clientCode: newClientCode,
-                };
-                dispatch(createClientProfile(data)).then(clientProfileRes => {
-                }).catch(err => console.log(err));
-            })
+            // check client code is existing
+            const stepRespOne = await authService.checkClintCode({ "client_code": arrayOfClientCode });
+            // console.log("stepRespOne", stepRespOne)
+            let newClientCode;
+            // if client code available return status true, then make request with the given client
+            if (stepRespOne?.data?.clientCode !== "" && stepRespOne?.data?.status === true) {
+                newClientCode = stepRespOne?.data?.clientCode
+            } else {
+                newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+            }
+
+
+            // update new client code in db
+            const data = { loginId: merchantKycData?.loginMasterId, clientName: merchantKycData?.name, clientCode: newClientCode };
+            await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
+
+
+            // const postData = {
+            //     clientId: stepRespTwo?.data?.clientId,
+            //     applicationName: "Paymentgateway",
+            //     planId: "1",
+            //     planName: "SME",
+            //     applicationId: "10"
+            // }
+
+            // await axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData)
+
+            setIsDisable(false);
+
+            // dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
+            //     let newClientCode = ""
+            //     // if client code available return status true, then make request with the given client
+            //     if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
+            //         newClientCode = res?.payload?.clientCode
+            //     } else {
+            //         newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+            //     }
+
+            //     // update new client code
+            //     const data = {
+            //         loginId: merchantKycData?.loginMasterId,
+            //         clientName: merchantKycData?.name,
+            //         clientCode: newClientCode,
+            //     };
+
+            //     const stepRespTwo = await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
+
+            //     dispatch(createClientProfile(data)).then(clientProfileRes => {
+            //     }).catch(err => console.log(err));
+            // })
 
         }
 
@@ -81,7 +117,7 @@ function SubmitKyc({setCurrentTab}) {
         });
 
     };
-    const backToFirstScreen = async ()=>{
+    const backToFirstScreen = async () => {
         await sessionStorage.removeItem("onboardingStatusByAdmin");
         await dispatch(resetFormState());
         await setCurrentTab(1)
