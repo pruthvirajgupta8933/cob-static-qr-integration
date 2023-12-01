@@ -107,7 +107,7 @@ const OnboardMerchant = () => {
 
     const dispatch = useDispatch();
 
-    const handleRegistration = (formData) => {
+    const handleRegistration = (formData,{resetForm}) => {
 
         let businessType = 1;
         let {
@@ -139,6 +139,7 @@ const OnboardMerchant = () => {
                 axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${resLoginId}`)
 
                 setBtnDisable(false);
+                resetForm()
             })
             .catch((err) => {
                 setBtnDisable(false);
@@ -205,7 +206,10 @@ const OnboardMerchant = () => {
                     terms_and_condition: false,
                 }}
                 validationSchema={FORM_VALIDATION}
-                onSubmit={handleRegistration}
+                // onSubmit={handleRegistration}
+                onSubmit={(values, { resetForm }) => {
+                    handleRegistration(values, { resetForm });
+                }}
             >
 
                 {(formik) => (
