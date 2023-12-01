@@ -576,7 +576,7 @@ export const MyMerchantListData = createAsyncThunk(
         const requestParam1 = data?.page_size;
         const response = await axiosInstanceJWT
             .post(
-                `${API_URL.MY_MERCHANT_LIST}?page=${requestParam}&page_size=${requestParam1}&order_by=loginMasterId`,data)
+                `${API_URL.MY_MERCHANT_LIST}?page=${requestParam}&page_size=${requestParam1}&order_by=-loginMasterId`,data)
             .catch((error) => {
                 return error.response;
             });
