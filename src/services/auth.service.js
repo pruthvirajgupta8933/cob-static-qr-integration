@@ -2,7 +2,7 @@ import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
 import { stringEnc } from "../utilities/encodeDecode";
 
-const register = ({fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, requestId, roleId, plan_details,is_social}) => {
+const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social }) => {
   return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
     name: fullname,
     mobileNumber: mobileNumber,
@@ -11,23 +11,23 @@ const register = ({fullname, mobileNumber, email, business_cat_code, password, b
     password: password,
     requestedClientType: businessType,
     isDirect: isDirect,
-    requestId: requestId,
+    created_by: created_by,
     roleId: roleId,
     plan_details: plan_details,
-    is_social:is_social
+    is_social: is_social
   })
 };
 
 
-const login = (username, password,is_social) => {
+const login = (username, password, is_social) => {
   return axiosInstanceJWT
     .post(API_URL.AUTH_LOGIN, {
       clientUserId: username,
       userPassword: password,
-      is_social:is_social
+      is_social: is_social
     })
     .then((response) => {
-      
+
       sessionStorage.setItem("user", JSON.stringify(response.data));
       sessionStorage.setItem("categoryId", 1)
       // sessionStorage.setItem("prog_id", stringEnc(password))
@@ -109,7 +109,7 @@ const checkPermission = (object) => {
 }
 
 
-const emailVerification = async (loginId)=>{
+const emailVerification = async (loginId) => {
   return axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
 }
 

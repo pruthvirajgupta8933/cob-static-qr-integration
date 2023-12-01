@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { createClientProfile, updateClientProfile } from "../../../slices/auth";
+// import { createClientProfile, updateClientProfile } from "../../../slices/auth";
 import { Link } from "react-router-dom";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+// import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import profileIllustration from "../../../assets/images/profile-illustration.png"
 import classes from "./Profile/profile.module.css"
@@ -115,15 +116,7 @@ export const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData]);
 
-  function onSubmit(data) {
-    if (isCreateorUpdate) {
-      dispatch(createClientProfile(data));
-    } else {
-      delete data.clientCode;
-      dispatch(updateClientProfile({ data }));
-    }
 
-  }
 
 
 

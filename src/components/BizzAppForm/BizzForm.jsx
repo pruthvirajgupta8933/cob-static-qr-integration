@@ -215,42 +215,40 @@ const BizzAppForm = (props) => {
                                 onSubmit={onSubmit}
                             >
                                 {({ formik }) => (
-                                    <>
-                                        <Form>
-                                            <div className="form-group">
-                                                {InputArray.map((singleData) => {
-                                                    return (<>
-                                                        <div className="form-group ">
-                                                            {singleData.control === "input" ? <FormikController
-                                                                control={singleData.control}
-                                                                label={singleData.label}
-                                                                name={singleData.name}
-                                                                className="form-control rounded-0"
-                                                                placeholder={singleData.placeholder}
-                                                                type={singleData.type}
-                                                            /> : <FormikController
-                                                                control={singleData.control}
-                                                                label={singleData.label}
-                                                                name={singleData.name}
-                                                                className="form-control rounded-0"
-                                                                options={singleData.options}
+                                    <Form>
+                                        <div className="form-group">
+                                            {InputArray.map((singleData) => {
+                                                return (<>
+                                                    <div className="form-group ">
+                                                        {singleData.control === "input" ? <FormikController
+                                                            control={singleData.control}
+                                                            label={singleData.label}
+                                                            name={singleData.name}
+                                                            className="form-control rounded-0"
+                                                            placeholder={singleData.placeholder}
+                                                            type={singleData.type}
+                                                        /> : <FormikController
+                                                            control={singleData.control}
+                                                            label={singleData.label}
+                                                            name={singleData.name}
+                                                            className="form-control rounded-0"
+                                                            options={singleData.options}
 
-                                                                type={singleData.type}
-                                                            />}
+                                                            type={singleData.type}
+                                                        />}
 
 
-                                                        </div>
-                                                    </>)
-                                                })}
-                                            </div>
-                                            <button
-                                                type="submit"
-                                                className="btn cob-btn-primary btn-sm text-white mt-3"
-                                            >
-                                                Submit
-                                            </button>
-                                        </Form>
-                                    </>
+                                                    </div>
+                                                </>)
+                                            })}
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            className="btn cob-btn-primary btn-sm text-white mt-3"
+                                        >
+                                            Submit
+                                        </button>
+                                    </Form>
                                 )}
                             </Formik>
 

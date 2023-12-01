@@ -19,7 +19,7 @@ import { Profile } from "../AllPages/Profile";
 import Emandate from "../AllPages/Emandate";
 import PaymentResponse from "../AllPages/PaymentResponse";
 import KycForm from "../../KYC/KycForm";
-import Test from "../../Otherpages/Test";
+// import Test from "../../Otherpages/Test";
 import SettlementReportNew from "../AllPages/SettlementReportNew";
 import TransactionHistoryDownload from "../AllPages/TransactionHistoryDownload";
 import Approver from "../../ApproverNVerifier/Approver";
@@ -32,17 +32,17 @@ import OnboardMerchant from "../../ApproverNVerifier/Onboarderchant/OnboardMerch
 import RefundTransactionHistory from "../AllPages/RefundTransactionHistory";
 import ChargeBackTxnHistory from "../AllPages/ChargeBackTxnHistory";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { checkClientCodeSlice, createClientProfile } from "../../../slices/auth";
+import { updateClientDataInLocal } from "../../../slices/auth";
 import Sandbox from "../../SandBox/SendBox";
 import AssignZone from "../../ApproverNVerifier/AssignZone";
 import AdditionalKYC from "../../ApproverNVerifier/AdditionalKYC";
 import RateMapping from "../../ApproverNVerifier/RateMapping";
 import SignupData from "../../ApproverNVerifier/SignupData";
-import MerchantRoute from "../../../ProtectedRoutes/MerchantRoute";
-import BankRoute from "../../../ProtectedRoutes/BankRoute";
-import VerifierRoute from "../../../ProtectedRoutes/VerifierRoute";
-import ApproverRoute from "../../../ProtectedRoutes/ApproverRoute";
-import ViewerRoute from "../../../ProtectedRoutes/ViewerRoute";
+// import MerchantRoute from "../../../ProtectedRoutes/MerchantRoute";
+// import BankRoute from "../../../ProtectedRoutes/BankRoute";
+// import VerifierRoute from "../../../ProtectedRoutes/VerifierRoute";
+// import ApproverRoute from "../../../ProtectedRoutes/ApproverRoute";
+// import ViewerRoute from "../../../ProtectedRoutes/ViewerRoute";
 import SpPg from "../../sabpaisa-pg/SpPg";
 import UrlNotFound from "../UrlNotFound";
 import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
@@ -54,7 +54,7 @@ import MISReport from "../../../payout/MISReport";
 import MakePayment from '../../../payout/MakePayment';
 import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../../B2B_components/ChallanTransactReport";
-import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
+// import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
 import { isNull } from "lodash";
 import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
@@ -70,84 +70,98 @@ import DebitReport from "../../../subscription_components/DebitReport";
 import Faq from "../../../components/Faq/Faq"
 import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
 import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
-import HandleResponseModal from "../../../subscription_components/Create_Mandate/HandleResponseModal";
+// import HandleResponseModal from "../../../subscription_components/Create_Mandate/HandleResponseModal";
 import AuthorizedRoute from "../../../ProtectedRoutes/AuthorizedRoute";
 import MerchantReferralOnboard
     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
 import BankMerchantOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
+import authService from "../../../services/auth.service";
 
 
 function DashboardMainContent() {
     let history = useHistory();
     let { path } = useRouteMatch();
 
-    const { menuListReducer, auth } = useSelector((state) => state);
+    const { auth } = useSelector((state) => state);
     const { user } = auth;
     const roles = roleBasedAccess();
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const queryParams = new URLSearchParams(location.search);
-    const mendateRegId = queryParams.get("mendateRegId");
+    // const queryParams = new URLSearchParams(location.search);
+    // const mendateRegId = queryParams.get("mendateRegId");
 
 
-    // create new client code
-    useEffect(() => {
-        //  check the role and clientcode should be null
-        if ((roles?.merchant || roles?.referral) && user?.clientMerchantDetailsList[0]?.clientCode === null) {
 
+
+    const createAndSaveClientCode = async () => {
+        if ((roles?.merchant) && user?.clientMerchantDetailsList[0]?.clientCode === null) {
             const clientFullName = user?.clientContactPersonName
             const clientMobileNo = user?.clientMobileNo
             const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
-            dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
+            // check client code is existing
+            const stepRespOne = await authService.checkClintCode({ "client_code": arrayOfClientCode });
+            // console.log("stepRespOne", stepRespOne)
+            let newClientCode;
+            // if client code available return status true, then make request with the given client
+            if (stepRespOne?.data?.clientCode !== "" && stepRespOne?.data?.status === true) {
+                newClientCode = stepRespOne?.data?.clientCode
+            } else {
+                newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+            }
 
-                let newClientCode = ""
-                // if client code available return status true, then make request with the given client
-                if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-                    newClientCode = res?.payload?.clientCode
+            // update new client code in db
+            const data = { loginId: user?.loginId, clientName: user?.clientContactPersonName, clientCode: newClientCode };
+            const stepRespTwo = await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
+            // console.log("stepRespTwo", stepRespTwo)
 
-                } else {
-                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-                }
+            let userLocalData = JSON.parse(sessionStorage?.getItem("user"));
+            // console.log("before update - userLocalData", userLocalData)
+            let clientMerchantDetailsListLocal = userLocalData.clientMerchantDetailsList[0]
+            let mergeClientMerchantDetailsList = Object.assign(clientMerchantDetailsListLocal, stepRespTwo.data);
 
-                // update new client code
-                const data = {
-                    loginId: user?.loginId, clientName: user?.clientContactPersonName, clientCode: newClientCode,
+            // console.log("mergeClientMerchantDetailsList", mergeClientMerchantDetailsList)
+            userLocalData.clientMerchantDetailsList = [mergeClientMerchantDetailsList]
+            // console.log("after update - userLocalData", userLocalData)
+            dispatch(updateClientDataInLocal(userLocalData))
+            sessionStorage?.setItem("user", JSON.stringify(userLocalData))
+            // fetch the details selected product by users
+            const postData = { login_id: user?.loginId }
+
+            const stepRespThree = await axiosInstanceJWT.post(API_URL.website_plan_details, postData)
+            // console.log("stepRespThree", stepRespThree)
+            // console.log("user", user)
+
+            const webData = stepRespThree?.data?.data[0]?.plan_details
+            // if business catagory code is gaming then not subscribed the plan
+            if (user?.clientMerchantDetailsList[0]?.business_cat_code !== "37") {
+                const postData = {
+                    clientId: stepRespTwo?.data?.clientId,
+                    applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                    planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                    planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                    applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
                 };
 
+                await axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData).then((res) => {
+                    dispatch(merchantSubscribedPlanData({ "clientId": stepRespTwo?.data?.clientId }))
 
-                dispatch(createClientProfile(data)).then(clientProfileRes => {
-                    // after create the client update the subscribe product
-                    const postData = {
-                        login_id: user?.loginId
-                    }
-
-                    // fetch details of the user registraion
-                    axiosInstanceJWT.post(API_URL.website_plan_details, postData).then(res => {
-                        const webData = res?.data?.data[0]?.plan_details
-
-                        // if business catagory code is gaming then not subscribed the plan
-                        if (user?.clientMerchantDetailsList[0]?.business_cat_code !== "37") {
-                            const postData = {
-                                clientId: clientProfileRes?.payload?.clientId,
-                                applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
-                                planId: !isNull(webData?.planid) ? webData?.planid : "1",
-                                planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
-                                applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
-                            };
-
-                            axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData).then((res) => {
-                                dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
-
-                            })
-                        } // end subscribe
-                    })
-                }).catch(err => console.log(err));
-            })
+                })
+            }
 
         }
+    }
+
+
+    // create new client code
+    useEffect(() => {
+
+        createAndSaveClientCode()
     }, []);
+
+
+
 
 
     useEffect(() => {
@@ -189,7 +203,7 @@ function DashboardMainContent() {
                         <Route exact path={`${path}/profile`}>
                             <Profile />
                         </Route>
-                        <AuthorizedRoute exact path={`${path}/onboard-merchant`} Component={OnboardMerchant} roleList={{ approver: true,  viewer:true, accountManager: true }}>
+                        <AuthorizedRoute exact path={`${path}/onboard-merchant`} Component={OnboardMerchant} roleList={{ approver: true, viewer: true, accountManager: true }}>
                             <OnboardMerchant />
                         </AuthorizedRoute>
 
@@ -395,7 +409,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/additional-kyc`}
                             Component={AdditionalKYC}
-                            roleList={{ approver: true, verifier: true, viewer:true, accountManager: true }}
+                            roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}
                         >
                             <AdditionalKYC />
                         </AuthorizedRoute>
@@ -502,7 +516,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/referral-onboarding`}
                             Component={MerchantReferralOnboard}
-                            roleList={{ approver: true, viewer:true, accountManager: true }}
+                            roleList={{ approver: true, viewer: true, accountManager: true }}
                         />
 
                         {roles?.approver && (<Route
