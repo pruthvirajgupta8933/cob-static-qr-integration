@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {Form, Formik} from "formik";
 import FormikController from "../../../../../../_components/formik/FormikController";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,7 +13,7 @@ import {createClientProfile} from "../../../../../../slices/auth";
 function ReferralOnboardForm({referralChild, fetchData}) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
-    const [passwordType, setPasswordType] = useState({showPasswords: false});
+   
 
     const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
     const {merchantKycData} = kyc
@@ -73,11 +73,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
         password: Yup.string(),
     });
 
-    // const togglePassword = () => {
-    //     setPasswordType({
-    //         ...passwordType, showPasswords: !passwordType.showPasswords,
-    //     });
-    // };
+  
 
 
     const handleSubmitContact = async (value, resetForm) => {

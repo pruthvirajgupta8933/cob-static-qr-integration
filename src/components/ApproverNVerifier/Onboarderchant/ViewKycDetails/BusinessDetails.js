@@ -4,16 +4,12 @@ import { toast } from "react-toastify";
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
-// import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+
 
 const BusinessDetails = (props) => {
   const { merchantKycId, KycTabStatus } = props;
-
   const { classifications, nic_codes: nicCodes } = merchantKycId?.udyam_data || {};
-
-
-  // console.log("merchantKycId", merchantKycId)
-  const dispatch = useDispatch();
+ const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
   const { user } = auth;
@@ -63,7 +59,7 @@ const BusinessDetails = (props) => {
     }
   };
 
-  // console.log("merchantKycId",merchantKycId)
+  
 
   return (
     <div className="row mb-4 border p-1">

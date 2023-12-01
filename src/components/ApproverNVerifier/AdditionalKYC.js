@@ -62,10 +62,8 @@ const AdditionalKYC = () => {
   const objArray = Object.entries(gstinData);
   const panInfoData = Object.entries(showPanInfo);
   const bankAccountInfo = Object.entries(bankAccount);
-  // console.log("udyamRegistrationData",udyamRegistrationData.nic_codes)
-
   const nicCodes = udyamRegistrationData?.nic_codes ?? [];
-  // console.log(udyamRegistrationData.classifications,"classifications")
+
 
   const classifications = udyamRegistrationData.classifications
 
@@ -301,7 +299,6 @@ const AdditionalKYC = () => {
               {selectedDocType === "3" ? (
                 <Formik
                   initialValues={initialValuesForBankAccount}
-                  // validationSchema={validationSchemaForBankAccount}
                   onSubmit={handleBankAccountSubmit}
                   enableReinitialize={true}
                 >

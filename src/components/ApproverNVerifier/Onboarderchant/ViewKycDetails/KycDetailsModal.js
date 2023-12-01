@@ -6,7 +6,6 @@ import {
   businessTypeById,
   documentsUpload,
   GetKycTabsStatus,
-  platformType,
 } from "../../../../slices/kycSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -23,7 +22,6 @@ import GeneralForm from "./GeneralForm";
 import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
 import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
 import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMappingSlice";
-import { rateMappingFn } from "../../../../utilities/rateMapping";
 
 
 
