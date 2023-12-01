@@ -107,7 +107,7 @@ const OnboardMerchant = () => {
 
     const dispatch = useDispatch();
 
-    const handleRegistration = (formData,{resetForm}) => {
+    const handleRegistration = (formData, { resetForm }) => {
 
         let businessType = 1;
         let {
@@ -218,12 +218,15 @@ const OnboardMerchant = () => {
                     <Form class="row g-3 mt-4">
                         <div className="col-md-10"></div>
                         <div class="col-md-6">
-                            <label htmlFor="full-name" class="form-label font-weight-bold">Full Name</label>
+                            {/* <label htmlFor="full-name" class="form-label font-weight-bold">Full Name</label> */}
+                            <label className="form-label font-weight-bold" >
+                                Full Name <span style={{ color: "red" }}>*</span>
+                            </label>
                             <Field
                                 class="form-control"
                                 maxLength={230}
                                 id="fullname"
-                                placeholder="Full Name"
+                                placeholder="Full Name Of Merchant"
                                 type="text"
                                 name="fullname"
                                 size={50}
@@ -240,7 +243,9 @@ const OnboardMerchant = () => {
                             </ErrorMessage>
                         </div>
                         <div class="col-md-6">
-                            <label htmlFor="mobile" class="form-label font-weight-bold">Mobile Number</label>
+                            <label htmlFor="mobile" className="form-label font-weight-bold">Mobile Number
+                            <span style={{ color: "red" }}>*</span>
+                            </label>
 
                             <Field
                                 className="form-control"
@@ -272,7 +277,9 @@ const OnboardMerchant = () => {
                             {/* <input type="password" class="form-control" id="inputPassword4" /> */}
                         </div>
                         <div class="col-md-6">
-                            <label htmlFor="user-email" class="form-label font-weight-bold">Email ID</label>
+                            <label htmlFor="user-email" className="form-label font-weight-bold">Email ID
+                            <span style={{ color: "red" }}>*</span>
+                            </label>
                             <Field
                                 className="form-control"
                                 maxLength={255}
@@ -296,7 +303,9 @@ const OnboardMerchant = () => {
                         </div>
                         <div class="col-md-3">
                             <label htmlFor="business_category" className="form-label font-weight-bold">Business
-                                Category</label>
+                                Category
+                                <span style={{ color: "red" }}>*</span>
+                                </label>
                             <Field
                                 name="business_cat_code"
                                 className="form-select"
@@ -337,7 +346,8 @@ const OnboardMerchant = () => {
                         </div>
 
                         <div class="col-md-3">
-                            <label htmlFor="roles" className="form-label font-weight-bold">Roles</label>
+                            <label htmlFor="roles" className="form-label font-weight-bold">Roles
+                            <span style={{ color: "red" }}>*</span></label>
                             <Field
                                 name="roleId"
                                 className="form-select"
@@ -348,7 +358,7 @@ const OnboardMerchant = () => {
                                     className="form-control"
                                     value={""}
                                 >
-                                    Select Roles
+                                    Select Roles 
                                 </option>
                                 {roles.map((role, i) => (
                                     <option
@@ -374,7 +384,9 @@ const OnboardMerchant = () => {
                         </div>
 
                         <div class="col-md-6">
-                            <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password</label>
+                            <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password
+                            <span style={{ color: "red" }}>*</span>
+                            </label>
                             <div class="input-group mb-3">
                                 <Field
                                     className="form-control"
@@ -412,7 +424,9 @@ const OnboardMerchant = () => {
                         </div>
 
                         <div class="col-md-6">
-                            <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password</label>
+                            <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password
+                            <span style={{ color: "red" }}>*</span>
+                            </label>
                             <div class="input-group mb-3">
                                 <Field
                                     className="form-control"
