@@ -544,7 +544,7 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
                         <AuthorizedRoute
-                            exact path={`${path}/myMerchant-list`}
+                            exact path={`${path}/my-merchant`}
                             Component={MyMerchantList}
                             roleList={{  viewer: true }}>
                             <MyMerchantList/>
