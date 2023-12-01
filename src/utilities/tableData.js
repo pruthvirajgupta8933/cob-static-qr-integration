@@ -76,6 +76,19 @@ export const NotFilledKYCData = [
   },
 ];
 
+
+export const AllMerchnatListData = [
+  {
+    id: "1",
+    name: "S.No",
+    selector: (row) => row.s_no,
+    sortable: true,
+    width: "95px",
+  },
+  
+ 
+];
+
 export const ChallanReportData = [
   {
     id: "1",
