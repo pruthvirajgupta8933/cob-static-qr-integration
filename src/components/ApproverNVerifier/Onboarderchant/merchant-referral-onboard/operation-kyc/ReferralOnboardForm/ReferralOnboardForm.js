@@ -57,7 +57,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-        username: Yup.string().required("Required").nullable(),
+        username: Yup.string().nullable(),
         mobileNumber: Yup.string()
             .trim()
             .required("Required")
@@ -76,7 +76,8 @@ function ReferralOnboardForm({referralChild, fetchData}) {
   
 
 
-    const handleSubmitContact = async (value, resetForm) => {
+    const handleSubmitContact = async (value) => {
+        // alert(3)
         setSubmitLoader(true)
         try {
             const {fullName, mobileNumber, email_id, password, username} = value
@@ -163,12 +164,12 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 // onSubmit={(values) => handleSubmitContact(values)}
-                onSubmit={async (values, {resetForm}) => {
+                onSubmit={async (values) => {
                     await handleSubmitContact(values)
-                    resetForm()
+                    // resetForm()
                 }}
                 enableReinitialize={true}>
-                {({values}) => (<Form>
+                {(formik) => (<Form>
                     <div className="row g-3">
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
@@ -207,7 +208,8 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                     control="input"
                                     type="text"
                                     name="username"
-                                    className="form-control"
+                                   
+ className="form-control"
                                     label="Username *"
                                 />
                             </div>
