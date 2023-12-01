@@ -7,9 +7,6 @@ function VerifyRejectBtn(props) {
   // console.log("here pass props",props)
   const [buttonClick, setButtonClick] = useState(false)
   const [commetText, setCommetText] = useState()
-
-  // console.log("This is clicked value",commetText)
-
   const status = props.KycTabStatus;
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();

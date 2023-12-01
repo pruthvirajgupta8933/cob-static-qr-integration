@@ -43,30 +43,7 @@ export const Profile = () => {
   if (sessionStorage.getItem("DC_bank_list") !== null) {
     initDClist = JSON.parse(sessionStorage.getItem("DC_bank_list"));
   }
-  // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  const clientId = user?.clientMerchantDetailsList[0]?.clientId;
-
-
-  // const clientId = user?.clientMerchantDetailsList[0]?.clientId;
-
-  // const [createProfileResponse , setCreateProfileResponse]  = useState('');
-
-  const [authenticationMode, setAuthenticationMode] = useState(
-    clientAuthenticationType
-  );
-  const [listOfNetBank, setListOfNetBank] = useState(initNBlist);
-  const [listOfDebitCardBank, setListOfDebitCardBank] = useState(initDClist);
-
-  const [selectedListForOption, setSelectedListForOption] = useState(
-    authenticationMode === "NetBank" ? listOfNetBank : listOfDebitCardBank
-  );
-
-  const [isClientCodeValid, setIsClientCodeValid] = useState(null);
-  const [isIfcsValid, setIsIfscValid] = useState(true);
-
-  const userIfscCode = ifscCode;
-
-  useEffect(() => {
+   useEffect(() => {
     // setCreateProfileResponse(dashboard.createClientProfile)
   }, [dashboard]);
 
@@ -111,29 +88,6 @@ export const Profile = () => {
         .nullable(),
     }),
     address: Yup.string().matches(Regex.address, RegexMsg.address).required("Required").nullable(),
-    // accountHolderName: Yup.string()
-    //   .required("Required")
-    //   .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-    //   .nullable(),
-    // bankName: Yup.string()
-    //   .required("Required")
-    //   .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-    //   .nullable(),
-    // accountNumber: Yup.string()
-    //   .matches(Regex.digit, RegexMsg.digit)
-    //   .required("Required")
-    //   .max(20, "Bank Account number length under 20 digits")
-    //   .nullable(),
-    // ifscCode: Yup.string()
-    //   .required("Required")
-    //   .matches(/^[a-zA-Z0-9\s]+$/, "IFCS Code not valid ")
-    //   .nullable(),
-    // pan: Yup.string()
-    //   .matches(/^[a-zA-Z0-9\s]+$/, "Pan Card not valid ")
-    //   .nullable(),
-    // clientAuthenticationType: Yup.string().required(
-    //   "Select Authentication Mode"
-    // ),
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };

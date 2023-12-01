@@ -92,14 +92,13 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
       business_cat_code: formData?.business_cat_code,
       businessType,
       isDirect: true,
-      requestId: null,
+      created_by: null,
       plan_details: queryString,
       is_social: true,
     };
     try {
       const response = await AuthService.register(data);
-      if(response.status===200)
-      {
+      if (response.status === 200) {
         toast.success(response.data.message);
         history.push("/login");
       }
@@ -195,7 +194,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
                         : false
                     }
                     data-rel={btnDisable}
-                    // onClick={()=>handleRegistration()}
+                  // onClick={()=>handleRegistration()}
                   >
                     Create an account
                   </button>

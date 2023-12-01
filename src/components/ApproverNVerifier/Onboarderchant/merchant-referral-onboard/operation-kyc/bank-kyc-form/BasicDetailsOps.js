@@ -7,7 +7,7 @@ import { Regex, RegexMsg } from '../../../../../../_components/formik/Validation
 import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import { resetFormState, resetStateMfo, saveMerchantBasicDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { saveMerchantBasicDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import { kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
@@ -233,7 +233,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                             className="text-danger m-0">{msg}</p>}</ErrorMessage>
                     </div>
                     <div className="col-6">
-                        {/*{merchantBasicDetails?.resp?.status !== "Activate" &&*/}
+                       
                         {merchantKycData?.isContactNumberVerified !== 1 &&
                             <button type="submit" className="btn cob-btn-primary btn-sm m-2">
                                 {submitLoader && <>
@@ -243,7 +243,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                                 </>}
                                 Save
                             </button>}
-                        {/*{merchantBasicDetails?.resp?.status === "Activate" &&*/}
+                       
                         {merchantKycData?.isContactNumberVerified === 1 &&
                             <a className="btn active-secondary btn-sm m-2"
                                 onClick={() => setCurrentTab(2)}>Next</a>}

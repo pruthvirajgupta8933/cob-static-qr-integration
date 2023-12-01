@@ -215,7 +215,7 @@ const OnboardMerchant = () => {
                         <div className="col-md-10"></div>
                         <div class="col-md-6">
                             <label htmlFor="full-name" class="form-label font-weight-bold">Full Name</label>
-                            < Field
+                            <Field
                                 class="form-control"
                                 maxLength={230}
                                 id="fullname"

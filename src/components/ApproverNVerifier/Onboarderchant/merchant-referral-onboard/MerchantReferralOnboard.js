@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import classes from "../../approver.module.css"
-// import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
 import BankRefMerchantList from './merchant-product-subscription/BankRefMerchantList';
 import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard";
 

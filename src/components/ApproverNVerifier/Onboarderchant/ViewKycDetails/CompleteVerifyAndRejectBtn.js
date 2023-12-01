@@ -17,7 +17,6 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 
   const dropDownDocList = docList?.map((r) => r?.status?.toString());
-  // console.log("dropDownDocList", dropDownDocList)
   const hasPendingItem = dropDownDocList.some(item => item.includes("Pending"))
   const hasVerifiedItem = dropDownDocList.some(item => item.includes("Verified")) // tab 4
   

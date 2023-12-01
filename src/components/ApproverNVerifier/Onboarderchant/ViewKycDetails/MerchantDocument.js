@@ -174,20 +174,7 @@ const MerchantDocument = (props) => {
       });
   };
 
-  // useEffect(() => {
-
-  //   role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
-  //     setButtonText("Verify")
-
-  //     : role?.approver === true && currenTab === 4 ?
-  //       setButtonText("Approve")
-  //       : role?.verifier === true ?
-  //         setButtonText("Verify")
-  //         : <></>
-
-  //  });
-
-  useEffect(() => {
+useEffect(() => {
 
     if (role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3) {
       setButtonText("Verify")

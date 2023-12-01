@@ -2,12 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
-import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
-import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { useDispatch, useSelector } from 'react-redux';
 import { businessDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-
-// import verifiedIcon from "../../../../../assets/images/verified.png";
 import verifiedIcon from "../../../../../../assets/images/verified.png" 
 import {kycDetailsByMerchantLoginId, panValidation} from '../../../../../../slices/kycSlice';
 import { isNull } from 'lodash';
@@ -33,7 +29,7 @@ function BusinessDetailsOps({setCurrentTab}) {
         pan_card: Yup.string().nullable(),
         website: Yup.string().nullable(),
         is_pan_verified:Yup.string().nullable()
-            // .required("Pan verification is Required")
+           
     })
 
     const handleSubmit = (value) => {

@@ -76,6 +76,7 @@ import MerchantReferralOnboard
     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
 import BankMerchantOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
 import authService from "../../../services/auth.service";
+import MyMerchantList from "../../ApproverNVerifier/MyMerchantList";
 
 
 function DashboardMainContent() {
@@ -540,6 +541,13 @@ function DashboardMainContent() {
                             Component={BizzAppData}
                             roleList={{ approver: true, verifier: true, viewer: true }}>
                             <BizzAppData />
+                        </AuthorizedRoute>
+
+                        <AuthorizedRoute
+                            exact path={`${path}/my-merchant`}
+                            Component={MyMerchantList}
+                            roleList={{  viewer: true }}>
+                            <MyMerchantList/>
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>

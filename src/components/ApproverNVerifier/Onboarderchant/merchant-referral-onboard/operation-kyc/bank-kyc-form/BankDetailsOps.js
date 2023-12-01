@@ -81,10 +81,8 @@ function BankDetailsOps({setCurrentTab}) {
     });
 
     const handleSubmit = (values) => {
-        // console.log("hekki")
         setSubmitLoader(true)
         let selectedAccType = values.account_type?.toString() === "1" ? "Current" : values.account_type?.toString() === "2" ? "Saving" : "";
-        // console.log('dfd')
         dispatch(
             saveBankDetails({
                 account_holder_name: values.account_holder_name,

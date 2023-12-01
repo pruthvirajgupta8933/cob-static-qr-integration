@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import {kycDetailsByMerchantLoginId,saveKycConsent} from "../../../../../../slices/kycSlice";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
-import { resetFormState, resetStateMfo } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { resetFormState} from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 function SubmitKyc({setCurrentTab}) {
     const dispatch = useDispatch();
@@ -17,10 +17,8 @@ function SubmitKyc({setCurrentTab}) {
 
     const { user } = auth;
     const { loginId } = user;
-    const { compareDocListArray, KycDocUpload } = kyc;
-    const { dropDownDocList, finalArray } = compareDocListArray
     const merchant_consent = merchantKycData?.merchant_consent?.term_condition;
-    const kyc_status = merchantKycData?.status;
+    
 
     const [disable, setIsDisable] = useState(false);
 
@@ -36,7 +34,7 @@ function SubmitKyc({setCurrentTab}) {
     useEffect(() => {
             if(merchantLoginId===""){
                 setCurrentTab(1)
-                // console.log("call to redirect")
+                
             }else{
                 dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
             }

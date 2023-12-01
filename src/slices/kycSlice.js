@@ -30,6 +30,11 @@ const initialState = {
         count: 0
 
     },
+
+    myMerchnatUserList:{
+        results: [],
+        count: 0
+},
     kycApprovedList: {
         results: [],
         count: 0
@@ -556,6 +561,22 @@ export const kycForNotFilled = createAsyncThunk(
         const response = await axiosInstanceJWT
             .get(
                 `${API_URL.KYC_FOR_NOT_FILLED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
+            .catch((error) => {
+                return error.response;
+            });
+
+        return response.data;
+    }
+);
+
+export const MyMerchantListData = createAsyncThunk(
+    "kyc/MyMerchantListData",
+    async (data) => {
+        const requestParam = data?.page;
+        const requestParam1 = data?.page_size;
+        const response = await axiosInstanceJWT
+            .post(
+                `${API_URL.MY_MERCHANT_LIST}?page=${requestParam}&page_size=${requestParam1}&order_by=loginMasterId`,data)
             .catch((error) => {
                 return error.response;
             });
@@ -1117,6 +1138,24 @@ export const kycSlice = createSlice({
             state.isLoading = false;
         },
         //--------------------------------------------
+        //////////////////////////////////////////
+        [MyMerchantListData.pending]: (state, action) => {
+            state.status = "pending";
+            state.isLoading = true;
+        },
+        [MyMerchantListData.fulfilled]: (state, action) => {
+            console.log("action",action)
+            state.myMerchnatUserList = action.payload
+            state.isLoading = false;
+        },
+        [MyMerchantListData.rejected]: (state, action) => {
+            state.status = "failed";
+            state.error = action.error.message;
+            state.isLoading = false;
+        },
+
+
+        /////////////////////////////////////////////////
         [kycForPendingMerchants.pending]: (state, action) => {
 
             state.status = "pending";

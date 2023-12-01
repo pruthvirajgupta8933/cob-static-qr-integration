@@ -6,14 +6,12 @@ import { Form, Formik } from 'formik'
 import FormikController from '../../../../_components/formik/FormikController'
 import Yup from '../../../../_components/formik/Yup'
 import { kycUserList } from '../../../../slices/kycSlice'
-// import { Toast } from 'react-toastify/dist/components'
 import { toast } from 'react-toastify'
 
 const GeneralForm = ({ merchantKycId, role }) => {
 
     const dispatch = useDispatch()
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
-    // const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
 
     useEffect(() => {
@@ -31,7 +29,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
 
     }
 
-    // console.log("initialValues",initialValues)
+   
 
     const validationSchema = Yup.object({
         rr_amount: Yup.string().required("Required").nullable(),
