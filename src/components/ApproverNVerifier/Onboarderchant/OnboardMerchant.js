@@ -188,9 +188,9 @@ const OnboardMerchant = () => {
     return (
         <>
             <div className="logmod__heading">
-                <span className="fontfigma">
-                    Onboard Merchant
-                </span>
+                <div className="mb-5">
+            <h5 className=""> Onboard Merchant</h5>
+          </div>
 
             </div>
             <Formik
