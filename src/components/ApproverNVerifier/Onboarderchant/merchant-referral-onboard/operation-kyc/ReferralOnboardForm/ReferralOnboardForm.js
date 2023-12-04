@@ -176,7 +176,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 control="input"
                                 type="text"
                                 name="fullName"
-                                placeholder="Enter the name of referral"
+                                placeholder="Enter Name"
                                 className="form-control"
                                 label="Client Name *"
                             />
@@ -187,7 +187,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 control="input"
                                 type="text"
                                 name="mobileNumber"
-                                placeholder="Enter the referral mobile number"
+                                placeholder="Enter Mobile Number"
                                 className="form-control"
                                 label="Contact Number *"
                             />
@@ -197,7 +197,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                 control="input"
                                 type="email"
                                 name="email_id"
-                                placeholder="Enter the referral mobile number"
+                                placeholder="Enter Email"
                                 className="form-control"
                                 label="Email ID *"
                             />

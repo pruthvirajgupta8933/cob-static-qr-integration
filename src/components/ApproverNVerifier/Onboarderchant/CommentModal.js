@@ -16,6 +16,7 @@ import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 
 const CommentModal = (props) => {
+  
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);

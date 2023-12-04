@@ -156,6 +156,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                             type="text"
                             name="fullName"
                             className="form-control"
+                            placeholder="Enter Merchant Name"
                             label="Full Name *"
                             autoComplete='off'
                         />
@@ -166,6 +167,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                             control="input"
                             type="text"
                             name="mobileNumber"
+                            placeholder="Enter Mobile Number"
                             className="form-control"
                             label="Contact Number *"
                             autoComplete='off'
@@ -177,6 +179,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                             type="email"
                             name="email_id"
                             className="form-control"
+                            placeholder="Enter Email Id"
                             label="Email ID *"
                             autoComplete='off'
                         />

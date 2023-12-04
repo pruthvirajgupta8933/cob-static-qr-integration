@@ -56,7 +56,5 @@ export const addReferralService = (obj, isChild=false)=>{
     }else{
         apiUrl = API_URL.addReferral
     }
-    console.log("apiUrl",apiUrl)
-    console.log("obj",obj)
     return axiosInstanceJWT.post(apiUrl,obj)
 }
