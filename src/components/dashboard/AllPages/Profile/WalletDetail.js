@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { useEffect } from 'react';
 import { merchantSubscribedPlanData } from '../../../../slices/merchant-slice/productCatalogueSlice';
+import { LocalConvenienceStoreOutlined } from '@mui/icons-material';
 
 
 function WalletDetail() {
@@ -24,6 +25,10 @@ function WalletDetail() {
     }, [clientId])
 
 
+    const balanceCalculate = (purchaseAmount, commission) => {
+        const total = parseFloat(purchaseAmount) - parseFloat(commission)
+        return isNaN(total) ? 0.00 : total
+    }
 
 
     return (
@@ -37,7 +42,7 @@ function WalletDetail() {
                                 <h6 className="card-subtitle mb-2 text-body-secondary">{data.planName}</h6>
                                 <hr />
                                 <p className="card-text">Purchased Amount : {data.purchaseAmount} INR</p>
-                                <p className="card-text">Wallet Balance : {parseFloat(data.purchaseAmount) - parseFloat(data.commission)} INR</p>
+                                <p className="card-text">Wallet Balance : {balanceCalculate(data.purchaseAmount, data.commission)} INR</p>
 
                             </div>
                         </div>
