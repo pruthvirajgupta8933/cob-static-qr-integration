@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MyMerchantListData } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
-// import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
-import { AllMerchnatListData } from "../../utilities/tableData";
+import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
-import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
+import CommentModal from "./Onboarderchant/CommentModal";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 
 
 const MyMerchantList = () => {
+    const roles = roleBasedAccess();
     const loadingState = useSelector((state) => state.kyc.isLoading);
 
 
     // const [dataCount, setDataCount] = useState("");
     const [searchText, setSearchText] = useState("");
+    const [isOpenModal, setIsModalOpen] = useState(false);
+    const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
@@ -38,6 +41,7 @@ const MyMerchantList = () => {
     const [notFilledData, setNotFilledData] = useState([]);
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState("")
+    const [kycIdClick, setKycIdClick] = useState([]);
 
     useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
@@ -46,6 +50,7 @@ const MyMerchantList = () => {
         if (myAllMerchantDataList) {
             setData(myAllMerchantDataList);
             setNotFilledData(myAllMerchantDataList);
+            setKycIdClick(myAllMerchantDataList);
 
             setDataCount(dataCount)
         }
@@ -73,19 +78,8 @@ const MyMerchantList = () => {
         fetchData();
     }, [currentPage, pageSize]);
 
-    // const searchByText = () => {
-    //     const filterData = setData(
-    //         notFilledData?.filter((item) =>
-    //             Object.values(item)
-    //                 .join(" ")
-    //                 .toLowerCase()
-    //                 .includes(searchText?.toLocaleLowerCase())
-    //         )
-    //     );
-    //     setNotFilledData(filterData)
-    // };
-
-    const searchByText = (text) => {
+   
+const searchByText = (text) => {
         setData(
             notFilledData?.filter((item) =>
                 Object.values(item)
@@ -161,8 +155,60 @@ const MyMerchantList = () => {
             selector: (row) => row.createdDate,
             sortable: true,
             cell: (row) => <div>{DateFormatter(row.createdDate)}</div>,
-            width: "150px",
+            width: "180px",
+            
         },
+        {
+            id: "13",
+            name: "View Status",
+      
+            cell: (row) => (
+              <div>
+                <button
+                  type="button"
+                  className="approve text-white cob-btn-primary btn-sm "
+                  onClick={() => {
+                    setKycIdClick(row);
+                    setIsModalOpen(true);
+                  }}
+                  data-toggle="modal"
+                  data-target="#kycmodaldetail"
+                >
+                 
+                   
+                    View Status
+                </button>
+              </div>
+            ),
+          },
+          {
+            id: "14",
+            name: "Action",
+      
+            cell: (row) => (
+              <div>
+                {roles?.verifier === true ||
+                  roles?.approver === true ||
+                  roles?.viewer === true ? (
+                  <button
+                    type="button"
+                    className="approve text-white  cob-btn-primary   btn-sm"
+                    data-toggle="modal"
+                    onClick={() => {
+                      setCommentId(row);
+                      setOpenCommentModal(true);
+                    }}
+                    data-target="#exampleModal"
+                    disabled={row?.clientCode === null ? true : false}
+                  >
+                    Comments
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </div>
+            ),
+          },
 
     ];
 
@@ -174,6 +220,24 @@ const MyMerchantList = () => {
             <h5 className="">My Merchant List</h5>
           </div>
             <div className="form-row">
+
+            {openCommentModal && <CommentModal
+            commentData={commentId}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Pending Verification"}
+          />}
+
+
+
+          {/* KYC Details Modal */}
+
+          {isOpenModal && <KycDetailsModal
+            kycId={kycIdClick}
+            handleModal={setIsModalOpen}
+            isOpenModal={isOpenModal}
+            // renderPendingVerification={pendingVerify}
+          />}
                 <div className="form-group col-lg-3 col-md-12 mt-2">
                     <SearchFilter
                         kycSearch={kycSearch}
