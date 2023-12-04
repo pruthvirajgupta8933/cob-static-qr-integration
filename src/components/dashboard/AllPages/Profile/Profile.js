@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import WalletDetail from "./WalletDetail";
 import UserDetails from "./UserDetails";
 
@@ -18,7 +18,7 @@ const Profile = () => {
 
     <div className="container-fluid flleft">
       <div className="mb-5">
-        <h5 className>Profile</h5>
+        <h5 className>My Profile</h5>
       </div>
 
       <div className="row">
