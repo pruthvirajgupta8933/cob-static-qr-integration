@@ -25,6 +25,9 @@ const MyMerchantList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+   
+
+    const masterClientCode=commentId?.master_client_id
 
     const [onboardType, setOnboardType] = useState("")
 
@@ -55,6 +58,9 @@ const MyMerchantList = () => {
             setDataCount(dataCount)
         }
     }, [myMerchantListData]); //
+
+
+    console.log("commentId",commentId)
 
     // console.log(loadingState,"my loading")
 
@@ -222,10 +228,10 @@ const searchByText = (text) => {
             <div className="form-row">
 
             {openCommentModal && <CommentModal
-            commentData={commentId}
+            commentData={masterClientCode}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
-            tabName={"Pending Verification"}
+            tabName={"My Merchant List"}
           />}
 
 
