@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import sideNavClasses from "./sidenavbar.module.css"
-
+import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 
 function SideNavbar() {
     const { menuListReducer, auth } = useSelector((state) => state);
@@ -61,7 +61,7 @@ function SideNavbar() {
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`} >
                                 <span> {m?.app_name}</span>
                                 <a className="link-secondary" href={false} aria-label="Add a new report">
-                                    <i className="fa fa-plus"></i>
+                                    <i className="fa fa-plus" id={`icon_${m?.app_code}`}></i>
                                 </a>
                             </h6>
                         </div>
@@ -206,7 +206,7 @@ function SideNavbar() {
                     </li>
                 </ul>
 
-                
+
 
             </div>
         </nav>
