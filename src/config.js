@@ -6,7 +6,7 @@ let url,
   payout_url,
   webSocketUrl,
   payLinkAPIURL = "";
-  
+
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -14,7 +14,7 @@ if (ENV_PROD) {
   kyc_validate = " https://kycvalidator.sabpaisa.in";
   payout_url = "https://payout.sabpaisa.in";
   b2b_url = "https://b2becollect.sabpaisa.in";
-  payLinkAPIURL="https://paybylink.sabpaisa.in/paymentlink";
+  payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
 
 } else {
@@ -45,7 +45,7 @@ const API_LIVE = {
   ////////////////////////////////////---------------------------business_cat_code api
 
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
-  getExpectedTransaction:`${kyc_url}/kyc/get-range/transaction-range`,
+  getExpectedTransaction: `${kyc_url}/kyc/get-range/transaction-range`,
 
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
@@ -67,7 +67,7 @@ const API_LIVE = {
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL + "/REST/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE: adminAPIURL + "/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
@@ -186,7 +186,7 @@ const API_LIVE = {
   /////////////////////////Kyc approver
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  MY_MERCHANT_LIST:`${kyc_url}/kyc/get-merchant-data/created-by/`,
+  MY_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/created-by/`,
   KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
   KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
@@ -262,8 +262,8 @@ const API_LIVE = {
   // KYC VALIDATE URL
   VALIDATE_KYC: `${kyc_validate}/validator`,
 
-  UDYAM_REGISTRATION:`${kyc_validate}/validator`,
-  
+  UDYAM_REGISTRATION: `${kyc_validate}/validator`,
+
 
 
   // For comments in approver and merchant (Pending Verification and Pending Approval)
@@ -311,7 +311,7 @@ const API_LIVE = {
 
   // -------------------------------------------------------------------------Subscription APIS-------------------------------------------||
 
-  HANDLE_RESPONSE:`${subAPIURL}/npci/registration/status/`,
+  HANDLE_RESPONSE: `${subAPIURL}/npci/registration/status/`,
   // Mandate Report
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
@@ -330,28 +330,28 @@ const API_LIVE = {
 
 
   // for chart
-  GET_TRANSACTION_DATA_CHART : reportAPIURL+"/REST/getSuccessGraph",
+  GET_TRANSACTION_DATA_CHART: reportAPIURL + "/REST/getSuccessGraph",
 
 
 
   // bank merchant onboard API's // kyc_url 'http://192.168.34.91:8000'
-  saveBasicDetails : `${kyc_url}/kyc/bank-merchant/basic-detail/`,
-  saveBankDetails : `${kyc_url}/kyc/bank-merchant/bank-detail/`,
-  saveBusinesDetails : `${kyc_url}/kyc/bank-merchant/business-detail/`,
-  uploadDocuement : `${kyc_url}/kyc/bank-merchant/upload-doc/`,
+  saveBasicDetails: `${kyc_url}/kyc/bank-merchant/basic-detail/`,
+  saveBankDetails: `${kyc_url}/kyc/bank-merchant/bank-detail/`,
+  saveBusinesDetails: `${kyc_url}/kyc/bank-merchant/business-detail/`,
+  uploadDocuement: `${kyc_url}/kyc/bank-merchant/upload-doc/`,
   // `{{url}}/kyc/bank-merchant/basic-detail/`
 
 
-//   merchant list with the subscription data
-  fetchAllMerchantListWithSubscriptionData : `${url}/subscription/?order_by=-id`,
+  //   merchant list with the subscription data
+  fetchAllMerchantListWithSubscriptionData: `${url}/subscription/?order_by=-id`,
   unsubscribeProductPlan: `${url}/subscription/unsubscribe-plan/`,
 
 
   // adding referral merchant
-  addReferral : `${kyc_url}/kyc/referrer/add-referrer/`,
-  addReferralChild : `${kyc_url}/kyc/referrer/add-referrer-child/`,
-  fetchReferralChild : `${kyc_url}/kyc/get-merchant-data/offline-merchant/`,
-  
+  addReferral: `${kyc_url}/kyc/referrer/add-referrer/`,
+  addReferralChild: `${kyc_url}/kyc/referrer/add-referrer-child/`,
+  fetchReferralChild: `${kyc_url}/kyc/get-merchant-data/offline-merchant/`,
+
 };
 
 const B2B_API_LIVE = {
@@ -361,8 +361,8 @@ const B2B_API_LIVE = {
 
 
 export const wsConnectUrl = {
-  connectionURL : webSocketUrl,
-  readNotification : `${kyc_url}/kyc/notification/fetch_all/` //?page_size=5&page=1
+  connectionURL: webSocketUrl,
+  readNotification: `${kyc_url}/kyc/notification/fetch_all/` //?page_size=5&page=1
 }
 
 const API_URL = API_LIVE;
