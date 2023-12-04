@@ -15,19 +15,16 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 const MyMerchantList = () => {
     const roles = roleBasedAccess();
     const loadingState = useSelector((state) => state.kyc.isLoading);
-
-
-    // const [dataCount, setDataCount] = useState("");
     const [searchText, setSearchText] = useState("");
     const [isOpenModal, setIsModalOpen] = useState(false);
     const [commentId, setCommentId] = useState({});
-  const [openCommentModal, setOpenCommentModal] = useState(false);
+    const [openCommentModal, setOpenCommentModal] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
    
 
-    const masterClientCode=commentId?.master_client_id
+    const masterClientCode= commentId?.master_client_id
 
     const [onboardType, setOnboardType] = useState("")
 
