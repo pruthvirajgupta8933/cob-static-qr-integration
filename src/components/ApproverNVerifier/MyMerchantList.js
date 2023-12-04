@@ -9,6 +9,7 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import { kycUserList } from "../../slices/kycSlice";
 
 
 
@@ -36,12 +37,23 @@ const MyMerchantList = () => {
         (state) => state.kyc.myMerchnatUserList
     );
 
+    const myKycAllData=useSelector(
+        (state) =>state.kyc.kycUserList
+    );
+
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
     const [notFilledData, setNotFilledData] = useState([]);
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState("")
-    const [kycIdClick, setKycIdClick] = useState([]);
+    const [kycIdClick, setKycIdClick] = useState(myKycAllData);
+
+  
+
+    
+    // const viewStatusbyId=kycIdClick?.master_client_id
+
+    
 
     useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
@@ -50,14 +62,14 @@ const MyMerchantList = () => {
         if (myAllMerchantDataList) {
             setData(myAllMerchantDataList);
             setNotFilledData(myAllMerchantDataList);
-            setKycIdClick(myAllMerchantDataList);
+            // setKycIdClick(myAllMerchantDataList);
 
             setDataCount(dataCount)
         }
     }, [myMerchantListData]); //
 
 
-    console.log("commentId",commentId)
+   
 
     // console.log(loadingState,"my loading")
 
@@ -73,6 +85,14 @@ const MyMerchantList = () => {
 
 
     };
+
+    useEffect(() => {
+        dispatch(kycUserList({ login_id: user?.loginId }));
+        return () => {
+        //   dispatch(clearSuccessTxnsummary());
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
 
 
 
@@ -138,14 +158,14 @@ const searchByText = (text) => {
             width: "200px",
         },
         {
-            id: "3",
+            id: "4",
             name: "Contact Number",
             selector: (row) => row.mobileNumber,
             cell: (row) => <div className="removeWhiteSpace">{row?.mobileNumber}</div>,
             width: "200px",
         },
         {
-            id: "3",
+            id: "5",
             name: "Status",
             selector: (row) => row.status,
             cell: (row) => <div className="removeWhiteSpace">{row?.status}</div>,
@@ -153,7 +173,7 @@ const searchByText = (text) => {
         },
 
         {
-            id: "8",
+            id: "6",
             name: "Created Date",
             selector: (row) => row.createdDate,
             sortable: true,
@@ -161,31 +181,31 @@ const searchByText = (text) => {
             width: "180px",
             
         },
-        {
-            id: "13",
-            name: "View Status",
+        // {
+        //     id: "13",
+        //     name: "View Status",
       
-            cell: (row) => (
-              <div>
-                <button
-                  type="button"
-                  className="approve text-white cob-btn-primary btn-sm "
-                  onClick={() => {
-                    setKycIdClick(row);
-                    setIsModalOpen(true);
-                  }}
-                  data-toggle="modal"
-                  data-target="#kycmodaldetail"
-                >
+        //     cell: (row) => (
+        //       <div>
+        //         <button
+        //           type="button"
+        //           className="approve text-white cob-btn-primary btn-sm "
+        //           onClick={() => {
+        //             setKycIdClick(row);
+        //             setIsModalOpen(true);
+        //           }}
+        //           data-toggle="modal"
+        //           data-target="#kycmodaldetail"
+        //         >
                  
                    
-                    View Status
-                </button>
-              </div>
-            ),
-          },
+        //             View Status
+        //         </button>
+        //       </div>
+        //     ),
+        //   },
           {
-            id: "14",
+            id: "7",
             name: "Action",
       
             cell: (row) => (
