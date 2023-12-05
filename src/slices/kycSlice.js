@@ -1,12 +1,12 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import API_URL, {APP_ENV} from "../config";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API_URL, { APP_ENV } from "../config";
 import {
     axiosInstanceJWT,
     kycValidatorAuth,
 } from "../utilities/axiosInstance";
 
 // import { APP_ENV } from "../config";
-import {KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED} from "../utilities/enums";
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 
 const initialState = {
@@ -31,10 +31,10 @@ const initialState = {
 
     },
 
-    myMerchnatUserList:{
+    myMerchnatUserList: {
         results: [],
         count: 0
-},
+    },
     kycApprovedList: {
         results: [],
         count: 0
@@ -187,7 +187,7 @@ const initialState = {
         logs: {},
 
     },
-    merchantKycData:{}
+    merchantKycData: {}
 
 
 };
@@ -424,7 +424,7 @@ export const merchantInfo = createAsyncThunk(
                     ? API_URL.UPLOAD_MERCHANT_AADHAAR
                     : API_URL.upload_Single_Doc,
             data: requestParam.bodyFormData,
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: { "Content-Type": "multipart/form-data" },
         }).catch((error) => {
             return error.response;
         });
@@ -576,7 +576,7 @@ export const MyMerchantListData = createAsyncThunk(
         const requestParam1 = data?.page_size;
         const response = await axiosInstanceJWT
             .post(
-                `${API_URL.MY_MERCHANT_LIST}?page=${requestParam}&page_size=${requestParam1}&order_by=-loginMasterId`,data)
+                `${API_URL.MY_MERCHANT_LIST}?page=${requestParam}&page_size=${requestParam1}&order_by=-loginMasterId`, data)
             .catch((error) => {
                 return error.response;
             });
@@ -1144,7 +1144,6 @@ export const kycSlice = createSlice({
             state.isLoading = true;
         },
         [MyMerchantListData.fulfilled]: (state, action) => {
-            console.log("action",action)
             state.myMerchnatUserList = action.payload
             state.isLoading = false;
         },

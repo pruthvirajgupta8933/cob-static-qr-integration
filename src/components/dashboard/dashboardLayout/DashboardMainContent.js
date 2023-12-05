@@ -15,7 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
 import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
 import Paylink from "../AllPages/Paylink";
-import { Profile } from "../AllPages/Profile";
+// improt Profile
+// import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
 import PaymentResponse from "../AllPages/PaymentResponse";
 import KycForm from "../../KYC/KycForm";
@@ -77,6 +78,7 @@ import MerchantReferralOnboard
 import BankMerchantOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
 import authService from "../../../services/auth.service";
 import MyMerchantList from "../../ApproverNVerifier/MyMerchantList";
+import Profile from "../AllPages/Profile/Profile";
 
 
 function DashboardMainContent() {
@@ -546,8 +548,8 @@ function DashboardMainContent() {
                         <AuthorizedRoute
                             exact path={`${path}/my-merchant`}
                             Component={MyMerchantList}
-                            roleList={{  viewer: true }}>
-                            <MyMerchantList/>
+                            roleList={{ viewer: true }}>
+                            <MyMerchantList />
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
