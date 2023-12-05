@@ -181,6 +181,9 @@ const searchByText = (text) => {
             width: "180px",
             
         },
+        
+
+
         // {
         //     id: "13",
         //     name: "View Status",

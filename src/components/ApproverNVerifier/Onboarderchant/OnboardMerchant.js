@@ -213,14 +213,12 @@ const OnboardMerchant = () => {
             >
 
                 {(formik) => (
-
-
-                    <Form class="row g-3 mt-4">
+                    
+            <Form class="row g-3 mt-4">
                         <div className="col-md-10"></div>
                         <div class="col-md-6">
-                            {/* <label htmlFor="full-name" class="form-label font-weight-bold">Full Name</label> */}
-                            <label className="form-label font-weight-bold" >
-                                Full Name <span style={{ color: "red" }}>*</span>
+                            <label htmlFor="full-name"className="form-label font-weight-bold">Full Name
+                            <span style={{ color: "red" }}>*</span>
                             </label>
                             <Field
                                 class="form-control"
