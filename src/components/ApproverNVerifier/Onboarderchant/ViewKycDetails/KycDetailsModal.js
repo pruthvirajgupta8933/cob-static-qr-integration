@@ -71,7 +71,7 @@ const KycDetailsModal = (props) => {
         })
       );
 
-      
+
       const businessType = merchantKycId?.businessType;
       if (businessType !== "" && businessType !== null && businessType !== undefined) {
         // console.log(busiType,"Business TYPE==========>")
@@ -86,14 +86,9 @@ const KycDetailsModal = (props) => {
         ).then((resp) => {
           setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
         });
-  
+
 
       }
-
-
-  
-
-
 
       const busnCatId = parseInt(merchantKycId?.businessCategory);
       if (isNumber(busnCatId) && busnCatId !== "" && busnCatId !== null && busnCatId !== undefined) {
@@ -109,11 +104,8 @@ const KycDetailsModal = (props) => {
         setPlatform(resp.data.platformName)
       })
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, merchantKycId]);
-
-
 
   useEffect(() => {
     setDocList(KycDocUpload)
@@ -126,7 +118,6 @@ const KycDetailsModal = (props) => {
       dispatch(clearRatemapping())
     }
   }, [])
-
 
   const modalBody = () => {
     return (

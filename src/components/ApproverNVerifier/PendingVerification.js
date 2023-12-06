@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -260,15 +260,31 @@ function PendingVerification() {
     setPageSize(pageSize);
   };
 
-  const searchByText = () => {
-    setData(
-      newRegistrationData?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
+  // const searchByText = () => {
+  //   setData(
+  //     newRegistrationData?.filter((item) =>
+  //       Object.values(item)
+  //         .join(" ")
+  //         .toLowerCase()
+  //         .includes(searchText?.toLocaleLowerCase())
+  //     )
+  //   );
+  // };
+
+  const filteredData = useMemo(() => {
+    return newRegistrationData?.filter((item) =>
+      Object.values(item)
+        .join(' ')
+        .toLowerCase()
+        .includes(searchText?.toLocaleLowerCase())
     );
+  }, [newRegistrationData, searchText]);
+
+  
+
+  const searchByText = () => {
+    // Set data with the memoized filteredData
+    setData(filteredData);
   };
 
   const optionSearchData = [
