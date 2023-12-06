@@ -41,7 +41,7 @@ const FORM_VALIDATION = Yup.object().shape({
         .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
         .required("Confirm Password Required"),
     business_cat_code: Yup.string().required("Required"),
-    roleId: Yup.string().required("Required")
+    // roleId: Yup.string().required("Required")
 });
 
 const OnboardMerchant = () => {
@@ -128,7 +128,7 @@ const OnboardMerchant = () => {
                 businessType: businessType,
                 isDirect: false,
                 created_by: user?.loginId,
-                roleId: roleId,
+                roleId: "4",
                 is_social: false
             })
         )
@@ -145,6 +145,7 @@ const OnboardMerchant = () => {
                 setBtnDisable(false);
             });
     };
+
 
 
     const handleClickShowPassword = () => {
@@ -299,7 +300,7 @@ const OnboardMerchant = () => {
                                 </ErrorMessage>
                             }
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label htmlFor="business_category" className="form-label font-weight-bold">Business
                                 Category
                                 <span style={{ color: "red" }}>*</span>
@@ -343,7 +344,7 @@ const OnboardMerchant = () => {
                             }
                         </div>
 
-                        <div class="col-md-3">
+                        {/* <div class="col-md-3">
                             <label htmlFor="roles" className="form-label font-weight-bold">Roles
                             <span style={{ color: "red" }}>*</span></label>
                             <Field
@@ -379,7 +380,7 @@ const OnboardMerchant = () => {
                                     )}
                                 </ErrorMessage>
                             }
-                        </div>
+                        </div> */}
 
                         <div class="col-md-6">
                             <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password

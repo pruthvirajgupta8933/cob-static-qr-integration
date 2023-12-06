@@ -61,6 +61,7 @@ function BankRefMerchantList() {
         {
             id: "6",
             name: "Payment Gateway",
+            width: "220px",
             cell: (row) => (
                 <div>
                     <button
