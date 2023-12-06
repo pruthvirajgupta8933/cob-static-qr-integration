@@ -74,7 +74,7 @@ function Home() {
     roles.verifier === true ||
     roles.viewer === true
   ) {
-    return <Redirect to={`${path}/approver`} />;
+    return <Redirect to={`${path}/InternalDashboard`} />;
   }
 
   const handleClose = () => {
