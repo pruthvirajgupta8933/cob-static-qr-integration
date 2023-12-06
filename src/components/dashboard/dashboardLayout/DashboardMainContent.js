@@ -79,6 +79,7 @@ import BankMerchantOnboard from "../../ApproverNVerifier/Onboarderchant/merchant
 import authService from "../../../services/auth.service";
 import MyMerchantList from "../../ApproverNVerifier/MyMerchantList";
 import Profile from "../AllPages/Profile/Profile";
+import InternalDashboard from "../../ApproverNVerifier/InternalDashboard";
 
 
 function DashboardMainContent() {
@@ -211,6 +212,14 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
 
+                        <AuthorizedRoute
+                            exact
+                            path={`${path}/Internal-dashboard`}
+                            Component={InternalDashboard}
+                            roleList={{ approver: true, viewer: true, verifier: true }}
+                        >
+                            <InternalDashboard />
+                        </AuthorizedRoute>
                         <AuthorizedRoute
                             exact
                             path={`${path}/change-password`}
