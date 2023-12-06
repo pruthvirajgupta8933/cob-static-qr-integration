@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
@@ -30,13 +30,9 @@ function ApprovedMerchant() {
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [onboardType, setOnboardType] = useState("")
 
- 
-
-  const approvedMerchantList = useSelector(
+ const approvedMerchantList = useSelector(
     (state) => state.kyc.kycApprovedList
   );
-
-  
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount,setDataCount]=useState("")
@@ -78,7 +74,7 @@ function ApprovedMerchant() {
       name: "Company Name",
       selector: (row) => row.companyName,
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-      width: "300px",
+      width: "150px",
     },
     {
       id: "4",
@@ -280,15 +276,31 @@ function ApprovedMerchant() {
     fetchData();
   };
 
-  const searchByText = () => {
-    setData(
-      approvedMerchantData?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
+  // const searchByText = () => {
+  //   setData(
+  //     approvedMerchantData?.filter((item) =>
+  //       Object.values(item)
+  //         .join(" ")
+  //         .toLowerCase()
+  //         .includes(searchText?.toLocaleLowerCase())
+  //     )
+  //   );
+  // };
+
+  const filteredData = useMemo(() => {
+    return approvedMerchantData?.filter((item) =>
+      Object.values(item)
+        .join(' ')
+        .toLowerCase()
+        .includes(searchText?.toLocaleLowerCase())
     );
+  }, [approvedMerchantData, searchText]);
+
+  
+
+  const searchByText = () => {
+    // Set data with the memoized filteredData
+    setData(filteredData);
   };
 
  

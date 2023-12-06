@@ -212,7 +212,12 @@ useEffect(() => {
   };
 
   const rowSignUpData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "1", 
+    name: "S. No.", 
+    selector: (row) => row.sno, 
+    sortable: true ,
+    width:"80px"
+  },
     {
       id: "2",
       name: "Merchant Name",
@@ -223,6 +228,7 @@ useEffect(() => {
       id: "3",
       name: "Email",
       selector: (row) => row.email,
+      width:"180px"
     },
     {
       id: "4",

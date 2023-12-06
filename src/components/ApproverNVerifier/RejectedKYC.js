@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
@@ -225,15 +225,31 @@ const RejectedKYC = () => {
     kycForRejectedMerchnats();
   }, [currentPage, pageSize, searchText, onboardType]);
 
-  const searchByText = () => {
-    setData(
-      rejectedMerchants?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
+  // const searchByText = () => {
+  //   setData(
+  //     rejectedMerchants?.filter((item) =>
+  //       Object.values(item)
+  //         .join(" ")
+  //         .toLowerCase()
+  //         .includes(searchText?.toLocaleLowerCase())
+  //     )
+  //   );
+  // };
+
+  const filteredData = useMemo(() => {
+    return rejectedMerchants?.filter((item) =>
+      Object.values(item)
+        .join(' ')
+        .toLowerCase()
+        .includes(searchText?.toLocaleLowerCase())
     );
+  }, [rejectedMerchants, searchText]);
+
+  
+
+  const searchByText = () => {
+    // Set data with the memoized filteredData
+    setData(filteredData);
   };
 
   const optionSearchData = [

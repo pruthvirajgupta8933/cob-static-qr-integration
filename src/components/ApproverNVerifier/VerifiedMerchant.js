@@ -73,7 +73,7 @@ function VerifiedMerchant() {
       name: "Company Name",
       selector: (row) => row.companyName,
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-      width: "400px",
+      width: "150px",
     },
     {
       id: "4",
