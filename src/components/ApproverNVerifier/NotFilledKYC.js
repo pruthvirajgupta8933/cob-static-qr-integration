@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useMemo} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
@@ -53,18 +52,22 @@ const NotFilledKYC = () => {
 
   };
 
-  const mappedData = notFilledKycData?.map((item) => {
-    return {
-      sno: item.sno,
-      name: item.name,
-      clientCode: item.clientCode,
-      emailId: item.emailId,
-      contactNumber: item.contactNumber,
-      status: item.status,
-      signUpDate: item.signUpDate,
-      isDirect: item.isDirect,
-    };
-  });
+  const mappedData = useMemo(() => {
+    return notFilledKycData?.map((item) => {
+        return {
+            sno: item.sno,
+            name: item.name,
+            clientCode: item.clientCode,
+            emailId: item.emailId,
+            contactNumber: item.contactNumber,
+            status: item.status,
+            signUpDate: item.signUpDate,
+            isDirect: item.isDirect,
+        };
+    });
+}, [notFilledKycData]);
+
+ 
 
   useEffect(() => {
 
@@ -72,6 +75,8 @@ const NotFilledKYC = () => {
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   const searchByText = () => {
+
+    
     const filterData = setData(
       notFilledData?.filter((item) =>
         Object.values(item)

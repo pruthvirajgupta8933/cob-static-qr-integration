@@ -41,14 +41,15 @@ function Home() {
   const { txnChartData } = dashboard
 
   const { SubscribedPlanData } = productCatalogueSlice;
+  // console.log("SubscribedPlanData", SubscribedPlanData)
 
   useEffect(() => {
     // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
-    if(roles.merchant){
+    if (roles.merchant) {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
       dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
-    } 
-    
+    }
+
   }, []);
 
   useEffect(() => {
@@ -162,7 +163,7 @@ function Home() {
                           the limit complete your KYC and get it approved.
                         </span>
                         <Link to={`/dashboard/kyc`} className="ml-1">
-                            Complete KYC
+                          Complete KYC
                         </Link>
                       </div>
                     </div>
@@ -458,7 +459,7 @@ function Home() {
             "modal fade mymodals " +
             (modalState === "Not-Filled" ? " show d-block" : " d-none")
           }
-          // role="dialog"
+        // role="dialog"
         >
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">
@@ -546,7 +547,7 @@ function Home() {
           "modal fade mymodals" +
           (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : "d-none")
         }
-        // role="dialog"
+      // role="dialog"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div

@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { createClientTxnId } from '../../services/merchant-service/prouduct-catalogue.service'
 import { toast } from "react-toastify";
 import { Link, useParams } from 'react-router-dom'
-import {  isNull } from 'lodash'
+import { isNull } from 'lodash'
 import payment_default_gif from "../../assets/images/image_processing20201113-8803-s9v2bo.gif"
 import payment_response_gif from "../../assets/images/image_processing20210906-19522-9n3ter.gif"
 import classes from "./pg.module.css"
@@ -27,14 +27,14 @@ function SpPg() {
     const history = useHistory()
 
     const { auth, productCatalogueSlice } = useSelector((state) => state);
-    const { SubscribedPlanData,   } = productCatalogueSlice
+    const { SubscribedPlanData } = productCatalogueSlice
     const { subscribeId } = useParams();
 
     // console.log("SubscribedPlanData",SubscribedPlanData)
     useEffect(() => {
 
         const unPaidProduct = SubscribedPlanData?.filter((d) => (
-            (isNull(d?.mandateStatus) || d?.mandateStatus==="pending") &&   
+            (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
             (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
 
         const searchParam = window.location.search.slice(1)
@@ -57,18 +57,19 @@ function SpPg() {
                 dispatch(updateSubscribeDetails(updatePostData));
                 toast.success("Your Transaction is completed")
 
-            }else{
+            } else {
                 toast.error("Your Transaction is not completed")
             }
 
-        }else{
+        } else {
 
-            if(unPaidProduct?.length>0){
+            if (unPaidProduct?.length > 0) {
                 // console.log("continue")
                 setSelectedPlanCode(unPaidProduct[0]?.plan_code)
-                const postBody = {"app_id": unPaidProduct[0]?.applicationId}
+                const postBody = { "app_id": unPaidProduct[0]?.applicationId }
+                // console.log("postBody", postBody)
                 dispatch(productPlanData(postBody))
-            }else{
+            } else {
                 history.push("/dashboard")
                 // console.log("redirect to dashboard")
             }
@@ -81,15 +82,15 @@ function SpPg() {
     }, [])
 
     useEffect(() => {
-        if(productCatalogueSlice?.productPlanData?.length>0){
-            setSelectedPlan(productCatalogueSlice?.productPlanData?.filter((pd)=> (pd?.plan_code === selectedPlanCode)))
+        if (productCatalogueSlice?.productPlanData?.length > 0) {
+            setSelectedPlan(productCatalogueSlice?.productPlanData?.filter((pd) => (pd?.plan_code === selectedPlanCode)))
         }
     }, [productCatalogueSlice])
 
 
 
 
-    const getClientTxnId = async (selectedPlan, userData)=>{
+    const getClientTxnId = async (selectedPlan, userData) => {
         const postBody = {
             "clientSubscribedPlanDetailsId": subscribeId,
             "appId": selectedPlan[0]?.app_id,
@@ -101,25 +102,26 @@ function SpPg() {
         }
 
         let data = await createClientTxnId(postBody)
-        if(data?.status===200){
-            if(data?.data?.status===200){
+        if (data?.status === 200) {
+            if (data?.data?.status === 200) {
                 setNewClientTxnId(data?.data?.data)
                 setIsOpenPg(true)
-            }else{
+            } else {
                 setIsOpenPg(false)
                 // console.log("erro")
             }
-        }else{
+        } else {
             setIsOpenPg(false)
             // console.log("error")
         }
     }
 
+    // console.log("newClientTxnId", newClientTxnId)
 
     return (
         <React.Fragment>
             <section className="ant-layout">
-                
+
                 <SabpaisaPaymentGateway planData={selectedPlan} clientTxnId={newClientTxnId} openPg={isOpenPg} clientData={auth?.user} subscribeId={subscribeId} />
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
@@ -128,37 +130,37 @@ function SpPg() {
                         </div>
                         <section className="features8 cid-sg6XYTl25a" id="features08-3-">
                             <div className="container">
-                            <div className="row">
-                                <div className="col-lg-6">
-                                    <img src={reponseFromServerFlag ? payment_default_gif: payment_response_gif} alt="payment" className={`${classes.image}`} />
-                                </div>
-                                <div className="col-lg-6">
-                                    <div className="card">
-                                        {reponseFromServerFlag ?
-                                            <div className="card-body">
-                                                {/* <h5 className="card-title">Payment Status</h5> */}
-                                                <p className="card-text">SP Txn. ID : {responseData?.sabpaisaTxnId}</p>
-                                                <p className="card-text">Payer Name : {responseData?.payerName}</p>
-                                                <p className="card-text">Payer Email : {responseData?.payerEmail}</p>
-                                                <p className="card-text">Paid Amount : {responseData?.paidAmount}</p>
-                                                <p className="card-text">Payment Status : {responseData?.status}</p>
-                                                <p className="card-text">Transaction Date : {responseData?.transDate}</p>
-                                                <p className="card-text">{responseData?.sabpaisaMessage}</p>
-                                                <Link className="btn  cob-btn-primary btn-sm" to="/dashboard">Back to Dashboard</Link>
-                                            </div>
-                                            :
-                                            <div className="card-body">
-                                                <h5 className="card-title">Make payment to activate the selected plan.</h5>
-                                                <p className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</p>
-                                                <p className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</p>
-                                                {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
-                                                {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
-                                                <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
-                                            </div>
-                                        }
-
+                                <div className="row">
+                                    <div className="col-lg-6">
+                                        <img src={reponseFromServerFlag ? payment_default_gif : payment_response_gif} alt="payment" className={`${classes.image}`} />
                                     </div>
-                                </div>
+                                    <div className="col-lg-6">
+                                        <div className="card">
+                                            {reponseFromServerFlag ?
+                                                <div className="card-body">
+                                                    {/* <h5 className="card-title">Payment Status</h5> */}
+                                                    <p className="card-text">SP Txn. ID : {responseData?.sabpaisaTxnId}</p>
+                                                    <p className="card-text">Payer Name : {responseData?.payerName}</p>
+                                                    <p className="card-text">Payer Email : {responseData?.payerEmail}</p>
+                                                    <p className="card-text">Paid Amount : {responseData?.paidAmount}</p>
+                                                    <p className="card-text">Payment Status : {responseData?.status}</p>
+                                                    <p className="card-text">Transaction Date : {responseData?.transDate}</p>
+                                                    <p className="card-text">{responseData?.sabpaisaMessage}</p>
+                                                    <Link className="btn  cob-btn-primary btn-sm" to="/dashboard">Back to Dashboard</Link>
+                                                </div>
+                                                :
+                                                <div className="card-body">
+                                                    <h5 className="card-title">Make payment to activate the selected plan.</h5>
+                                                    <p className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</p>
+                                                    <p className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</p>
+                                                    {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
+                                                    {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
+                                                    <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>

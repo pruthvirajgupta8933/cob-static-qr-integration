@@ -22,7 +22,7 @@ function ChangePassword() {
   };
 
   const [values, setValues] = useState({
-     old_password: "",
+     
     confirm_password: "",
     showPassword: false,
   });
@@ -31,6 +31,26 @@ function ChangePassword() {
     new_password: "",
     showPasswords: false,
 });
+
+console.log("passwordType",passwordType)
+
+
+
+const [oldPasswordType,setOldPasswordType]=useState({
+  old_password: "",
+  showPasswordss: false,
+})
+console.log("oldPasswordType",oldPasswordType)
+
+
+const oldTogglePassword=()=>{
+  setOldPasswordType({
+    ...oldPasswordType,
+    showPasswordss: !oldPasswordType.showPasswordss,
+
+  })
+
+}
 
 const togglePassword = () => {
   setPasswordType({
@@ -112,110 +132,91 @@ const togglePassword = () => {
                     <Field type="hidden" name="loginId" disabled />
                     <Field type="hidden" name="email" disabled />
 
-                    <div className="form-group">
+                    <div className="col-lg-4 mb-3">
+  <label className="form-label">
+    Old Password
+  </label>
+  <div className="input-group">
+    <Field
+      type={oldPasswordType.showPasswordss ? "text" : "password"}
+      name="old_password"
+      placeholder="Enter Old Password"
+      className="form-control"
+    />
+    <div className="input-group-append">
+      <span className="input-group-text" id="basic-addon2" onClick={oldTogglePassword}>
+        {oldPasswordType.showPasswordss ? (
+          <i className="fa fa-eye" aria-hidden="true"></i>
+        ) : (
+          <i className="fa fa-eye-slash" aria-hidden="true"></i>
+        )}
+      </span>
+    </div>
+  </div>
+  <ErrorMessage name="old_password">
+    {(msg) => (
+      <div className="text-danger m-0">{msg}</div>
+    )}
+  </ErrorMessage>
+</div>
 
-                     <div className="col-lg-4 mb-3">
-                        <label className="form-label">
-                          Old Password
-                        </label>
-                        
-                        <Field
-                          type={
-                            values.showPassword
-                              ? "old_password"
-                              : "password"
-                          }
-                          name="old_password"
-                          placeholder="Enter Old Password"
-                          className="form-control"
-                        />
+<div className="col-lg-4 mb-3">
+  <label className="form-label">
+    New Password
+  </label>
+  <div className="input-group">
+    <Field
+      type={passwordType.showPasswords ? "text" : "password"}
+      name="new_password"
+      placeholder="Enter New Password"
+      className="form-control"
+    />
+    <div className="input-group-append">
+      <span className="input-group-text" id="basic-addon2" onClick={togglePassword}>
+        {passwordType.showPasswords ? (
+          <i className="fa fa-eye" aria-hidden="true"></i>
+        ) : (
+          <i className="fa fa-eye-slash" aria-hidden="true"></i>
+        )}
+      </span>
+    </div>
+  </div>
+  <ErrorMessage name="new_password">
+    {(msg) => (
+      <div className="text-danger m-0">{msg}</div>
+    )}
+  </ErrorMessage>
+</div>
 
-
-                        <ErrorMessage name="old_password">
-                          {(msg) => (
-                            <div className="text-danger m-0">{msg}</div>
-                          )}
-                        </ErrorMessage>
-                      </div>
-
-
-                      <div className="col-lg-4 mb-3">
-                        <label
-                          className="form-label"
-                        >
-                          New Password
-                        </label>
-                        <div className="input-group">
-                        <Field
-                         type={
-                          passwordType.showPasswords
-                              ? "text"
-                              : "password"
-                      }
-                          name="new_password"
-                          placeholder="Enter New Password"
-                          className="form-control"
-                        />
-                         <div className="input-group-append">
-                          <span className="input-group-text" id="basic-addon2" onClick={togglePassword} > 
-                          {passwordType.showPasswords ? (
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                              ) : (
-                                <i
-                                  className="fa fa-eye-slash"
-                                  aria-hidden="true"
-                                ></i>
-                              )}
-                           </span>
-                           </div>
-                         </div>
-                        
-                      <ErrorMessage name="new_password">
-                          {(msg) => (
-                            <div className="text-danger m-0">{msg}</div>
-                          )}
-                        </ErrorMessage>
-                      </div>
-
-                      <div className="col-lg-4 mb-3">
-                        <label
-                          className="form-label"
-                          htmlFor="changepassword"
-                        >
-                          Confirm New Password :
-                        </label>
-                        <div className="input-group">
-
-                          <Field
-                            type={values.showPassword ? "text" : "password"}
-                            name="confirm_password"
-                            placeholder="Re-type New Password"
-                            className="form-control"
-                          />
-                          <div className="input-group-append">
-                          <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword} > 
-                          {values.showPassword ? (
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                              ) : (
-                                <i
-                                  className="fa fa-eye-slash"
-                                  aria-hidden="true"
-                                ></i>
-                              )}
-                           </span></div>
-                        
-                       
-                        </div>
-                        <ErrorMessage name="confirm_password">
-                            {(msg) => (
-                              <div className="text-danger m-0">{msg}</div>
-                            )}
-                          </ErrorMessage>
-                      </div>
-
-
-
-                      <div className="col-lg-4 mb-3">
+<div className="col-lg-4 mb-3">
+  <label className="form-label" htmlFor="changepassword">
+    Confirm New Password:
+  </label>
+  <div className="input-group">
+    <Field
+      type={values.showPassword ? "text" : "password"}
+      name="confirm_password"
+      placeholder="Re-type New Password"
+      className="form-control"
+    />
+    <div className="input-group-append">
+      <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
+        {values.showPassword ? (
+          <i className="fa fa-eye" aria-hidden="true"></i>
+        ) : (
+          <i className="fa fa-eye-slash" aria-hidden="true"></i>
+        )}
+      </span>
+    </div>
+  </div>
+  <ErrorMessage name="confirm_password">
+    {(msg) => (
+      <div className="text-danger m-0">{msg}</div>
+    )}
+  </ErrorMessage>
+  
+</div>
+<div className="col-lg-4 mb-3">
                         <button
                           type="sumbit"
                           className=" btn bttn font-weight-bold cob-btn-primary w-100"
@@ -223,8 +224,8 @@ const togglePassword = () => {
                         >
                           Update Password
                         </button>
-                      </div>
-                    </div>
+                        </div>
+
 
                     <br />
                   </Form>

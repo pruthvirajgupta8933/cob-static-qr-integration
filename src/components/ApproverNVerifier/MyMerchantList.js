@@ -23,9 +23,11 @@ const MyMerchantList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-   
 
-    const masterClientCode= commentId?.master_client_id
+
+    const masterClientCode = commentId?.master_client_id
+
+    console.log("masterClientCode", masterClientCode)
 
     const [onboardType, setOnboardType] = useState("")
 
@@ -37,8 +39,8 @@ const MyMerchantList = () => {
         (state) => state.kyc.myMerchnatUserList
     );
 
-    const myKycAllData=useSelector(
-        (state) =>state.kyc.kycUserList
+    const myKycAllData = useSelector(
+        (state) => state.kyc.kycUserList
     );
 
     const { user } = useSelector((state) => state.auth);
@@ -48,12 +50,12 @@ const MyMerchantList = () => {
     const [dataCount, setDataCount] = useState("")
     const [kycIdClick, setKycIdClick] = useState(myKycAllData);
 
-  
 
-    
+
+
     // const viewStatusbyId=kycIdClick?.master_client_id
 
-    
+
 
     useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
@@ -69,7 +71,7 @@ const MyMerchantList = () => {
     }, [myMerchantListData]); //
 
 
-   
+
 
     // console.log(loadingState,"my loading")
 
@@ -89,10 +91,10 @@ const MyMerchantList = () => {
     useEffect(() => {
         dispatch(kycUserList({ login_id: user?.loginId }));
         return () => {
-        //   dispatch(clearSuccessTxnsummary());
+            //   dispatch(clearSuccessTxnsummary());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
+    }, []);
 
 
 
@@ -101,8 +103,8 @@ const MyMerchantList = () => {
         fetchData();
     }, [currentPage, pageSize]);
 
-   
-const searchByText = (text) => {
+
+    const searchByText = (text) => {
         setData(
             notFilledData?.filter((item) =>
                 Object.values(item)
@@ -141,7 +143,7 @@ const searchByText = (text) => {
             name: "S.No",
             selector: (row) => row.s_no,
             sortable: true,
-            width: "100px",
+            // width: "100px",
         },
         {
             id: "2",
@@ -161,15 +163,15 @@ const searchByText = (text) => {
             id: "4",
             name: "Contact Number",
             selector: (row) => row.mobileNumber,
-            cell: (row) => <div className="removeWhiteSpace">{row?.mobileNumber}</div>,
-            width: "200px",
+            cell: (row) => <div className="removeWhiteSpace"> {row?.mobileNumber}</div>,
+            // width: "200px",
         },
         {
             id: "5",
             name: "Status",
             selector: (row) => row.status,
             cell: (row) => <div className="removeWhiteSpace">{row?.status}</div>,
-            width: "200px",
+            // width: "200px",
         },
 
         {
@@ -178,13 +180,21 @@ const searchByText = (text) => {
             selector: (row) => row.createdDate,
             sortable: true,
             cell: (row) => <div>{DateFormatter(row.createdDate)}</div>,
-            width: "180px",
-            
+            width: "170px",
+
         },
-        // {
+        {
+            id: "7",
+            name: "Client Code",
+            selector: (row) => row?.master_client_id?.clientCode,
+            sortable: true,
+            cell: (row) => <div>{row?.master_client_id?.clientCode}</div>,
+        },
+
+ // {
         //     id: "13",
         //     name: "View Status",
-      
+
         //     cell: (row) => (
         //       <div>
         //         <button
@@ -197,70 +207,72 @@ const searchByText = (text) => {
         //           data-toggle="modal"
         //           data-target="#kycmodaldetail"
         //         >
-                 
-                   
+
+
         //             View Status
         //         </button>
         //       </div>
         //     ),
         //   },
-          {
+        {
             id: "7",
             name: "Action",
-      
+
             cell: (row) => (
-              <div>
-                {roles?.verifier === true ||
-                  roles?.approver === true ||
-                  roles?.viewer === true ? (
-                  <button
-                    type="button"
-                    className="approve text-white  cob-btn-primary   btn-sm"
-                    data-toggle="modal"
-                    onClick={() => {
-                      setCommentId(row);
-                      setOpenCommentModal(true);
-                    }}
-                    data-target="#exampleModal"
-                    disabled={row?.clientCode === null ? true : false}
-                  >
-                    Comments
-                  </button>
-                ) : (
-                  <></>
-                )}
-              </div>
+                <div>
+                    {roles?.verifier === true ||
+                        roles?.approver === true ||
+                        roles?.viewer === true ? (
+                        <button
+                            type="button"
+                            className="approve text-white  cob-btn-primary   btn-sm"
+                            data-toggle="modal"
+                            onClick={() => {
+                                setCommentId(row);
+                                setOpenCommentModal(true);
+                            }}
+                            data-target="#exampleModal"
+                            disabled={row?.clientCode === null ? true : false}
+                        >
+                            Comments
+                        </button>
+                    ) : (
+                        <></>
+                    )}
+                </div>
             ),
-          },
+        },
 
     ];
 
 
 
+
+
     return (
         <div className="container-fluid flleft">
-             <div className="mb-5">
-            <h5 className="">My Merchant List</h5>
-          </div>
+            <div className="mb-5">
+                <h5 className="">My Merchant List</h5>
+            </div>
             <div className="form-row">
 
-            {openCommentModal && <CommentModal
-            commentData={masterClientCode}
-            isModalOpen={openCommentModal}
-            setModalState={setOpenCommentModal}
-            tabName={"My Merchant List"}
-          />}
+                {openCommentModal && <CommentModal
+                    commentData={masterClientCode}
+                    isModalOpen={openCommentModal}
+                    setModalState={setOpenCommentModal}
+                    tabName={"My Merchant List"}
+                />}
 
 
 
-          {/* KYC Details Modal */}
+                {/* KYC Details Modal */}
 
-          {isOpenModal && <KycDetailsModal
-            kycId={kycIdClick}
-            handleModal={setIsModalOpen}
-            isOpenModal={isOpenModal}
-            // renderPendingVerification={pendingVerify}
-          />}
+                {isOpenModal && <KycDetailsModal
+                    kycId={kycIdClick}
+                    handleModal={setIsModalOpen}
+                    isOpenModal={isOpenModal}
+                // renderPendingVerification={pendingVerify}
+                />}
                 <div className="form-group col-lg-3 col-md-12 mt-2">
                     <SearchFilter
                         kycSearch={kycSearch}
