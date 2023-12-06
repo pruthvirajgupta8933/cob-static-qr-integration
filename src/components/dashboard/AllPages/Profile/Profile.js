@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import WalletDetail from "./WalletDetail";
 import UserDetails from "./UserDetails";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
+
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState(1)
-
+  const roles = roleBasedAccess()
 
 
   const handleTabClick = (currenTabVal) => {
     setCurrentTab(currenTabVal)
   };
-
-
 
 
   return (
@@ -29,9 +29,10 @@ const Profile = () => {
             <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 1 && 'active-secondary'}  `}
               onClick={() => handleTabClick(1)} id="v-pills-link1-tab" data-mdb-toggle="pill"
               href={() => false} role="tab" aria-controls="v-pills-link1" aria-selected="true">Profile</a>
-            <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 2 && 'active-secondary'} `}
+            {roles.merchant && <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 2 && 'active-secondary'} `}
               onClick={() => handleTabClick(2)} id="v-pills-link2-tab" data-mdb-toggle="pill"
-              href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">Wallet</a>
+              href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">Wallet</a>}
+
 
 
           </div>

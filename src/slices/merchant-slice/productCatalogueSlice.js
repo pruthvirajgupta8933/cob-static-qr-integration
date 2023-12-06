@@ -3,70 +3,72 @@ import { fetchProductPlan, fetchSubscribedPlan, updateClientSubscribedDetails } 
 import { setMessage } from "../message";
 
 
-const initialState = {  
-  SubscribedPlanData:[],
-  productPlanData:[],
-  clientSubscribeStatus:[],
-  isLoading:false  }
+const initialState = {
+  SubscribedPlanData: [],
+  productPlanData: [],
+  clientSubscribeStatus: [],
+  isLoading: false
+}
 
 export const merchantSubscribedPlanData = createAsyncThunk(
-    "productCatalogue/merchantSubscribedPlanData",
-    async (object, thunkAPI) => {
-      try {
-        const data = await fetchSubscribedPlan(object);
-        return { data : data };
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        thunkAPI.dispatch(setMessage(message));
-        return thunkAPI.rejectWithValue();
-      }
+  "productCatalogue/merchantSubscribedPlanData",
+  async (object, thunkAPI) => {
+    try {
+      const data = await fetchSubscribedPlan(object);
+      return { data: data.data.data };
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
     }
-  );
+  }
+);
 
 
-  export const updateSubscribeDetails = createAsyncThunk(
-    "productCatalogue/updateSubscribeDetails",
-    async (object, thunkAPI) => {
-      try {
-        const data = await updateClientSubscribedDetails(object);
-        return { data : data };
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        thunkAPI.dispatch(setMessage(message));
-        return thunkAPI.rejectWithValue();
-      }
+export const updateSubscribeDetails = createAsyncThunk(
+  "productCatalogue/updateSubscribeDetails",
+  async (object, thunkAPI) => {
+    try {
+      const data = await updateClientSubscribedDetails(object);
+      return { data: data };
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
     }
-  );
+  }
+);
 
 
-  export const productPlanData = createAsyncThunk(
-    "productCatalogue/productPlanData",
-    async (object, thunkAPI) => {
-      try {
-        const data = await fetchProductPlan(object);
-        return { data : data };
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        thunkAPI.dispatch(setMessage(message));
-        return thunkAPI.rejectWithValue();
-      }
+export const productPlanData = createAsyncThunk(
+  "productCatalogue/productPlanData",
+  async (object, thunkAPI) => {
+    try {
+      const data = await fetchProductPlan(object);
+      // console.log(data)
+      return { data: data?.data?.ProductDetail };
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
     }
-  );
+  }
+);
 
 
 const productCatalogueSlice = createSlice({
@@ -79,17 +81,17 @@ const productCatalogueSlice = createSlice({
     },
     [merchantSubscribedPlanData.fulfilled]: (state, action) => {
       state.isLoading = false
-      state.SubscribedPlanData = action.payload?.data?.data?.data;
+      state.SubscribedPlanData = action.payload.data;
     },
     [merchantSubscribedPlanData.rejected]: (state) => {
       state.isLoading = false
       state.SubscribedPlanData = [];
     },
-    [productPlanData.fulfilled]:(state,action)=>{
-      state.productPlanData = action.payload?.data?.data?.ProductDetail;
+
+    [productPlanData.fulfilled]: (state, action) => {
+      state.productPlanData = action.payload.data;
     },
-    [updateSubscribeDetails.fulfilled]:(state,action)=>{
-      // console.log("action",action)
+    [updateSubscribeDetails.fulfilled]: (state, action) => {
       state.clientSubscribeStatus = action.payload?.data?.data;
     }
 
