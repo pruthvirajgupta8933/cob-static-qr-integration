@@ -88,13 +88,7 @@ const MyMerchantList = () => {
 
     };
 
-    useEffect(() => {
-        dispatch(kycUserList({ login_id: user?.loginId }));
-        return () => {
-            //   dispatch(clearSuccessTxnsummary());
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+  
 
 
 

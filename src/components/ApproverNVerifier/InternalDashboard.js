@@ -2,14 +2,17 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import API_URL from '../../config';
+// import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 
 
 
 function InternalDashboard() {
-
+    const roles = roleBasedAccess();
     const [newSignUp, setNewSignUp] = useState(0)
     const [verified, setVerified] = useState(0)
     const [approved, setApproved] = useState(0)
+    const [myMerchants, setMymerchants] = useState(0)
 
     useEffect(() => {
         const todayDate = new Date()
@@ -36,6 +39,16 @@ function InternalDashboard() {
             setApproved(resp?.data?.count)
         })
 
+        // My Merchant List
+
+        axiosInstanceJWT.post(
+            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-loginMasterId`).then(resp => {
+                setMymerchants(resp?.data?.count)
+            })
+
+
+
+
 
 
 
@@ -46,6 +59,9 @@ function InternalDashboard() {
 
     return (
         <div className='row'>
+              <div className="mb-5">
+                <h5 className="">Internal Dashboard</h5>
+            </div>
             <div className="col-lg-4">
                 <div className="card webColorBg1">
                     <div className="card-body">
@@ -83,6 +99,22 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div>
+            {roles.viewer &&
+
+                <div className="col-lg-4">
+                    <div className="card webColorBg1">
+                        <div className="card-body">
+                            <h5>My Merhant's</h5>
+                        </div>
+
+                        <div className="card-footer d-flex justify-content-between">
+                            <h6>Total</h6>
+                            <h6>{myMerchants}</h6>
+                        </div>
+
+                    </div>
+                </div>
+            }
 
 
         </div>
