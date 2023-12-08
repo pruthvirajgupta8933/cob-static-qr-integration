@@ -20,9 +20,9 @@ const BankDetails = (props) => {
         login_id: merchantKycId.loginMasterId,
         settlement_info_verified_by: loginId,
       };
-  
+
       const resp = await dispatch(verifyKycEachTab(verifierDetails));
-  
+
       if (resp?.payload?.settlement_info_status) {
         toast.success(resp.payload.settlement_info_status);
       } else if (resp?.payload?.detail) {
@@ -32,7 +32,7 @@ const BankDetails = (props) => {
       toast.error("Try Again Network Error");
     }
   };
-  
+
 
   const handleRejectClick = async (settlement_info_reject_comments = "") => {
     const rejectDetails = {
@@ -40,10 +40,10 @@ const BankDetails = (props) => {
       settlement_info_rejected_by: loginId,
       settlement_info_reject_comments: settlement_info_reject_comments,
     };
-  if (window.confirm("Reject Bank Details?")) {
+    if (window.confirm("Reject Bank Details?")) {
       try {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
-      if (resp?.payload?.merchant_info_status) {
+        if (resp?.payload?.merchant_info_status) {
           toast.success(resp.payload.settlement_info_status);
         } else if (resp?.payload) {
           toast.error(resp.payload);
@@ -54,8 +54,8 @@ const BankDetails = (props) => {
       }
     }
   };
-  
-return (
+
+  return (
     <div className="row mb-4 border p-1">
       <h5 className="">Bank Details</h5>
 
@@ -173,8 +173,8 @@ return (
       <div className="form-row g-3">
 
         <div className="col-lg-6 font-weight-bold">
-          <p>Status : <span>{KycTabStatus?.settlement_info_status}</span></p>
-          <p>Comments : <span>{KycTabStatus?.settlement_info_reject_comments}</span></p>
+          <p className='m-0'>Status : <span>{KycTabStatus?.settlement_info_status}</span></p>
+          <p className='m-0'>Comments : <span>{KycTabStatus?.settlement_info_reject_comments}</span></p>
         </div>
         <div className="col-lg-6 mt-3">
           <VerifyRejectBtn

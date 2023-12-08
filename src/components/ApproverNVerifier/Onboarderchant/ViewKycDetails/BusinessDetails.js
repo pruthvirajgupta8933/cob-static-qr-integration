@@ -9,7 +9,7 @@ import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
 const BusinessDetails = (props) => {
   const { merchantKycId, KycTabStatus } = props;
   const { classifications, nic_codes: nicCodes } = merchantKycId?.udyam_data || {};
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
   const { user } = auth;
@@ -59,7 +59,7 @@ const BusinessDetails = (props) => {
     }
   };
 
-  
+
 
   return (
     <div className="row mb-4 border p-1">
@@ -371,8 +371,8 @@ const BusinessDetails = (props) => {
 
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
-          <p>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
-          <p>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
+          <p className='m-0'>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
+          <p className='m-0'>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
         </div>
 
         <div className="col-lg-6">

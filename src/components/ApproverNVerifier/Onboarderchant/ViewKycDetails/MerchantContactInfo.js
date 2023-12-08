@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+import moment from 'moment';
 
 
 function MerchantContactInfo(props) {
@@ -159,8 +160,8 @@ function MerchantContactInfo(props) {
       </div>
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
-          <p>Status : <span>{KycTabStatus?.general_info_status}</span></p>
-          <p>Comments : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
+          <p className='m-0'>Status : <span>{KycTabStatus?.general_info_status}</span></p>
+          <p className='m-0'>Comments and Date : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
         </div>
         <div className="col-lg-6">
           <VerifyRejectBtn
