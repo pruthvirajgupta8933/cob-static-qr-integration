@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
@@ -87,7 +87,7 @@ const [commentId, setCommentId] = useState({});
       name: "Company Name",
       selector: (row) => row.companyName,
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-      width: "300px",
+      width: "180px",
     },
 
     {
@@ -210,22 +210,38 @@ const [commentId, setCommentId] = useState({});
     setPageSize(pageSize);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
-  const fetchData = () => {
+  // const fetchData = () => {
+  //   dispatch(
+  //     kycForPendingMerchants({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: searchText,
+  //       merchantStatus: "Pending",
+  //       isDirect: onboardType,
+  //     })
+  //   )
+      
+  // };
+
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForPendingMerchants({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: searchText,
-        merchantStatus: "Pending",
-        isDirect: onboardType,
+             page: currentPage,
+              page_size: pageSize,
+              searchquery: searchText,
+              merchantStatus: "Pending",
+              isDirect: onboardType,
       })
-    )
-      
-  };
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const searchByText = () => {
     setData(

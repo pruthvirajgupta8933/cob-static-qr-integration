@@ -350,9 +350,8 @@ function BankDetails(props) {
 
 
               <div className="col-sm-12 col-md-12 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Business Account Number{" "}
-                  <span style={{ color: "red" }}>*</span>
+              <label className="col-form-label mt-0 p-2">
+              Business Account Number<span className="text-danger">*</span>
                 </label>
                 <div className="input-group">
 

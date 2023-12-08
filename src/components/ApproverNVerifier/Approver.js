@@ -56,7 +56,7 @@ const Approver = () => {
                 Merchant List
               </h5>
             </div>
-            <div className="col-6 d-flex justify-content-end">
+            {/* <div className="col-6 d-flex justify-content-end">
               {roles?.viewer === true ? (
                 <></>
               ) : (
@@ -68,7 +68,7 @@ const Approver = () => {
                   Onboard Merchant
                 </button>
               )}
-            </div>
+            </div> */}
           </div>
 
           <section>

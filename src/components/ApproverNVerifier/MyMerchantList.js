@@ -146,22 +146,30 @@ const MyMerchantList = () => {
             cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
             width: "200px",
         },
+
         {
             id: "3",
+            name: "Client Code",
+            selector: (row) => row?.master_client_id?.clientCode,
+            sortable: true,
+            cell: (row) => <div>{row?.master_client_id?.clientCode}</div>,
+        },
+        {
+            id: "4",
             name: "Email",
             selector: (row) => row.email,
             cell: (row) => <div className="removeWhiteSpace">{row?.email}</div>,
             width: "200px",
         },
         {
-            id: "4",
+            id: "5",
             name: "Contact Number",
             selector: (row) => row.mobileNumber,
             cell: (row) => <div className="removeWhiteSpace"> {row?.mobileNumber}</div>,
             // width: "200px",
         },
         {
-            id: "5",
+            id: "6",
             name: "Status",
             selector: (row) => row.status,
             cell: (row) => <div className="removeWhiteSpace">{row?.status}</div>,
@@ -169,7 +177,7 @@ const MyMerchantList = () => {
         },
 
         {
-            id: "6",
+            id: "7",
             name: "Created Date",
             selector: (row) => row.createdDate,
             sortable: true,
@@ -177,13 +185,7 @@ const MyMerchantList = () => {
             width: "170px",
 
         },
-        {
-            id: "7",
-            name: "Client Code",
-            selector: (row) => row?.master_client_id?.clientCode,
-            sortable: true,
-            cell: (row) => <div>{row?.master_client_id?.clientCode}</div>,
-        },
+        
 
  // {
         //     id: "13",
