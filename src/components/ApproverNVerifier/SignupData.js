@@ -323,8 +323,6 @@ useEffect(() => {
                           errorMsg={formik.errors["to_date"]}
                         />
                     </div>
-                  
-
                   <div className="row">
                     <div className="col-md-4">
                       <button
@@ -376,6 +374,7 @@ useEffect(() => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
+                <h6>Total Count : {dataCount}</h6>
                   {!loadingState && signupData?.length !== 0 && (
                     <Table
                       row={rowSignUpData}

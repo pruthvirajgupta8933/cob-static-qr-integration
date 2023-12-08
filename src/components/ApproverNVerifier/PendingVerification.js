@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState,useMemo,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -233,22 +233,39 @@ function PendingVerification() {
 
   //---------------GET Api for KycPending-------------------
 
+  // useEffect(() => {
+  //   fetchData();
+  // }, [currentPage, searchText, searchText, pageSize, onboardType]);
+
+  // const fetchData = () => {
+  //   dispatch(
+  //     kycForPending({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: searchText,
+  //       merchantStatus: "Processing",
+  //       isDirect: onboardType,
+  //     })
+  //   )
+
+  // };
+
+
+  const fetchData = useCallback((startingSerialNumber) => {
+    dispatch(
+          kycForPending({
+            page: currentPage,
+            page_size: pageSize,
+            searchquery: searchText,
+            merchantStatus: "Processing",
+            isDirect: onboardType,
+          })
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+
   useEffect(() => {
     fetchData();
-  }, [currentPage, searchText, searchText, pageSize, onboardType]);
-
-  const fetchData = () => {
-    dispatch(
-      kycForPending({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: searchText,
-        merchantStatus: "Processing",
-        isDirect: onboardType,
-      })
-    )
-
-  };
+  }, [fetchData]);
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -260,18 +277,8 @@ function PendingVerification() {
     setPageSize(pageSize);
   };
 
-  // const searchByText = () => {
-  //   setData(
-  //     newRegistrationData?.filter((item) =>
-  //       Object.values(item)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchText?.toLocaleLowerCase())
-  //     )
-  //   );
-  // };
-
-  const filteredData = useMemo(() => {
+  
+const filteredData = useMemo(() => {
     return newRegistrationData?.filter((item) =>
       Object.values(item)
         .join(' ')

@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
-
 import DashboardHeader from './header/DashboardHeader'
 import SideNavbar from './side-navbar/SideNavbar'
 import classes from "./dashboard-main.module.css"
 import Home from '../AllPages/Home'
-
 import TransactionEnquirey from "../AllPages/TransactionEnquirey";
 import SettlementReport from "../AllPages/SettlementReport";
 import TransactionHistory from "../AllPages/TransactionHistory";

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState,useMemo} from "react";
+import React, { useEffect, useState,useMemo,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
@@ -69,10 +69,10 @@ const NotFilledKYC = () => {
 
  
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    fetchData();
-  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+  //   fetchData();
+  // }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   const searchByText = () => {
 
@@ -88,7 +88,20 @@ const NotFilledKYC = () => {
     setNotFilledData(filterData)
   };
 
-  const fetchData = (startingSerialNumber) => {
+  // const fetchData = (startingSerialNumber) => {
+  //   dispatch(
+  //     kycForNotFilled({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: searchText,
+  //       merchantStatus: "Not-Filled",
+  //       isDirect: onboardType
+  //     })
+  //   )
+
+  // };
+
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForNotFilled({
         page: currentPage,
@@ -97,9 +110,15 @@ const NotFilledKYC = () => {
         merchantStatus: "Not-Filled",
         isDirect: onboardType
       })
-    )
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
-  };
+ 
+  // ...
+  
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);

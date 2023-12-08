@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import toastConfig from "../../utilities/toastTypes";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
@@ -232,23 +231,39 @@ function VerifiedMerchant() {
     );
   };
 
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchText, pageSize, onboardType]);
+  // useEffect(() => {
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentPage, searchText, pageSize, onboardType]);
 
-  const fetchData = () => {
+  // const fetchData = () => {
+  //   dispatch(
+  //     kycForVerified({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: searchText,
+  //       merchantStatus: "Verified",
+  //       isDirect: onboardType
+  //     })
+  //   )
+      
+  // };
+
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForVerified({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: searchText,
-        merchantStatus: "Verified",
-        isDirect: onboardType
-      })
-    )
-      
-  };
+              page: currentPage,
+              page_size: pageSize,
+              searchquery: searchText,
+              merchantStatus: "Verified",
+              isDirect: onboardType
+          })
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   //function for change current page
   const changeCurrentPage = (page) => {

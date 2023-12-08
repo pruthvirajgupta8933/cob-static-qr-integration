@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAllByKycStatus, clearFetchAllByKycStatus } from "../../slices/kycSlice";
+import { FetchAllByKycStatus, clearFetchAllByKycStatus} from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal";
 import Table from "../../_components/table_components/table/Table";
@@ -182,8 +182,12 @@ const ReferZone = () => {
     setAssignzone(allKycData?.result);
 
     allKycData?.error && toastConfig.successToast("Data is not loading, Try again")
-
+    
   }, [allKycData])
+
+
+
+
 
   const kycSearch = (e, fieldType) => {
     fieldType === "text"
@@ -191,6 +195,8 @@ const ReferZone = () => {
       : setSearchByDropDown(true);
     setSearchText(e);
   };
+
+
 
   const searchByText = (text) => {
     setData(
@@ -236,13 +242,13 @@ const ReferZone = () => {
               </div>
 
               <div className="col-lg-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={dataCount}
-                  currentPage={currentPage}
-                  changePageSize={changePageSize}
-                  changeCurrentPage={changeCurrentPage}
-                />
+              <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          />
               </div>
 
               <div className="col-lg-3">
@@ -252,6 +258,8 @@ const ReferZone = () => {
                 </select>
               </div>
             </div>
+
+
             <div className="">
               <div className="scroll overflow-auto">
                 {!allKycData?.loading && data?.length !== 0 && (
