@@ -62,6 +62,8 @@ function InternalDashboard() {
               <div className="mb-5">
                 <h5 className="">Internal Dashboard</h5>
             </div>
+
+            {roles.verifier || roles.approver===true &&
             <div className="col-lg-4">
                 <div className="card webColorBg1">
                     <div className="card-body">
@@ -73,6 +75,7 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div>
+}
 
             {/* <div className="col-lg-4">
                 <div className="card webColorBg1">
@@ -86,22 +89,8 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div> */}
-
-            <div className="col-lg-4">
-                <div className="card webColorBg1">
-                    <div className="card-body">
-                        <h5>Approved Merhant's</h5>
-                    </div>
-
-                    <div className="card-footer d-flex justify-content-between">
-                        <h6>Total</h6>
-                        <h6>{approved}</h6>
-                    </div>
-                </div>
-            </div>
-            {roles.viewer &&
-
-                <div className="col-lg-4">
+             {roles.viewer &&
+           <div className="col-lg-4">
                     <div className="card webColorBg1">
                         <div className="card-body">
                             <h5>My Merhant's</h5>
@@ -115,6 +104,23 @@ function InternalDashboard() {
                     </div>
                 </div>
             }
+             {roles.viewer &&
+
+            <div className="col-lg-4">
+                <div className="card webColorBg1">
+                    <div className="card-body">
+                        <h5>Approved Merhant's</h5>
+                    </div>
+
+                    <div className="card-footer d-flex justify-content-between">
+                        <h6>Total</h6>
+                        <h6>{approved}</h6>
+                    </div>
+                </div>
+            </div>
+}
+
+           
 
 
         </div>

@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
 import ViewZoneModal from "./ViewZoneModal";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
@@ -16,8 +15,6 @@ function AssignZone() {
   const approvedMerchantList = useSelector(
     (state) => state.kyc.kycApprovedList
   );
-
- 
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -76,15 +73,31 @@ function AssignZone() {
       // });
   }, [currentPage, pageSize]);
 
-  const searchByText = (text) => {
-    setData(
-      assignZone?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
+  // const searchByText = (text) => {
+  //   setData(
+  //     assignZone?.filter((item) =>
+  //       Object.values(item)
+  //         .join(" ")
+  //         .toLowerCase()
+  //         .includes(searchText?.toLocaleLowerCase())
+  //     )
+  //   );
+  // };
+
+  const filteredData = useMemo(() => {
+    return assignZone?.filter((item) =>
+      Object.values(item)
+        .join(' ')
+        .toLowerCase()
+        .includes(searchText?.toLocaleLowerCase())
     );
+  }, [assignZone, searchText]);
+
+  
+
+  const searchByText = () => {
+    // Set data with the memoized filteredData
+    setData(filteredData);
   };
 
  

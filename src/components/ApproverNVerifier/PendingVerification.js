@@ -260,18 +260,8 @@ function PendingVerification() {
     setPageSize(pageSize);
   };
 
-  // const searchByText = () => {
-  //   setData(
-  //     newRegistrationData?.filter((item) =>
-  //       Object.values(item)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchText?.toLocaleLowerCase())
-  //     )
-  //   );
-  // };
-
-  const filteredData = useMemo(() => {
+  
+const filteredData = useMemo(() => {
     return newRegistrationData?.filter((item) =>
       Object.values(item)
         .join(' ')

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
@@ -75,15 +75,31 @@ function RateMapping() {
 
 
 
-  const searchByText = (text) => {
-    setData(
-      rateMappingList?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
+  // const searchByText = (text) => {
+  //   setData(
+  //     rateMappingList?.filter((item) =>
+  //       Object.values(item)
+  //         .join(" ")
+  //         .toLowerCase()
+  //         .includes(searchText?.toLocaleLowerCase())
+  //     )
+  //   );
+  // };
+
+  const filteredData = useMemo(() => {
+    return rateMappingList?.filter((item) =>
+      Object.values(item)
+        .join(' ')
+        .toLowerCase()
+        .includes(searchText?.toLocaleLowerCase())
     );
+  }, [rateMappingList, searchText]);
+
+  
+
+  const searchByText = () => {
+    // Set data with the memoized filteredData
+    setData(filteredData);
   };
 
   const kycSearch = (e, fieldType) => {
