@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect,useMemo} from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
@@ -17,7 +17,7 @@ import DateFormatter from "../../utilities/DateConvert";
 
 
 function ApprovedMerchant() {
- 
+
   // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [commentId, setCommentId] = useState({});
@@ -30,16 +30,16 @@ function ApprovedMerchant() {
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [onboardType, setOnboardType] = useState("")
 
- const approvedMerchantList = useSelector(
+  const approvedMerchantList = useSelector(
     (state) => state.kyc.kycApprovedList
   );
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
-  const [dataCount,setDataCount]=useState("")
+  const [dataCount, setDataCount] = useState("")
 
   useEffect(() => {
-    const approvedList=approvedMerchantList?.results
-    const dataCount=approvedMerchantList?.count
+    const approvedList = approvedMerchantList?.results
+    const dataCount = approvedMerchantList?.count
 
     if (approvedList) {
       setData(approvedList);
@@ -253,10 +253,24 @@ function ApprovedMerchant() {
   }
 
 
-  useEffect(() => {
-    fetchData();
-  }, [currentPage, searchText, pageSize, onboardType]);
-  const fetchData = () => {
+  // useEffect(() => {
+  //   fetchData();
+  // }, [currentPage, searchText, pageSize, onboardType]);
+  // const fetchData = () => {
+  //   dispatch(
+  //     kycForApproved({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: searchText,
+  //       merchantStatus: "Approved",
+  //       isDirect: onboardType
+  //     })
+  //   )
+
+  // };
+
+
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForApproved({
         page: currentPage,
@@ -265,9 +279,12 @@ function ApprovedMerchant() {
         merchantStatus: "Approved",
         isDirect: onboardType
       })
-    )
-      
-  };
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   /////////////////////////////////////Search filter
 
@@ -296,14 +313,14 @@ function ApprovedMerchant() {
     );
   }, [approvedMerchantData, searchText]);
 
-  
+
 
   const searchByText = () => {
     // Set data with the memoized filteredData
     setData(filteredData);
   };
 
- 
+
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -337,51 +354,51 @@ function ApprovedMerchant() {
 
   return (
     <div className="container-fluid">
-    <div className="form-row">
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchFilter
-          kycSearch={kycSearch}
-          searchText={searchText}
-          searchByText={searchByText}
-          setSearchByDropDown={setSearchByDropDown}
-          searchTextByApiCall={true}
-        />
-      </div>
+      <div className="form-row">
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+            searchTextByApiCall={true}
+          />
+        </div>
 
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-      <CountPerPageFilter
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             currentPage={currentPage}
             changePageSize={changePageSize}
             changeCurrentPage={changeCurrentPage}
           />
-      </div>
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
-          kycSearch={kycSearch}
-          searchText={searchText}
-          isSearchByDropDown={isSearchByDropDown}
-          notFilledData={approvedMerchantData}
-          setData={setData}
-          setSearchByDropDown={setSearchByDropDown}
-          optionSearchData={optionSearchData}
-        />
-      </div>
-      <div className="">
-      {!loadingState &&
-        <MerchnatListExportToxl
-          URL={
-            "export-excel/?search=Approved"
+        </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchbyDropDown
+            kycSearch={kycSearch}
+            searchText={searchText}
+            isSearchByDropDown={isSearchByDropDown}
+            notFilledData={approvedMerchantData}
+            setData={setData}
+            setSearchByDropDown={setSearchByDropDown}
+            optionSearchData={optionSearchData}
+          />
+        </div>
+        <div className="">
+          {!loadingState &&
+            <MerchnatListExportToxl
+              URL={
+                "export-excel/?search=Approved"
+              }
+              filename={"Approved"}
+            />
           }
-          filename={"Approved"}
-        />
-}
-      </div>
+        </div>
       </div>
       <div className="">
         <div className="scroll overflow-auto">
-        <h6>Total Count : {dataCount}</h6>
+          <h6>Total Count : {dataCount}</h6>
           {!loadingState && data?.length !== 0 && (
             <Table
               row={ApprovedTableData}

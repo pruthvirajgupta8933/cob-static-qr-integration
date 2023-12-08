@@ -623,9 +623,12 @@ function BusinessDetails(props) {
 
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
+                {/* <label className="col-form-label mt-0 p-2">
                   Business PAN <span className="text-danger">*</span>
-                </label>
+                </label> */}
+                 <label className="col-form-label p-2">
+                 Business PAN<span className="text-danger">*</span>
+                    </label>
                 <div className="input-group">
                   <Field
                     type="text"

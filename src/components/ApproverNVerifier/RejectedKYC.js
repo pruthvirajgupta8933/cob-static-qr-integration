@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState,useMemo,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
@@ -208,22 +208,39 @@ const RejectedKYC = () => {
     }
   };
 
-  const kycForRejectedMerchnats = () => {
+
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForRejectedMerchants({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: searchText,
-        merchantStatus: "Rejected",
-        isDirect: onboardType,
-      })
-    )
-
-  };
+              page: currentPage,
+              page_size: pageSize,
+              searchquery: searchText,
+              merchantStatus: "Rejected",
+              isDirect: onboardType,
+            })
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   useEffect(() => {
-    kycForRejectedMerchnats();
-  }, [currentPage, pageSize, searchText, onboardType]);
+    fetchData();
+  }, [fetchData]);
+
+  // const kycForRejectedMerchnats = () => {
+  //   dispatch(
+  //     kycForRejectedMerchants({
+  //       page: currentPage,
+  //       page_size: pageSize,
+  //       searchquery: searchText,
+  //       merchantStatus: "Rejected",
+  //       isDirect: onboardType,
+  //     })
+  //   )
+
+  // };
+
+  // useEffect(() => {
+  //   kycForRejectedMerchnats();
+  // }, [currentPage, pageSize, searchText, onboardType]);
 
   // const searchByText = () => {
   //   setData(
@@ -308,7 +325,7 @@ const RejectedKYC = () => {
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
           isOpenModal={isOpenModal}
-          renderToPendingKyc={kycForRejectedMerchnats}
+          renderToPendingKyc={fetchData}
         />}
 
 
