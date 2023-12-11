@@ -1293,7 +1293,6 @@ export const kycSlice = createSlice({
             state.isLoadingForApproved = true;
         },
         [kycForApproved.fulfilled]: (state, action) => {
-            console.log("action-11 ====>", action.payload)
             state.kycApprovedList = action.payload;
             state.isLoadingForApproved = false;
         },
