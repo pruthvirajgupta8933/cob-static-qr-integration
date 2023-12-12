@@ -32,12 +32,12 @@ function SideNavbar() {
 
         const pathName = location?.pathname
         if (pathName === "/dashboard") {
-            setSelectedMenu('dashboard')
+            // setSelectedMenu('dashboard')
         }
 
         // console.log(location)
         if (pathName === "/dashboard/approver") {
-            setSelectedMenu(10)
+            // setSelectedMenu(10)
         }
 
     }, [location])
@@ -95,6 +95,7 @@ function SideNavbar() {
                                 ) : (
                                     sm?.is_active &&
                                     <li className="nav-item" role="menuitem" key={sm?.id}>
+
                                         <Link
                                             to={`${url}/${sm?.url}`}
                                             className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === sm?.id ? sideNavClasses.selected_memu : ''}`}
