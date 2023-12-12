@@ -105,7 +105,7 @@ function KycForm() {
     <section className="ant-layout NunitoSans-Regular">
       <div
         className={
-          "mt-5 modal fade mymodals" +
+          "pt-5 modal fade mymodals" +
           (kycPopUp === true ? " show d-block" : " d-none")
         }
         style={{ overflow: "scroll" }}
