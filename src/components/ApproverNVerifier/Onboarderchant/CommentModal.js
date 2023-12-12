@@ -16,7 +16,8 @@ import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 
 const CommentModal = (props) => {
-  
+  // console.log(props)
+
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -286,18 +287,18 @@ const CommentModal = (props) => {
 
   const modalFooter = () => {
     return (
-        <button
-          type="button"
-          className="btn btn-secondary text-white"
-          data-dismiss="modal"
-          onClick={() => {
-            setCommentsList([]);
-            props?.setModalState(false);
-          }}
-        >
-          Close
-        </button>
-      
+      <button
+        type="button"
+        className="btn btn-secondary text-white"
+        data-dismiss="modal"
+        onClick={() => {
+          setCommentsList([]);
+          props?.setModalState(false);
+        }}
+      >
+        Close
+      </button>
+
     );
   };
 

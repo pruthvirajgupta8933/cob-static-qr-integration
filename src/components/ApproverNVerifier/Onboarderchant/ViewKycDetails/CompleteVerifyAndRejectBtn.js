@@ -7,7 +7,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 
   const dispatch = useDispatch();
-  const { roleBasePermissions, merchantKycId, documentsIdList, setCheckedClicked, docList, setdocumentsIdList, checkedClicked } = props;
+  const { roleBasePermissions, selectedUserData, documentsIdList, setCheckedClicked, docList, setdocumentsIdList, checkedClicked } = props;
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const { auth } = useSelector((state) => state);
@@ -19,7 +19,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
   const dropDownDocList = docList?.map((r) => r?.status?.toString());
   const hasPendingItem = dropDownDocList.some(item => item.includes("Pending"))
   const hasVerifiedItem = dropDownDocList.some(item => item.includes("Verified")) // tab 4
-  
+
 
 
   const [buttonText, setButtonText] = useState("Verify");
@@ -38,7 +38,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
   const getKycDocList = (role) => {
     dispatch(
-      kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
+      kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
 
     );
   };
@@ -89,14 +89,14 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 
     if (roles?.approver) {
-      if ( hasVerifiedItem  &&  currenTab === 4) {
+      if (hasVerifiedItem && currenTab === 4) {
         enableBtn = true; // if logged by approver and doc status is verified  then  enable reject btn
       }
-     
-      if ( hasPendingItem &&  (currenTab === 3 && roles.permission.Allow_To_Do_Verify_Kyc_details)) {
+
+      if (hasPendingItem && (currenTab === 3 && roles.permission.Allow_To_Do_Verify_Kyc_details)) {
         enableBtn = true; // if logged by approver and doc status is verified  then  enable reject btn
       }
-     
+
     }
 
     return enableBtn;
@@ -113,18 +113,18 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 
 
-useEffect(() => {
+  useEffect(() => {
     if (currenTab === 3) {
       setButtonText("Verify All Selected")
-     
+
     }
     if (currenTab === 4) {
       setButtonText("Approve All Selected")
-      
+
 
     }
 
-    
+
 
   }, [roles, Allow_To_Do_Verify_Kyc_details]);
 

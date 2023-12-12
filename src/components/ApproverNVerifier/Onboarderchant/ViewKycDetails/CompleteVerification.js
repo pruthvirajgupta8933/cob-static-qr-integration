@@ -6,7 +6,7 @@ import {
   completeVerificationRejectKyc,
 
 } from "../../../../slices/kycOperationSlice"
-import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
+import { approvekyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
 
 import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
@@ -25,7 +25,7 @@ const CompleteVerification = (props) => {
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
 
-  const { merchantKycId } = props;
+  const { selectedUserData } = props;
 
 
   const dispatch = useDispatch()
@@ -65,8 +65,8 @@ const CompleteVerification = (props) => {
 
     if (approveKyc.isApproved && !approveKyc.isError) {
 
-      dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-      dispatch(ratemapping({ merchantLoginId: merchantKycId?.loginMasterId }))
+      dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
+      dispatch(ratemapping({ merchantLoginId: selectedUserData?.loginMasterId }))
       pendingApporvalTable()
     }
 
@@ -79,7 +79,7 @@ const CompleteVerification = (props) => {
 
   const handleVerifyClick = async () => {
     const veriferDetails = {
-      login_id: merchantKycId?.loginMasterId,
+      login_id: selectedUserData?.loginMasterId,
       verified_by: loginId,
     };
     if (currenTab === 3 && !isverified) {
@@ -90,7 +90,8 @@ const CompleteVerification = (props) => {
 
             if (resp?.payload?.status_code === 200) {
               toast.success(resp.payload.message);
-              dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }));
+              dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId }));
+              dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
               pendingVerfyTable();
               closeVerificationModal(false);
             } else {
@@ -118,7 +119,7 @@ const CompleteVerification = (props) => {
 
 
             let dataAppr = {
-              login_id: merchantKycId.loginMasterId,
+              login_id: selectedUserData.loginMasterId,
               approved_by: loginId,
               rolling_reserve: parseFloat(approverDashboard?.generalFormData?.rr_amount),
               refer_by: approverDashboard?.generalFormData?.refer_by,
@@ -130,14 +131,14 @@ const CompleteVerification = (props) => {
 
             // update the redux state - for the ratemapping
 
-            GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })
+            GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
             dispatch(approvekyc(dataAppr))
 
             // .then((resp) => {
 
             //   // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
-            //   // dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-            //   // dispatch(ratemapping({merchantLoginId : merchantKycId?.loginMasterId}))
+            //   // dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
+            //   // dispatch(ratemapping({merchantLoginId : selectedUserData?.loginMasterId}))
             //   // pendingApporvalTable()
             //   // closeVerificationModal(false)
             // })
@@ -155,7 +156,7 @@ const CompleteVerification = (props) => {
 
   const handleRejectClick = async (commetText) => {
     const rejectDetails = {
-      login_id: merchantKycId.loginMasterId,
+      login_id: selectedUserData.loginMasterId,
       rejected_by: loginId,
       comments: commetText,
     };
@@ -166,7 +167,8 @@ const CompleteVerification = (props) => {
 
         if (resp?.payload?.status_code === 200) {
           toast.success(resp.payload.message);
-          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }));
+          dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
+          dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId }));
           setButtonClick(false);
           setCommetText("");
 

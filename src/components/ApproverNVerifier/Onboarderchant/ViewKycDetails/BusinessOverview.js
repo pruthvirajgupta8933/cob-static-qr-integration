@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 
 const BusinessOverview = (props) => {
-  const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus, platform } = props;
+  const { businessTypeResponse, businessCategoryResponse, KycTabStatus, platform, selectedUserData } = props;
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
@@ -30,7 +30,7 @@ const BusinessOverview = (props) => {
   const handleVerifyClick = async () => {
     try {
       const verifierDetails = {
-        login_id: merchantKycId.loginMasterId,
+        login_id: selectedUserData.loginMasterId,
         business_info_verified_by: loginId,
       };
 
@@ -50,7 +50,7 @@ const BusinessOverview = (props) => {
 
   const handleRejectClick = async (business_info_reject_comments = "") => {
     const rejectDetails = {
-      login_id: merchantKycId.loginMasterId,
+      login_id: selectedUserData.loginMasterId,
       business_info_rejected_by: loginId,
       business_info_reject_comments: business_info_reject_comments,
     };
@@ -65,7 +65,7 @@ const BusinessOverview = (props) => {
           toast.error(resp.payload);
         }
 
-        dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because updated in redux store
+        dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })); // Used to remove kyc button because updated in redux store
       } catch (error) {
         toast.error("Try Again Network Error");
       }
@@ -119,7 +119,7 @@ const BusinessOverview = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.billingLabel
+              selectedUserData?.billingLabel
             }
           >
           </textarea>
@@ -141,7 +141,7 @@ const BusinessOverview = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.expectedTransactions
+              selectedUserData?.expectedTransactions
             }
           />
         </div>
@@ -159,7 +159,7 @@ const BusinessOverview = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.avg_ticket_size
+              selectedUserData?.avg_ticket_size
             }
           />
         </div>
@@ -180,7 +180,7 @@ const BusinessOverview = (props) => {
 
         <div className="col-sm-6 col-md-6 col-lg-6">
           <label className="">
-            {merchantKycId?.is_website_url === true ?
+            {selectedUserData?.is_website_url === true ?
               <>
                 Merchant wish to accept payments on :
                 <textarea
@@ -191,7 +191,7 @@ const BusinessOverview = (props) => {
                   cols={4}
                   rows={3}
                   value={
-                    merchantKycId?.website_app_url
+                    selectedUserData?.website_app_url
                   }
                 ></textarea>
               </>

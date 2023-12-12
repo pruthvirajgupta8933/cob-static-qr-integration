@@ -25,9 +25,9 @@ const MyMerchantList = () => {
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
 
-    const masterClientCode = commentId?.master_client_id
+    // const masterClientCode = commentId?.master_client_id
 
-    console.log("masterClientCode", masterClientCode)
+    // console.log("masterClientCode", masterClientCode)
 
     const [onboardType, setOnboardType] = useState("")
 
@@ -48,9 +48,9 @@ const MyMerchantList = () => {
     const [notFilledData, setNotFilledData] = useState([]);
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState("")
-    const [kycIdClick, setKycIdClick] = useState(myKycAllData);
+    const [kycIdClick, setKycIdClick] = useState([]);
 
-
+    // console.log("kycIdClick", kycIdClick)
 
 
     // const viewStatusbyId=kycIdClick?.master_client_id
@@ -88,7 +88,7 @@ const MyMerchantList = () => {
 
     };
 
-  
+
 
 
 
@@ -135,81 +135,96 @@ const MyMerchantList = () => {
         {
             id: "1",
             name: "S.No",
-            selector: (row) => row.s_no,
+            selector: (row) => row?.s_no,
             sortable: true,
             // width: "100px",
         },
         {
             id: "2",
             name: "Name",
-            selector: (row) => row.name,
-            cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
+            selector: (row) => row?.login_id.name,
+            cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.name}</div>,
             width: "200px",
         },
 
         {
             id: "3",
             name: "Client Code",
-            selector: (row) => row?.master_client_id?.clientCode,
+            selector: (row) => row?.login_id?.master_client_id?.clientCode,
             sortable: true,
-            cell: (row) => <div>{row?.master_client_id?.clientCode}</div>,
+            cell: (row) => <div>{row?.login_id?.master_client_id?.clientCode}</div>,
         },
         {
             id: "4",
             name: "Email",
             selector: (row) => row.email,
-            cell: (row) => <div className="removeWhiteSpace">{row?.email}</div>,
+            cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.email}</div>,
             width: "200px",
         },
         {
             id: "5",
             name: "Contact Number",
             selector: (row) => row.mobileNumber,
-            cell: (row) => <div className="removeWhiteSpace"> {row?.mobileNumber}</div>,
+            cell: (row) => <div className="removeWhiteSpace"> {row?.login_id?.mobileNumber}</div>,
             // width: "200px",
         },
         {
             id: "6",
-            name: "Status",
+            name: "Account Status",
             selector: (row) => row.status,
-            cell: (row) => <div className="removeWhiteSpace">{row?.status}</div>,
+            cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.status}</div>,
             // width: "200px",
         },
+        {
+            id: "21",
+            name: "KYC Verify Status",
+            selector: (row) => row.status,
+            cell: (row) => <div className="removeWhiteSpace">{row?.is_verified ? "Verified" : "Pending"}</div>,
+            // width: "200px",
+        },
+        {
+            id: "23",
+            name: "KYC Approve Status",
+            selector: (row) => row.status,
+            cell: (row) => <div className="removeWhiteSpace">{row?.is_approved ? "Approved" : "Pending"}</div>,
+            // width: "200px",
+        },
+
 
         {
             id: "7",
             name: "Created Date",
             selector: (row) => row.createdDate,
             sortable: true,
-            cell: (row) => <div>{DateFormatter(row.createdDate)}</div>,
+            cell: (row) => <div>{DateFormatter(row?.login_id.createdDate)}</div>,
             width: "170px",
 
         },
-        
-
- // {
-        //     id: "13",
-        //     name: "View Status",
-
-        //     cell: (row) => (
-        //       <div>
-        //         <button
-        //           type="button"
-        //           className="approve text-white cob-btn-primary btn-sm "
-        //           onClick={() => {
-        //             setKycIdClick(row);
-        //             setIsModalOpen(true);
-        //           }}
-        //           data-toggle="modal"
-        //           data-target="#kycmodaldetail"
-        //         >
 
 
-        //             View Status
-        //         </button>
-        //       </div>
-        //     ),
-        //   },
+        {
+            id: "13",
+            name: "View Status",
+
+            cell: (row) => (
+                <div>
+                    <button
+                        type="button"
+                        className="approve text-white cob-btn-primary btn-sm "
+                        onClick={() => {
+                            setKycIdClick(row?.login_id);
+                            setIsModalOpen(true);
+                        }}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                    >
+
+
+                        View Status
+                    </button>
+                </div>
+            ),
+        },
         {
             id: "7",
             name: "Action",
@@ -224,11 +239,11 @@ const MyMerchantList = () => {
                             className="approve text-white  cob-btn-primary   btn-sm"
                             data-toggle="modal"
                             onClick={() => {
-                                setCommentId(row);
+                                setCommentId(row?.login_id?.master_client_id);
                                 setOpenCommentModal(true);
                             }}
                             data-target="#exampleModal"
-                            disabled={row?.clientCode === null ? true : false}
+                            disabled={row?.login_id?.master_client_id?.clientCode ? true : false}
                         >
                             Comments
                         </button>
@@ -253,7 +268,7 @@ const MyMerchantList = () => {
             <div className="form-row">
 
                 {openCommentModal && <CommentModal
-                    commentData={masterClientCode}
+                    commentData={{ clientCode: commentId?.clientCode, clientName: commentId?.clientName }}
                     isModalOpen={openCommentModal}
                     setModalState={setOpenCommentModal}
                     tabName={"My Merchant List"}
@@ -263,12 +278,7 @@ const MyMerchantList = () => {
 
                 {/* KYC Details Modal */}
 
-                {isOpenModal && <KycDetailsModal
-                    kycId={kycIdClick}
-                    handleModal={setIsModalOpen}
-                    isOpenModal={isOpenModal}
-                // renderPendingVerification={pendingVerify}
-                />}
+
                 <div className="form-group col-lg-3 col-md-12 mt-2">
                     <SearchFilter
                         kycSearch={kycSearch}
@@ -308,6 +318,14 @@ const MyMerchantList = () => {
                 {loadingState &&
                     <SkeletonTable />
                 }
+
+                {isOpenModal && <KycDetailsModal
+                    kycId={kycIdClick}
+                    handleModal={setIsModalOpen}
+                    isOpenModal={isOpenModal}
+                />}
+
+
                 {data?.length == 0 && !loadingState && (
                     <h6 className="text-center">No data Found</h6>
                 )}

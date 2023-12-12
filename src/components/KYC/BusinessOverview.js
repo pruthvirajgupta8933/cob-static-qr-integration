@@ -396,8 +396,8 @@ function BusinessOverview(props) {
 
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6">
-              <label className="col-form-label p-2 mt-0">
-              Business Description <span className="text-danger">*</span>
+                <label className="col-form-label p-2 mt-0">
+                  Business Description <span className="text-danger">*</span>
                 </label>
 
                 <FormikController

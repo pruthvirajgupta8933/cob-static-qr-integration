@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { verifyKycEachTab } from "../../../../slices/kycSlice"
+import { kycUserList, verifyKycEachTab } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
@@ -10,19 +10,19 @@ import moment from 'moment';
 
 function MerchantContactInfo(props) {
 
-  const { merchantKycId, KycTabStatus } = props
+  const { merchantKycId, KycTabStatus, selectedUserData } = props
   const [buttonText, setButtonText] = useState("Save and Next");
 
   const [isVerified, setIsVerified] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
   const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
-
 
   let commentsStatus = KycTabStatus.general_info_reject_comments;
 
   const dispatch = useDispatch();
   const { role, kycid } = props;
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
+
 
   const { user } = auth;
   const { loginId } = user;
@@ -40,14 +40,15 @@ function MerchantContactInfo(props) {
   const handleVerifyClick = async () => {
     try {
       const verifierDetails = {
-        login_id: merchantKycId.loginMasterId,
+        login_id: selectedUserData.loginMasterId,
         general_info_verified_by: loginId,
       };
 
       const resp = await dispatch(verifyKycEachTab(verifierDetails));
 
       if (resp?.payload?.general_info_status) {
-        toast.success(resp.payload.general_info_status);
+        toast.success("Kyc Status has been updated");
+        dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }))
       } else if (resp?.payload?.detail) {
         toast.error(resp.payload.detail);
       }
@@ -59,7 +60,7 @@ function MerchantContactInfo(props) {
 
   const handleRejectClick = async (general_info_reject_comments = "") => {
     const rejectDetails = {
-      login_id: merchantKycId.loginMasterId,
+      login_id: selectedUserData.loginMasterId,
       general_info_rejected_by: loginId,
       general_info_reject_comments: general_info_reject_comments,
     };
@@ -68,13 +69,14 @@ function MerchantContactInfo(props) {
       try {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
         // console.log(resp)
-        if (resp?.payload?.merchant_info_status) {
-          toast.success(resp.payload.general_info_status);
+        if (resp?.payload?.general_info_status) {
+          toast.success("Kyc Status has been updated");
+          dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }))
         } else if (resp?.payload) {
           toast.error(resp.payload);
         }
 
-        dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because updated in redux store
+        dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })); // Used to remove kyc button because updated in redux store
       } catch (error) {
         toast.error("Try Again Network Error");
       }
@@ -94,9 +96,9 @@ function MerchantContactInfo(props) {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
+
             disabled="true"
-            value={merchantKycId?.name}
+            value={selectedUserData?.name}
           />
         </div>
 
@@ -107,9 +109,9 @@ function MerchantContactInfo(props) {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
+
             disabled="true"
-            value={merchantKycId?.aadharNumber}
+            value={selectedUserData?.aadharNumber}
           />
         </div>
 
@@ -123,13 +125,13 @@ function MerchantContactInfo(props) {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
+
             disabled="true"
-            value={merchantKycId?.contactNumber}
+            value={selectedUserData?.contactNumber}
           />
 
           <span>
-            {merchantKycId?.isContactNumberVerified === 1 ? (
+            {selectedUserData?.isContactNumberVerified === 1 ? (
               <p className="text-success">Verified</p>
             ) : (
               <p className="text-danger"> Not Verified</p>
@@ -138,18 +140,18 @@ function MerchantContactInfo(props) {
         </div>
         <div className="col-sm-6 col-md-6 col-lg-6 ">
           <label className="">
-            Email Id<span style={{ color: "red" }}>*</span>
+            Email Id
           </label>
 
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
+
             disabled="true"
-            value={merchantKycId?.emailId}
+            value={selectedUserData?.emailId}
           />
           <span>
-            {merchantKycId?.isEmailVerified === 1 ? (
+            {selectedUserData?.isEmailVerified === 1 ? (
               <p className="text-success">Verified</p>
             ) : (
               <p className="text-danger"> Not Verified</p>
