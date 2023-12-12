@@ -210,22 +210,7 @@ const [commentId, setCommentId] = useState({});
     setPageSize(pageSize);
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [currentPage, pageSize, searchText, dispatch, onboardType]);
-
-  // const fetchData = () => {
-  //   dispatch(
-  //     kycForPendingMerchants({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: searchText,
-  //       merchantStatus: "Pending",
-  //       isDirect: onboardType,
-  //     })
-  //   )
-      
-  // };
+ 
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
