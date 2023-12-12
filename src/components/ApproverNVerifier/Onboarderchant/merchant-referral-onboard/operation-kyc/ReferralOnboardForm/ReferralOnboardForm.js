@@ -1,23 +1,24 @@
-import React, { useState} from 'react';
-import {Form, Formik} from "formik";
+import React, { useState } from 'react';
+import { Form, Formik } from "formik";
 import FormikController from "../../../../../../_components/formik/FormikController";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../../../../../_components/formik/Yup";
-import {Regex, RegexMsg} from "../../../../../../_components/formik/ValidationRegex";
+import { Regex, RegexMsg } from "../../../../../../_components/formik/ValidationRegex";
 import toastConfig from "../../../../../../utilities/toastTypes";
-import {generateWord} from "../../../../../../utilities/generateClientCode";
-import {addReferralService} from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
+import { generateWord } from "../../../../../../utilities/generateClientCode";
+import { addReferralService } from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 import authService from "../../../../../../services/auth.service";
-import {createClientProfile} from "../../../../../../slices/auth";
+import { createClientProfile } from "../../../../../../slices/auth";
 
-function ReferralOnboardForm({referralChild, fetchData}) {
+function ReferralOnboardForm({ referralChild, fetchData }) {
+    console.log("referralChild", referralChild)
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
-   
 
-    const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
-    const {merchantKycData} = kyc
-    const {merchantBasicDetails} = merchantReferralOnboardReducer
+
+    const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
+    const { merchantKycData } = kyc
+    const { merchantBasicDetails } = merchantReferralOnboardReducer
 
     const generateRandomPassword = () => {
         const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -57,7 +58,12 @@ function ReferralOnboardForm({referralChild, fetchData}) {
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-        username: Yup.string().nullable(),
+
+            username: Yup.string().when('isPasswordReq', {
+                is: true,
+                then: Yup.string().required('Required'),
+                otherwise: Yup.string(),
+              }),
         mobileNumber: Yup.string()
             .trim()
             .required("Required")
@@ -73,14 +79,14 @@ function ReferralOnboardForm({referralChild, fetchData}) {
         password: Yup.string(),
     });
 
-  
+
 
 
     const handleSubmitContact = async (value) => {
         // alert(3)
         setSubmitLoader(true)
         try {
-            const {fullName, mobileNumber, email_id, password, username} = value
+            const { fullName, mobileNumber, email_id, password, username } = value
             let postData = {}
             if (referralChild === true) {
                 postData = {
@@ -117,7 +123,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                 const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
                 // check client code is existing
-                const resp3 = await authService.checkClintCode({"client_code": arrayOfClientCode})
+                const resp3 = await authService.checkClintCode({ "client_code": arrayOfClientCode })
                 let newClientCode
                 // if client code available return status true, then make request with the given client
                 if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {
@@ -159,7 +165,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
 
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
-             aria-labelledby="v-pills-link1-tab">
+            aria-labelledby="v-pills-link1-tab">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -208,8 +214,8 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                                     control="input"
                                     type="text"
                                     name="username"
-                                   
- className="form-control"
+
+                                    className="form-control"
                                     label="Username *"
                                 />
                             </div>
@@ -220,7 +226,7 @@ function ReferralOnboardForm({referralChild, fetchData}) {
                             {merchantBasicDetails?.resp?.status !== "Activate" &&
                                 <button type="submit" className="btn cob-btn-primary btn-sm m-2">
                                     {submitLoader && <>
-                                            <span className="spinner-border spinner-border-sm" aria-hidden="true"/>
+                                        <span className="spinner-border spinner-border-sm" aria-hidden="true" />
                                         <span className="sr-only">Loading...</span>
                                     </>}
                                     Save

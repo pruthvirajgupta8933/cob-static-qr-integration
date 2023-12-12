@@ -386,7 +386,7 @@ const OnboardMerchant = () => {
                             <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password
                             <span style={{ color: "red" }}>*</span>
                             </label>
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <Field
                                     className="form-control"
                                     maxLength={255}
@@ -426,7 +426,7 @@ const OnboardMerchant = () => {
                             <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password
                             <span style={{ color: "red" }}>*</span>
                             </label>
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <Field
                                     className="form-control"
                                     maxLength={255}
