@@ -6,6 +6,7 @@ import {
   businessTypeById,
   documentsUpload,
   GetKycTabsStatus,
+  kycUserList,
 } from "../../../../slices/kycSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -29,12 +30,12 @@ const KycDetailsModal = (props) => {
   // console.log(props)
 
   let closeVerification = props?.handleModal;
-
   let renderPendingApprovel = props.renderPendingApproval;
   let renderPendingVerificationTable = props?.renderPendingVerification;
   let renderApprovedTable = props?.renderApprovedTable;
   let renderToPendingKyc = props?.renderToPendingKyc;
 
+  // console.log(props?.kycId)
   let merchantKycId = props?.kycId;
 
 
@@ -59,30 +60,44 @@ const KycDetailsModal = (props) => {
 
   //------------- Kyc  Document List ------------//
 
+
+  const selectedUserData = kyc.kycUserList
+  // console.log("selectedUserData", selectedUserData)
+
+
   useEffect(() => {
     if (merchantKycId !== null && merchantKycId?.loginMasterId !== "") {
+      dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
+    }
+  }, [merchantKycId])
+
+
+  useEffect(() => {
+    if (selectedUserData !== null && selectedUserData?.loginMasterId !== "") {
+      // dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
+
       dispatch(
-        kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
+        kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
       )
       // console.log(merchantKycId?.loginMasterId)
       dispatch(
         GetKycTabsStatus({
-          login_id: merchantKycId?.loginMasterId,
+          login_id: selectedUserData?.loginMasterId,
         })
       );
 
 
-      const businessType = merchantKycId?.businessType;
+      const businessType = selectedUserData?.businessType;
       if (businessType !== "" && businessType !== null && businessType !== undefined) {
         // console.log(busiType,"Business TYPE==========>")
-        dispatch(documentsUpload({ businessType, is_udyam: merchantKycId?.is_udyam })).then((resp) => {
+        dispatch(documentsUpload({ businessType, is_udyam: selectedUserData?.is_udyam })).then((resp) => {
           const data = convertToFormikSelectJson("id", "name", resp?.payload);
           setDocTypeList(data);
         });
 
 
         dispatch(
-          businessTypeById({ business_type_id: merchantKycId?.businessType })
+          businessTypeById({ business_type_id: selectedUserData?.businessType })
         ).then((resp) => {
           setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
         });
@@ -90,22 +105,24 @@ const KycDetailsModal = (props) => {
 
       }
 
-      const busnCatId = parseInt(merchantKycId?.businessCategory);
+      const busnCatId = parseInt(selectedUserData?.businessCategory);
       if (isNumber(busnCatId) && busnCatId !== "" && busnCatId !== null && busnCatId !== undefined) {
         dispatch(
-          businessCategoryById({ category_id: merchantKycId?.businessCategory })
+          businessCategoryById({ category_id: selectedUserData?.businessCategory })
         ).then((resp) => {
           // console.log(resp,"response")
           setBusinessCategoryResponse(resp?.payload[0]?.category_name);
         });
       }
 
-      approverDashboardService.getPlatformById(merchantKycId?.platformId).then(resp => {
+      approverDashboardService.getPlatformById(selectedUserData?.platformId).then(resp => {
         setPlatform(resp.data.platformName)
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, merchantKycId]);
+  }, [dispatch, selectedUserData]);
+
+
 
   useEffect(() => {
     setDocList(KycDocUpload)
@@ -128,6 +145,7 @@ const KycDetailsModal = (props) => {
           {/* contact info section */}
           <MerchantContactInfo
             merchantKycId={merchantKycId}
+            selectedUserData={selectedUserData}
             role={roles}
             KycTabStatus={KycTabStatusStore}
           />
@@ -135,6 +153,7 @@ const KycDetailsModal = (props) => {
           {/* business overview */}
           <BusinessOverview
             businessTypeResponse={businessTypeResponse}
+            selectedUserData={selectedUserData}
             businessCategoryResponse={businessCategoryResponse}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
@@ -143,12 +162,14 @@ const KycDetailsModal = (props) => {
 
           {/* business details */}
           <BusinessDetails
+            selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
 
           {/* Bank details */}
           <BankDetails
+            selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
@@ -159,12 +180,14 @@ const KycDetailsModal = (props) => {
             setDocList={setDocList}
             docTypeList={docTypeList}
             role={roles}
+            selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
 
           {/* Extra field required when merhcant goes to approved */}
           <GeneralForm
+            selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             role={roles}
 
@@ -172,6 +195,7 @@ const KycDetailsModal = (props) => {
 
           <CompleteVerification
             merchantKycId={merchantKycId}
+            selectedUserData={selectedUserData}
             KycTabStatus={KycTabStatusStore}
             renderApprovalTable={renderPendingApprovel}
             renderPendingVerificationData={renderPendingVerificationTable}

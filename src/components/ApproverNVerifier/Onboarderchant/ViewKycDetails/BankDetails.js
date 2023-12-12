@@ -8,7 +8,7 @@ import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 
 const BankDetails = (props) => {
   const dispatch = useDispatch();
-  const { merchantKycId, KycTabStatus } = props;
+  const { KycTabStatus, selectedUserData } = props;
   const { auth } = useSelector((state) => state);
 
   const { user } = auth;
@@ -17,7 +17,7 @@ const BankDetails = (props) => {
   const handleVerifyClick = async () => {
     try {
       const verifierDetails = {
-        login_id: merchantKycId.loginMasterId,
+        login_id: selectedUserData.loginMasterId,
         settlement_info_verified_by: loginId,
       };
 
@@ -36,7 +36,7 @@ const BankDetails = (props) => {
 
   const handleRejectClick = async (settlement_info_reject_comments = "") => {
     const rejectDetails = {
-      login_id: merchantKycId.loginMasterId,
+      login_id: selectedUserData.loginMasterId,
       settlement_info_rejected_by: loginId,
       settlement_info_reject_comments: settlement_info_reject_comments,
     };
@@ -48,7 +48,7 @@ const BankDetails = (props) => {
         } else if (resp?.payload) {
           toast.error(resp.payload);
         }
-        dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because it's updated in the redux store
+        dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })); // Used to remove kyc button because it's updated in the redux store
       } catch (error) {
         toast.error("Try Again Network Error");
       }
@@ -63,7 +63,7 @@ const BankDetails = (props) => {
 
         <div className="col-sm-12 col-md-12 col-lg-6 ">
           <label className="">
-            IFSC Code<span style={{ color: "red" }}>*</span>
+            IFSC Code
           </label>
 
           <input
@@ -71,10 +71,10 @@ const BankDetails = (props) => {
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={merchantKycId?.ifscCode}
+            value={selectedUserData?.ifscCode}
           />
           <span>
-            {merchantKycId?.ifscCode === null || merchantKycId?.ifscCode === "" ? (
+            {selectedUserData?.ifscCode === null || selectedUserData?.ifscCode === "" ? (
               <p className="text-danger"> Not Verified</p>
             ) : (
               <p className="text-success">Verified</p>
@@ -84,7 +84,7 @@ const BankDetails = (props) => {
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
             Business Account Number
-            <span style={{ color: "red" }}>*</span>
+
           </label>
 
           <input
@@ -93,11 +93,11 @@ const BankDetails = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.accountNumber
+              selectedUserData?.accountNumber
             }
           />
           <span>
-            {merchantKycId?.accountNumber === null || merchantKycId?.accountNumber === "" ? (
+            {selectedUserData?.accountNumber === null || selectedUserData?.accountNumber === "" ? (
               <p className="text-danger"> Not Verified</p>
 
             ) : (
@@ -113,7 +113,7 @@ const BankDetails = (props) => {
 
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
-            Account Holder Name<span style={{ color: "red" }}>*</span>
+            Account Holder Name
           </label>
           <input
             type="text"
@@ -121,14 +121,14 @@ const BankDetails = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.accountHolderName
+              selectedUserData?.accountHolderName
             }
           />
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
-            Account Type<span style={{ color: "red" }}>*</span>
+            Account Type
           </label>
           <input
             type="text"
@@ -136,7 +136,8 @@ const BankDetails = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.accountType
+              selectedUserData?.merchant_account_details
+                ?.accountType
             }
           />
         </div>
@@ -145,27 +146,27 @@ const BankDetails = (props) => {
 
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
-            Bank Name<span style={{ color: "red" }}>*</span>
+            Bank Name
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={merchantKycId?.bankName}
+            value={selectedUserData?.bankName}
           />
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
-            Branch<span style={{ color: "red" }}>*</span>
+            Branch
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={merchantKycId?.branch}
+            value={selectedUserData?.merchant_account_details?.branch}
           />
 
         </div>

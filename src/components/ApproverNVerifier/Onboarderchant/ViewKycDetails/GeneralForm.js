@@ -8,7 +8,7 @@ import Yup from '../../../../_components/formik/Yup'
 import { kycUserList } from '../../../../slices/kycSlice'
 import { toast } from 'react-toastify'
 
-const GeneralForm = ({ merchantKycId, role }) => {
+const GeneralForm = ({ selectedUserData, role }) => {
 
     const dispatch = useDispatch()
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
@@ -17,7 +17,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
     useEffect(() => {
         dispatch(businessCategoryType())
         dispatch(getAllCLientCodeSlice())
-        dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId, }))
+        // dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId, }))
     }, [])
 
 
@@ -29,7 +29,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
 
     }
 
-   
+
 
     const validationSchema = Yup.object({
         rr_amount: Yup.string().required("Required").nullable(),
@@ -72,7 +72,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
                                     label="Rolling Reserve (%)"
                                     disabled={!role?.approver}
                                     onChange={(e) => {
-                                        formik.setFieldValue("rr_amount",e.target.value)
+                                        formik.setFieldValue("rr_amount", e.target.value)
                                         formik.setStatus(false);
                                     }}
                                 />
@@ -87,7 +87,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
                                     label="Business Category"
                                     disabled={!role?.approver}
                                     onChange={(e) => {
-                                        formik.setFieldValue("business_cat_type",e.target.value)
+                                        formik.setFieldValue("business_cat_type", e.target.value)
                                         formik.setStatus(false);
                                     }}
                                 />
@@ -102,7 +102,7 @@ const GeneralForm = ({ merchantKycId, role }) => {
                                     label="Referred By (if any)"
                                     disabled={!role?.approver}
                                     onChange={(e) => {
-                                        formik.setFieldValue("refer_by",e.target.value)
+                                        formik.setFieldValue("refer_by", e.target.value)
                                         formik.setStatus(false);
                                     }}
                                 />

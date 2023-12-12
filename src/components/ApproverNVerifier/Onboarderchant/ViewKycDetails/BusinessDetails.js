@@ -7,8 +7,8 @@ import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
 
 
 const BusinessDetails = (props) => {
-  const { merchantKycId, KycTabStatus } = props;
-  const { classifications, nic_codes: nicCodes } = merchantKycId?.udyam_data || {};
+  const { merchantKycId, KycTabStatus, selectedUserData } = props;
+  const { classifications, nic_codes: nicCodes } = selectedUserData?.udyam_data || {};
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
@@ -19,7 +19,7 @@ const BusinessDetails = (props) => {
   const handleVerifyClick = async () => {
     try {
       const verifierDetails = {
-        login_id: merchantKycId.loginMasterId,
+        login_id: selectedUserData.loginMasterId,
         merchant_info_verified_by: loginId,
       };
 
@@ -38,7 +38,7 @@ const BusinessDetails = (props) => {
 
   const handleRejectClick = async (merchant_info_reject_comments = "") => {
     const rejectDetails = {
-      login_id: merchantKycId.loginMasterId,
+      login_id: selectedUserData.loginMasterId,
       merchant_info_rejected_by: loginId,
       merchant_info_reject_comments: merchant_info_reject_comments,
     };
@@ -52,7 +52,7 @@ const BusinessDetails = (props) => {
         } else if (resp?.payload) {
           toast.error(resp.payload);
         }
-        dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })); // Used to remove kyc button because it's updated in the redux store
+        dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })); // Used to remove kyc button because it's updated in the redux store
       } catch (error) {
         toast.error("Try Again Network Error");
       }
@@ -69,19 +69,19 @@ const BusinessDetails = (props) => {
         <div className="col-sm-12 col-md-6 col-lg-6">
 
           <label className="">
-            GSTIN<span className="text-danger">*</span>
+            GSTIN
           </label>
           <input
             type="text"
-            className={`form-control ${merchantKycId?.registerdWithGST ? "bg-default" : "bg-warning"}`}
+            className={`form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"}`}
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.registerdWithGST ? merchantKycId?.gstNumber : "Merchant does not have GSTIN"
+              selectedUserData?.registerdWithGST ? selectedUserData?.gstNumber : "Merchant does not have GSTIN"
             }
           />
           <span>
-            {merchantKycId?.gstNumber === null || merchantKycId?.gstNumber === "" ? (
+            {selectedUserData?.gstNumber === null || selectedUserData?.gstNumber === "" ? (
               <p className="text-danger"> Not Verified</p>
             ) : (
               <p className="text-success">Verified</p>
@@ -90,16 +90,16 @@ const BusinessDetails = (props) => {
         </div>
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Business PAN<span className="text-danger">*</span>
+            Business PAN
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={merchantKycId?.panCard}
+            value={selectedUserData?.panCard}
           />
-          {merchantKycId?.panCard === null || merchantKycId?.panCard === "" ? (
+          {selectedUserData?.panCard === null || selectedUserData?.panCard === "" ? (
             <p className="text-danger"> Not Verified</p>
           ) : (
             <p className="text-success">Verified</p>
@@ -112,19 +112,17 @@ const BusinessDetails = (props) => {
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
             Authorized Signatory PAN
-            <span className="text-danger">*</span>
+
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={
-              merchantKycId?.signatoryPAN
-            }
+            value={selectedUserData?.signatoryPAN}
           />
           <span>
-            {merchantKycId?.signatoryPAN === null || merchantKycId?.signatoryPAN === "" ? (
+            {selectedUserData?.signatoryPAN === null || selectedUserData?.signatoryPAN === "" ? (
               <p className="text-danger"> Not Verified</p>
             ) : (
               <p className="text-success">Verified</p>
@@ -133,7 +131,7 @@ const BusinessDetails = (props) => {
         </div>
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Business Name<span className="text-danger">*</span>
+            Business Name
           </label>
           <input
             type="text"
@@ -141,7 +139,7 @@ const BusinessDetails = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.companyName ? merchantKycId?.companyName : ""
+              selectedUserData?.companyName ? selectedUserData?.companyName : ""
             }
           />
         </div>
@@ -151,7 +149,7 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            PAN Owner's Name<span className="text-danger">*</span>
+            PAN Owner's Name
           </label>
           <input
             type="text"
@@ -159,23 +157,21 @@ const BusinessDetails = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.nameOnPanCard
+              selectedUserData?.nameOnPanCard
             }
           />
         </div>
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Address<span className="text-danger">*</span>
+            Address
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={
-              merchantKycId?.operationalAddress
-            }
+            value={selectedUserData?.operationalAddress}
           />
         </div>
       </div>
@@ -184,20 +180,20 @@ const BusinessDetails = (props) => {
 
         <div className="col-sm-3 col-md-3 col-lg-3">
           <label className="">
-            City<span className="text-danger">*</span>
+            City
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={merchantKycId?.cityId}
+            value={selectedUserData?.merchant_address_details?.city}
           />
         </div>
 
         <div className="col-sm-3 col-md-3 col-lg-3">
           <label className="">
-            State<span className="text-danger">*</span>
+            State
           </label>
           <input
             type="text"
@@ -205,32 +201,32 @@ const BusinessDetails = (props) => {
             id="inputPassword3"
             disabled="true"
             value={
-              merchantKycId?.state_name
+              selectedUserData?.merchant_address_details?.state_name
             }
           />
         </div>
 
         <div className="col-sm-12 col-md-6 col-lg-6">
           <label className="">
-            Pin Code<span className="text-danger">*</span>
+            Pin Code
           </label>
           <input
             type="text"
             className="form-control"
             id="inputPassword3"
             disabled="true"
-            value={merchantKycId?.pinCode}
+            value={selectedUserData?.pinCode}
           />
         </div>
 
 
       </div>
-      {merchantKycId?.is_udyam === true ? <div className="accordion accordion-flush mt-3" id="accordionFlushExample">
+      {selectedUserData?.is_udyam === true ? <div className="accordion accordion-flush mt-3" id="accordionFlushExample">
         <div className="accordion-item">
           <h2 className="accordion-header" id="flush-headingOne">
             <button className="collapsed btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
               <p className="fs-6 m-0 text-success" >Merchant Udyam Aadhar Details <i className="fa fa-arrow-circle-o-down" /></p>
-              <p className="fs-6 m-0">{merchantKycId?.udyam_data?.reg_number}</p>
+              <p className="fs-6 m-0">{selectedUserData?.udyam_data?.reg_number}</p>
             </button>
           </h2>
           <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -250,10 +246,10 @@ const BusinessDetails = (props) => {
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{merchantKycId?.udyam_data?.entity}</td>
-                          <td>{merchantKycId?.udyam_data?.type}</td>
-                          <td>{merchantKycId?.udyam_data?.incorporated_date}</td>
-                          <td>{merchantKycId?.udyam_data?.reg_number}</td>
+                          <td>{selectedUserData?.udyam_data?.entity}</td>
+                          <td>{selectedUserData?.udyam_data?.type}</td>
+                          <td>{selectedUserData?.udyam_data?.incorporated_date}</td>
+                          <td>{selectedUserData?.udyam_data?.reg_number}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -281,17 +277,17 @@ const BusinessDetails = (props) => {
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{merchantKycId?.udyam_data?.official_address?.block}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.building}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.city}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.district}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.maskedEmail}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.maskedMobile}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.road}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.state}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.unitNumber}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.villageOrTown}</td>
-                          <td>{merchantKycId?.udyam_data?.official_address?.zip}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.block}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.building}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.city}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.district}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.maskedEmail}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.maskedMobile}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.road}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.state}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.unitNumber}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.villageOrTown}</td>
+                          <td>{selectedUserData?.udyam_data?.official_address?.zip}</td>
                         </tr>
                       </tbody>
                     </table>

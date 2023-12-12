@@ -9,7 +9,7 @@ import classes from "./viewStatus.module.css"
 import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
 const MerchantDocument = (props) => {
-  const { docList, docTypeList, role, merchantKycId } = props;
+  const { docList, docTypeList, role, selectedUserData } = props;
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ const MerchantDocument = (props) => {
 
   const getKycDocList = (role) => {
     dispatch(
-      kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
+      kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
 
     );
   };
@@ -174,7 +174,7 @@ const MerchantDocument = (props) => {
       });
   };
 
-useEffect(() => {
+  useEffect(() => {
 
     if (role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3) {
       setButtonText("Verify")
@@ -297,28 +297,28 @@ useEffect(() => {
 
   return (
     <div className="row mb-4 border p-1">
-        <h5 className="">Merchant Documents</h5>
-        {pendingDocument?.length === 0 ? null : <p className="font-weight-bold m-0">Not submitted document list:</p>}
-        {pendingDocument?.map((item) => {
-          return (<> <span className="text-danger"> {item?.value}</span><br /></>)
-        })}
+      <h5 className="">Merchant Documents</h5>
+      {pendingDocument?.length === 0 ? null : <p className="font-weight-bold m-0">Not submitted document list:</p>}
+      {pendingDocument?.map((item) => {
+        return (<> <span className="text-danger"> {item?.value}</span><br /></>)
+      })}
 
-        
+
       <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
-        <thead>
+          <thead>
             {checkedClicked === true && (roles.approver || roles.verifier) &&
               <th colSpan={6} style={{ textAlign: "right" }}>
-                <CompleteVerifyAndRejectBtn 
-                  roles={roles} 
-                  roleBasePermissions={roleBasePermissions}  
-                  setdocumentsIdList={setdocumentsIdList} 
-                  merchantKycId={merchantKycId} 
-                  documentsIdList={documentsIdList} 
-                  docList={docList} 
-                  setCheckedClicked={setCheckedClicked} 
+                <CompleteVerifyAndRejectBtn
+                  roles={roles}
+                  roleBasePermissions={roleBasePermissions}
+                  setdocumentsIdList={setdocumentsIdList}
+                  selectedUserData={selectedUserData}
+                  documentsIdList={documentsIdList}
+                  docList={docList}
+                  setCheckedClicked={setCheckedClicked}
                   checkedClicked={checkedClicked}
-                    />
+                />
               </th>
             }
             <tr>
@@ -337,7 +337,7 @@ useEffect(() => {
 
             </tr>
           </thead>
-          
+
           <tbody>
             {KycDocUpload?.length > 0 ? (
               KycDocUpload?.map((doc, i) => {
@@ -369,7 +369,7 @@ useEffect(() => {
                     </td>
                     <td>
 
-                      <p  className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
+                      <p className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
                     {/* <td>{doc?.status}</td> */}
 
