@@ -54,12 +54,19 @@ const FileUploader = ({setCurrentTab}) => {
             // console.log(response,"this is rcomplete response")
             setDocumentUploadResponse(response?.data?.status)
             fetchDocList(merchantLoginId)
-            toastConfig.successToast(response.data?.message)
+            if (response.data.status === true) {
+                // Display success toast for a successful response
+                toastConfig.successToast(response.data.message);
+            } else {
+                // Display error toast for a response with status set to false
+                toastConfig.errorToast(response.data.message);
+            }
+            // toastConfig.successToast(response.data?.message)
             setSubmitLoader(false)
             // console.log('Files uploaded successfully:', response.data?.message);
         } catch (error) {
             // toastConfig.errorToast(response.data?.message)
-            toastConfig.errorToast('Error uploading files');
+            // toastConfig.errorToast('Error uploading files');
             setSubmitLoader(false)
         }
     };
