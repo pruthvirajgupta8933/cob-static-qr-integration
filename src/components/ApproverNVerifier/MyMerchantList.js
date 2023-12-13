@@ -95,7 +95,7 @@ const MyMerchantList = () => {
     useEffect(() => {
 
         fetchData();
-    }, [currentPage, pageSize]);
+    }, [currentPage, pageSize,searchText]);
 
 
     const searchByText = (text) => {
@@ -116,7 +116,8 @@ const MyMerchantList = () => {
             MyMerchantListData({
                 page: currentPage,
                 page_size: pageSize,
-                created_by: loginId
+                created_by: loginId,
+                searchquery: searchText,
             })
         )
 
@@ -285,7 +286,7 @@ const MyMerchantList = () => {
                         searchText={searchText}
                         searchByText={searchByText}
                         setSearchByDropDown={setSearchByDropDown}
-                        searchTextByApiCall={false}
+                        searchTextByApiCall={true}
                     />
                 </div>
                 <div className="form-group col-lg-3 col-md-12 mt-2">
