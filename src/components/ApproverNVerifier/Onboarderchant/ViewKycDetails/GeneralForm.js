@@ -22,9 +22,9 @@ const GeneralForm = ({ selectedUserData, role }) => {
     useEffect(() => {
         dispatch(businessCategoryType())
         dispatch(getAllCLientCodeSlice())
-        axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
-            setParentClientCode(resp.data)
-        }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
+        // axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
+        //     setParentClientCode(resp.data)
+        // }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
     }, [])
 
 
@@ -41,7 +41,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
     const validationSchema = Yup.object({
         rr_amount: Yup.string().nullable(),
         business_cat_type: Yup.string().nullable(),
-        parent_client_code: Yup.string().required("Required").nullable(),
+        // parent_client_code: Yup.string().required("Required").nullable(),
         refer_by: Yup.string().nullable()
     })
 
@@ -51,7 +51,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         const saveGenData = {
             rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
             business_cat_type: val.business_cat_type,
-            parent_client_code: 'COBED', // if not selected
+            // parent_client_code: 'COBED', // if not selected
             refer_by: val.refer_by,
             rolling_reserve_type: val.rolling_reserve_type
         }
@@ -63,7 +63,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
 
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
-    const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
+    // const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
     const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
 
     // console.log("parentClientCodeOption", parentClientCodeOption)
@@ -113,7 +113,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
-                                <div className="col-md-4">
+                                {/* <div className="col-md-4">
                                     <FormikController
                                         control="select"
                                         name="parent_client_code"
@@ -126,7 +126,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                             formik.setStatus(false);
                                         }}
                                     />
-                                </div>
+                                </div> */}
 
                                 <div className="col-md-4 mt-1">
                                     <FormikController

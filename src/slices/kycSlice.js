@@ -572,17 +572,15 @@ export const kycForNotFilled = createAsyncThunk(
 export const MyMerchantListData = createAsyncThunk(
     "kyc/MyMerchantListData",
     async (data) => {
-       
         const requestParam = data?.page;
         const requestParam1 = data?.page_size;
         const searchQuery = data?.searchquery;
-        
-        const url = `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&search_query=${searchQuery}&order_by=-login_id`;
-        
-        const response = await axiosInstanceJWT.post(url).catch((error) => {
-            return error.response;
-        });
-        
+        const response = await axiosInstanceJWT
+            .post(
+                `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&search_query=${searchQuery}&order_by=-login_id`, data)
+            .catch((error) => {
+                return error.response;
+            });
 
         return response.data;
     }
