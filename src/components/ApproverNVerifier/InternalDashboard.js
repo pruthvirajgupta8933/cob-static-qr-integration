@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import API_URL from '../../config';
 // import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
@@ -45,7 +45,7 @@ function InternalDashboard() {
         // My Merchant List
 
         axiosInstanceJWT.post(
-            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id`,{created_by:loginId}).then(resp => {
+            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id&kyc_status=Approved`, { created_by: loginId }).then(resp => {
                 setMymerchants(resp?.data?.count)
             })
 
@@ -62,7 +62,7 @@ function InternalDashboard() {
 
     return (
         <div className='row'>
-              <div className="mb-5">
+            <div className="mb-5">
                 <h5 className="">Internal Dashboard</h5>
             </div>
 
@@ -92,38 +92,38 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div> */}
-             {roles.viewer &&
-           <div className="col-lg-4">
+            {roles.viewer &&
+                <div className="col-lg-4">
                     <div className="card webColorBg1">
                         <div className="card-body">
                             <h5>My Merchants</h5>
                         </div>
 
                         <div className="card-footer d-flex justify-content-between">
-                            <h6>Total</h6>
+                            <h6>Total Approved</h6>
                             <h6>{myMerchants}</h6>
                         </div>
 
                     </div>
                 </div>
             }
-               {roles.verifier || roles.approver===true &&
+            {roles.verifier || roles.approver === true &&
 
-            <div className="col-lg-4">
-                <div className="card webColorBg1">
-                    <div className="card-body">
-                        <h5>Approved Merchants</h5>
-                    </div>
+                <div className="col-lg-4">
+                    <div className="card webColorBg1">
+                        <div className="card-body">
+                            <h5>Approved Merchants</h5>
+                        </div>
 
-                    <div className="card-footer d-flex justify-content-between">
-                        <h6>Total</h6>
-                        <h6>{approved}</h6>
+                        <div className="card-footer d-flex justify-content-between">
+                            <h6>Total</h6>
+                            <h6>{approved}</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-}
+            }
 
-           
+
 
 
         </div>

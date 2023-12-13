@@ -10,7 +10,8 @@ import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { kycUserList } from "../../slices/kycSlice";
-
+import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+// import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown"
 
 
 const MyMerchantList = () => {
@@ -30,6 +31,7 @@ const MyMerchantList = () => {
     // console.log("masterClientCode", masterClientCode)
 
     const [onboardType, setOnboardType] = useState("")
+    const [kycSearchStatus, setKycSearchStatus] = useState("Not-Filled")
 
     const dispatch = useDispatch();
 
@@ -88,6 +90,14 @@ const MyMerchantList = () => {
 
     };
 
+    const kycStatus = [
+        { key: KYC_STATUS_NOT_FILLED, values: KYC_STATUS_NOT_FILLED },
+        { key: KYC_STATUS_PENDING, values: KYC_STATUS_PENDING },
+        { key: KYC_STATUS_PROCESSING, values: "Pending Verification" },
+        { key: KYC_STATUS_VERIFIED, values: "Pending Approval" },
+        { key: KYC_STATUS_APPROVED, values: KYC_STATUS_APPROVED },
+        { key: KYC_STATUS_REJECTED, values: KYC_STATUS_REJECTED }
+    ]
 
 
 
@@ -95,7 +105,7 @@ const MyMerchantList = () => {
     useEffect(() => {
 
         fetchData();
-    }, [currentPage, pageSize,searchText]);
+    }, [currentPage, pageSize, searchText, kycSearchStatus]);
 
 
     const searchByText = (text) => {
@@ -118,6 +128,7 @@ const MyMerchantList = () => {
                 page_size: pageSize,
                 created_by: loginId,
                 searchquery: searchText,
+                kyc_status: kycSearchStatus
             })
         )
 
@@ -138,7 +149,7 @@ const MyMerchantList = () => {
             name: "S.No",
             selector: (row) => row?.s_no,
             sortable: true,
-            
+
             // width: "100px",
         },
         {
@@ -268,16 +279,15 @@ const MyMerchantList = () => {
             </div>
             <div className="form-row">
 
-                {openCommentModal && <CommentModal
-                    commentData={{ clientCode: commentId?.clientCode, clientName: commentId?.clientName }}
-                    isModalOpen={openCommentModal}
-                    setModalState={setOpenCommentModal}
-                    tabName={"My Merchant List"}
-                />}
+                {openCommentModal &&
+                    <CommentModal
+                        commentData={{ clientCode: commentId?.clientCode, clientName: commentId?.clientName }}
+                        isModalOpen={openCommentModal}
+                        setModalState={setOpenCommentModal}
+                        tabName={"My Merchant List"}
+                    />}
 
 
-
-                {/* KYC Details Modal */}
 
 
                 <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -289,6 +299,17 @@ const MyMerchantList = () => {
                         searchTextByApiCall={true}
                     />
                 </div>
+
+                {/* {console.log(kycStatus)} */}
+                <div className="form-group col-lg-3 col-md-12 mt-2">
+                    <label>Select KYC Status</label>
+                    <select class="form-select" onChange={(e) => setKycSearchStatus(e.currentTarget.value)}>
+                        {kycStatus?.map((d, i) => (
+                            <option value={d?.key} key={i}>{d.values}</option>
+                        ))}
+                    </select>
+                </div>
+
                 <div className="form-group col-lg-3 col-md-12 mt-2">
                     <CountPerPageFilter
                         pageSize={pageSize}
@@ -298,12 +319,14 @@ const MyMerchantList = () => {
                         changeCurrentPage={changeCurrentPage}
                     />
                 </div>
+
+
             </div>
 
             <div>
 
                 <div className="scroll overflow-auto">
-                    <h6>Total Count : {dataCount}</h6>
+                    <h6>Total Count ({kycSearchStatus}) : {dataCount}</h6>
                     {!loadingState && data?.length !== 0 && (
                         <Table
                             row={myMerchantListDataa}
