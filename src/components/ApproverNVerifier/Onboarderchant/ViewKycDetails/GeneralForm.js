@@ -22,7 +22,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
 
     const initialValues = {
-        rr_amount: kyc.kycUserList?.rolling_reserve,
+        rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
         refer_by: kyc.kycUserList?.refer_by,
         rolling_reserve_type: "Percentage"
@@ -32,14 +32,22 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
 
     const validationSchema = Yup.object({
-        rr_amount: Yup.string().required("Required").nullable(),
+        rr_amount: Yup.string().nullable(),
         business_cat_type: Yup.string().nullable(),
         refer_by: Yup.string().nullable()
     })
 
 
     const handleSubmit = (val) => {
-        dispatch(generalFormData(val))
+        // console.log("val", val)
+        const saveGenData = {
+            rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
+            business_cat_type: val.business_cat_type,
+            refer_by: val.refer_by,
+            rolling_reserve_type: val.rolling_reserve_type
+        }
+        // console.log("saveGenData", saveGenData)
+        dispatch(generalFormData(saveGenData))
         toast.success("Successfully updated")
     }
 
