@@ -66,7 +66,7 @@ function InternalDashboard() {
                 <h5 className="">Internal Dashboard</h5>
             </div>
 
-            {roles.verifier || roles.approver===true &&
+            {/* {roles.verifier || roles.approver===true &&
             <div className="col-lg-4">
                 <div className="card webColorBg1">
                     <div className="card-body">
@@ -78,7 +78,7 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div>
-}
+} */}
 
             {/* <div className="col-lg-4">
                 <div className="card webColorBg1">
@@ -107,7 +107,7 @@ function InternalDashboard() {
                     </div>
                 </div>
             }
-             {roles.viewer &&
+               {roles.verifier || roles.approver===true &&
 
             <div className="col-lg-4">
                 <div className="card webColorBg1">
