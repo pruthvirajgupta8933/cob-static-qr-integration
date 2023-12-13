@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
+import {  useSelector } from "react-redux";
 import API_URL from '../../config';
 // import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
@@ -13,6 +14,8 @@ function InternalDashboard() {
     const [verified, setVerified] = useState(0)
     const [approved, setApproved] = useState(0)
     const [myMerchants, setMymerchants] = useState(0)
+    const { user } = useSelector((state) => state.auth);
+    const loginId = user?.loginId;
 
     useEffect(() => {
         const todayDate = new Date()
@@ -42,7 +45,7 @@ function InternalDashboard() {
         // My Merchant List
 
         axiosInstanceJWT.post(
-            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-loginMasterId`).then(resp => {
+            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id`,{created_by:loginId}).then(resp => {
                 setMymerchants(resp?.data?.count)
             })
 
