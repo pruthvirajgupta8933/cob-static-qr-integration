@@ -61,13 +61,7 @@ const [commentId, setCommentId] = useState({});
   }, [pendindKycList]); //
 
 
-
-
-
-
-
-  
-  const PendindKycRowData = [
+ const PendindKycRowData = [
     {
       id: "1",
       name: "S.No",

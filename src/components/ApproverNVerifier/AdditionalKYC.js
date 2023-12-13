@@ -320,7 +320,7 @@ const AdditionalKYC = () => {
                         type="text"
                         name="account_number"
                         className="form-control mr-4 mb-3"
-                        placeholder="Enter your Account Number"
+                        placeholder="Enter Account Number"
                       />
                     </div>
                     <div className="form-group mb-3">
