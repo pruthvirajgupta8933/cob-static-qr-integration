@@ -15,7 +15,7 @@ export const NotFilledKYCData = [
     selector: (row) => row.sno,
     
     sortable: true,
-    width: "86px",
+    width: "90px",
     cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div>,
     
   },

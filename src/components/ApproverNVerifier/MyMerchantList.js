@@ -137,6 +137,7 @@ const MyMerchantList = () => {
             name: "S.No",
             selector: (row) => row?.s_no,
             sortable: true,
+            
             // width: "100px",
         },
         {

@@ -93,7 +93,7 @@ function InternalDashboard() {
            <div className="col-lg-4">
                     <div className="card webColorBg1">
                         <div className="card-body">
-                            <h5>My Merhant's</h5>
+                            <h5>My Merchants</h5>
                         </div>
 
                         <div className="card-footer d-flex justify-content-between">
@@ -109,7 +109,7 @@ function InternalDashboard() {
             <div className="col-lg-4">
                 <div className="card webColorBg1">
                     <div className="card-body">
-                        <h5>Approved Merhant's</h5>
+                        <h5>Approved Merchants</h5>
                     </div>
 
                     <div className="card-footer d-flex justify-content-between">

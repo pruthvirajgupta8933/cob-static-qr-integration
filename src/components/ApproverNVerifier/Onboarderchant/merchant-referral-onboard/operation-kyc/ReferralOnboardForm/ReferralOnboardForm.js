@@ -214,6 +214,7 @@ function ReferralOnboardForm({ referralChild, fetchData }) {
                                     control="input"
                                     type="text"
                                     name="username"
+                                    placeholder="Create User Name"
 
                                     className="form-control"
                                     label="Username *"

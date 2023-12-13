@@ -27,7 +27,7 @@ function PendingVerification() {
       name: "S.No",
       selector: (row) => row.sno,
       sortable: true,
-      width: "86px",
+      width: "90px",
     },
     {
       id: "2",
