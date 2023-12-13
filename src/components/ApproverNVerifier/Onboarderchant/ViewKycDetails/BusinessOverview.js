@@ -22,9 +22,7 @@ const BusinessOverview = (props) => {
   const { loginId } = user;
 
 
-  useEffect(() => {
 
-  }, [])
 
 
   const handleVerifyClick = async () => {
