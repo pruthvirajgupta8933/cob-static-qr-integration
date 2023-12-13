@@ -577,7 +577,7 @@ export const MyMerchantListData = createAsyncThunk(
         const searchQuery = data?.searchquery;
         const response = await axiosInstanceJWT
             .post(
-                `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&search_query=${searchQuery}&order_by=-login_id`, data)
+                `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&kyc_status=${data?.kyc_status}&search_query=${searchQuery}&order_by=-login_id`, data)
             .catch((error) => {
                 return error.response;
             });
