@@ -17,11 +17,23 @@ function SideNavbar() {
         checked: false,
         items: [],
     });
-
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = (e) => {
-        e.currentTarget.nextSibling.classList.toggle("hide-menu-nav")
+        const menuElement = e.currentTarget.nextSibling;
+        menuElement.classList.toggle("hide-menu-nav");
+
+        const iconElement = e.currentTarget.querySelector('i');
+        if (iconElement) {
+            iconElement.classList.toggle("fa-minus");
+            iconElement.classList.toggle("fa-plus");
+        }
     }
+
+
+    // const toggleMenu = (e) => {
+    //     e.currentTarget.nextSibling.classList.toggle("hide-menu-nav")
+    // }
 
 
     const handleItemClick = (item) => {
@@ -57,14 +69,15 @@ function SideNavbar() {
             return (
                 m?.is_active === true && (
                     <React.Fragment key={m?.app_name}>
-                        <div onClick={(e) => toggleMenu(e)}>
+                        <div onClick={(e) => toggleMenu(e)} className={`your-custom-class ${isMenuOpen ? 'open-menu' : 'closed-menu'}`}>
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`} >
                                 <span> {m?.app_name}</span>
                                 <a className="link-secondary" href={false} aria-label="Add a new report">
-                                    <i className="fa fa-plus" id={`icon_${m?.app_code}`}></i>
+                                    <i className={`fa ${isMenuOpen ? 'fa-minus' : 'fa-plus'}`} id={`icon_${m?.app_code}`}></i>
                                 </a>
                             </h6>
                         </div>
+
 
                         <ul
                             id={`menulist_${m?.app_code}`}

@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import NavBar from '../NavBar/NavBar';
-import {uniqueId} from 'lodash';
 import CustomModal from "../../../_components/custom_modal";
 import {fetchChiledDataList} from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import ReferralOnboardForm
-    from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
-// import BasicDetailsOps
-//     from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/bank-kyc-form/BasicDetailsOps";
+import ReferralOnboardForm from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
 import Table from '../../../_components/table_components/table/Table';
-import {RefrerChiledList} from '../../../utilities/tableData';
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
 import {roleBasedAccess} from '../../../_components/reuseable_components/roleBasedAccess';
