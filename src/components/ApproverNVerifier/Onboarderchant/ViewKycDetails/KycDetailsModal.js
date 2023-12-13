@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   kycDocumentUploadList,
   businessCategoryById,
@@ -27,7 +27,7 @@ import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMapp
 
 
 const KycDetailsModal = (props) => {
-  // console.log(props)
+  // console.log("render")
 
   let closeVerification = props?.handleModal;
   let renderPendingApprovel = props.renderPendingApproval;
@@ -46,36 +46,27 @@ const KycDetailsModal = (props) => {
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
   const [platform, setPlatform] = useState("");
   const roles = roleBasedAccess();
-
-  //   console.log(props?.kycId, "Props =======>");
-
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
   const { kyc, rateMappingSlice } = state;
-
   const { KycTabStatusStore, KycDocUpload } = kyc;
-  // console.log(KycTabStatusStore)
-  //------------------------------------------------------------------
-
-  //------------- Kyc  Document List ------------//
+  // const selectedUserData = kyc.kycUserList
 
 
-  const selectedUserData = kyc.kycUserList
+  const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId])
+  const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList])
   // console.log("selectedUserData", selectedUserData)
-
-
+  // 10974
   useEffect(() => {
-    if (merchantKycId !== null && merchantKycId?.loginMasterId !== "") {
+    if (merchantLoginLogin !== null && merchantLoginLogin !== "") {
       dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
     }
-  }, [merchantKycId])
+  }, [merchantLoginLogin])
 
 
   useEffect(() => {
     if (selectedUserData !== null && selectedUserData?.loginMasterId !== "") {
-      // dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
-
       dispatch(
         kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
       )
@@ -115,9 +106,12 @@ const KycDetailsModal = (props) => {
         });
       }
 
-      approverDashboardService.getPlatformById(selectedUserData?.platformId).then(resp => {
+      // console.log("selectedUserData?.platformId", selectedUserData?.platformId)
+
+      selectedUserData?.platformId && approverDashboardService.getPlatformById(selectedUserData?.platformId).then(resp => {
         setPlatform(resp.data.platformName)
       })
+
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, selectedUserData]);
@@ -136,7 +130,7 @@ const KycDetailsModal = (props) => {
     }
   }, [])
 
-  const modalBody = () => {
+  const modalBody = useCallback(() => {
     return (
       <>
         {/* if rate mapping trigger , hide the all coloum */}
@@ -173,7 +167,6 @@ const KycDetailsModal = (props) => {
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
-
           {/* Merchant Documents */}
           <MerchantDocument
             docList={KycDocUpload}
@@ -184,6 +177,8 @@ const KycDetailsModal = (props) => {
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
+
+
 
           {/* Extra field required when merhcant goes to approved */}
           <GeneralForm
@@ -211,29 +206,24 @@ const KycDetailsModal = (props) => {
         </div>}
       </>
     )
+  }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, businessTypeResponse, businessCategoryResponse, platform, KycDocUpload, setDocList, docTypeList])
 
-
-  }
-
-  const modalFooter = () => {
+  const modalFooter = useCallback(() => {
     return (
-      <>
-        <div className="modal-footer">
-          <button
-            type="button"
-            className="btn btn-secondary text-white"
-            data-dismiss="modal"
-            onClick={() => {
-              props?.handleModal(false);
-            }}
-          >
-            Close
-          </button>
-
-        </div>
-      </>
+      <div className="modal-footer">
+        <button
+          type="button" className="btn btn-secondary text-white" data-dismiss="modal"
+          onClick={() => {
+            props?.handleModal(false);
+          }}>
+          Close
+        </button>
+      </div>
     )
-  }
+  },
+    [props]
+  )
+
 
 
   return (

@@ -176,14 +176,14 @@ const MyMerchantList = () => {
             // width: "200px",
         },
         {
-            id: "21",
+            id: "7",
             name: "KYC Verify Status",
             selector: (row) => row.status,
             cell: (row) => <div className="removeWhiteSpace">{row?.is_verified ? "Verified" : "Pending"}</div>,
             // width: "200px",
         },
         {
-            id: "23",
+            id: "8",
             name: "KYC Approve Status",
             selector: (row) => row.status,
             cell: (row) => <div className="removeWhiteSpace">{row?.is_approved ? "Approved" : "Pending"}</div>,
@@ -192,7 +192,7 @@ const MyMerchantList = () => {
 
 
         {
-            id: "7",
+            id: "9",
             name: "Created Date",
             selector: (row) => row.createdDate,
             sortable: true,
@@ -203,7 +203,7 @@ const MyMerchantList = () => {
 
 
         {
-            id: "13",
+            id: "10",
             name: "View Status",
 
             cell: (row) => (
@@ -226,14 +226,14 @@ const MyMerchantList = () => {
             ),
         },
         {
-            id: "7",
+            id: "11",
             name: "Action",
 
             cell: (row) => (
                 <div>
                     {roles?.verifier === true ||
                         roles?.approver === true ||
-                        roles?.viewer === true ? (
+                        roles?.viewer === true && row?.login_id?.master_client_id?.clientCode !== undefined ? (
                         <button
                             type="button"
                             className="approve text-white  cob-btn-primary   btn-sm"
@@ -243,7 +243,6 @@ const MyMerchantList = () => {
                                 setOpenCommentModal(true);
                             }}
                             data-target="#exampleModal"
-                            disabled={row?.login_id?.master_client_id?.clientCode ? true : false}
                         >
                             Comments
                         </button>
