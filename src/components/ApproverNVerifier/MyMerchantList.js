@@ -9,7 +9,6 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
-import { kycUserList } from "../../slices/kycSlice";
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 // import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown"
 
@@ -24,26 +23,16 @@ const MyMerchantList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-
-
-    // const masterClientCode = commentId?.master_client_id
-
-    // console.log("masterClientCode", masterClientCode)
-
-    const [onboardType, setOnboardType] = useState("")
+   const [onboardType, setOnboardType] = useState("")
     const [kycSearchStatus, setKycSearchStatus] = useState("Not-Filled")
 
     const dispatch = useDispatch();
-
-
 
     const myMerchantListData = useSelector(
         (state) => state.kyc.myMerchnatUserList
     );
 
-    const myKycAllData = useSelector(
-        (state) => state.kyc.kycUserList
-    );
+
 
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
@@ -133,6 +122,8 @@ const MyMerchantList = () => {
         )
 
     };
+
+
     //function for change current page
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
@@ -188,20 +179,20 @@ const MyMerchantList = () => {
             cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.status}</div>,
             // width: "200px",
         },
-        {
-            id: "7",
-            name: "KYC Verify Status",
-            selector: (row) => row.status,
-            cell: (row) => <div className="removeWhiteSpace">{row?.is_verified ? "Verified" : "Pending"}</div>,
-            // width: "200px",
-        },
-        {
-            id: "8",
-            name: "KYC Approve Status",
-            selector: (row) => row.status,
-            cell: (row) => <div className="removeWhiteSpace">{row?.is_approved ? "Approved" : "Pending"}</div>,
-            // width: "200px",
-        },
+        // {
+        //     id: "7",
+        //     name: "KYC Verify Status",
+        //     selector: (row) => row.status,
+        //     cell: (row) => <div className="removeWhiteSpace">{row?.is_verified ? "Verified" : "Pending"}</div>,
+        //     // width: "200px",
+        // },
+        // {
+        //     id: "8",
+        //     name: "KYC Approve Status",
+        //     selector: (row) => row.status,
+        //     cell: (row) => <div className="removeWhiteSpace">{row?.is_approved ? "Approved" : "Pending"}</div>,
+        //     // width: "200px",
+        // },
 
 
         {
@@ -326,7 +317,8 @@ const MyMerchantList = () => {
             <div>
 
                 <div className="scroll overflow-auto">
-                    <h6>Total Count ({kycSearchStatus}) : {dataCount}</h6>
+                    {/* here i compare the kycSearchstatus value with kycStatus dropdown using find which return true and false */}
+                    <h6>Total Count ({kycSearchStatus ? kycStatus.find(item => item.key === kycSearchStatus)?.values : ''}) : {dataCount}</h6>
                     {!loadingState && data?.length !== 0 && (
                         <Table
                             row={myMerchantListDataa}

@@ -10,8 +10,6 @@ import { roleBasedAccess } from '../../_components/reuseable_components/roleBase
 
 function InternalDashboard() {
     const roles = roleBasedAccess();
-    const [newSignUp, setNewSignUp] = useState(0)
-    const [verified, setVerified] = useState(0)
     const [approved, setApproved] = useState(0)
     const [myMerchants, setMymerchants] = useState(0)
     const { user } = useSelector((state) => state.auth);
@@ -28,26 +26,32 @@ function InternalDashboard() {
         };
 
         // signup data
-        axiosInstanceJWT.post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=1&page_size=10`, postDataSignUp).then(resp => {
-            setNewSignUp(resp?.data?.count)
-        })
+    //     {roles.approver &&
+    //     axiosInstanceJWT.post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=1&page_size=10`, postDataSignUp).then(resp => {
+    //         setNewSignUp(resp?.data?.count)
+    //     })
+    // }
 
-        // verified data
-        axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Verified&order_by=-verified_date&search_map=verified_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
-            setVerified(resp?.data?.count)
-        })
+        // // verified data
+        // axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Verified&order_by=-verified_date&search_map=verified_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
+        //     setVerified(resp?.data?.count)
+        // })
 
         // approved data 
+        {roles.approver  &&
         axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Approved&order_by=-approved_date&search_map=approved_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
             setApproved(resp?.data?.count)
         })
+    }
 
         // My Merchant List
+        { roles.viewer || roles?.accountManager &&
 
         axiosInstanceJWT.post(
             `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id&kyc_status=Approved`, { created_by: loginId }).then(resp => {
                 setMymerchants(resp?.data?.count)
             })
+        }
 
 
 
@@ -92,7 +96,7 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div> */}
-            {roles.viewer &&
+            {roles.viewer || roles?.accountManager &&
                 <div className="col-lg-4">
                     <div className="card webColorBg1">
                         <div className="card-body">
