@@ -1,10 +1,9 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
-import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { useSelector } from "react-redux";
-import API_URL from '../../config';
-// import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
+import { getApprovedCount } from '../../services/internalDashboard.service';
+import { getMyMerchantsCount } from '../../services/internalDashboard.service';
 
 
 
@@ -16,6 +15,7 @@ function InternalDashboard() {
     const [myMerchants, setMymerchants] = useState(0)
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
+    console.log("approved",approved)
 
     useEffect(() => {
         const todayDate = new Date()
@@ -40,20 +40,26 @@ function InternalDashboard() {
         // })
 
         // approved data 
-        {roles.approver  &&
-        axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Approved&order_by=-approved_date&search_map=approved_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
-            setApproved(resp?.data?.count)
-        })
-    }
+        {roles.approver &&
+            getApprovedCount(from_date, to_date)
+              .then((count) => {
+                setApproved(count);
+              })
+              .catch((error) => {
+                // Handle errors as needed
+              })
+          }
 
         // My Merchant List
         {(roles.viewer || roles?.accountManager) &&
-
-        axiosInstanceJWT.post(
-            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id&kyc_status=Approved`, { created_by: loginId }).then(resp => {
-                setMymerchants(resp?.data?.count)
-            })
-        }
+            getMyMerchantsCount(loginId)
+              .then((count) => {
+                setMymerchants(count);
+              })
+              .catch((error) => {
+                // Handle errors as needed
+              })
+          }
 
 
 

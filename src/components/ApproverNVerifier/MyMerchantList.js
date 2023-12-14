@@ -23,7 +23,7 @@ const MyMerchantList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-   const [onboardType, setOnboardType] = useState("")
+    const [onboardType, setOnboardType] = useState("")
     const [kycSearchStatus, setKycSearchStatus] = useState("Not-Filled")
 
     const dispatch = useDispatch();
@@ -235,24 +235,23 @@ const MyMerchantList = () => {
 
             cell: (row) => (
                 <div>
-                    {roles?.verifier === true ||
-                        roles?.approver === true ||
-                        roles?.viewer === true && row?.login_id?.master_client_id?.clientCode !== undefined ? (
-                        <button
-                            type="button"
-                            className="approve text-white  cob-btn-primary   btn-sm"
-                            data-toggle="modal"
-                            onClick={() => {
-                                setCommentId(row?.login_id?.master_client_id);
-                                setOpenCommentModal(true);
-                            }}
-                            data-target="#exampleModal"
-                        >
-                            Comments
-                        </button>
-                    ) : (
-                        <></>
-                    )}
+                    {
+                        roles?.viewer === true || roles?.accountManager === true && row?.login_id?.master_client_id?.clientCode !== undefined ? (
+                            <button
+                                type="button"
+                                className="approve text-white  cob-btn-primary   btn-sm"
+                                data-toggle="modal"
+                                onClick={() => {
+                                    setCommentId(row?.login_id?.master_client_id);
+                                    setOpenCommentModal(true);
+                                }}
+                                data-target="#exampleModal"
+                            >
+                                Comments
+                            </button>
+                        ) : (
+                            <></>
+                        )}
                 </div>
             ),
         },
