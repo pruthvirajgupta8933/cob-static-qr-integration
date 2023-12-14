@@ -10,6 +10,8 @@ import { roleBasedAccess } from '../../_components/reuseable_components/roleBase
 
 function InternalDashboard() {
     const roles = roleBasedAccess();
+    console.log("roles",roles.viewer
+    )
     const [approved, setApproved] = useState(0)
     const [myMerchants, setMymerchants] = useState(0)
     const { user } = useSelector((state) => state.auth);
@@ -45,7 +47,7 @@ function InternalDashboard() {
     }
 
         // My Merchant List
-        { roles.viewer || roles?.accountManager &&
+        {(roles.viewer || roles?.accountManager) &&
 
         axiosInstanceJWT.post(
             `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id&kyc_status=Approved`, { created_by: loginId }).then(resp => {
@@ -96,21 +98,21 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div> */}
-            {roles.viewer || roles?.accountManager &&
-                <div className="col-lg-4">
-                    <div className="card webColorBg1">
-                        <div className="card-body">
-                            <h5>My Merchants</h5>
-                        </div>
+           {(roles.viewer || roles?.accountManager) && (
+  <div className="col-lg-4">
+    <div className="card webColorBg1">
+      <div className="card-body">
+        <h5>My Merchants</h5>
+      </div>
 
-                        <div className="card-footer d-flex justify-content-between">
-                            <h6>Total Approved</h6>
-                            <h6>{myMerchants}</h6>
-                        </div>
+      <div className="card-footer d-flex justify-content-between">
+        <h6>Total Approved</h6>
+        <h6>{myMerchants}</h6>
+      </div>
+    </div>
+  </div>
+)}
 
-                    </div>
-                </div>
-            }
             {roles.verifier || roles.approver === true &&
 
                 <div className="col-lg-4">
