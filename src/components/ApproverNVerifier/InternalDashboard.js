@@ -1,21 +1,21 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
-import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { useSelector } from "react-redux";
-import API_URL from '../../config';
-// import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
+import { getApprovedCount } from '../../services/internalDashboard.service';
+import { getMyMerchantsCount } from '../../services/internalDashboard.service';
 
 
 
 function InternalDashboard() {
     const roles = roleBasedAccess();
-    const [newSignUp, setNewSignUp] = useState(0)
-    const [verified, setVerified] = useState(0)
+    console.log("roles",roles.viewer
+    )
     const [approved, setApproved] = useState(0)
     const [myMerchants, setMymerchants] = useState(0)
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
+    console.log("approved",approved)
 
     useEffect(() => {
         const todayDate = new Date()
@@ -28,26 +28,38 @@ function InternalDashboard() {
         };
 
         // signup data
-        axiosInstanceJWT.post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=1&page_size=10`, postDataSignUp).then(resp => {
-            setNewSignUp(resp?.data?.count)
-        })
+    //     {roles.approver &&
+    //     axiosInstanceJWT.post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=1&page_size=10`, postDataSignUp).then(resp => {
+    //         setNewSignUp(resp?.data?.count)
+    //     })
+    // }
 
-        // verified data
-        axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Verified&order_by=-verified_date&search_map=verified_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
-            setVerified(resp?.data?.count)
-        })
+        // // verified data
+        // axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Verified&order_by=-verified_date&search_map=verified_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
+        //     setVerified(resp?.data?.count)
+        // })
 
         // approved data 
-        axiosInstanceJWT.get(`${API_URL.KYC_FOR_ONBOARDED}?search=Approved&order_by=-approved_date&search_map=approved_date&page=1&page_size=10&from_date=${from_date}&to_date=${to_date}`).then(resp => {
-            setApproved(resp?.data?.count)
-        })
+        {roles.approver &&
+            getApprovedCount(from_date, to_date)
+              .then((count) => {
+                setApproved(count);
+              })
+              .catch((error) => {
+                // Handle errors as needed
+              })
+          }
 
         // My Merchant List
-
-        axiosInstanceJWT.post(
-            `${API_URL.MY_MERCHANT_LIST}?page=1&page_size=10&order_by=-login_id&kyc_status=Approved`, { created_by: loginId }).then(resp => {
-                setMymerchants(resp?.data?.count)
-            })
+        {(roles.viewer || roles?.accountManager) &&
+            getMyMerchantsCount(loginId)
+              .then((count) => {
+                setMymerchants(count);
+              })
+              .catch((error) => {
+                // Handle errors as needed
+              })
+          }
 
 
 
@@ -92,21 +104,21 @@ function InternalDashboard() {
                     </div>
                 </div>
             </div> */}
-            {roles.viewer &&
-                <div className="col-lg-4">
-                    <div className="card webColorBg1">
-                        <div className="card-body">
-                            <h5>My Merchants</h5>
-                        </div>
+           {(roles.viewer || roles?.accountManager) && (
+  <div className="col-lg-4">
+    <div className="card webColorBg1">
+      <div className="card-body">
+        <h5>My Merchants</h5>
+      </div>
 
-                        <div className="card-footer d-flex justify-content-between">
-                            <h6>Total Approved</h6>
-                            <h6>{myMerchants}</h6>
-                        </div>
+      <div className="card-footer d-flex justify-content-between">
+        <h6>Total Approved</h6>
+        <h6>{myMerchants}</h6>
+      </div>
+    </div>
+  </div>
+)}
 
-                    </div>
-                </div>
-            }
             {roles.verifier || roles.approver === true &&
 
                 <div className="col-lg-4">

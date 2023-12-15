@@ -214,7 +214,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/Internal-dashboard`}
                             Component={InternalDashboard}
-                            roleList={{ approver: true, viewer: true, verifier: true }}
+                            roleList={{ approver: true, viewer: true, verifier: true,accountManager:true}}
                         >
                             <InternalDashboard />
                         </AuthorizedRoute>
@@ -548,14 +548,14 @@ function DashboardMainContent() {
                         <AuthorizedRoute
                             exact path={`${path}/bizz-appdata`}
                             Component={BizzAppData}
-                            roleList={{ approver: true, verifier: true, viewer: true }}>
+                            roleList={{ approver: true, verifier: true, viewer: true,accountManager:true}}>
                             <BizzAppData />
                         </AuthorizedRoute>
 
                         <AuthorizedRoute
                             exact path={`${path}/my-merchant`}
                             Component={MyMerchantList}
-                            roleList={{ viewer: true }}>
+                            roleList={{ viewer: true,accountManager:true}}>
                             <MyMerchantList />
                         </AuthorizedRoute>
 
