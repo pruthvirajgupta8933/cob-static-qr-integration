@@ -11,6 +11,8 @@ import { isNull } from 'lodash'
 import payment_default_gif from "../../assets/images/image_processing20201113-8803-s9v2bo.gif"
 import payment_response_gif from "../../assets/images/image_processing20210906-19522-9n3ter.gif"
 import classes from "./pg.module.css"
+import { axiosInstanceJWT } from '../../utilities/axiosInstance'
+import API_URL from '../../config'
 
 function SpPg() {
 
@@ -28,14 +30,14 @@ function SpPg() {
 
     const { auth, productCatalogueSlice } = useSelector((state) => state);
     const { SubscribedPlanData } = productCatalogueSlice
-    const { subscribeId } = useParams();
+    const { subscribeId, applicationid } = useParams();
+    const clientId = auth?.user?.clientMerchantDetailsList[0]?.clientId
 
-    // console.log("SubscribedPlanData",SubscribedPlanData)
+
+    // console.log("productCatalogueSlice", productCatalogueSlice)
     useEffect(() => {
 
-        const unPaidProduct = SubscribedPlanData?.filter((d) => (
-            (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
-            (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+
 
         const searchParam = window.location.search.slice(1)
         const queryString = new URLSearchParams(searchParam?.toString());
@@ -63,16 +65,37 @@ function SpPg() {
 
         } else {
 
-            if (unPaidProduct?.length > 0) {
-                // console.log("continue")
-                setSelectedPlanCode(unPaidProduct[0]?.plan_code)
-                const postBody = { "app_id": unPaidProduct[0]?.applicationId }
-                // console.log("postBody", postBody)
-                dispatch(productPlanData(postBody))
-            } else {
-                history.push("/dashboard")
-                // console.log("redirect to dashboard")
-            }
+            axiosInstanceJWT
+                .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
+                .then((resp) => {
+
+                    const unPaidProduct = resp?.data?.data?.filter((d) => (
+                        (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
+                        (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+
+                    if (unPaidProduct?.length > 0) {
+                        // console.log("continue")
+                        // console.log("unPaidProduct---", unPaidProduct)
+                        setSelectedPlanCode(unPaidProduct[0]?.plan_code)
+                        setSelectedPlan(unPaidProduct)
+                        // setSelectedPlan()
+                        const postBody = { "app_id": unPaidProduct[0]?.applicationId }
+                        // console.log("postBody", postBody)
+                        dispatch(productPlanData(postBody))
+                    } else {
+                        history.push("/dashboard")
+                        // console.log("redirect to dashboard")
+                    }
+                    // console.log(resp?.data?.data[0])
+                    // setSelectedPlan(resp?.data?.data[0])
+                    // setButtonLoader(false)
+                    // history.push(`${path}/sabpaisa-pg/${resp?.data?.data[0].clientSubscribedPlanDetailsId}`)
+                    // return <Redirect to={} />;
+                }).catch(err => console.log(err))
+
+
+            // console.log("unPaidProduct", unPaidProduct)
+
         }
 
         return () => {
@@ -81,11 +104,11 @@ function SpPg() {
 
     }, [])
 
-    useEffect(() => {
-        if (productCatalogueSlice?.productPlanData?.length > 0) {
-            setSelectedPlan(productCatalogueSlice?.productPlanData?.filter((pd) => (pd?.plan_code === selectedPlanCode)))
-        }
-    }, [productCatalogueSlice])
+    // useEffect(() => {
+    //     if (productCatalogueSlice?.productPlanData?.length > 0) {
+    //         setSelectedPlan(productCatalogueSlice?.productPlanData?.filter((pd) => (pd?.plan_code === selectedPlanCode)))
+    //     }
+    // }, [productCatalogueSlice])
 
 
 
@@ -93,12 +116,12 @@ function SpPg() {
     const getClientTxnId = async (selectedPlan, userData) => {
         const postBody = {
             "clientSubscribedPlanDetailsId": subscribeId,
-            "appId": selectedPlan[0]?.app_id,
-            "planId": selectedPlan[0]?.plan_id,
+            "appId": selectedPlan[0]?.applicationId,
+            "planId": selectedPlan[0]?.planId,
             "clientCode": userData?.clientMerchantDetailsList[0]?.clientCode,
             "clientName": userData?.clientMerchantDetailsList[0]?.clientName,
             "clientId": userData?.clientMerchantDetailsList[0]?.clientId,
-            "purchaseAmount": selectedPlan[0]?.actual_price
+            "purchaseAmount": selectedPlan[0]?.purchaseAmount
         }
 
         let data = await createClientTxnId(postBody)
@@ -116,7 +139,7 @@ function SpPg() {
         }
     }
 
-    // console.log("newClientTxnId", newClientTxnId)
+    // console.log("selectedPlan", selectedPlan)
 
     return (
         <React.Fragment>
@@ -151,8 +174,8 @@ function SpPg() {
                                                 :
                                                 <div className="card-body">
                                                     <h5 className="card-title">Make payment to activate the selected plan.</h5>
-                                                    <p className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</p>
-                                                    <p className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</p>
+                                                    <p className="card-title">Amount : {selectedPlan[0]?.purchaseAmount} INR</p>
+                                                    <p className="card-title">Plan Name : {selectedPlan[0]?.planName}</p>
                                                     {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
                                                     {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
                                                     <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>

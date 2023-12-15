@@ -116,7 +116,7 @@ function Home() {
     extraValues
   }
 
-  console.log("unPaidProduct", unPaidProduct)
+  // console.log("unPaidProduct", unPaidProduct)
 
   return (
     <section className="">
