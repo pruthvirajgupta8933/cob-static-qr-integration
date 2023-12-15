@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TxnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
 import { useRouteMatch, Redirect, Link } from "react-router-dom";
@@ -43,6 +43,14 @@ function Home() {
   const { SubscribedPlanData } = productCatalogueSlice;
   // console.log("SubscribedPlanData", SubscribedPlanData)
 
+  const unPaidProduct = useMemo(() => {
+    return SubscribedPlanData?.filter(
+      (d) =>
+        (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
+        d?.plan_code === "005"
+    );
+  }, [SubscribedPlanData])
+
   useEffect(() => {
     // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
     if (roles.merchant) {
@@ -83,11 +91,8 @@ function Home() {
   };
 
   // filter only subscription plan
-  const unPaidProduct = SubscribedPlanData?.filter(
-    (d) =>
-      (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
-      d?.plan_code === "005"
-  );
+
+
 
   // prepare chart data
   let chartDataArr = {};
@@ -111,6 +116,7 @@ function Home() {
     extraValues
   }
 
+  console.log("unPaidProduct", unPaidProduct)
 
   return (
     <section className="">
