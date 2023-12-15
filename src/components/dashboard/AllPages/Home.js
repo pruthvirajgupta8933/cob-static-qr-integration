@@ -22,7 +22,7 @@ import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { isNull } from "lodash";
-import AlertBox from "../../../_components/reuseable_components/AlertBox";
+import PaymentAlertBox from "./Product Catalogue/PaymentAlertBox";
 import classes from "./Home/home.module.css"
 import moment from "moment";
 import ChartContainer from "../../chart/ChartContainer";
@@ -80,7 +80,7 @@ function Home() {
   } else if (
     roles.approver === true ||
     roles.verifier === true ||
-    roles.viewer === true || 
+    roles.viewer === true ||
     roles.accountManager === true
   ) {
     return <Redirect to={`${path}/Internal-dashboard`} />;
@@ -147,7 +147,7 @@ function Home() {
 
             {/* payment alert */}
             {unPaidProduct?.length > 0 && (
-              <AlertBox
+              <PaymentAlertBox
                 cardData={unPaidProduct}
                 heading={`Payment Alert`}
                 text1={`Kindly pay the amount of the subscribed product`}

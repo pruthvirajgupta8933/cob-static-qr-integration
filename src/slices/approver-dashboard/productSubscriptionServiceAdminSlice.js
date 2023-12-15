@@ -10,8 +10,10 @@ export const fetchMerchantProductSubscribeList = createAsyncThunk(
     async (data) => {
         const page =data?.page;
         const page_size =data?.page_size;
+        const createdBy = data?.created_by
+        const shouldIncludeCreatedBy = data.roleBased;
         const response = await axiosInstanceJWT
-            .get(`${API_URL.fetchAllMerchantListWithSubscriptionData}&page=${page}&page_size=${page_size}`)
+            .get(`${API_URL.fetchAllMerchantListWithSubscriptionData}&page=${page}&page_size=${page_size}${shouldIncludeCreatedBy ? `&created_by=${createdBy}` : ''}`)
             .catch((error) => {
                 return error.response;
             });
