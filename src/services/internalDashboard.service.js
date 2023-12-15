@@ -26,8 +26,8 @@ export const getMyMerchantsCount = async (loginId) => {
   
       return response.data.count;
     } catch (error) {
-      // Handle errors here, e.g., log them or throw an exception
-      console.error('Error fetching My Merchants count:', error);
+      // // Handle errors here, e.g., log them or throw an exception
+      // console.error('Error fetching My Merchants count:', error);
       throw error;
     }
   };
