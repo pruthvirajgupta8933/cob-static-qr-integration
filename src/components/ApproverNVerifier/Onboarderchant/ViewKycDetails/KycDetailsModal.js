@@ -49,8 +49,10 @@ const KycDetailsModal = (props) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
-  const { kyc, rateMappingSlice } = state;
+  const { kyc, rateMappingSlice, approverDashboard } = state;
   const { KycTabStatusStore, KycDocUpload } = kyc;
+  const { generalFormData } = approverDashboard
+
   // const selectedUserData = kyc.kycUserList
 
 
@@ -201,9 +203,11 @@ const KycDetailsModal = (props) => {
         </div>}
 
         {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
-        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null) && <div className="container">
-          <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} />
-        </div>}
+        {/* {console.log("generalFormData?.parent_client_code", generalFormData?.parent_client_code)} */}
+        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null) &&
+          <div className="container">
+            <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} generalFormData={generalFormData?.parent_client_code} />
+          </div>}
       </>
     )
   }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, businessTypeResponse, businessCategoryResponse, platform, KycDocUpload, setDocList, docTypeList])

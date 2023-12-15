@@ -5,9 +5,9 @@ import {
   completeVerification,
   completeVerificationRejectKyc
 } from "../../../../slices/kycOperationSlice"
-import { approvekyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
+import { approvekyc, clearApproveKyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
+// import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
 import { ratemapping } from '../../../../slices/approver-dashboard/rateMappingSlice';
 import toastConfig from '../../../../utilities/toastTypes';
 import { KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
@@ -45,6 +45,7 @@ const CompleteVerification = (props) => {
   const { user } = auth;
   const { loginId } = user;
   const { approveKyc } = kyc
+  const { generalFormData } = approverDashboard
 
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -55,18 +56,28 @@ const CompleteVerification = (props) => {
 
 
   useEffect(() => {
-    dispatch(generalFormData({
-      rr_amount: kyc.kycUserList?.rolling_reserve,
-      business_cat_type: kyc.kycUserList?.business_category_type,
-      refer_by: kyc.kycUserList?.refer_by
-    }))
 
-  }, [kyc])
+    return () => {
+      // console.log("clear state approver")
+      dispatch(clearApproveKyc())
+    }
+  }, [])
 
+
+  // useEffect(() => {
+  //   // dispatch(generalFormData({
+  //   //   rr_amount: kyc.kycUserList?.rolling_reserve,
+  //   //   business_cat_type: kyc.kycUserList?.business_category_type,
+  //   //   refer_by: kyc.kycUserList?.refer_by
+  //   // }))
+
+  // }, [kyc])
+
+  // const approveKycState = useMemo(() => first, [second])
 
   useEffect(() => {
 
-    if (approveKyc.isApproved && !approveKyc.isError) {
+    if (kyc?.approveKyc.isApproved && !kyc?.approveKyc.isError) {
       dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
       dispatch(ratemapping({ merchantLoginId: selectedUserData?.loginMasterId }))
       pendingApporvalTable()
@@ -75,16 +86,27 @@ const CompleteVerification = (props) => {
     if (approveKyc.isError) {
       toastConfig.errorToast("Something went wrong, Please Try Again later")
     }
-  }, [approveKyc])
+
+
+  }, [kyc])
 
 
 
-  const handleVerifyClick = async () => {
+  const submitHandler = async () => {
+
+    if (!generalFormData.isFinalSubmit && generalFormData.parent_client_code === '' && roles.approver) {
+      alert("Please Select the parent client code for the rate mapping");
+      return false
+    }
+
+    setDisable(true)
+    setButtonLoader(true)
+
     const veriferDetails = {
       login_id: selectedUserData?.loginMasterId,
       verified_by: loginId,
     };
-    setButtonLoader(true)
+
 
     if (currenTab === 3 && !isverified) {
       if ((roles?.approver && Allow_To_Do_Verify_Kyc_details) || roles?.verifier) {
@@ -99,17 +121,21 @@ const CompleteVerification = (props) => {
               pendingVerfyTable();
               closeVerificationModal(false);
               setButtonLoader(false)
+              setDisable(false);
             } else {
               toast.error(resp?.payload);
               setButtonLoader(false)
+              setDisable(false);
             }
 
-            setDisable(false);
           } catch (error) {
             setDisable(false);
             setButtonLoader(false)
+
             toast.error("Something went wrong, Please Try Again later");
           }
+        } else {
+          setDisable(false);
         }
       }
     }
@@ -142,7 +168,8 @@ const CompleteVerification = (props) => {
             GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
             dispatch(approvekyc(dataAppr))
               .then((resp) => {
-
+                // console.log("resp", resp)
+                setDisable(false);
                 // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
                 // dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
                 // dispatch(ratemapping({merchantLoginId : selectedUserData?.loginMasterId}))
@@ -151,15 +178,22 @@ const CompleteVerification = (props) => {
                 setButtonLoader(false)
               })
               .catch((e) => {
+                console.log(e)
+                setDisable(false);
                 setButtonLoader(false)
                 toast.error("Something went wrong, Please Try Again later")
 
               });
+          } else {
+            setButtonLoader(false)
+            setDisable(false);
           }
 
         }
       }
     }
+
+
 
   }
 
@@ -196,12 +230,17 @@ const CompleteVerification = (props) => {
           closeVerificationModal(false)
         } else {
           setButtonLoader(false)
+          setDisable(false);
           toast.error(resp?.payload);
         }
       } catch (error) {
+        setDisable(false);
         setButtonLoader(false)
         toast.error("Something went wrong, Please Try Again later");
       }
+    } else {
+      setDisable(false);
+      setButtonLoader(false)
     }
   };
 
@@ -214,9 +253,9 @@ const CompleteVerification = (props) => {
         if (roles.approver === true)
           if (isverified === true && isapproved === false) {
             enableBtn = true;
-
           }
       }
+
       setEnableBtnApprover(enableBtn);
     };
 
@@ -259,6 +298,8 @@ const CompleteVerification = (props) => {
       setButtonText("Verify KYC")
       // console.log("The Button Name is verify kyc",buttonText)
     }
+
+    // console.log("currenTab", currenTab)
     if (currenTab === 4) {
       setButtonText("Approve KYC")
       // console.log("The Button Name is Approve kyc",buttonText)
@@ -291,26 +332,51 @@ const CompleteVerification = (props) => {
   // console.log("---------end final btn-----")
 
   // console.log("KycTabStatus", KycTabStatus.status)
-
+  // console.log("disable", disable)
 
   return (
     <div className="row">
 
       <label className="font-weight-bold col-lg-12">Comments : <span>{KycTabStatus?.comments}</span></label>
-      <div className="col-lg-12">
-        {(enableBtnVerifier || enableBtnApprover) && (KycTabStatus.status === KYC_STATUS_PENDING || KycTabStatus.status === KYC_STATUS_PROCESSING || KycTabStatus.status === KYC_STATUS_VERIFIED) ?
-          <><button type="button" disabled={disable} onClick={() => {
-            handleVerifyClick()
-          }} className="btn  cob-btn-primary  btn-sm text-white m-2">  {buttonLoader && <>
-            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-            <span className="sr-only">Loading...</span>
-          </>} {buttonText}</button>
 
-            <button type="button" onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button></>
-          : enableBtnApprovedTab === true ? <button type="button"
-            onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
-        }
-      </div>
+      {/* verifier buttons  */}
+
+      {(enableBtnVerifier) && (KycTabStatus.status === KYC_STATUS_PENDING || KycTabStatus.status === KYC_STATUS_PROCESSING || KycTabStatus.status === KYC_STATUS_VERIFIED) &&
+        <div className="col-lg-3">
+          <button type="button" disabled={disable} onClick={() => {
+            submitHandler()
+          }} className="btn  cob-btn-primary  btn-sm text-white m-2">
+            {buttonLoader && <>
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+              <span className="sr-only">Loading...</span>
+            </>} {buttonText}</button>
+
+        </div>
+      }
+
+
+
+      {/* approver buttons */}
+
+      {(enableBtnApprover) && (KycTabStatus.status === KYC_STATUS_PENDING || KycTabStatus.status === KYC_STATUS_PROCESSING || KycTabStatus.status === KYC_STATUS_VERIFIED) &&
+        <div className="col-lg-3">
+          <button type="button" disabled={disable} onClick={() => { submitHandler() }} className="btn  cob-btn-primary  btn-sm text-white m-2">
+            {buttonLoader && <>
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+              <span className="sr-only">Loading...</span>
+            </>} {buttonText}</button>
+
+        </div>
+
+        // Reject kyc for currentab 4(Approved) 
+      }
+
+
+      <div className="col-lg-3">
+        {(roles.approver || roles.verifier) && (currenTab === 3 || currenTab === 4 || currenTab === 5) &&
+          <button type="button"
+            onClick={() => setButtonClick(true)} disabled={disable} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button>}</div>
+
 
       <div className="col-lg-12">
         {buttonClick === true ?
@@ -319,6 +385,7 @@ const CompleteVerification = (props) => {
             <textarea id="comments" className="col-lg-12" name="reject_commet" rows="4" cols="40" onChange={(e) => setCommetText(e.target.value)}>
             </textarea>
             <button type="button"
+              disabled={disable}
               onClick={() => handleRejectClick(commetText)}
               className="btn btn-danger btn-sm text-white pull-left m-2"> {buttonLoader && <>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
