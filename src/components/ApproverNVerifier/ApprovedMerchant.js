@@ -293,18 +293,7 @@ function ApprovedMerchant() {
     fetchData();
   };
 
-  // const searchByText = () => {
-  //   setData(
-  //     approvedMerchantData?.filter((item) =>
-  //       Object.values(item)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchText?.toLocaleLowerCase())
-  //     )
-  //   );
-  // };
-
-  const filteredData = useMemo(() => {
+   const filteredData = useMemo(() => {
     return approvedMerchantData?.filter((item) =>
       Object.values(item)
         .join(' ')
@@ -410,7 +399,6 @@ function ApprovedMerchant() {
             />
           )}
         </div>
-        {/* <CustomLoader loadingState={loadingState} /> */}
         {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center font-weight-bold">No Data Found</h6>

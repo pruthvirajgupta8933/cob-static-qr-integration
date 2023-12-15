@@ -50,11 +50,11 @@ function SabpaisaPaymentGateway(props) {
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
     setclientTxnId(props?.clientTxnId)
-    setamount(props?.planData[0]?.actual_price);
+    setamount(props?.planData[0]?.purchaseAmount);
     setudf12(props?.clientData?.clientMerchantDetailsList[0]?.clientCode)
-    setudf13(props?.planData[0]?.plan_id)
-    setudf14(props?.planData[0]?.plan_name)
-    setudf15(props?.planData[0]?.app_id)
+    setudf13(props?.planData[0]?.planId)
+    setudf14(props?.planData[0]?.planName)
+    setudf15(props?.planData[0]?.applicationId)
     setudf16(props?.subscribeId)
 
   }, [props, clientDetails])
@@ -83,13 +83,13 @@ function SabpaisaPaymentGateway(props) {
         udf15={udf15}
         udf16={udf16}
         udf17={udf17}
-        onToggle={() => setIsOpen(!isOpen)} 
+        onToggle={() => setIsOpen(!isOpen)}
         channelId={channelId}
         programId={programId}
         mcc={mcc}
         label={"Production"}
         env={'prod'}
-        />
+      />
 
 
 
