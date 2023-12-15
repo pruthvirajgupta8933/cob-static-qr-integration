@@ -5,8 +5,10 @@ import { setMessage } from "../message";
 
 const InitialState = {
   businessCategoryType: [],
-  generalFormData:{},
-  clientCodeList:[]
+  generalFormData: {
+    isFinalSubmit: false
+  },
+  clientCodeList: []
 
 }
 
@@ -16,7 +18,7 @@ export const businessCategoryType = createAsyncThunk(
   async (object = {}, thunkAPI) => {
     try {
       const response = await approverDashboardService.businessCategoryType();
-      
+
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -38,7 +40,7 @@ export const getAllCLientCodeSlice = createAsyncThunk(
   async (object = {}, thunkAPI) => {
     try {
       const response = await approverDashboardService.getAllClientCode();
-      
+
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -58,8 +60,9 @@ export const getAllCLientCodeSlice = createAsyncThunk(
 const approverDashboardSlice = createSlice({
   name: "approverDashboard",
   initialState: InitialState,
-  reducers:{
-    generalFormData : (state, action)=>{
+  reducers: {
+    generalFormData: (state, action) => {
+      // console.log(action.payload)
       state.generalFormData = action.payload
     }
   },
@@ -74,7 +77,7 @@ const approverDashboardSlice = createSlice({
     [businessCategoryType.rejected]: (state, action) => {
       state.businessCategoryType = []
     },
-  
+
     [getAllCLientCodeSlice.pending]: (state, action) => {
       state.clientCodeList = []
     },
@@ -90,7 +93,7 @@ const approverDashboardSlice = createSlice({
 });
 
 
-export const {generalFormData} = approverDashboardSlice.actions 
+export const { generalFormData } = approverDashboardSlice.actions
 
 const { reducer } = approverDashboardSlice;
 export default reducer;

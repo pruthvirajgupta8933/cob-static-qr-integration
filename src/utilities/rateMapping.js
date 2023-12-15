@@ -3,7 +3,7 @@ import API_URL from "../config";
 
 import { axiosInstance, axiosInstanceJWT } from "./axiosInstance";
 
-export const rateMappingFn = (loginId) => {
+export const rateMappingFn = (loginId, parentClientCode) => {
     console.log("---rate mapping start---", loginId)
     let loader = true
 
@@ -103,13 +103,13 @@ export const rateMappingFn = (loginId) => {
 
                     console.log("Run7-  // parent client code / new client code / login id", inputData)
                     //2 - rate map clone   // parent client code / new client code / login id
-                    const result5 = await callAPI(`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${merchantLoginId}`, "get", false)
+                    const result5 = await callAPI(`${API_URL.RATE_MAPPING_CLONE}/${parentClientCode}/${clientCode}/${merchantLoginId}`, "get", false)
 
                     console.log("Run8- updating the apiVersion", api_version)
                     //  console.log("step 7 -  updating the apiVersion ", apiVersion)
                     const result6 = await callAPI(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/apiversion/${api_version}/${merchantLoginId}`, "get", false)
                     loader = false
-                // console.log(rateMappingState.updateValue({loader:false,isError:false}))
+                    // console.log(rateMappingState.updateValue({loader:false,isError:false}))
 
                 }
             }
@@ -127,19 +127,19 @@ export const rateMappingFn = (loginId) => {
     }
 
 
-  return rateMapping(loginId)
-   
+    return rateMapping(loginId)
 
 
-          // Usage
-//   const myVariable = createUpdater(initialValue);
-//   console.log(myVariable.getValue()); // Initial value
-  
-//   myVariable.updateValue(newValue);
-//   console.log(myVariable.getValue());
-//     console.log("loader--", loader)
-//     console.log("errorRm--", errorRm)
 
-  
+    // Usage
+    //   const myVariable = createUpdater(initialValue);
+    //   console.log(myVariable.getValue()); // Initial value
+
+    //   myVariable.updateValue(newValue);
+    //   console.log(myVariable.getValue());
+    //     console.log("loader--", loader)
+    //     console.log("errorRm--", errorRm)
+
+
 
 }

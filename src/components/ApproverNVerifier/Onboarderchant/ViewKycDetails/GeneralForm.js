@@ -19,12 +19,15 @@ const GeneralForm = ({ selectedUserData, role }) => {
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
 
+
     useEffect(() => {
         dispatch(businessCategoryType())
         dispatch(getAllCLientCodeSlice())
-        // axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
-        //     setParentClientCode(resp.data)
-        // }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
+        axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
+            setParentClientCode(resp.data)
+        }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
+
+
     }, [])
 
 
@@ -32,7 +35,8 @@ const GeneralForm = ({ selectedUserData, role }) => {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
         refer_by: kyc.kycUserList?.refer_by,
-        rolling_reserve_type: "Percentage"
+        rolling_reserve_type: "Percentage",
+        parent_client_code: "COBED"
 
     }
 
@@ -41,7 +45,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
     const validationSchema = Yup.object({
         rr_amount: Yup.string().nullable(),
         business_cat_type: Yup.string().nullable(),
-        // parent_client_code: Yup.string().required("Required").nullable(),
+        parent_client_code: Yup.string().required("Required").nullable(),
         refer_by: Yup.string().nullable()
     })
 
@@ -51,9 +55,10 @@ const GeneralForm = ({ selectedUserData, role }) => {
         const saveGenData = {
             rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
             business_cat_type: val.business_cat_type,
-            // parent_client_code: 'COBED', // if not selected
+            parent_client_code: val?.parent_client_code, // if not selected
             refer_by: val.refer_by,
-            rolling_reserve_type: val.rolling_reserve_type
+            rolling_reserve_type: "Percentage",
+            isFinalSubmit: true
         }
         // console.log("saveGenData", saveGenData)
         dispatch(generalFormData(saveGenData))
@@ -63,7 +68,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
 
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
-    // const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
+    const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
     const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
 
     // console.log("parentClientCodeOption", parentClientCodeOption)
@@ -113,21 +118,6 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
-                                {/* <div className="col-md-4">
-                                    <FormikController
-                                        control="select"
-                                        name="parent_client_code"
-                                        options={parentClientCodeOption}
-                                        className="form-select"
-                                        label="Rate Mapping Client Code"
-                                        disabled={!role?.approver}
-                                        onChange={(e) => {
-                                            formik.setFieldValue("parent_client_code", e.target.value)
-                                            formik.setStatus(false);
-                                        }}
-                                    />
-                                </div> */}
-
                                 <div className="col-md-4 mt-1">
                                     <FormikController
                                         control="select"
@@ -143,6 +133,20 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
+                                <div className="col-md-4">
+                                    <FormikController
+                                        control="select"
+                                        name="parent_client_code"
+                                        options={parentClientCodeOption}
+                                        className="form-select"
+                                        label="Rate Mapping Client Code"
+                                        disabled={!role?.approver}
+                                        onChange={(e) => {
+                                            formik.setFieldValue("parent_client_code", e.target.value)
+                                            formik.setStatus(false);
+                                        }}
+                                    />
+                                </div>
                             </div>
                             <div className='row mt-2'>
                                 <div className="col-md-4">

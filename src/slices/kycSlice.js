@@ -1250,7 +1250,7 @@ export const kycSlice = createSlice({
             state.isLoadingForApproved = true;
         },
         [kycForApproved.fulfilled]: (state, action) => {
-            console.log("action==================>", action)
+            // console.log("action==================>", action)
             // state.kycUserList = action.payload;
             state.rateMappingData = action.payload
 
