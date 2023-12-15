@@ -72,7 +72,8 @@ function Home() {
   } else if (
     roles.approver === true ||
     roles.verifier === true ||
-    roles.viewer === true
+    roles.viewer === true || 
+    roles.accountManager === true
   ) {
     return <Redirect to={`${path}/Internal-dashboard`} />;
   }

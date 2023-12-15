@@ -558,9 +558,10 @@ export const kycForNotFilled = createAsyncThunk(
         const requestParam = data?.page;
         const requestParam1 = data?.page_size;
         const isDirect = data?.isDirect
+        const searchQuery = data?.searchquery;
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.KYC_FOR_NOT_FILLED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
+                `${API_URL.KYC_FOR_NOT_FILLED}&search=${data.merchantStatus}&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
             .catch((error) => {
                 return error.response;
             });
@@ -592,10 +593,11 @@ export const kycForPendingMerchants = createAsyncThunk(
         const requestParam = data?.page;
         const requestParam1 = data?.page_size;
         const isDirect = data?.isDirect;
+        const searchQuery = data?.searchquery;
 
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
+                `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${data.merchantStatus}&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
             .catch((error) => {
                 return error.response;
             });
