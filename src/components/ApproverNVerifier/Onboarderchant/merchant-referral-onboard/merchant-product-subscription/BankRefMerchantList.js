@@ -19,6 +19,8 @@ import toastConfig from "../../../../../utilities/toastTypes";
 function BankRefMerchantList() {
     const roles = roleBasedAccess();
     const [onboardType, setOnboardType] = useState("");
+    const { user } = useSelector((state) => state.auth);
+    const loginId = user?.loginId;
 
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -218,9 +220,9 @@ function BankRefMerchantList() {
             fetchMerchantProductSubscribeList({
                 page: currentPage,
                 page_size: pageSize,
-                // searchquery: searchText,
-                // merchantStatus: "Processing",
-                // isDirect: "offline",
+                created_by:loginId,
+                roleBased:roles.accountManager
+               
             })
         )
 
