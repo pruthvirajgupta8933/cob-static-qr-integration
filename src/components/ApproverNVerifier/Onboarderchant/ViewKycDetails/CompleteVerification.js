@@ -95,7 +95,7 @@ const CompleteVerification = (props) => {
   const submitHandler = async () => {
     // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
     // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
-    if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver) {
+    if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
       alert("Please Select the parent client code for the rate mapping");
       return false
     }

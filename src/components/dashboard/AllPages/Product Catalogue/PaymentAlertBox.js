@@ -1,9 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import SelectProductPlan from './SelectProductPlan'
 
-function AlertBox(props) {
+function PaymentAlertBox(props) {
   const { heading, text1, linkName, bgColor, cardData } = props
   // console.log("cardData", cardData)
+
+
 
   return (
     <div className="accordion" id="collapseParentId">
@@ -30,8 +33,8 @@ function AlertBox(props) {
                     <p>{`Kindly pay the amount of the subscribed product`}</p>
                     <p>{`Product : ${data?.applicationName}`} </p>
                     <p>{`Product Plan : ${data?.planName}`} </p>
-                    <hr />
-                    <Link className="btn cob-btn-primary text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
+                    <SelectProductPlan plans={data} />
+
                   </div>
                 </div>
               ))}
@@ -43,4 +46,4 @@ function AlertBox(props) {
   )
 }
 
-export default AlertBox
+export default PaymentAlertBox
