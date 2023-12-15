@@ -262,6 +262,7 @@ const ReferZone = () => {
 
             <div className="">
               <div className="scroll overflow-auto">
+              <h6>Total Count : {dataCount}</h6>
                 {!allKycData?.loading && data?.length !== 0 && (
                   <Table
                     row={ReferZoneData}

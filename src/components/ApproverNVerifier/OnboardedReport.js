@@ -17,13 +17,12 @@ import { exportToExcelOnboard } from "../../services/kyc/export-data.service";
 
 
 const OnboardedReport = () => {
-  // const [data, setData] = useState([]);
+ 
   const [searchingData, setSearchingData] = useState([]);
   // const [dataCount, setDataCount] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  // const [loadingState, setLoadingState] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+  
 
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardValue, setOnboradValue] = useState({});
@@ -308,6 +307,7 @@ const OnboardedReport = () => {
 
             <div className="container p-0">
               <div className="scroll overflow-auto">
+              <h6>Total Count : {count}</h6>
                 {!loading && searchingData?.length !== 0 && (
                   <Table
                     row={rowSignUpData}
