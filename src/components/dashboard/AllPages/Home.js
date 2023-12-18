@@ -347,12 +347,7 @@ function Home() {
                     Links offers password-protected and shortened payment links
                     for seamless payment collection.
                   </p>
-                  <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
-                    <p className="pricingclasscss">
-                      Read More & Pricing &nbsp;{">"}
-                      {">"}
-                    </p>
-                  </Link>
+
                 </div>
               </div>
               <div className="col-lg-6">
