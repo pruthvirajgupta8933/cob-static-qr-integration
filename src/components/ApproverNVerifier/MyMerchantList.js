@@ -24,7 +24,7 @@ const MyMerchantList = () => {
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
     const [onboardType, setOnboardType] = useState("")
-    const [kycSearchStatus, setKycSearchStatus] = useState("Not-Filled")
+    const [kycSearchStatus, setKycSearchStatus] = useState("All")
 
     const dispatch = useDispatch();
 
@@ -62,11 +62,7 @@ const MyMerchantList = () => {
     }, [myMerchantListData]); //
 
 
-
-
-    // console.log(loadingState,"my loading")
-
-    const kycSearch = (e, fieldType) => {
+const kycSearch = (e, fieldType) => {
         if (fieldType === "text") {
             setSearchByDropDown(false)
             setSearchText(e);
@@ -80,13 +76,15 @@ const MyMerchantList = () => {
     };
 
     const kycStatus = [
+        { key: 'All', values: 'ALL' },
         { key: KYC_STATUS_NOT_FILLED, values: KYC_STATUS_NOT_FILLED },
         { key: KYC_STATUS_PENDING, values: KYC_STATUS_PENDING },
-        { key: KYC_STATUS_PROCESSING, values: "Pending Verification" },
-        { key: KYC_STATUS_VERIFIED, values: "Pending Approval" },
+        { key: KYC_STATUS_PROCESSING, values: 'Pending Verification' },
+        { key: KYC_STATUS_VERIFIED, values: 'Pending Approval' },
         { key: KYC_STATUS_APPROVED, values: KYC_STATUS_APPROVED },
         { key: KYC_STATUS_REJECTED, values: KYC_STATUS_REJECTED }
-    ]
+      ];
+      
 
 
 

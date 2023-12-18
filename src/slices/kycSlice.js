@@ -576,16 +576,24 @@ export const MyMerchantListData = createAsyncThunk(
         const requestParam = data?.page;
         const requestParam1 = data?.page_size;
         const searchQuery = data?.searchquery;
-        const response = await axiosInstanceJWT
-            .post(
-                `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&kyc_status=${data?.kyc_status}&search_query=${searchQuery}&order_by=-login_id`, data)
-            .catch((error) => {
-                return error.response;
-            });
-
+        let apiUrl = `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&order_by=-login_id`;
+        // Check if kyc_status is present and not equal to 'ALL'
+        if (data?.kyc_status && data.kyc_status !== 'All') {
+          apiUrl += `&kyc_status=${data.kyc_status}`;
+        }
+        
+        // Add the search_query parameter
+        apiUrl += `&search_query=${searchQuery}`;
+        
+        // Make the API request
+        const response = await axiosInstanceJWT.post(apiUrl, data).catch((error) => {
+          return error.response;
+        });
+        
         return response.data;
     }
 );
+    
 
 export const kycForPendingMerchants = createAsyncThunk(
     "kyc/kycForPendingMerchants",
