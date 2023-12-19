@@ -42,18 +42,12 @@ const MyMerchantList = () => {
 
 
     // const viewStatusbyId=kycIdClick?.master_client_id
-
-
-
-    useEffect(() => {
+     useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
         const dataCount = myMerchantListData?.count;
-
         if (myAllMerchantDataList) {
             setData(myAllMerchantDataList);
             setNotFilledData(myAllMerchantDataList);
-            // setKycIdClick(myAllMerchantDataList);
-
             setDataCount(dataCount)
         }
     }, [myMerchantListData]); //
