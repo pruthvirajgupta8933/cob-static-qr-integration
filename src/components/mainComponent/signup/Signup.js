@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, register, udpateRegistrationStatus } from "../../../slices/auth";
 import { useHistory, Link } from "react-router-dom";
-
 import API_URL from "../../../config";
 import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import AfterSignUp from "../../../components/social-login/AfterSignup";
@@ -60,11 +59,8 @@ const FORM_VALIDATION = Yup.object().shape({
 
 
 function Signup() {
-
-
-    const history = useHistory();
-
-    const reduxState = useSelector((state) => state);
+     const history = useHistory();
+     const reduxState = useSelector((state) => state);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { message, auth } = reduxState;
@@ -84,7 +80,7 @@ function Signup() {
         showPassword: false,
     });
 
-    //details from goole sign in
+    
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
 
@@ -97,13 +93,7 @@ function Signup() {
         });
     };
 
-    const checkBoxHandler = (value, setFormikValue) => {
-        // if(value){
-        setFormikValue("terms_and_condition", value)
-        // }else{
-        //     setFormikValue("terms_and_condition","")
-        // }
-    }
+    
 
     useEffect(() => {
         axiosInstanceJWT

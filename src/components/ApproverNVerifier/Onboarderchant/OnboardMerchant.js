@@ -225,7 +225,7 @@ const OnboardMerchant = () => {
                                 class="form-control"
                                 maxLength={230}
                                 id="fullname"
-                                placeholder="Full Name Of Merchant"
+                                placeholder="Full name of merchant"
                                 type="text"
                                 name="fullname"
                                 size={50}
@@ -250,7 +250,7 @@ const OnboardMerchant = () => {
                                 className="form-control"
                                 maxLength={10}
                                 id="mobilenumber"
-                                placeholder="Mobile Number"
+                                placeholder="Mobile number"
                                 name="mobilenumber"
                                 type="text"
                                 pattern="\d{10}"
@@ -318,7 +318,7 @@ const OnboardMerchant = () => {
                                     id="businesscode"
 
                                 >
-                                    Select Business
+                                    Select business
                                 </option>
                                 {businessCode?.map((business, i) => (
                                     <option
