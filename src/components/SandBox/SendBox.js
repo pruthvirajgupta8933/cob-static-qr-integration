@@ -205,7 +205,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h6 className="">Test Credentials (| JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS) </h6>
+                    <h6 className="">Test Credentials (| JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue) </h6>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
