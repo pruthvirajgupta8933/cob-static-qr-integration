@@ -150,19 +150,20 @@ const kycSearch = (e, fieldType) => {
         },
         {
             id: "2",
+            name: "Client Code",
+            selector: (row) => row?.login_id?.master_client_id?.clientCode,
+            sortable: true,
+            cell: (row) => <div>{row?.login_id?.master_client_id?.clientCode}</div>,
+        },
+        {
+            id: "3",
             name: "Name",
             selector: (row) => row?.login_id.name,
             cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.name}</div>,
             width: "200px",
         },
 
-        {
-            id: "3",
-            name: "Client Code",
-            selector: (row) => row?.login_id?.master_client_id?.clientCode,
-            sortable: true,
-            cell: (row) => <div>{row?.login_id?.master_client_id?.clientCode}</div>,
-        },
+       
         {
             id: "4",
             name: "Email",

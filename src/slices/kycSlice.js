@@ -584,9 +584,7 @@ export const MyMerchantListData = createAsyncThunk(
         
         // Add the search_query parameter
         apiUrl += `&search_query=${searchQuery}`;
-        
-        // Make the API request
-        const response = await axiosInstanceJWT.post(apiUrl, data).catch((error) => {
+        const response = await axiosInstanceJWT.post(apiUrl,{"created_by":data.created_by}).catch((error) => {
           return error.response;
         });
         
