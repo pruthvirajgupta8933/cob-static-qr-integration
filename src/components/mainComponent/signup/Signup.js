@@ -49,7 +49,7 @@ const FORM_VALIDATION = Yup.object().shape({
         .required("Password Required")
         .matches(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
         ),
     confirmpasswordd: Yup.string()
         .oneOf([Yup.ref("passwordd"), null], "Passwords must match")

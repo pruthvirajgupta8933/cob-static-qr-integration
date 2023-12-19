@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MyMerchantListData } from "../../slices/kycSlice";
 import Table from "../../_components/table_components/table/Table";
@@ -31,9 +31,6 @@ const MyMerchantList = () => {
     const myMerchantListData = useSelector(
         (state) => state.kyc.myMerchnatUserList
     );
-
-
-
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
     const [notFilledData, setNotFilledData] = useState([]);
@@ -88,13 +85,6 @@ const kycSearch = (e, fieldType) => {
 
 
 
-
-    useEffect(() => {
-
-        fetchData();
-    }, [currentPage, pageSize, searchText, kycSearchStatus]);
-
-
     const searchByText = (text) => {
         setData(
             notFilledData?.filter((item) =>
@@ -108,18 +98,35 @@ const kycSearch = (e, fieldType) => {
 
     };
 
-    const fetchData = (startingSerialNumber) => {
+    // const fetchData = (startingSerialNumber) => {
+    //     dispatch(
+    //         MyMerchantListData({
+    //             page: currentPage,
+    //             page_size: pageSize,
+    //             created_by: loginId,
+    //             searchquery: searchText,
+    //             kyc_status: kycSearchStatus
+    //         })
+    //     )
+
+    // };
+
+
+    const fetchData = useCallback((startingSerialNumber) => {
         dispatch(
             MyMerchantListData({
-                page: currentPage,
-                page_size: pageSize,
-                created_by: loginId,
-                searchquery: searchText,
-                kyc_status: kycSearchStatus
-            })
-        )
+                            page: currentPage,
+                            page_size: pageSize,
+                            created_by: loginId,
+                            searchquery: searchText,
+                            kyc_status: kycSearchStatus
+                        })
+        );
+      }, [currentPage, pageSize, searchText, dispatch, onboardType, kycSearchStatus]);
 
-    };
+      useEffect(() => {
+        fetchData();
+      }, [fetchData]);
 
 
     //function for change current page
