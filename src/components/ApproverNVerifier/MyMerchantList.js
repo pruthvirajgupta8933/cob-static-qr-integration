@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MyMerchantListData } from "../../slices/kycSlice";
 import Table from "../../_components/table_components/table/Table";
@@ -24,16 +24,13 @@ const MyMerchantList = () => {
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
     const [onboardType, setOnboardType] = useState("")
-    const [kycSearchStatus, setKycSearchStatus] = useState("Not-Filled")
+    const [kycSearchStatus, setKycSearchStatus] = useState("All")
 
     const dispatch = useDispatch();
 
     const myMerchantListData = useSelector(
         (state) => state.kyc.myMerchnatUserList
     );
-
-
-
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
     const [notFilledData, setNotFilledData] = useState([]);
@@ -62,11 +59,7 @@ const MyMerchantList = () => {
     }, [myMerchantListData]); //
 
 
-
-
-    // console.log(loadingState,"my loading")
-
-    const kycSearch = (e, fieldType) => {
+const kycSearch = (e, fieldType) => {
         if (fieldType === "text") {
             setSearchByDropDown(false)
             setSearchText(e);
@@ -80,21 +73,16 @@ const MyMerchantList = () => {
     };
 
     const kycStatus = [
+        { key: 'All', values: 'ALL' },
         { key: KYC_STATUS_NOT_FILLED, values: KYC_STATUS_NOT_FILLED },
         { key: KYC_STATUS_PENDING, values: KYC_STATUS_PENDING },
-        { key: KYC_STATUS_PROCESSING, values: "Pending Verification" },
-        { key: KYC_STATUS_VERIFIED, values: "Pending Approval" },
+        { key: KYC_STATUS_PROCESSING, values: 'Pending Verification' },
+        { key: KYC_STATUS_VERIFIED, values: 'Pending Approval' },
         { key: KYC_STATUS_APPROVED, values: KYC_STATUS_APPROVED },
         { key: KYC_STATUS_REJECTED, values: KYC_STATUS_REJECTED }
-    ]
+      ];
+      
 
-
-
-
-    useEffect(() => {
-
-        fetchData();
-    }, [currentPage, pageSize, searchText, kycSearchStatus]);
 
 
     const searchByText = (text) => {
@@ -110,18 +98,35 @@ const MyMerchantList = () => {
 
     };
 
-    const fetchData = (startingSerialNumber) => {
+    // const fetchData = (startingSerialNumber) => {
+    //     dispatch(
+    //         MyMerchantListData({
+    //             page: currentPage,
+    //             page_size: pageSize,
+    //             created_by: loginId,
+    //             searchquery: searchText,
+    //             kyc_status: kycSearchStatus
+    //         })
+    //     )
+
+    // };
+
+
+    const fetchData = useCallback((startingSerialNumber) => {
         dispatch(
             MyMerchantListData({
-                page: currentPage,
-                page_size: pageSize,
-                created_by: loginId,
-                searchquery: searchText,
-                kyc_status: kycSearchStatus
-            })
-        )
+                            page: currentPage,
+                            page_size: pageSize,
+                            created_by: loginId,
+                            searchquery: searchText,
+                            kyc_status: kycSearchStatus
+                        })
+        );
+      }, [currentPage, pageSize, searchText, dispatch, onboardType, kycSearchStatus]);
 
-    };
+      useEffect(() => {
+        fetchData();
+      }, [fetchData]);
 
 
     //function for change current page

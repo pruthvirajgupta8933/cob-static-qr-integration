@@ -120,10 +120,6 @@ function DocumentsUpload(props) {
 
 
 
-  // const requiredData=required.every((elem)=>isrequired.includes(elem.toString()))
-  // console.log(requiredData,"requiredData")
-
-
   const isrequired = savedData?.map((r) => r.type);
 
   const handleChange = function (e, id) {
