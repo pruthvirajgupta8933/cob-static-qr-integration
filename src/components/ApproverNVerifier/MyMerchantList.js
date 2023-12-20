@@ -42,18 +42,12 @@ const MyMerchantList = () => {
 
 
     // const viewStatusbyId=kycIdClick?.master_client_id
-
-
-
-    useEffect(() => {
+     useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
         const dataCount = myMerchantListData?.count;
-
         if (myAllMerchantDataList) {
             setData(myAllMerchantDataList);
             setNotFilledData(myAllMerchantDataList);
-            // setKycIdClick(myAllMerchantDataList);
-
             setDataCount(dataCount)
         }
     }, [myMerchantListData]); //
@@ -185,24 +179,10 @@ const kycSearch = (e, fieldType) => {
             cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.status}</div>,
             // width: "200px",
         },
-        // {
-        //     id: "7",
-        //     name: "KYC Verify Status",
-        //     selector: (row) => row.status,
-        //     cell: (row) => <div className="removeWhiteSpace">{row?.is_verified ? "Verified" : "Pending"}</div>,
-        //     // width: "200px",
-        // },
-        // {
-        //     id: "8",
-        //     name: "KYC Approve Status",
-        //     selector: (row) => row.status,
-        //     cell: (row) => <div className="removeWhiteSpace">{row?.is_approved ? "Approved" : "Pending"}</div>,
-        //     // width: "200px",
-        // },
+       
 
-
-        {
-            id: "9",
+{
+            id: "7",
             name: "Created Date",
             selector: (row) => row.createdDate,
             sortable: true,
@@ -213,7 +193,7 @@ const kycSearch = (e, fieldType) => {
 
 
         {
-            id: "10",
+            id: "8",
             name: "View Status",
 
             cell: (row) => (
@@ -236,7 +216,7 @@ const kycSearch = (e, fieldType) => {
             ),
         },
         {
-            id: "11",
+            id: "9",
             name: "Action",
 
             cell: (row) => (

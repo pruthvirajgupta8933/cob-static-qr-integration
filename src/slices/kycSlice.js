@@ -581,10 +581,9 @@ export const MyMerchantListData = createAsyncThunk(
         if (data?.kyc_status && data.kyc_status !== 'All') {
           apiUrl += `&kyc_status=${data.kyc_status}`;
         }
-        
-        // Add the search_query parameter
+         // Add the search_query parameter
         apiUrl += `&search_query=${searchQuery}`;
-        const response = await axiosInstanceJWT.post(apiUrl,{"created_by":data.created_by}).catch((error) => {
+        const response = await axiosInstanceJWT.post(apiUrl,{"created_by": data.created_by}).catch((error) => {
           return error.response;
         });
         
