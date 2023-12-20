@@ -18,9 +18,10 @@ import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosIns
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
-    fullname: Yup.string()
-        .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-        .required("Required"),
+   fullname: Yup.string()
+  .matches(/^[a-zA-Z\s.0-9]+$/, "Only alphabets, full stops, and numbers are allowed for this field")
+  .required("Required"),
+
     // lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
     mobilenumber: Yup.string()
         .required("Required")

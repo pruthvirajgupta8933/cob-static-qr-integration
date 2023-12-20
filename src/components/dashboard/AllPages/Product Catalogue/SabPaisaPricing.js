@@ -151,108 +151,70 @@ const SabPaisaPricing = () => {
           </h5>
         </div>
         <div className="container">
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center flex-wrap">
             {spinner && <span className="spinner-border" role="status"></span>}
             {productDetails.map((Products) => (
-              // if user select the business catagory gamming then hide the subscription plan
-              (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
-                (param?.id === '14') ?
-                  <div className="col-lg-4 card mx-3">
-                    <div className="card-body">
-                      <div className="col-lg-12">
-                        <h2 className="pull-left- bold-font text-center mb-20 price d_block">
-                          {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ?
-                            <></> :
+              // If the user selects the business category gaming, hide the subscription plan
+              (business_cat_code === "37" && Products.plan_code === "005") ? (
+                <React.Fragment key={Products.plan_id}></React.Fragment>
+              ) : (
+                <div key={Products.plan_id} className="col-lg-4 card mx-3 mb-3">
+                  <div className="card-body">
+                    <div className="col-lg-12 text-center">
+                      {param?.id === '14' ? (
+                        <h2 className="bold-font text-center mb-20 price d_block">
+                          {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ? (
+                            <></>
+                          ) : (
                             <>
-                              {Products?.plan_price?.split("*")[0]} <span className={`title2 ${param?.id === "14" ? 'fontn' : 'fontna'}`}> {Products?.plan_price?.split("*")[1]}</span>
+                              {Products?.plan_price?.split("*")[0]}{' '}
+                              <span className={`title2 ${param?.id === "14" ? 'fontn' : 'fontna'}`}>
+                                {Products?.plan_price?.split("*")[1]}
+                              </span>
                             </>
-                          }
+                          )}
                         </h2>
-                        <span className="blockquote mb-0 pull-left- text-center">
-                          <span className="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
-                          <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
-                          <ul className="list-group list-group-flush">
-                            {Products?.plan_description
-                              .split(",")
-                              .map((details) => (
-                                <li className="list-group-item fnt-sz" key={details}><p className="firstli1 mb-1">{details}</p></li>
-                              ))}
-                          </ul>
-                        </span>
-                        <span className=" text-center">
-                          <p className="mt-20">
-
-                            <button
-                              type="button"
-                              className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products?.plan_id ? "btn-bg-color" : ""}`}
-                              disabled={selectedPlan?.mandateStatus === "success" ? true : false}
-                              onClick={() => {
-                                if (selectedPlan?.planId !== Products?.plan_id) {
-                                  handleClick(
-                                    Products.plan_id,
-                                    Products.plan_name,
-                                    Products?.plan_code
-                                  )
-                                }
-                              }
-                              }
-                            >
-                              {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
-                            </button>
-                          </p>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  :
-                  <div className="col-lg-4 card mx-3">
-                    <div className="card-body">
-                      <div className="">
-                        <div className="col-lg-12 text-center">
-                          <h1 className="card-title- cardoneheadingcss pb-3-">
-                            {Products.plan_name}
-                          </h1>
-                          <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length == 2 ? 'fs-6' : ''}`}>
-                            {Products.plan_price === "Connect" && Products.plan_name === "Enterprise" ? <></> :
-                              <>{Products?.plan_price?.split("*")[0]} <span className="title2"> {Products?.plan_price?.split("*")[1]}</span></>
-                            }
+                      ) : (
+                        <>
+                          <h1 className="card-title- cardoneheadingcss pb-3-">{Products.plan_name}</h1>
+                          <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length === 2 ? 'fs-6' : ''}`}>
+                            {Products.plan_price === "Connect" && Products.plan_name === "Enterprise" ? (
+                              <></>
+                            ) : (
+                              <>
+                                {Products?.plan_price?.split("*")[0]}{' '}
+                                <span className="title2">{Products?.plan_price?.split("*")[1]}</span>
+                              </>
+                            )}
                           </span>
-                          <h3 className="paragraphcsss text-center">
-
-                            {Products?.plan_type}
-                          </h3>
-                          <button
-                            type="button"
-                            className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
-                            disabled={selectedPlan?.mandateStatus === "success" ? true : false}
-                            onClick={() => {
-                              if (selectedPlan?.planId !== Products?.plan_id) {
-                                handleClick(
-                                  Products.plan_id,
-                                  Products.plan_name,
-                                  Products?.plan_code
-                                )
-                              }
-                            }
-                            }
-                          >
-                            {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
-                          </button>
-
-                        </div>
-                      </div>
-
-                      <span className="w-50 pxsolid text-center">&nbsp;</span>
-                      <h2 className="featurespricing">FEATURES INCLUDING</h2>
-                      <div className="text-center">
-                        {Products?.plan_description
-                          .split(",")
-                          .map((details, i) => (
-                            <p className="firstli1 mb-1">{details}</p>
-                          ))}
-                      </div>
+                          <h3 className="paragraphcsss text-center">{Products?.plan_type}</h3>
+                        </>
+                      )}
+                      <button
+                        type="button"
+                        className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
+                        disabled={selectedPlan?.mandateStatus === "success"}
+                        onClick={() => {
+                          if (selectedPlan?.planId !== Products?.plan_id) {
+                            handleClick(Products.plan_id, Products.plan_name, Products?.plan_code);
+                          }
+                        }}
+                      >
+                        {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
+                      </button>
+                    </div>
+                    <span className="w-50 pxsolid text-center">&nbsp;</span>
+                    <h2 className="featurespricing text-center">FEATURES INCLUDING</h2>
+                    <div className="text-center">
+                      {Products?.plan_description
+                        .split(",")
+                        .map((details, i) => (
+                          <p key={i} className="firstli1 mb-1">{details}</p>
+                        ))}
                     </div>
                   </div>
+                </div>
+              )
             ))}
           </div>
         </div>

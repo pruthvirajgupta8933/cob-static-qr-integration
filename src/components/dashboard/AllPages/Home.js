@@ -169,9 +169,9 @@ function Home() {
                           You can accept payments upto ₹10,000 for now. To extend
                           the limit complete your KYC and get it approved.
                         </span>
-                        <Link to={`/dashboard/kyc`} className="ml-1">
+                        {/* <Link to={`/dashboard/kyc`} className="ml-1">
                           Complete KYC
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
                   </div>
