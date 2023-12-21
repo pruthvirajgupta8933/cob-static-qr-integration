@@ -368,8 +368,7 @@ const MerchantDocument = (props) => {
 
                     </td>
                     <td>
-
-                      <p className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
+                  <p className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
                     {/* <td>{doc?.status}</td> */}
 

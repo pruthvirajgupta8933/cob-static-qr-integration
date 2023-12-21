@@ -54,7 +54,7 @@ function DashboardHeader() {
                                 </button>
                                 <ul className="dropdown-menu position-absolute">
                                     <li>  <Link to="/dashboard/profile" className="dropdown-item">Profile</Link></li>
-                                    <li>  <Link onClick={exitback} className="dropdown-item">Log out</Link></li>
+                                    <li>  <Link to="" onClick={exitback} className="dropdown-item">Log out</Link></li>
                                 </ul>
                             </div>
                         </div>

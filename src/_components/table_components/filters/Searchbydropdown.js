@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 const SearchFilter = ({
   searchText,
   kycSearch,
@@ -16,7 +17,7 @@ const SearchFilter = ({
           isDirect: searchText,
         };
         let refData = notFilledData;
-        refData = refData.filter(function(item) {
+        refData = refData.filter(function (item) {
           for (let key in filter) {
             if (item[key] === undefined || item[key] !== filter[key]) {
               return false;
@@ -31,9 +32,9 @@ const SearchFilter = ({
     }
     setSearchByDropDown(false);
   }, [searchText]);
+
   return (
     <div>
-      {" "}
       <div>
         <label>Onboard Type</label>
         <select
@@ -41,12 +42,15 @@ const SearchFilter = ({
           onChange={(e) => kycSearch(e.target.value, "dropdown")}
         >
           {optionSearchData &&
-            optionSearchData.map((data) => {
-              return <option value={data.value}>{data.name}</option>;
-            })}
+            optionSearchData.map((data) => (
+              <option key={data.value} value={data.value}>
+                {data.name}
+              </option>
+            ))}
         </select>
       </div>
     </div>
   );
 };
+
 export default SearchFilter;
