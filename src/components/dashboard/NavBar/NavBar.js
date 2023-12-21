@@ -17,67 +17,67 @@ const NavBar = () => {
   const exitback = () => {
     dispatch(logout());
   };
-  
-  return (
-      <nav
-        className="navbar navbar-light NunitoSans-Regular minh d-none-"
-        style={{ background: "#140633" }}
-      >
-        <ul className="navbar-brand mb-0 h1 pl-5- pl-0">
-          <img src={profile} alt="profile" title="profile" />
-          <h3 className="text-white float-right mt-0">Welcome back</h3>
-          <div style={{ fontSize: "13px" }}>
-            <span
-              className="text-white text-sm text-uppercase"
-              style={{ paddingLeft: "40px" }}
-            >
-              {loggedUser} Id &nbsp;: {loginId}
-            </span>
-          </div>
-        </ul>
 
-        
-          {/* Dropdown in the Nav Bar */}
-          <div className="dropdown show">
-            <a
-              className="btn dropdown-toggle"
-              href={()=>false}
-              role="button"
-              id="dropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i className="fa fa-user fa-2xl"
-                aria-hidden="true"
-                style={{ fontSize: "24px", color: "white" }}
-              ></i>
-              <span
-                className="glyphicon glyphicon-cog text-white"
-                style={{ color: "white" }}
-              ></span>
-              <span className="caret text-white text-uppercase">{username}</span>
-            </a>
-            <div className="dropdown-menu text-white navpro">
-              <div className="row px-md-3 p-2">
-                <Link to="/dashboard/profile" className="dropdown-item text-white">
-                  Profile
-                </Link>
-                {/* <Link
+  return (
+    <nav
+      className="navbar navbar-light NunitoSans-Regular minh d-none-"
+      style={{ background: "#140633" }}
+    >
+      <div className="navbar-brand mb-0 h1 pl-5- pl-0">
+        <img src={profile} alt="profile" title="profile" />
+        <h3 className="text-white float-right mt-0">Welcome back</h3>
+        <div style={{ fontSize: "13px" }}>
+          <span
+            className="text-white text-sm text-uppercase"
+            style={{ paddingLeft: "40px" }}
+          >
+            {loggedUser} Id &nbsp;: {loginId}
+          </span>
+        </div>
+      </div>
+
+
+      {/* Dropdown in the Nav Bar */}
+      <div className="dropdown show">
+        <a
+          className="btn dropdown-toggle"
+          href={() => false}
+          role="button"
+          id="dropdownMenuLink"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i className="fa fa-user fa-2xl"
+            aria-hidden="true"
+            style={{ fontSize: "24px", color: "white" }}
+          ></i>
+          <span
+            className="glyphicon glyphicon-cog text-white"
+            style={{ color: "white" }}
+          ></span>
+          <span className="caret text-white text-uppercase">{username}</span>
+        </a>
+        <div className="dropdown-menu text-white navpro">
+          <div className="row px-md-3 p-2">
+            <Link to="/dashboard/profile" className="dropdown-item text-white">
+              Profile
+            </Link>
+            {/* <Link
                   to="/dashboard/change-password"
                   className="dropdown-item text-white"
                 >
                   Change Password
                 </Link> */}
-                <Link onClick={exitback} className="dropdown-item text-white ">
-                  Log out
-                </Link>
-              </div>
-            </div>
+            <Link onClick={exitback} className="dropdown-item text-white ">
+              Log out
+            </Link>
           </div>
-        
-        {/* Dropdown in the Nav Bar */}
-      </nav>
+        </div>
+      </div>
+
+      {/* Dropdown in the Nav Bar */}
+    </nav>
   );
 };
 
