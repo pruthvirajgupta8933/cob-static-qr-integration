@@ -7,6 +7,7 @@ import { merchantSubscribedPlanData } from "../../../../slices/merchant-slice/pr
 import moment from "moment";
 // import { KYC_STATUS_PENDING } from "../../../../utilities/enums";
 import { isNull } from "lodash";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const Profile = () => {
@@ -49,7 +50,7 @@ const Profile = () => {
     let dataWallet = []
     SubscribedPlanData?.map((data, i) => (
       (
-        dataWallet.push(<div className="col-lg-4 mx-3 my-1" key={i}>
+        dataWallet.push(<div className="col-lg-4 mx-3 my-1" key={uuidv4()}>
           <div className="card" style={{ width: '18rem' }}>
             <div className="card-body">
               <h5 className="card-title">{data.applicationName}</h5>

@@ -8,6 +8,7 @@ import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import FormikController from '../../_components/formik/FormikController'
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
+import { v4 as uuidv4 } from 'uuid';
 // import { useEffect } from "react";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
@@ -218,8 +219,8 @@ const BizzAppForm = (props) => {
                                     <Form>
                                         <div className="form-group">
                                             {InputArray.map((singleData) => {
-                                                return (<>
-                                                    <div className="form-group ">
+                                                return (
+                                                    <div className="form-group" key={uuidv4()}>
                                                         {singleData.control === "input" ? <FormikController
                                                             control={singleData.control}
                                                             label={singleData.label}
@@ -236,10 +237,7 @@ const BizzAppForm = (props) => {
 
                                                             type={singleData.type}
                                                         />}
-
-
-                                                    </div>
-                                                </>)
+                                                    </div>)
                                             })}
                                         </div>
                                         <button

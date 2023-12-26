@@ -5,16 +5,17 @@ import { saveDocumentDetails } from '../../../services/approver-dashboard/mercha
 import { useDropzone } from 'react-dropzone';
 import { kycDocumentUploadList } from "../../../slices/kycSlice";
 import toastConfig from "../../../utilities/toastTypes";
+import { v4 as uuidv4 } from 'uuid';
 
 
-const FileUploader = ({setCurrentTab}) => {
+const FileUploader = ({ setCurrentTab }) => {
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [submitLoader, setSubmitLoader] = useState(false);
-    const [documentUploadResponse,setDocumentUploadResponse]=useState({})
+    const [documentUploadResponse, setDocumentUploadResponse] = useState({})
     // console.log("documentUploadResponse",documentUploadResponse)
 
- 
+
 
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
@@ -95,16 +96,16 @@ const FileUploader = ({setCurrentTab}) => {
                                 aria-hidden="true" />
                             <span className="sr-only">Loading...</span>
                         </>} Upload Files
-                    </button>  } {documentUploadResponse === true &&
-                                    <a className="btn active-secondary btn-sm m-2" onClick={()=>setCurrentTab(5)}>Next</a>
-                                }
+                    </button>} {documentUploadResponse === true &&
+                        <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(5)}>Next</a>
+                }
             </div>
 
             {KycDocUpload?.length > 0 && <div className="row p-2">
                 <h6>Uploaded Document</h6>
                 <ul>
                     {KycDocUpload?.map((d, i) => (
-                        <li><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
+                        <li key={uuidv4()}><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
                     ))}
                 </ul>
             </div>}

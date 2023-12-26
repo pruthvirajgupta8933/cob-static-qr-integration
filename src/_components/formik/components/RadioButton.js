@@ -1,18 +1,19 @@
 import React from "react"
 import { Field, ErrorMessage } from "formik"
+import { v4 as uuidv4 } from 'uuid';
 
 function RadioButtons(props) {
   const { label, name, options, ...rest } = props
   return (
     <React.Fragment>
-      {typeof(label)!=="undefined" && 
-      <label htmlFor={name}> {label}</label>}
+      {typeof (label) !== "undefined" &&
+        <label htmlFor={name}> {label}</label>}
       <Field name={name}>
         {formik => {
           const { field } = formik
           return options.map(option => {
             return (
-              <div key={option.key} className="form-check">
+              <div key={uuidv4()} className="form-check">
                 <input
                   type="radio"
                   id={option.value}

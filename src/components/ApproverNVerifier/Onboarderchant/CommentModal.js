@@ -14,6 +14,7 @@ import "./comment.css";
 import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
+import { v4 as uuidv4 } from 'uuid';
 
 const CommentModal = (props) => {
   // console.log(props)
@@ -236,7 +237,7 @@ const CommentModal = (props) => {
                         commentsList?.length > 0) &&
                         Array.isArray(commentsList)
                         ? commentsList?.map((commentData, i) => (
-                          <tr key={i}>
+                          <tr key={uuidv4()}>
                             <td>
                               {commentData?.comment_by_user_name.toUpperCase()}
                             </td>

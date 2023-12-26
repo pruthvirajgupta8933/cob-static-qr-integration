@@ -19,6 +19,7 @@ import plusIcon from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 import { isNull, isUndefined } from "lodash";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED, } from "../../utilities/enums";
+import { v4 as uuidv4 } from 'uuid';
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
@@ -58,7 +59,7 @@ function DocumentsUpload(props) {
   const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
 
   let submitAction;
-  
+
   // formik 
   const initialValues = {
     docType: savedData[0]?.type ? savedData[0]?.type : "",
@@ -251,7 +252,7 @@ function DocumentsUpload(props) {
   }, [uploadedReqDocList, KycDocUpload])
 
 
-  
+
   useEffect(() => {
     if (isRequiredDocUpload) {
       dispatch(saveDropDownAndFinalArray(true));
@@ -441,7 +442,7 @@ function DocumentsUpload(props) {
                           </thead>
                           <tbody>
                             {savedData?.map((doc, i) => (
-                              <tr key={i}>
+                              <tr key={uuidv4()}>
                                 <td>{i + 1}</td>
                                 <td>{getDocTypeName(doc?.type)}</td>
                                 <td>

@@ -1,13 +1,14 @@
-import React from 'react'
-import { verifyKycEachTab } from "../../../../slices/kycSlice"
+import React, { useEffect, useMemo, useState } from 'react'
+import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import VerifyRejectBtn from './VerifyRejectBtn';
-import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+import { fetchBankList } from '../../../../services/approver-dashboard/merchantReferralOnboard.service';
 
 const BankDetails = (props) => {
   const dispatch = useDispatch();
+  const [bankName, setBankName] = useState("")
   const { KycTabStatus, selectedUserData } = props;
   const { auth } = useSelector((state) => state);
 
@@ -55,6 +56,25 @@ const BankDetails = (props) => {
     }
   };
 
+
+  const bankid = useMemo(() => {
+    return selectedUserData?.merchant_account_details?.bankId
+  }, [selectedUserData])
+
+
+  useEffect(() => {
+    fetchBankList().then(resp => {
+      const bankData = resp.data?.filter((item) => item.bankId === bankid)
+      setBankName(bankData[0].bankName)
+    }).catch(err => console.log(err))
+
+
+  }, [bankid])
+
+
+
+
+
   return (
     <div className="row mb-4 border p-1">
       <h5 className="">Bank Details</h5>
@@ -69,12 +89,11 @@ const BankDetails = (props) => {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
             disabled="true"
-            value={selectedUserData?.ifscCode}
+            value={selectedUserData?.merchant_account_details?.ifsc_code}
           />
           <span>
-            {selectedUserData?.ifscCode === null || selectedUserData?.ifscCode === "" ? (
+            {selectedUserData?.merchant_account_details?.ifsc_code === null || selectedUserData?.merchant_account_details?.ifsc_code === "" ? (
               <p className="text-danger"> Not Verified</p>
             ) : (
               <p className="text-success">Verified</p>
@@ -90,14 +109,11 @@ const BankDetails = (props) => {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
             disabled="true"
-            value={
-              selectedUserData?.accountNumber
-            }
+            value={selectedUserData?.merchant_account_details?.account_number}
           />
           <span>
-            {selectedUserData?.accountNumber === null || selectedUserData?.accountNumber === "" ? (
+            {selectedUserData?.merchant_account_details?.account_number === null || selectedUserData?.merchant_account_details?.account_number === "" ? (
               <p className="text-danger"> Not Verified</p>
 
             ) : (
@@ -118,10 +134,10 @@ const BankDetails = (props) => {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
             disabled="true"
             value={
-              selectedUserData?.accountHolderName
+              selectedUserData?.merchant_account_details
+                ?.account_holder_name
             }
           />
         </div>
@@ -133,7 +149,6 @@ const BankDetails = (props) => {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
             disabled="true"
             value={
               selectedUserData?.merchant_account_details
@@ -151,9 +166,8 @@ const BankDetails = (props) => {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
             disabled="true"
-            value={selectedUserData?.bankName}
+            value={bankName}
           />
         </div>
 
@@ -164,7 +178,6 @@ const BankDetails = (props) => {
           <input
             type="text"
             className="form-control"
-            id="inputPassword3"
             disabled="true"
             value={selectedUserData?.merchant_account_details?.branch}
           />

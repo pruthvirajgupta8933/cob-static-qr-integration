@@ -11,6 +11,7 @@ import { register } from "../../../slices/auth";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../../config";
 import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosInstance";
+import { v4 as uuidv4 } from 'uuid';
 // import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 // import {logout} from "../../../slices/auth";
 
@@ -18,9 +19,9 @@ import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosIns
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
-   fullname: Yup.string()
-  .matches(/^[a-zA-Z\s.0-9]+$/, "Only alphabets, full stops, and numbers are allowed for this field")
-  .required("Required"),
+    fullname: Yup.string()
+        .matches(/^[a-zA-Z\s.0-9]+$/, "Only alphabets, full stops, and numbers are allowed for this field")
+        .required("Required"),
 
     // lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
     mobilenumber: Yup.string()
@@ -191,8 +192,8 @@ const OnboardMerchant = () => {
         <>
             <div className="logmod__heading">
                 <div className="mb-5">
-            <h5 className=""> Onboard Merchant</h5>
-          </div>
+                    <h5 className=""> Onboard Merchant</h5>
+                </div>
 
             </div>
             <Formik
@@ -215,12 +216,12 @@ const OnboardMerchant = () => {
             >
 
                 {(formik) => (
-                    
-            <Form class="row g-3 mt-4">
+
+                    <Form class="row g-3 mt-4">
                         <div className="col-md-10"></div>
                         <div class="col-md-6">
-                            <label htmlFor="full-name"className="form-label font-weight-bold">Full Name
-                            <span style={{ color: "red" }}>*</span>
+                            <label htmlFor="full-name" className="form-label font-weight-bold">Full Name
+                                <span style={{ color: "red" }}>*</span>
                             </label>
                             <Field
                                 class="form-control"
@@ -244,7 +245,7 @@ const OnboardMerchant = () => {
                         </div>
                         <div class="col-md-6">
                             <label htmlFor="mobile" className="form-label font-weight-bold">Mobile Number
-                            <span style={{ color: "red" }}>*</span>
+                                <span style={{ color: "red" }}>*</span>
                             </label>
 
                             <Field
@@ -278,7 +279,7 @@ const OnboardMerchant = () => {
                         </div>
                         <div class="col-md-6">
                             <label htmlFor="user-email" className="form-label font-weight-bold">Email ID
-                            <span style={{ color: "red" }}>*</span>
+                                <span style={{ color: "red" }}>*</span>
                             </label>
                             <Field
                                 className="form-control"
@@ -305,7 +306,7 @@ const OnboardMerchant = () => {
                             <label htmlFor="business_category" className="form-label font-weight-bold">Business
                                 Category
                                 <span style={{ color: "red" }}>*</span>
-                                </label>
+                            </label>
                             <Field
                                 name="business_cat_code"
                                 className="form-select"
@@ -324,8 +325,7 @@ const OnboardMerchant = () => {
                                 {businessCode?.map((business, i) => (
                                     <option
                                         value={business.category_id}
-                                        key={i}
-
+                                        key={uuidv4()}
                                     >
                                         {business.category_name}
                                     </option>
@@ -385,7 +385,7 @@ const OnboardMerchant = () => {
 
                         <div class="col-md-6">
                             <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password
-                            <span style={{ color: "red" }}>*</span>
+                                <span style={{ color: "red" }}>*</span>
                             </label>
                             <div class="input-group">
                                 <Field
@@ -425,7 +425,7 @@ const OnboardMerchant = () => {
 
                         <div class="col-md-6">
                             <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password
-                            <span style={{ color: "red" }}>*</span>
+                                <span style={{ color: "red" }}>*</span>
                             </label>
                             <div class="input-group">
                                 <Field

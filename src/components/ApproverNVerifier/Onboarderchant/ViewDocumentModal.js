@@ -11,9 +11,10 @@ import "./comment.css";
 import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
+import { v4 as uuidv4 } from 'uuid';
 
 const ViewDocumentModal = (props) => {
-  
+
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -38,7 +39,7 @@ const ViewDocumentModal = (props) => {
       })
     )
       .then((resp) => {
-       
+
         setCommentsList(resp.payload);
       })
       .catch((err) => {
@@ -285,7 +286,7 @@ const ViewDocumentModal = (props) => {
                       commentsList?.length > 0) &&
                       Array.isArray(commentsList)
                       ? commentsList?.map((remark, i) => (
-                        <tr key={i}>
+                        <tr key={uuidv4()}>
                           <td style={{ overflowWrap: "anywhere" }}>{remark?.comment}</td>
                           <td>
                             {dateManipulate(remark?.comment_on)}
@@ -312,6 +313,7 @@ const ViewDocumentModal = (props) => {
                           </td>
                           <td>
                             <button
+                              aria-label="button"
                               type="button"
                               onClick={() => {
                                 removeDocument(remark?.document_id);
@@ -356,7 +358,7 @@ const ViewDocumentModal = (props) => {
     )
   }
 
-return (
+  return (
     <>
       <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
     </>

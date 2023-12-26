@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
-import {Formik, Form} from "formik";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import _ from "lodash";
@@ -13,25 +13,26 @@ import {
     exportTxnLoadingState,
     fetchTransactionHistorySlice
 } from "../../../slices/dashboardSlice";
-import {exportToSpreadsheet} from "../../../utilities/exportToSpreadsheet";
+import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import API_URL from "../../../config";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
-import {convertToFormikSelectJson} from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
-import {axiosInstance} from "../../../utilities/axiosInstance";
+import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { axiosInstance } from "../../../utilities/axiosInstance";
 import Notification from "../../../_components/reuseable_components/Notification";
 import moment from "moment";
-import {fetchChiledDataList} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 const TransactionHistory = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const roles = roleBasedAccess();
-    const {auth, dashboard, merchantReferralOnboardReducer} = useSelector((state) => state);
-    const {user} = auth;
-    const {refrerChiledList} = merchantReferralOnboardReducer
+    const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+    const { user } = auth;
+    const { refrerChiledList } = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    const {isLoadingTxnHistory, isExportData} = dashboard;
+    const { isLoadingTxnHistory, isExportData } = dashboard;
 
     const [paymentStatusList, SetPaymentStatusList] = useState([]);
     const [paymentModeList, SetPaymentModeList] = useState([]);
@@ -150,7 +151,7 @@ const TransactionHistory = () => {
     let extraDataObj = {};
     if (user.roleId === 3 || user.roleId === 13) {
         isExtraDataRequired = true;
-        extraDataObj = {key: "All", value: "All"};
+        extraDataObj = { key: "All", value: "All" };
     }
 
     const forClientCode = true;
@@ -182,17 +183,17 @@ const TransactionHistory = () => {
     // console.log("clientCodeOption", clientCodeOption)
 
 
-    const tempPayStatus = [{key: "All", value: "All"}];
+    const tempPayStatus = [{ key: "All", value: "All" }];
 
     paymentStatusList.map((item) => {
         if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
-            tempPayStatus.push({key: item, value: item});
+            tempPayStatus.push({ key: item, value: item });
         }
     });
 
-    const tempPaymode = [{key: "All", value: "All"}];
+    const tempPaymode = [{ key: "All", value: "All" }];
     paymentModeList.map((item) => {
-        tempPaymode.push({key: item.paymodeId, value: item.paymodeName});
+        tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
     });
 
     const pagination = (pageNo) => {
@@ -202,7 +203,7 @@ const TransactionHistory = () => {
     // console.log("clientCodeList",clientCodeList)
     const submitHandler = (values) => {
         isButtonClicked(true);
-        const {fromDate, endDate, transaction_status, payment_mode} = values;
+        const { fromDate, endDate, transaction_status, payment_mode } = values;
         const dateRangeValid = checkValidation(fromDate, endDate);
 
         if (dateRangeValid) {
@@ -468,7 +469,7 @@ const TransactionHistory = () => {
 
         <section className="">
             <div className="profileBarStatus">
-                <Notification/>
+                <Notification />
             </div>
 
             <main className="">
@@ -487,7 +488,7 @@ const TransactionHistory = () => {
                                 {(formik) => (
                                     <Form>
                                         <div className="form-row mt-5">
-                                            {(roles?.bank || roles?.referral)&& (
+                                            {(roles?.bank || roles?.referral) && (
                                                 <div className="form-group col-lg-3">
                                                     <FormikController
                                                         control="select"
@@ -611,7 +612,7 @@ const TransactionHistory = () => {
                                                 className="form-select"
                                                 onChange={(e) => setPageSize(parseInt(e.target.value))}
                                             >
-                                                <DropDownCountPerPage datalength={txnList.length}/>
+                                                <DropDownCountPerPage datalength={txnList.length} />
                                             </select>
                                         </div>
                                     </div>
@@ -624,103 +625,103 @@ const TransactionHistory = () => {
                             <div className="overflow-auto">
                                 <table className="table table-bordered">
                                     <thead>
-                                    {txnList.length > 0 ? (
-                                        <tr>
-                                            <th> S.No</th>
-                                            <th> Trans ID</th>
-                                            <th> Client Trans ID</th>
-                                            <th> Challan Number / VAN</th>
-                                            <th> Amount</th>
-                                            <th> Transaction Date</th>
-                                            <th> Payment Status</th>
-                                            <th> Payer First Name</th>
-                                            <th> Payer Last Name</th>
-                                            <th> Payer Mob number</th>
-                                            <th> Payer Email</th>
-                                            <th> Client Code</th>
-                                            <th> Payment Mode</th>
-                                            <th> Payer Address</th>
-                                            <th> Encrypted PAN</th>
-                                            <th> Udf1</th>
-                                            <th> Udf2</th>
-                                            <th> Udf3</th>
-                                            <th> Udf4</th>
-                                            <th> Udf5</th>
-                                            <th> Udf6</th>
-                                            <th> Udf7</th>
-                                            <th> Udf8</th>
-                                            <th> Udf9</th>
-                                            <th> Udf10</th>
-                                            <th> Udf11</th>
-                                            <th> Udf12</th>
-                                            <th> Udf13</th>
-                                            <th> Udf14</th>
-                                            <th> Udf15</th>
-                                            <th> Udf16</th>
-                                            <th> Udf17</th>
-                                            <th> Udf18</th>
-                                            <th> Udf19</th>
-                                            <th> Udf20</th>
-                                            <th> Gr.No</th>
-                                            <th> Bank Response</th>
-                                            <th> IFSC Code</th>
-                                            <th> Payer Account No</th>
-                                            <th> Bank Txn Id</th>
-                                        </tr>
-                                    ) : (
-                                        <></>
-                                    )}
+                                        {txnList.length > 0 ? (
+                                            <tr>
+                                                <th> S.No</th>
+                                                <th> Trans ID</th>
+                                                <th> Client Trans ID</th>
+                                                <th> Challan Number / VAN</th>
+                                                <th> Amount</th>
+                                                <th> Transaction Date</th>
+                                                <th> Payment Status</th>
+                                                <th> Payer First Name</th>
+                                                <th> Payer Last Name</th>
+                                                <th> Payer Mob number</th>
+                                                <th> Payer Email</th>
+                                                <th> Client Code</th>
+                                                <th> Payment Mode</th>
+                                                <th> Payer Address</th>
+                                                <th> Encrypted PAN</th>
+                                                <th> Udf1</th>
+                                                <th> Udf2</th>
+                                                <th> Udf3</th>
+                                                <th> Udf4</th>
+                                                <th> Udf5</th>
+                                                <th> Udf6</th>
+                                                <th> Udf7</th>
+                                                <th> Udf8</th>
+                                                <th> Udf9</th>
+                                                <th> Udf10</th>
+                                                <th> Udf11</th>
+                                                <th> Udf12</th>
+                                                <th> Udf13</th>
+                                                <th> Udf14</th>
+                                                <th> Udf15</th>
+                                                <th> Udf16</th>
+                                                <th> Udf17</th>
+                                                <th> Udf18</th>
+                                                <th> Udf19</th>
+                                                <th> Udf20</th>
+                                                <th> Gr.No</th>
+                                                <th> Bank Response</th>
+                                                <th> IFSC Code</th>
+                                                <th> Payer Account No</th>
+                                                <th> Bank Txn Id</th>
+                                            </tr>
+                                        ) : (
+                                            <></>
+                                        )}
                                     </thead>
                                     <tbody>
-                                    {txnList.length > 0 &&
-                                        paginatedata.map((item, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td>{i + 1}</td>
-                                                    <td>{item.txn_id}</td>
-                                                    <td>{item.client_txn_id}</td>
-                                                    <td>{item.challan_no}</td>
-                                                    <td>
-                                                        {Number.parseFloat(item.payee_amount).toFixed(2)}
-                                                    </td>
-                                                    <td>{convertDate(item.trans_date)}</td>
-                                                    <td>{item.status}</td>
-                                                    <td>{item.payee_first_name}</td>
-                                                    <td>{item.payee_lst_name}</td>
-                                                    <td>{item.payee_mob}</td>
-                                                    <td>{item.payee_email}</td>
-                                                    <td>{item.client_code}</td>
-                                                    <td>{item.payment_mode}</td>
-                                                    <td>{item.payee_address}</td>
-                                                    <td>{item.encrypted_pan}</td>
-                                                    <td>{item.udf1}</td>
-                                                    <td>{item.udf2}</td>
-                                                    <td>{item.udf3}</td>
-                                                    <td>{item.udf4}</td>
-                                                    <td>{item.udf5}</td>
-                                                    <td>{item.udf6}</td>
-                                                    <td>{item.udf7}</td>
-                                                    <td>{item.udf8}</td>
-                                                    <td>{item.udf9}</td>
-                                                    <td>{item.udf10}</td>
-                                                    <td>{item.udf11}</td>
-                                                    <td>{item.udf12}</td>
-                                                    <td>{item.udf13}</td>
-                                                    <td>{item.udf14}</td>
-                                                    <td>{item.udf15}</td>
-                                                    <td>{item.udf16}</td>
-                                                    <td>{item.udf17}</td>
-                                                    <td>{item.udf18}</td>
-                                                    <td>{item.udf19}</td>
-                                                    <td>{item.udf20}</td>
-                                                    <td>{item.gr_number}</td>
-                                                    <td>{item.bank_message}</td>
-                                                    <td>{item.ifsc_code}</td>
-                                                    <td>{item.payer_acount_number}</td>
-                                                    <td>{item.bank_txn_id}</td>
-                                                </tr>
-                                            );
-                                        })}
+                                        {txnList.length > 0 &&
+                                            paginatedata.map((item, i) => {
+                                                return (
+                                                    <tr key={uuidv4()}>
+                                                        <td>{i + 1}</td>
+                                                        <td>{item.txn_id}</td>
+                                                        <td>{item.client_txn_id}</td>
+                                                        <td>{item.challan_no}</td>
+                                                        <td>
+                                                            {Number.parseFloat(item.payee_amount).toFixed(2)}
+                                                        </td>
+                                                        <td>{convertDate(item.trans_date)}</td>
+                                                        <td>{item.status}</td>
+                                                        <td>{item.payee_first_name}</td>
+                                                        <td>{item.payee_lst_name}</td>
+                                                        <td>{item.payee_mob}</td>
+                                                        <td>{item.payee_email}</td>
+                                                        <td>{item.client_code}</td>
+                                                        <td>{item.payment_mode}</td>
+                                                        <td>{item.payee_address}</td>
+                                                        <td>{item.encrypted_pan}</td>
+                                                        <td>{item.udf1}</td>
+                                                        <td>{item.udf2}</td>
+                                                        <td>{item.udf3}</td>
+                                                        <td>{item.udf4}</td>
+                                                        <td>{item.udf5}</td>
+                                                        <td>{item.udf6}</td>
+                                                        <td>{item.udf7}</td>
+                                                        <td>{item.udf8}</td>
+                                                        <td>{item.udf9}</td>
+                                                        <td>{item.udf10}</td>
+                                                        <td>{item.udf11}</td>
+                                                        <td>{item.udf12}</td>
+                                                        <td>{item.udf13}</td>
+                                                        <td>{item.udf14}</td>
+                                                        <td>{item.udf15}</td>
+                                                        <td>{item.udf16}</td>
+                                                        <td>{item.udf17}</td>
+                                                        <td>{item.udf18}</td>
+                                                        <td>{item.udf19}</td>
+                                                        <td>{item.udf20}</td>
+                                                        <td>{item.gr_number}</td>
+                                                        <td>{item.bank_message}</td>
+                                                        <td>{item.ifsc_code}</td>
+                                                        <td>{item.payer_acount_number}</td>
+                                                        <td>{item.bank_txn_id}</td>
+                                                    </tr>
+                                                );
+                                            })}
                                     </tbody>
                                 </table>
                             </div>
@@ -745,7 +746,7 @@ const TransactionHistory = () => {
                                                 .slice(currentPage - 1, currentPage + 6)
                                                 .map((page, i) => (
                                                     <li
-                                                        key={i}
+                                                        key={uuidv4()}
                                                         className={
                                                             page === currentPage
                                                                 ? " page-item active"

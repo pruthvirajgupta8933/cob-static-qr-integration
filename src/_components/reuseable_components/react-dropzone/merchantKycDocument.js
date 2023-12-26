@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {kycDocumentUploadList} from "../../../slices/kycSlice";
-import {saveDocumentDetails} from "../../../services/approver-dashboard/merchantReferralOnboard.service";
-import toastConfig from "../../../utilities/toastTypes";
-import {useDropzone} from "react-dropzone";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+// import {kycDocumentUploadList} from "../../../slices/kycSlice";
+// import {saveDocumentDetails} from "../../../services/approver-dashboard/merchantReferralOnboard.service";
+// import toastConfig from "../../../utilities/toastTypes";
+import { useDropzone } from "react-dropzone";
+import { v4 as uuidv4 } from 'uuid';
 
-const  MerchantKycDocument = () =>{
+const MerchantKycDocument = () => {
 
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [submitLoader, setSubmitLoader] = useState(false);
-    const [documentUploadResponse,setDocumentUploadResponse]=useState({})
+    const [documentUploadResponse, setDocumentUploadResponse] = useState({})
     // console.log("documentUploadResponse",documentUploadResponse)
 
 
@@ -63,7 +64,7 @@ const  MerchantKycDocument = () =>{
     };
 
     const { getRootProps, getInputProps } = useDropzone({
-        accept: ['.pdf','image/*'],
+        accept: ['.pdf', 'image/*'],
         onDrop,
     });
 
@@ -83,19 +84,19 @@ const  MerchantKycDocument = () =>{
                     <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
                         {submitLoader && <>
                             <span className="spinner-border spinner-border-sm" role="status"
-                                  aria-hidden="true"/>
+                                aria-hidden="true" />
                             <span className="sr-only">Loading...</span>
                         </>} Upload Files
                     </button>} {documentUploadResponse === true &&
-                <a className="btn active-secondary btn-sm m-2" onClick={() => console.log(5)}>Next</a>
-            }
+                        <a className="btn active-secondary btn-sm m-2" onClick={() => console.log(5)}>Next</a>
+                }
             </div>
 
             {KycDocUpload?.length > 0 && <div className="row p-2">
                 <h6>Uploaded Document</h6>
                 <ul>
                     {KycDocUpload?.map((d, i) => (
-                        <li><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
+                        <li key={uuidv4()}><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
                     ))}
                 </ul>
             </div>}

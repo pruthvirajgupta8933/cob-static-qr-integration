@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
-
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
@@ -17,20 +16,18 @@ import Notification from "../../../_components/reuseable_components/Notification
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-
 import moment from "moment";
-
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { v4 as uuidv4 } from 'uuid';
 
 const SettlementReportNew = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-
     const [txnList, SetTxnList] = useState([]);
     // const [filterList,SetFilterList] = useState([])
     const [searchText, SetSearchText] = useState("");
-    const [startDate, setStartDate] = useState(null);
+    // const [startDate, setStartDate] = useState(null);
 
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([]);
@@ -386,7 +383,7 @@ const SettlementReportNew = () => {
         });
 
         const fileName = "Settlement-Report";
-        
+
         let handleExportLoading = (state) => {
             // console.log(state)
             if (state) {
@@ -559,11 +556,8 @@ const SettlementReportNew = () => {
                                     <tbody>
                                         {txnList.length > 0 &&
                                             paginatedata.map((item, i) => {
-                                                {
-                                                    console.log("txnList.length", txnList.length)
-                                                }
                                                 return (
-                                                    <tr key={i}>
+                                                    <tr key={uuidv4()}>
                                                         <td>{i + 1}</td>
                                                         <td>{item.client_code}</td>
                                                         <td>{item.client_name}</td>
@@ -611,7 +605,7 @@ const SettlementReportNew = () => {
                                                 .slice(currentPage - 1, currentPage + 6)
                                                 .map((page, i) => (
                                                     <li
-                                                        key={i}
+                                                        key={uuidv4()}
                                                         className={
                                                             page === currentPage
                                                                 ? " page-item active"

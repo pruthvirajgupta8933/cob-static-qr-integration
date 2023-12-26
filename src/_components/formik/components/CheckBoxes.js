@@ -1,5 +1,6 @@
 import React from "react"
 import { Field, ErrorMessage } from "formik"
+import { v4 as uuidv4 } from 'uuid';
 
 function Checkboxes(props) {
   const { label, name, options, ...rest } = props
@@ -8,9 +9,9 @@ function Checkboxes(props) {
       <Field name={name}>
         {formik => {
           const { field } = formik
-          return options.map(option => {
+          return options?.map(option => {
             return (
-              <div key={option.key}>
+              <div key={uuidv4()}>
                 <input
                   type="checkbox"
                   id={option.value}
@@ -19,8 +20,8 @@ function Checkboxes(props) {
                   value={option.value}
                   checked={field.value.includes(option.value)}
                 />
-                <label>{option?.isHyperLink && <a href={option?.hyperLink} target="_blank" rel="noreferrer">{option.key} </a> }   
-                {option?.isHyperLink===false && option.key } </label>
+                <label>{option?.isHyperLink && <a href={option?.hyperLink} target="_blank" rel="noreferrer">{option.key} </a>}
+                  {option?.isHyperLink === false && option.key} </label>
               </div>
             )
           })

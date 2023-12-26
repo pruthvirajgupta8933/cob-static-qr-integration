@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const Pagination = ({ nPages, currentPage, setCurrentPage }) => {
   const pageNumbers = [...Array(nPages + 1).keys()].slice(1);
@@ -19,7 +20,7 @@ const Pagination = ({ nPages, currentPage, setCurrentPage }) => {
         </li>
         {pageNumbers.map((pgNumber, i) => (
           <li
-            key={i}
+            key={uuidv4()}
             className={
               pgNumber === currentPage ? " page-item active" : "page-item"
             }

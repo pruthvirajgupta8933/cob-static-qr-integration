@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import API_URL from '../../../../config';
-import toastConfig from '../../../../utilities/toastTypes';
+// import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 import { axiosInstance } from '../../../../utilities/axiosInstance';
 import CustomLoader from '../../../../_components/loader';
 import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
 
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -129,7 +130,7 @@ const Reports = () => {
 
       <section className="">
         <div className="container-fluid p-3 my-3">
-        <h6>Total Records: {data.length}</h6>
+          <h6>Total Records: {data.length}</h6>
 
           {!paginatedata ? (<h3> No Data Found</h3>) : (<React.Fragment>  <div className="scroll" style={{ overflow: "auto" }}>
             <table className="table table-bordered">
@@ -151,7 +152,7 @@ const Reports = () => {
               </thead>
               <tbody>
                 {paginatedata.map((report, i) => (
-                  <tr key={i}>
+                  <tr key={uuidv4()}>
                     <td>{i + 1}</td>
                     <td>{report.customer_name}</td>
                     <td>{report.customer_email}</td>
@@ -182,7 +183,7 @@ const Reports = () => {
                     <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1)} href={() => false}>Previous</a>
                     {
                       pages.slice(currentPage - 1, currentPage + 6).map((page, i) => (
-                        <li key={i} className={
+                        <li key={uuidv4()} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }>
                           <a href={() => false} className={`page-link data_${i}`} >

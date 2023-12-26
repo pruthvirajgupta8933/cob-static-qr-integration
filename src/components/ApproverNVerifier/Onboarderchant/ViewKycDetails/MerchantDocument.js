@@ -6,6 +6,7 @@ import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../.
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify"
 import classes from "./viewStatus.module.css"
+import { v4 as uuidv4 } from 'uuid';
 import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
 const MerchantDocument = (props) => {
@@ -300,7 +301,7 @@ const MerchantDocument = (props) => {
       <h5 className="">Merchant Documents</h5>
       {pendingDocument?.length === 0 ? null : <p className="font-weight-bold m-0">Not submitted document list:</p>}
       {pendingDocument?.map((item) => {
-        return (<> <span className="text-danger"> {item?.value}</span><br /></>)
+        return (<React.Fragment key={uuidv4()}> <span className="text-danger"> {item?.value}</span><br /></React.Fragment>)
       })}
 
 
@@ -342,7 +343,7 @@ const MerchantDocument = (props) => {
             {KycDocUpload?.length > 0 ? (
               KycDocUpload?.map((doc, i) => {
                 return (
-                  <tr key={i} >
+                  <tr key={uuidv4()} >
                     {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) ?
                       <td>
 
@@ -368,7 +369,7 @@ const MerchantDocument = (props) => {
 
                     </td>
                     <td>
-                  <p className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
+                      <p className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
                     {/* <td>{doc?.status}</td> */}
 
