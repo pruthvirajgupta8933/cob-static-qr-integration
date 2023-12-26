@@ -7,6 +7,7 @@ import {
   documentsUpload,
   GetKycTabsStatus,
   kycUserList,
+  clearKycState,
 } from "../../../../slices/kycSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -129,6 +130,7 @@ const KycDetailsModal = (props) => {
 
     return () => {
       dispatch(clearRatemapping())
+      dispatch(clearKycState())
     }
   }, [])
 
