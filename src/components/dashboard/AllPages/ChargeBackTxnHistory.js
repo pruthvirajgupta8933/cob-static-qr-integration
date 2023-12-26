@@ -16,10 +16,11 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
+import { v4 as uuidv4 } from 'uuid';
 
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
- 
+
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
@@ -71,7 +72,7 @@ const ChargeBackTxnHistory = () => {
   //   clientMerchantDetailsList
   // );
 
- 
+
 
   const initialValues = {
     clientCode: "",
@@ -99,7 +100,7 @@ const ChargeBackTxnHistory = () => {
     true
   );
 
-useEffect(() => {
+  useEffect(() => {
 
 
     setTimeout(() => {
@@ -130,7 +131,7 @@ useEffect(() => {
     setIsDisable(true)
     isButtonClicked(true)
     dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {
-    const ApiStatus = res?.meta?.requestStatus;
+      const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
@@ -140,7 +141,7 @@ useEffect(() => {
         setIsDisable(false)
       }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
-        
+
         setIsDisable(false)
       }
     });
@@ -150,7 +151,7 @@ useEffect(() => {
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-      setUpdateTxnList(TxnListArrUpdated);
+    setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
     setPaginatedData(
@@ -265,10 +266,10 @@ useEffect(() => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       return state
-  }
+    }
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
@@ -304,7 +305,7 @@ useEffect(() => {
                       </div>
 
                       <div className="form-group col-lg-3">
-                      <FormikController
+                        <FormikController
                           control="date"
                           label="From Date"
                           id="fromDate"
@@ -317,11 +318,11 @@ useEffect(() => {
                           required={true}
                           errorMsg={formik.errors["fromDate"]}
                         />
-                        
+
                       </div>
 
                       <div className="form-group col-lg-3">
-                      <FormikController
+                        <FormikController
                           control="date"
                           label="End Date"
                           id="endDate"
@@ -334,7 +335,7 @@ useEffect(() => {
                           required={true}
                           errorMsg={formik.errors["endDate"]}
                         />
-                        
+
                       </div>
                     </div>
                     <div className="form-row">
@@ -440,7 +441,7 @@ useEffect(() => {
                     {txnList.length > 0 &&
                       paginatedata.map((item, i) => {
                         return (
-                          <tr key={i}>
+                          <tr key={uuidv4()}>
                             <td>{i + 1}</td>
                             <td>{item.client_code}</td>
                             <td>{item.client_name}</td>
@@ -487,7 +488,7 @@ useEffect(() => {
                         .slice(currentPage - 1, currentPage + 6)
                         .map((page, i) => (
                           <li
-                            key={i}
+                            key={uuidv4()}
                             className={
                               page === currentPage
                                 ? " page-item active"
@@ -508,7 +509,7 @@ useEffect(() => {
                           className="page-link"
                           onClick={(nex) => {
                             setCurrentPage((nex) =>
-                              nex ===  pages.length > 9 ? nex : nex + 1
+                              nex === pages.length > 9 ? nex : nex + 1
                             );
                           }}
                           href={() => false}
@@ -533,10 +534,10 @@ useEffect(() => {
                       </div>
                     </div>
                   </div>
-                ) : buttonClicked && dataFound && txnList?.length===0 ? (
+                ) : buttonClicked && dataFound && txnList?.length === 0 ? (
                   <div>
-                  <h5 className="d-flex justify-content-center align-items-center">Data Not Found</h5>
-                </div>
+                    <h5 className="d-flex justify-content-center align-items-center">Data Not Found</h5>
+                  </div>
                 ) : (
                   <></>
                 )}

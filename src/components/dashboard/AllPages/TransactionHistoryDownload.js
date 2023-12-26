@@ -12,6 +12,7 @@ import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
 import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
 import { axiosInstance } from '../../../utilities/axiosInstance';
+import { v4 as uuidv4 } from 'uuid';
 
 
 function TransactionHistoryDownload() {
@@ -23,9 +24,9 @@ function TransactionHistoryDownload() {
   const { isLoadingTxnHistory } = dashboard
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
- 
+
   const [txnList, SetTxnList] = useState([])
-  
+
   const [searchText, SetSearchText] = useState('')
   const [show, setShow] = useState('')
   const [pageSize, setPageSize] = useState(10);
@@ -352,10 +353,10 @@ function TransactionHistoryDownload() {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       return state
-  }
+    }
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
 
   }
@@ -620,7 +621,7 @@ function TransactionHistoryDownload() {
                   <tbody>
                     {txnList.length > 0 && paginatedata.map((item, i) => {
                       return (
-                        <tr key={i}>
+                        <tr key={uuidv4()}>
                           <td>{i + 1}</td>
                           <td>{item.txn_id}</td>
                           <td>{item.client_txn_id}</td>
@@ -667,7 +668,7 @@ function TransactionHistoryDownload() {
                       <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1)} href={() => false}>Previous</a>
                       {
                         pages.slice(currentPage - 1, currentPage + 6).map((page, i) => (
-                          <li key={i} className={
+                          <li key={uuidv4()} className={
                             page === currentPage ? " page-item active" : "page-item"
                           }>
                             {/* {console.log("currentPage",currentPage)} */}

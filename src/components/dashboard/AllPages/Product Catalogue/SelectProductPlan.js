@@ -1,11 +1,13 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import { fetchProductPlan } from '../../../../services/merchant-service/prouduct-catalogue.service'
-import { Link, Redirect, useRouteMatch, useHistory } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { axiosInstanceJWT } from '../../../../utilities/axiosInstance'
 import API_URL from '../../../../config'
 import toastConfig from '../../../../utilities/toastTypes'
+import { v4 as uuidv4 } from 'uuid';
+
 // import { } from 'react-router-dom/cjs/react-router-dom.min'
 // import { useHistory } from "react-router-dom";
 
@@ -73,7 +75,7 @@ function SelectProductPlan(props) {
         <div>
             <div className='d-flex justify-content-start'>
                 {productPlanData?.map((item, i) => (
-                    <div className="form-check mx-2" key={i}>
+                    <div className="form-check mx-2" key={uuidv4()}>
                         {/* {console.log("item", item)} */}
                         <input className="form-check-input"
                             type="radio"

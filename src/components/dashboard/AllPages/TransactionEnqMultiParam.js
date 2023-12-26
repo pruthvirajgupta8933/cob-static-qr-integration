@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import _ from "lodash";
 import API_URL from "../../../config";
 import { Formik, Form } from "formik";
@@ -10,6 +10,7 @@ import DropDownCountPerPage from "../../../_components/reuseable_components/Drop
 import PrintDocument from "../../../_components/reuseable_components/PrintDocument";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import toastConfig from "../../../utilities/toastTypes";
+import { v4 as uuidv4 } from 'uuid';
 
 function TransactionEnqMultiParam() {
   const [txnList, SetTxnList] = useState([]);
@@ -20,7 +21,7 @@ function TransactionEnqMultiParam() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showData, setShowData] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [atLeastOneFieldReq, setAtLeastOneFieldReq] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
@@ -198,12 +199,12 @@ function TransactionEnqMultiParam() {
 
       {/* Modal */}
       <div
-        className={`modal fade mymodals show ${toggleModal ? "d-block" : "d-none" }`}
+        className={`modal fade mymodals show ${toggleModal ? "d-block" : "d-none"}`}
         id="exampleModalCenter"
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true"
-        // style={{ display: toggleModal ? "block" : "none" }}
+      // style={{ display: toggleModal ? "block" : "none" }}
       >
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
@@ -478,7 +479,7 @@ function TransactionEnqMultiParam() {
                         <th> Payment Status </th>
                         <th> Payer Name </th>
                         <th> Payer Email </th>
-                        <th> </th>
+                        <th> &nbsp;</th>
                       </tr>
                     ) : (
                       <></>
@@ -488,7 +489,7 @@ function TransactionEnqMultiParam() {
                     {paginatedata.length > 0 &&
                       paginatedata.map((item, i) => {
                         return (
-                          <tr key={i}>
+                          <tr key={uuidv4()}>
                             <td>{i + 1}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_Id}</td>
@@ -542,7 +543,7 @@ function TransactionEnqMultiParam() {
                                 ? " page-item active"
                                 : "page-item"
                             }
-                            key={i}
+                            key={uuidv4()}
                           >
                             {/* {console.log("currentPage",currentPage)} */}
                             {/* {console.log("page",page)} */}

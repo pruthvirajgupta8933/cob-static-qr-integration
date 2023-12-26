@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
+import { v4 as uuidv4 } from 'uuid';
 
 
 const BusinessDetails = (props) => {
@@ -308,7 +309,7 @@ const BusinessDetails = (props) => {
                       </thead>
                       <tbody>
                         {classifications?.map((data, index) => (
-                          <tr key={index}>
+                          <tr key={uuidv4()}>
                             <td>{index + 1}</td>
                             <td>{data?.year}</td>
                             <td>{data?.type}</td>
@@ -336,7 +337,7 @@ const BusinessDetails = (props) => {
                       </thead>
                       <tbody>
                         {nicCodes?.map((data, index) => (
-                          <tr key={index}>
+                          <tr key={uuidv4()}>
                             <td>{index + 1}</td>
                             <td>{data?.digit2}</td>
                             <td>{data?.digit4}</td>

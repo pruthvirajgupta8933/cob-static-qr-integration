@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {successTxnSummary} from "../../../slices/dashboardSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { successTxnSummary } from "../../../slices/dashboardSlice";
 import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
-import {useRouteMatch, Redirect} from "react-router-dom";
+import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
-import {roleBasedAccess} from "../../../_components/reuseable_components/roleBasedAccess";
-import {fetchChiledDataList} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 function TransactionSummery() {
 
     const dispatch = useDispatch();
-    const {path} = useRouteMatch();
+    const { path } = useRouteMatch();
     const userRole = roleBasedAccess()
 
     let currentDate = new Date().toJSON().slice(0, 10);
@@ -23,12 +24,12 @@ function TransactionSummery() {
     const [txnList, SetTxnList] = useState([]);
     const [showData, SetShowData] = useState([]);
 
-    const {dashboard, auth, merchantReferralOnboardReducer} = useSelector((state) => state);
+    const { dashboard, auth, merchantReferralOnboardReducer } = useSelector((state) => state);
 
-    const {refrerChiledList} = merchantReferralOnboardReducer
+    const { refrerChiledList } = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    const {isLoading, successTxnsumry} = dashboard;
-    const {user} = auth;
+    const { isLoading, successTxnsumry } = dashboard;
+    const { user } = auth;
 
     var clientCodeArr = [];
     var totalSuccessTxn = 0;
@@ -96,8 +97,8 @@ function TransactionSummery() {
     // filter api response data with client code
     useEffect(() => {
         if (successTxnsumry?.length > 0) {
-            console.log("clientCodeArr",clientCodeArr)
-            console.log("successTxnsumry",successTxnsumry)
+            console.log("clientCodeArr", clientCodeArr)
+            console.log("successTxnsumry", successTxnsumry)
             var filterData = successTxnsumry?.filter((txnsummery) => {
                 if (clientCodeArr.includes(txnsummery.clientCode)) {
                     return clientCodeArr.includes(txnsummery.clientCode);
@@ -127,7 +128,7 @@ function TransactionSummery() {
 
     if (user.roleId !== 3 && user.roleId !== 13) {
         if (user.clientMerchantDetailsList === null) {
-            return <Redirect to={`${path}/profile`}/>;
+            return <Redirect to={`${path}/profile`} />;
         }
     }
 
@@ -136,8 +137,8 @@ function TransactionSummery() {
         totalAmt += item.payeeamount;
     });
 
-    console.log("showData",showData)
-    console.log("txnList",txnList)
+    // console.log("showData",showData)
+    // console.log("txnList",txnList)
 
     return (
         <section className="">
@@ -195,26 +196,26 @@ function TransactionSummery() {
                                     className="tables"
                                 >
                                     <tbody>
-                                    {(showData.length !== 0 && isLoading === false) &&
-                                        <tr>
-                                            <th>Sr. No.</th>
-                                            <th>Client's Name</th>
-                                            <th>Transactions</th>
-                                            <th>Amount</th>
-                                        </tr>
-                                    }
-                                    {showData &&
-                                        !isLoading &&
-                                        showData.map((item, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td>{i + 1}</td>
-                                                    <td>{item.clientName}</td>
-                                                    <td>{item.noOfTransaction}</td>
-                                                    <td>Rs {item.payeeamount}</td>
-                                                </tr>
-                                            );
-                                        })}
+                                        {(showData.length !== 0 && isLoading === false) &&
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                <th>Client's Name</th>
+                                                <th>Transactions</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        }
+                                        {showData &&
+                                            !isLoading &&
+                                            showData.map((item, i) => {
+                                                return (
+                                                    <tr key={uuidv4()}>
+                                                        <td>{i + 1}</td>
+                                                        <td>{item.clientName}</td>
+                                                        <td>{item.noOfTransaction}</td>
+                                                        <td>Rs {item.payeeamount}</td>
+                                                    </tr>
+                                                );
+                                            })}
                                     </tbody>
                                 </table>
 
@@ -225,7 +226,7 @@ function TransactionSummery() {
                                     </div>
                                 )}
 
-                                {isLoading ? <ProgressBar/> : <></>}
+                                {isLoading ? <ProgressBar /> : <></>}
                             </div>
                         </div>
                     </section>

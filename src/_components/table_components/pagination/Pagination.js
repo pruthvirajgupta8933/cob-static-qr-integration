@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+
 const Paginataion = ({
   dataCount,
   pageSize,
@@ -6,6 +8,7 @@ const Paginataion = ({
   changeCurrentPage,
 }) => {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+
 
   const totalPages = Math.ceil(dataCount / pageSize);
   // console.log(totalPages,'totalPages')
@@ -57,7 +60,7 @@ const Paginataion = ({
 
         {displayPageNumber?.map((pgNumber, i) => (
           <li
-            key={i}
+            key={uuidv4()}
             className={
               pgNumber === currentPage ? " page-item active" : "page-item"
             }

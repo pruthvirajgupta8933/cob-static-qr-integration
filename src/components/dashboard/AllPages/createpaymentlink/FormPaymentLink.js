@@ -6,6 +6,7 @@ import { toast, Zoom } from 'react-toastify';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
+import { v4 as uuidv4 } from 'uuid';
 
 function FormPaymentLink(props) {
   const { loaduser } = props;
@@ -143,16 +144,16 @@ function FormPaymentLink(props) {
                   <Form>
 
                     <div className="form-row mb-2">
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        onChange={handleCheck}
-                        value={passwordcheck}
-                        id="checkbox_pass"
-                      />
-                      <label className="form-check-label" htmlFor="exampleCheck1" >  Is Password Protected</label>
-                  </div>
+                      <div className="form-check">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          onChange={handleCheck}
+                          value={passwordcheck}
+                          id="checkbox_pass"
+                        />
+                        <label className="form-check-label" htmlFor="exampleCheck1" >  Is Password Protected</label>
+                      </div>
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-6">
@@ -162,7 +163,7 @@ function FormPaymentLink(props) {
                         >
                           <option value="">Select Payer</option>
                           {drop.map((payer, i) => (
-                            <option value={payer.id} key={i}>
+                            <option value={payer.id} key={uuidv4()}>
                               {payer.name} - {payer.email}
                             </option>
                           ))}
@@ -228,7 +229,7 @@ function FormPaymentLink(props) {
                         <Field component='select' className="form-select" name='hours' value={hours} onChange={(e) => setHours(e.target.value)}>
                           <option value="" >Hours</option>
                           {hoursArr.map((val, i) => (
-                            <option value={val} key={i}>{val}</option>
+                            <option value={val} key={uuidv4()}>{val}</option>
                           ))}
                         </Field>
                       </div>

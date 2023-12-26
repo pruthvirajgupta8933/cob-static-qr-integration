@@ -11,6 +11,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import CustomModal from "../../../../_components/custom_modal";
+import { v4 as uuidv4 } from 'uuid';
 
 const SabPaisaPricing = () => {
   const history = useHistory();
@@ -156,9 +157,9 @@ const SabPaisaPricing = () => {
             {productDetails.map((Products) => (
               // If the user selects the business category gaming, hide the subscription plan
               (business_cat_code === "37" && Products.plan_code === "005") ? (
-                <React.Fragment key={Products.plan_id}></React.Fragment>
+                <React.Fragment key={uuidv4()}></React.Fragment>
               ) : (
-                <div key={Products.plan_id} className="col-lg-4 card mx-3 mb-3">
+                <div key={uuidv4()} className="col-lg-4 card mx-3 mb-3">
                   <div className="card-body">
                     <div className="col-lg-12 text-center">
                       {param?.id === '14' ? (
@@ -209,7 +210,7 @@ const SabPaisaPricing = () => {
                       {Products?.plan_description
                         .split(",")
                         .map((details, i) => (
-                          <p key={i} className="firstli1 mb-1">{details}</p>
+                          <p key={uuidv4()} className="firstli1 mb-1">{details}</p>
                         ))}
                     </div>
                   </div>

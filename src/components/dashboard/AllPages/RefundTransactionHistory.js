@@ -18,6 +18,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import moment from "moment";
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { v4 as uuidv4 } from 'uuid';
 
 const RefundTransactionHistory = () => {
     const dispatch = useDispatch();
@@ -458,7 +459,7 @@ const RefundTransactionHistory = () => {
                                         {txnList.length > 0 &&
                                             paginatedata.map((item, i) => {
                                                 return (
-                                                    <tr key={i}>
+                                                    <tr key={uuidv4()}>
                                                         <td>{i + 1}</td>
                                                         <td>{item.client_code}</td>
                                                         <td>{item.client_name}</td>
@@ -504,7 +505,7 @@ const RefundTransactionHistory = () => {
                                                 .slice(currentPage - 1, currentPage + 6)
                                                 .map((page, i) => (
                                                     <li
-                                                        key={i}
+                                                        key={uuidv4()}
                                                         className={
                                                             page === currentPage
                                                                 ? " page-item active"

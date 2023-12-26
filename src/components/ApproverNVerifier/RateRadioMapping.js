@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const RateRadioMapping = (props) => {
@@ -24,15 +25,12 @@ const RateRadioMapping = (props) => {
       <tbody>
         {Array.isArray(props?.riskTemplate)
           ? props?.riskTemplate?.map((riskTemplate, i) => (
-            <tr key={i}>
+            <tr key={uuidv4()}>
               <td>
                 <div className="form-check">
                   <input className="form-check-input" type="radio" name="isChecked" id="flexRadioDefault1" />
-
                 </div>
-
               </td>
-
               <td>{riskTemplate?.client_code}</td>
               <td>{riskTemplate?.rate_template_name}</td>
             </tr>

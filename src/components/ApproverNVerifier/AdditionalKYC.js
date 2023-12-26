@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
+import { v4 as uuidv4 } from 'uuid';
 
 import FormikController from "../../_components/formik/FormikController";
 import {
@@ -102,7 +103,7 @@ const AdditionalKYC = () => {
 
   const handleGstinSubmit = async (values) => {
     setIsLoading(true);
-  
+
     try {
       const res = await dispatch(
         gstValidation({
@@ -111,10 +112,10 @@ const AdditionalKYC = () => {
           fy: "2018-19",
         })
       );
-  
+
       setIsLoading(false);
       setGstinData(res?.payload);
-  
+
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -128,21 +129,21 @@ const AdditionalKYC = () => {
       setIsLoading(false);
     }
   };
-  
+
 
   const handleReginSubmit = async (values) => {
     setIsLoading(true);
-  
+
     try {
       const res = await dispatch(
         udyamRegistration({
           reg_number: values.reg_number,
         })
       );
-  
+
       setIsLoading(false);
       setUdyamRegistrationData(res?.payload);
-  
+
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -153,16 +154,16 @@ const AdditionalKYC = () => {
         toast.error(res?.payload?.message);
       }
     } catch (error) {
-      
-     
+
+
       setIsLoading(false);
     }
   };
-  
+
 
   const handleBankAccountSubmit = async (values) => {
     setButtonDisable(true);
-  
+
     try {
       const res = await dispatch(
         bankAccountVerification({
@@ -170,10 +171,10 @@ const AdditionalKYC = () => {
           ifsc: values.ifsc_code,
         })
       );
-  
+
       setButtonDisable(false);
       setBankAccount(res?.payload);
-  
+
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
@@ -184,12 +185,12 @@ const AdditionalKYC = () => {
         toast.error(res?.payload?.message);
       }
     } catch (error) {
-     
-    
+
+
       setButtonDisable(false);
     }
   };
-  
+
 
   // Reset status on document type change
   useEffect(() => {
@@ -516,7 +517,7 @@ const AdditionalKYC = () => {
                       </thead>
                       <tbody>
                         {classifications?.map((data, index) => (
-                          <tr key={index}>
+                          <tr key={uuidv4()}>
                             <td>{index + 1}</td>
                             <td>{data?.year}</td>
                             <td>{data?.type}</td>
@@ -544,7 +545,7 @@ const AdditionalKYC = () => {
                       </thead>
                       <tbody>
                         {nicCodes?.map((data, index) => (
-                          <tr key={index}>
+                          <tr key={uuidv4()}>
                             <td>{index + 1}</td>
                             <td>{data?.digit2}</td>
                             <td>{data?.digit4}</td>

@@ -1,6 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import SelectProductPlan from './SelectProductPlan'
+import { v4 as uuidv4 } from 'uuid';
 
 function PaymentAlertBox(props) {
   const { heading, text1, linkName, bgColor, cardData } = props
@@ -28,7 +29,7 @@ function PaymentAlertBox(props) {
           <div className="card-body">
             <div className="row">
               {cardData?.map(data => (
-                <div className="col-12 mb-1" key={data}>
+                <div className="col-12 mb-1" key={uuidv4()}>
                   <div className={`alert bg-light`} role="alert" >
                     <p>{`Kindly pay the amount of the subscribed product`}</p>
                     <p>{`Product : ${data?.applicationName}`} </p>

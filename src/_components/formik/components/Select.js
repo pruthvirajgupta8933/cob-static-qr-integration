@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, ErrorMessage } from "formik";
 import "./index.css";
+import { v4 as uuidv4 } from 'uuid';
 
 function Select(props) {
   const { label, name, options, ...rest } = props;
@@ -22,7 +23,7 @@ function Select(props) {
         {options.map((option, i) => {
           return (
             <option
-              key={i}
+              key={uuidv4()}
               value={props.valueFlag ? option.value : option.key}
               datakey={i}
               disabled={option?.disabled}
