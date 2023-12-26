@@ -68,13 +68,7 @@ const NotFilledKYC = () => {
 }, [notFilledKycData]);
 
  
-
-  // useEffect(() => {
-
-  //   fetchData();
-  // }, [currentPage, pageSize, searchText, dispatch, onboardType]);
-
-  const searchByText = () => {
+const searchByText = () => {
 
     
     const filterData = setData(

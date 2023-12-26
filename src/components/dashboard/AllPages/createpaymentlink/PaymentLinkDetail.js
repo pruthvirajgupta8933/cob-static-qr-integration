@@ -84,10 +84,7 @@ const PaymentLinkDetail = () => {
     setCurrentPage(pageNo);
   }
 
-
-
-
-  useEffect(() => {
+useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value())
     setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0)
   }, [pageSize, displayList]);
