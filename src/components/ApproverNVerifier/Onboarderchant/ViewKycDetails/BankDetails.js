@@ -63,10 +63,11 @@ const BankDetails = (props) => {
 
 
   useEffect(() => {
+    console.log("usef Caallll")
     fetchBankList().then(resp => {
       const bankData = resp.data?.filter((item) => item.bankId === bankid)
       setBankName(bankData[0].bankName)
-    }).catch(err => console.log(err))
+    }).catch(err => console.log("err", err))
 
 
   }, [bankid])

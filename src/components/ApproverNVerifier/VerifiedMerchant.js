@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -16,10 +16,10 @@ function VerifiedMerchant() {
 
   const dispatch = useDispatch();
   const verifiedList = useSelector(
-    (state) => state.kyc.kycVerifiedList 
+    (state) => state.kyc.kycVerifiedList
   );
 
-  
+
 
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
@@ -35,13 +35,13 @@ function VerifiedMerchant() {
   const [onboardType, setOnboardType] = useState("")
 
   useEffect(() => {
-    const verifiedDataList =verifiedList?.results;
-    const dataCount =verifiedList?.count;
+    const verifiedDataList = verifiedList?.results;
+    const dataCount = verifiedList?.count;
 
-    if (verifiedDataList ) {
-      setData(verifiedDataList );
+    if (verifiedDataList) {
+      setData(verifiedDataList);
       setVerifiedMerchant(verifiedDataList);
-      setKycIdClick(verifiedDataList );
+      setKycIdClick(verifiedDataList);
       setDataCount(dataCount)
     }
   }, [verifiedList]); //
@@ -246,18 +246,18 @@ function VerifiedMerchant() {
   //       isDirect: onboardType
   //     })
   //   )
-      
+
   // };
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForVerified({
-              page: currentPage,
-              page_size: pageSize,
-              searchquery: searchText,
-              merchantStatus: "Verified",
-              isDirect: onboardType
-          })
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Verified",
+        isDirect: onboardType
+      })
     );
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
@@ -308,7 +308,7 @@ function VerifiedMerchant() {
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             currentPage={currentPage}
@@ -329,14 +329,14 @@ function VerifiedMerchant() {
           />
         </div>
         <div className="">
-        {!loadingState &&
-          <MerchnatListExportToxl
-            URL={
-              "export-excel/?search=Verified"
-            }
-            filename={"Pending-Approval"}
-          />
-}
+          {!loadingState &&
+            <MerchnatListExportToxl
+              URL={
+                "export-excel/?search=Verified"
+              }
+              filename={"Pending-Approval"}
+            />
+          }
         </div>
         <div>
         </div>
@@ -347,6 +347,8 @@ function VerifiedMerchant() {
           setModalState={setOpenCommentModal}
           tabName={"Pending Approval"}
         />}
+
+
 
         {isOpenModal && <KycDetailsModal
           kycId={kycIdClick}
@@ -359,7 +361,7 @@ function VerifiedMerchant() {
       </div>
       <div className="">
         <div className="scroll overflow-auto">
-        <h6>Total Count : {dataCount}</h6>
+          <h6>Total Count : {dataCount}</h6>
           {!loadingState && data?.length !== 0 && (
             <Table
               row={PendingApprovalData}
@@ -371,7 +373,7 @@ function VerifiedMerchant() {
             />
           )}
         </div>
-        {/* <CustomLoader loadingState={loadingState} /> */}
+
         {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center font-weight-bold">No Data Found</h6>
