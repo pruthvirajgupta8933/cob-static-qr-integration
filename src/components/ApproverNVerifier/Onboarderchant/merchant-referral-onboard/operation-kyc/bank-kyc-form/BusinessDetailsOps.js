@@ -27,7 +27,7 @@ function BusinessDetailsOps({ setCurrentTab }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string().nullable(),
-        website: Yup.string().nullable(),
+        website: Yup.string().nullable().required("Required"),
         is_pan_verified: Yup.string().nullable()
     })
 
@@ -35,7 +35,7 @@ function BusinessDetailsOps({ setCurrentTab }) {
         setSubmitLoader(true)
         const postData = {
             website_app_url: value.website,
-            is_website_url: value.website !== "" ? "True" : "False",
+            is_website_url: "True",
             pan_card: value.pan_card,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId
