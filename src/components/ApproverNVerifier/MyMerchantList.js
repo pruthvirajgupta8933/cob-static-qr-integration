@@ -282,7 +282,7 @@ const MyMerchantList = () => {
                     <label>Select KYC Status</label>
                     <select class="form-select" onChange={(e) => setKycSearchStatus(e.currentTarget.value)}>
                         {kycStatus?.map((d, i) => (
-                            <option value={d?.key} key={uuidv4()}>{d.values}</option>
+                            <option value={d?.key} key={uuidv4()} selected={kycSearchStatus === d.key}>{d.values}</option>
                         ))}
                     </select>
                 </div>
