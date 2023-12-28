@@ -246,6 +246,10 @@ const MyMerchantList = () => {
     ];
 
 
+    const KycStatusHandler = (value) => {
+        setKycSearchStatus(value)
+        setCurrentPage(1)
+    }
 
 
 
@@ -280,7 +284,7 @@ const MyMerchantList = () => {
                 {/* {console.log(kycStatus)} */}
                 <div className="form-group col-lg-3 col-md-12 mt-2">
                     <label>Select KYC Status</label>
-                    <select class="form-select" onChange={(e) => setKycSearchStatus(e.currentTarget.value)}>
+                    <select class="form-select" onChange={(e) => KycStatusHandler(e.currentTarget.value)}>
                         {kycStatus?.map((d, i) => (
                             <option value={d?.key} key={uuidv4()} selected={kycSearchStatus === d.key}>{d.values}</option>
                         ))}
