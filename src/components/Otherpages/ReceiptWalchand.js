@@ -3,14 +3,15 @@ import axios from "axios";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 import Header from "../mainComponent/header/Header";
+import { v4 as uuidv4 } from 'uuid';
 
 const ReceiptWalchand = () => {
   const [pnrId, setPnrId] = useState();
   const [show, setIsShow] = useState(false);
-  const [btnDisable,setBtnDisable] = useState(false)
+  const [btnDisable, setBtnDisable] = useState(false)
   const [data, setData] = useState([]);
 
-  const onSubmit = async (e,pnrId) => {
+  const onSubmit = async (e, pnrId) => {
     setBtnDisable(true)
     e.preventDefault();
     await axios
@@ -18,12 +19,12 @@ const ReceiptWalchand = () => {
       .then((response) => {
         // console.log(response.data)
         let resData = response.data;
-        if(response?.data.length === 0 || null) {
+        if (response?.data.length === 0 || null) {
           toastConfig.errorToast("No Data Found")
           setBtnDisable(false)
           setIsShow(false);
         }
-        
+
         resData.map((dt, i) =>
           transactionStatus(dt.cid, dt.transId).then((response) => {
             if (response[0].client_txn_id === dt.transId) {
@@ -37,7 +38,7 @@ const ReceiptWalchand = () => {
           setData(resData);
           setIsShow(true);
           setBtnDisable(false)
-     
+
           // setErrMessage('');
         }, 2000);
       }).catch((e) => {
@@ -80,14 +81,14 @@ const ReceiptWalchand = () => {
 
       <div className="container-fluid">
         <div className="row justify-content-center">
-        <div className="col-lg-6">
+          <div className="col-lg-6">
             <div className="card">
               <div className="card-header text-center">
                 <p>
-                Dear payer, in case money is debited by a Bank and not confirmed
-              to us in Real time Your Bank would probably Refund your money as
-              per your policy.For any payment issues please mail us at
-              support@sabpaisa.in
+                  Dear payer, in case money is debited by a Bank and not confirmed
+                  to us in Real time Your Bank would probably Refund your money as
+                  per your policy.For any payment issues please mail us at
+                  support@sabpaisa.in
                 </p>
                 <p>
                   <strong>SABPAISA TRANSACTION RECEIPT</strong>
@@ -95,30 +96,30 @@ const ReceiptWalchand = () => {
               </div>
               <div className="card-body">
 
-              <form action="#">
-                    <div className="form-group">
-                      <label for="txn_id_input">Enter PNR number :</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="pnrId"
-                        value={pnrId}
-                        onChange={(e) => setPnrId(e.target.value)}
-                        placeholder="Enter PNR number"
-                      />
-                    </div>
+                <form action="#">
+                  <div className="form-group">
+                    <label for="txn_id_input">Enter PNR number :</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="pnrId"
+                      value={pnrId}
+                      onChange={(e) => setPnrId(e.target.value)}
+                      placeholder="Enter PNR number"
+                    />
+                  </div>
 
-                    <div className="form-group">
-                      <button
-                        className="btn cob-btn-primary btn-sm"
-                        onClick={(e) => onSubmit(e,pnrId)}
-                        disabled={btnDisable}
-                      >
-                       View
-                      </button>
-                     
-                    </div>
-                  </form>
+                  <div className="form-group">
+                    <button
+                      className="btn cob-btn-primary btn-sm"
+                      onClick={(e) => onSubmit(e, pnrId)}
+                      disabled={btnDisable}
+                    >
+                      View
+                    </button>
+
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -130,18 +131,17 @@ const ReceiptWalchand = () => {
           <div className="col-lg-6">
             {show &&
               data.map((user, i) => (
-                <>
-                  {/* {console.log(user)} */}
+                <React.Fragment key={uuidv4()}>
                   <div className="card">
                     <div className="card-body table-responsive">
-                    <div className="d-flex justify-content-end">
-                      <button onClick={()=>{printHandler('table_'+i)}} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
-                    </div>
+                      <div className="d-flex justify-content-end">
+                        <button onClick={() => { printHandler('table_' + i) }} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                      </div>
                       <table className="table" id={`table_${i}`}>
                         <thead className="">
-                        <tr>
-                          <th colspan="2">Sabpaisa Transaction Receipt</th>
-                        </tr>
+                          <tr>
+                            <th colspan="2">Sabpaisa Transaction Receipt</th>
+                          </tr>
                         </thead>
                         <tbody>
                           <tr>
@@ -184,18 +184,15 @@ const ReceiptWalchand = () => {
                         </tbody>
                       </table>
                     </div>
-                    {/* <div className="card-footer">
-                    <button value='click' onClick={()=>{printHandler('table_'+i)}} className="btn cob-btn-primary">Print</button>
-                    </div> */}
                   </div>
-                </>
+                </React.Fragment>
               ))}
           </div>
         </div>
       </div>
     </React.Fragment>
 
-  
+
   );
 };
 

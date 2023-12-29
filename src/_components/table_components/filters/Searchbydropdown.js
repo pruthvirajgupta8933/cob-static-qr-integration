@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const SearchFilter = ({
   searchText,
@@ -43,7 +44,7 @@ const SearchFilter = ({
         >
           {optionSearchData &&
             optionSearchData.map((data) => (
-              <option key={data.value} value={data.value}>
+              <option key={uuidv4()} value={data.value}>
                 {data.name}
               </option>
             ))}

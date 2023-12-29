@@ -256,8 +256,7 @@ function BusinessOverview(props) {
           ticket_size: values.ticket_size,
           modified_by: loginId,
           login_id: loginId,
-          is_website_url:
-          values.seletcted_website_app_url === "Yes" ? "True" : "False",
+          is_website_url: values.seletcted_website_app_url === "Yes" ? "True" : "False",
           website_app_url: values.website_app_url,
         })
       ).then((res) => {

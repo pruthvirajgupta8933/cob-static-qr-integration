@@ -13,6 +13,7 @@ import Header from '../header/Header'
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
 import signupBnr from "../../../assets/images/sb-front-bnrr.png"
+import { v4 as uuidv4 } from 'uuid';
 // import { toast, Zoom } from "react-toastify";
 // import 'react-toastify/dist/ReactToastify.css';
 import toastConfig from "../../../utilities/toastTypes";
@@ -59,8 +60,8 @@ const FORM_VALIDATION = Yup.object().shape({
 
 
 function Signup() {
-     const history = useHistory();
-     const reduxState = useSelector((state) => state);
+    const history = useHistory();
+    const reduxState = useSelector((state) => state);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { message, auth } = reduxState;
@@ -80,7 +81,7 @@ function Signup() {
         showPassword: false,
     });
 
-    
+
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
 
@@ -93,7 +94,7 @@ function Signup() {
         });
     };
 
-    
+
 
     useEffect(() => {
         axiosInstanceJWT
@@ -351,7 +352,7 @@ function Signup() {
                                                     {businessCode?.map((business, i) => (
                                                         <option
                                                             value={business.category_id}
-                                                            key={i}
+                                                            key={uuidv4()}
                                                         >
                                                             {business.category_name}
                                                         </option>

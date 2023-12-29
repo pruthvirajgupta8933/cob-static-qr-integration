@@ -8,6 +8,7 @@ import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import FormikController from "../../_components/formik/FormikController";
 import { exportTxnLoadingState } from "../../slices/dashboardSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const validationSchema = Yup.object({
@@ -180,10 +181,10 @@ const BizzAppData = () => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       return state
-  }
+    }
 
 
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
@@ -210,19 +211,19 @@ const BizzAppData = () => {
                 <div className="container mt-5">
                   <div className="row">
                     <div className="form-group  col-md-3">
-                    <FormikController
-                          control="date"
-                          label="From Date"
-                          id="start_date"
-                          name="start_date"
-                          value={formik.values.start_date ? new Date(formik.values.start_date) : null}
-                          onChange={date => formik.setFieldValue('start_date', date)}
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["start_date"]}
-                        />
+                      <FormikController
+                        control="date"
+                        label="From Date"
+                        id="start_date"
+                        name="start_date"
+                        value={formik.values.start_date ? new Date(formik.values.start_date) : null}
+                        onChange={date => formik.setFieldValue('start_date', date)}
+                        format="dd-MM-y"
+                        clearIcon={null}
+                        className="form-control rounded-0 p-0"
+                        required={true}
+                        errorMsg={formik.errors["start_date"]}
+                      />
 
                     </div>
 
@@ -318,7 +319,7 @@ const BizzAppData = () => {
                       </tr>
                     ) : (
                       FormData?.map((SingleFormData, i) => (
-                        <tr key={i}>
+                        <tr key={uuidv4()}>
                           <td>{i + 1}</td>
                           <td>{SingleFormData?.merchant_business_name}</td>
                           <td>{SingleFormData?.merchant_legal_name}</td>

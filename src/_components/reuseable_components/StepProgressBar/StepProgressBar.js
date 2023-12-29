@@ -5,25 +5,25 @@ import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
 import "react-step-progress/dist/index.css";
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from "../../../utilities/enums";
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 function StepComplete(props) {
-  
-  const {data, progressPercentage} = props
+
+  const { data, progressPercentage } = props
   let colorValue = "#e4e4e4";
 
-if(data.id===1 && (progressPercentage >= 1 && progressPercentage <= 100)){
-  colorValue = "#ed7d31"
-}else if(data.id===2 && (progressPercentage > 33)){
-  colorValue = "#ed7d31"
-}else if(data.id===3  && (progressPercentage > 33.4 && progressPercentage <= 100)){
-  colorValue = "#ed7d31"
-}else if(data.id===4 && (progressPercentage > 67 &&  progressPercentage <= 100)){
-  colorValue = "#ed7d31"
-}else{
-  colorValue = "#e4e4e4";
-}
+  if (data.id === 1 && (progressPercentage >= 1 && progressPercentage <= 100)) {
+    colorValue = "#ed7d31"
+  } else if (data.id === 2 && (progressPercentage > 33)) {
+    colorValue = "#ed7d31"
+  } else if (data.id === 3 && (progressPercentage > 33.4 && progressPercentage <= 100)) {
+    colorValue = "#ed7d31"
+  } else if (data.id === 4 && (progressPercentage > 67 && progressPercentage <= 100)) {
+    colorValue = "#ed7d31"
+  } else {
+    colorValue = "#e4e4e4";
+  }
 
   return (
     <svg
@@ -76,7 +76,7 @@ function StepProgressBar(props) {
 
   let status = props?.status?.toLocaleLowerCase();
 
-  const getProgressByStatus= (status)=>{
+  const getProgressByStatus = (status) => {
 
     let percent = 0;
     if (status === KYC_STATUS_PENDING.toLocaleLowerCase() || status === KYC_STATUS_NOT_FILLED.toLocaleLowerCase()) {
@@ -118,10 +118,10 @@ function StepProgressBar(props) {
   }, [status]);
 
 
-// console.log(kycStatusData[0])
+  // console.log(kycStatusData[0])
   const steps = kycStatusData[0]?.steps?.map((s, index) => {
     return (
-      <Step transition="scale" key={s.title}>
+      <Step transition="scale" key={uuidv4()}>
         {({ accomplished }) => (
           <div
             style={{
@@ -131,7 +131,7 @@ function StepProgressBar(props) {
               alignItems: "center",
             }}
           >
-    
+
             <div style={{ marginTop: 0, position: "absolute" }}>
               <StepComplete data={s} progressPercentage={percentage} />
             </div>
@@ -163,7 +163,7 @@ function StepProgressBar(props) {
             filledBackground="linear-gradient(to right, #ED7D31, #ED7D00)"
           >
             {steps}
-          
+
           </ProgressBar>
         </div>
         <br />

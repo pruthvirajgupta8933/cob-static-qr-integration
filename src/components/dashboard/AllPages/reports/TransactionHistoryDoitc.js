@@ -13,11 +13,12 @@ import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import NavBar from "../../../dashboard/NavBar/NavBar";
+// import NavBar from "../../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
-import { exportTxnLoadingState } from "../../../../slices/dashboardSlice";
+// import { exportTxnLoadingState } from "../../../../slices/dashboardSlice";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const TransactionHistoryDoitc = () => {
@@ -408,11 +409,11 @@ const TransactionHistoryDoitc = () => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       // dispatch(exportTxnLoadingState(state))
       return state
-  }
+    }
 
     const fileName = "Transactions-Report";
     if (exportType === "xlxs") {
@@ -632,7 +633,7 @@ const TransactionHistoryDoitc = () => {
                     {txnList.length > 0 &&
                       paginatedata.map((item, i) => {
                         return (
-                          <tr key={i}>
+                          <tr key={uuidv4()}>
                             <td>{i + 1}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
@@ -694,7 +695,7 @@ const TransactionHistoryDoitc = () => {
                         .slice(currentPage - 1, currentPage + 6)
                         .map((page, i) => (
                           <li
-                            key={i}
+                            key={uuidv4()}
                             className={
                               page === currentPage
                                 ? " page-item active"

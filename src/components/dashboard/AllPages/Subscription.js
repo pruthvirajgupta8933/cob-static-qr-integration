@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
+// import axios from "axios";
 // import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
 // import { Link } from 'react-router-dom';
-import Emandate from "../AllPages/Mandate";
+// import Emandate from "../AllPages/Mandate";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import API_URL from "../../../config";
-import { Link } from "react-router-dom";
-import CreateClientCode from "./Modals/CreateClientCode";
-import BusinessCategory from "./Modals/BusinessCategory";
-import NavBar from "../NavBar/NavBar";
+// import API_URL from "../../../config";
+// import { Link } from "react-router-dom";
+// import CreateClientCode from "./Modals/CreateClientCode";
+// import BusinessCategory from "./Modals/BusinessCategory";
+// import NavBar from "../NavBar/NavBar";
 // import paymentGateWay from '../../../payment-gateway/'
+import { v4 as uuidv4 } from 'uuid';
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
@@ -581,7 +582,7 @@ const Subsciption = () => {
   return (
     <section className="ant-layout">
       <div>
-        
+
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
@@ -600,7 +601,7 @@ const Subsciption = () => {
                   <h3>Loading...</h3>
                 ) : (
                   subscriptionPlanData.map((s, i) => (
-                    <div className="col col-lg-5 ">
+                    <div className="col col-lg-5 " key={uuidv4()}>
                       <div className="card">
                         <div className="card-body">
                           <h5 className="card-title font-weight-bold h3">
@@ -624,7 +625,7 @@ const Subsciption = () => {
                             </a>
                             <button type="button" className=" btn bttn cob-btn-primary collapsed"
                               data-toggle="modal" data-target="#exampleModal"
-                              // onClick={() => console.log('this is mapped data for modal : ', s)}
+                            // onClick={() => console.log('this is mapped data for modal : ', s)}
                             >
                               Subscribe
                             </button>

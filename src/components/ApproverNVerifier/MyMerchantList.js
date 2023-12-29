@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MyMerchantListData } from "../../slices/kycSlice";
 import Table from "../../_components/table_components/table/Table";
@@ -9,6 +9,7 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import { v4 as uuidv4 } from 'uuid';
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 // import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown"
 
@@ -42,7 +43,7 @@ const MyMerchantList = () => {
 
 
     // const viewStatusbyId=kycIdClick?.master_client_id
-     useEffect(() => {
+    useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
         const dataCount = myMerchantListData?.count;
         if (myAllMerchantDataList) {
@@ -53,7 +54,7 @@ const MyMerchantList = () => {
     }, [myMerchantListData]); //
 
 
-const kycSearch = (e, fieldType) => {
+    const kycSearch = (e, fieldType) => {
         if (fieldType === "text") {
             setSearchByDropDown(false)
             setSearchText(e);
@@ -74,8 +75,8 @@ const kycSearch = (e, fieldType) => {
         { key: KYC_STATUS_VERIFIED, values: 'Pending Approval' },
         { key: KYC_STATUS_APPROVED, values: KYC_STATUS_APPROVED },
         { key: KYC_STATUS_REJECTED, values: KYC_STATUS_REJECTED }
-      ];
-      
+    ];
+
 
 
 
@@ -109,18 +110,18 @@ const kycSearch = (e, fieldType) => {
     const fetchData = useCallback((startingSerialNumber) => {
         dispatch(
             MyMerchantListData({
-                            page: currentPage,
-                            page_size: pageSize,
-                            created_by: loginId,
-                            searchquery: searchText,
-                            kyc_status: kycSearchStatus
-                        })
+                page: currentPage,
+                page_size: pageSize,
+                created_by: loginId,
+                searchquery: searchText,
+                kyc_status: kycSearchStatus
+            })
         );
-      }, [currentPage, pageSize, searchText, dispatch, onboardType, kycSearchStatus]);
+    }, [currentPage, pageSize, searchText, dispatch, onboardType, kycSearchStatus]);
 
-      useEffect(() => {
+    useEffect(() => {
         fetchData();
-      }, [fetchData]);
+    }, [fetchData]);
 
 
     //function for change current page
@@ -157,7 +158,7 @@ const kycSearch = (e, fieldType) => {
             width: "200px",
         },
 
-       
+
         {
             id: "4",
             name: "Email",
@@ -179,9 +180,9 @@ const kycSearch = (e, fieldType) => {
             cell: (row) => <div className="removeWhiteSpace">{row?.login_id?.status}</div>,
             // width: "200px",
         },
-       
 
-{
+
+        {
             id: "7",
             name: "Created Date",
             selector: (row) => row.createdDate,
@@ -281,7 +282,7 @@ const kycSearch = (e, fieldType) => {
                     <label>Select KYC Status</label>
                     <select class="form-select" onChange={(e) => setKycSearchStatus(e.currentTarget.value)}>
                         {kycStatus?.map((d, i) => (
-                            <option value={d?.key} key={i}>{d.values}</option>
+                            <option value={d?.key} key={uuidv4()} selected={kycSearchStatus === d.key}>{d.values}</option>
                         ))}
                     </select>
                 </div>

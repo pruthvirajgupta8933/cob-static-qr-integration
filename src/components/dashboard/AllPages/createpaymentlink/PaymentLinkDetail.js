@@ -7,7 +7,7 @@ import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
-
+import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
 
 const PaymentLinkDetail = () => {
@@ -84,7 +84,7 @@ const PaymentLinkDetail = () => {
     setCurrentPage(pageNo);
   }
 
-useEffect(() => {
+  useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value())
     setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0)
   }, [pageSize, displayList]);
@@ -152,7 +152,7 @@ useEffect(() => {
 
       <section className="">
         <div className="container-fluid p-3 my-3">
-        <h6>Total Records:{data.length}</h6>
+          <h6>Total Records:{data.length}</h6>
 
           {!paginatedata ? (<h3> No Data Found</h3>) : (<React.Fragment>  <div className="scroll" style={{ overflow: "auto" }}>
             <table className="table table-bordered nowrap">
@@ -177,7 +177,7 @@ useEffect(() => {
                 <tbody>
 
                   {paginatedata.map((user, i) => (
-                    <tr key={i}>
+                    <tr key={uuidv4()}>
                       <td>{i + 1}</td>
                       <td>{user?.customer_phoneNumber}</td>
                       <td>{user?.amount}</td>
@@ -210,7 +210,7 @@ useEffect(() => {
                     <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1)} href={() => false}>Previous</a>
                     {
                       pages.slice(currentPage - 1, currentPage + 6).map((page, i) => (
-                        <li key={i} className={
+                        <li key={uuidv4()} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }>
                           <a className={`page-link data_${i}`} href={() => false}>

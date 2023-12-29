@@ -170,7 +170,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
                         Select Business
                       </option>
                       {businessCode?.map((business, i) => (
-                        <option value={business.category_id} key={i}>
+                        <option value={business.category_id} key={business.category_id}>
                           {business.category_name}
                         </option>
                       ))}

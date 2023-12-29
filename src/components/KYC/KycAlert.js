@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid';
 
 function KycAlert() {
 
@@ -68,7 +69,7 @@ function KycAlert() {
     <div className="alert alert-danger NunitoSans-Regular" role="alert" >
       <h6 className="alert-heading" data-tip="Kindly Update your KYC">KYC Alert!</h6>
       {kycTabRejectionStatus && kycTabRejectionStatus?.map((kycTabStatus, i) => (
-        <p key={i}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
+        <p key={uuidv4()}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
       )}
       <hr />
       <Link className="submit-btn cob-btn-primary btn-sm text-decoration-none  text-white" to="dashboard/kyc">

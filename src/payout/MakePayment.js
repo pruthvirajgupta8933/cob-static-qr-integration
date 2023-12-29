@@ -35,7 +35,7 @@ const MakePayment = (props) => {
       pageSize: 10,
       pageNumber: 1,
     };
-    dispatch(fetchBeneficiaryDetails({ data })).then((res)=>{
+    dispatch(fetchBeneficiaryDetails({ data })).then((res) => {
       toastConfig.infoToast(res.payload.message)
     })
   };
@@ -46,7 +46,7 @@ const MakePayment = (props) => {
   const [beneficiary, setbeneficiary] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
   const payoutBeneficiaryState = useSelector((state) => state.payout);
-  const clientState=useSelector((state)=>state.payout.clientData);
+  const clientState = useSelector((state) => state.payout.clientData);
   const payoutTransactionsState = useSelector((state) => state.payout);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState({});
   const [bankdata, setData] = useState([]);
@@ -55,8 +55,8 @@ const MakePayment = (props) => {
   const beneficiaryData = payoutBeneficiaryState?.beneficiaryList.results;
 
   const transactionsMode = payoutTransactionsState?.transactionsMode?.data;
-  const authKey=clientState?.data?.auth_key;
-  const authIv=clientState?.data?.auth_iv;
+  const authKey = clientState?.data?.auth_key;
+  const authIv = clientState?.data?.auth_iv;
 
   let data = beneficiary.toString();
   const FORM_VALIDATION = Yup.object().shape({
@@ -108,8 +108,7 @@ const MakePayment = (props) => {
       if (res) {
         // console.log(res,"--makepayment")
         if (res.meta.requestStatus === "fulfilled") {
-          if(res.payload.responseCode==="1")
-          {
+          if (res.payload.responseCode === "1") {
             setBankRespDetails(true);
             setPaymentForm(false);
           }
@@ -128,12 +127,11 @@ const MakePayment = (props) => {
           toastConfig.infoToast(res.payload.message);
         }
       }
-    }).catch((err)=>
-    {
-      console.log(err,'error');
+    }).catch((err) => {
+      console.log(err, 'error');
     })
   }
-  
+
   const test = (e) => {
     let data = beneficiaryData.filter((data) => data.id == e);
     let obj = Object.assign({}, data);
@@ -147,7 +145,7 @@ const MakePayment = (props) => {
     <>
       <section className="ant-layout">
         <div>
-          
+
         </div>
         <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
           <div className="gx-main-content-wrapper">
@@ -207,11 +205,9 @@ const MakePayment = (props) => {
                               <option selected>Select beneficiary</option>
                               {beneficiaryData?.map((data, key) => {
                                 return (
-                                  <>
-                                    <option value={data.id} id={key}>
-                                      {data.full_name}
-                                    </option>
-                                  </>
+                                  <option value={data.id} id={data.id}>
+                                    {data.full_name}
+                                  </option>
                                 );
                               })}
                             </select>

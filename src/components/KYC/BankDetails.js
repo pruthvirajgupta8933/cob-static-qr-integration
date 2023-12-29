@@ -188,6 +188,7 @@ function BankDetails(props) {
 
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
 
+  // TODO: remove the api 
   useEffect(() => {
     dispatch(kycBankNames())
       .then((resp) => {
@@ -205,6 +206,7 @@ function BankDetails(props) {
   }, []);
 
 
+  // TODO: remove the bank list api and update with the response from the bank name api
   const onSubmit = (values) => {
     let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
     if (role.merchant) {

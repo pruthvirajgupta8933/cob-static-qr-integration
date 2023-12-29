@@ -579,18 +579,18 @@ export const MyMerchantListData = createAsyncThunk(
         let apiUrl = `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&order_by=-login_id`;
         // Check if kyc_status is present and not equal to 'ALL'
         if (data?.kyc_status && data.kyc_status !== 'All') {
-          apiUrl += `&kyc_status=${data.kyc_status}`;
+            apiUrl += `&kyc_status=${data.kyc_status}`;
         }
-         // Add the search_query parameter
+        // Add the search_query parameter
         apiUrl += `&search_query=${searchQuery}`;
-        const response = await axiosInstanceJWT.post(apiUrl,{"created_by": data.created_by}).catch((error) => {
-          return error.response;
+        const response = await axiosInstanceJWT.post(apiUrl, { "created_by": data.created_by }).catch((error) => {
+            return error.response;
         });
-        
+
         return response.data;
     }
 );
-    
+
 
 export const kycForPendingMerchants = createAsyncThunk(
     "kyc/kycForPendingMerchants",
@@ -685,7 +685,7 @@ export const kycForVerified = createAsyncThunk(
 
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus}&search_query=${searchQuery }&page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`
+                `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus}&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`
             )
             .catch((error) => {
                 return error.response;
@@ -737,7 +737,7 @@ export const kycForApproved = createAsyncThunk(
         // console.log("isDirect",isDirect)
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${searchquery}&page=${ searchquery ? 1 : requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
+                `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${searchquery}&page=${searchquery ? 1 : requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
             .catch((error) => {
                 return error.response;
             });
@@ -1094,7 +1094,7 @@ export const kycSlice = createSlice({
             state.busiCategory = [];
         },
         loadKycUserList: (state) => {
-            state.kycUserList = [];
+            state.kycUserList = {};
         },
         loadKycVericationForAllTabs: (state) => {
             state.KycTabStatusStore = [];

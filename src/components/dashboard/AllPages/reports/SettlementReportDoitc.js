@@ -11,10 +11,10 @@ import { toast } from "react-toastify";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
-import NavBar from "../../NavBar/NavBar";
+// import NavBar from "../../NavBar/NavBar";
 import moment from "moment";
 import { clearSettledTransactionHistory, settledTransactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 const SettlementReportDoitc = () => {
@@ -209,7 +209,7 @@ const SettlementReportDoitc = () => {
       "Refund Status",
       "Refunded Date",
 
-      "Refunded Amount",      
+      "Refunded Amount",
       "Track Id",
       "Chargeback Status",
       "Charged Date",
@@ -289,11 +289,11 @@ const SettlementReportDoitc = () => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       // dispatch(exportTxnLoadingState(state))
       return state
-  }
+    }
 
     if (exportType === "xlxs") {
       exportToSpreadsheet(excelArr, fileName + "-xlxs", handleExportLoading);
@@ -368,16 +368,16 @@ const SettlementReportDoitc = () => {
                       </div>
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
-                        <div className="dropdown form-group">
-                              <button className="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Export
-                              </button>
-                              <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("csv")}>CSV</button>
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv-ms-excel")}>CSV for MS-Excel</button>
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("xlxs")}>Excel</button>
-                              </div>
+                          <div className="dropdown form-group">
+                            <button className="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Export
+                            </button>
+                            <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
+                              <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv")}>CSV</button>
+                              <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv-ms-excel")}>CSV for MS-Excel</button>
+                              <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("xlxs")}>Excel</button>
                             </div>
+                          </div>
                         </div>
                       ) : (
                         <></>
@@ -464,7 +464,7 @@ const SettlementReportDoitc = () => {
                     {txnList.length > 0 &&
                       paginatedata.map((item, i) => {
                         return (
-                          <tr key={i}>
+                          <tr key={uuidv4()}>
                             <td>{item.srNo}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
@@ -514,7 +514,7 @@ const SettlementReportDoitc = () => {
                         .slice(currentPage - 1, currentPage + 6)
                         .map((page, i) => (
                           <li
-                            key={i}
+                            key={uuidv4()}
                             className={
                               page === currentPage
                                 ? " page-item active"

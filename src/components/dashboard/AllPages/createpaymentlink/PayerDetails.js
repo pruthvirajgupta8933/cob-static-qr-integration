@@ -13,6 +13,7 @@ import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 // import "./index.css";
+import { v4 as uuidv4 } from 'uuid';
 import classes from "./paylink.module.css"
 
 const phoneRegExp =
@@ -143,7 +144,7 @@ const PayerDetails = () => {
 
   //ADD user API Integration
 
-    const onSubmit = async (e) => {
+  const onSubmit = async (e) => {
     // console.log(e)
     const res = await axiosInstance.post(API_URL.ADD_CUSTOMER, {
       name: e.name,
@@ -152,7 +153,7 @@ const PayerDetails = () => {
       client_code: clientCode,
       customer_type_id: e.customer_type_id,
     });
-  loadUser();
+    loadUser();
     if (res.status === 200) {
       toastConfig.successToast("Payee added successfully");
     } else {
@@ -161,7 +162,7 @@ const PayerDetails = () => {
   };
 
   // USE FOR EDIT FORM
-const handleClick = (id) => {
+  const handleClick = (id) => {
     setEditModalToggle(true);
     data.filter((dataItem) => {
       if (dataItem.id === id) {
@@ -215,8 +216,8 @@ const handleClick = (id) => {
         modalToggle={editModalToggle}
         fnSetModalToggle={setEditModalToggle}
       />
-      <Genratelink generatedata={genrateform}/>
-        <div
+      <Genratelink generatedata={genrateform} />
+      <div
         className="mymodals modal fade"
         id="exampleModal"
         role="dialog"
@@ -366,7 +367,7 @@ const handleClick = (id) => {
                             Select Your Payer Category
                           </option>
                           {customerType.map((payer, i) => (
-                            <option value={payer.id} key={i}>
+                            <option value={payer.id} key={uuidv4()}>
                               {payer.type?.toUpperCase()}
                             </option>
                           ))}
@@ -431,8 +432,8 @@ const handleClick = (id) => {
           </div>
 
           <div className="row">
-          <div className={`col-lg-3 mt-3`}>
-            {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
+            <div className={`col-lg-3 mt-3`}>
+              {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
               <label>Search</label>
               <input
                 className="form-control"
@@ -458,7 +459,7 @@ const handleClick = (id) => {
 
       <section className="">
         <div className="container-fluid p-3 my-3 ">
-        <h6>Total Records:{data.length}</h6>
+          <h6>Total Records:{data.length}</h6>
 
           <div className="scroll overflow-auto">
             <table className="table table-bordered">
@@ -477,7 +478,7 @@ const handleClick = (id) => {
               </thead>
               <tbody>
                 {paginatedata.map((user, i) => (
-                  <tr key={i}>
+                  <tr key={uuidv4()}>
                     <td>{i + 1}</td>
                     <td>{user.name}</td>
                     <td>{user.phone_number}</td>
@@ -537,7 +538,7 @@ const handleClick = (id) => {
                     .slice(currentPage - 1, currentPage + 6)
                     .map((page, i) => (
                       <li
-                        key={i}
+                        key={uuidv4()}
                         className={
                           page === currentPage
                             ? " page-item active"
