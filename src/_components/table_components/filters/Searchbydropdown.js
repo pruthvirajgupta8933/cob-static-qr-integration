@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 const SearchFilter = ({
@@ -10,6 +10,8 @@ const SearchFilter = ({
   setSearchByDropDown,
   optionSearchData,
 }) => {
+ 
+  
   useEffect(() => {
     if (searchText?.length > 0) {
       // search by dropdown
@@ -33,6 +35,20 @@ const SearchFilter = ({
     }
     setSearchByDropDown(false);
   }, [searchText]);
+  const[selectedValue,setSelectedValue]=useState()
+
+
+// // handler (e, text){
+//   kycSearch(e, text)
+//   setSelectedValue(e)
+
+// }
+
+const changeHandler = (e,text) => {
+  kycSearch(e, text)
+  setSelectedValue(e)
+};
+
 
   return (
     <div>
@@ -40,11 +56,11 @@ const SearchFilter = ({
         <label>Onboard Type</label>
         <select
           className="form-select"
-          onChange={(e) => kycSearch(e.target.value, "dropdown")}
+          onChange={(e) =>changeHandler (e.target.value, "dropdown")}
         >
           {optionSearchData &&
             optionSearchData.map((data) => (
-              <option key={uuidv4()} value={data.value}>
+              <option key={uuidv4()} value={data.value} selected={selectedValue === data.value} >
                 {data.name}
               </option>
             ))}

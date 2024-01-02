@@ -25,10 +25,7 @@ const SettlementReportNew = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const [txnList, SetTxnList] = useState([]);
-    // const [filterList,SetFilterList] = useState([])
     const [searchText, SetSearchText] = useState("");
-    // const [startDate, setStartDate] = useState(null);
-
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -89,7 +86,6 @@ const SettlementReportNew = () => {
         clientMerchantDetailsList = user?.clientMerchantDetailsList;
     }
 
-    // console.log("clientCodeData", clientCodeData)
     let fnKey, fnVal = ""
     let clientCodeListArr = []
     if (roles?.merchant === true) {
