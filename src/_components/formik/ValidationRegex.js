@@ -22,7 +22,7 @@ export const RegexMsg = {
     addressForSpecific:"Address is not in valid format, Only '-', '/' , '.' special chracters are allowed",
     address : "Address is not in valid format, Special Characters are not allowed (#,$,@ etc)",
     phoneNumber : "Phone number is not valid",
-    password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character",
+    password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character",
     ifscRegex:"Your IFSC code is Invalid and must be in capital letters",
     accountNoRgex:"Account Number format is invalid",
 }
