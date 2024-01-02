@@ -172,7 +172,7 @@ function Signup() {
         if (isLoggedInLc) {
             history.push("/dashboard");
         } else {
-            dispatch(logout());
+            dispatch(logout()); 
         }
     }, []);
 

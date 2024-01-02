@@ -5,7 +5,12 @@ function getChar(string, retry, position = 0, charLen = 2) {
     return string.toString().substr(start, charLength)
 }
 
-export const generateWord =  (name, mobile, retry = 7) => {
+
+function hasWhiteSpace(s) {
+    return /\s/g.test(s);
+}
+
+export const generateWord = (name, mobile, retry = 7) => {
     let newSuggestedClientCode = []
     const fullName = name.replace(/[^a-zA-Z0-9]/g, '');
     const splitName = fullName.split(" ")
@@ -30,7 +35,7 @@ export const generateWord =  (name, mobile, retry = 7) => {
                 wordChar += getChar(mobile, i, 0, 2)
             }
         }
-        newSuggestedClientCode.push(wordChar.toUpperCase())
+        !hasWhiteSpace(wordChar) && newSuggestedClientCode.push(wordChar.toUpperCase())
         wordChar = ""
     }
     return newSuggestedClientCode
