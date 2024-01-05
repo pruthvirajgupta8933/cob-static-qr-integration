@@ -28,17 +28,14 @@ function SpPg() {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const { auth, productCatalogueSlice } = useSelector((state) => state);
-    const { SubscribedPlanData } = productCatalogueSlice
+    const { auth } = useSelector((state) => state);
+    // const { SubscribedPlanData } = productCatalogueSlice
     const { subscribeId, applicationid } = useParams();
     const clientId = auth?.user?.clientMerchantDetailsList[0]?.clientId
 
 
     // console.log("productCatalogueSlice", productCatalogueSlice)
     useEffect(() => {
-
-
-
         const searchParam = window.location.search.slice(1)
         const queryString = new URLSearchParams(searchParam?.toString());
         const queryStringData = Object.fromEntries(queryString.entries());
@@ -72,10 +69,7 @@ function SpPg() {
                     const unPaidProduct = resp?.data?.data?.filter((d) => (
                         (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
                         (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
-
                     if (unPaidProduct?.length > 0) {
-                        // console.log("continue")
-                        // console.log("unPaidProduct---", unPaidProduct)
                         setSelectedPlanCode(unPaidProduct[0]?.plan_code)
                         setSelectedPlan(unPaidProduct)
                         // setSelectedPlan()
@@ -94,24 +88,14 @@ function SpPg() {
                 }).catch(err => console.log(err))
 
 
-            // console.log("unPaidProduct", unPaidProduct)
-
         }
 
         return () => {
             setRespFromServerFlag(false)
+            setIsOpenPg(false)
         }
 
     }, [])
-
-    // useEffect(() => {
-    //     if (productCatalogueSlice?.productPlanData?.length > 0) {
-    //         setSelectedPlan(productCatalogueSlice?.productPlanData?.filter((pd) => (pd?.plan_code === selectedPlanCode)))
-    //     }
-    // }, [productCatalogueSlice])
-
-
-
 
     const getClientTxnId = async (selectedPlan, userData) => {
         const postBody = {
@@ -139,12 +123,10 @@ function SpPg() {
         }
     }
 
-    // console.log("selectedPlan", selectedPlan)
 
     return (
         <React.Fragment>
             <section className="ant-layout">
-
                 <SabpaisaPaymentGateway planData={selectedPlan} clientTxnId={newClientTxnId} openPg={isOpenPg} clientData={auth?.user} subscribeId={subscribeId} />
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
@@ -176,8 +158,6 @@ function SpPg() {
                                                     <h5 className="card-title">Make payment to activate the selected plan.</h5>
                                                     <p className="card-title">Amount : {selectedPlan[0]?.purchaseAmount} INR</p>
                                                     <p className="card-title">Plan Name : {selectedPlan[0]?.planName}</p>
-                                                    {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
-                                                    {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
                                                     <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
                                                 </div>
                                             }
