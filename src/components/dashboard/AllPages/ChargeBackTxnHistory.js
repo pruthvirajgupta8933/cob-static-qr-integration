@@ -60,21 +60,7 @@ const ChargeBackTxnHistory = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  // const clientcode_rolebased = roles.bank
-  //   ? "All"
-  //   : roles.merchant
-  //     ? clientMerchantDetailsList[0]?.clientCode
-  //     : "";
-
-  // const tempClientList = convertToFormikSelectJson(
-  //   "clientCode",
-  //   "clientName",
-  //   clientMerchantDetailsList
-  // );
-
-
-
-  const initialValues = {
+const initialValues = {
     clientCode: "",
     fromDate: splitDate,
     endDate: splitDate,

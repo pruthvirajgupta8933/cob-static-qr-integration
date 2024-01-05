@@ -205,7 +205,6 @@ const TransactionHistory = () => {
         isButtonClicked(true);
         const { fromDate, endDate, transaction_status, payment_mode } = values;
         const dateRangeValid = checkValidation(fromDate, endDate);
-
         if (dateRangeValid) {
             let strClientCode, clientCodeArrLength = "";
             if (values.clientCode === "All") {
@@ -561,7 +560,7 @@ const TransactionHistory = () => {
                                                 >
                                                     Search
                                                 </button>
-                                                <p className="text-danger">{formik?.errors?.clientCode}</p>
+                                                {/* <p className="text-danger">{formik?.errors?.clientCode}</p> */}
                                             </div>
 
                                             {txnList?.length > 0 ? (
