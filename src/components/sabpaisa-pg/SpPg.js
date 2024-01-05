@@ -28,13 +28,20 @@ function SpPg() {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const { auth } = useSelector((state) => state);
-    // const { SubscribedPlanData } = productCatalogueSlice
+    const { auth, productCatalogueSlice } = useSelector((state) => state);
+    const { SubscribedPlanData } = productCatalogueSlice
     const { subscribeId, applicationid } = useParams();
+
     const clientId = auth?.user?.clientMerchantDetailsList[0]?.clientId
 
 
-    // console.log("productCatalogueSlice", productCatalogueSlice)
+    const productPlans = productCatalogueSlice.productPlanData
+    // console.log("selectedPlan", selectedPlan)
+    // console.log("productPlans", productPlans)
+
+    const planFilterData = productPlans?.filter((p) => p.plan_code === selectedPlan?.[0]?.plan_code && p?.plan_id === selectedPlan?.[0]?.planId)
+
+    // console.log("planFilterData", planFilterData)
     useEffect(() => {
         const searchParam = window.location.search.slice(1)
         const queryString = new URLSearchParams(searchParam?.toString());
@@ -65,7 +72,7 @@ function SpPg() {
             axiosInstanceJWT
                 .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
                 .then((resp) => {
-
+                    // console.log("resp", resp)
                     const unPaidProduct = resp?.data?.data?.filter((d) => (
                         (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
                         (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
@@ -73,9 +80,9 @@ function SpPg() {
                         setSelectedPlanCode(unPaidProduct[0]?.plan_code)
                         setSelectedPlan(unPaidProduct)
                         // setSelectedPlan()
-                        const postBody = { "app_id": unPaidProduct[0]?.applicationId }
+                        // const postBody = { "app_id": unPaidProduct[0]?.applicationId }
                         // console.log("postBody", postBody)
-                        dispatch(productPlanData(postBody))
+                        // dispatch(productPlanData(postBody))
                     } else {
                         history.push("/dashboard")
                         // console.log("redirect to dashboard")
@@ -97,15 +104,28 @@ function SpPg() {
 
     }, [])
 
-    const getClientTxnId = async (selectedPlan, userData) => {
+
+    useEffect(() => {
+        const postBody = { "app_id": applicationid }
+        dispatch(productPlanData(postBody))
+
+    }, [applicationid])
+
+
+    const getClientTxnId = async (planFilterData, userData) => {
+
+        if (planFilterData?.length <= 0) {
+            history.push("/dashboard")
+        }
+
         const postBody = {
             "clientSubscribedPlanDetailsId": subscribeId,
-            "appId": selectedPlan[0]?.applicationId,
-            "planId": selectedPlan[0]?.planId,
+            "appId": planFilterData?.[0]?.app_id,
+            "planId": planFilterData?.[0]?.plan_id,
             "clientCode": userData?.clientMerchantDetailsList[0]?.clientCode,
             "clientName": userData?.clientMerchantDetailsList[0]?.clientName,
             "clientId": userData?.clientMerchantDetailsList[0]?.clientId,
-            "purchaseAmount": selectedPlan[0]?.purchaseAmount
+            "purchaseAmount": planFilterData?.[0]?.actual_price
         }
 
         let data = await createClientTxnId(postBody)
@@ -123,11 +143,12 @@ function SpPg() {
         }
     }
 
+    // console.log("selectedPlan", selectedPlan)
 
     return (
         <React.Fragment>
             <section className="ant-layout">
-                <SabpaisaPaymentGateway planData={selectedPlan} clientTxnId={newClientTxnId} openPg={isOpenPg} clientData={auth?.user} subscribeId={subscribeId} />
+                <SabpaisaPaymentGateway planData={planFilterData} clientTxnId={newClientTxnId} openPg={isOpenPg} clientData={auth?.user} subscribeId={subscribeId} />
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
                         <div className="right_layout my_account_wrapper right_side_heading">
@@ -156,9 +177,9 @@ function SpPg() {
                                                 :
                                                 <div className="card-body">
                                                     <h5 className="card-title">Make payment to activate the selected plan.</h5>
-                                                    <p className="card-title">Amount : {selectedPlan[0]?.purchaseAmount} INR</p>
-                                                    <p className="card-title">Plan Name : {selectedPlan[0]?.planName}</p>
-                                                    <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
+                                                    <p className="card-title">Amount : {planFilterData?.[0]?.actual_price} INR</p>
+                                                    <p className="card-title">Plan Name : {planFilterData?.[0]?.plan_name}</p>
+                                                    <button onClick={() => { getClientTxnId(planFilterData, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
                                                 </div>
                                             }
 

@@ -50,11 +50,11 @@ function SabpaisaPaymentGateway(props) {
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
     setclientTxnId(props?.clientTxnId)
-    setamount(props?.planData[0]?.purchaseAmount);
+    setamount(props?.planData?.[0]?.actual_price);
     setudf12(props?.clientData?.clientMerchantDetailsList[0]?.clientCode)
-    setudf13(props?.planData[0]?.planId)
-    setudf14(props?.planData[0]?.planName)
-    setudf15(props?.planData[0]?.applicationId)
+    setudf13(props?.planData?.[0]?.plan_id)
+    setudf14(props?.planData?.[0]?.plan_name)
+    setudf15(props?.planData?.[0]?.app_id)
     setudf16(props?.subscribeId)
 
   }, [props, clientDetails])
