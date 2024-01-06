@@ -114,7 +114,7 @@ function SpPg() {
 
     const getClientTxnId = async (planFilterData, userData) => {
 
-        if (planFilterData?.length <= 0) {
+        if (planFilterData?.length <= 0 && planFilterData?.[0]?.actual_price === "") {
             history.push("/dashboard")
         }
 
