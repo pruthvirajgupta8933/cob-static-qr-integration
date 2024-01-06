@@ -179,7 +179,8 @@ function SpPg() {
                                                     <h5 className="card-title">Make payment to activate the selected plan.</h5>
                                                     <p className="card-title">Amount : {planFilterData?.[0]?.actual_price} INR</p>
                                                     <p className="card-title">Plan Name : {planFilterData?.[0]?.plan_name}</p>
-                                                    <button onClick={() => { getClientTxnId(planFilterData, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
+                                                    {planFilterData?.length > 0 && <button onClick={() => { getClientTxnId(planFilterData, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>}
+
                                                 </div>
                                             }
 
