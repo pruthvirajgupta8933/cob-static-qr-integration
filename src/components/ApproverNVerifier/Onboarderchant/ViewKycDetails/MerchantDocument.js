@@ -271,7 +271,6 @@ const MerchantDocument = (props) => {
       {pendingDocument?.map((item) => {
         return (<React.Fragment key={uuidv4()}> <span className="text-danger"> {item?.value}</span><br /></React.Fragment>)
       })}
-      <input id="comments" type="text" name="reject_commet" value={commetText} onChange={(e) => { setCommetText(e.target.value) }} />
 
       <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
@@ -343,7 +342,7 @@ const MerchantDocument = (props) => {
 
                     <td>
                       <div className="d-flex">
-                        {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") &&
+                        {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                           <>
                             <a
                               href={() => false}
@@ -368,7 +367,7 @@ const MerchantDocument = (props) => {
                             >
                               <h5 className="text-danger fs-6">Reject</h5>
                             </a>
-                          </>
+                          </> : <></>
                         }
                       </div>
                       {buttonClick === doc?.documentId && closeModal === true &&
