@@ -247,9 +247,17 @@ const TransactionHistory = () => {
             const date2 = new Date(toDate);
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            if (diffDays < 0 || diffDays > 90) {
+
+            let allowedTxnViewDays = 31
+            let monthAllowed = 1
+            if (user?.roleId === 3) {
+                allowedTxnViewDays = 92
+                monthAllowed = 3
+            }
+
+            if (diffDays < 0 || diffDays > allowedTxnViewDays) {
                 flag = false;
-                alert("The date range should be under 3 months");
+                alert(`Please choose a ${monthAllowed}-month date range. `);
             }
         } else {
             flag = true;
