@@ -3,16 +3,17 @@ import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import NavBar from '../dashboard/NavBar/NavBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { productPlanData, updateSubscribeDetails } from '../../slices/merchant-slice/productCatalogueSlice'
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+// import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { createClientTxnId } from '../../services/merchant-service/prouduct-catalogue.service'
 import { toast } from "react-toastify";
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory, useLocation } from 'react-router-dom'
 import { isNull } from 'lodash'
 import payment_default_gif from "../../assets/images/image_processing20201113-8803-s9v2bo.gif"
 import payment_response_gif from "../../assets/images/image_processing20210906-19522-9n3ter.gif"
 import classes from "./pg.module.css"
 import { axiosInstanceJWT } from '../../utilities/axiosInstance'
 import API_URL from '../../config'
+// import { useLocation } from 'react-router-dom/cjs/react-router-dom'
 
 function SpPg() {
 
@@ -27,6 +28,13 @@ function SpPg() {
 
     const dispatch = useDispatch()
     const history = useHistory()
+    const location = useLocation();
+
+
+    useEffect(() => {
+        console.log('URL changed', location.pathname);
+        // Perform actions based on the new URL
+    }, [location]);
 
     const { auth, productCatalogueSlice } = useSelector((state) => state);
     const { SubscribedPlanData } = productCatalogueSlice
