@@ -276,7 +276,7 @@ function RateMapping() {
             </div>
             <CustomLoader loadingState={loadingState} />
             {data?.length == 0 && !loadingState && (
-              <h2 className="text-center font-weight-bold">No Data Found</h2>
+              <h6 className="text-center font-weight-bold">No Data Found</h6>
             )}
           </div>
         </div>
