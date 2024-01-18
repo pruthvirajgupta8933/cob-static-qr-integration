@@ -23,23 +23,66 @@ function BusinessDetailsOps({ setCurrentTab }) {
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
         website: merchantKycData?.website_app_url ?? "",
         pan_name: "",
+        platform_id: "",
+        avg_ticket_size: "",
+        expected_transactions: "",
     }
+
+    const dropdownOptions = [
+        { value: "Select", label: "" },
+        // { value: "WordPress", label: "2" },
+        // { value: "Android SDK", label: "4" },
+        { value: "Java", label: "13" },
+      ];
+
+    const tooltipData = {
+        "expected_transaction_yr": "Expected transaction/year refers to the estimated number of transactions that are anticipated to occur within a specific time frame, typically a year",
+        "avg_ticket_amount": "Average ticket amount refers to the average value or amount spent per transaction or customer."
+    }
+
+    const slabOptions = [
+        { label: '0-1000', value: '0-1000' },
+        { label: '1001-5000', value: '1001-5000' },
+
+    ];
+
+    const ticketOptions = [
+        { label: '0-500', value: '0-500' },
+        { label: '501-2000', value: '1001-5000' },
+    ];
+
+
 
     const validationSchema = Yup.object({
         pan_card: Yup.string().nullable(),
         website: Yup.string().nullable().required("Required"),
-        is_pan_verified: Yup.string().nullable()
+        is_pan_verified: Yup.string().nullable(),
+        platform_id: Yup.string()
+            .required("Select the platform")
+            .nullable(),
+        expected_transactions: Yup.string().trim().required("Required").nullable(),
+        avg_ticket_size: Yup.string()
+            .trim()
+            .required("Required").nullable(),
     })
 
     const handleSubmit = (value) => {
+        const selectedValue = dropdownOptions.find(option => option.value === value.selectedOption)?.label;
+        console.log("selectedValue",selectedValue)
         setSubmitLoader(true)
         const postData = {
             website_app_url: value.website,
             is_website_url: "True",
             pan_card: value.pan_card,
             login_id: merchantLoginId,
-            updated_by: auth?.user?.loginId
+            updated_by: auth?.user?.loginId,
+            platform_id: "13",
+            avg_ticket_size: value.avg_ticket_size,
+            expected_transactions: value.expected_transactions,
+
         }
+
+        console.log("postData",postData)
         dispatch(businessDetailsSlice(postData)).then((resp) => {
             if (resp?.error?.message) {
                 toastConfig.errorToast(resp?.error?.message)
@@ -201,19 +244,72 @@ function BusinessDetailsOps({ setCurrentTab }) {
                                     placeholder="Enter Website URL"
                                 />
                             </div>
-                            <div className="col-12">
+                            <div></div>
 
-                                <button type="submit" className="btn cob-btn-primary btn-sm">Save
-                                    {submitLoader && <>
-                                        <span className="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true" />
-                                        <span className="sr-only">Loading...</span>
-                                    </>}
-                                </button>
-                                {businessDetails?.resp?.status === true &&
-                                    <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
-                                }
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    Platform Type<span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="select"
+                                    name="platform_id"
+                                    className="form-select"
+                                    valueFlag={false}
+                                    //   disabled={VerifyKycStatus === "Verified" ? true : false}
+                                    //   readOnly={readOnly}
+                                    options={dropdownOptions}
+
+                                />
                             </div>
+
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0" data-tip={tooltipData.expected_transaction_yr}>
+                                    Expected Trans./Year
+                                    <span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="select"
+                                    name="expected_transactions"
+                                    valueFlag={true}
+                                    className="form-select form-control"
+                                    options={slabOptions}
+                                //   onClick={() => getExpectedTransactions(1)}
+                                />
+                              </div>
+
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0" data-tip={tooltipData.avg_ticket_amount}>
+                                    Avg Ticket Amount<span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="select"
+                                    type="text"
+                                    name="avg_ticket_size"
+                                    className="form-select form-control"
+                                    valueFlag={true}
+                                    // readOnly={readOnly}
+                                    options={ticketOptions}
+
+                                />
+                            </div>
+                             </div>
+                        <div className="col-12 mt-4 mr-5">
+
+                            <button type="submit" className="btn cob-btn-primary btn-sm">Save
+                                {submitLoader && <>
+                                    <span className="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true" />
+                                    <span className="sr-only">Loading...</span>
+                                </>}
+                            </button>
+                            {businessDetails?.resp?.status === true &&
+                                <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
+                            }
                         </div>
                     </Form>
                 )}
