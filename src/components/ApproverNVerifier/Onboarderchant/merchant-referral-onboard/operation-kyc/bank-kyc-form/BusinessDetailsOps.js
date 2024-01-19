@@ -5,14 +5,18 @@ import FormikController from '../../../../../../_components/formik/FormikControl
 import { useDispatch, useSelector } from 'react-redux';
 import { businessDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import verifiedIcon from "../../../../../../assets/images/verified.png"
-import { kycDetailsByMerchantLoginId, panValidation } from '../../../../../../slices/kycSlice';
+import { kycDetailsByMerchantLoginId, panValidation, platformType, } from '../../../../../../slices/kycSlice';
 import { isNull } from 'lodash';
 import { toast } from 'react-toastify';
 import toastConfig from "../../../../../../utilities/toastTypes";
-
+import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
+import kycOperationService from '../../../../../../services/kycOperation.service';
 function BusinessDetailsOps({ setCurrentTab }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
+    const [avgTicketAmount, setAvgTicketAmount] = useState([]);
+    const [transactionRangeOption, setTransactionRangeOption] = useState([]);
+    const [platform, setPlatform] = useState([]);
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
@@ -40,16 +44,16 @@ function BusinessDetailsOps({ setCurrentTab }) {
         "avg_ticket_amount": "Average ticket amount refers to the average value or amount spent per transaction or customer."
     }
 
-    const slabOptions = [
-        { label: '0-1000', value: '0-1000' },
-        { label: '1001-5000', value: '1001-5000' },
+    // const slabOptions = [
+    //     { label: '0-1000', value: '0-1000' },
+    //     { label: '1001-5000', value: '1001-5000' },
 
-    ];
+    // ];
 
-    const ticketOptions = [
-        { label: '0-500', value: '0-500' },
-        { label: '501-2000', value: '1001-5000' },
-    ];
+    // const ticketOptions = [
+    //     { label: '0-500', value: '0-500' },
+    //     { label: '501-2000', value: '1001-5000' },
+    // ];
 
 
 
@@ -65,18 +69,60 @@ function BusinessDetailsOps({ setCurrentTab }) {
             .trim()
             .required("Required").nullable(),
     })
+    //////////////////APi for Platform
+  useEffect(() => {
+    dispatch(platformType())
+      .then((resp) => {
+        const data = convertToFormikSelectJson(
+          "platformId",
+          "platformName",
+          resp.payload
+        );
+        setPlatform(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const slabOptions = convertToFormikSelectJson(
+    "id",
+    "slab_range",
+    transactionRangeOption
+  );
+
+  useEffect(() => {
+    getExpectedTransactions("1");
+    getExpectedTransactions("2");
+  }, []);
+  const getExpectedTransactions = async (slabId) => {
+    try {
+      const response = await kycOperationService.expectedTransactions(slabId);
+      if (response.status === 200) {
+        if (slabId == 1) {
+          setTransactionRangeOption(response.data.data);
+        } else if (slabId == 2) {
+          setAvgTicketAmount(response.data.data);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const ticketOptions = convertToFormikSelectJson(
+    "id",
+    "slab_range",
+    avgTicketAmount
+  );
 
     const handleSubmit = (value) => {
-        const selectedValue = dropdownOptions.find(option => option.value === value.selectedOption)?.label;
-        console.log("selectedValue",selectedValue)
-        setSubmitLoader(true)
+       setSubmitLoader(true)
         const postData = {
             website_app_url: value.website,
             is_website_url: "True",
             pan_card: value.pan_card,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId,
-            platform_id: "13",
+            platform_id: value.platform_id,
             avg_ticket_size: value.avg_ticket_size,
             expected_transactions: value.expected_transactions,
 
@@ -260,7 +306,7 @@ function BusinessDetailsOps({ setCurrentTab }) {
                                     valueFlag={false}
                                     //   disabled={VerifyKycStatus === "Verified" ? true : false}
                                     //   readOnly={readOnly}
-                                    options={dropdownOptions}
+                                    options={platform}
 
                                 />
                             </div>
