@@ -22,14 +22,15 @@ function BusinessDetailsOps({ setCurrentTab }) {
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
 
+    console.log("merchantKycData", merchantKycData)
     const initialValues = {
         pan_card: merchantKycData?.signatoryPAN ?? "",
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
         website: merchantKycData?.website_app_url ?? "",
         pan_name: "",
-        platform_id: "",
-        avg_ticket_size: "",
-        expected_transactions: "",
+        platform_id: merchantKycData?.platformId ?? "",
+        avg_ticket_size: merchantKycData?.avg_ticket_size ?? "",
+        expected_transactions: merchantKycData?.expectedTransactions ?? "",
     }
 
 
@@ -107,10 +108,9 @@ function BusinessDetailsOps({ setCurrentTab }) {
             platform_id: value.platform_id,
             avg_ticket_size: value.avg_ticket_size,
             expected_transactions: value.expected_transactions,
-
         }
 
-        console.log("postData", postData)
+
         dispatch(businessDetailsSlice(postData)).then((resp) => {
             if (resp?.error?.message) {
                 toastConfig.errorToast(resp?.error?.message)

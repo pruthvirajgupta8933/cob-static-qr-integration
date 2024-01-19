@@ -46,16 +46,6 @@ const CommentModal = (props) => {
   };
 
   useEffect(() => {
-    // if (props && props?.commentData?.clientCode !== "") {
-    //   dispatch(
-    //     forGettingCommentList({
-    //       client_code: props?.commentData?.clientCode,
-    //     })
-    //   ).then((resp) => {
-    //       setCommentsList(resp?.payload?.Data);
-    //     }).catch((err) => { });
-    // }
-
     commentUpdate();
   }, [props]);
 
