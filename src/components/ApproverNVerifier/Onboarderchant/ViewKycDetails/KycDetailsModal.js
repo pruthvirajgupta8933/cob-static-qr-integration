@@ -80,7 +80,6 @@ const KycDetailsModal = (props) => {
         })
       );
 
-
       const businessType = selectedUserData?.businessType;
       if (businessType !== "" && businessType !== null && businessType !== undefined) {
         // console.log(busiType,"Business TYPE==========>")
@@ -204,9 +203,10 @@ const KycDetailsModal = (props) => {
           />
         </div>}
 
+        {/* {console.log("merchantKycId", merchantKycId)} */}
         {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
         {/* {console.log("generalFormData?.parent_client_code", generalFormData?.parent_client_code)} */}
-        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null) &&
+        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null && selectedUserData?.roleId !== 13) &&
           <div className="container">
             <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} generalFormData={generalFormData?.parent_client_code} />
           </div>}

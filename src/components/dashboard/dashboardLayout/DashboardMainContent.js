@@ -92,11 +92,7 @@ function DashboardMainContent() {
 
     // const queryParams = new URLSearchParams(location.search);
     // const mendateRegId = queryParams.get("mendateRegId");
-
-
-
-
-    const createAndSaveClientCode = async () => {
+     const createAndSaveClientCode = async () => {
         if ((roles?.merchant) && user?.clientMerchantDetailsList[0]?.clientCode === null) {
             const clientFullName = user?.clientContactPersonName
             const clientMobileNo = user?.clientMobileNo

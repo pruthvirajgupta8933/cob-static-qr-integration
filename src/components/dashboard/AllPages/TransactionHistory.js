@@ -1,6 +1,5 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -109,7 +108,7 @@ const TransactionHistory = () => {
         clientCode: clientCode,
         fromDate: todayDate,
         endDate: todayDate,
-        transaction_status: "All",
+        transaction_status: "SUCCESS",
         payment_mode: "All",
     };
 
@@ -180,10 +179,7 @@ const TransactionHistory = () => {
         setClientCodeList(clientCodeListArr)
     }, [clientCodeListArr]);
 
-    // console.log("clientCodeOption", clientCodeOption)
-
-
-    const tempPayStatus = [{ key: "All", value: "All" }];
+    const tempPayStatus = [];
 
     paymentStatusList.map((item) => {
         if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
