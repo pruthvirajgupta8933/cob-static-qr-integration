@@ -88,10 +88,12 @@ const CommentModal = (props) => {
           toast.success(resp?.payload?.message.message);
           commentUpdate();
           resetUploadFile();
+          setattachCommentFile();
         } else {
           toast.error(resp?.payload?.message.message);
           resetUploadFile();
           commentUpdate();
+          setattachCommentFile();
         }
       })
       .catch((err) => {
