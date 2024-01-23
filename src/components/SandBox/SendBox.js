@@ -25,10 +25,10 @@ function Sandbox() {
   const clientId = user?.clientMerchantDetailsList && user?.clientMerchantDetailsList[0]?.clientId
 
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(kycUserList({ login_id: user?.loginId }));
-  }, [user, dispatch]);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(kycUserList({ login_id: user?.loginId }));
+  // }, [user, dispatch]);
 
 
 
@@ -84,9 +84,9 @@ function Sandbox() {
           <section className="">
 
             <div className="container-fluid">
-              <div className="row">
+              {/* <div className="row">
                 <StepProgressBar status={kycStatus} />
-              </div>
+              </div> */}
 
               <div className="row">
 
