@@ -84,11 +84,13 @@ function TransactionSummery() {
     const fetchData = () => {
         // const roleType = roles
         const type = userRole.bank ? "bank" : userRole.referral ? "referrer" : "default";
-        let postObj = {
-            type: type,  // Set the type based on roleType
-            login_id: auth?.user?.loginId
+        if (type !== "default") {
+            let postObj = {
+                type: type,  // Set the type based on roleType
+                login_id: auth?.user?.loginId
+            }
+            dispatch(fetchChiledDataList(postObj));
         }
-        dispatch(fetchChiledDataList(postObj));
     };
     useEffect(() => {
         fetchData();

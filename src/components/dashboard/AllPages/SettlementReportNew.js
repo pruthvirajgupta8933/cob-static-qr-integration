@@ -63,11 +63,13 @@ const SettlementReportNew = () => {
     const fetchData = () => {
         const roleType = roles
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
-        let postObj = {
-            type: type,  // Set the type based on roleType
-            login_id: auth?.user?.loginId
+        if (type !== "default") {
+            let postObj = {
+                type: type,  // Set the type based on roleType
+                login_id: auth?.user?.loginId
+            }
+            dispatch(fetchChiledDataList(postObj));
         }
-        dispatch(fetchChiledDataList(postObj));
     };
     useEffect(() => {
         fetchData();

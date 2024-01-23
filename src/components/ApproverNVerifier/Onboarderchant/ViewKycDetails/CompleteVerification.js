@@ -95,9 +95,11 @@ const CompleteVerification = (props) => {
   const submitHandler = async () => {
     // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
     // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
-    if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
-      alert("Please Select the parent client code for the rate mapping");
-      return false
+    if (selectedUserData?.roleId !== 13) {
+      if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
+        alert("Please Select the parent client code for the rate mapping");
+        return false
+      }
     }
 
     setDisable(true)
@@ -150,9 +152,6 @@ const CompleteVerification = (props) => {
       if (isverified === true && isapproved === false) {
         if (roles?.approver === true) {
           if (window.confirm("Approve kyc")) {
-            // dataAppr = [...dataAppr]
-
-
             let dataAppr = {
               login_id: selectedUserData.loginMasterId,
               approved_by: loginId,
@@ -160,9 +159,16 @@ const CompleteVerification = (props) => {
               refer_by: approverDashboard?.generalFormData?.refer_by,
               business_category_type: approverDashboard?.generalFormData?.business_cat_type,
               rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type
-
             };
-            // console.log("dataAppr",dataAppr)
+
+            if (selectedUserData?.roleId === 13) {
+              dataAppr = {
+                login_id: selectedUserData.loginMasterId,
+                approved_by: loginId,
+              }
+            }
+
+
 
             // update the redux state - for the ratemapping
 
@@ -177,6 +183,10 @@ const CompleteVerification = (props) => {
                 // pendingApporvalTable()
                 // closeVerificationModal(false)
                 setButtonLoader(false)
+                if (selectedUserData?.roleId === 13) {
+                  pendingApporvalTable()
+                  closeVerificationModal(false)
+                }
               })
               .catch((e) => {
                 console.log(e)

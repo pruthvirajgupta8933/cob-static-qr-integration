@@ -7,7 +7,7 @@ import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
   GetKycTabsStatus,
-  kycUserList,
+  // kycUserList,
   UpdateModalStatus,
 } from "../../../slices/kycSlice";
 
@@ -66,7 +66,8 @@ function Home() {
   }, [KycTabStatusStore]);
 
   useEffect(() => {
-    dispatch(kycUserList({ login_id: user?.loginId }));
+    // comment unwanted api call
+    // dispatch(kycUserList({ login_id: user?.loginId }));
     return () => {
       dispatch(clearSuccessTxnsummary());
     };
@@ -126,7 +127,7 @@ function Home() {
         {roles?.bank === true || roles?.b2b === true ? (
           <></>
         ) : (
-          <StepProgressBar status={kyc?.kycUserList?.status} />
+          <StepProgressBar status={KycTabStatusStore?.status} />
         )}
       </div>
 
