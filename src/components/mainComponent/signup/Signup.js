@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import HeaderPage from "../login/HeaderPage";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import Yup from "../../../_components/formik/Yup";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, register, udpateRegistrationStatus } from "../../../slices/auth";
 import { useHistory, Link } from "react-router-dom";
@@ -35,25 +35,31 @@ const initialValues = {
 const FORM_VALIDATION = Yup.object().shape({
     fullname: Yup.string()
         .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-        .required("Required"),
+        .required("Required")
+        .allowOneSpace("Invalid inputs"),
     mobilenumber: Yup.string()
         .required("Required")
         .matches(phoneRegExp, "Phone number is not valid")
         .min(10, "Phone number in not valid")
-        .max(10, "too long"),
+        .max(10, "too long")
+        .allowOneSpace("Invalid inputs"),
+
     emaill: Yup.string()
         .email("Must be a valid email")
         .max(255)
-        .required("Required"),
+        .required("Required")
+        .allowOneSpace(),
     passwordd: Yup.string()
         .required("Password Required")
+        .allowOneSpace("Invalid inputs")
         .matches(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
         ),
     confirmpasswordd: Yup.string()
         .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
-        .required("Confirm Password"),
+        .required("Confirm Password")
+        .allowOneSpace(),
     business_cat_code: Yup.string().required("Required"),
     terms_and_condition: Yup.boolean().oneOf([true], 'Please accept the terms & conditions and privacy policy to proceed further')
 });

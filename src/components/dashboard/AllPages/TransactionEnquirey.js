@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import Yup from "../../../_components/formik/Yup";
 import { Formik, Form } from "formik";
 import API_URL from "../../../config";
 import FormikController from "../../../_components/formik/FormikController";
@@ -14,8 +15,8 @@ function TransactionEnquirey() {
     transaction_from: "1"
   };
   const validationSchema = Yup.object({
-    transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required"),
-    transaction_from: Yup.string().nullable().required("Required")
+    transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required").allowOneSpace(),
+    transaction_from: Yup.string().nullable().required("Required").allowOneSpace(),
   });
 
   const [show, setIsShow] = useState(false);
@@ -158,7 +159,7 @@ function TransactionEnquirey() {
 
                           <button
                             disabled={disable}
-                            className="btn btn-sm text-white cob-btn-primary mt-2"
+                            className="btn btn-sm text-white cob-btn-primary mt-4"
                             type="submit"
                           >
                             View

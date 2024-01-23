@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import _ from "lodash";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import Yup from "../../../../_components/formik/Yup";
 import Genratelink from "./Genratelink";
 import { Edituser } from "./Edituser";
 import API_URL from "../../../../config";
@@ -23,13 +24,14 @@ const validationSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "It's too short")
     .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-    .required("Required"),
+    .required("Required")
+    .allowOneSpace("Invalid inputs"),
   phone_number: Yup.string()
     .required("Required")
     .matches(phoneRegExp, "Phone number is not valid")
     .min(10, "to short")
     .max(10, "to long"),
-  email: Yup.string().email("Enter valid email").required("Required"),
+  email: Yup.string().email("Enter valid email").required("Required").allowOneSpace("Invalid inputs"),
   customer_type_id: Yup.string().required("Required"),
 });
 

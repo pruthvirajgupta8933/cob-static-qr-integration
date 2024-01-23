@@ -67,7 +67,8 @@ function ContactInfo(props) {
       .required("Required")
       .wordLength("Word character length exceeded")
       .max(100, "Maximum 100 characters are allowed")
-      .nullable(),
+      .nullable()
+      .allowOneSpace(),
     contact_number: Yup.string()
       .trim()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
