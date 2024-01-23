@@ -184,12 +184,13 @@ const KycDetailsModal = (props) => {
 
 
           {/* Extra field required when merhcant goes to approved */}
-          <GeneralForm
-            selectedUserData={selectedUserData}
-            merchantKycId={merchantKycId}
-            role={roles}
+          {selectedUserData?.roleId !== 13 &&
+            <GeneralForm
+              selectedUserData={selectedUserData}
+              merchantKycId={merchantKycId}
+              role={roles}
+            />}
 
-          />
 
           <CompleteVerification
             merchantKycId={merchantKycId}
@@ -203,9 +204,7 @@ const KycDetailsModal = (props) => {
           />
         </div>}
 
-        {/* {console.log("merchantKycId", merchantKycId)} */}
         {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
-        {/* {console.log("generalFormData?.parent_client_code", generalFormData?.parent_client_code)} */}
         {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null && selectedUserData?.roleId !== 13) &&
           <div className="container">
             <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} generalFormData={generalFormData?.parent_client_code} />
