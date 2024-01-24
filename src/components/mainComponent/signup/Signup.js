@@ -36,13 +36,13 @@ const FORM_VALIDATION = Yup.object().shape({
     fullname: Yup.string()
         .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
         .required("Required")
-        .allowOneSpace("Invalid inputs"),
+        .allowOneSpace(),
     mobilenumber: Yup.string()
         .required("Required")
         .matches(phoneRegExp, "Phone number is not valid")
         .min(10, "Phone number in not valid")
         .max(10, "too long")
-        .allowOneSpace("Invalid inputs"),
+        .allowOneSpace(),
 
     emaill: Yup.string()
         .email("Must be a valid email")
@@ -51,7 +51,7 @@ const FORM_VALIDATION = Yup.object().shape({
         .allowOneSpace(),
     passwordd: Yup.string()
         .required("Password Required")
-        .allowOneSpace("Invalid inputs")
+        .allowOneSpace()
         .matches(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
