@@ -1,20 +1,55 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from "../../../_components/custom_modal";
-import {fetchChiledDataList} from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { fetchChiledDataList } from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import ReferralOnboardForm from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
 import Table from '../../../_components/table_components/table/Table';
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
-import {roleBasedAccess} from '../../../_components/reuseable_components/roleBasedAccess';
+import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 
 
 function ClientList() {
 
-
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
     }
+
+
+
+
+    const PasswordCell = ({ password }) => {
+        const [visible, setVisible] = useState(false);
+
+        const toggleVisibility = () => {
+            setVisible((prevVisible) => !prevVisible);
+        };
+
+        return (<div className="removeWhiteSpace">
+            {visible ? (password) : ("*****")}
+            <button className="btn btn-link" onClick={toggleVisibility}>
+                {visible ? (<i className="fa fa-eye"></i>) : (<i className="fa fa-eye-slash"></i>)}
+            </button>
+        </div>);
+    };
+    // const [isLoading,setIsLoading] = useState(false);
+    const [search, SetSearch] = useState("");
+
+    const [modalToggle, setModalToggle] = useState(false)
+    const [modalToggleFormessage, setModalTogalforMessage] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(100);
+    const [searchText, setSearchText] = useState("");
+
+    const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
+    // var {user} = useSelector((state) => state.auth);
+    const { auth } = useSelector(state => state)
+    const { user } = auth
+
+    const dispatch = useDispatch();
+
+
 
 
     const RefrerChiledList = [
@@ -36,8 +71,8 @@ function ClientList() {
             selector: (row) => row?.name,
             sortable: true,
             cell: (row) => (<div className="removeWhiteSpace">
-                    {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
-                </div>),
+                {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+            </div>),
             width: "200px",
         },
 
@@ -48,8 +83,8 @@ function ClientList() {
             selector: (row) => row?.client_code,
             sortable: true,
             cell: (row) => (<div className="removeWhiteSpace">
-                    {row?.client_code}
-                </div>), // width: "200px",
+                {row?.client_code}
+            </div>), // width: "200px",
         },
 
         {
@@ -72,8 +107,8 @@ function ClientList() {
             selector: (row) => row?.email,
             sortable: true,
             cell: (row) => (<div className="removeWhiteSpace">
-                    {row?.email}
-                </div>),
+                {row?.email}
+            </div>),
             width: "200px",
         },
 
@@ -85,14 +120,14 @@ function ClientList() {
             selector: (row) => row?.username,
             sortable: true,
             cell: (row) => (<div className="removeWhiteSpace">
-                    {row?.username}
-                </div>),
+                {row?.username}
+            </div>),
             width: "200px",
         }, {
             id: "8",
             name: "Password",
             selector: (row) => row.password,
-            cell: (row) => (<PasswordCell password={row.password}/>),
+            cell: (row) => (<PasswordCell password={row.password} />),
             width: "170px",
         },
 
@@ -101,53 +136,25 @@ function ClientList() {
             id: "9", name: "Action",
             cell: (row) => (<div>
                 <button
-                        type="button"
-                        className="approve text-white  cob-btn-primary   btn-sm"
-                        data-toggle="modal"
-                        onClick={() => {
-                            setModalTogalforMessage(true);
-                        }}
-                        data-target="#exampleModal"
-                    >
-                        Kyc Complete
-                    </button>
-                </div>),
+                    type="button"
+                    className="approve text-white  cob-btn-primary   btn-sm"
+                    data-toggle="modal"
+                    onClick={() => {
+                        setModalTogalforMessage(true);
+                    }}
+                    data-target="#exampleModal"
+                >
+                    Kyc Complete
+                </button>
+            </div>),
+            omit: user?.roleId === 3
         },
 
 
     ]
 
-    const PasswordCell = ({password}) => {
-        const [visible, setVisible] = useState(false);
-
-        const toggleVisibility = () => {
-            setVisible((prevVisible) => !prevVisible);
-        };
-
-        return (<div className="removeWhiteSpace">
-                {visible ? (password) : ("*****")}
-                <button className="btn btn-link" onClick={toggleVisibility}>
-                    {visible ? (<i className="fa fa-eye"></i>) : (<i className="fa fa-eye-slash"></i>)}
-                </button>
-            </div>);
-    };
-    // const [isLoading,setIsLoading] = useState(false);
-    const [search, SetSearch] = useState("");
-
-    const [modalToggle, setModalToggle] = useState(false)
-    const [modalToggleFormessage, setModalTogalforMessage] = useState(false)
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(100);
-    const [searchText, setSearchText] = useState("");
-
-    const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-
-    var {user} = useSelector((state) => state.auth);
-    const {auth} = useSelector(state => state)
-
-    const dispatch = useDispatch();
-
     const rowData = RefrerChiledList;
+
 
 
     const refrerDataList = useSelector((state) => state.merchantReferralOnboardReducer.refrerChiledList.resp);
@@ -188,7 +195,7 @@ function ClientList() {
 
     useEffect(() => {
         fetchData();
-    }, [currentPage,pageSize]);
+    }, [currentPage, pageSize]);
 
     const fetchData = () => {
         // Determine the type based on the result of roleBasedAccess()
@@ -196,7 +203,7 @@ function ClientList() {
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
         let postObj = {
             page: currentPage, page_size: pageSize, type: type,  // Set the type based on roleType
-            login_id: auth?.user?.loginId
+            login_id: user?.loginId
         }
         //  console.log(postObj)
         dispatch(fetchChiledDataList(postObj));
@@ -219,7 +226,7 @@ function ClientList() {
 
     // console.log(user?.roleId)
     const modalBody = () => {
-        return (<ReferralOnboardForm referralChild={true} fetchData={fetchData}/>)
+        return (<ReferralOnboardForm referralChild={true} fetchData={fetchData} />)
 
 
     }
@@ -233,67 +240,67 @@ function ClientList() {
 
     return (<section className="">
 
-            <main className="">
+        <main className="">
+            <div className="">
                 <div className="">
-                    <div className="">
-                        <h5 className="">Client List</h5>
-                    </div>
-                    <section className="">
-                        <div className="container">
-                            <div className="row mt-4">
-                                {data.length === 0 ? "" : (<div className='row'>
-                                        <div className="col-lg-3 p-0 mr-3">
-                                            <SearchFilter
-                                                kycSearch={kycSearch}
-                                                searchText={searchText}
-                                                searchByText={searchByText}
-                                                setSearchByDropDown={setSearchByDropDown}
-                                            />
-                                        </div>
-
-                                        <div className="col-lg-3 p-0">
-                                            <CountPerPageFilter
-                                                pageSize={pageSize}
-                                                dataCount={dataCount}
-                                                changePageSize={changePageSize}
-                                            />
-                                        </div>
-                                    </div>)}
-
-                                <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
-                                    <div><h6>Number of Record: {dataCount}</h6></div>
-
-                                    <div>
-                                        {user?.roleId === 13 &&
-                                            <button className="btn btn-sm cob-btn-primary"
-                                                    onClick={() => setModalToggle(true)}>Add Child
-                                            Client</button>}
-                                    </div>
-
+                    <h5 className="">Client List</h5>
+                </div>
+                <section className="">
+                    <div className="container">
+                        <div className="row mt-4">
+                            {data.length === 0 ? "" : (<div className='row'>
+                                <div className="col-lg-3 p-0 mr-3">
+                                    <SearchFilter
+                                        kycSearch={kycSearch}
+                                        searchText={searchText}
+                                        searchByText={searchByText}
+                                        setSearchByDropDown={setSearchByDropDown}
+                                    />
                                 </div>
 
-                                {/* {!loadingState && data?.length !== 0 && ( */}
-                                <Table
-                                    row={RefrerChiledList}
-                                    dataCount={dataCount}
-                                    pageSize={pageSize}
-                                    currentPage={currentPage}
-                                    changeCurrentPage={changeCurrentPage}
-                                    data={data}
-                                />
+                                <div className="col-lg-3 p-0">
+                                    <CountPerPageFilter
+                                        pageSize={pageSize}
+                                        dataCount={dataCount}
+                                        changePageSize={changePageSize}
+                                    />
+                                </div>
+                            </div>)}
+
+                            <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
+                                <div><h6>Number of Record: {dataCount}</h6></div>
+
+                                <div>
+                                    {user?.roleId === 13 &&
+                                        <button className="btn btn-sm cob-btn-primary"
+                                            onClick={() => setModalToggle(true)}>Add Child
+                                            Client</button>}
+                                </div>
+
                             </div>
+
+                            {/* {!loadingState && data?.length !== 0 && ( */}
+                            <Table
+                                row={RefrerChiledList}
+                                dataCount={dataCount}
+                                pageSize={pageSize}
+                                currentPage={currentPage}
+                                changeCurrentPage={changeCurrentPage}
+                                data={data}
+                            />
                         </div>
-                    </section>
-                </div>
-            </main>
+                    </div>
+                </section>
+            </div>
+        </main>
 
-            <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle}
-                         fnSetModalToggle={() => setModalToggle()}/>
+        <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle}
+            fnSetModalToggle={() => setModalToggle()} />
 
 
-            <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage}
-                         fnSetModalToggle={() => setModalTogalforMessage()}/>
-        </section>)
+        <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage}
+            fnSetModalToggle={() => setModalTogalforMessage()} />
+    </section>)
 }
 
 export default ClientList
