@@ -113,9 +113,9 @@ function Sandbox() {
           <section className="">
 
             <div className="container-fluid">
-              <div className="row">
+              {/* <div className="row">
                 <StepProgressBar status={kycStatus} />
-              </div>
+              </div> */}
 
               <div className="row">
 
@@ -154,6 +154,10 @@ function Sandbox() {
                               style={{ cursor: 'pointer' }}
                               onClick={() => copyToClipboard("DCRBP")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
+<<<<<<< HEAD
+=======
+                            // data-for="copyTooltip"
+>>>>>>> 6dbb90d0b23905eb54ef7b9160556efa8155fb99
                             >
                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
@@ -221,7 +225,7 @@ function Sandbox() {
                               className="input-group-text"
                               style={{ cursor: 'pointer' }}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                              
+
                               onClick={() => copyToClipboard("DBOI1_SP3036")}
                             >
                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
@@ -773,7 +777,7 @@ function Sandbox() {
                               className="input-group-text"
                               style={{ cursor: 'pointer' }}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                              
+
                               onClick={() => copyToClipboard(data && data?.clientUserName)}
                             >
                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
@@ -908,7 +912,7 @@ function Sandbox() {
                               className="input-group-text"
                               style={{ cursor: 'pointer' }}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                               onClick={() => copyToClipboard(`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`)}
+                              onClick={() => copyToClipboard(`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`)}
                             >
                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
