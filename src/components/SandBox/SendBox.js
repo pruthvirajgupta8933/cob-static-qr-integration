@@ -76,7 +76,7 @@ function Sandbox() {
     // Reset the copy status after a delay (e.g., 2 seconds)
     setTimeout(() => {
       setIsCopied(false);
-    }, 2000);
+    }, 650);
   }
 
 
@@ -139,26 +139,29 @@ function Sandbox() {
                         <label htmlFor="inputEmail3" className="col-form-label">
                           Client Code
                         </label>
-                        <div className="input-group">
+                        <div className="input-group" >
                           <input
                             type="text"
                             className="form-control"
                             id="inputEmail3"
                             disabled={true}
                             value="DCRBP"
+                          
                           />
                           <div className="input-group-append">
                             <span
                               className="input-group-text"
-                              //  className={`input-group-text ${isCopied ? 'copied' : ''}`}
                               style={{ cursor: 'pointer' }}
                               onClick={() => copyToClipboard("DCRBP")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
+<<<<<<< HEAD
+=======
                             // data-for="copyTooltip"
+>>>>>>> 6dbb90d0b23905eb54ef7b9160556efa8155fb99
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
-                            {/* <Tooltip id="copyTooltip" /> */}
+                          
                           </div>
                         </div>
                       </div>
@@ -181,7 +184,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("userph.jha_3036")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                             {/* <button
                               className="btn btn-outline-secondary"
@@ -225,7 +228,7 @@ function Sandbox() {
 
                               onClick={() => copyToClipboard("DBOI1_SP3036")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
 
                           </div>
@@ -257,7 +260,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("0jeOYcu3UnfmWyLC")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
 
                           </div>
@@ -311,7 +314,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("C28LAmGxXTqmK0QJ")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
 
                           </div>
@@ -386,7 +389,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("LPSD1")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
 
                           </div>
@@ -414,7 +417,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("Abh789@sp")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                             <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
 
                           </div>
@@ -440,7 +443,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("P8c3WQ7ei")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                           </div>
 
@@ -470,7 +473,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("x0xzPnXsgTq0QqXx")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -497,7 +500,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("oLA38cwT6IYNGqb3")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -524,7 +527,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -567,7 +570,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("NITE5")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -593,7 +596,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("Ish988@sp")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -620,7 +623,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("wF2F0io7gdNj")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -648,7 +651,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("zvMzY0UZLxkiE6ad")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -675,7 +678,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("iFwrtsCSw3j7HG15")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -702,7 +705,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit")}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -747,8 +750,9 @@ function Sandbox() {
                               style={{ cursor: 'pointer' }}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard(data && data?.clientCode)}
+                              
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -776,7 +780,7 @@ function Sandbox() {
 
                               onClick={() => copyToClipboard(data && data?.clientUserName)}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -823,7 +827,7 @@ function Sandbox() {
                                 data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                                 onClick={() => copyToClipboard(`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`)}
                               >
-                                <i className="fa fa-copy"></i> {/* Copy Icon */}
+                                <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                               </span>
                             </div>
                           </div>
@@ -852,7 +856,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard(data && data?.authKey)}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -881,7 +885,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard(data && data?.authIV)}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -910,7 +914,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard(`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`)}
                             >
-                              <i className="fa fa-copy"></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
