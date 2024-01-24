@@ -20,9 +20,6 @@ if (ENV_PROD) {
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
-  // kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
-  // url = "http://192.168.34.91:8000";
-  // kyc_url = "http://192.168.34.91:8000";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
@@ -74,7 +71,6 @@ const API_LIVE = {
 
   CHECK_PERMISSION_PAYLINK:
     adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
-  BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
   BANK_LIST_NB:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
   BANK_LIST_DC:

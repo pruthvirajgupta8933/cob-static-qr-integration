@@ -11,7 +11,7 @@ import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
 
 function ReferralOnboardForm({ referralChild, fetchData }) {
-    console.log("referralChild", referralChild)
+    // console.log("referralChild", referralChild)
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
 
@@ -58,13 +58,13 @@ function ReferralOnboardForm({ referralChild, fetchData }) {
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-           
 
-            username: Yup.string().when('isPasswordReq', {
-                is: true,
-                then: Yup.string().required('Required'),
-                otherwise: Yup.string(),
-              }),
+
+        username: Yup.string().when('isPasswordReq', {
+            is: true,
+            then: Yup.string().required('Required'),
+            otherwise: Yup.string(),
+        }),
         mobileNumber: Yup.string()
             .trim()
             .required("Required")
