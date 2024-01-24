@@ -76,7 +76,7 @@ function Sandbox() {
     // Reset the copy status after a delay (e.g., 2 seconds)
     setTimeout(() => {
       setIsCopied(false);
-    }, 2000);
+    }, 650);
   }
 
 
@@ -139,26 +139,25 @@ function Sandbox() {
                         <label htmlFor="inputEmail3" className="col-form-label">
                           Client Code
                         </label>
-                        <div className="input-group">
+                        <div className="input-group" >
                           <input
                             type="text"
                             className="form-control"
                             id="inputEmail3"
                             disabled={true}
                             value="DCRBP"
+                          
                           />
                           <div className="input-group-append">
                             <span
                               className="input-group-text"
-                              //  className={`input-group-text ${isCopied ? 'copied' : ''}`}
                               style={{ cursor: 'pointer' }}
                               onClick={() => copyToClipboard("DCRBP")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                              // data-for="copyTooltip"
                             >
                               <i className="fa fa-copy"></i> {/* Copy Icon */}
                             </span>
-                            {/* <Tooltip id="copyTooltip" /> */}
+                          
                           </div>
                         </div>
                       </div>
