@@ -10,7 +10,8 @@ export const Regex = {
     phoneNumber : /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
     password:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     ifscRegex : /^[A-Z]{4}0[A-Z0-9]{6}$/,
-    accountNoRgex : /^[a-zA-Z0-9]{2,25}$/
+    accountNoRgex : /^[a-zA-Z0-9]{2,25}$/,
+    multipleSpace:/^\S+(\s{1}\S+)*$/
 }
 
 export const RegexMsg = {
@@ -25,11 +26,12 @@ export const RegexMsg = {
     password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character",
     ifscRegex:"Your IFSC code is Invalid and must be in capital letters",
     accountNoRgex:"Account Number format is invalid",
+    multipleSpace:"Invalid input"
 }
 
 
 
-
+// if word length more then 20 char. then throw error
 export const wordValidation = function(str, validCharLength=20) {
     if(str?.length>0){
     const wordArr = str.split(" ")

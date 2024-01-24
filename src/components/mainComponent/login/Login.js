@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory, Link } from "react-router-dom";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import Yup from "../../../_components/formik/Yup";
 // import { toast } from "react-toastify";
 // import FormikController from "../../../_components/formik/FormikController";
 
@@ -12,6 +13,7 @@ import sbbnner from "../../../assets/images/sb-front-bnrr.png"
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from '../header/Header'
 import classes from "./login.module.css"
+import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
 
 // import api from './api';
 import toastConfig from "../../../utilities/toastTypes";
@@ -21,10 +23,14 @@ const INITIAL_FORM_STATE = {
     userPassword: "",
 };
 
-const FORM_VALIDATION = Yup.object().shape({
-    clientUserId: Yup.string().required("Please enter username"),
-    userPassword: Yup.string().required("Please enter Password"),
-});
+const validationSchema = Yup.object().shape({
+    clientUserId: Yup.string()
+      .required("Please enter username")
+      .allowOneSpace(),
+    userPassword: Yup.string()
+      .required("Please enter Password")
+      .allowOneSpace(),
+  });
 
 
 function Login() {
@@ -153,7 +159,7 @@ function Login() {
                                 initialValues={{
                                     ...INITIAL_FORM_STATE,
                                 }}
-                                validationSchema={FORM_VALIDATION}
+                                validationSchema={validationSchema}
                                 onSubmit={handleLogin}
                             >
                                 {(formik) => (<Form>
