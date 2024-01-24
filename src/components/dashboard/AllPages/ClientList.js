@@ -150,6 +150,24 @@ function ClientList() {
             omit: user?.roleId === 3
         },
 
+        {
+            id: "10", name: "Action",
+            cell: (row) => (<div>
+                <button
+                    type="button"
+                    className="approve text-white  cob-btn-primary   btn-sm"
+                    data-toggle="modal"
+                    onClick={() => {
+                        setModalTogalforMessage(true);
+                    }}
+                    data-target="#exampleModal"
+                >
+                    Edit Details
+                </button>
+            </div>),
+            omit: user?.roleId !== 3
+        }
+
 
     ]
 
