@@ -3,7 +3,8 @@ import {
     bankDetails,
     saveBasicDetails,
     saveBusinessDetails,
-    fetchReferralChildList
+    fetchReferralChildList,
+    updateBasicDetails
 } from "../../services/approver-dashboard/merchantReferralOnboard.service";
 
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
@@ -41,6 +42,24 @@ export const saveMerchantBasicDetails = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/saveMerchantBasicDetails",
     async (requestParam, thunkAPI) => {
         const response = await saveBasicDetails(requestParam)
+            .catch((error) => {
+                return error.response;
+            });
+
+        if (response.status !== 200) {
+            return thunkAPI.rejectWithValue(response.data.detail)
+        } else {
+            return response.data;
+        }
+
+    }
+);
+
+
+export const updateBasicDetailsSlice = createAsyncThunk(
+    "merchantReferralOnboardSlice/bank/updateBasicDetailsSlice",
+    async (requestParam, thunkAPI) => {
+        const response = await updateBasicDetails(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -124,7 +143,7 @@ export const merchantReferralOnboardSlice = createSlice({
     initialState,
     reducers: {
         resetStateMfo: (state) => {
-            console.log("dispatch cleaer function")
+            // console.log("dispatch cleaer function")
             state.merchantBasicDetails.resp = {};
             state.bankDetails.resp = {};
             state.businessDetails.resp = {};
@@ -132,20 +151,25 @@ export const merchantReferralOnboardSlice = createSlice({
             state.merchantOnboardingProcess.isOnboardStart = false
             state.merchantOnboardingProcess.isOnboardComplete = false
             state.merchantOnboardingProcess.merchantLoginId = ""
+            sessionStorage.removeItem("onboardingStatusByAdmin")
         },
         clearErrorMerchantReferralOnboardSlice: (state) => {
             state.merchantBasicDetails.resp.error = false
             state.bankDetails.resp.error = false
             state.businessDetails.resp.error = false
         },
-        updateOnboardingStatus: (state) => {
+        updateOnboardingStatus: (state, action) => {
+            // console.log("action.payload", action.payload)
             state.merchantOnboardingProcess.isOnboardComplete = true
-            const sessionDataC = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
+            state.merchantOnboardingProcess.isOnboardStart = action.payload?.isOnboardStart
+            state.merchantOnboardingProcess.merchantLoginId = action.payload?.merchantLoginId
+            // const sessionDataC = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
             const onboardingStatusComplete = {
-                merchantLoginId: sessionDataC?.merchantLoginId,
-                isOnboardStart: sessionDataC?.isOnboardStart,
+                merchantLoginId: action.payload?.merchantLoginId,
+                isOnboardStart: action.payload?.isOnboardStart,
                 isOnboardComplete: true
             }
+            // console.log("onboardingStatusComplete", onboardingStatusComplete)
             sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusComplete))
         }
     },
@@ -171,6 +195,28 @@ export const merchantReferralOnboardSlice = createSlice({
                 state.merchantBasicDetails.resp.error = true
                 state.merchantBasicDetails.resp.errorMsg = action.payload
             })
+
+            .addCase(updateBasicDetailsSlice.pending, (state) => {
+                // state.loading = 'loading';
+            })
+            .addCase(updateBasicDetailsSlice.fulfilled, (state, action) => {
+                state.merchantBasicDetails.resp = action.payload.merchant_data
+                if (action.payload.merchant_data?.status === "Activate") {
+                    state.merchantOnboardingProcess.merchantLoginId = action.payload.merchant_data?.loginMasterId
+                    state.merchantOnboardingProcess.isOnboardStart = true
+                    const onboardingStatusByAdmin = {
+                        merchantLoginId: action.payload.merchant_data?.loginMasterId,
+                        isOnboardStart: true
+                    }
+                    sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusByAdmin))
+                }
+            })
+            .addCase(updateBasicDetailsSlice.rejected, (state, action) => {
+                // console.log("action",action)
+                state.merchantBasicDetails.resp.error = true
+                state.merchantBasicDetails.resp.errorMsg = action.payload
+            })
+
 
             .addCase(saveBankDetails.pending, (state) => {
                 state.loading = 'loading';
@@ -201,7 +247,7 @@ export const merchantReferralOnboardSlice = createSlice({
             .addCase(fetchChiledDataList.rejected, (state, action) => {
                 state.loading = 'failed';
             })
-            .addCase(resetFormState.fulfilled, (state,action)=>{
+            .addCase(resetFormState.fulfilled, (state, action) => {
                 state.merchantBasicDetails.resp = {};
                 state.bankDetails.resp = {};
                 state.businessDetails.resp = {};
