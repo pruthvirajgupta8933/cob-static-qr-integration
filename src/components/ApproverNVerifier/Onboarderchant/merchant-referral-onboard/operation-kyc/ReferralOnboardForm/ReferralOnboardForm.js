@@ -11,7 +11,6 @@ import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
 
 function ReferralOnboardForm({ referralChild, fetchData }) {
-    // console.log("referralChild", referralChild)
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
 
