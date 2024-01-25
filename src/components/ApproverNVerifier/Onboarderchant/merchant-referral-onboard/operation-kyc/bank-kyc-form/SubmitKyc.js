@@ -11,7 +11,7 @@ import { axiosInstanceJWT } from "../../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../../config";
 import authService from "../../../../../../services/auth.service";
 
-function SubmitKyc({ setCurrentTab }) {
+function SubmitKyc({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch();
     const { auth, kyc, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { merchantKycData } = kyc
@@ -190,20 +190,20 @@ function SubmitKyc({ setCurrentTab }) {
                 <br />
                 <div className="row">
                     <div className="col-12">
-                        <button
-                            disabled={disable}
-                            className="btn btn-sm float-lg-right cob-btn-primary text-white"
-                            type="submit"
+                        {!isEditableInput &&
+                            <button
+                                disabled={disable}
+                                className="btn btn-sm float-lg-right cob-btn-primary text-white"
+                                type="submit"
 
-                        >
-                            {disable && <>
-                                <span className="spinner-border spinner-border-sm" role="status"
-                                    aria-hidden="true" />
-                                <span className="sr-only">Loading...</span>
-                            </>}
-                            Submit
-                        </button>
-
+                            >
+                                {disable && <>
+                                    <span className="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true" />
+                                    <span className="sr-only">Loading...</span>
+                                </>}
+                                Submit
+                            </button>}
                     </div>
                 </div>
                 <br />

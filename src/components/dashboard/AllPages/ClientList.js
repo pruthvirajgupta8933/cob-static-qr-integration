@@ -7,6 +7,8 @@ import Table from '../../../_components/table_components/table/Table';
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
+// import { LinkOffSharp } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 
 function ClientList() {
@@ -149,6 +151,19 @@ function ClientList() {
             </div>),
             omit: user?.roleId === 3
         },
+
+        {
+            id: "10", name: "Action",
+            cell: (row) => (<div>
+                <Link
+                    className="approve text-white cob-btn-primary btn-sm"
+                    to={`/dashboard/bank-onboarding/?cmid=${row?.loginMasterId}&edit=true`}
+                >
+                    Edit Details
+                </Link>
+            </div>),
+            omit: user?.roleId !== 3
+        }
 
 
     ]

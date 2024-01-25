@@ -7,12 +7,13 @@ import { Regex, RegexMsg } from '../../../../../../_components/formik/Validation
 import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import { saveMerchantBasicDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { saveMerchantBasicDetails, updateBasicDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import { kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
+import { updateBasicDetails } from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
 
 
-function BasicDetailsOps({ setCurrentTab }) {
+function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -21,7 +22,14 @@ function BasicDetailsOps({ setCurrentTab }) {
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails, merchantOnboardingProcess } = merchantReferralOnboardReducer
+
+    // const searchParams = new URLSearchParams(document.location.search)
+    // const edit = searchParams.get('edit')
+
+
     // console.log("merchantKycData", merchantKycData)
+    const loginIdFromState = merchantOnboardingProcess?.merchantLoginId !== "" ? true : false
+
     const initialValues = {
         fullName: merchantKycData?.name ?? "",
         mobileNumber: merchantKycData?.contactNumber ?? "",
@@ -29,7 +37,8 @@ function BasicDetailsOps({ setCurrentTab }) {
         business_category: merchantKycData?.businessCategory ?? "",
         business_type: merchantKycData?.businessType ?? "",
         password: merchantBasicDetails?.resp?.password ?? "",
-        username: merchantBasicDetails?.resp?.username ?? ""
+        username: merchantKycData?.username ?? "",
+        isEditTable: loginIdFromState
     };
 
 
@@ -54,12 +63,16 @@ function BasicDetailsOps({ setCurrentTab }) {
             .nullable(),
         business_category: Yup.string().required("Required"),
         business_type: Yup.string().required("Required"),
-        password: Yup.string()
-            .required("Password Required")
-            .matches(Regex.password, RegexMsg.password),
+
+        password: Yup.string().when("isEditTable", {
+            is: true,
+            then: Yup.string(),
+            otherwise: (Yup) => Yup.matches(Regex.password, RegexMsg.password).required("Required")
+        }),
         username: Yup.string()
             .trim()
             .required("Required")
+            .min(6, "Minimum 6 characters are allowed")
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
     });
@@ -70,7 +83,17 @@ function BasicDetailsOps({ setCurrentTab }) {
             fullName, mobileNumber, email_id, business_category, password, business_type, username
         } = value
 
-        dispatch(saveMerchantBasicDetails({
+
+        const updateReqBody = {
+            "login_id": merchantOnboardingProcess?.merchantLoginId,
+            "name": fullName,
+            "mobileNumber": mobileNumber,
+            "business_category": business_category,
+            "business_type": business_type,
+            "updated_by": auth?.user?.loginId
+        }
+
+        const saveDetailsReqBody = {
             name: fullName,
             mobileNumber: mobileNumber,
             email: email_id,
@@ -81,21 +104,44 @@ function BasicDetailsOps({ setCurrentTab }) {
             isDirect: false,
             created_by: auth?.user?.loginId,
             updated_by: auth?.user?.loginId
-        })).then((resp) => {
-            setSubmitLoader(false)
-            if (resp?.error?.message) {
-                toastConfig.errorToast(resp?.error?.message)
-                toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
-            }
+        }
 
-            if (resp?.payload?.status === true) {
-                toastConfig.successToast(resp?.payload?.message)
-            }
-        }).catch(err => {
-            toastConfig.errorToast("Something went wrong!")
-            console.log(err)
-            setSubmitLoader(false)
-        })
+        if (merchantOnboardingProcess?.merchantLoginId === "") {
+            dispatch(saveMerchantBasicDetails(saveDetailsReqBody)).then((resp) => {
+                setSubmitLoader(false)
+                if (resp?.error?.message) {
+                    toastConfig.errorToast(resp?.error?.message)
+                    toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+                }
+
+                if (resp?.payload?.status === true) {
+                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
+                    toastConfig.successToast(resp?.payload?.message)
+                }
+            }).catch(err => {
+                toastConfig.errorToast("Something went wrong!")
+                // console.log(err)
+                setSubmitLoader(false)
+            })
+        } else {
+            dispatch(updateBasicDetailsSlice(updateReqBody)).then((resp) => {
+                setSubmitLoader(false)
+                if (resp?.error?.message) {
+                    toastConfig.errorToast(resp?.error?.message)
+                    toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+                }
+
+                if (resp?.payload?.status === true) {
+                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
+                    toastConfig.successToast(resp?.payload?.message)
+                }
+            }).catch(err => {
+                toastConfig.errorToast("Something went wrong!")
+                // console.log(err)
+                setSubmitLoader(false)
+            })
+        }
+
     }
 
 
@@ -136,7 +182,6 @@ function BasicDetailsOps({ setCurrentTab }) {
             ...passwordType, showPasswords: !passwordType.showPasswords,
         });
     };
-
 
 
 
@@ -182,6 +227,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                             placeholder="Enter Email Id"
                             label="Email ID *"
                             autoComplete='off'
+                            disabled={loginIdFromState}
                         />
                     </div>
                     <div className="col-md-6">
@@ -191,8 +237,8 @@ function BasicDetailsOps({ setCurrentTab }) {
                             name="username"
                             className="form-control"
                             label="Username *"
-                            plaseHolder="example@username"
                             autoComplete='off'
+                            disabled={loginIdFromState}
                         />
                     </div>
                     <div className="col-sm-6 col-md-3">
@@ -203,6 +249,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                             className="form-select"
                             label="Business Type *"
                             autoComplete='off'
+
                         />
                     </div>
                     <div className="col-md-3">
@@ -225,6 +272,7 @@ function BasicDetailsOps({ setCurrentTab }) {
                                 autoComplete='off'
                                 className="form-control"
                                 displayMsgOutside={true}
+                                disabled={loginIdFromState}
                             />
                             <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
                                 {passwordType.showPasswords ? (
@@ -236,17 +284,17 @@ function BasicDetailsOps({ setCurrentTab }) {
                             className="text-danger m-0">{msg}</p>}</ErrorMessage>
                     </div>
                     <div className="col-6">
-                       
-                        {merchantKycData?.isContactNumberVerified !== 1 &&
-                            <button type="submit" className="btn cob-btn-primary btn-sm m-2">
-                                {submitLoader && <>
-                                    <span className="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true" />
-                                    <span className="sr-only">Loading...</span>
-                                </>}
-                                Save
-                            </button>}
-                       
+
+                        {!isEditableInput && <button type="submit" className="btn cob-btn-primary btn-sm m-2">
+                            {submitLoader && <>
+                                <span className="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true" />
+                                <span className="sr-only">Loading...</span>
+                            </>}
+                            Save
+                        </button>}
+
+
                         {merchantKycData?.isContactNumberVerified === 1 &&
                             <a className="btn active-secondary btn-sm m-2"
                                 onClick={() => setCurrentTab(2)}>Next</a>}

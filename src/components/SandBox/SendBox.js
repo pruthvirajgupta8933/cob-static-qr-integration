@@ -410,7 +410,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("Abh789@sp")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                             <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
 
                           </div>
@@ -493,7 +493,7 @@ function Sandbox() {
                               onClick={() => copyToClipboard("oLA38cwT6IYNGqb3")}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                             >
-                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -561,7 +561,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("NITE5")}
                             >
-                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -614,7 +614,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("wF2F0io7gdNj")}
                             >
-                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
                             </span>
                           </div>
                         </div>
@@ -669,7 +669,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard("iFwrtsCSw3j7HG15")}
                             >
-                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -739,9 +739,9 @@ function Sandbox() {
                               style={{ cursor: 'pointer' }}
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard(data && data?.clientCode)}
-                              
+
                             >
-                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>
@@ -845,7 +845,7 @@ function Sandbox() {
                               data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
                               onClick={() => copyToClipboard(data && data?.authKey)}
                             >
-                               <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                              <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                             </span>
                           </div>
                         </div>

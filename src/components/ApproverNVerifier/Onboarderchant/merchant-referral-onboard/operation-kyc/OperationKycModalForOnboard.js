@@ -6,7 +6,9 @@ import BasicDetailsOps from './bank-kyc-form/BasicDetailsOps'
 import SubmitKyc from './bank-kyc-form/SubmitKyc'
 import { useDispatch, useSelector } from 'react-redux'
 import { Prompt } from "react-router-dom";
-import { kycDetailsByMerchantLoginId } from "../../../../../slices/kycSlice";
+import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId } from "../../../../../slices/kycSlice";
+import { resetStateMfo, updateOnboardingStatus } from '../../../../../slices/approver-dashboard/merchantReferralOnboardSlice'
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from '../../../../../utilities/enums'
 
 
 function OperationKycModalForOnboard() {
@@ -15,6 +17,10 @@ function OperationKycModalForOnboard() {
     const { merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantOnboardingProcess, merchantBasicDetails } = merchantReferralOnboardReducer
+
+    const searchParams = new URLSearchParams(document.location.search)
+    const cmid = searchParams.get('cmid')
+    const edit = searchParams.get('edit')
 
     const handleTabClick = (currenTabVal) => {
         setCurrentTab(currenTabVal)
@@ -31,19 +37,54 @@ function OperationKycModalForOnboard() {
         e.returnValue = ''
     }
     useEffect(() => {
-        dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess?.merchantLoginId }))
-    }, [merchantOnboardingProcess]);
+        let merchantLoginId = ""
+        if (edit && cmid !== "") {
+            merchantLoginId = cmid
+        } else {
+            merchantLoginId = merchantOnboardingProcess?.merchantLoginId
+        }
+
+        // console.log("merchantLoginId", merchantLoginId)
+        if (merchantLoginId !== "") {
+            // console.log("hell2")
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId })).then(resp => {
+                dispatch(updateOnboardingStatus({ merchantLoginId, isOnboardStart: true }))
+            })
+        }
+
+        return () => {
+            dispatch(resetStateMfo())
+            dispatch(clearKycDetailsByMerchantLoginId())
+        }
+
+    }, [cmid, edit]);
+
+
+
+
 
     const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart;
 
+    const kycStatusArr = [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].toString().toLowerCase().split(",");
+
+    const isEditableInput = kycStatusArr.includes(merchantKycData?.status?.toString().toLowerCase())
     return (<div className="row">
         <Prompt
             message={() => 'Are you sure you want to leave this page?'}
         />
-        {merchantOnboardingProcess?.isOnboardStart && <div className="d-flex bg-light justify-content-between px-0 my-2">
-            <p className="p-2 m-0">Session Start : {merchantKycData?.name}</p>
-            <p className="p-2 m-0">Merchant Onboard Login ID : {merchantOnboardingProcess?.merchantLoginId}</p>
-        </div>}
+        {merchantOnboardingProcess?.isOnboardStart && <>
+            <div className="bg-light text-danger px-0"><h6> Note :
+                Once the KYC status is verified or approved, editing the merchant information will not be possible until the merchant's KYC is rejected.</h6></div>
+            <div className="d-flex bg-light justify-content-between px-0 my-2">
+                <div>
+                    <p className="p-2 m-0">Session Start : {merchantKycData?.name}</p>
+                    <p className="p-2 m-0">KYC Status : {merchantKycData?.status}</p>
+                </div>
+                <div><p className="p-2 m-0">Merchant Onboard Login ID : {merchantOnboardingProcess?.merchantLoginId}</p></div>
+            </div>
+
+        </>}
+
         <div className="col-2 bg-light p-1">
             {/* Tab navs */}
             <div className="nav flex-column nav-pills text-start " id="v-pills-tab" role="tablist"
@@ -74,11 +115,11 @@ function OperationKycModalForOnboard() {
             {/* Tab content */}
 
             <div className="tab-content" id="v-pills-tabContent">
-                {currentTab === 1 && <BasicDetailsOps setCurrentTab={setCurrentTab} />}
-                {currentTab === 2 && <BankDetailsOps setCurrentTab={setCurrentTab} />}
-                {currentTab === 3 && <BusinessDetailsOps setCurrentTab={setCurrentTab} />}
-                {currentTab === 4 && <DocumentCenter setCurrentTab={setCurrentTab} />}
-                {currentTab === 5 && <SubmitKyc setCurrentTab={setCurrentTab} />}
+                {currentTab === 1 && <BasicDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
+                {currentTab === 2 && <BankDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
+                {currentTab === 3 && <BusinessDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
+                {currentTab === 4 && <DocumentCenter setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
+                {currentTab === 5 && <SubmitKyc setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
             </div>
             {/* Tab content */}
         </div>
