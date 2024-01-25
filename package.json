@@ -34,6 +34,7 @@
     "number-to-words": "^1.2.4",
     "pg-test-project": "^4.0.9",
     "react": "^17.0.2",
+    "react-collapse": "^5.1.1",
     "react-data-table-component": "^7.5.3",
     "react-date-picker": "^10.2.0",
     "react-detect-offline": "^2.4.5",
