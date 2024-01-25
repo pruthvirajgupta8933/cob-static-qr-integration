@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import toastConfig from "../../../../../../utilities/toastTypes";
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import kycOperationService from '../../../../../../services/kycOperation.service';
-function BusinessDetailsOps({ setCurrentTab }) {
+function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [avgTicketAmount, setAvgTicketAmount] = useState([]);
@@ -22,7 +22,7 @@ function BusinessDetailsOps({ setCurrentTab }) {
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
 
-    console.log("merchantKycData", merchantKycData)
+    // console.log("merchantKycData", merchantKycData)
     const initialValues = {
         pan_card: merchantKycData?.signatoryPAN ?? "",
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
@@ -41,7 +41,7 @@ function BusinessDetailsOps({ setCurrentTab }) {
 
 
     const validationSchema = Yup.object({
-        pan_card: Yup.string().nullable(),
+        pan_card: Yup.string().nullable().required("Required"),
         website: Yup.string().nullable().required("Required"),
         is_pan_verified: Yup.string().nullable(),
         platform_id: Yup.string()
@@ -87,7 +87,7 @@ function BusinessDetailsOps({ setCurrentTab }) {
                 }
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     };
 
@@ -112,9 +112,8 @@ function BusinessDetailsOps({ setCurrentTab }) {
 
 
         dispatch(businessDetailsSlice(postData)).then((resp) => {
-            if (resp?.error?.message) {
-                toastConfig.errorToast(resp?.error?.message)
-                toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
+            if (resp?.payload?.detail) {
+                toastConfig.errorToast(resp?.payload?.detail)
             }
 
             if (resp?.payload?.status === true) {
@@ -321,13 +320,15 @@ function BusinessDetailsOps({ setCurrentTab }) {
                             </div>
                         </div>
                         <div className="col-12 mt-4 mr-5">
-                            <button type="submit" className="btn cob-btn-primary btn-sm">Save
-                                {submitLoader && <>
-                                    <span className="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true" />
-                                    <span className="sr-only">Loading...</span>
-                                </>}
-                            </button>
+                            {!isEditableInput &&
+                                <button type="submit" className="btn cob-btn-primary btn-sm">Save
+                                    {submitLoader && <>
+                                        <span className="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true" />
+                                        <span className="sr-only">Loading...</span>
+                                    </>}
+                                </button>
+                            }
                             {businessDetails?.resp?.status === true &&
                                 <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
                             }

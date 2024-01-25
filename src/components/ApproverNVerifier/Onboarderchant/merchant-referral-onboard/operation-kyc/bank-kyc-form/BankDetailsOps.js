@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react'
-import {Formik, Field, Form, ErrorMessage} from "formik";
+import React, { useEffect, useState } from 'react'
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
-import {Regex, RegexMsg} from '../../../../../../_components/formik/ValidationRegex';
+import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
 import verifiedIcon from "../../../../../../assets/images/verified.png";
 
 import {
@@ -11,25 +11,25 @@ import {
     ifscValidation,
     kycDetailsByMerchantLoginId
 } from '../../../../../../slices/kycSlice';
-import {toast} from 'react-toastify';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchBankList} from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
-import {convertToFormikSelectJson} from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
-import {saveBankDetails} from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBankList } from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
+import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
+import { saveBankDetails } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import toastConfig from "../../../../../../utilities/toastTypes";
 
 
-function BankDetailsOps({setCurrentTab}) {
+function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const [loading, setLoading] = useState(false);
     const [submitLoader, setSubmitLoader] = useState(false);
     const [bankList, setBankList] = useState([]);
     const dispatch = useDispatch();
-    const {auth, merchantReferralOnboardReducer, kyc} = useSelector(state => state)
-
+    const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
+    // console.log("merchantReferralOnboardReducer", merchantReferralOnboardReducer)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
-    const {bankDetails} = merchantReferralOnboardReducer
-    const {merchantKycData} = kyc
+    const { bankDetails } = merchantReferralOnboardReducer
+    const { merchantKycData } = kyc
 
     const initialValues = {
         account_holder_name: merchantKycData?.merchant_account_details?.account_holder_name ?? "",
@@ -93,28 +93,27 @@ function BankDetailsOps({setCurrentTab}) {
                 branch: values.branch,
                 login_id: merchantLoginId,
                 modified_by: auth?.user?.loginId,
-            })).then((resp)=>{
-            if(resp?.error?.message){
-                toastConfig.errorToast(resp?.error?.message)
-                toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
-            }
+            })).then((resp) => {
+                if (resp?.payload?.detail) {
+                    toastConfig.errorToast(resp?.payload?.detail)
+                }
 
-            if(resp?.payload?.status===true){
-                toastConfig.successToast(resp?.payload?.message)
-            }
-        }).catch(err=>toastConfig.errorToast("Something went wrong!"))
+                if (resp?.payload?.status === true) {
+                    toastConfig.successToast(resp?.payload?.message)
+                }
+            }).catch(err => {
+                console.log(err)
+            })
 
-        // console.log("23432")
         setSubmitLoader(false)
-        // tabHandler(3)
 
     }
 
 
     const selectedType = [
-        {key: "", value: "Select"},
-        {key: "1", value: "Current"},
-        {key: "2", value: "Saving"},
+        { key: "", value: "Select" },
+        { key: "1", value: "Current" },
+        { key: "2", value: "Saving" },
     ];
 
 
@@ -133,8 +132,8 @@ function BankDetailsOps({setCurrentTab}) {
     }, []);
 
     useEffect(() => {
-        if(merchantLoginId!==""){
-            dispatch(kycDetailsByMerchantLoginId({login_id: merchantLoginId}))
+        if (merchantLoginId !== "") {
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
         }
     }, [merchantLoginId]);
 
@@ -153,7 +152,7 @@ function BankDetailsOps({setCurrentTab}) {
                 ) {
                     // console.log(res?.payload)
                     setLoading(false)
-                    const postData = {bank_name: res?.payload?.bank};
+                    const postData = { bank_name: res?.payload?.bank };
                     dispatch(getBankId(postData)).then(resp => {
 
                         if (resp?.payload?.length > 0) {
@@ -242,7 +241,7 @@ function BankDetailsOps({setCurrentTab}) {
     return (
         // create html bootstrap from with for the bank details eg: account number / ifce / account holder name/ bank name/ account type
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
-             aria-labelledby="v-pills-link1-tab">
+            aria-labelledby="v-pills-link1-tab">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -250,13 +249,13 @@ function BankDetailsOps({setCurrentTab}) {
                 enableReinitialize={true}
             >
                 {({
-                      values,
-                      errors,
-                      setFieldError,
-                      setFieldValue,
-                      setFieldTouched,
-                      handleChange,
-                  }) => (
+                    values,
+                    errors,
+                    setFieldError,
+                    setFieldValue,
+                    setFieldTouched,
+                    handleChange,
+                }) => (
                     <Form>
                         <div className="row">
                             <div className="col-sm-12 col-md-12 col-lg-6 ">
@@ -277,7 +276,7 @@ function BankDetailsOps({setCurrentTab}) {
                                     {(values?.ifsc_code !== null && loading) &&
                                         <div className="input-group-append">
                                             <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
-                                                    disabled={loading}>
+                                                disabled={loading}>
                                                 <span className="spinner-border spinner-border-sm" role="status">
                                                     <span className="sr-only">Loading...</span>
                                                 </span>
@@ -336,15 +335,15 @@ function BankDetailsOps({setCurrentTab}) {
                                     {/* if both values are same then display verified icon */}
                                     {(values?.account_number !== null && values?.account_number !== "" && !errors.hasOwnProperty("isAccountNumberVerified") && !errors.hasOwnProperty("isIfscVerified")) &&
                                         <span className="success input-group-append">
-                                        <img
-                                            src={verifiedIcon}
-                                            alt=""
-                                            title=""
-                                            width={"20px"}
-                                            height={"20px"}
-                                            className="btn-outline-secondary"
-                                        />
-                                    </span>
+                                            <img
+                                                src={verifiedIcon}
+                                                alt=""
+                                                title=""
+                                                width={"20px"}
+                                                height={"20px"}
+                                                className="btn-outline-secondary"
+                                            />
+                                        </span>
                                     }
 
                                     {/* if found any error in validation */}
@@ -352,17 +351,17 @@ function BankDetailsOps({setCurrentTab}) {
                                     {(values?.ifsc_code !== null && (errors.hasOwnProperty("isAccountNumberVerified") || errors.hasOwnProperty("isIfscVerified"))) &&
                                         <div className="input-group-append">
                                             <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
-                                                    disabled={loading}
-                                                    onClick={() => {
-                                                        checkInputIsValid(
-                                                            errors,
-                                                            values,
-                                                            setFieldError,
-                                                            setFieldTouched,
-                                                            "account_number",
-                                                            setFieldValue
-                                                        );
-                                                    }}>
+                                                disabled={loading}
+                                                onClick={() => {
+                                                    checkInputIsValid(
+                                                        errors,
+                                                        values,
+                                                        setFieldError,
+                                                        setFieldTouched,
+                                                        "account_number",
+                                                        setFieldValue
+                                                    );
+                                                }}>
                                                 {loading ?
                                                     <span className="spinner-border spinner-border-sm" role="status">
                                                         <span className="sr-only">Loading...</span>
@@ -451,19 +450,20 @@ function BankDetailsOps({setCurrentTab}) {
                         <div className="row">
                             <div className="col-lg-6 mt-2">
                                 {/*{console.log(submitLoader)}*/}
+                                {!isEditableInput &&
                                     <button
                                         className="cob-btn-primary btn text-white btn-sm"
                                         type="submit" >
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
-                                                  aria-hidden="true"/>
+                                                aria-hidden="true" />
                                             <span className="sr-only">Loading...</span>
                                         </>}
                                         Save
-                                    </button>
+                                    </button>}
 
                                 {bankDetails?.resp?.status === true &&
-                                    <a className="btn active-secondary btn-sm m-2" onClick={()=>setCurrentTab(3)}>Next</a>
+                                    <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(3)}>Next</a>
                                 }
 
                             </div>

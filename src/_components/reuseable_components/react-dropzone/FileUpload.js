@@ -8,7 +8,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import { v4 as uuidv4 } from 'uuid';
 
 
-const FileUploader = ({ setCurrentTab }) => {
+const FileUploader = ({ setCurrentTab, isEditableInput }) => {
 
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [submitLoader, setSubmitLoader] = useState(false);
@@ -52,7 +52,7 @@ const FileUploader = ({ setCurrentTab }) => {
         try {
             // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for uploading files
             const response = await saveDocumentDetails(formData)
-            // console.log(response,"this is rcomplete response")
+            // console.log(response, "this is rcomplete response")
             setDocumentUploadResponse(response?.data?.status)
             fetchDocList(merchantLoginId)
             if (response.data.status === true) {
@@ -66,7 +66,8 @@ const FileUploader = ({ setCurrentTab }) => {
             setSubmitLoader(false)
             // console.log('Files uploaded successfully:', response.data?.message);
         } catch (error) {
-            // toastConfig.errorToast(response.data?.message)
+            // console.log("doc-error", error?.response?.data?.deta il)
+            toastConfig.errorToast(error?.response?.data?.detail)
             // toastConfig.errorToast('Error uploading files');
             setSubmitLoader(false)
         }
@@ -79,28 +80,29 @@ const FileUploader = ({ setCurrentTab }) => {
 
     return (
         <div>
-            <div className="file-uploader">
-                {uploadedFiles[0]?.name ?
-                    <p>{uploadedFiles[0]?.name} <span className='ml-5 cursor_pointer' onClick={() => {
-                        setUploadedFiles([])
-                    }}>X</span></p> : null
-                }
-                <div {...getRootProps()} className="dropzone">
-                    <input {...getInputProps()} />
-                    <p>Drag 'n' drop some PDF files here, or click to select files 5MB</p>
+            {!isEditableInput &&
+                <div className="file-uploader">
+                    {uploadedFiles[0]?.name ?
+                        <p>{uploadedFiles[0]?.name} <span className='ml-5 cursor_pointer' onClick={() => {
+                            setUploadedFiles([])
+                        }}>X</span></p> : null
+                    }
+                    <div {...getRootProps()} className="dropzone">
+                        <input {...getInputProps()} />
+                        <p>Drag 'n' drop some PDF files here, or click to select files 5MB</p>
+                    </div>
+                    {uploadedFiles?.length > 0 &&
+                        <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
+                            {submitLoader && <>
+                                <span className="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true" />
+                                <span className="sr-only">Loading...</span>
+                            </>} Upload Files
+                        </button>} {documentUploadResponse === true &&
+                            <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(5)}>Next</a>
+                    }
                 </div>
-                {uploadedFiles?.length > 0 &&
-                    <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
-                        {submitLoader && <>
-                            <span className="spinner-border spinner-border-sm" role="status"
-                                aria-hidden="true" />
-                            <span className="sr-only">Loading...</span>
-                        </>} Upload Files
-                    </button>} {documentUploadResponse === true &&
-                        <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(5)}>Next</a>
-                }
-            </div>
-
+            }
             {KycDocUpload?.length > 0 && <div className="row p-2">
                 <h6>Uploaded Document</h6>
                 <ul>
