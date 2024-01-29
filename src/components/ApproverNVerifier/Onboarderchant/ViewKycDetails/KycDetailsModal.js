@@ -24,6 +24,7 @@ import GeneralForm from "./GeneralForm";
 import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
 import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
 import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMappingSlice";
+import { APP_ENV } from "../../../../config";
 
 
 
@@ -205,7 +206,8 @@ const KycDetailsModal = (props) => {
         </div>}
 
         {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
-        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null && selectedUserData?.roleId !== 13) &&
+        {console.log(APP_ENV)}
+        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null && selectedUserData?.roleId !== 13 && APP_ENV === true) &&
           <div className="container">
             <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} generalFormData={generalFormData?.parent_client_code} />
           </div>}

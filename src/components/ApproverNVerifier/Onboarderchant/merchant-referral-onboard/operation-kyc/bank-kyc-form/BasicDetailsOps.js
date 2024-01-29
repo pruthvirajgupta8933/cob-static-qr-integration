@@ -146,7 +146,6 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
 
 
     useEffect(() => {
-        dispatch(clearKycDetailsByMerchantLoginId())
         axiosInstanceJWT
             .get(API_URL.Business_Category_CODE)
             .then((resp) => {
