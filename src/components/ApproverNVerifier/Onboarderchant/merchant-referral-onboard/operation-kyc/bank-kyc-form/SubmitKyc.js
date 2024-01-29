@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { kycDetailsByMerchantLoginId, saveKycConsent } from "../../../../../../slices/kycSlice";
+import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId, saveKycConsent } from "../../../../../../slices/kycSlice";
 import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { resetFormState } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
@@ -117,10 +117,11 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
         });
 
     };
-    const backToFirstScreen = async () => {
-        await sessionStorage.removeItem("onboardingStatusByAdmin");
-        await dispatch(resetFormState());
-        await setCurrentTab(1)
+    const backToFirstScreen = () => {
+        sessionStorage.removeItem("onboardingStatusByAdmin");
+        dispatch(resetFormState());
+        dispatch(clearKycDetailsByMerchantLoginId())
+        setCurrentTab(1)
     }
 
     return (<div className="col-md-12 p-3 NunitoSans-Regular">
