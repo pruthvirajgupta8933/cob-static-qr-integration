@@ -174,11 +174,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         }
     };
 
-    useEffect(() => {
-        if (merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
-        }
-    }, [merchantLoginId]);
+    // useEffect(() => {
+    //     if (merchantLoginId !== "") {
+    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+    //     }
+    // }, [merchantLoginId]);
 
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">

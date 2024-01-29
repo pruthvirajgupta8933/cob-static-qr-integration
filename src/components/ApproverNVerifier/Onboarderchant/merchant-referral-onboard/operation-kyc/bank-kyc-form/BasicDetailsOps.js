@@ -8,7 +8,7 @@ import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { saveMerchantBasicDetails, updateBasicDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import { kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
+import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 import { updateBasicDetails } from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
 
@@ -146,6 +146,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
 
 
     useEffect(() => {
+        dispatch(clearKycDetailsByMerchantLoginId())
         axiosInstanceJWT
             .get(API_URL.Business_Category_CODE)
             .then((resp) => {
@@ -170,12 +171,12 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
 
     }, []);
 
-    useEffect(() => {
-        if (merchantOnboardingProcess.merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
-        }
+    // useEffect(() => {
+    //     if (merchantOnboardingProcess.merchantLoginId !== "") {
+    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
+    //     }
 
-    }, [merchantOnboardingProcess]);
+    // }, [merchantOnboardingProcess]);
 
     const togglePassword = () => {
         setPasswordType({

@@ -131,11 +131,11 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
     }, []);
 
-    useEffect(() => {
-        if (merchantLoginId !== "") {
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
-        }
-    }, [merchantLoginId]);
+    // useEffect(() => {
+    //     if (merchantLoginId !== "") {
+    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+    //     }
+    // }, [merchantLoginId]);
 
     const ifscValidationNo = (values, setFieldValue) => {
         setLoading(true)
