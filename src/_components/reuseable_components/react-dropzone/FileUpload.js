@@ -78,6 +78,7 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
         onDrop,
     });
 
+    
     return (
         <div>
             {!isEditableInput &&

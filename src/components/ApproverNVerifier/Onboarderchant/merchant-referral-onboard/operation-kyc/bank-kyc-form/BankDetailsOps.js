@@ -267,6 +267,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                         text="text"
                                         name="ifsc_code"
                                         className="form-control"
+                                        disabled={isEditableInput}
                                         onChange={(e) => {
                                             setFieldValue("ifsc_code", e.target.value)
                                             setFieldValue("isIfscVerified", "")
@@ -327,6 +328,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                         type="text"
                                         name="account_number"
                                         className="form-control"
+                                        disabled={isEditableInput}
                                         onChange={(e) => {
                                             setFieldValue("account_number", e.target.value)
                                             setFieldValue("isAccountNumberVerified", "")
@@ -399,6 +401,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                 <FormikController
                                     control="input"
                                     type="text"
+                                    disabled={isEditableInput}
                                     name="account_holder_name"
                                     className="form-control"
 
@@ -414,6 +417,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                 <FormikController
                                     control="select"
                                     name="account_type"
+                                    disabled={isEditableInput}
                                     options={selectedType}
                                     className="form-select"
 
@@ -430,6 +434,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                     name="bank_id"
                                     className="form-select"
                                     options={bankList}
+                                    disabled={isEditableInput}
 
                                 />
                             </div>
@@ -442,6 +447,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                     control="input"
                                     type="text"
                                     name="branch"
+                                    disabled={isEditableInput}
                                     className="form-control"
 
                                 />
