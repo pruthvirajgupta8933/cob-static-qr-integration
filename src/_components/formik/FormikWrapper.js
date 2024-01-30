@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import FormikController from "./FormikController"
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material"
 import { useState } from "react"
 import moment from "moment"
 
@@ -11,14 +10,14 @@ function FormikWrapper() {
   // get today date
   var now = moment().format('YYYY-M-D');
   var splitDate = now.split("-");
-  if(splitDate[1].length===1){
-    splitDate[1] = '0'+splitDate[1]; 
-  }  
-  if(splitDate[2].length===1){
-    splitDate[2] = '0'+splitDate[2];
+  if (splitDate[1].length === 1) {
+    splitDate[1] = '0' + splitDate[1];
   }
-  splitDate =splitDate.join('-');
-  
+  if (splitDate[2].length === 1) {
+    splitDate[2] = '0' + splitDate[2];
+  }
+  splitDate = splitDate.join('-');
+
 
 
 
@@ -39,25 +38,25 @@ function FormikWrapper() {
     selectChoice: "",
     radioChoice: "",
     checkBoxChoice: "",
-    file:"",
-    date:todayDate
+    file: "",
+    date: todayDate
     // date:"2022-09-01"
   }
 
 
   // console.log(initialValues)
-  const validationSchema = Yup.object ({
+  const validationSchema = Yup.object({
     // email: Yup.string().required("Required"),
     // description: Yup.string().required("Required"),
     // selectChoice: Yup.string().required("Required"),
     // radioChoice: Yup.string().required("Required"),
     // checkBoxChoice: Yup.array().required("Required"),
     // file: Yup.mixed().required("Required" ),
-    date:Yup.date().required("Required")
+    date: Yup.date().required("Required")
   })
 
-  const imageHandler = e =>{
-      // console.log(e.target.files[0])
+  const imageHandler = e => {
+    // console.log(e.target.files[0])
   }
 
   const onSubmit = values => values
@@ -70,17 +69,17 @@ function FormikWrapper() {
     >
       {formik => (
         <Form>
-        <FormikController
+          <FormikController
             control="input"
             type="date"
             label="date"
             name="date"
-            onChange={(e)=>{
-              formik.setFieldValue("date",e.target.value)
+            onChange={(e) => {
+              formik.setFieldValue("date", e.target.value)
               // setTodayDate(e.target.value)
-              }}
-              
-            // value={'2013-01-08'}
+            }}
+
+          // value={'2013-01-08'}
           />
           <FormikController
             control="input"
