@@ -53,6 +53,9 @@ select {
   margin: auto;
 }
 
+.not-allowed {
+  cursor: not-allowed;}
+
 
 .profile-img-card {
   width: 96px;
