@@ -356,7 +356,7 @@ function Sandbox() {
                   isOpen={openCollapse === 2}
                   onToggle={() => handleToggle(2)}
 
-                  title="Test Credentials (| JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue)"
+                  title="Test Credentials (JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue)"
                   formContent={
                     <>
                       <form

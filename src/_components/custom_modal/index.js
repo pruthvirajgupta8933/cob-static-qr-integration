@@ -1,9 +1,10 @@
-import React,{ useEffect }from "react";
+import React, { useEffect } from "react";
+import "../../components/dashboard/css/Home.css"
 
 const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle }) => {
 
   const handleEscapeKey = (event) => {
-    if (event.key === "Escape") {   
+    if (event.key === "Escape") {
       fnSetModalToggle(false);
     }
   };
@@ -19,9 +20,9 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
   return (
     <div
       className={
-          "modal fade mymodals" +
-          ((modalToggle) ? " show d-block" : " d-none")
-        }
+        "modal fade mymodals" +
+        ((modalToggle) ? " show d-block" : " d-none")
+      }
       id="web"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -31,12 +32,12 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              {headerTitle} 
+              {headerTitle}
             </h5>
             <button
               type="button"
               className="close"
-              onClick={()=>fnSetModalToggle(false)}
+              onClick={() => fnSetModalToggle(false)}
             >
               <span aria-hidden="true">&times;</span>
             </button>

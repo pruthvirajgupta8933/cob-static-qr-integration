@@ -14,6 +14,7 @@ import { updateBasicDetails } from '../../../../../../services/approver-dashboar
 
 
 function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
+    console.log("isEditableInput",isEditableInput)
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -204,6 +205,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                             placeholder="Enter Merchant Name"
                             label="Full Name *"
                             autoComplete='off'
+                            disabled={isEditableInput}
                         />
                     </div>
 
@@ -216,6 +218,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                             className="form-control"
                             label="Contact Number *"
                             autoComplete='off'
+                            disabled={isEditableInput}
                         />
                     </div>
                     <div className="col-md-6">
@@ -228,6 +231,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                             label="Email ID *"
                             autoComplete='off'
                             disabled={loginIdFromState}
+                            
                         />
                     </div>
                     <div className="col-md-6">
@@ -249,6 +253,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                             className="form-select"
                             label="Business Type *"
                             autoComplete='off'
+                            disabled={isEditableInput}
 
                         />
                     </div>
@@ -260,6 +265,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                             className="form-select"
                             label="Business Category *"
                             autoComplete='off'
+                            disabled={isEditableInput}
                         />
                     </div>
                     <div className="col-md-6">

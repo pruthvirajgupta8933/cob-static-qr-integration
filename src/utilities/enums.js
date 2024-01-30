@@ -1,6 +1,6 @@
 export const KYC_STATUS_NOT_FILLED = "Not-Filled"
 export const KYC_STATUS_PENDING = "Pending"
-export const KYC_STATUS_PROCESSING = "Processing"
+export const KYC_STATUS_PROCESSING = "Processing"  //pending verification
 export const KYC_STATUS_VERIFIED = "Verified"
 export const KYC_STATUS_APPROVED = "Approved"
 export const KYC_STATUS_REJECTED = "Rejected"

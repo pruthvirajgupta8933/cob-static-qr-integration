@@ -206,6 +206,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         type="text"
                                         name="pan_card"
                                         className="form-control"
+                                        disabled={isEditableInput}
                                         onChange={(e) => {
                                             setFieldValue("pan_card", e.target.value?.toString().toUpperCase())
                                             setFieldValue("is_pan_verified", "")
@@ -263,6 +264,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                             <div className="col-md-6">
                                 <FormikController
                                     control="input"
+                                    disabled={isEditableInput}
                                     type="text"
                                     name="website"
                                     className="form-control"
@@ -283,6 +285,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     control="select"
                                     name="platform_id"
                                     className="form-select"
+                                    disabled={isEditableInput}
                                     valueFlag={false}
                                     options={platform}
 
@@ -300,6 +303,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     name="expected_transactions"
                                     valueFlag={true}
                                     className="form-select form-control"
+                                    disabled={isEditableInput}
                                     options={slabOptions}
                                 />
                             </div>
@@ -315,6 +319,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     name="avg_ticket_size"
                                     className="form-select form-control"
                                     valueFlag={true}
+                                    disabled={isEditableInput}
                                     options={ticketOptions}
                                 />
                             </div>

@@ -1,4 +1,3 @@
-import { CleaningServices } from "@mui/icons-material";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createMandateService } from "../../services/subscription-service/create.mandate.service";
 import { setMessage } from "../message";
@@ -7,12 +6,12 @@ import subAPIURL from "../../config";
 
 
 const initialState = {
-  fetchFrequencyData : [],
-  isLoading : false,
-  mandateType:[],
+  fetchFrequencyData: [],
+  isLoading: false,
+  mandateType: [],
   createMandate: {
     formData: {
-      firstForm : {},
+      firstForm: {},
       secondForm: {},
       thirdForm: {},
 
@@ -28,7 +27,7 @@ export const fetchFrequency = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await createMandateService.fetchFrequency();
-      
+
       return response;
     } catch (error) {
       const message =
@@ -48,7 +47,7 @@ export const fetchMandateType = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await createMandateService.fetchMandateType();
-      
+
       return response;
     } catch (error) {
       const message =
@@ -69,7 +68,7 @@ export const fetchMandatePurpose = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await createMandateService.fetchMandatePurpose();
-     
+
       return response;
     } catch (error) {
       const message =
@@ -90,7 +89,7 @@ export const fetchRequestType = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await createMandateService.fetchrequestType();
-     
+
       return response;
     } catch (error) {
       const message =
@@ -111,7 +110,7 @@ export const fetchMandateBankName = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await createMandateService.fetchBankName();
-     
+
       return response;
     } catch (error) {
       const message =
@@ -139,22 +138,22 @@ const createMandateSlice = createSlice({
   initialState,
   reducers: {
     saveFormFirstData: (state, action) => {
-      
-      state.createMandate.formData.firstForm = action?.payload?.newValues;
-     
-       },
 
-       saveFormSecondData: (state, action) => {
-       
-        state.createMandate.formData.secondForm = action?.payload?.values;
-       
-         },
-        saveFormThirdData: (state, action) => {
-          
-          state.createMandate.formData.thirdForm = action?.payload?.values;
-         
-           },
-       
+      state.createMandate.formData.firstForm = action?.payload?.newValues;
+
+    },
+
+    saveFormSecondData: (state, action) => {
+
+      state.createMandate.formData.secondForm = action?.payload?.values;
+
+    },
+    saveFormThirdData: (state, action) => {
+
+      state.createMandate.formData.thirdForm = action?.payload?.values;
+
+    },
+
 
   },
   extraReducers: {
@@ -203,6 +202,6 @@ export const {
   saveFormFirstData,
   saveFormSecondData,
   saveFormThirdData
-  
+
 } = createMandateSlice.actions;
 export const createMandateReducer = createMandateSlice.reducer;

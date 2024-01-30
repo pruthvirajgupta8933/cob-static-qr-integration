@@ -93,19 +93,19 @@ function OperationKycModalForOnboard() {
                     onClick={() => handleTabClick(1)} id="v-pills-link1-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link1" aria-selected="true">Basic
                     Details</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 2 && 'active-secondary'} ${!isOnboardStartM && 'disabled'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 2 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}  //yha par cursor css dalni hai "disabled" par
                     onClick={() => handleTabClick(2)} id="v-pills-link2-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">Bank
                     Details</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 3 && 'active-secondary'} ${!isOnboardStartM && 'disabled'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 3 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}
                     onClick={() => handleTabClick(3)} id="v-pills-link3-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link3" aria-selected="false">Business
                     Details</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 4 && 'active-secondary'} ${!isOnboardStartM && 'disabled'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 4 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}
                     onClick={() => handleTabClick(4)} id="v-pills-link4-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link4" aria-selected="false">Document
                     Center</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 5 && 'active-secondary'} ${!isOnboardStartM && 'disabled'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 5 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}
                     onClick={() => handleTabClick(5)} id="v-pills-link4-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link4" aria-selected="false">Submit KYC</a>
             </div>
