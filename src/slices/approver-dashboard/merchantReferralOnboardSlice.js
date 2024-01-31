@@ -12,6 +12,7 @@ import API_URL from "../../config";
 
 const sessionDataI = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
 const initialState = {
+    isLoading: false,
     merchantOnboardingProcess: {
         isOnboardStart: sessionDataI?.isOnboardStart ?? false,
         isOnboardComplete: sessionDataI?.isOnboardComplete ?? false,
@@ -239,13 +240,15 @@ export const merchantReferralOnboardSlice = createSlice({
             })
 
             .addCase(fetchChiledDataList.pending, (state) => {
-                state.loading = 'loading';
+                state.isLoading = true;
             })
             .addCase(fetchChiledDataList.fulfilled, (state, action) => {
                 state.refrerChiledList.resp = action.payload;
+                state.isLoading = false;
             })
             .addCase(fetchChiledDataList.rejected, (state, action) => {
                 state.loading = 'failed';
+                state.isLoading = false;
             })
             .addCase(resetFormState.fulfilled, (state, action) => {
                 state.merchantBasicDetails.resp = {};
