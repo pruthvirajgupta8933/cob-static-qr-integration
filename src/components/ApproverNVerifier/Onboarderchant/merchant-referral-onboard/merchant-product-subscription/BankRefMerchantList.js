@@ -214,17 +214,20 @@ function BankRefMerchantList() {
 
     //---------------GET Api for KycPending-------------------
 
+
     useEffect(() => {
         fetchData();
-    }, [currentPage, pageSize, onboardType]);
+    }, [currentPage, pageSize, onboardType, searchText]);
 
     const fetchData = () => {
+        console.log("searchText", searchText)
         dispatch(
             fetchMerchantProductSubscribeList({
                 page: currentPage,
                 page_size: pageSize,
                 created_by: loginId,
-                roleBased: roles.accountManager
+                roleBased: roles?.accountManager,
+                search: searchText
 
             })
         )
@@ -242,34 +245,16 @@ function BankRefMerchantList() {
     };
 
     const searchByText = () => {
-        setData(
-            newRegistrationData?.filter((item) =>
-                Object.values(item)
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(searchText?.toLocaleLowerCase())
-            )
-        );
+        // setData(
+        //     newRegistrationData?.filter((item) =>
+        //         Object.values(item)
+        //             .join(" ")
+        //             .toLowerCase()
+        //             .includes(searchText?.toLocaleLowerCase())
+        //     )
+        // );
     };
 
-    // const optionSearchData = [
-    //     {
-    //         name: "Select Onboard Type",
-    //         value: "",
-    //     },
-    //     {
-    //         name: "All",
-    //         value: "",
-    //     },
-    //     {
-    //         name: "Online",
-    //         value: "online",
-    //     },
-    //     {
-    //         name: "Offline",
-    //         value: "offline",
-    //     },
-    // ];
 
     return (
         <div className="container-fluid flleft">
@@ -280,7 +265,7 @@ function BankRefMerchantList() {
                         searchText={searchText}
                         searchByText={searchByText}
                         setSearchByDropDown={setSearchByDropDown}
-                    // searchTextByApiCall={false}
+                        searchTextByApiCall={true}
                     />
                 </div>
                 <div>
