@@ -1484,10 +1484,10 @@ export const kycSlice = createSlice({
         [kycDetailsByMerchantLoginId.fulfilled]: (state, action) => {
             state.merchantKycData = action.payload;
         },
-        [kycDetailsByMerchantLoginId.pending]: (state, action) => {
+        [kycDetailsByMerchantLoginId.pending]: (state) => {
             state.merchantKycData = {};
         },
-        [kycDetailsByMerchantLoginId.rejected]: (state, action) => {
+        [kycDetailsByMerchantLoginId.rejected]: (state) => {
             state.merchantKycData = {};
         },
 
