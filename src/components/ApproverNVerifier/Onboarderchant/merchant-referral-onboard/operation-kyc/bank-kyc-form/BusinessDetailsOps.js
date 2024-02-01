@@ -118,6 +118,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
             if (resp?.payload?.status === true) {
                 toastConfig.successToast(resp?.payload?.message)
+                dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId, password_required: true }))
             }
         }).catch(err => toastConfig.errorToast("Something went wrong!"))
         setSubmitLoader(false)
@@ -176,7 +177,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     // useEffect(() => {
     //     if (merchantLoginId !== "") {
-    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId ,password_required: true}))
     //     }
     // }, [merchantLoginId]);
 

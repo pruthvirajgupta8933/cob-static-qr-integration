@@ -39,7 +39,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
             setCurrentTab(1)
 
         } else {
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId }))
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId, password_required: true }))
         }
     }, [merchantLoginId]);
 

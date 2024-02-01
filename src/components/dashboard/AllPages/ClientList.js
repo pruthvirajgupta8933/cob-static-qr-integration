@@ -8,6 +8,7 @@ import SearchFilter from '../../../_components/table_components/filters/SearchFi
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 import { Link } from 'react-router-dom';
+import CustomLoader from '../../../_components/loader';
 
 
 function ClientList() {
@@ -21,6 +22,7 @@ function ClientList() {
 
     const PasswordCell = ({ password }) => {
         const [visible, setVisible] = useState(false);
+        const [loading,setIsLoading]=useState(false)
 
         const toggleVisibility = () => {
             setVisible((prevVisible) => !prevVisible);
@@ -167,11 +169,10 @@ function ClientList() {
 
     ]
 
-    const rowData = RefrerChiledList;
-
-
-
     const refrerDataList = useSelector((state) => state.merchantReferralOnboardReducer.refrerChiledList.resp);
+
+    const loadingState=useSelector((state) =>state.merchantReferralOnboardReducer.isLoading)
+    
     const [clientListData, setClientListData] = useState([]);
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState("")
@@ -293,7 +294,8 @@ function ClientList() {
 
                             </div>
 
-                            {/* {!loadingState && data?.length !== 0 && ( */}
+                            {!loadingState && data?.length !== 0 && (
+                            
                             <Table
                                 row={RefrerChiledList}
                                 dataCount={dataCount}
@@ -302,7 +304,10 @@ function ClientList() {
                                 changeCurrentPage={changeCurrentPage}
                                 data={data}
                             />
+                            )}
+                        
                         </div>
+                        <CustomLoader loadingState={loadingState} />
                     </div>
                 </section>
             </div>

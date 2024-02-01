@@ -14,7 +14,7 @@ import { updateBasicDetails } from '../../../../../../services/approver-dashboar
 
 
 function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
-    console.log("isEditableInput",isEditableInput)
+    // console.log("isEditableInput", isEditableInput)
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -85,13 +85,15 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
         } = value
 
 
+
         const updateReqBody = {
             "login_id": merchantOnboardingProcess?.merchantLoginId,
             "name": fullName,
             "mobileNumber": mobileNumber,
             "business_category": business_category,
             "business_type": business_type,
-            "updated_by": auth?.user?.loginId
+            "updated_by": auth?.user?.loginId,
+            "password": merchantKycData?.secret_key
         }
 
         const saveDetailsReqBody = {
@@ -116,7 +118,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                 }
 
                 if (resp?.payload?.status === true) {
-                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
+                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId, password_required: true }))
                     toastConfig.successToast(resp?.payload?.message)
                 }
             }).catch(err => {
@@ -133,7 +135,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                 }
 
                 if (resp?.payload?.status === true) {
-                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
+                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId, password_required: true }))
                     toastConfig.successToast(resp?.payload?.message)
                 }
             }).catch(err => {
@@ -231,7 +233,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
                             label="Email ID *"
                             autoComplete='off'
                             disabled={loginIdFromState}
-                            
+
                         />
                     </div>
                     <div className="col-md-6">

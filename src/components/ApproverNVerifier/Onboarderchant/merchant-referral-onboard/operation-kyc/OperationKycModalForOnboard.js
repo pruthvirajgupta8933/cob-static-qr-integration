@@ -16,7 +16,7 @@ function OperationKycModalForOnboard() {
     const [currentTab, setCurrentTab] = useState(1)
     const { merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
-    const { merchantOnboardingProcess, merchantBasicDetails } = merchantReferralOnboardReducer
+    const { merchantOnboardingProcess } = merchantReferralOnboardReducer
 
     const searchParams = new URLSearchParams(document.location.search)
     const cmid = searchParams.get('cmid')
@@ -47,7 +47,7 @@ function OperationKycModalForOnboard() {
         // console.log("merchantLoginId", merchantLoginId)
         if (merchantLoginId !== "") {
             // console.log("hell2")
-            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId })).then(resp => {
+            dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId, password_required: true })).then(resp => {
                 dispatch(updateOnboardingStatus({ merchantLoginId, isOnboardStart: true }))
             })
         }
