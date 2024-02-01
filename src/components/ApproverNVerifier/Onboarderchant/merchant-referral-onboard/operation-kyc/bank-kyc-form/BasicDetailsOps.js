@@ -83,9 +83,9 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
         const {
             fullName, mobileNumber, email_id, business_category, password, business_type, username
         } = value
+        // console.log("merchantOnboardingProcess", merchantOnboardingProcess)
 
-
-
+        // return false
         const updateReqBody = {
             "login_id": merchantOnboardingProcess?.merchantLoginId,
             "name": fullName,
@@ -110,15 +110,18 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
         }
 
         if (merchantOnboardingProcess?.merchantLoginId === "") {
+
             dispatch(saveMerchantBasicDetails(saveDetailsReqBody)).then((resp) => {
                 setSubmitLoader(false)
+                // console.log(resp?.payload?.merchant_data?.loginMasterId)
                 if (resp?.error?.message) {
                     toastConfig.errorToast(resp?.error?.message)
                     toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
                 }
 
                 if (resp?.payload?.status === true) {
-                    dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId, password_required: true }))
+                    // console.log(resp)
+                    dispatch(kycDetailsByMerchantLoginId({ login_id: resp?.payload?.merchant_data?.loginMasterId, password_required: true }))
                     toastConfig.successToast(resp?.payload?.message)
                 }
             }).catch(err => {
