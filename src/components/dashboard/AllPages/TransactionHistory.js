@@ -111,7 +111,7 @@ const TransactionHistory = () => {
         clientCode: clientCode,
         fromDate: todayDate,
         endDate: todayDate,
-        transaction_status: "SUCCESS",
+        transaction_status: "All",
         payment_mode: "All",
     };
 
@@ -182,7 +182,7 @@ const TransactionHistory = () => {
         setClientCodeList(clientCodeListArr)
     }, [clientCodeListArr]);
 
-    const tempPayStatus = [];
+    const tempPayStatus = [{ key: "All", value: "All" }];
 
     paymentStatusList.map((item) => {
         if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
