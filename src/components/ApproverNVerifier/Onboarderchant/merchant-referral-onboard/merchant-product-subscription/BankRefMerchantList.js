@@ -68,8 +68,9 @@ function BankRefMerchantList() {
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "pg")}
                         className={`btn-sm ${row?.payment_gateway?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
+                        disabled={row.client_code === null || row?.payment_gateway?.subscription_status === "Subscribed"}
                     >
-                        {(row?.payment_gateway?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
+                        {row.client_code === null ? 'Client code not available' : row?.payment_gateway?.subscription_status === "Subscribed" ? "Subscribed" : "Subscribe"}
                     </button>
                 </div>
             ),
@@ -89,25 +90,29 @@ function BankRefMerchantList() {
                             }
                             productSubscriptionHandler(row, "qf");
                         }}
+                        disabled={row.client_code === null || row?.payment_gateway?.subscription_status === "Subscribed"}
                         className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
+
                     >
-                        {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"}
+                        {/* {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"} */}
+                        {row.client_code === null ? 'Client code not available' : row?.payment_gateway?.subscription_status === "Subscribed" ? "Subscribed" : "Subscribe"}
+
                     </button>
                     {(row?.qwik_form?.subscription_status === "Subscribed") &&
                         <a
                             rel="noreferrer"
                             className={`btn-sm mx-1 btn-outline-secondary`}
                             target="_blank"
+                            disabled={row.client_code === null}
                             href={`https://qwikforms.in/QwikForms/saLogin?clientId=${row?.client_id}&&cobUserName=opsuser2@sp&&password=wkVc1iUwAn5tn1V1K&&requestType=COB`}
                         >
                             Config
                         </a>
                     }
                 </div>
-            ),
-            width: "220px",
+            )
         }
-        
+
 
     ];
 
@@ -218,9 +223,9 @@ function BankRefMerchantList() {
             fetchMerchantProductSubscribeList({
                 page: currentPage,
                 page_size: pageSize,
-                created_by:loginId,
-                roleBased:roles.accountManager
-               
+                created_by: loginId,
+                roleBased: roles.accountManager
+
             })
         )
 
@@ -275,7 +280,7 @@ function BankRefMerchantList() {
                         searchText={searchText}
                         searchByText={searchByText}
                         setSearchByDropDown={setSearchByDropDown}
-                        // searchTextByApiCall={false}
+                    // searchTextByApiCall={false}
                     />
                 </div>
                 <div>
@@ -293,7 +298,7 @@ function BankRefMerchantList() {
 
             <div>
                 <div className="scroll overflow-auto">
-                <h6>Total Count : {dataCount}</h6>
+                    <h6>Total Count : {dataCount}</h6>
                     {!loadingState && data?.length !== 0 && (
                         <Table
                             row={PendingVerificationData}
