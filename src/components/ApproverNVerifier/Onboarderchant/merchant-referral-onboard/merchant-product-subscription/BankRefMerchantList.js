@@ -117,8 +117,6 @@ function BankRefMerchantList() {
     ];
 
     const productSubscriptionHandler = async (data, appBtn) => {
-        // payment gateway = pg
-        // Qwik form = qf
         let subscribeReqData = {
             clientId: data.client_id
         }
@@ -149,25 +147,16 @@ function BankRefMerchantList() {
     };
 
 
-    //  const { user } = useSelector((state) => state.auth);
-    const roleBasePermissions = roleBasedAccess();
 
     const dispatch = useDispatch();
     const loadingState = useSelector(
         (state) => state.kyc.isLoadingForPendingVerification
     );
-    const Allow_To_Do_Verify_Kyc_details =
-        roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
 
-    //  const [dataCount, setDataCount] = useState("");
 
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    // const [commentId, setCommentId] = useState({});
     const [pageSize, setPageSize] = useState(100);
-
-    // const [isOpenModal, setIsModalOpen] = useState(false);
-    // const [openCommentModal, setOpenCommentModal] = useState(false);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
     // const currenTab = parseInt(verifierApproverTab?.currenTab);
@@ -206,21 +195,13 @@ function BankRefMerchantList() {
             setOnboardType(e);
         }
     };
-
-    // const pendingVerify = () => {
-    //     fetchData();
-
-    // };
-
     //---------------GET Api for KycPending-------------------
-
-
     useEffect(() => {
         fetchData();
     }, [currentPage, pageSize, onboardType, searchText]);
 
     const fetchData = () => {
-        console.log("searchText", searchText)
+        // console.log("searchText", searchText)
         dispatch(
             fetchMerchantProductSubscribeList({
                 page: currentPage,
@@ -245,14 +226,7 @@ function BankRefMerchantList() {
     };
 
     const searchByText = () => {
-        // setData(
-        //     newRegistrationData?.filter((item) =>
-        //         Object.values(item)
-        //             .join(" ")
-        //             .toLowerCase()
-        //             .includes(searchText?.toLocaleLowerCase())
-        //     )
-        // );
+        changeCurrentPage(1)
     };
 
 
