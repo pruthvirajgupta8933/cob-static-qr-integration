@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect,useMemo} from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import ViewZoneModal from "./ViewZoneModal";
@@ -27,13 +27,12 @@ function AssignZone() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   useEffect(() => {
-    const approvedList=approvedMerchantList?.results
-    const dataCount=approvedMerchantList?.count
+    const approvedList = approvedMerchantList?.results
+    const dataCount = approvedMerchantList?.count
 
     if (approvedList) {
       setData(approvedList);
       setAssignzone(approvedList);
-    
       setDataCount(dataCount)
     }
   }, [approvedMerchantList]); //
@@ -60,17 +59,17 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-      // .then((resp) => {
-      //   const data = resp?.payload?.results;
-      //   const dataCoun = resp?.payload?.count;
-      //   setData(data);
-      //   setDataCount(dataCoun);
-      //   setAssignzone(data);
-      // })
+    // .then((resp) => {
+    //   const data = resp?.payload?.results;
+    //   const dataCoun = resp?.payload?.count;
+    //   setData(data);
+    //   setDataCount(dataCoun);
+    //   setAssignzone(data);
+    // })
 
-      // .catch((err) => {
-      //   toastConfig.errorToast("Data not loaded");
-      // });
+    // .catch((err) => {
+    //   toastConfig.errorToast("Data not loaded");
+    // });
   }, [currentPage, pageSize]);
 
   // const searchByText = (text) => {
@@ -93,14 +92,14 @@ function AssignZone() {
     );
   }, [assignZone, searchText]);
 
-  
+
 
   const searchByText = () => {
     // Set data with the memoized filteredData
     setData(filteredData);
   };
 
- 
+
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -174,7 +173,7 @@ function AssignZone() {
       id: "7",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
-      cell: (row) =>DateFormatter(row.signUpDate),
+      cell: (row) => DateFormatter(row.signUpDate),
       sortable: true,
       width: "150px",
     },
@@ -225,13 +224,13 @@ function AssignZone() {
               />
             </div>
             <div className="col-lg-3">
-            <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            currentPage={currentPage}
-            changePageSize={changePageSize}
-            changeCurrentPage={changeCurrentPage}
-          /> 
+              <CountPerPageFilter
+                pageSize={pageSize}
+                dataCount={dataCount}
+                currentPage={currentPage}
+                changePageSize={changePageSize}
+                changeCurrentPage={changeCurrentPage}
+              />
             </div>
             <div className="col-lg-3">
               <SearchbyDropDown
@@ -248,7 +247,7 @@ function AssignZone() {
           </div>
           <div className="">
             <div className="scroll overflow-auto">
-            <h6>Total Count : {dataCount}</h6>
+              <h6>Total Count : {dataCount}</h6>
               {!loadingState && data?.length !== 0 && (
                 <Table
                   row={AssignZoneData}
