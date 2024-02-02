@@ -27,7 +27,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         pan_card: merchantKycData?.signatoryPAN ?? "",
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
         website: merchantKycData?.website_app_url ?? "",
-        pan_name: "",
+        name_on_pancard: merchantKycData?.nameOnPanCard ?? "",
         platform_id: merchantKycData?.platformId ?? "",
         avg_ticket_size: merchantKycData?.avg_ticket_size ?? "",
         expected_transactions: merchantKycData?.expectedTransactions ?? "",
@@ -108,6 +108,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             platform_id: value.platform_id,
             avg_ticket_size: value.avg_ticket_size,
             expected_transactions: value.expected_transactions,
+            name_on_pancard: value.name_on_pancard
         }
 
 
@@ -127,7 +128,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const trimFullName = (strOne, strTwo) => {
         let fullStr = isNull(strOne) ? "" : strOne
-        fullStr += isNull(strTwo) ? "" : strTwo
+        fullStr += isNull(strTwo) ? "" : " " + strTwo
         return fullStr
     }
 
@@ -143,6 +144,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 res.payload.valid === true
             ) {
                 const fullNameByPan = trimFullName(res?.payload?.first_name, res?.payload?.last_name)
+                // console.log(key, fullNameByPan)
                 setFieldValue(key, fullNameByPan)
                 setFieldValue("pan_card", values)
                 setFieldValue("is_pan_verified", 1)
@@ -171,7 +173,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         }
         if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
             // for  -Business PAN 
-            panValidate(val[key], "pan_name", setFieldValue);
+            panValidate(val[key], "name_on_pancard", setFieldValue);
         }
     };
 
@@ -211,7 +213,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         onChange={(e) => {
                                             setFieldValue("pan_card", e.target.value?.toString().toUpperCase())
                                             setFieldValue("is_pan_verified", "")
-                                            setFieldValue("pan_name", "")
+                                            setFieldValue("name_on_pancard", "")
                                         }}
                                     />
 
@@ -256,9 +258,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         {errors?.is_pan_verified}
                                     </p>
                                 )}
-                                {values?.pan_name && (
+                                {values?.name_on_pancard && (
                                     <p className="text-success mb-0">
-                                        {values?.pan_name}
+                                        {values?.name_on_pancard}
                                     </p>
                                 )}
                             </div>
