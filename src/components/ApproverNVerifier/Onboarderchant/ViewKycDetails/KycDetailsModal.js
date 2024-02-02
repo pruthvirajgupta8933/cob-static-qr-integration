@@ -206,7 +206,7 @@ const KycDetailsModal = (props) => {
         </div>}
 
         {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
-        {console.log(APP_ENV)}
+        {/* {console.log(APP_ENV)} */}
         {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null && selectedUserData?.roleId !== 13 && APP_ENV === true) &&
           <div className="container">
             <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} generalFormData={generalFormData?.parent_client_code} />

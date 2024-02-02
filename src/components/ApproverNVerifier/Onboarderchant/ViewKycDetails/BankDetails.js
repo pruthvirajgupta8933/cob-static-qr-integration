@@ -168,7 +168,7 @@ const BankDetails = (props) => {
             type="text"
             className="form-control"
             disabled="true"
-            value={bankName}
+            value={selectedUserData?.bankName}
           />
         </div>
 
