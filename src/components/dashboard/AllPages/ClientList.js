@@ -22,7 +22,7 @@ function ClientList() {
 
     const PasswordCell = ({ password }) => {
         const [visible, setVisible] = useState(false);
-        const [loading,setIsLoading]=useState(false)
+        const [loading, setIsLoading] = useState(false)
 
         const toggleVisibility = () => {
             setVisible((prevVisible) => !prevVisible);
@@ -171,8 +171,8 @@ function ClientList() {
 
     const refrerDataList = useSelector((state) => state.merchantReferralOnboardReducer.refrerChiledList.resp);
 
-    const loadingState=useSelector((state) =>state.merchantReferralOnboardReducer.isLoading)
-    
+    const loadingState = useSelector((state) => state.merchantReferralOnboardReducer.isLoading)
+
     const [clientListData, setClientListData] = useState([]);
     const [data, setData] = useState([]);
     const [dataCount, setDataCount] = useState("")
@@ -263,7 +263,8 @@ function ClientList() {
                 <section className="">
                     <div className="container">
                         <div className="row mt-4">
-                            {data.length === 0 ? "" : (<div className='row'>
+                            {/* {data.length === 0 ? "" : ( */}
+                            <div className='row'>
                                 <div className="col-lg-3 p-0 mr-3">
                                     <SearchFilter
                                         kycSearch={kycSearch}
@@ -272,7 +273,6 @@ function ClientList() {
                                         setSearchByDropDown={setSearchByDropDown}
                                     />
                                 </div>
-
                                 <div className="col-lg-3 p-0">
                                     <CountPerPageFilter
                                         pageSize={pageSize}
@@ -280,32 +280,34 @@ function ClientList() {
                                         changePageSize={changePageSize}
                                     />
                                 </div>
-                            </div>)}
-
-                            <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
-                                <div><h6>Number of Record: {dataCount}</h6></div>
-
-                                <div>
-                                    {user?.roleId === 13 &&
-                                        <button className="btn btn-sm cob-btn-primary"
-                                            onClick={() => setModalToggle(true)}>Add Child
-                                            Client</button>}
-                                </div>
-
                             </div>
 
+
+
                             {!loadingState && data?.length !== 0 && (
-                            
-                            <Table
-                                row={RefrerChiledList}
-                                dataCount={dataCount}
-                                pageSize={pageSize}
-                                currentPage={currentPage}
-                                changeCurrentPage={changeCurrentPage}
-                                data={data}
-                            />
+                                <>
+                                    <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
+                                        <div><h6>Number of Record: {dataCount}</h6></div>
+                                        <div>
+                                            {user?.roleId === 13 &&
+                                                <button className="btn btn-sm cob-btn-primary"
+                                                    onClick={() => setModalToggle(true)}>Add Child
+                                                    Client</button>}
+                                        </div>
+
+                                    </div>
+                                    <Table
+                                        row={RefrerChiledList}
+                                        dataCount={dataCount}
+                                        pageSize={pageSize}
+                                        currentPage={currentPage}
+                                        changeCurrentPage={changeCurrentPage}
+                                        data={data}
+                                    />
+                                </>
+
                             )}
-                        
+
                         </div>
                         <CustomLoader loadingState={loadingState} />
                     </div>
