@@ -42,11 +42,7 @@ const ChallanTransactReport = () => {
   const [dataCountGmv, setDataGmv] = useState(0);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
-
-
-
-
-  useEffect(() => {
+useEffect(() => {
     const transactionHistoryDataList = challanTransactionList?.results.transactions;
     const dataCount = challanTransactionList?.count;
     const gmvCount = challanTransactionList?.results?.gmv;
@@ -60,15 +56,7 @@ const ChallanTransactReport = () => {
     }
   }, [challanTransactionList]); //
 
-
-
-
-
-
-
-
-
-  const validationSchema = Yup.object({
+const validationSchema = Yup.object({
     from_date: Yup.date()
       .required("Required")
       .nullable(),
@@ -343,9 +331,13 @@ const ChallanTransactReport = () => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
+                  <div className="mb-2">
                   <p className="d-inline mr-3" style={{ fontSize: '15px' }}>Total Record(s): {dataCount}</p>
-                  <p className="d-inline" style={{ fontSize: '15px' }}>GMV(INR): {dataCountGmv}</p>
+                  <p className="d-inline" style={{ fontSize: '15px' }}>GMV (INR): {dataCountGmv}</p>
 
+
+                  </div>
+                 
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
