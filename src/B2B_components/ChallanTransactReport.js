@@ -161,17 +161,19 @@ const ChallanTransactReport = () => {
       )
         .then((resp) => {
           // resp?.payload?.status_code && toastConfig.errorToast("");
-          setSpinner(false);
-          setLoadingData(true)
+
           console.log("workding", resp)
           let gmv = resp?.payload?.results?.gmv;
           let data = resp?.payload?.results?.transactions;
           let dataCoun = resp?.payload?.count;
           setData(data);
+          setVerifiedMerchant(data);
           setDataCount(dataCoun);
           setDataGmv(gmv);
+
+          setSpinner(false);
+          setLoadingData(false)
           setLoadState(false);
-          setVerifiedMerchant(data);
         })
 
         .catch((err) => { });
@@ -203,9 +205,10 @@ const ChallanTransactReport = () => {
         let dataCoun = resp?.payload?.count;
 
         setDataGmv(gmv);
-        console.log("data", data)
+        // console.log("data", data)
         setData(data);
         setDataCount(dataCoun)
+        setVerifiedMerchant(data);
 
         setSpinner(false);
         setShowData(true);
@@ -343,8 +346,7 @@ const ChallanTransactReport = () => {
             No Data Found
           </h5>}
 
-          {console.log("loadingState", loadingData)}
-          {console.log("data", data)}
+
           {!loadingData && data?.length !== 0 && (
             <>
               <div className="row mt-4">
@@ -373,7 +375,7 @@ const ChallanTransactReport = () => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
-                  <p>Total Record(s): {dataCount}</p>  <p>Total GMV(s): {dataCountGmv}</p>
+                  <p>Total Record(s): {dataCount}</p>  <p>GMV: {dataCountGmv}</p>
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
