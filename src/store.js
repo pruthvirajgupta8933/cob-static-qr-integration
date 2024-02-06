@@ -11,7 +11,7 @@ import { payoutReducer } from "./slices/payoutSlice";
 import menuListReducer from "./slices/cob-dashboard/menulistSlice";
 import productCatalogueSlice from "./slices/merchant-slice/productCatalogueSlice";
 import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
-import { challanReducer } from "./slices/backTobusinessSlice";
+import { challanReducer } from "./slices/emamiSlice";
 import merchantReportSlice from "./slices/merchant-slice/reportSlice";
 import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 import { DebitReportsDataReducer } from "./slices/subscription-slice/debitSlice";
