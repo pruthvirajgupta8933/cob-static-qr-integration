@@ -127,10 +127,11 @@ const ChallanTransactReport = () => {
   };
 
   const searchByText = (text) => {
-    // console.log("text", text)
+    console.log("text", text)
+    console.log("searchText", searchText)
     // console.log("verfiedMerchant-s", verfiedMerchant)
     // console.log("data-s", data)
-    if (text) {
+    if (searchText) {
       setData(
         verfiedMerchant?.filter((item) =>
           Object.values(item)
@@ -381,7 +382,7 @@ const ChallanTransactReport = () => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
-                  <p>Total Record(s): {dataCount}</p>  <p>GMV: {dataCountGmv}</p>
+                  <h6>Total Record(s): {dataCount}</h6>  <h6>GMV(INR): {dataCountGmv}</h6>
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
