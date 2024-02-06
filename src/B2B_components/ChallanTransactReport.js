@@ -119,7 +119,7 @@ const ChallanTransactReport = () => {
 
 
   const kycSearch = (e, fieldType) => {
-    console.log("e is here", e)
+    // console.log("e is here", e)
     fieldType === "text"
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
@@ -127,9 +127,10 @@ const ChallanTransactReport = () => {
   };
 
   const searchByText = (text) => {
-    console.log("text", text)
-
-    text &&
+    // console.log("text", text)
+    // console.log("verfiedMerchant-s", verfiedMerchant)
+    // console.log("data-s", data)
+    if (text) {
       setData(
         verfiedMerchant?.filter((item) =>
           Object.values(item)
@@ -138,6 +139,11 @@ const ChallanTransactReport = () => {
             .includes(searchText?.toLocaleLowerCase())
         )
       );
+    } else {
+      setData(verfiedMerchant)
+      // console.log("else")
+    }
+
   };
 
   // const challanSearch = (e) => {
@@ -162,7 +168,7 @@ const ChallanTransactReport = () => {
         .then((resp) => {
           // resp?.payload?.status_code && toastConfig.errorToast("");
 
-          console.log("workding", resp)
+          // console.log("workding", resp)
           let gmv = resp?.payload?.results?.gmv;
           let data = resp?.payload?.results?.transactions;
           let dataCoun = resp?.payload?.count;
@@ -357,9 +363,9 @@ const ChallanTransactReport = () => {
                     searchText={searchText}
                     searchByText={searchByText}
                     setSearchByDropDown={setSearchByDropDown}
-                    searchTextByApiCall={false}
+                    searchTextByApiCall={true}
                   />
-                  <div></div>
+                  {/* <div></div> */}
                 </div>
 
                 <div className="form-group col-lg-3">
