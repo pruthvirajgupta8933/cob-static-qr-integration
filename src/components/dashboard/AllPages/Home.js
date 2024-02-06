@@ -46,7 +46,7 @@ function Home() {
   const unPaidProduct = useMemo(() => {
     return SubscribedPlanData?.filter(
       (d) =>
-        (isNull(d?.mandateStatus) && d?.mandateStatus === "pending") &&
+        (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
         d?.plan_code === "005"
     );
   }, [SubscribedPlanData])
