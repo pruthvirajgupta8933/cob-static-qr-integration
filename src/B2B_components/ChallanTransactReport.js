@@ -41,7 +41,8 @@ const ChallanTransactReport = () => {
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [loadState, setLoadState] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
-  const [dataCount, setDataCount] = useState("");
+  const [dataCount, setDataCount] = useState(0);
+  const [dataCountGmv, setDataGmv] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -50,19 +51,19 @@ const ChallanTransactReport = () => {
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
-  
 
-useEffect(() => {
-    const challanDataList = challanTransactionList?.results;
-    const dataCount = challanTransactionList?.count;
 
-    if (challanDataList) {
-      setData(challanDataList);
-      setVerifiedMerchant(challanDataList);
+  // useEffect(() => {
+  //   const challanDataList = challanTransactionList?.results;
+  //   const dataCount = challanTransactionList?.count;
 
-      setDataCount(dataCount)
-    }
-  }, [challanTransactionList]); //
+  //   if (challanDataList) {
+  //     setData(challanDataList);
+  //     setVerifiedMerchant(challanDataList);
+
+  //     setDataCount(dataCount)
+  //   }
+  // }, [challanTransactionList]); //
 
   const validationSchema = Yup.object({
     from_date: Yup.date()
@@ -86,6 +87,7 @@ useEffect(() => {
 
   // const [todayDate, setTodayDate] = useState(splitDate);
 
+  // console.log("splitDate", splitDate)
   let todayDate = splitDate;
 
   const initialValues = {
@@ -126,14 +128,16 @@ useEffect(() => {
 
   const searchByText = (text) => {
     console.log("text", text)
-    setData(
-      verfiedMerchant?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
-    );
+
+    text &&
+      setData(
+        verfiedMerchant?.filter((item) =>
+          Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(searchText?.toLocaleLowerCase())
+        )
+      );
   };
 
   // const challanSearch = (e) => {
@@ -141,39 +145,46 @@ useEffect(() => {
   // };
 
   useEffect(() => {
-    setLoadState(true);
+    // setLoadState(true);
     // console.log("ct", pageSize)
-    dispatch(
-      challanTransactions({
-        page: currentPage,
-        page_size: pageSize,
-        from_date: saveData?.from_date,
-        to_date: saveData?.to_date,
-        client_code: saveData?.clientCode,
 
-      })
-    )
-      .then((resp) => {
-        // resp?.payload?.status_code && toastConfig.errorToast("");
-        setSpinner(false);
-        setLoadingData(true)
+    if (saveData?.from_date && saveData?.clientCode) {
+      dispatch(
+        challanTransactions({
+          page: currentPage,
+          page_size: pageSize,
+          from_date: saveData?.from_date,
+          to_date: saveData?.to_date,
+          client_code: saveData?.clientCode,
 
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setLoadState(false);
-        setVerifiedMerchant(data);
-      })
+        })
+      )
+        .then((resp) => {
+          // resp?.payload?.status_code && toastConfig.errorToast("");
+          setSpinner(false);
+          setLoadingData(true)
+          console.log("workding", resp)
+          let gmv = resp?.payload?.results?.gmv;
+          let data = resp?.payload?.results?.transactions;
+          let dataCoun = resp?.payload?.count;
+          setData(data);
+          setDataCount(dataCoun);
+          setDataGmv(gmv);
+          setLoadState(false);
+          setVerifiedMerchant(data);
+        })
 
-      .catch((err) => { });
+        .catch((err) => { });
+    }
+
   }, [currentPage, pageSize]);
 
- 
+
 
   const handleSubmit = (values) => {
     // console.log(values);
     setDisable(true);
+    setLoadingData(true)
     const formData = {
       from_date: values.from_date,
       to_date: values.to_date,
@@ -187,24 +198,28 @@ useEffect(() => {
     dispatch(challanTransactions(formData))
       .then((resp) => {
 
+        let gmv = resp?.payload?.results?.gmv;
+        let data = resp?.payload?.results?.transactions;
+        let dataCoun = resp?.payload?.count;
 
-        // if (data?.length === 0 && data !== null) {
-        //   // Return null value
-        // } else {
-        //   // toastConfig.successToast("Data loaded");
-        // }
-
+        setDataGmv(gmv);
+        console.log("data", data)
         setData(data);
-        setSpinner(true);
+        setDataCount(dataCoun)
 
+        setSpinner(false);
         setShowData(true);
-
         setDisable(false);
+        setLoadingData(false)
       })
 
       .catch((err) => {
         toastConfig.errorToast(err);
         setDisable(false);
+        setSpinner(false);
+        setShowData(false);
+        setDisable(false);
+        setLoadingData(false)
       });
   };
 
@@ -327,7 +342,10 @@ useEffect(() => {
           {data?.length === 0 && showData === true && <h5 className="text-center font-weight-bold mt-5">
             No Data Found
           </h5>}
-          {!loadingState && data?.length !== 0 && (
+
+          {console.log("loadingState", loadingData)}
+          {console.log("data", data)}
+          {!loadingData && data?.length !== 0 && (
             <>
               <div className="row mt-4">
 
@@ -337,6 +355,7 @@ useEffect(() => {
                     searchText={searchText}
                     searchByText={searchByText}
                     setSearchByDropDown={setSearchByDropDown}
+                    searchTextByApiCall={false}
                   />
                   <div></div>
                 </div>
@@ -354,7 +373,7 @@ useEffect(() => {
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
-                  <h6>Total Record(s):{dataCount}</h6>
+                  <p>Total Record(s): {dataCount}</p>  <p>Total GMV(s): {dataCountGmv}</p>
                   {!loadingState && data?.length !== 0 && (
                     <Table
                       row={rowData}
