@@ -13,7 +13,7 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
 
-function PendingVerification() {
+function PendingVerification() { 
   const roles = roleBasedAccess();
 
   const [onboardType, setOnboardType] = useState("");
