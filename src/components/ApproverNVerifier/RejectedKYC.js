@@ -225,34 +225,6 @@ const RejectedKYC = () => {
     fetchData();
   }, [fetchData]);
 
-  // const kycForRejectedMerchnats = () => {
-  //   dispatch(
-  //     kycForRejectedMerchants({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: searchText,
-  //       merchantStatus: "Rejected",
-  //       isDirect: onboardType,
-  //     })
-  //   )
-
-  // };
-
-  // useEffect(() => {
-  //   kycForRejectedMerchnats();
-  // }, [currentPage, pageSize, searchText, onboardType]);
-
-  // const searchByText = () => {
-  //   setData(
-  //     rejectedMerchants?.filter((item) =>
-  //       Object.values(item)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchText?.toLocaleLowerCase())
-  //     )
-  //   );
-  // };
-
   const filteredData = useMemo(() => {
     return rejectedMerchants?.filter((item) =>
       Object.values(item)

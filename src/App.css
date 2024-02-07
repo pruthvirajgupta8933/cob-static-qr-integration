@@ -23,6 +23,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.total_records_fontSize{
+font-size: 15px;
+}
+
 
 
 .bg-body-sp {
