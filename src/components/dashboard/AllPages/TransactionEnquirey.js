@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import * as Yup from "yup";
 import Yup from "../../../_components/formik/Yup";
 import { Formik, Form } from "formik";
@@ -8,16 +9,78 @@ import FormikController from "../../../_components/formik/FormikController";
 import PrintDocument from "../../../_components/reuseable_components/PrintDocument";
 import moment from "moment";
 import CustomLoader from "../../../_components/loader";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 function TransactionEnquirey() {
+  const dispatch = useDispatch();
+  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const { refrerChiledList } = merchantReferralOnboardReducer
+  const clientCodeData = refrerChiledList?.resp?.results ?? []
+  const roles = roleBasedAccess();
+  const { user } = auth;
   const initialValues = {
+    clientCode:"",
     transaction_id: "",
     transaction_from: "1"
   };
   const validationSchema = Yup.object({
+
     transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required").allowOneSpace(),
     transaction_from: Yup.string().nullable().required("Required").allowOneSpace(),
+    clientCode:Yup.string().nullable().required("Required").allowOneSpace(),
+    
   });
+
+  const fetchData = () => {
+    const roleType = roles
+    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    if (type !== "default") {
+      let postObj = {
+        type: type,  // Set the type based on roleType
+        login_id: auth?.user?.loginId
+      }
+      dispatch(fetchChiledDataList(postObj));
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  let clientMerchantDetailsList = [];
+  if (
+    user &&
+    user?.clientMerchantDetailsList === null &&
+    user?.roleId !== 3 &&
+    user?.roleId !== 13
+  ) {
+    // history.push("/dashboard/profile");
+  } else {
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  }
+
+  let fnKey, fnVal = ""
+  let clientCodeListArr = []
+  if (roles?.merchant === true) {
+    fnKey = "clientCode"
+    fnVal = "clientName"
+    clientCodeListArr = clientMerchantDetailsList
+  } else {
+    fnKey = "client_code"
+    fnVal = "name"
+    clientCodeListArr = clientCodeData
+  }
+
+
+  const clientCodeOption = convertToFormikSelectJson(
+    fnKey,
+    fnVal,
+    clientCodeListArr,
+    {},
+    false,
+    true
+  );
 
   const [show, setIsShow] = useState(false);
   const [errMessage, setErrMessage] = useState("");
@@ -33,23 +96,24 @@ function TransactionEnquirey() {
   };
 
   const onSubmit = async (input) => {
+    console.log("inputs",input.clientCode)
     setLoadingState(true);
     setData({});
     setIsDisable(true);
-  
+
     let spTxnId = 0;
     let clientTxnId = 0;
-  
+
     if (input.transaction_from === "1") {
       spTxnId = input.transaction_id;
     } else {
       clientTxnId = input.transaction_id;
     }
-    let endPoint = `/${spTxnId}/${clientTxnId}`;
-  
+    let endPoint = `/${spTxnId}/${clientTxnId}/${input.clientCode}`;
+
     try {
       const response = await axios.get(API_URL.VIEW_TXN + endPoint);
-  
+
       if (response?.data?.length > 0) {
         setLoadingState(false);
         setIsShow(true);
@@ -65,10 +129,10 @@ function TransactionEnquirey() {
       setIsShow(false);
       setErrMessage(true);
     }
-  
+
     setIsDisable(false);
   };
-  
+
 
 
   useEffect(() => {
@@ -137,6 +201,15 @@ function TransactionEnquirey() {
 
                       <div className="form-row mt-4 ml-1">
                         <div className="col-lg-12">
+                          <div className="form-group col-lg-3">
+                            <FormikController
+                              control="select"
+                              label="Client Code"
+                              name="clientCode"
+                              className="form-select rounded-0 mt-0"
+                              options={clientCodeOption}
+                            />
+                          </div>
                           <div className="form-group col-md-12 col-sm-12 p-0 col-lg-5 d-flex justify-content-between">
                             <FormikController
                               control="radio"
