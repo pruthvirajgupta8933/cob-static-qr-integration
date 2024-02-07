@@ -96,7 +96,6 @@ function TransactionEnquirey() {
   };
 
   const onSubmit = async (input) => {
-    console.log("inputs",input.clientCode)
     setLoadingState(true);
     setData({});
     setIsDisable(true);
@@ -240,7 +239,7 @@ function TransactionEnquirey() {
                           {(show && printData?.length > 0) && <button
                             Value="click"
                             onClick={onClick}
-                            className="btn btn-secondary text-white mt-2 ml-3 btn-sm"
+                            className="btn btn-secondary text-white mt-4 ml-3 btn-sm"
                           >
                             <i className="fa fa-print" aria-hidden="true"></i> Print
                           </button>}
