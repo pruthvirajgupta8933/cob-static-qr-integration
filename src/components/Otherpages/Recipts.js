@@ -46,7 +46,7 @@ import toastConfig from '../../utilities/toastTypes';
     }
     let endPoint = `/${spTxnId}/${clientTxnId}`
 
-    axios.get(API_URL.VIEW_TXN + endPoint)
+    axios.get(API_URL.VIEW_RECIPTS_TXN + endPoint)
       .then((response) => {
         let res = response.data
         if (res?.length === 0 || null) {

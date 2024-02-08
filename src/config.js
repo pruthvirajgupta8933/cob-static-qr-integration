@@ -103,6 +103,7 @@ const API_LIVE = {
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
+  VIEW_RECIPTS_TXN:reportAPIURL + "/Enquiry/ViewTxnPublic",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */

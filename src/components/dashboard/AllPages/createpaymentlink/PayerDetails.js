@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
 // import * as Yup from "yup";
 import Yup from "../../../../_components/formik/Yup";
@@ -50,6 +51,7 @@ const PayerDetails = () => {
   const [searchText, setSearchText] = useState("");
   const { user } = useSelector((state) => state.auth);
   const [displayList, setDisplayList] = useState([]);
+  const [loadingState, setLoadingState] = useState(true)
   const [data, setData] = useState([]);
   const [customerType, setCustomerType] = useState([]);
   const [pageSize, setPageSize] = useState(10);
@@ -77,6 +79,7 @@ const PayerDetails = () => {
       .then((res) => {
         // console.log(res)
         setData(res.data);
+        setLoadingState(false)
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value());
       })
@@ -521,6 +524,9 @@ const PayerDetails = () => {
                 ))}
               </tbody>
             </table>
+            <div className="d-flex justify-content-center align-items-center loader-container">
+              <CustomLoader loadingState={loadingState} />
+            </div>
           </div>
 
           <div>

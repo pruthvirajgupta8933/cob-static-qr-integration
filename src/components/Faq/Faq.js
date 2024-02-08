@@ -25,7 +25,7 @@ const Faq = () => {
     },
     {
       title: "Is SabPaisa free or are there any charges? What are the charges taken by SabPaisa for various services?",
-      content: <>
+      content:
         <ul className={` ${classes.font_size}`}>
           <li>SabPaisa charges according to industry standards for its services.</li>
           <li>For PG- It depends on the merchant’s industry and business volumes.</li>
@@ -33,77 +33,77 @@ const Faq = () => {
           <li>For Paylink- Nominal fee, as agreed with the merchant.</li>
           <li>For Payout- Nominal fee, as agreed with the merchant.</li>
         </ul>
-      </>
+      
     },
     {
       title: "How do I signup for SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>To sign up for SabPaisa, visit <a href="https://sabpaisa.in/sign-up/">https://sabpaisa.in/sign-up/</a>, fill in your details, and our team will get in touch with you at the earliest.</p>
-      </>
+      
     },
     {
       title: "What all card Information does SabPaisa store?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>SabPaisa stores only the last four digits of a card, which is the industry standard.</p>
-      </>
+     
     },
     {
       title: "For what purposes can the end-customer use SabPaisa?",
-      content: <>
+      content: 
         <ul className={` ${classes.font_size}`}>
           <li>Payment collection through Payment Gateway.</li>
           <li>Auto payment collection through Payment Links even without a website.</li>
           <li>Collect recurring payments through the Subscription Platform.</li>
         </ul>
-      </>
+      
     },
     {
       title: "What payment options are available in SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>All the modes of payments are available with SabPaia, from Debit cards, Credit Card, Wallets, UPI, Bharat QR etc. We have almost 10 lac e-cash counters that make payments convenient.</p>
-      </>
+      
     },
     {
       title: "My customer mostly uses Net banking, what’s in for me?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>SabPaisa offers Netbanking services with all major banks for the convenience of the customers.</p>
-      </>
+      
     },
     {
       title: "Do you support International Payments?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>SabPaisa is working on getting international payments.</p>
-      </>
+      
     },
     {
       title: "Do you support mobile payments?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>Yes, SabPaisa supports mobile payments.</p>
-      </>
+      
     },
     {
       title: "Do you support partial refunds?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>Yes, we support partial refunds.</p>
-      </>
+      
     },
     {
       title: "How long does it take to go live?",
-      content: <>
+      content:
         <p className={` ${classes.font_size}`}>SabPaisa offers you the fastest TAT after all formalities like KYC, agreement etc is done.</p>
-      </>
+      
     },
     {
       title: "Is the payment experience customisable as per my website’s look and feel?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>No, the payment experience is not customisable as per the merchant’s website’s look and feel at this point.</p>
-      </>
+     
     },
     {
       title: "How and when will I receive the money for payments made to us?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>SabPaisa Payment Gateway is governed by the Payment and Settlement Act of RBI and payments are done to merchants within RBI prescribed TATs.</p>
-      </>
+      
     },
     {
       title: "What kind Of MIS/Reports do you provide?",
@@ -120,51 +120,51 @@ const Faq = () => {
     },
     {
       title: "What kind of customer support can I expect from SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>To ensure that all our merchants/clients are given 100% attention, SabPaisa assigns every merchant an Account Manager to handle any issues.</p>
-      </>
+      
     },
     {
       title: "Are You PCI DSS Certified?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>Yes, we are PCI-DSS certified.</p>
-      </>
+      
     },
     {
       title: "How will you guarantee my data privacy?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>SabPaisa uses the HTTPS extension that protects the integrity and confidentiality of data for secure connections. We are also PCI-DSS certified and adhere to RBI guidelines of data privacy.</p>
-      </>
+      
     },
     {
       title: "What all documents are required for signing up with SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>It varies with the constitution of the firm. Broadly, documents for business proofs, signatory individual’s proofs, bank statements and cancelled cheques along with GST registration.</p>
-      </>
+      
     },
     {
       title: "Do you have Sandbox where I can test the integration before going live with SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>Yes, SabPaisa has a Sandbox where one can test the integration before going live with SabPaisa. </p>
-      </>
+      
     },
     {
       title: "How can I contact SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>For sales enquiries, signup with your details at https://sabpaisa.in/sign-up/ and our Sales Team will get in touch with you.</p>
-      </>
+      
     },
     {
       title: "Where do I seek support from SabPaisa?",
-      content: <>
+      content: 
         <p className={` ${classes.font_size}`}>For support, write to us at <a href="support@sabpaisa.in" target="_blank">support@sabpaisa.in</a> or call us at 011-41733223</p>
-      </>
+      
     },
     {
       title: "How to calculate TSR (Transaction Success Rate)?",
-      content: <>
+      content:
         <p className={` ${classes.font_size}`}>Transaction success rate (TSR) is calculated by dividing the total number of processed (success+business declined) transactions by the total number of attempted transactions over a given time period. For example, if SabPaisa processed 100 transactions, and 82 were successful & 16 were failed due to business decline, then your TSR would be 98%.</p>
-      </>
+      
     },
   ];
 
@@ -172,7 +172,7 @@ const Faq = () => {
  
 
   return (
-    <>
+   
       <section>
         <main>
           <div className="container-fluid mb-5">
@@ -209,7 +209,7 @@ const Faq = () => {
         </main>
       </section>
 
-    </>
+   
 
 
   );
