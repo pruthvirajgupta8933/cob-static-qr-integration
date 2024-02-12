@@ -18,10 +18,10 @@ if (ENV_PROD) {
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
 
 } else {
-  // url = "https://stgcobapi.sabpaisa.in";
-  // kyc_url = "https://stgcobkyc.sabpaisa.in";
-  url = "http://192.168.2.120:8000";
-  kyc_url = "http://192.168.2.120:8001";
+  url = "https://stgcobapi.sabpaisa.in";
+  kyc_url = "https://stgcobkyc.sabpaisa.in";
+  // url = "http://192.168.2.120:8000";
+  // kyc_url = "http://192.168.2.120:8001";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
