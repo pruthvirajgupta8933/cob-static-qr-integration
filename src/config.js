@@ -18,8 +18,10 @@ if (ENV_PROD) {
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
 
 } else {
-  url = "https://stgcobapi.sabpaisa.in";
-  kyc_url = "https://stgcobkyc.sabpaisa.in";
+  // url = "https://stgcobapi.sabpaisa.in";
+  // kyc_url = "https://stgcobkyc.sabpaisa.in";
+  url = "http://192.168.2.120:8000";
+  kyc_url = "http://192.168.2.120:8001";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
@@ -103,7 +105,7 @@ const API_LIVE = {
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
-  VIEW_RECIPTS_TXN:reportAPIURL + "/Enquiry/ViewTxnPublic",
+  VIEW_RECIPTS_TXN: reportAPIURL + "/Enquiry/ViewTxnPublic",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
@@ -370,7 +372,7 @@ export default API_URL;
 
 export const APP_ENV = ENV_PROD;
 
-export const TIMEOUT = 1500; // time in seconds 1500 = 25 minutes
+export const TIMEOUT = 30000; // add milisecond 
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";
 
 // COB PG credential
