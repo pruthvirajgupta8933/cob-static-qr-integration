@@ -13,11 +13,11 @@ export const NotFilledKYCData = [
     id: "1",
     name: "S.No",
     selector: (row) => row.sno,
-    
+
     sortable: true,
     width: "90px",
     cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div>,
-    
+
   },
   {
     id: "2",
@@ -41,7 +41,7 @@ export const NotFilledKYCData = [
   },
 
 
-  
+
   {
     id: "4",
     name: "Email",
@@ -85,8 +85,8 @@ export const AllMerchnatListData = [
     sortable: true,
     width: "95px",
   },
-  
- 
+
+
 ];
 
 export const ChallanReportData = [
@@ -122,9 +122,9 @@ export const ChallanReportData = [
       </div>
     ),
   },
-  
-  
-  
+
+
+
   {
     id: "4",
     name: "Bank Reference No.",
@@ -332,13 +332,13 @@ export const TransactionRowData = [
     id: "20",
     name: "Updated On",
     cell: (row) => <div>{covertDate(row.updated_at)}</div>,
-    sortable:true
+    sortable: true
   },
   {
     id: "21",
     name: "Deleted On",
     cell: (row) => <div>{covertDate(row.deleted_at)}</div>,
-    sortable:true
+    sortable: true
   },
 ];
 
@@ -695,27 +695,41 @@ export const ApprovedTableData = [
 
 // For subscription paisa
 export const MandateReportData = [
-  { id: "1", name: "S.No",selector:(row)=>row.sno },
-  { id: "2", name: "Mandate Registration Id",selector:(row)=>row.mandateRegistrationId, sortable: true,
-  width: "160px", },
-  { id: "3", name: "Client Code",selector:(row)=>row.clientCode },
-  { id: "4", name: "Client Registration Id",selector:(row)=>row.clientRegistrationId },
-  { id: "5", name: "Consumer Reference Number",selector:(row)=>row.consumerReferenceNumber },
-  { id: "6",name:"Mandate Purpose",selector:(row)=>row.mandatePurpose, sortable: true,
-  width: "180px",},
-  { id: "7", name: "Payer Utility Code",selector:(row)=>row.payerUtilitityCode,sortable: true,
-  width: "180px", },
-  { id: "8", name: "Payer Name",selector:(row)=>row.payerName},
-  { id: "9", name: "Mandate End Date",selector:(row)=>row.mandateEndDate ?row.mandateEndDate :"NA", sortable: true,
-  width: "160px" , },
-  { id: "10", name: "Mandate Max Amount",selector:(row)=>row.mandateMaxAmount},
-  { id: "11", name: "Mandate Registration Time",selector:(row)=>row.mandateRegTime, sortable: true,
-  width: "160px", },
-  { id: "12", name: "Mandate Type",selector:(row)=>row.mandateType },
-  { id: "13", name: "Merchant Id",selector:(row)=>row.merchantId, sortable: true,
-  width: "170px",},
-  { id: "14", name: "Mandate Start Date",selector:(row)=>row.mandateStartDate, sortable: true,
-  width: "170px", },
+  { id: "1", name: "S.No", selector: (row) => row.sno },
+  {
+    id: "2", name: "Mandate Registration Id", selector: (row) => row.mandateRegistrationId, sortable: true,
+    width: "160px",
+  },
+  { id: "3", name: "Client Code", selector: (row) => row.clientCode },
+  { id: "4", name: "Client Registration Id", selector: (row) => row.clientRegistrationId },
+  { id: "5", name: "Consumer Reference Number", selector: (row) => row.consumerReferenceNumber },
+  {
+    id: "6", name: "Mandate Purpose", selector: (row) => row.mandatePurpose, sortable: true,
+    width: "180px",
+  },
+  {
+    id: "7", name: "Payer Utility Code", selector: (row) => row.payerUtilitityCode, sortable: true,
+    width: "180px",
+  },
+  { id: "8", name: "Payer Name", selector: (row) => row.payerName },
+  {
+    id: "9", name: "Mandate End Date", selector: (row) => row.mandateEndDate ? row.mandateEndDate : "NA", sortable: true,
+    width: "160px",
+  },
+  { id: "10", name: "Mandate Max Amount", selector: (row) => row.mandateMaxAmount },
+  {
+    id: "11", name: "Mandate Registration Time", selector: (row) => row.mandateRegTime, sortable: true,
+    width: "160px",
+  },
+  { id: "12", name: "Mandate Type", selector: (row) => row.mandateType },
+  {
+    id: "13", name: "Merchant Id", selector: (row) => row.merchantId, sortable: true,
+    width: "170px",
+  },
+  {
+    id: "14", name: "Mandate Start Date", selector: (row) => row.mandateStartDate, sortable: true,
+    width: "170px",
+  },
   // { id: "15", name: "Message Id",selector:(row)=>row.messageId },
   // { id: "16", name: "Mandate Collect Amount",selector:(row)=>row.mandateCollectAmount },
   // { id: "17", name: "Pan No",selector:(row)=>row.panNo },
@@ -859,4 +873,14 @@ export const DebitReportData = [
 
 
 
+// subscript wallet row column
 
+export const subscriptionWalletTableCol = [
+  { id: "1", name: "S. no.", cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div> },
+  { id: "1", name: "Subscription Id", cell: (row) => <div className="removeWhiteSpace">{row?.clientSubscribedPlanDetailsId}</div> },
+  { id: "2", name: "Application name", cell: (row) => <div className="removeWhiteSpace">{row?.applicationName}</div> },
+  { id: "3", name: "Plan name", cell: (row) => <div className="removeWhiteSpace">{row?.planName}</div> },
+  { id: "4", name: "Subscription status", cell: (row) => <div className="removeWhiteSpace">{row?.subscription_status}</div> },
+  { id: "4", name: "Mandate status", cell: (row) => <div className="removeWhiteSpace">{row?.mandateStatus}</div> },
+  { id: "4", name: "Purchase amount", cell: (row) => <div className="removeWhiteSpace">{row?.purchaseAmount}</div> }
+]
