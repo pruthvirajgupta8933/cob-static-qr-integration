@@ -16,7 +16,9 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { auth, productCatalogueSlice } = useSelector((state) => state);
   const { user } = auth
-  const { SubscribedPlanData, isLoading } = productCatalogueSlice
+  const { SubscribedPlanData, isLoading, walletCommission } = productCatalogueSlice
+
+  // console.log("SubscribedPlanData", SubscribedPlanData)
   const [walletDisplayData, setWalletDisplayData] = useState([])
 
   const clientId = user.clientMerchantDetailsList[0]?.clientId
@@ -49,27 +51,26 @@ const Profile = () => {
   useEffect(() => {
     let dataWallet = []
     SubscribedPlanData?.map((data, i) => (
-      (
-        dataWallet.push(<div className="col-lg-4 mx-3 my-1" key={uuidv4()}>
-          <div className="card" style={{ width: '18rem' }}>
-            <div className="card-body">
-              <h5 className="card-title">{data.applicationName}</h5>
-              <p className="card-subtitle mb-2 text-body-secondary">Plan : {data.planName}</p>
-              <hr />
 
-              {isNull(data?.mandateStatus) && data?.mandateStatus?.toLowerCase() !== "success" &&
-                data?.plan_code === "005" && <p className="text-danger"> Payment is pending </p>}
+      dataWallet.push(<div className="col-lg-4 mx-3 my-1" key={uuidv4()}>
+        <div className="card" style={{ width: '18rem' }}>
+          <div className="card-body">
+            <h5 className="card-title">{data.applicationName}</h5>
+            <p className="card-subtitle mb-2 text-body-secondary">Plan : {data.planName}</p>
+            <hr />
 
+            {isNull(data?.mandateStatus) && data?.mandateStatus?.toLowerCase() !== "success" &&
+              data?.plan_code === "005" && <p className="text-danger"> Payment is pending </p>}
 
-              {data?.mandateStatus === "SUCCESS" && data?.plan_code === "005" && (
-                <> <p className="card-text">Subscribed Date : {moment(data.mandateStartTime).format('DD/MM/YYYY')} </p>
-                  <p className="card-text">Purchased Amount : {data.purchaseAmount} INR</p>
-                  <p className="card-text">Commission : {data.commission ?? 0} INR</p>
-                  <p className="card-text">Wallet Balance : {balanceCalculate(data.purchaseAmount, data.commission)} INR</p></>)}
-            </div>
+            {data?.mandateStatus === "SUCCESS" && data?.plan_code === "005" && (
+              <> <p className="card-text">Subscribed Date : {moment(data.mandateStartTime).format('DD/MM/YYYY')} </p>
+                <p className="card-text">Purchased Amount : {data.purchaseAmount} INR</p>
+                <p className="card-text">Commission : {data.commission ?? 0} INR</p>
+                <p className="card-text">Wallet Balance : {balanceCalculate(data.purchaseAmount, data.commission)} INR</p></>)}
           </div>
-        </div>)
-      )
+        </div>
+      </div>)
+
     ))
     setWalletDisplayData(dataWallet)
   }, [SubscribedPlanData])
@@ -102,7 +103,7 @@ const Profile = () => {
           {/* Tab content */}
           <div className="tab-content" id="v-pills-tabContent">
             {currentTab === 1 && <UserDetails />}
-            {currentTab === 2 && <WalletDetail isLoading={isLoading} walletDisplayData={walletDisplayData} />}
+            {currentTab === 2 && <WalletDetail isLoading={isLoading} walletDisplayData={SubscribedPlanData} walletCommission={walletCommission} />}
           </div>
           {/* Tab content */}
         </div>

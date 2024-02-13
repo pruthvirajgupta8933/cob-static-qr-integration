@@ -15,7 +15,7 @@ export const merchantSubscribedPlanData = createAsyncThunk(
   async (object, thunkAPI) => {
     try {
       const data = await fetchSubscribedPlan(object);
-      return { data: data.data.data };
+      return { data: data.data.data, commission_data: data.data.commission_data };
     } catch (error) {
       const message =
         (error.response &&
@@ -82,6 +82,7 @@ const productCatalogueSlice = createSlice({
     [merchantSubscribedPlanData.fulfilled]: (state, action) => {
       state.isLoading = false
       state.SubscribedPlanData = action.payload.data;
+      state.walletCommission = action.payload.commission_data;
     },
     [merchantSubscribedPlanData.rejected]: (state) => {
       state.isLoading = false

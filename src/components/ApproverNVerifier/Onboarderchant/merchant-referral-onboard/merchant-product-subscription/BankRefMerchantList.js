@@ -90,12 +90,12 @@ function BankRefMerchantList() {
                             }
                             productSubscriptionHandler(row, "qf");
                         }}
-                        disabled={row.client_code === null || row?.payment_gateway?.subscription_status === "Subscribed"}
+                        disabled={row.client_code === null || row?.qwik_form?.subscription_status === "Subscribed"}
                         className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
 
                     >
                         {/* {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"} */}
-                        {row.client_code === null ? 'Client code not available' : row?.payment_gateway?.subscription_status === "Subscribed" ? "Subscribed" : "Subscribe"}
+                        {row.client_code === null ? 'Client code not available' : row?.qwik_form?.subscription_status === "Subscribed" ? "Subscribed" : "Subscribe"}
 
                     </button>
                     {(row?.qwik_form?.subscription_status === "Subscribed") &&
