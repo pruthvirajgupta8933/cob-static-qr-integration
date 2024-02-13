@@ -4,28 +4,95 @@ import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import { Collapse } from 'react-collapse';
-import SandboxForm from "../SandBox/SandboxForm"
+import SandboxCollapse from "./SandboxCollapse"
 
 
 function Sandbox() {
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth} = useSelector((state) => state);
   const { user } = auth;
   const [openCollapse, setOpenCollapse] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Function to toggle the visibility of the password field
+  const togglePasswordVisibility = () => {
+    setShowPassword(prevState => !prevState);
+  };
 
   const handleToggle = (index) => {
     setOpenCollapse(index === openCollapse ? 0 : index);
   };
-  const [isCollapseOpen, setIsCollapseOpen] = useState(true);
 
 
 
   const [data, setData] = useState([])
   const [isCopied, setIsCopied] = useState(false);
-  const [values, setValues] = useState({
-    password: "",
-    showPassword: false,
-  });
+  const formDetails = [
+    {
+      title: "Test Credentials ( PHP )",
+      initialValues: [
+        { label: "Client Code", value: "DCRBP" },
+        { label: "User Name", value: "userph.jha_3036" },
+        { label: "Password", value: "DBOI1_SP3036" },
+        { label: "Authentication Key", value: "0jeOYcu3UnfmWyLC" },
+        { label: "Authentication IV", value: "C28LAmGxXTqmK0QJ" },
+        { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" }
+        
+      ]
+    },
+    {
+      title: "Test Credentials (JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue)",
+      initialValues: [
+        { label: "Client Code", value: "LPSD1" },
+        { label: "User Name", value: "Abh789@sp" },
+        { label: "Password", value: "P8c3WQ7ei" },
+        { label: "Authentication Key", value: "x0xzPnXsgTq0QqXx" },
+        { label: "Authentication IV", value: "oLA38cwT6IYNGqb3" },
+        { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" }
+      ]
+    },
+    {
+      title: "Test Credentials ( OpenCart | WooCommerce)",
+      initialValues: [
+        { label: "Client Code", value: "NITE5" },
+        { label: "User Name", value: "Ish988@sp" },
+        { label: "Password", value: "wF2F0io7gdNj" },
+        { label: "Authentication Key", value: "zvMzY0UZLxkiE6ad" },
+        { label: "Authentication IV", value: "iFwrtsCSw3j7HG15" },
+        { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit" }
+      ]
+    },
+    {
+      title: "Live Credentials",
+      initialValues: [
+        {
+          label: "Client Code",
+          value: data?.clientCode
+        },
+        {
+          label: "User Name",
+          value: data && data.clientUserName
+        },
+        {
+          label: "Password",
+          value: data && data.clientPassword,
+
+        },
+        {
+          label: "Authentication Key",
+          value: data && data.authKey
+        },
+        {
+          label: "Authentication IV",
+          value: data && data.authIV
+        },
+        {
+          label: "SabPaisa Domain/Environment Base URL",
+          value: `https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`
+        }
+      ]
+    }
+  ];
+
 
 
 
@@ -37,13 +104,6 @@ function Sandbox() {
   useEffect(() => {
     dispatch(kycUserList({ login_id: user?.loginId }));
   }, [user, dispatch]);
-
-
-
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
 
 
   const clientDetailRequest = async () => {
@@ -119,808 +179,75 @@ function Sandbox() {
           <section className="">
 
             <div className="container-fluid">
-              {/* <div className="row">
-                <StepProgressBar status={kycStatus} />
-              </div> */}
-
               <div className="row">
-                <SandboxForm
-                  isOpen={openCollapse === 1}
-                  onToggle={() => handleToggle(1)}
+                {formDetails.map((form, index) => (
+                  <SandboxCollapse
+                    key={index}
+                    isOpen={openCollapse === index + 1}
+                    onToggle={() => handleToggle(index + 1)}
+                    title={form.title}
+                    formContent={(
 
-                  title="Test Credentials ( PHP )"
-                  formContent={
-                    <>
-                      <form
-                        className="collapse multi-collapse show"
-                        id="multiCollapseExample122"
-                      >
+                      <form>
                         <div className="form-group row">
-                          <div className="col-lg-4">
-                            <label htmlFor="inputEmail3" className="col-form-label">
-                              Client Code
-                            </label>
-                            <div className="input-group" >
-                              <input
-                                type="text"
-                                className="form-control"
-                                id="inputEmail3"
-                                disabled={true}
-                                value="DCRBP"
-
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("DCRBP")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-
+                          {form.initialValues.map((item, i) => (
+                            <div className="col-lg-4" key={i}>
+                              <label className="col-form-label">{item.label}</label>
+                              <div className="input-group">
+                                <input
+                                  type={item.label === 'Password' && !showPassword ? "password" : "text"}
+                                  className="form-control"
+                                  disabled={true}
+                                  value={item.value}
+                                />
+                                {item.label === 'Password' && (
+                                  <>
+                                    <div className="input-group-append">
+                                      <span
+                                        className="input-group-text"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={togglePasswordVisibility}
+                                      >
+                                        {showPassword ? (
+                                          <i className="fa fa-eye" style={{ fontSize: '12px' }}></i>
+                                        ) : (
+                                          <i className="fa fa-eye-slash" style={{ fontSize: '12px' }}></i>
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="input-group-append">
+                                      <span
+                                        className="input-group-text"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => copyToClipboard(item.value)}
+                                        data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
+                                      >
+                                        <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                                      </span>
+                                    </div>
+                                  </>
+                                )}
+                                {item.label !== 'Password' && (
+                                  <div className="input-group-append">
+                                    <span
+                                      className="input-group-text"
+                                      style={{ cursor: 'pointer' }}
+                                      onClick={() => copyToClipboard(item.value)}
+                                      data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
+                                    >
+                                      <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </div>
-                          </div>
-                          <div className="col-lg-4">
-                            <label className="col-form-label">
-                              User Name
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled={true}
-                                value="userph.jha_3036"
-
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("userph.jha_3036")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-                                {/* <button
-                              className="btn btn-outline-secondary"
-                              type="button"
-                              onClick={() => copyToClipboard("userph.jha_3036")}
-                            >
-                              Copy
-                            </button> */}
-                              </div>
-
-                            </div>
-                          </div>
-
-                          <div className="col-lg-4">
-                            <label className="col-form-label">
-                              Password
-                            </label>
-
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled={true}
-                                value="DBOI1_SP3036"
-
-                              />
-                              {/* <input
-                            type="text"
-                            className="form-control"
-
-                            disabled="true"
-                            value="DBOI1_SP3036"
-
-                          /> */}
-
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-
-                                  onClick={() => copyToClipboard("DBOI1_SP3036")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-
-                              </div>
-
-                            </div>
-                          </div>
-
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication Key
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="0jeOYcu3UnfmWyLC"
-
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("0jeOYcu3UnfmWyLC")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-
-                              </div>
-                              {/* <div className="input-group-append">
-                            <button
-                              className="btn btn-outline-secondary"
-                              type="button"
-                              onClick={() => copyToClipboard("0jeOYcu3UnfmWyLC")}
-                            >
-                              Copy
-                            </button>
-                          </div> */}
-
-                            </div>
-                            {/* <input
-                          type="text"
-                          className="form-control"
-
-                          disabled="true"
-                          value="0jeOYcu3UnfmWyLC"
-                        /> */}
-                          </div>
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication IV
-                            </label>
-
-                            {/* <input
-                          type="text"
-                          className="form-control"
-
-                          disabled="true"
-                          value="C28LAmGxXTqmK0QJ"
-                        /> */}
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="C28LAmGxXTqmK0QJ"
-
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("C28LAmGxXTqmK0QJ")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-
-                              </div>
-
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Environment Base URL
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-
-                              </div>
-                            </div>
-                          </div>
+                          ))}
                         </div>
                       </form>
 
-                    </>
-                  } />
-
-                <SandboxForm
-                  isOpen={openCollapse === 2}
-                  onToggle={() => handleToggle(2)}
-
-                  title="Test Credentials (JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue)"
-                  formContent={
-                    <>
-                      <form
-
-                      >
-                        <div className="form-group row">
-                          <div className="col-lg-4">
-                            <label htmlFor="inputEmail3" className="col-form-label">
-                              Client Code
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                id="inputEmail3"
-                                disabled="true"
-                                value="LPSD1"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("LPSD1")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-
-                              </div>
-
-                            </div>
-                          </div>
-                          <div className="col-lg-4">
-                            <label
-                              className="col-form-label"
-                            >
-                              User Name
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="Abh789@sp"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("Abh789@sp")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-
-                              </div>
-                            </div>
-
-                          </div>
-
-                          <div className="col-lg-4">
-                            <label className="col-form-label">
-                              Password
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled="true"
-                                value="P8c3WQ7ei"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("P8c3WQ7ei")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-                              </div>
-
-                            </div>
-                          </div>
-
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication Key
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="x0xzPnXsgTq0QqXx"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("x0xzPnXsgTq0QqXx")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication IV
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="oLA38cwT6IYNGqb3"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => copyToClipboard("oLA38cwT6IYNGqb3")}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Environment Base URL
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i> {/* Copy Icon */}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-
-                    </>
-                  }
-
-                />
-
-                <SandboxForm
-                  isOpen={openCollapse === 3}
-                  onToggle={() => handleToggle(3)}
-                  title="Test Credentials ( OpenCart | WooCommerce)"
-                  formContent={
-                    <>
-                      <form
-
-                      >
-                        <div className="form-group row">
-                          <div className="col-lg-4">
-                            <label htmlFor="inputEmail3" className="col-form-label">
-                              Client Code
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled="true"
-                                value="NITE5"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("NITE5")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              User Name
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled="true"
-                                value="Ish988@sp"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("Ish988@sp")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Password
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled="true"
-                                value="wF2F0io7gdNj"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("wF2F0io7gdNj")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>{/* Copy Icon */}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication Key
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                disabled="true"
-                                value="zvMzY0UZLxkiE6ad"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("zvMzY0UZLxkiE6ad")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication IV
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="iFwrtsCSw3j7HG15"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("iFwrtsCSw3j7HG15")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-6">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Environment Base URL
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit"
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard("https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit")}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-
-                    </>
-                  }
-
-
-
-                />
-
-                <SandboxForm
-                  isOpen={openCollapse === 4}
-                  onToggle={() => handleToggle(4)}
-                  title="Live Credentials"
-                  formContent={
-                    <>
-                      <form
-
-                      >
-                        <div className="form-group row">
-                          <div className="col-lg-4">
-                            <label htmlFor="inputEmail3" className="col-form-label">
-                              Client Code
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-                                id="inputEmail3"
-                                disabled="true"
-                                value={data && data?.clientCode}
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard(data && data?.clientCode)}
-
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-4">
-                            <label
-
-                              className=" col-form-label"
-                            >
-                              User Name
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value={data && data?.clientUserName}
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-
-                                  onClick={() => copyToClipboard(data && data?.clientUserName)}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Password
-                            </label>
-                            <div className="input-group">
-                              <input type={
-                                values.showPassword
-                                  ? "text"
-                                  : "password"
-                              }
-                                className="form-control"
-
-                                name="passwordd"
-                                readOnly="true"
-                                value={data && data?.clientPassword} />
-
-                              <div className="input-group-append">
-                                <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
-
-                                  {values.showPassword ? (
-                                    <i
-                                      className="fa fa-eye"
-                                      aria-hidden="true"
-                                    ></i>
-                                  ) : (
-                                    <i
-                                      className="fa fa-eye-slash"
-                                      aria-hidden="true"
-                                    ></i>
-                                  )}
-                                </span>
-                                <div className="input-group-append">
-                                  <span
-                                    className="input-group-text"
-                                    style={{ cursor: 'pointer' }}
-                                    data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                    onClick={() => copyToClipboard(`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`)}
-                                  >
-                                    <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication Key
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value={data && data?.authKey}
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard(data && data?.authKey)}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-
-                          <div className="col-lg-4">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              Authentication IV{" "}
-                            </label>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value={data && data?.authIV}
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard(data && data?.authIV)}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-lg-6">
-                            <label
-
-                              className="col-form-label"
-                            >
-                              SabPaisa Domain/Environment Base URL
-                            </label>
-                            <div className="input-group">
-
-                              <input
-                                type="text"
-                                className="form-control"
-
-                                disabled="true"
-                                value={`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`}
-                              />
-                              <div className="input-group-append">
-                                <span
-                                  className="input-group-text"
-                                  style={{ cursor: 'pointer' }}
-                                  data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                  onClick={() => copyToClipboard(`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}`)}
-                                >
-                                  <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-
-
-                    </>
-                  }
-
-                />
-
-
-
-
-
+                    )}
+                  />
+                ))}
               </div>
             </div>
           </section>

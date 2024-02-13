@@ -99,8 +99,8 @@ function TransactionSummery() {
     // filter api response data with client code
     useEffect(() => {
         if (successTxnsumry?.length > 0) {
-            console.log("clientCodeArr", clientCodeArr)
-            console.log("successTxnsumry", successTxnsumry)
+            // console.log("clientCodeArr", clientCodeArr)
+            // console.log("successTxnsumry", successTxnsumry)
             var filterData = successTxnsumry?.filter((txnsummery) => {
                 if (clientCodeArr.includes(txnsummery.clientCode)) {
                     return clientCodeArr.includes(txnsummery.clientCode);
