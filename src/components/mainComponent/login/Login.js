@@ -129,7 +129,8 @@ function Login() {
                 } else {
                     window.location.href = `https://sabpaisa.in/pricing/`;
                     setLoading(false);
-                    toastConfig.errorToast(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+                      toastConfig.errorToast(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+                 
                 }
             })
         }

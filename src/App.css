@@ -26,6 +26,17 @@ body {
 .total_records_fontSize{
 font-size: 15px;
 }
+/* Apply primary button styles */
+.btn-sm.cob-btn-primary:not(.client_code_not_available) {
+  background-color: #0156b3 !important;
+  color: whitesmoke !important;
+}
+
+/* Apply styles when client code is not available */
+.btn-sm.client_code_not_available {
+  background-color: #00000033 !important;
+}
+
 
 
 

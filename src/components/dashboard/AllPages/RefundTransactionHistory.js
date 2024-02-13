@@ -71,13 +71,7 @@ const RefundTransactionHistory = () => {
 
     const [todayDate, setTodayDate] = useState(splitDate);
 
-    const initialValues = {
-        clientCode: "",
-        fromDate: todayDate,
-        endDate: todayDate,
-        noOfClient: "1",
-        rpttype: "0",
-    };
+    
 
     const validationSchema = Yup.object({
         clientCode: Yup.string().required("Required"),
@@ -107,6 +101,19 @@ const RefundTransactionHistory = () => {
         false,
         true
     );
+    
+
+    const initialValues = {
+        clientCode: "",
+        fromDate: todayDate,
+        endDate: todayDate,
+        noOfClient: "1",
+        rpttype: "0",
+    };
+    if (roles.merchant === true && clientCodeListArr && clientCodeListArr.length > 0 && clientCodeListArr[0] && clientCodeListArr[0][fnKey]) {
+        initialValues.clientCode = clientCodeListArr[0][fnKey];
+      }
+
 
     const fetchData = () => {
         const roleType = roles
