@@ -35,6 +35,7 @@ const SettlementReportNew = () => {
     const [dataFound, setDataFound] = useState(false);
     const [buttonClicked, isButtonClicked] = useState(false);
     const [disable, setIsDisable] = useState(false)
+    
 
     const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { user } = auth;
@@ -108,9 +109,7 @@ const SettlementReportNew = () => {
         false,
         true
     );
-
     const [todayDate, setTodayDate] = useState(splitDate);
-
     const initialValues = {
         clientCode: "",
         fromDate: todayDate,
@@ -118,6 +117,13 @@ const SettlementReportNew = () => {
         noOfClient: "1",
         rpttype: "0",
     };
+    if (roles.merchant === true && clientCodeListArr && clientCodeListArr.length > 0 && clientCodeListArr[0] && clientCodeListArr[0][fnKey]) {
+        initialValues.clientCode = clientCodeListArr[0][fnKey];
+      }
+
+   
+
+    
 
     const validationSchema = Yup.object({
         clientCode: Yup.string().required("Required"),
