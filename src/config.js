@@ -47,6 +47,7 @@ const API_LIVE = {
   getExpectedTransaction: `${kyc_url}/kyc/get-range/transaction-range`,
 
 
+
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
   AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
@@ -216,6 +217,9 @@ const API_LIVE = {
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
   /*KYC USER LIST */
   Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
+  // PAN API FOR DISPLAY DATA
+
+  GET_MERCHANT_PAN:`${kyc_url}/kyc/get-merchants-by-pan/`,
   /* KYC VERIFICATION FOR ALL TABS */
   KYC_TAB_STATUS_URL: `${kyc_url}/kyc/verify-kyc`,
   /*Image Preview API */

@@ -37,6 +37,16 @@ font-size: 15px;
   background-color: #00000033 !important;
 }
 
+.pan_title{
+  font-family: "Sofia-Pro-Regular";
+    font-weight: 500;
+    font-style: normal;
+}
+.table_maxheight{
+  max-height: 400px;
+  overflow: auto;
+}
+
 
 
 
