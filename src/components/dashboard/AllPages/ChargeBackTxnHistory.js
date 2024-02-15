@@ -17,9 +17,12 @@ import DropDownCountPerPage from "../../../_components/reuseable_components/Drop
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
+  const roles = roleBasedAccess();
+  const roleType = roles
 
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
@@ -60,13 +63,7 @@ const ChargeBackTxnHistory = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-const initialValues = {
-    clientCode: "",
-    fromDate: splitDate,
-    endDate: splitDate,
-    noOfClient: "1",
-    rpttype: "0",
-  };
+
 
   const validationSchema = Yup.object({
     clientCode: Yup.string().required("Required"),
@@ -76,6 +73,13 @@ const initialValues = {
       .required("Required"),
   });
 
+  const initialValues = {
+    clientCode: roles.merchant ? (clientMerchantDetailsList && clientMerchantDetailsList.length > 0 ? clientMerchantDetailsList[0].clientCode : "") : "",
+    fromDate: splitDate,
+    endDate: splitDate,
+    noOfClient: "1",
+    rpttype: "0",
+  };
 
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
