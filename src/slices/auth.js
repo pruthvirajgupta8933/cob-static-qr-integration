@@ -86,9 +86,11 @@ export const login = createAsyncThunk(
   async ({ username, password, is_social }, thunkAPI) => {
     try {
       const data = await AuthService.login(username, password, is_social);
-      // console.log("data",data)
-      TokenService.setUser(data)
-      return { user: data };
+      data && TokenService.setUser(data?.data)
+      data && TokenService.setUserData(data?.data)
+      data && TokenService.setCategory()
+
+      return { user: data?.data };
     } catch (error) {
       const message =
         (error.response &&
@@ -96,7 +98,7 @@ export const login = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString() || error.request.toString();
-      thunkAPI.dispatch(setMessage(message));
+      // thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);              // here we pass message for error
     }
   }

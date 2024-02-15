@@ -1,6 +1,7 @@
+
 import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
-import { stringEnc } from "../utilities/encodeDecode";
+
 
 const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social }) => {
   return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
@@ -19,20 +20,13 @@ const register = ({ fullname, mobileNumber, email, business_cat_code, password, 
 };
 
 
-const login = (username, password, is_social) => {
-  return axiosInstanceJWT
-    .post(API_URL.AUTH_LOGIN, {
-      clientUserId: username,
-      userPassword: password,
-      is_social: is_social
-    })
-    .then((response) => {
+const login = async (username, password, is_social) => {
 
-      sessionStorage.setItem("user", JSON.stringify(response.data));
-      sessionStorage.setItem("categoryId", 1)
-      // sessionStorage.setItem("prog_id", stringEnc(password))
-      return response.data;
-    });
+  return axiosInstanceAuth.post(API_URL.AUTH_LOGIN, {
+    clientUserId: username,
+    userPassword: password,
+    is_social: is_social
+  })
 };
 
 const logout = () => {
@@ -64,9 +58,9 @@ const checkClintCode = (object) => {
 // }
 
 
-const verifyIfcsCode = (ifsc_code) => {
-  return axiosInstance.get("https://ifsc.razorpay.com/" + ifsc_code);
-}
+// const verifyIfcsCode = (ifsc_code) => {
+//   return axiosInstance.get("https://ifsc.razorpay.com/" + ifsc_code);
+// }
 
 // const fetchNbBankList = () => {
 //   return axiosInstance.get(BANK_LIST_URL + "nb");
@@ -124,7 +118,7 @@ const authService = {
   // verifyClientCode,
   // fetchNbBankList,
   // fetchDcBankList,
-  verifyIfcsCode,
+  // verifyIfcsCode,
   changePassword,
   getEmailToSendOTP,
   verifyOtpOnForgotPwd,
