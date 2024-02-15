@@ -264,8 +264,8 @@ function ClientList() {
                     <div className="container">
                         <div className="row mt-4">
                             {/* {data.length === 0 ? "" : ( */}
-                            <div className='row'>
-                                <div className="col-lg-3 p-0 mr-3">
+                            <div className='row g-3'>
+                                <div className="col-2">
                                     <SearchFilter
                                         kycSearch={kycSearch}
                                         searchText={searchText}
@@ -273,7 +273,8 @@ function ClientList() {
                                         setSearchByDropDown={setSearchByDropDown}
                                     />
                                 </div>
-                                <div className="col-lg-3 p-0">
+
+                                <div className="col-2">
                                     <CountPerPageFilter
                                         pageSize={pageSize}
                                         dataCount={dataCount}
@@ -282,19 +283,16 @@ function ClientList() {
                                 </div>
                             </div>
 
-
-
+                            <div className="col-2">
+                                {user?.roleId === 13 &&
+                                    <button className="btn btn-sm  mb-3 cob-btn-primary"
+                                        onClick={() => setModalToggle(true)}>Add Child
+                                        Client</button>}
+                            </div>
                             {!loadingState && data?.length !== 0 && (
                                 <>
                                     <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
                                         <div><h6>Number of Record: {dataCount}</h6></div>
-                                        <div>
-                                            {user?.roleId === 13 &&
-                                                <button className="btn btn-sm cob-btn-primary"
-                                                    onClick={() => setModalToggle(true)}>Add Child
-                                                    Client</button>}
-                                        </div>
-
                                     </div>
                                     <Table
                                         row={RefrerChiledList}
