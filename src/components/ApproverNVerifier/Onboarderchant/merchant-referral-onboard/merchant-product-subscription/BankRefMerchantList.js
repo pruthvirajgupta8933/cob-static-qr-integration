@@ -67,7 +67,11 @@ function BankRefMerchantList() {
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "pg")}
-                        className={`btn-sm ${row?.payment_gateway?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
+                        className={`btn-sm ${
+                            row?.payment_gateway?.subscription_status === "Subscribed" 
+                                ? "btn-outline-secondary" 
+                                : "cob-btn-primary text-white"
+                        } ${row.client_code === null ? "client_code_not_available" : ""}`}
                         disabled={row.client_code === null || row?.payment_gateway?.subscription_status === "Subscribed"}
                     >
                         {row.client_code === null ? 'Client code not available' : row?.payment_gateway?.subscription_status === "Subscribed" ? "Subscribed" : "Subscribe"}
@@ -91,7 +95,12 @@ function BankRefMerchantList() {
                             productSubscriptionHandler(row, "qf");
                         }}
                         disabled={row.client_code === null || row?.qwik_form?.subscription_status === "Subscribed"}
-                        className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
+                        // className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
+                        className={`btn-sm mx-1 ${
+                            row?.qwik_form?.subscription_status === "Subscribed" 
+                                ? "btn-outline-secondary" 
+                                : "cob-btn-primary text-white"
+                        } ${row.client_code === null ? "client_code_not_available" : ""}`}
 
                     >
                         {/* {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"} */}
@@ -152,6 +161,8 @@ function BankRefMerchantList() {
     const loadingState = useSelector(
         (state) => state.kyc.isLoadingForPendingVerification
     );
+
+    
 
 
     const [searchText, setSearchText] = useState("");

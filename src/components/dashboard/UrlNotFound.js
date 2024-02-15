@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom'
 
 const UrlNotFound = () => {
   return (
-    
-    
-  
     <div className="row container-fluid bgblue">
       <div className="col-lg-12 col-md-12 d-flex flex-column justify-content-center align-items-center text-white vh-100">
         <h1>404</h1>

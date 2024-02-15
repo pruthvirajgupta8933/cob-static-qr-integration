@@ -20,17 +20,13 @@ function TransactionEnquirey() {
   const clientCodeData = refrerChiledList?.resp?.results ?? []
   const roles = roleBasedAccess();
   const { user } = auth;
-  const initialValues = {
-    clientCode:"",
-    transaction_id: "",
-    transaction_from: "1"
-  };
+
   const validationSchema = Yup.object({
 
     transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required").allowOneSpace(),
     transaction_from: Yup.string().nullable().required("Required").allowOneSpace(),
-    clientCode:Yup.string().nullable().required("Required").allowOneSpace(),
-    
+    clientCode: Yup.string().nullable().required("Required").allowOneSpace(),
+
   });
 
   const fetchData = () => {
@@ -81,6 +77,18 @@ function TransactionEnquirey() {
     false,
     true
   );
+
+
+  let initialValues = {
+    clientCode: "",
+    transaction_id: "",
+    transaction_from: "1"
+  };
+
+  if (roles.merchant === true && clientCodeListArr && clientCodeListArr.length > 0 && clientCodeListArr[0] && clientCodeListArr[0][fnKey]) {
+    initialValues.clientCode = clientCodeListArr[0][fnKey];
+  }
+
 
   const [show, setIsShow] = useState(false);
   const [errMessage, setErrMessage] = useState("");
