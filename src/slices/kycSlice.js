@@ -10,6 +10,7 @@ import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 
 const initialState = {
+    isLoadingForpanDetails:false,
     isLoading: false,
     isLoadingForPending: false,
     isLoadingForPendingVerification: false,
@@ -34,6 +35,12 @@ const initialState = {
     myMerchnatUserList: {
         results: [],
         count: 0
+    },
+
+    panDetailsData:{
+        loading: false,
+        results:[],
+        count:0
     },
     kycApprovedList: {
         results: [],
@@ -789,6 +796,22 @@ export const verifyKycEachTab = createAsyncThunk(
     }
 );
 
+export const getMerchantpanData = createAsyncThunk(
+    "kyc/getMerchantpanData",
+    async (requestParam) => {
+        const response = await axiosInstanceJWT
+            .post(`${API_URL.GET_MERCHANT_PAN}`, requestParam)
+            .catch((error) => {
+                return error.response;
+            });
+
+        return response.data;
+    }
+);
+
+
+
+
 export const verifyKycDocumentTab = createAsyncThunk(
     "kyc/verifyKycDocumentTab",
     async (requestParam) => {
@@ -1162,6 +1185,23 @@ export const kycSlice = createSlice({
             state.status = "failed";
             state.error = action.error.message;
             state.isLoading = false;
+        },
+
+        ///////////////////////////////////////////////////////////
+        
+
+        [getMerchantpanData.pending]: (state, action) => {
+            state.isLoadingForpanDetails = true;
+        },
+        [getMerchantpanData.fulfilled]: (state, action) => {
+            console.log("action.payload",action.payload)
+            state.panDetailsData = action.payload
+            state.isLoadingForpanDetails = false;
+        },
+        [getMerchantpanData.rejected]: (state, action) => {
+            state.status = "failed";
+            state.error = action.error.message;
+            state.isLoadingForpanDetails = false;
         },
 
 
