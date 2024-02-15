@@ -13,7 +13,7 @@ import sbbnner from "../../../assets/images/sb-front-bnrr.png"
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from '../header/Header'
 import classes from "./login.module.css"
-import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+// import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
 
 // import api from './api';
 import toastConfig from "../../../utilities/toastTypes";
@@ -25,12 +25,12 @@ const INITIAL_FORM_STATE = {
 
 const validationSchema = Yup.object().shape({
     clientUserId: Yup.string()
-      .required("Please enter username")
-      .allowOneSpace(),
+        .required("Please enter username")
+        .allowOneSpace(),
     userPassword: Yup.string()
-      .required("Please enter Password")
-      .allowOneSpace(),
-  });
+        .required("Please enter Password")
+        .allowOneSpace(),
+});
 
 
 function Login() {
@@ -81,7 +81,7 @@ function Login() {
         const password = userPassword;
 
         setLoading(true);
-        dispatch(login({ username, password })).then((res) => {
+        dispatch(login({ username, password, is_social: false })).then((res) => {
             if (res?.payload?.user) {
                 const activeStatus = res?.payload?.user?.loginStatus;
                 const loginMessage = res?.payload?.user?.loginMessage;
@@ -108,6 +108,7 @@ function Login() {
 
     const queryString = window.location.search;
     const enableSocialLogin = (flag, response) => {
+        // console.log("response", response)
         const username = response?.profileObj?.email;
         const is_social = true;
         if (flag) {
@@ -126,12 +127,13 @@ function Login() {
                         setLoading(false);
                     }
                 } else {
-                    window.location.href = `https://sabpaisa.in/pricing/`;
+
                     setLoading(false);
-                      toastConfig.errorToast(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
-                 
+                    toastConfig.errorToast(res?.payload?.detail ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+                    // window.location.href = `https://sabpaisa.in/pricing/`;
+
                 }
-            })
+            }).catch(err => console.log("err", err))
         }
     }
     // const queryStringUrl = window.location.search;

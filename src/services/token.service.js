@@ -16,9 +16,17 @@ class TokenService {
   }
 
 
-  setUser(authToken) {
-    sessionStorage.setItem("at", JSON.stringify(authToken?.accessToken));
-    sessionStorage.setItem("rt", JSON.stringify(authToken.refreshToken));
+  setUser(data) {
+    sessionStorage.setItem("at", JSON.stringify(data?.accessToken));
+    sessionStorage.setItem("rt", JSON.stringify(data.refreshToken));
+  }
+
+  setCategory() {
+    sessionStorage.setItem("categoryId", 1)
+  }
+
+  setUserData(data) {
+    sessionStorage.setItem("user", JSON.stringify(data));
   }
 
   removeUser() {
