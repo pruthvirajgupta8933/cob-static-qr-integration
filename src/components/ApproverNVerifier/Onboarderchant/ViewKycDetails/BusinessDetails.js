@@ -410,6 +410,7 @@ const BusinessDetails = (props) => {
                         <th>Merchant Name</th>
                         <th>Email ID</th>
                         <th>Phone Number</th>
+                        <th>Client Code</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -420,6 +421,7 @@ const BusinessDetails = (props) => {
                             <td>{merchant?.name}</td>
                             <td>{merchant?.emailId}</td>
                             <td>{merchant?.contactNumber}</td>
+                            <td>{merchant?.clientCode}</td>
                           </tr>
                         ))}
                     </tbody>
