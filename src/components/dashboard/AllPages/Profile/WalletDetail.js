@@ -10,8 +10,11 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
         <div className="row">
             {/* {walletDisplayData */}
             <div className="col-lg-12 my-2">
-                <span className="font-size-14">Total Purchase Amount : {purchaseAmt}  | Commision : {walletCommission} | Wallet Balance: {purchaseAmt - walletCommission}</span>
-            </div>
+                <span className="font-size-14">
+                    Total Purchase Amount: {purchaseAmt.toFixed(2)} |
+                    Commission: {parseFloat(walletCommission).toFixed(2)} |
+                    Wallet Balance: {(purchaseAmt - parseFloat(walletCommission)).toFixed(2)}
+                </span>           </div>
             <div className="col-lg-12">
 
                 <Table

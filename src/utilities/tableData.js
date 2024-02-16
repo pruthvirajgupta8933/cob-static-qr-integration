@@ -877,10 +877,10 @@ export const DebitReportData = [
 
 export const subscriptionWalletTableCol = [
   { id: "1", name: "S. no.", cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div> },
-  { id: "1", name: "Subscription Id", cell: (row) => <div className="removeWhiteSpace">{row?.clientSubscribedPlanDetailsId}</div> },
-  { id: "2", name: "Application name", cell: (row) => <div className="removeWhiteSpace">{row?.applicationName}</div> },
-  { id: "3", name: "Plan name", cell: (row) => <div className="removeWhiteSpace">{row?.planName}</div> },
-  { id: "4", name: "Subscription status", cell: (row) => <div className="removeWhiteSpace">{row?.subscription_status}</div> },
-  { id: "4", name: "Mandate status", cell: (row) => <div className="removeWhiteSpace">{row?.mandateStatus}</div> },
-  { id: "4", name: "Purchase amount", cell: (row) => <div className="removeWhiteSpace">{row?.purchaseAmount}</div> }
+  { id: "1", name: "Subscription Id" , width:"140px", cell: (row) => <div className="removeWhiteSpace">{row?.clientSubscribedPlanDetailsId}</div> },
+  { id: "2", name: "Application name" , width:"160px", cell: (row) => <div className="removeWhiteSpace">{row?.applicationName}</div> },
+  { id: "3", name: "Plan name" , width:"140px", cell: (row) => <div className="removeWhiteSpace">{row?.planName}</div> },
+  { id: "4", name: "Subscription status" , width:"160px", cell: (row) => <div className="removeWhiteSpace">{row?.subscription_status}</div> },
+  { id: "4", name: "Mandate status" , width:"140px", cell: (row) => <div className="removeWhiteSpace">{row?.mandateStatus}</div> },
+  { id: "4", name: "Purchase amount" , width:"160px", cell: (row) => <div className="removeWhiteSpace">{row?.purchaseAmount}</div> }
 ]

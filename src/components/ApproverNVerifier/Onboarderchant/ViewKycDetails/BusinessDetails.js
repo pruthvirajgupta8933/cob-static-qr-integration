@@ -396,7 +396,7 @@ const BusinessDetails = (props) => {
 
       <>
         <ViewKycCollapse
-          title={isCollapseOpen ? `Total account linked with Business PAN / Authorized Signatory PAN : ${count}` : "Total account linked with Business PAN / Authorized Signatory PAN"}
+          title={isCollapseOpen===2 ? `Total account linked with Business PAN / Authorized Signatory PAN : ${count}` : "Total account linked with Business PAN / Authorized Signatory PAN"}
           formContent={
             <>
               <div className="table-responsive table_maxheight">
@@ -441,10 +441,7 @@ const BusinessDetails = (props) => {
 
       </>
 
-
-
-
-      <div className="form-row g-3">
+<div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
           <p className='m-0'>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
           <p className='m-0'>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
