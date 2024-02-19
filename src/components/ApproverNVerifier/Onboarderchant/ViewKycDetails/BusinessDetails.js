@@ -30,11 +30,8 @@ const BusinessDetails = (props) => {
   );
 
 
-
-  const { user } = auth;
+const { user } = auth;
   const { loginId } = user;
-  const [merchantData, setMerchantData] = useState(null);
-
 
   const handleVerifyClick = async () => {
     try {
@@ -88,6 +85,7 @@ const BusinessDetails = (props) => {
       const resp = await dispatch(getMerchantpanData(panDetails));
 
     } catch (error) {
+      
       toast.error("Try Again Network Error");
     }
   };
@@ -97,10 +95,11 @@ const BusinessDetails = (props) => {
 
   const toggleCollapse = (index) => {
     setIsCollapseOpen(isCollapseOpen === index ? null : index);
-    if (!isCollapseOpen && !merchantData) {
-      displayPanData()
+    if (index === 2) {
+        displayPanData();
     }
-  };
+};
+
 
 
 
