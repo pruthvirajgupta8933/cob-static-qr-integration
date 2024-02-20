@@ -63,16 +63,31 @@ function SideNavbar() {
 
                         <ul id={`menulist_${menu.app_code}`} className="nav flex-column mb-2" role="menu">
                             {menu.submenu?.map((submenu) => (
-                                auth?.user?.loginId.toString() === "11235" && (submenu.url !== "transaction-history" && submenu.url !== "settlement-report-new") &&
-                                <li className="nav-item" role="menuitem" key={submenu.id}>
-                                    <Link
-                                        to={`${url}/${submenu.url}`}
-                                        className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
-                                    >
-                                        <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
-                                    </Link>
-                                </li>
-                            ))}
+                                auth?.user?.loginId.toString() === "11235" ? (
+                                    submenu?.is_active &&
+                                    submenu?.id !== 5 &&
+                                    submenu?.id !== 6 &&
+                                    submenu?.id !== 7 &&
+                                    submenu?.id !== 8 && (
+                                        <li className="nav-item" role="menuitem" key={submenu.id}>
+                                            <Link
+                                                to={`${url}/${submenu.url}`}
+                                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
+                                            >
+                                                <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
+                                            </Link>
+                                        </li>
+                                    )) : (
+                                    submenu?.is_active && <li className="nav-item" role="menuitem" key={submenu.id}>
+                                        <Link
+                                            to={`${url}/${submenu.url}`}
+                                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
+                                        >
+                                            <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
+                                        </Link>
+                                    </li>
+                                )))
+                            }
                         </ul>
                     </React.Fragment>
                 ))}
