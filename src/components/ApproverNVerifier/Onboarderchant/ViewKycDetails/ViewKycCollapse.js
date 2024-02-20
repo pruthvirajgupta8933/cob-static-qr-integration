@@ -1,11 +1,11 @@
 import React from 'react'
 import Collapse from 'react-collapse';
 
-const ViewKycCollapse = ({ title, formContent, isOpen, onToggle,icon}) => {
+const ViewKycCollapse = ({ title, formContent, isOpen, onToggle, icon}) => {
     return (
         <div className="col-lg-12 border m-1 p-2">
         
-        <div onClick={onToggle} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+        <div onClick={onToggle} class="d-flex align-items-center">
         {isOpen ? (
           <i className="fa fa-caret-down me-2"></i>
         ) : (

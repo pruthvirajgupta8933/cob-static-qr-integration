@@ -15,7 +15,7 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
                     Commission: {parseFloat(walletCommission).toFixed(2)} |
                     Wallet Balance: {(purchaseAmt - parseFloat(walletCommission)).toFixed(2)}
                 </span>           </div>
-            <div className="col-lg-12">
+            <div className="col-lg-12 table-responsive table_maxheight">
 
                 <Table
                     row={subscriptionWalletTableCol}
