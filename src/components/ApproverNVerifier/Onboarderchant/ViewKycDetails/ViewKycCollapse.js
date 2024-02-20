@@ -5,7 +5,7 @@ const ViewKycCollapse = ({ title, formContent, isOpen, onToggle, icon}) => {
     return (
         <div className="col-lg-12 border m-1 p-2">
         
-        <div onClick={onToggle} class="d-flex align-items-center">
+        <div onClick={onToggle} class="d-flex align-items-center cursor_pointer">
         {isOpen ? (
           <i className="fa fa-caret-down me-2"></i>
         ) : (
