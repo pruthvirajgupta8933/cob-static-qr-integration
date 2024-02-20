@@ -8,7 +8,7 @@ function SideNavbar() {
     const { menuListReducer, auth } = useSelector((state) => state);
     const { url } = useRouteMatch();
     const location = useLocation();
-     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const roleBasedShowTab = roleBasedAccess();
     const enableSettlementReport = ["5208", "5207", "4304", "795"];
@@ -18,7 +18,7 @@ function SideNavbar() {
 
     useEffect(() => {
         // Additional logic if needed when the selected menu changes
-        
+
     }, [selectedMenu]);
 
     const toggleMenu = (e) => {
@@ -63,6 +63,7 @@ function SideNavbar() {
 
                         <ul id={`menulist_${menu.app_code}`} className="nav flex-column mb-2" role="menu">
                             {menu.submenu?.map((submenu) => (
+                                auth?.user?.loginId.toString() === "11235" && (submenu.url !== "transaction-history" && submenu.url !== "settlement-report-new") &&
                                 <li className="nav-item" role="menuitem" key={submenu.id}>
                                     <Link
                                         to={`${url}/${submenu.url}`}
@@ -120,16 +121,16 @@ function SideNavbar() {
                         <Link
                             to={`${url}/faq`}
                             className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "faq" ? sideNavClasses.selected_memu : ""}`}
-                            >
-                                <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
-                                FAQ/Help
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        );
-    }
-    
-    export default SideNavbar;
-    
+                        >
+                            <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            FAQ/Help
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    );
+}
+
+export default SideNavbar;
+
