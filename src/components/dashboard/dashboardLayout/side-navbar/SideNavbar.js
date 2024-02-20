@@ -8,7 +8,7 @@ function SideNavbar() {
     const { menuListReducer, auth } = useSelector((state) => state);
     const { url } = useRouteMatch();
     const location = useLocation();
-     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const roleBasedShowTab = roleBasedAccess();
     const enableSettlementReport = ["5208", "5207", "4304", "795"];
@@ -18,7 +18,7 @@ function SideNavbar() {
 
     useEffect(() => {
         // Additional logic if needed when the selected menu changes
-        
+
     }, [selectedMenu]);
 
     const toggleMenu = (e) => {
@@ -63,15 +63,31 @@ function SideNavbar() {
 
                         <ul id={`menulist_${menu.app_code}`} className="nav flex-column mb-2" role="menu">
                             {menu.submenu?.map((submenu) => (
-                                <li className="nav-item" role="menuitem" key={submenu.id}>
-                                    <Link
-                                        to={`${url}/${submenu.url}`}
-                                        className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
-                                    >
-                                        <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
-                                    </Link>
-                                </li>
-                            ))}
+                                auth?.user?.loginId.toString() === "11235" ? (
+                                    submenu?.is_active &&
+                                    submenu?.id !== 5 &&
+                                    submenu?.id !== 6 &&
+                                    submenu?.id !== 7 &&
+                                    submenu?.id !== 8 && (
+                                        <li className="nav-item" role="menuitem" key={submenu.id}>
+                                            <Link
+                                                to={`${url}/${submenu.url}`}
+                                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
+                                            >
+                                                <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
+                                            </Link>
+                                        </li>
+                                    )) : (
+                                    submenu?.is_active && <li className="nav-item" role="menuitem" key={submenu.id}>
+                                        <Link
+                                            to={`${url}/${submenu.url}`}
+                                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
+                                        >
+                                            <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
+                                        </Link>
+                                    </li>
+                                )))
+                            }
                         </ul>
                     </React.Fragment>
                 ))}
@@ -120,16 +136,16 @@ function SideNavbar() {
                         <Link
                             to={`${url}/faq`}
                             className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "faq" ? sideNavClasses.selected_memu : ""}`}
-                            >
-                                <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
-                                FAQ/Help
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        );
-    }
-    
-    export default SideNavbar;
-    
+                        >
+                            <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            FAQ/Help
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    );
+}
+
+export default SideNavbar;
+
