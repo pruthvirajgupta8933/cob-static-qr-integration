@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import VerifyRejectBtn from './VerifyRejectBtn';
@@ -75,11 +75,19 @@ const { user } = auth;
     }
   };
 
-  const displayPanData = async () => {
+  useEffect(()=>{
+    // console.log(selectedUserData?.panCard)
+    if(selectedUserData?.panCard || selectedUserData?.signatoryPAN){
+      displayPanData(selectedUserData);
+    }
+
+  },[selectedUserData])
+
+  const displayPanData = async (data) => {
     try {
       const panDetails = {
-        "pan": selectedUserData?.panCard,
-        "signatory_pan": selectedUserData?.signatoryPAN
+        "pan": data?.panCard,
+        "signatory_pan": data?.signatoryPAN
       };
 
       const resp = await dispatch(getMerchantpanData(panDetails));
@@ -94,10 +102,13 @@ const { user } = auth;
 
 
   const toggleCollapse = (index) => {
-    setIsCollapseOpen(isCollapseOpen === index ? null : index);
-    if (index === 2) {
-        displayPanData();
-    }
+    // Check if the collapse is being opened or closed
+    const isOpening = isCollapseOpen !== index;
+    setIsCollapseOpen(isOpening ? index : null);
+// Check if the collapse with the specified index is open
+    // if (isOpening && index === 2) {
+        
+    // }
 };
 
 
