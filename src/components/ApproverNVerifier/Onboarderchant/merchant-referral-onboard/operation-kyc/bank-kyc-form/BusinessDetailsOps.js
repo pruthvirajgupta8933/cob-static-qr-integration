@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import toastConfig from "../../../../../../utilities/toastTypes";
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import kycOperationService from '../../../../../../services/kycOperation.service';
+import { Regex,RegexMsg} from '../../../../../../_components/formik/ValidationRegex'
 function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
@@ -42,7 +43,25 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string().nullable().required("Required"),
-        website: Yup.string().nullable().required("Required"),
+        // website: Yup.string().nullable().required("Required"),
+        website: Yup.string().when(["seletcted_website_app_url"], {
+            is: "Yes",
+            then: Yup.string()
+            .matches(
+              Regex.urlFormate,RegexMsg.urlFormate
+            )
+            .test('is-url', 'Please enter a valid website URL', (value) => {
+              if (!value) return true; // Allow empty values
+              try {
+                new URL(value);
+                return true;
+              } catch (error) {
+                return false;
+              }
+            })
+            // .required('Website App Url is required')
+            .nullable(),
+          otherwise: Yup.string().notRequired().nullable(),  }),
         is_pan_verified: Yup.string().nullable(),
         platform_id: Yup.string()
             .required("Select the platform")
