@@ -11,7 +11,9 @@ export const Regex = {
     password:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     ifscRegex : /^[A-Z]{4}0[A-Z0-9]{6}$/,
     accountNoRgex : /^[a-zA-Z0-9]{2,25}$/,
-    multipleSpace:/^\S+(\s{1}\S+)*$/
+    multipleSpace:/^\S+(\s{1}\S+)*$/,
+    urlFormate:  /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.(com|in)(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.(com|in)(\/[^\s]*)?)$/,
+
 }
 
 export const RegexMsg = {
@@ -26,7 +28,8 @@ export const RegexMsg = {
     password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character",
     ifscRegex:"Your IFSC code is Invalid and must be in capital letters",
     accountNoRgex:"Account Number format is invalid",
-    multipleSpace:"Invalid input"
+    multipleSpace:"Invalid input",
+    urlFormate:"Please enter a valid HTTPS URL"
 }
 
 

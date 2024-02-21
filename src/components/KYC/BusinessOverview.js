@@ -89,11 +89,11 @@ function BusinessOverview(props) {
     form_build: "Yes",
   };
 
-  const Regex = {
+  const Regexx = {
     acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
   };
 
-  const RegexMsg = {
+  const RegexMssg = {
     acceptAlphabet: 'Please enter valid characters.',
   };
 
@@ -110,7 +110,7 @@ function BusinessOverview(props) {
         .trim()
         .min(1, 'Please enter more than 1 character')
         .max(250, 'Please do not enter more than 250 characters')
-        .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+        .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
         .required('Required')
         .nullable(),
       // company_website: Yup.string().trim()
@@ -120,13 +120,21 @@ function BusinessOverview(props) {
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
         then: Yup.string()
-          .url("Please enter the valid website url")
-          .trim()
-          .ensure()
-          .required("Website App Url is required")
-          .nullable(),
-        otherwise: Yup.string().notRequired().nullable(),
-      }),
+        .matches(
+         Regex.urlFormate,RegexMsg.urlFormate
+        )
+        .test('is-url', 'Please enter a valid website URL', (value) => {
+          if (!value) return true; // Allow empty values
+          try {
+            new URL(value);
+            return true;
+          } catch (error) {
+            return false;
+          }
+        })
+        // .required('Website App Url is required')
+        .nullable(),
+      otherwise: Yup.string().notRequired().nullable(),  }),
       expected_transactions: Yup.string().trim().required("Required").nullable(),
       // .matches(Regex.digit, RegexMsg.digit)
       // .test("IntergerRequired", "Value should be more then 1", (val) => {
