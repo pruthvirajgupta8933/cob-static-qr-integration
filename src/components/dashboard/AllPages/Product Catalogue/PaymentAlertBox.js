@@ -34,8 +34,8 @@ function PaymentAlertBox(props) {
                     <p>{`Kindly pay the amount of the subscribed product`}</p>
                     <p>{`Product : ${data?.applicationName}`} </p>
                     <p>{`Product Plan : ${data?.planName}`} </p>
+                    <p>{data?.purchaseAmount && `Amount : ${Number.parseFloat(data?.purchaseAmount).toFixed(2)} INR`} </p>
                     <SelectProductPlan plans={data} />
-
                   </div>
                 </div>
               ))}

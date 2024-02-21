@@ -136,6 +136,7 @@ function Home() {
             <KycAlert />
 
             {/* payment alert */}
+
             {unPaidProduct?.length > 0 && (
               <PaymentAlertBox
                 cardData={unPaidProduct}

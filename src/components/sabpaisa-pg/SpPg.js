@@ -28,13 +28,13 @@ function SpPg() {
 
     const dispatch = useDispatch()
     const history = useHistory()
-    const location = useLocation();
+    // const location = useLocation();
 
 
-    useEffect(() => {
-        console.log('URL changed', location.pathname);
-        // Perform actions based on the new URL
-    }, [location]);
+    // useEffect(() => {
+    //     // console.log('URL changed', location.pathname);
+    //     // Perform actions based on the new URL
+    // }, [location]);
 
     const { auth, productCatalogueSlice } = useSelector((state) => state);
     const { SubscribedPlanData } = productCatalogueSlice
