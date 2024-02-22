@@ -5,8 +5,7 @@ const KycStatusUpdateMessage = ()=>{
     const roles = roleBasedAccess();
     const {kyc} = useSelector((state) => state);
     return (
-        <>
-          <div className="row kyc-link mt-2">
+        <div className="row kyc-link mt-2">
               {roles?.merchant === true &&
                 kyc?.kycUserList?.status !== "Approved" && (
 
@@ -37,7 +36,7 @@ const KycStatusUpdateMessage = ()=>{
                 )}
 
             </div>
-        </>
+        
     )
 }
 

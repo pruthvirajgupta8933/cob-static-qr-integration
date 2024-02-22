@@ -3,8 +3,13 @@ import Table from '../../../../_components/table_components/table/Table'
 import { subscriptionWalletTableCol } from '../../../../utilities/tableData'
 
 function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
-    // console.log("walletDisplayData", walletDisplayData)
-    const purchaseAmt = walletDisplayData?.reduce((accumulator, currentValue) => accumulator + currentValue.purchaseAmount, 0);
+    
+let purchaseAmt = 0;
+    if (walletDisplayData && Array.isArray(walletDisplayData)) {
+        purchaseAmt = walletDisplayData
+            .filter(data => data && data.mandateStatus && data.mandateStatus.toLowerCase() === "success")
+            .reduce((accumulator, currentValue) => accumulator + (currentValue.purchaseAmount || 0), 0);
+    }
 
     return (
         <div className="row">
