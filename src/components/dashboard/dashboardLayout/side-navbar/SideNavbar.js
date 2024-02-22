@@ -51,6 +51,7 @@ function SideNavbar() {
 
                 {/* render menu from API */}
                 {menuListReducer?.enableMenu?.map((menu) => (
+                    menu?.is_active &&
                     <React.Fragment key={menu.app_name}>
                         <div onClick={(e) => toggleMenu(e)} className={`your-custom-class ${isMenuOpen ? 'open-menu' : 'closed-menu'}`}>
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`}>
@@ -64,11 +65,11 @@ function SideNavbar() {
                         <ul id={`menulist_${menu.app_code}`} className="nav flex-column mb-2" role="menu">
                             {menu.submenu?.map((submenu) => (
                                 auth?.user?.loginId.toString() === "11235" ? (
-                                    submenu?.is_active &&
                                     submenu?.id !== 5 &&
                                     submenu?.id !== 6 &&
                                     submenu?.id !== 7 &&
                                     submenu?.id !== 8 && (
+                                        submenu?.is_active &&
                                         <li className="nav-item" role="menuitem" key={submenu.id}>
                                             <Link
                                                 to={`${url}/${submenu.url}`}
