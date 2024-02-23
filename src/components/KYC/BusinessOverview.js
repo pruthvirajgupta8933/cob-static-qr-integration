@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-// import * as Yup from "yup";
 import Yup from "../../_components/formik/Yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
@@ -120,38 +119,26 @@ function BusinessOverview(props) {
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
         then: Yup.string()
-        .matches(
-         Regex.urlFormate,RegexMsg.urlFormate
-        )
-        .test('is-url', 'Please enter a valid website URL', (value) => {
-          if (!value) return true; // Allow empty values
-          try {
-            new URL(value);
-            return true;
-          } catch (error) {
-            return false;
-          }
-        })
-        // .required('Website App Url is required')
-        .nullable(),
-      otherwise: Yup.string().notRequired().nullable(),  }),
+          .matches(
+            Regex.urlFormate, RegexMsg.urlFormate
+          )
+          .test('is-url', 'Please enter a valid website URL', (value) => {
+            if (!value) return true; // Allow empty values
+            try {
+              new URL(value);
+              return true;
+            } catch (error) {
+              return false;
+            }
+          })
+          // .required('Website App Url is required')
+          .nullable(),
+        otherwise: Yup.string().notRequired().nullable(),
+      }),
       expected_transactions: Yup.string().trim().required("Required").nullable(),
-      // .matches(Regex.digit, RegexMsg.digit)
-      // .test("IntergerRequired", "Value should be more then 1", (val) => {
-      //   return val > 0;
-      // })
-      // .min(1, "Please enter more than 1 character")
-      // .max(19, "Please do not enter more then 19 characters")
-      // .nullable(),
-
       avg_ticket_size: Yup.string()
         .trim()
-        // .matches(Regex.digit, RegexMsg.digit)
-        // .min(1, "Please enter more than 1 character")
-        // .max(19, "Please do not enter more then 19 characters")
-        // .test("IntergerRequired", "Value should be more then 1", (val) => {
-        //   return val > 0;
-        // })
+
         .required("Required").nullable(),
       // .nullable(),
     },
