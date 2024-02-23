@@ -113,6 +113,7 @@ function ContactInfo(props) {
   });
 
   const handleSubmitContact = (values) => {
+    // console.log("sybmit")
     if (role.merchant) {
       setIsDisable(true);
       dispatch(
@@ -141,7 +142,10 @@ function ContactInfo(props) {
           setShowOtpVerifyModalEmail(false);
           setIsDisable(false);
         }
-      });
+      }).catch((error) => {
+        // console.log("error", error)
+        toast.error("Something went wrong");
+      })
     }
 
   };
