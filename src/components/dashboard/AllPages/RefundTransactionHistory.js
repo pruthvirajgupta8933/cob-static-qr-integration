@@ -45,6 +45,8 @@ const RefundTransactionHistory = () => {
     const clientCodeData = refrerChiledList?.resp?.results ?? []
     const { isLoadingTxnHistory } = dashboard;
 
+    
+
     var clientMerchantDetailsList = [];
     if (
         user &&
@@ -81,6 +83,15 @@ const RefundTransactionHistory = () => {
             .required("Required"),
     });
 
+    let isExtraDataRequired = false;
+    let extraDataObj = {};
+    if (user.roleId === 3 || user.roleId === 13) {
+        isExtraDataRequired = true;
+        extraDataObj = { key: "All", value: "All" };
+    }
+
+    const forClientCode = true;
+
 
     let fnKey, fnVal = ""
     let clientCodeListArr = []
@@ -97,9 +108,9 @@ const RefundTransactionHistory = () => {
         fnKey,
         fnVal,
         clientCodeListArr,
-        {},
-        false,
-        true
+        extraDataObj,
+        isExtraDataRequired,
+        forClientCode
     );
     
 
@@ -149,12 +160,24 @@ const RefundTransactionHistory = () => {
     };
 
     const onSubmitHandler = async (values) => {
+        let strClientCode, clientCodeArrLength = "";
+        if (values.clientCode === "All") {
+            const allClientCode = [];
+            clientCodeListArr?.map((item) => {
+                allClientCode.push(item.client_code);
+            });
+            clientCodeArrLength = allClientCode.length.toString();
+            strClientCode = allClientCode.join().toString();
+        } else {
+            strClientCode = values.clientCode;
+            clientCodeArrLength = "1";
+        }
         const paramData = {
-            clientCode: values.clientCode,
+            clientCode: strClientCode,
             fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
             endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
             noOfClient: values.noOfClient,
-            rpttype: values.rpttype,
+            rpttype: clientCodeArrLength,
         };
 
         setLoading(true);
