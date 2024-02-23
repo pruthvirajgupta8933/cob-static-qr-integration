@@ -76,6 +76,14 @@ const SettlementReportNew = () => {
         fetchData();
     }, []);
 
+    let isExtraDataRequired = false;
+    let extraDataObj = {};
+    if (user.roleId === 3 || user.roleId === 13) {
+        isExtraDataRequired = true;
+        extraDataObj = { key: "All", value: "All" };
+    }
+
+    const forClientCode = true;
 
     let clientMerchantDetailsList = [];
     if (
@@ -105,9 +113,9 @@ const SettlementReportNew = () => {
         fnKey,
         fnVal,
         clientCodeListArr,
-        {},
-        false,
-        true
+        extraDataObj,
+        isExtraDataRequired,
+        forClientCode
     );
     const [todayDate, setTodayDate] = useState(splitDate);
     const initialValues = {
@@ -153,11 +161,23 @@ const SettlementReportNew = () => {
 
 
     const onSubmitHandler = async (values) => {
+        let strClientCode, clientCodeArrLength = "";
+        if (values.clientCode === "All") {
+            const allClientCode = [];
+            clientCodeListArr?.map((item) => {
+                allClientCode.push(item.client_code);
+            });
+            clientCodeArrLength = allClientCode.length.toString();
+            strClientCode = allClientCode.join().toString();
+        } else {
+            strClientCode = values.clientCode;
+            clientCodeArrLength = "1";
+        }
         const paramData = {
-            clientCode: values.clientCode,
+            clientCode: strClientCode,
             fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
             endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
-            noOfClient: values.noOfClient,
+            noOfClient: clientCodeArrLength,
             rpttype: values.rpttype,
         };
 
