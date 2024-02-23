@@ -111,14 +111,102 @@ const { user } = auth;
     // }
 };
 
+const formFields = [
+  {
+    label: "GSTIN",
+    value: selectedUserData?.gstNumber ? selectedUserData.gstNumber : "Merchant does not have GSTIN",
+    verificationMessage: selectedUserData?.gstNumber ? "Verified" : "Not Verified",
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: `form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"}`,
+  },
+  {
+    label: "Business PAN",
+    value: selectedUserData?.panCard,
+    verificationMessage: selectedUserData?.panCard ? "Verified" : "Not Verified",
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: "form-control",
+  },
+  {
+    label: "Authorized Signatory PAN",
+    value: selectedUserData?.signatoryPAN,
+    verificationMessage: selectedUserData?.signatoryPAN ? "Verified" : "Not Verified",
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: "form-control",
+  },
+  {
+    label: "Business Name",
+    value: selectedUserData?.companyName ? selectedUserData.companyName : "",
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: "form-control",
+  },
+  {
+    label: "PAN Owner's Name",
+    value: selectedUserData?.nameOnPanCard,
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: "form-control",
+  },
+  {
+    label: "Address",
+    value: selectedUserData?.operationalAddress,
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: "form-control",
+  },
+  {
+    label: "City",
+    value: selectedUserData?.merchant_address_details?.city,
+    gridClasses: "col-sm-3 col-md-3 col-lg-3",
+    inputClasses: "form-control",
+  },
+  {
+    label: "State",
+    value: selectedUserData?.merchant_address_details?.state_name,
+    gridClasses: "col-sm-3 col-md-3 col-lg-3",
+    inputClasses: "form-control",
+  },
+  {
+    label: "Pin Code",
+    value: selectedUserData?.pinCode,
+    gridClasses: "col-sm-12 col-md-6 col-lg-6",
+    inputClasses: "form-control",
+  },
+];
+
+
 
 
 
   return (
     <div className="row mb-4 border p-1">
       <h5 className="">Business Details</h5>
+      {formFields.map((field, index) => (
+    <div key={uuidv4()} className={`${field.gridClasses}`}>
+      <div className="form-group">
+        <label>{field.label}</label>
+        {field.value !== undefined ? (
+          <>
+        <input
+          type="text"
+          className={field.inputClasses}
+          id="inputPassword3"
+          disabled="true"
+          value={field.value}
+        />
+        {field.verificationMessage && (
+          <span>
+            <p className={field.verificationMessage === "Not Verified" ? "text-danger" : "text-success"}>
+              {field.verificationMessage}
+            </p>
+          </span>
+        )}
+        </>
+        ) : (
+          <p className='font-weight-bold'>Loading...</p>
+        )}
+      </div>
+    </div>
+  ))}
 
-      <div className="form-row g-3">
+      {/* <div className="form-row g-3">
         <div className="col-sm-12 col-md-6 col-lg-6">
 
           <label className="">
@@ -273,7 +361,11 @@ const { user } = auth;
         </div>
 
 
-      </div>
+      </div> */}
+
+
+
+
       {selectedUserData?.is_udyam === true ?
         <ViewKycCollapse
           title={`Merchant Udyam Aadhar Details : ${selectedUserData?.udyam_data?.reg_number}`}
