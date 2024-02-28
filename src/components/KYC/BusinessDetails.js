@@ -16,7 +16,7 @@ import {
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
-import { isNull} from "lodash";
+import { isNull } from "lodash";
 import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.service";
 import toastConfig from "../../utilities/toastTypes";
 
@@ -74,9 +74,6 @@ function BusinessDetails(props) {
     { "value": false, "key": "No" },
   ]
 
-  // alert(3434)
-
-  // const value = inputValue?.trim() || defaultValue;
   const initialValues = {
     company_name: KycList?.companyName,
     registerd_with_gst: KycList?.registerdWithGST ?? true,
@@ -94,13 +91,17 @@ function BusinessDetails(props) {
     registerd_with_udyam: JSON.parse(KycList?.is_udyam),
     udyam_number: KycList?.udyam_data?.reg_number ?? "",
     prevUdyamNumber: KycList?.udyam_data?.reg_number?.length > 2 ? KycList?.udyam_data?.reg_number : "0000",
+
     pan_card: KycList?.panCard,
     prev_pan_card: KycList?.panCard?.length > 2 ? KycList?.panCard : "pan",
+    isPanVerified: KycList?.pan_card?.length > 9 && 1,
 
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
-    prevSignatoryPan: KycList?.signatoryPAN
+    prevSignatoryPan: KycList?.signatoryPAN,
+    isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
   };
 
+  // console.log("isPanVerified", isPanVerified)
 
   // console.log("initialValues-----reupdate", initialValues)
   const validationSchema = Yup.object({
@@ -151,11 +152,14 @@ function BusinessDetails(props) {
       .matches(reqexPAN, "PAN number is invalid")
       .required("Required")
       .nullable(),
+    isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
+
     signatory_pan: Yup.string()
       .trim()
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
+    isSignatoryPanVerified: Yup.string().required("Please verify the signatory pan number").nullable(),
     prevSignatoryPan: Yup.string()
       .oneOf(
         [Yup.ref("signatory_pan"), null],
@@ -163,6 +167,7 @@ function BusinessDetails(props) {
       )
       .required("Authorized Signatory PAN Number Required")
       .nullable(),
+
     name_on_pancard: Yup.string()
       .trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
@@ -230,8 +235,7 @@ function BusinessDetails(props) {
         setFieldValue(key, fullNameByPan)
         setFieldValue("pan_card", values)
         setFieldValue("prev_pan_card", values)
-
-
+        setFieldValue("isPanVerified", 1)
         toast.success(res?.payload?.message);
 
       } else {
@@ -263,6 +267,7 @@ function BusinessDetails(props) {
 
         setFieldValue("pan_card", res?.payload?.pan)
         setFieldValue("prev_pan_card", res?.payload?.pan)
+        setFieldValue("isPanVerified", 1)
 
         setFieldValue("registerd_with_gst", true)
         setFieldValue("registerd_with_udyam", false)
@@ -297,6 +302,7 @@ function BusinessDetails(props) {
   }
 
   const authValidation = (values, key, setFieldValue) => {
+    // console.log("auth", "auth pan")
     dispatch(
       authPanValidation({
         pan_number: values,
@@ -312,6 +318,8 @@ function BusinessDetails(props) {
         setFieldValue(key, values)
         setFieldValue("prevSignatoryPan", values)
         setFieldValue("name_on_pancard", authName)
+        setFieldValue("isSignatoryPanVerified", 1)
+
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);
@@ -340,6 +348,7 @@ function BusinessDetails(props) {
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       // auth signatory pan
+      // console.log("dfdfdf")
       authValidation(val[key], "signatory_pan", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
@@ -356,8 +365,10 @@ function BusinessDetails(props) {
       "company_name": values.company_name,
       "registerd_with_gst": JSON.parse(values.registerd_with_gst),
       "gst_number": values.gst_number,
+
       "pan_card": values.pan_card,
       "signatory_pan": values.signatory_pan,
+
       "name_on_pancard": values.name_on_pancard,
       "pin_code": values.pin_code,
       "city_id": values.city_id,
@@ -429,7 +440,6 @@ function BusinessDetails(props) {
   useEffect(() => {
     setUdyamResponseData(KycList?.udyam_data)
   }, [KycList])
-  
 
   return (
     <div className="col-lg-12 p-0">
@@ -445,11 +455,12 @@ function BusinessDetails(props) {
           setFieldValue,
           errors,
           setFieldError,
-          setFieldTouched,
+          setFieldTouched
         }) => (
           <Form>
             <div className="row">
-            {/* {console.log("initialValues",initialValues)}
+              {console.log("values?.isPanVerified", values?.isPanVerified)}
+              {/* {console.log("initialValues",initialValues)}
             {console.log("values",values)}
             {console.log("errors",errors)} */}
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -626,25 +637,27 @@ function BusinessDetails(props) {
                 {/* <label className="col-form-label mt-0 p-2">
                   Business PAN <span className="text-danger">*</span>
                 </label> */}
-                 <label className="col-form-label p-2">
-                 Business PAN<span className="text-danger">*</span>
-                    </label>
+                <label className="col-form-label p-2">
+                  Business PAN<span className="text-danger">*</span>
+                </label>
                 <div className="input-group">
                   <Field
                     type="text"
                     name="pan_card"
                     className="form-control"
-                    disabled={VerifyKycStatus === "Verified"}
-                    readOnly={JSON.parse(values?.registerd_with_gst)}
                     onChange={(e) => {
+                      setFieldValue("isPanVerified", "")
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
-                     
-                  }}
+                    }}
+                    disabled={VerifyKycStatus === "Verified"}
+                    readOnly={JSON.parse(values?.registerd_with_gst)}
+            
                   />
 
 
                   {(values?.pan_card !== null &&
+                    values?.isPanVerified !== "" &&
                     values?.pan_card !== "" &&
                     values?.pan_card !== undefined &&
                     !errors.hasOwnProperty("pan_card") &&
@@ -684,6 +697,12 @@ function BusinessDetails(props) {
                   </p>
                 )}
 
+                {errors?.isPanVerified && (
+                  <p className="notVerifiedtext- text-danger mb-0">
+                    {errors?.isPanVerified}
+                  </p>
+                )}
+
 
               </div>
 
@@ -703,12 +722,12 @@ function BusinessDetails(props) {
                     onChange={(e) => {
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("signatory_pan", uppercaseValue); // Set the uppercase value to form state
-                      
+                      setFieldValue("isSignatoryPanVerified", "")                      
                   }}
+
                   />
-                  {values?.signatory_pan !== null &&
-                    values?.signatory_pan !== "" &&
-                    values?.signatory_pan !== undefined &&
+                  {values?.signatory_pan &&
+                    values?.isSignatoryPanVerified &&
                     !errors.hasOwnProperty("signatory_pan") &&
                     !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
@@ -735,19 +754,20 @@ function BusinessDetails(props) {
                     </div>
                   )}
                 </div>
-                {
-                  <ErrorMessage name="signatory_pan">
-                    {(msg) => (
-                      <span className="text-danger">
-                        {msg}
-                      </span>
-                    )}
-                  </ErrorMessage>
-                }
-                <br />
+
+                {errors?.signatory_pan && (
+                  <span className="text-danger mb-0 d-flex">
+                    {errors?.signatory_pan}
+                  </span>
+                )}
                 {errors?.prevSignatoryPan && (
-                  <span className="text-danger mb-0">
+                  <span className="text-danger mb-0 d-flex">
                     {errors?.prevSignatoryPan}
+                  </span>
+                )}
+                {errors?.isSignatoryPanVerified && (
+                  <span className="text-danger mb-0 d-flex">
+                    {errors?.isSignatoryPanVerified}
                   </span>
                 )}
               </div>
@@ -809,13 +829,13 @@ function BusinessDetails(props) {
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-3 col-lg-3">
-              <label className="col-form-label mt-0 p-2">
+                <label className="col-form-label mt-0 p-2">
                   State<span className="text-danger">*</span>
                 </label>
                 <FormikController
                   control="select"
                   name="state_id"
-                 
+
                   options={BusinessOverview}
                   className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -824,7 +844,7 @@ function BusinessDetails(props) {
               </div>
 
               <div className="col-sm-12 col-md-3 col-lg-3">
-              <label className="col-form-label mt-0 p-2">
+                <label className="col-form-label mt-0 p-2">
                   Pin Code<span className="text-danger">*</span>
                 </label>
                 <FormikController
