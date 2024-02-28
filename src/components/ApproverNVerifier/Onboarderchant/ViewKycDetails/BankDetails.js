@@ -73,7 +73,38 @@ const BankDetails = (props) => {
   }, [bankid])
 
 
-
+  const inputFields = [
+    {
+      label: "IFSC Code",
+      value: selectedUserData?.merchant_account_details?.ifsc_code,
+      verificationMessage: selectedUserData?.merchant_account_details?.ifsc_code === null || selectedUserData?.merchant_account_details?.ifsc_code === "" ? "Not Verified" : "Verified"
+    },
+    {
+      label: "Business Account Number",
+      value: selectedUserData?.merchant_account_details?.account_number,
+      verificationMessage: selectedUserData?.merchant_account_details?.account_number === null || selectedUserData?.merchant_account_details?.account_number === "" ? "Not Verified" : "Verified"
+    },
+    {
+      label: "Account Holder Name",
+      value: selectedUserData?.merchant_account_details?.account_holder_name,
+      verificationMessage: ""
+    },
+    {
+      label: "Account Type",
+      value: selectedUserData?.merchant_account_details?.accountType,
+      verificationMessage: ""
+    },
+    {
+      label: "Bank Name",
+      value: selectedUserData?.bankName,
+      verificationMessage: ""
+    },
+    {
+      label: "Branch",
+      value: selectedUserData?.merchant_account_details?.branch,
+      verificationMessage: ""
+    }
+  ];
 
 
   return (
@@ -81,27 +112,37 @@ const BankDetails = (props) => {
       <h5 className="">Bank Details</h5>
 
       <div className="form-row g-3">
-
-        <div className="col-sm-12 col-md-12 col-lg-6 ">
-          <label className="">
-            IFSC Code
-          </label>
-
-          <input
-            type="text"
-            className="form-control"
-            disabled="true"
-            value={selectedUserData?.merchant_account_details?.ifsc_code}
-          />
-          <span>
-            {selectedUserData?.merchant_account_details?.ifsc_code === null || selectedUserData?.merchant_account_details?.ifsc_code === "" ? (
-              <p className="text-danger"> Not Verified</p>
+        {inputFields.map((field, index) => (
+          <div key={index} className="col-sm-12 col-md-12 col-lg-6">
+            <label>{field.label}</label>
+            {field.value !== undefined ? (
+              <>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled="true"
+                  value={field.value}
+                />
+                {field.verificationMessage && (
+                  <span>
+                    {field.verificationMessage === "Not Verified" ? (
+                      <p className="text-danger">{field.verificationMessage}</p>
+                    ) : (
+                      <p className="text-success">{field.verificationMessage}</p>
+                    )}
+                  </span>
+                  
+                )}
+                {index < inputFields.length - 1 && <div className='mb-3'></div>}
+              </>
             ) : (
-              <p className="text-success">Verified</p>
+              <p className='font-weight-bold'>Loading...</p>
             )}
-          </span>
-        </div>
-        <div className="col-sm-12 col-md-12 col-lg-6">
+          </div>
+        ))}
+
+
+        {/* <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
             Business Account Number
 
@@ -124,9 +165,10 @@ const BankDetails = (props) => {
 
 
 
-        </div>
+        </div> */}
+
       </div>
-      <div className="form-row g-3">
+      {/* <div className="form-row g-3">
 
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
@@ -157,8 +199,8 @@ const BankDetails = (props) => {
             }
           />
         </div>
-      </div>
-      <div className="form-row g-3">
+      </div> */}
+      {/* <div className="form-row g-3">
 
         <div className="col-sm-12 col-md-12 col-lg-6">
           <label className="">
@@ -184,7 +226,9 @@ const BankDetails = (props) => {
           />
 
         </div>
-      </div>
+      </div> */}
+
+
       <div className="form-row g-3">
 
         <div className="col-lg-6 font-weight-bold">

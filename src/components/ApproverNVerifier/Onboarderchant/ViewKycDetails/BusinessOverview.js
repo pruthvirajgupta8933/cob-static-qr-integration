@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const BusinessOverview = (props) => {
@@ -69,6 +70,68 @@ const BusinessOverview = (props) => {
       }
     }
   };
+  const formElements = [
+    {
+      className: "col-sm-6 col-md-6 col-lg-6",
+      label: "Business Type",
+      required: true,
+      color: "red",
+      value: businessTypeResponse,
+      inputType: "text"
+    },
+    {
+      className: "col-sm-6 col-md-6 col-lg-6",
+      label: "Business Category",
+      required: true,
+      color: "red",
+      value: businessCategoryResponse,
+      inputType: "text"
+    },
+    {
+      className: "col-sm-6 col-md-6 col-lg-6",
+      label: "Business Description",
+      required: true,
+      color: "red",
+      value: selectedUserData?.billingLabel,
+      inputType: "textarea"
+    },
+    {
+      className: "col-sm-6 col-md-6 col-lg-6",
+      label: "Expected Transactions/Year",
+      required: true,
+      color: "red",
+      value: selectedUserData?.expectedTransactions,
+      inputType: "text"
+    },
+    {
+      className: "col-sm-3 col-md-3 col-lg-3",
+      label: "Avg Ticket Amount",
+      required: true,
+      color: "red",
+      value: selectedUserData?.avg_ticket_size,
+      inputType: "text"
+    },
+    {
+      className: "col-sm-3 col-md-3 col-lg-3",
+      label: "Platform Type",
+      required: false,            // mandotry stars
+      color: "",
+      value: platform,
+      inputType: "text"
+    },
+    {
+      className: "col-sm-6 col-md-6 col-lg-6",
+      label: "Merchant wish to accept payments on:",
+      required: false,
+      color: "red",
+      value: selectedUserData?.website_app_url,
+      inputType: "textarea",
+      isConditional: true,
+      conditionalMessage: "Merchant has accepted payments without any web/app"
+    }
+  ];
+
+  // console.log(selectedUserData?.website_app_url)
 
 
 
@@ -77,8 +140,55 @@ const BusinessOverview = (props) => {
     <div className="row p-1 mb-4 border">
 
       <h5 className="">Business Overview</h5>
+      {formElements.map((element, index) => (
+        <div className={`${element.className}`} key={uuidv4()}>
+          {element.inputType === "textarea" && element.isConditional ? (
+            selectedUserData?.is_website_url === true ? (
+              <div>
+                <label className="">
+                  {element.label}{" "}
+                  {element.required && <span style={{ color: element.color }}>*</span>}
+                </label>
+                <textarea
+                  type="text"
+                  className="form-control"
+                  id="inputPassword3"
+                  disabled="true"
+                  cols={4}
+                  rows={3}
+                  value={element.value}
+                ></textarea>
+              </div>
+            ) : (
+              <div className={element.className}>
+                <p className="font-weight-bold text-danger">
+                  {element.conditionalMessage}
+                </p>
+              </div>
+            )
+          ) : (
+            <>
+              <label className="">
+                {element.label}{" "}
+                {element.required && <span style={{ color: element.color }}>*</span>}
+              </label>
+              <input
+                type={element.inputType}
+                className="form-control "
+                id="inputPassword3"
+                disabled="true"
+                value={element.value}
+              />
+              {index < formElements.length - 1 && <div className='mb-3'></div>}
+            </>
 
-      <div className="form-row g-3">
+
+          )}
+        </div>
+      ))}
+
+
+      {/* <div className="form-row g-3">
         <div className="col-sm-6 col-md-6 col-lg-6">
           <label className="">
             Business Type<span style={{ color: "red" }}>*</span>
@@ -199,7 +309,7 @@ const BusinessOverview = (props) => {
           </label>
 
         </div>
-      </div>
+      </div> */}
 
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold ">
