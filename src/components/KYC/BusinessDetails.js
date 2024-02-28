@@ -148,7 +148,7 @@ function BusinessDetails(props) {
       otherwise: Yup.string().notRequired().nullable()
     }),
     pan_card: Yup.string()
-      .matches(reqexPAN, "PAN number is Invalid")
+      .matches(reqexPAN, "PAN number is invalid")
       .required("Required")
       .nullable(),
     signatory_pan: Yup.string()
@@ -636,6 +636,11 @@ function BusinessDetails(props) {
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified"}
                     readOnly={JSON.parse(values?.registerd_with_gst)}
+                    onChange={(e) => {
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
+                     
+                  }}
                   />
 
 
@@ -695,6 +700,11 @@ function BusinessDetails(props) {
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
+                    onChange={(e) => {
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("signatory_pan", uppercaseValue); // Set the uppercase value to form state
+                      
+                  }}
                   />
                   {values?.signatory_pan !== null &&
                     values?.signatory_pan !== "" &&
