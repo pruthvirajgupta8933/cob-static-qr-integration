@@ -8,6 +8,14 @@ export const getRefferal = () => {
 }
 
 
+const updateContactInfo = async (requestParam) => {
+    return await axiosInstanceJWT.put(`${API_URL.Save_General_Info}`, requestParam)
+}
+
+export const merchantKycService = {
+    updateContactInfo
+}
+
 
 
 

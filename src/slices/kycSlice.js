@@ -8,9 +8,10 @@ import {
 // import { APP_ENV } from "../config";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
+import { merchantKycService } from "../services/kyc/merchant-kyc";
 
 const initialState = {
-    isLoadingForpanDetails:false,
+    isLoadingForpanDetails: false,
     isLoading: false,
     isLoadingForPending: false,
     isLoadingForPendingVerification: false,
@@ -37,10 +38,10 @@ const initialState = {
         count: 0
     },
 
-    panDetailsData:{
+    panDetailsData: {
         loading: false,
-        results:[],
-        count:0
+        results: [],
+        count: 0
     },
     kycApprovedList: {
         results: [],
@@ -203,17 +204,24 @@ const initialState = {
 export const updateContactInfo = createAsyncThunk(
     "UpdateContactInfo/updateContactInfo",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .put(`${API_URL.Save_General_Info}`, requestParam, {
-                headers: {
-                    // Authorization: ""
-                },
-            })
-            .catch((error) => {
-                return error.response;
-            });
+        // console.log("reqt")
+        try {
+            const response = await merchantKycService.updateContactInfo(requestParam)
+            console.log("response")
+            return response.data
+        } catch (error) {
+            console.log("err")
+            return error
+        }
+
+        // const response = await axiosInstanceJWT
+        //     .put(`${API_URL.Save_General_Info}`, requestParam).then(resp => console.log(resp))
+        //     .catch((error) => {
+        //         console.log(error)
+        //         return error.response;
+        //     });
         // console.log(response)
-        return response.data;
+        // return response.data;
     }
 );
 
@@ -1188,13 +1196,13 @@ export const kycSlice = createSlice({
         },
 
         ///////////////////////////////////////////////////////////
-        
+
 
         [getMerchantpanData.pending]: (state, action) => {
             state.isLoadingForpanDetails = true;
         },
         [getMerchantpanData.fulfilled]: (state, action) => {
-            console.log("action.payload",action.payload)
+            // console.log("action.payload", action.payload)
             state.panDetailsData = action.payload
             state.isLoadingForpanDetails = false;
         },
