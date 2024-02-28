@@ -42,7 +42,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
 
     const validationSchema = Yup.object({
-        pan_card: Yup.string().nullable().required("Required"),
+        pan_card: Yup.string()
+        .nullable()
+        .required("Required")
+        .max(10, "PAN should be exactly 10 characters long"),
         website: Yup.string()
             .nullable()
             .required('Website is required')
@@ -108,7 +111,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
         if (value.is_pan_verified === "") {
             // PAN card is not verified, show an error message and stop submission
-            toastConfig.errorToast("Please verify PAN card before submitting the form.");
+            toastConfig.errorToast("Please verify your PAN before submitting the form.");
             setSubmitLoader(false); // Stop loader
             return; // Exit the function, do not proceed with submission
         }

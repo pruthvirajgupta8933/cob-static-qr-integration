@@ -149,7 +149,7 @@ function BusinessDetails(props) {
       otherwise: Yup.string().notRequired().nullable()
     }),
     pan_card: Yup.string()
-      .matches(reqexPAN, "PAN number is Invalid")
+      .matches(reqexPAN, "PAN number is invalid")
       .required("Required")
       .nullable(),
     isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
@@ -647,10 +647,12 @@ function BusinessDetails(props) {
                     className="form-control"
                     onChange={(e) => {
                       setFieldValue("isPanVerified", "")
-                      setFieldValue("pan_card", e.target.value)
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
                     }}
                     disabled={VerifyKycStatus === "Verified"}
                     readOnly={JSON.parse(values?.registerd_with_gst)}
+            
                   />
 
 
@@ -718,9 +720,11 @@ function BusinessDetails(props) {
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
                     onChange={(e) => {
-                      setFieldValue("isSignatoryPanVerified", "")
-                      setFieldValue("signatory_pan", e.target.value)
-                    }}
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("signatory_pan", uppercaseValue); // Set the uppercase value to form state
+                      setFieldValue("isSignatoryPanVerified", "")                      
+                  }}
+
                   />
                   {values?.signatory_pan &&
                     values?.isSignatoryPanVerified &&
