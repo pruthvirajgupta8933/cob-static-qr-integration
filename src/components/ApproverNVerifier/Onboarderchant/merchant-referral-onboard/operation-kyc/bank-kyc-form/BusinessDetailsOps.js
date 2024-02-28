@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import toastConfig from "../../../../../../utilities/toastTypes";
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import kycOperationService from '../../../../../../services/kycOperation.service';
-import { Regex,RegexMsg} from '../../../../../../_components/formik/ValidationRegex'
+import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex'
 function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
@@ -43,25 +43,12 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string().nullable().required("Required"),
-        // website: Yup.string().nullable().required("Required"),
-        website: Yup.string().when(["seletcted_website_app_url"], {
-            is: "Yes",
-            then: Yup.string()
+        website: Yup.string()
+            .nullable()
+            .required('Website is required')
             .matches(
-              Regex.urlFormate,RegexMsg.urlFormate
-            )
-            .test('is-url', 'Please enter a valid website URL', (value) => {
-              if (!value) return true; // Allow empty values
-              try {
-                new URL(value);
-                return true;
-              } catch (error) {
-                return false;
-              }
-            })
-            // .required('Website App Url is required')
-            .nullable(),
-          otherwise: Yup.string().notRequired().nullable(),  }),
+                Regex.urlFormate, RegexMsg.urlFormate
+            ),
         is_pan_verified: Yup.string().nullable(),
         platform_id: Yup.string()
             .required("Select the platform")
@@ -118,6 +105,15 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const handleSubmit = (value) => {
         setSubmitLoader(true)
+
+        if (value.is_pan_verified === "") {
+            // PAN card is not verified, show an error message and stop submission
+            toastConfig.errorToast("Please verify PAN card before submitting the form.");
+            setSubmitLoader(false); // Stop loader
+            return; // Exit the function, do not proceed with submission
+        }
+
+
         const postData = {
             website_app_url: value.website,
             is_website_url: "True",
@@ -143,6 +139,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         }).catch(err => toastConfig.errorToast("Something went wrong!"))
         setSubmitLoader(false)
         // tabHandler(4)
+
     }
 
     const trimFullName = (strOne, strTwo) => {

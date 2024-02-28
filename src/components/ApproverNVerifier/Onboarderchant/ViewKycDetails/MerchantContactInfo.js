@@ -6,7 +6,8 @@ import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 import moment from 'moment';
-
+// import { uniqueId } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 function MerchantContactInfo(props) {
 
@@ -82,6 +83,12 @@ function MerchantContactInfo(props) {
       }
     }
   };
+  const inputFields = [
+    { label: 'Contact Person Name', value: selectedUserData?.name },
+    { label: 'Aadhaar Number', value: selectedUserData?.aadharNumber },
+    { label: 'Contact Number', value: selectedUserData?.contactNumber, verified: selectedUserData?.isContactNumberVerified },
+    { label: 'Email Id', value: selectedUserData?.emailId, verified: selectedUserData?.isEmailVerified }
+  ];
 
 
 
@@ -89,76 +96,32 @@ function MerchantContactInfo(props) {
     <div className="row mb-4 p-1 border">
       <h5 className="">Merchant Contact Info</h5>
       <div className="form-row g-3">
-        <div className="col-sm-6 col-md-6 col-lg-6">
-          <label className="">
-            Contact Person Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-
-            disabled="true"
-            value={selectedUserData?.name}
-          />
-        </div>
-
-        <div className="col-sm-6 col-md-6 col-lg-6 ">
-          <label className="">
-            Aadhaar Number
-          </label>
-          <input
-            type="text"
-            className="form-control"
-
-            disabled="true"
-            value={selectedUserData?.aadharNumber}
-          />
-        </div>
-
-
-      </div>
-      <div className="form-row g-3">
-        <div className="col-sm-6 col-md-6 col-lg-6 ">
-          <label className="">
-            Contact Number
-          </label>
-          <input
-            type="text"
-            className="form-control"
-
-            disabled="true"
-            value={selectedUserData?.contactNumber}
-          />
-
-          <span>
-            {selectedUserData?.isContactNumberVerified === 1 ? (
-              <p className="text-success">Verified</p>
+        {inputFields?.map((field) => (
+          <div className="col-sm-6 col-md-6 col-lg-6 mb-3" key={uuidv4()}>
+            <label className="">{field.label}</label>
+            {field.value !== undefined ? (
+              <>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled={true}
+                  value={field.value}
+                />
+                <span>
+                  {field.verified !== undefined && (
+                    <p className={field.verified === 1 ? "text-success" : "text-danger"}>
+                      {field.verified === 1 ? "Verified" : "Not Verified"}
+                    </p>
+                  )}
+                </span>
+                {/* {index < inputFields.length - 1 && <div className='mb-3'></div>} */}
+              </>
             ) : (
-              <p className="text-danger"> Not Verified</p>
+              <p className='font-weight-bold'>Loading...</p>
+
             )}
-          </span>
-        </div>
-        <div className="col-sm-6 col-md-6 col-lg-6 ">
-          <label className="">
-            Email Id
-          </label>
-
-          <input
-            type="text"
-            className="form-control"
-
-            disabled="true"
-            value={selectedUserData?.emailId}
-          />
-          <span>
-            {selectedUserData?.isEmailVerified === 1 ? (
-              <p className="text-success">Verified</p>
-            ) : (
-              <p className="text-danger"> Not Verified</p>
-            )}
-          </span>
-
-        </div>
+          </div>
+        ))}
       </div>
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
@@ -174,9 +137,7 @@ function MerchantContactInfo(props) {
             btnText={{ verify: "Verify", Reject: "Reject" }}
           />
         </div>
-        {/* <div className="col-lg-6 font-weight-bold mt-1 mb-2">
-        
-      </div> */}
+
       </div>
     </div>
 
