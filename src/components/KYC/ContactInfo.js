@@ -234,7 +234,7 @@ function ContactInfo(props) {
   // };
   const checkInputIsValid = (err, val, setErr, key) => {
     setIsLoading(true);
-    console.log("abcd");
+   
     const hasErr = err.hasOwnProperty(key);
     if (hasErr) {
       if (val[key] === "") {
