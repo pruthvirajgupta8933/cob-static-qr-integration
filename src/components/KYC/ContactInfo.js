@@ -42,6 +42,8 @@ function ContactInfo(props) {
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
   const [disable, setIsDisable] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
 
 
@@ -176,6 +178,7 @@ function ContactInfo(props) {
   //-----------------Functionality To Send OTP Via Button---------------------
 
   const handleToSendOTPForVerificationPhone = (values) => {
+
     dispatch(
       otpForContactInfo({
         mobile_number: values,
@@ -189,29 +192,62 @@ function ContactInfo(props) {
       ) {
         toast.success("OTP Sent to the Registered Mobile Number ");
         setShowOtpVerifyModalPhone(true);
+        setIsLoading(false);
+
+
       } else {
+
         toast.error(res.payload.message);
         setShowOtpVerifyModalPhone(false);
+        setIsLoading(false);
+
+
       }
     });
   };
 
 
+  // const checkInputIsValid = async (err, val, setErr, key) => {
+  //   try {
+  //     setIsLoading(true); // Show loader
+  //     const hasErr = err.hasOwnProperty(key);
+
+  //     if (hasErr && val[key] === "") {
+  //       setErr(key, true);
+  //       return;
+  //     }
+
+  //     if (!hasErr && val[key] !== "" && key === "contact_number") {
+  //       await handleToSendOTPForVerificationPhone(val[key]);
+  //       // Handle success if needed
+  //     }
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     console.error("Error sending OTP:", error);
+
+  //   }
+  //   //  finally {
+  //   //     setTimeout(() => {
+  //   //         setIsLoading(false); 
+  //   //     }, 500); 
+  //   // }
+  // };
   const checkInputIsValid = (err, val, setErr, key) => {
+    setIsLoading(true);
+   
     const hasErr = err.hasOwnProperty(key);
     if (hasErr) {
       if (val[key] === "") {
         setErr(key, true);
       }
     }
-    if (!hasErr && val[key] !== "" && key === "email_id") {
-      handleToSendOTPForVerificationEmail(val[key]);
-    }
 
     if (!hasErr && val[key] !== "" && key === "contact_number") {
       handleToSendOTPForVerificationPhone(val[key]);
+      // setIsLoading(false);
     }
   };
+
 
   const handlerModal = (val, key) => {
     if (key === "phone") {
@@ -307,21 +343,32 @@ function ContactInfo(props) {
                       />
                     </span>
                   ) : role.merchant ? (
+
                     <div className="input-group-append">
-                      <a
+                      <button
                         href={() => false}
-                        className="btn cob-btn-primary btn-sm text-white"
+                        className={`btn cob-btn-primary btn-sm text-white ${isLoading ? 'disabled' : ''}`}
                         onClick={() => {
-                          checkInputIsValid(
-                            errors,
-                            values,
-                            setFieldError,
-                            "contact_number"
-                          );
+                          // Check if the input is valid before triggering the loader
+                          if (!errors.contact_number) {
+                            // If input is valid, trigger the loader
+                            checkInputIsValid(
+                              errors,
+                              values,
+                              setFieldError,
+                              "contact_number"
+                            );
+                          }
                         }}
                       >
-                        Send OTP
-                      </a>
+                        {isLoading ? (
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                        ) : (
+                          "Send OTP"
+                        )}
+                      </button>
                     </div>
                   ) : (
                     <></>
@@ -400,11 +447,13 @@ function ContactInfo(props) {
                   <button
                     disabled={disable}
                     type="submit"
-                    className="btn btn-sm float-lg-right cob-btn-primary text-white"
+                    className="btn btn-sm float-lg-right cob-btn-primary text-white mr-4"
                   >
                     {disable && <>
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      <span className="sr-only">Loading...</span>
+                      <span className="mr-2">
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="sr-only">Loading...</span>
+                      </span>
                     </>}
                     {buttonText}
                   </button>

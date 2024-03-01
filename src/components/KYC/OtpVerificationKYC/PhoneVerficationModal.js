@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 
 const PhoneVerficationModal = ({ show, setShow }) => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const KycVerificationToken = useSelector(
     (state) =>
@@ -14,6 +15,7 @@ const PhoneVerficationModal = ({ show, setShow }) => {
   );
 
   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+  const [disable, setIsDisable] = useState(false);
 
 
 
@@ -29,6 +31,8 @@ const PhoneVerficationModal = ({ show, setShow }) => {
 
   //-----------------Functionality To Verify The OTP ----------------------
   const handleVerificationOfPhone = () => {
+    setIsLoading(true)
+    setIsDisable(true)
 
     dispatch(
       otpVerificationForContactForPhone({
@@ -39,11 +43,16 @@ const PhoneVerficationModal = ({ show, setShow }) => {
       // console.log(res?.payload?.status_code)
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
+          setIsLoading(false)
+          setIsDisable(false)
           toast.success(res.payload.message)
           setShow(false,"phone")
         } else if (res?.payload?.status === false) {
           toast.error(res.payload.message)
+          setIsLoading(false)
+          setIsDisable(false)
         } else if (res?.payload?.status_code === 500) {
+          setIsDisable(false)
 
           toast.error(res.payload.message)
         }
@@ -127,8 +136,16 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                 <div className="m-4 text-center">
                 <button className="btn btn cob-btn-primary" type="button" 
                     onClick={handleVerificationOfPhone}
+                    disabled={disable}
+                    
                   >
-                       Verify
+                   {isLoading ?
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                          :
+                          "Verify"
+                        }
                   </button>
                 </div>
 

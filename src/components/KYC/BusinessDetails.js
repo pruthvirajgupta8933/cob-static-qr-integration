@@ -42,6 +42,9 @@ function BusinessDetails(props) {
   const [buttonText, setButtonText] = useState("Save and Next");
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const[isLoader,setIsloader]=useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   // const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
   // const [bussinessPanFromGST, setBussinessPanFromGST] = useState("")
 
@@ -72,7 +75,24 @@ function BusinessDetails(props) {
   const radioBtnOptions = [
     { "value": true, "key": "Yes" },
     { "value": false, "key": "No" },
+
+
+
   ]
+
+  let registerd_with_udyam;
+
+  if (KycList?.is_udyam !== undefined && KycList?.is_udyam !== null) {
+    try {
+      registerd_with_udyam = JSON.parse(KycList.is_udyam);
+    } catch (error) {
+      // console.error('Error parsing JSON:', error);
+      registerd_with_udyam = {}; 
+    }
+  } else {
+    registerd_with_udyam = {}; 
+  }
+
 
   const initialValues = {
     company_name: KycList?.companyName,
@@ -88,7 +108,7 @@ function BusinessDetails(props) {
     gst_number: KycList?.gstNumber,
     prevGstNumber: KycList?.gstNumber?.length > 2 ? KycList?.gstNumber : "00",
 
-    registerd_with_udyam: JSON.parse(KycList?.is_udyam),
+    registerd_with_udyam: registerd_with_udyam,
     udyam_number: KycList?.udyam_data?.reg_number ?? "",
     prevUdyamNumber: KycList?.udyam_data?.reg_number?.length > 2 ? KycList?.udyam_data?.reg_number : "0000",
 
@@ -221,28 +241,35 @@ function BusinessDetails(props) {
 
 
   const panValidate = (values, key, setFieldValue) => {
+    setIsLoading(true)
+    
     dispatch(
       panValidation({
         pan_number: values,
       })
     ).then((res) => {
       if (
+       
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
       ) {
         const fullNameByPan = trimFullName(res?.payload?.first_name, res?.payload?.last_name)
         setFieldValue(key, fullNameByPan)
+
         setFieldValue("pan_card", values)
         setFieldValue("prev_pan_card", values)
         setFieldValue("isPanVerified", 1)
         toast.success(res?.payload?.message);
+        setIsLoading(false)
 
       } else {
         setFieldValue(key, "")
+        setIsLoading(false)
         toast.error(res?.payload?.message);
       }
     }).catch(err => { console.log("err", err) })
+    setIsLoading(false)
     // setRegisterWithGstState(false)
   };
 
@@ -278,30 +305,63 @@ function BusinessDetails(props) {
         setFieldValue(key, "")
         toast.error(res?.payload?.message);
       }
-    });
+    })
   };
 
 
-  const udyamValidation = (values, key, setFieldValue) => {
-    setUdyamData("")
+  // const udyamValidation = (values, key, setFieldValue) => {
+  //   setIsloader(true)
+  //   setUdyamData("")
+    
+  //   udyamValidate({ "reg_number": values }).then(
+  //     resp => {
+  //       if (resp?.data?.valid === true) {
+
+  //         setFieldValue(key, values)
+  //         setFieldValue("prevUdyamNumber", values)
+  //         setUdyamResponseData(resp?.data)
+  //         setIsloader(false)
+
+  //         toastConfig.successToast(resp?.data?.message)
+  //         setUdyamData({ entity: resp?.data?.entity, valid: resp?.data?.valid })
+  //       } else {
+  //         setUdyamResponseData({})
+  //         setIsloader(false)
+  //         toastConfig.errorToast("Detail is not valid");
+  //       }
+  //     }).catch(err => 
+  //       toastConfig.errorToast(err.response?.data?.detail)
+        
+  //       )
+  // }
+  const udyamValidation = (values, key, setFieldValue, setIsloader) => {
+    setIsloader(true);
+    setUdyamData("");
+  
     udyamValidate({ "reg_number": values }).then(
       resp => {
         if (resp?.data?.valid === true) {
-
-          setFieldValue(key, values)
-          setFieldValue("prevUdyamNumber", values)
-          setUdyamResponseData(resp?.data)
-
-          toastConfig.successToast(resp?.data?.message)
-          setUdyamData({ entity: resp?.data?.entity, valid: resp?.data?.valid })
+          setFieldValue(key, values);
+          setFieldValue("prevUdyamNumber", values);
+          setUdyamResponseData(resp?.data);
+          toastConfig.successToast(resp?.data?.message);
+          setUdyamData({ entity: resp?.data?.entity, valid: resp?.data?.valid });
         } else {
-          setUdyamResponseData({})
+          setUdyamResponseData({});
           toastConfig.errorToast("Detail is not valid");
         }
-      }).catch(err => toastConfig.errorToast(err.response?.data?.detail))
-  }
+      setIsloader(false); 
+      }).catch(err => {
+        setIsloader(false); 
+        toastConfig.errorToast(err.response?.data?.detail);
+      });
+  };
+  
+ 
+  
 
   const authValidation = (values, key, setFieldValue) => {
+    setIsLoading(true)
     // console.log("auth", "auth pan")
     dispatch(
       authPanValidation({
@@ -309,6 +369,7 @@ function BusinessDetails(props) {
       })
     ).then((res) => {
       if (
+        setIsLoading(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
@@ -316,13 +377,17 @@ function BusinessDetails(props) {
         const authName = res.payload.first_name + ' ' + res.payload?.last_name
 
         setFieldValue(key, values)
+        setIsLoading(false)
         setFieldValue("prevSignatoryPan", values)
         setFieldValue("name_on_pancard", authName)
         setFieldValue("isSignatoryPanVerified", 1)
 
         toast.success(res.payload.message);
       } else {
+
         toast.error(res?.payload?.message);
+        setIsLoading(false)
+        setIsLoading(false)
       }
     });
   };
@@ -330,6 +395,8 @@ function BusinessDetails(props) {
 
 
   const checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = () => { }) => {
+    
+    // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
     let isValidVal = true;
@@ -343,19 +410,22 @@ function BusinessDetails(props) {
       }
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
+     
       // for  -Business PAN 
-      panValidate(val[key], "company_name", setFieldValue);
+      panValidate(val[key], "company_name", setFieldValue, setIsLoading);
+      setIsLoading(true)
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       // auth signatory pan
       // console.log("dfdfdf")
-      authValidation(val[key], "signatory_pan", setFieldValue);
+      authValidation(val[key], "signatory_pan", setFieldValue,setIsLoading);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
       gstinValidate(val[key], "company_name", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "udyam_number") {
-      udyamValidation(val[key], "udyam_number", setFieldValue);
+      udyamValidation(val[key], "udyam_number", setFieldValue,setIsloader);
+      setIsloader(true)
     }
   };
 
@@ -459,7 +529,7 @@ function BusinessDetails(props) {
         }) => (
           <Form>
             <div className="row">
-              {console.log("values?.isPanVerified", values?.isPanVerified)}
+
               {/* {console.log("initialValues",initialValues)}
             {console.log("values",values)}
             {console.log("errors",errors)} */}
@@ -595,7 +665,7 @@ function BusinessDetails(props) {
                         </span>
                       ) : (
                         <div className="input-group-append">
-                          <a
+                          <button
                             href={() => false}
                             className="btn cob-btn-primary text-white btn-sm"
                             onClick={() => {
@@ -609,8 +679,14 @@ function BusinessDetails(props) {
                               );
                             }}
                           >
-                            Verify
-                          </a>
+                            {isLoader ?
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                          :
+                          "Verify"
+                        }
+                          </button>
                         </div>
                       )}
                     </div>
@@ -652,7 +728,7 @@ function BusinessDetails(props) {
                     }}
                     disabled={VerifyKycStatus === "Verified"}
                     readOnly={JSON.parse(values?.registerd_with_gst)}
-            
+
                   />
 
 
@@ -667,10 +743,12 @@ function BusinessDetails(props) {
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                     </span>
                     : <div className="input-group-append">
-                      <a
+                      <button
                         href={() => false}
                         className="btn cob-btn-primary text-white btn btn-sm"
+
                         onClick={() => {
+
                           checkInputIsValid(
                             errors,
                             values,
@@ -681,8 +759,14 @@ function BusinessDetails(props) {
                           );
                         }}
                       >
-                        Verify
-                      </a>
+                        {isLoading ?
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                          :
+                          "Verify"
+                        }
+                      </button>
                     </div>}
                 </div>
                 {errors?.pan_card && (
@@ -722,8 +806,8 @@ function BusinessDetails(props) {
                     onChange={(e) => {
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("signatory_pan", uppercaseValue); // Set the uppercase value to form state
-                      setFieldValue("isSignatoryPanVerified", "")                      
-                  }}
+                      setFieldValue("isSignatoryPanVerified", "")
+                    }}
 
                   />
                   {values?.signatory_pan &&
@@ -749,7 +833,13 @@ function BusinessDetails(props) {
                           );
                         }}
                       >
-                        Verify
+                        {isLoading ?
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                          :
+                          "Verify"
+                        }
                       </a>
                     </div>
                   )}
@@ -866,8 +956,10 @@ function BusinessDetails(props) {
                     className="float-lg-right cob-btn-primary text-white btn-sm btn"
                   >
                     {disable && <>
+                      <span className="mr-2">
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
                       <span className="sr-only">Loading...</span>
+                      </span>
                     </>}
 
                     {buttonText}
