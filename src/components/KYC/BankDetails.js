@@ -493,8 +493,10 @@ function BankDetails(props) {
                     type="submit"
                   >
                     {disable && <>
+                      <span className="mr-2">
                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
                       <span className="sr-only">Loading...</span>
+                      </span>
                     </>}
                     {buttonText}
                   </button>
