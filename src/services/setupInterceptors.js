@@ -70,6 +70,7 @@ const setup = async (store) => {
       return response;
     },
     (error) => {
+      console.log("error-setup",error)
       const refreshToken = TokenService.getLocalrefreshToken();
       // This promise handles the refresh logic for 401 errors specifically
       if (error.response && error.response.status === 401 && error.config && !error.config.__isRetryRequest && refreshToken) {

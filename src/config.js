@@ -5,6 +5,7 @@ let url,
   kyc_validate,
   payout_url,
   webSocketUrl,
+  widget_url,
   payLinkAPIURL = "";
 
 
@@ -25,6 +26,7 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
+  widget_url="https://stage-widget.sabpaisa.in"
   payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
 
@@ -363,6 +365,11 @@ const B2B_API_LIVE = {
   challanTransactionExport: `${b2b_url}/e-collection/challan/get_mis`,
 };
 
+const WIDGET_LIVE={
+  WIDGET_CLIENT_KEY:`${widget_url}/widget/client-master/create-client/`,
+  WIDGET_DETAILS:`${widget_url}/widget/client-master/get_client_details/`
+}
+
 
 export const wsConnectUrl = {
   connectionURL: webSocketUrl,
@@ -370,6 +377,7 @@ export const wsConnectUrl = {
 }
 
 const API_URL = API_LIVE;
+export const WIDGET_URL=WIDGET_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
 export default API_URL;

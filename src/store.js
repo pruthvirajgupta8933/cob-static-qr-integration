@@ -21,6 +21,7 @@ import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice"
 import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice"
 import notificationSlice from "./slices/notification-slice/notificationSlice"
 import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice"
+import { widgetReducer } from "./slices/widgetSlice";
 
 
 
@@ -31,6 +32,7 @@ const reducer = {
   subscription: reducerSubscription,
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
+  widget:widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
   payout: payoutReducer,
