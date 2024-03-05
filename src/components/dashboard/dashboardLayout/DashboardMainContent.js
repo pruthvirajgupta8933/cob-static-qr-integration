@@ -78,6 +78,7 @@ import authService from "../../../services/auth.service";
 import MyMerchantList from "../../ApproverNVerifier/MyMerchantList";
 import Profile from "../AllPages/Profile/Profile";
 import InternalDashboard from "../../ApproverNVerifier/InternalDashboard";
+import Widget from "../../widget/Widget";
 
 
 function DashboardMainContent() {
@@ -463,6 +464,10 @@ function DashboardMainContent() {
                         <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
                             <Faq />
                         </AllowedForAll>
+
+                        <AuthorizedRoute exact path={`${path}/widget`} Component={Widget}  roleList={{ merchant: true }}>
+                            <Widget/>
+                        </AuthorizedRoute>
 
 
                         {/* Routing for subscription */}

@@ -143,6 +143,19 @@ function SideNavbar() {
                         </Link>
                     </li>
                 </ul>
+
+
+                <ul className="nav flex-column" role="menu">
+                    <li className="nav-item" role="menuitem">
+                        <Link
+                            to={`${url}/widget`}
+                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "widget" ? sideNavClasses.selected_memu : ""}`}
+                        >
+                            <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            Create Widget
+                        </Link>
+                    </li>
+                </ul>
             </div>
         </nav>
     );
