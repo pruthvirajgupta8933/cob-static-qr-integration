@@ -6,6 +6,7 @@ import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productC
 import moment from "moment";
 import { isNull } from "lodash";
 import { v4 as uuidv4 } from 'uuid';
+import { getSubscribedDetails } from "../../slices/merchant-slice/productCatalogueSlice"
 
 const MerchantBalance = () => {
 
@@ -14,9 +15,10 @@ const MerchantBalance = () => {
   const { clientCodeList } = approverDashboard
   const [walletDisplayData, setWalletDisplayData] = useState([])
   const [selectedClientId, setSelectedClientId] = useState(null);
-  // const [clientCodeListt, setClientCodeListt] = useState([]);
+  const [clientCodeListt, setClientCodeListt] = useState([]);
 
-  console.log("walletDisplayData",walletDisplayData);
+  
+  
 
   
 
@@ -33,28 +35,15 @@ const MerchantBalance = () => {
 
   
 
-  // useEffect(() => {
-  //     dispatch(getAllCLientCodeSlice())
-  // }, [])
-
-
-  useEffect(() => {
-   dispatch(getAllCLientCodeSlice())
-    
-  }, []);
-
-  // Handle change in the select dropdown
+// Handle change in the select dropdown
   const handleSelectChange = (event) => {
     const selectedOption = event.target.value;
     setSelectedClientId(selectedOption);
     const postData = {
       clientCode: selectedOption
     };
-
-    dispatch(merchantSubscribedPlanData(postData));
-    
-    
-};
+ dispatch(merchantSubscribedPlanData(postData));
+    };
 
 
 
@@ -92,6 +81,15 @@ const MerchantBalance = () => {
   //   setWalletDisplayData(dataWallet)
   // }, [SubscribedPlanData])
 
+  useEffect(()=>{
+    dispatch(getSubscribedDetails()).then((res)=>{
+      const detail=res?.payload?.data
+      setClientCodeListt(detail)
+    })
+    
+    
+  },[dispatch])
+
 
   return (
 
@@ -104,16 +102,16 @@ const MerchantBalance = () => {
           <div className="row">
             <div className="col-lg-3 col-md-4">
               <div className="form-group">
-                <label className="form-label">Document Type</label>
+                <label className="form-label">Client Code</label>
                 <select
                   className="form-select"
                   onChange={handleSelectChange}
                   value={selectedClientId}
                 >
                   <option value="Select a Document">Select Client Code</option>
-                  {clientCodeList?.map((data, i) => (
-                    <option value={data.clientCode} key={i}>
-                      {data.clientCode} - {data.name}
+                  {clientCodeListt?.map((data, i) => (
+                    <option value={data.clientCode} key={uuidv4()}>
+                      {data.clientCode} - {data.clientName}
                     </option>
                   ))}
                 </select>
