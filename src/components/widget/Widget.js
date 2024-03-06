@@ -389,7 +389,7 @@ function MyForm() {
                                                 style={{ width: "150px", height: "40px" }}
                                             >
 
-                                                Create Client Key
+                                                Generate Script
                                             </button>
 
                                         </div>

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchProductPlan, fetchSubscribedPlan, updateClientSubscribedDetails } from "../../services/merchant-service/prouduct-catalogue.service";
+import { fetchProductPlan,subsCribedDetails, fetchSubscribedPlan, updateClientSubscribedDetails } from "../../services/merchant-service/prouduct-catalogue.service";
 import { setMessage } from "../message";
 
 
@@ -14,6 +14,7 @@ const initialState = {
 export const merchantSubscribedPlanData = createAsyncThunk(
   "productCatalogue/merchantSubscribedPlanData",
   async (object, thunkAPI) => {
+    console.log("object",object);
     try {
       const data = await fetchSubscribedPlan(object);
       return { data: data.data.data, commission_data: data.data.commission_data };
@@ -58,6 +59,28 @@ export const productPlanData = createAsyncThunk(
       const data = await fetchProductPlan(object);
       // console.log(data)
       return { data: data?.data?.ProductDetail };
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+export const getSubscribedDetails=createAsyncThunk(
+  "productCatalogue/getSubscribedDetails",
+  async (thunkAPI) => {
+   
+    try {
+      const data = await subsCribedDetails();
+     
+      return { data: data?.data?.result };
     } catch (error) {
       const message =
         (error.response &&

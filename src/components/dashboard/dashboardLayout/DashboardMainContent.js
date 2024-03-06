@@ -94,7 +94,7 @@ function DashboardMainContent() {
 
     // const queryParams = new URLSearchParams(location.search);
     // const mendateRegId = queryParams.get("mendateRegId");
-     const createAndSaveClientCode = async () => {
+    const createAndSaveClientCode = async () => {
         if ((roles?.merchant) && user?.clientMerchantDetailsList[0]?.clientCode === null) {
             const clientFullName = user?.clientContactPersonName
             const clientMobileNo = user?.clientMobileNo
@@ -190,7 +190,6 @@ function DashboardMainContent() {
     // console.log("roles", roles)
     return (<React.Fragment>
         <DashboardHeader />
-
         <div className="container-fluid">
             <div className="row">
                 <SideNavbar />
@@ -460,9 +459,9 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
                         <AuthorizedRoute exact path={`${path}/merchant-balance`} Component={MerchantBalance}
-                        roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}>
-                            <MerchantBalance/>
-                           </AuthorizedRoute>
+                            roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}>
+                            <MerchantBalance />
+                        </AuthorizedRoute>
 
 
                         {/* Routing for Faq */}
@@ -471,8 +470,8 @@ function DashboardMainContent() {
                             <Faq />
                         </AllowedForAll>
 
-                        <AuthorizedRoute exact path={`${path}/widget`} Component={Widget}  roleList={{ merchant: true }}>
-                            <Widget/>
+                        <AuthorizedRoute exact path={`${path}/widget`} Component={Widget} roleList={{ merchant: true }}>
+                            <Widget />
                         </AuthorizedRoute>
 
 
