@@ -158,7 +158,7 @@ function SideNavbar() {
                     </li>
                 </ul>}
 
-                <ul className="nav flex-column" role="menu">
+                {/* <ul className="nav flex-column" role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
                             to={`${url}/merchant-balance`}
@@ -168,7 +168,7 @@ function SideNavbar() {
                             Subscription Wallet
                         </Link>
                     </li>
-                </ul>
+                </ul> */}
             </div>
         </nav>
     );
