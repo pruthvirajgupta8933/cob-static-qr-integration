@@ -7,7 +7,8 @@ const initialState = {
   SubscribedPlanData: [],
   productPlanData: [],
   clientSubscribeStatus: [],
-  isLoading: false
+  isLoading: false,
+  clearWalletCommison:[]
 }
 
 export const merchantSubscribedPlanData = createAsyncThunk(
@@ -78,15 +79,19 @@ const productCatalogueSlice = createSlice({
     [merchantSubscribedPlanData.pending]: (state) => {
       state.isLoading = true
       state.SubscribedPlanData = [];
+      state.walletCommission=0;
     },
     [merchantSubscribedPlanData.fulfilled]: (state, action) => {
       state.isLoading = false
       state.SubscribedPlanData = action.payload.data;
       state.walletCommission = action.payload.commission_data;
+     
     },
+    
     [merchantSubscribedPlanData.rejected]: (state) => {
       state.isLoading = false
       state.SubscribedPlanData = [];
+      state.walletCommission=0;
     },
 
     [productPlanData.fulfilled]: (state, action) => {

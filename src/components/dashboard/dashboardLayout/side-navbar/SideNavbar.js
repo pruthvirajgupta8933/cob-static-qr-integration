@@ -145,7 +145,8 @@ function SideNavbar() {
                 </ul>
 
 
-                <ul className="nav flex-column" role="menu">
+                {roleBasedShowTab?.merchant === true &&
+                 <ul className="nav flex-column" role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
                             to={`${url}/widget`}
@@ -153,6 +154,18 @@ function SideNavbar() {
                         >
                             <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
                             Create Widget
+                        </Link>
+                    </li>
+                </ul>}
+
+                <ul className="nav flex-column" role="menu">
+                    <li className="nav-item" role="menuitem">
+                        <Link
+                            to={`${url}/merchant-balance`}
+                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "merchant-balance" ? sideNavClasses.selected_memu : ""}`}
+                        >
+                            <i className="fa fa-bank mr-1" aria-hidden="true"></i>
+                            Subscription Wallet
                         </Link>
                     </li>
                 </ul>
