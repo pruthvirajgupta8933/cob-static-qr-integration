@@ -79,6 +79,7 @@ import MyMerchantList from "../../ApproverNVerifier/MyMerchantList";
 import Profile from "../AllPages/Profile/Profile";
 import InternalDashboard from "../../ApproverNVerifier/InternalDashboard";
 import Widget from "../../widget/Widget";
+import MerchantBalance from "../../ApproverNVerifier/MerchantBalance";
 
 
 function DashboardMainContent() {
@@ -457,6 +458,11 @@ function DashboardMainContent() {
                             roleList={{ merchant: true }}>
                             <PayoutTransaction />
                         </AuthorizedRoute>
+
+                        <AuthorizedRoute exact path={`${path}/merchant-balance`} Component={MerchantBalance}
+                        roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}>
+                            <MerchantBalance/>
+                           </AuthorizedRoute>
 
 
                         {/* Routing for Faq */}
