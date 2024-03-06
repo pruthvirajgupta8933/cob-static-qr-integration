@@ -96,7 +96,7 @@ const MerchantBalance = () => {
     <section className="">
       <main className="">
         <div className="">
-          <h5 className="ml-4">Merchant Balance</h5>
+          <h5 className="ml-4">Subscription Wallet</h5>
         </div>
         <div className="container-fluid mt-5">
           <div className="row">
