@@ -20,12 +20,14 @@ let purchaseAmt = 0;
                     Commission: {parseFloat(walletCommission).toFixed(2)} |
                     Wallet Balance: {(purchaseAmt - parseFloat(walletCommission)).toFixed(2)}
                 </span>           </div>
-            <div className="col-lg-12 table-responsive table_maxheight">
+            <div className="scroll overflow-auto">
+                
 
                 <Table
                     row={subscriptionWalletTableCol}
                     dataCount={0}
                     data={walletDisplayData}
+                
                 />
             </div>
 
