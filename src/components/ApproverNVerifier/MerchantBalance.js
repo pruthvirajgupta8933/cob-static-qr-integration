@@ -11,23 +11,16 @@ const MerchantBalance = () => {
   const dispatch = useDispatch()
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [clientCodeListt, setClientCodeListt] = useState([]);
-
-
-  const {  productCatalogueSlice } = useSelector((state) => state);
- 
+   const {  productCatalogueSlice } = useSelector((state) => state);
   const { SubscribedPlanData, isLoading, walletCommission } = productCatalogueSlice
 
  
-
-
-
   // Handle change in the select dropdown
   const handleSelectChange = (selectedOption) => {
     setSelectedClientId(selectedOption ? selectedOption.value : null); // Update selected client ID
 
 if (selectedOption && selectedOption.value !== null && selectedOption.value !== "") {
-        
-        const postData = {
+         const postData = {
             clientCode: selectedOption.value
         };
         
