@@ -28,24 +28,7 @@ function TransactionEnquirey() {
     clientCode: Yup.string().nullable().required("Required").allowOneSpace(),
 
   });
-//   useEffect(() => {
-//     // Code to load the scripts
-//     const script1 = document.createElement('script');
-//     script1.src = 'https://pg-widget-button-staging.web.app/src/widgets/Widget1/Widget1.js';
-//     script1.setAttribute('data-config', 'https://pg-widget-button-staging.web.app/src/widgets/Widget1/config.json');
-//     script1.id = 'widget-1';
-//     document.body.appendChild(script1);
 
-//     const script2 = document.createElement('script');
-//     script2.src = 'https://payment-widget-sabpaisa.web.app/widget-bundle.js';
-//     document.body.appendChild(script2);
-
-//     return () => {
-//         // Cleanup if needed
-//         document.body.removeChild(script1);
-//         document.body.removeChild(script2);
-//     };
-// }, []);
 
   const fetchData = () => {
     const roleType = roles
@@ -206,11 +189,10 @@ function TransactionEnquirey() {
 
   return (
     <section className="">
-      {/* <div id="sabpaisa" client_code="LPSD1" client_key="4104d504-7502-4ac7-bb1b-239295d55fee"></div> */}
-
+      
       <main className="">
         <div className="">
-          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+         
           <h5 className="">Transaction Enquiry</h5>
           {/* </div> */}
           <section className="">

@@ -145,7 +145,7 @@ function SideNavbar() {
                 </ul>
 
 
-                {roleBasedShowTab?.merchant === true &&
+                {/* {roleBasedShowTab?.merchant === true &&
                  <ul className="nav flex-column" role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
@@ -156,7 +156,7 @@ function SideNavbar() {
                             Create Widget
                         </Link>
                     </li>
-                </ul>}
+                </ul>} */}
 
                 {/* <ul className="nav flex-column" role="menu">
                     <li className="nav-item" role="menuitem">
