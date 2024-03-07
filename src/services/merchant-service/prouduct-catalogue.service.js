@@ -26,7 +26,7 @@ export const updateClientSubscribedDetails =(postBody)=>{
   return axiosInstanceJWT.post(url,postBody)
 }
 
-export const subsCribedDetails =(dataObj)=>{
+export const subscribedDetails =(dataObj)=>{
   let url = API_URL.SUBSCRIBED_DETAILS
 
   return axiosInstanceJWT.get(url)

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchProductPlan,subsCribedDetails, fetchSubscribedPlan, updateClientSubscribedDetails } from "../../services/merchant-service/prouduct-catalogue.service";
+import { fetchProductPlan,subscribedDetails, fetchSubscribedPlan, updateClientSubscribedDetails } from "../../services/merchant-service/prouduct-catalogue.service";
 import { setMessage } from "../message";
 
 
@@ -8,13 +8,11 @@ const initialState = {
   productPlanData: [],
   clientSubscribeStatus: [],
   isLoading: false,
-  clearWalletCommison:[]
 }
 
 export const merchantSubscribedPlanData = createAsyncThunk(
   "productCatalogue/merchantSubscribedPlanData",
   async (object, thunkAPI) => {
-    console.log("object",object);
     try {
       const data = await fetchSubscribedPlan(object);
       return { data: data.data.data, commission_data: data.data.commission_data };
@@ -78,7 +76,7 @@ export const getSubscribedDetails=createAsyncThunk(
   async (thunkAPI) => {
    
     try {
-      const data = await subsCribedDetails();
+      const data = await subscribedDetails();
      
       return { data: data?.data?.result };
     } catch (error) {
