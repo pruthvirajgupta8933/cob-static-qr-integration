@@ -165,11 +165,14 @@ function DashboardMainContent() {
 
 
     useEffect(() => {
-        const postBody = {
-            LoginId: user?.loginId
+        if (user?.loginId != null && user?.loginId !== undefined && user?.loginId !== "") {
+            const postBody = {
+                LoginId: user?.loginId
+            };
+            dispatch(fetchMenuList(postBody));
         }
-        dispatch(fetchMenuList(postBody))
-    }, [user, dispatch])
+    }, [user, dispatch]);
+    
 
     // menuListReducer.enableMenu.length===0 
 

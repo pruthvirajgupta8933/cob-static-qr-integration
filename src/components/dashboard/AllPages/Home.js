@@ -164,7 +164,7 @@ function Home() {
       <HomeProduct />
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       <HomeOpenModal/>
-      <HomeOpenModal/>
+      {/* <HomeOpenModal/> */}
 
     </section>
   );

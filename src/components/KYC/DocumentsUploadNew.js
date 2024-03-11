@@ -202,11 +202,15 @@ function DocumentsUpload(props) {
   };
 
   const getKycDocList = () => {
+    if(loginId != undefined && loginId!==""){
+    const postData={
+      login_id: loginId,
+    }
+    
     dispatch(
-      kycDocumentUploadList({
-        login_id: loginId,
-      })
+      kycDocumentUploadList(postData)
     );
+    }
   };
 
   useEffect(() => {
