@@ -63,18 +63,17 @@ const KycDetailsModal = (props) => {
   // console.log("selectedUserData", selectedUserData)
   // 10974
   useEffect(() => {
-    if (merchantLoginLogin !== null && merchantLoginLogin !== "") {
+    if (merchantLoginLogin !== null  && merchantLoginLogin !== undefined && merchantLoginLogin !== "" ) {
       dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
     }
   }, [merchantLoginLogin])
 
 
   useEffect(() => {
-    if (selectedUserData !== null && selectedUserData?.loginMasterId !== "") {
+    if (selectedUserData?.loginMasterId  !== undefined && selectedUserData?.loginMasterId !== "") {
       dispatch(
         kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
       )
-      // console.log(merchantKycId?.loginMasterId)
       dispatch(
         GetKycTabsStatus({
           login_id: selectedUserData?.loginMasterId,
@@ -100,7 +99,7 @@ const KycDetailsModal = (props) => {
       }
 
       const busnCatId = parseInt(selectedUserData?.businessCategory);
-      if (isNumber(busnCatId) && busnCatId !== "" && busnCatId !== null && busnCatId !== undefined) {
+      if (isNumber(busnCatId) && busnCatId !== "" && selectedUserData?.businessCategory !== null && busnCatId !== undefined) {
         dispatch(
           businessCategoryById({ category_id: selectedUserData?.businessCategory })
         ).then((resp) => {

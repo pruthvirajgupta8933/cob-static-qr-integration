@@ -36,11 +36,18 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
   // console.log(roles)
 
-  const getKycDocList = (role) => {
-    dispatch(
-      kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
+  const getKycDocList = () => {
+    const loginId = selectedUserData?.loginMasterId;
+    
 
-    );
+    if (loginId !== undefined && loginId !== '') {
+      const postData = {
+        login_id: loginId
+      };
+
+      dispatch(kycDocumentUploadList(postData));
+    }
+
   };
 
 

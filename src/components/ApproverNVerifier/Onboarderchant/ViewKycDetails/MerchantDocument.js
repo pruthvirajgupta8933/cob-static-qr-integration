@@ -86,11 +86,18 @@ const MerchantDocument = (props) => {
     return data[0]?.value;
   };
 
-  const getKycDocList = (role) => {
+  const getKycDocList = () => {
+    const loginId=selectedUserData?.loginMasterId 
+    if(loginId !=undefined && loginId!=""){
+    const postData={
+      login_id:loginId
+    }
+    
     dispatch(
-      kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
+      kycDocumentUploadList(postData)
 
     );
+    }
   };
 
   const verifyApproveDoc = (doc_id, status) => {
