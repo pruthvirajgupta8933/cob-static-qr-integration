@@ -131,7 +131,7 @@ function BusinessOverview(props) {
               return false;
             }
           })
-          // .required('Website App Url is required')
+          .required('Website App Url is required')
           .nullable(),
         otherwise: Yup.string().notRequired().nullable(),
       }),
