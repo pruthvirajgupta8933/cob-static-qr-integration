@@ -11,7 +11,7 @@ import { resetStateMfo, updateOnboardingStatus } from '../../../../../slices/app
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from '../../../../../utilities/enums'
 
 
-function OperationKycModalForOnboard() {
+function OperationKycModalForOnboard({zoneCode,bankLoginId}) {
     const dispatch = useDispatch()
     const [currentTab, setCurrentTab] = useState(1)
     const { merchantReferralOnboardReducer, kyc } = useSelector(state => state)
@@ -115,7 +115,7 @@ function OperationKycModalForOnboard() {
             {/* Tab content */}
 
             <div className="tab-content" id="v-pills-tabContent">
-                {currentTab === 1 && <BasicDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
+                {currentTab === 1 && <BasicDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} zoneCode={zoneCode} bankLoginId={bankLoginId} />}
                 {currentTab === 2 && <BankDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
                 {currentTab === 3 && <BusinessDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
                 {currentTab === 4 && <DocumentCenter setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}

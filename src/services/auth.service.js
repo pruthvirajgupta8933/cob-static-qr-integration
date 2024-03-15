@@ -3,8 +3,8 @@ import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
 
 
-const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social }) => {
-  return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
+const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social,zone_code }) => {
+  const requestData = {
     name: fullname,
     mobileNumber: mobileNumber,
     email: email,
@@ -15,8 +15,13 @@ const register = ({ fullname, mobileNumber, email, business_cat_code, password, 
     created_by: created_by,
     roleId: roleId,
     plan_details: plan_details,
-    is_social: is_social
-  })
+    is_social: is_social,
+  };
+  if (zone_code) {
+    requestData.zone_code = zone_code;
+  }
+
+  return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, requestData);
 };
 
 

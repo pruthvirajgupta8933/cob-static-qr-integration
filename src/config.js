@@ -357,7 +357,9 @@ const API_LIVE = {
   addReferral: `${kyc_url}/kyc/referrer/add-referrer/`,
   addReferralChild: `${kyc_url}/kyc/referrer/add-referrer-child/`,
   fetchReferralChild: `${kyc_url}/kyc/get-merchant-data/offline-merchant/`,
-  fetchParentClientCodes: `${adminAPIURL}/getDataByCommonProc/getCommonData/35/0`
+  fetchParentClientCodes: `${adminAPIURL}/getDataByCommonProc/getCommonData/35/0`,
+  perentTypeMerchantData:`${kyc_url}/kyc/get-merchant-data/parent-type/`,
+  getAllzone:`${kyc_url}/kyc/refer-zone/get-all-zone/`,
 
 };
 

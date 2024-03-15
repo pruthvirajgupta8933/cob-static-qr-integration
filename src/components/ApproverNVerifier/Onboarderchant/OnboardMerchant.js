@@ -46,7 +46,9 @@ const FORM_VALIDATION = Yup.object().shape({
     // roleId: Yup.string().required("Required")
 });
 
-const OnboardMerchant = () => {
+const OnboardMerchant = ({zoneCode,heading}) => {
+    console.log("headind",heading)
+    
     // const history = useHistory();
 
     // let roleShow = roleBasedAccess()
@@ -105,11 +107,16 @@ const OnboardMerchant = () => {
             })
             .catch((err) => console.log(err));
     }, []);
+   
+   
 
 
     const dispatch = useDispatch();
 
-    const handleRegistration = (formData, { resetForm }) => {
+    const handleRegistration = (formData,{resetForm}) => {
+
+        
+        
 
         let businessType = 1;
         let {
@@ -120,9 +127,11 @@ const OnboardMerchant = () => {
             business_cat_code,
             roleId
         } = formData;
+       
         dispatch(
             register({
                 fullname: fullname,
+                zone_code:zoneCode,
                 mobileNumber: mobilenumber,
                 email: emaill,
                 business_cat_code: business_cat_code,
@@ -163,7 +172,7 @@ const OnboardMerchant = () => {
                 transition: Zoom,
             });
             setTimeout(function () {
-                window.location.href = ""
+                // window.location.href = ""
             }, 3000)
 
             // history.push("/dashboard/approver");
@@ -191,8 +200,8 @@ const OnboardMerchant = () => {
     return (
         <>
             <div className="logmod__heading">
-                <div className="mb-5">
-                    <h5 className=""> Onboard Merchant</h5>
+                <div className="mb-2">
+                {heading===false ? null: heading===undefined ? <h5 className=""> Onboard Merchant</h5>:""}
                 </div>
 
             </div>
@@ -205,6 +214,7 @@ const OnboardMerchant = () => {
                     business_cat_code: "",
                     confirmpasswordd: "",
                     roleId: "",
+                    zone_code:"",
                     // termsAndConditions: false,
                     terms_and_condition: false,
                 }}

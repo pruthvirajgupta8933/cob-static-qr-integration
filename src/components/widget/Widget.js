@@ -9,6 +9,7 @@ import FormikController from '../../_components/formik/FormikController';
 import { FaCopy } from 'react-icons/fa';
 import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
 import { toast } from "react-toastify";
+import ReactTooltip from 'react-tooltip';
 
 
 
@@ -212,7 +213,7 @@ function MyForm() {
 
                                 <div className="row">
                                     <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2">
+                                        <label className="col-form-label mt-0 p-2" >
                                             Client Type<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">
@@ -235,8 +236,9 @@ function MyForm() {
                                             </ErrorMessage>
                                         }
                                     </div>
+                                   
                                     <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter client URL (e.g., https://www.example.com)">
                                             Client URL<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">
@@ -260,15 +262,17 @@ function MyForm() {
                                             )}
                                         </ErrorMessage>
                                         }
+                                       
 
                                     </div>
+                                    
 
 
                                 </div>
 
                                 <div className="row">
                                     <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Return URL (e.g., https://https:cob-nf-dev.firebaseapp.com/login-page)">
                                             Return URL<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">
@@ -293,7 +297,7 @@ function MyForm() {
                                         }
                                     </div>
                                     <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter image URL (e.g., https://www.example.com/image.jpg)">
                                             Image URL<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">

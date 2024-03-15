@@ -80,6 +80,7 @@ import Profile from "../AllPages/Profile/Profile";
 import InternalDashboard from "../../ApproverNVerifier/InternalDashboard";
 import Widget from "../../widget/Widget";
 import MerchantBalance from "../../ApproverNVerifier/MerchantBalance";
+import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
 
 
 function DashboardMainContent() {
@@ -566,6 +567,15 @@ function DashboardMainContent() {
                             Component={MyMerchantList}
                             roleList={{ viewer: true, accountManager: true }}>
                             <MyMerchantList />
+                        </AuthorizedRoute>
+
+                        <AuthorizedRoute
+                            exact
+                            path={`${path}/multi-user-onboard`}
+                            Component={MultiUserOnboard}
+                            roleList={{ merchant: true, bank: true, referral: true,accountManager:true }}
+                        >
+                            <MultiUserOnboard/>
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>

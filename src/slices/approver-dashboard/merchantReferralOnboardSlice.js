@@ -4,7 +4,9 @@ import {
     saveBasicDetails,
     saveBusinessDetails,
     fetchReferralChildList,
-    updateBasicDetails
+    updateBasicDetails,
+    fetchPerentTypeMerchantData,
+    getAllZoneCode
 } from "../../services/approver-dashboard/merchantReferralOnboard.service";
 
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
@@ -35,7 +37,12 @@ const initialState = {
     refrerChiledList: {
         resp: {}
     },
-    referral: {}
+    referral: {},
+
+    getAllZoneCode:{
+        zoneCode:{}
+
+    }
 }
 
 
@@ -55,6 +62,25 @@ export const saveMerchantBasicDetails = createAsyncThunk(
 
     }
 );
+
+export const fetchParentTypeData = createAsyncThunk(
+    "merchantReferralOnboardSlice/bank/fetchParentTypeData",
+    async (requestParam, thunkAPI) => {
+        const response = await fetchPerentTypeMerchantData(requestParam)
+            .catch((error) => {
+                return error.response;
+            });
+
+        if (response.status !== 200) {
+            return thunkAPI.rejectWithValue(response.data.detail)
+        } else {
+            return response.data;
+        }
+
+    }
+);
+
+
 
 
 export const updateBasicDetailsSlice = createAsyncThunk(
@@ -79,6 +105,17 @@ export const saveBankDetails = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/saveBankDetails",
     async (requestParam) => {
         const response = await bankDetails(requestParam)
+            .catch((error) => {
+                return error.response;
+            });
+        return response.data;
+    }
+);
+
+export const getAllZoneName = createAsyncThunk(
+    "merchantReferralOnboardSlice/bank/getAllZoneName",
+    async (requestParam) => {
+        const response = await  getAllZoneCode(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -137,6 +174,8 @@ export const resetFormState = createAsyncThunk(
         return true;
     }
 )
+
+
 
 
 export const merchantReferralOnboardSlice = createSlice({
@@ -228,6 +267,18 @@ export const merchantReferralOnboardSlice = createSlice({
             .addCase(saveBankDetails.rejected, (state, action) => {
                 state.loading = 'failed';
             })
+
+            ////////////////////////////////////////////////////////// for All zone
+            .addCase(getAllZoneName.pending, (state) => {
+                state.loading = 'loading';
+            })
+            .addCase(getAllZoneName.fulfilled, (state, action) => {
+                state.getAllZoneCode.zoneCode = action.payload;
+            })
+            .addCase(getAllZoneName.rejected, (state, action) => {
+                state.loading = 'failed';
+            })
+            ////////////////////////////////////////////////////
 
             .addCase(businessDetailsSlice.pending, (state) => {
                 state.loading = 'loading';
