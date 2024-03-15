@@ -13,7 +13,7 @@ import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferral
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([])
   const [selectedValue, setSelectedvalue] = useState("")
- 
+
 
   const [selectedDocType, setSelectedDocType] = useState("");
   const [onboardTypeName, setOnboardTypeName] = useState("")
@@ -39,25 +39,18 @@ const MultiUserOnboard = () => {
       then: Yup.string().required('Required')
     }),
     onboardType: Yup.string().required('Onboard type is required'),
-    addMerchant: Yup.string().required()
+
   });
-
-
-
-
-
 
   const handleChange = (event) => {
     if (onboardTypeName === "referrer") {
       setShowForm(true)
       setShowBankForm(false)
-      
-
     } else {
       setShowBankForm(true)
       setShowForm(false)
     }
-   setSelectedDocType(event.target.value);
+    setSelectedDocType(event.target.value);
   };
 
 
@@ -71,8 +64,6 @@ const MultiUserOnboard = () => {
 
 
   useEffect(() => {
-
-
     dispatch(getAllZoneName()).then(res => {
       const data = convertToFormikSelectJson(
         "zoneCode",
@@ -80,13 +71,9 @@ const MultiUserOnboard = () => {
         res?.payload?.data
       )
       setRefferalList(data)
-
-
     })
-
-
   }, []);
- 
+
 
 
 
@@ -104,10 +91,10 @@ const MultiUserOnboard = () => {
     }
   }, [onboardTypeName]);
 
-  const isEnable = (label) => onboardTypeName === label && selectedValue
+  const isEnable = (label) => onboardTypeName === label && selectedValue //conditio for showing component
 
- 
-return (
+
+  return (
     <section className="">
       <main className="">
         <div className="">
@@ -130,19 +117,16 @@ return (
                     options={refferalList}
                     className="form-select"
                     onChange={(e) => {
-                      formik.resetForm(); 
+                      formik.resetForm();
                       setSelectedvalue(e.target.value);
                       setShowSecondDropdown(true);
-                      setShowForm(false); 
-                      setShowBankForm(false); 
-                      setOnboardTypeName(''); 
-                      setSelectedDocType(''); 
+                      setShowForm(false);
+                      setShowBankForm(false);
+                      setOnboardTypeName('');
+                      setSelectedDocType('');
                       formik.setFieldValue("zone", e.target.value);
                     }}
                   />
-
-                  
-
                 </div>
                 {selectedValue &&
                   <div className="form-group col-md-3">
@@ -154,11 +138,9 @@ return (
                       className="form-select"
                       onChange={(e) => {
                         setOnboardTypeName(e.target.value);
-                        setShowForm(false)
-                        formik.setFieldValue(
-                          "onboardType",
-                          e.target.value
-                        )
+                        setShowForm(false);
+                        formik.setFieldValue("onboardType", e.target.value);
+                        setSelectedDocType("");  
                       }}
                     />
                   </div>
@@ -172,7 +154,7 @@ return (
                       onChange={handleChange}
                       value={selectedDocType}
                     >
-                   
+
                       <option value="">
                         {onboardTypeName === "referrer" ? "Select the merchant" : onboardTypeName === "bank" ? "Select the bank" : "Select a Document"}
                       </option>
@@ -199,10 +181,10 @@ return (
           </div>
           {isEnable("normal_merchant") && <OnboardMerchant zoneCode={selectedValue} heading={false} />}
 
-          {isEnable("normal_referral") && <ReferralOnboardForm zoneCode={selectedValue} />}
+          {isEnable("normal_referral") && <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={true} />}
 
-          {isEnable("referrer") && showForm  && (
-            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType} />
+          {isEnable("referrer") && showForm && (
+            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType}  marginTopCss={true} />
           )}
 
           {isEnable("bank") && showBankForm && (
