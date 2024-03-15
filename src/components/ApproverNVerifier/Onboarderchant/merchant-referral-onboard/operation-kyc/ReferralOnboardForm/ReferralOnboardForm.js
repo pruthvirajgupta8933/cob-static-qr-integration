@@ -10,7 +10,7 @@ import { addReferralService } from "../../../../../../services/approver-dashboar
 import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
 
-function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode }) {
+function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode,marginTopCss }) {
 
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
@@ -196,8 +196,8 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 }}
                 enableReinitialize={true}>
                 {(formik) => (<Form>
-                    <div className="row g-3">
-                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                    <div className={`row g-3 ${marginTopCss ? "mt-5" : ""}`}>
+                    <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"
