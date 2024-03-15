@@ -13,7 +13,7 @@ import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferral
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([])
   const [selectedValue, setSelectedvalue] = useState("")
-  console.log("selectedValue",selectedValue);
+ 
 
   const [selectedDocType, setSelectedDocType] = useState("");
   const [onboardTypeName, setOnboardTypeName] = useState("")
