@@ -13,8 +13,9 @@ import toastConfig from "../../../../../../utilities/toastTypes";
 import { updateBasicDetails } from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
 
 
-function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
-    // console.log("isEditableInput", isEditableInput)
+function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }) {
+    console.log("bankLoginId",bankLoginId)
+    console.log("zoneCode",zoneCode);
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -39,7 +40,10 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
         business_type: merchantKycData?.businessType ?? "",
         password: merchantBasicDetails?.resp?.password ?? "",
         username: merchantKycData?.username ?? "",
-        isEditTable: loginIdFromState
+        isEditTable: loginIdFromState,
+        zone_code:"",
+        bank_login_id:""
+
     };
 
 
@@ -104,9 +108,17 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput }) {
             business_type: business_type,
             password: password,
             username: username,
-            isDirect: false,
+            // isDirect: false,
             created_by: auth?.user?.loginId,
-            updated_by: auth?.user?.loginId
+            // updated_by: auth?.user?.loginId,
+           
+        }
+        if (bankLoginId) {
+            saveDetailsReqBody.bank_login_id = bankLoginId;
+        }
+        
+        if (zoneCode) {
+            saveDetailsReqBody.zone_code = zoneCode;
         }
 
         if (merchantOnboardingProcess?.merchantLoginId === "") {

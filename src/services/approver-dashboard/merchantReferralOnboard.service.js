@@ -26,10 +26,19 @@ export const fetchBankList = () => {
 export const saveBusinessDetails = (obj) => {
     return axiosInstanceJWT.post(API_URL.saveBusinesDetails, obj)
 }
+export const getAllZoneCode= () => {
+    return axiosInstanceJWT.get(API_URL.getAllzone)
+}
 
 // export const fetchReferralChildList = (obj) => {
 //     return axiosInstanceJWT.post(API_URL.fetchReferralChild, obj)
 // }
+
+export const fetchPerentTypeMerchantData = (obj) => {
+    return axiosInstanceJWT.post(API_URL.perentTypeMerchantData, obj)
+}
+
+
 
 
 

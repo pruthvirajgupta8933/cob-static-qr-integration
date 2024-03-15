@@ -483,11 +483,7 @@ const authSlice = createSlice({
       // state.passwordChange = false;
       state.payLinkPermission = action.payload
     }
-
-
-
-
-  },
+},
 });
 
 

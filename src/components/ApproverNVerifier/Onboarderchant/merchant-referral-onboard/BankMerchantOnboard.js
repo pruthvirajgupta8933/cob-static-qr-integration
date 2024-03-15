@@ -3,7 +3,8 @@ import classes from "../../approver.module.css"
 import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
 
 
-function BankMerchantOnboard() {
+function BankMerchantOnboard({zoneCode,referrerLoginId,heading}) {
+    console.log("headind",heading)
     const [currentTab, setCurrentTab] = useState(1)
     const handleTabClick = (currenTab) => {
       setCurrentTab(currenTab)
@@ -18,7 +19,7 @@ function BankMerchantOnboard() {
                     <div className="row">
                         <div className="col-6">
                             <h5>
-                                Bank Onboarding
+                            {heading===false ? null: heading===undefined ? <h5 className="">Bank Onboarding</h5>:""}
                             </h5>
                         </div>
                     </div>
@@ -43,7 +44,7 @@ function BankMerchantOnboard() {
 
                     <section>
                         <div className="row">
-                            {currentTab === 1 && <OperationKycModalForOnboard/>}
+                            {currentTab === 1 && <OperationKycModalForOnboard zoneCode={zoneCode} bankLoginId={referrerLoginId}/>}
                         </div>
                     </section>
                 </div>

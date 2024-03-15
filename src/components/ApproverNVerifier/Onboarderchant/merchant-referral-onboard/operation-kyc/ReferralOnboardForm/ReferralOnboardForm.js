@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Formik } from "formik";
 import FormikController from "../../../../../../_components/formik/FormikController";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +10,12 @@ import { addReferralService } from "../../../../../../services/approver-dashboar
 import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
 
-function ReferralOnboardForm({ referralChild, fetchData }) {
+function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode }) {
+
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
+
+
 
 
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
@@ -39,12 +42,22 @@ function ReferralOnboardForm({ referralChild, fetchData }) {
         return password;
     };
 
+    // const [zoneCode, setZoneCode] = useState("");
+
+    // useEffect(() => {
+    //     const storedValue = sessionStorage.getItem('selectedValue');
+    //     if (storedValue) {
+    //         setZoneCode(storedValue);
+    //     }
+    // }, []);
+
 
     const initialValues = {
         fullName: "",
         mobileNumber: "",
         email_id: "",
         username: "",
+        referrer_login_id: "",
         password: generateRandomPassword(),
         isPasswordReq: referralChild
     };
@@ -83,11 +96,12 @@ function ReferralOnboardForm({ referralChild, fetchData }) {
 
 
     const handleSubmitContact = async (value) => {
+        const { fullName, mobileNumber, email_id, password, username } = value;
         // alert(3)
         setSubmitLoader(true)
         try {
-            const { fullName, mobileNumber, email_id, password, username } = value
-            let postData = {}
+            let postData = {};
+
             if (referralChild === true) {
                 postData = {
                     name: fullName,
@@ -95,19 +109,25 @@ function ReferralOnboardForm({ referralChild, fetchData }) {
                     phone: mobileNumber,
                     password: password,
                     username: username,
-                    referrer_login_id: auth?.user?.loginId
+                    created_by: auth?.user?.loginId,
+                };
+
+                if (referrerLoginId) {
+                    postData.referrer_login_id = referrerLoginId;  //check for referrer_login_id
                 }
 
+                if (zoneCode) {
+                    postData.zone_code = zoneCode; // check for zone_code
+                }
             } else {
                 postData = {
                     referrer_name: fullName,
                     referrer_email: email_id,
                     referrer_phone: mobileNumber,
-                    created_by: auth?.user?.loginId
-                }
-            }
-
-            const resp1 = await addReferralService(postData, referralChild);
+                    created_by: auth?.user?.loginId,
+                    zone_code: zoneCode,
+                };
+            } const resp1 = await addReferralService(postData, referralChild);
             // console.log("resp1",resp1)
             resp1?.data?.status && toastConfig.successToast("Data Saved")
             // create user
