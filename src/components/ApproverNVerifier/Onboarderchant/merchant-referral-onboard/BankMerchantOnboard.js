@@ -4,7 +4,6 @@ import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnb
 
 
 function BankMerchantOnboard({zoneCode,referrerLoginId,heading}) {
-    console.log("headind",heading)
     const [currentTab, setCurrentTab] = useState(1)
     const handleTabClick = (currenTab) => {
       setCurrentTab(currenTab)
@@ -26,6 +25,7 @@ function BankMerchantOnboard({zoneCode,referrerLoginId,heading}) {
 
                     <section>
                         <div className="row mt-5">
+                        {heading===false ? null : heading===undefined ?
                             <div className="col-lg-12 mb-4">
                                 <ul className="nav nav-tabs approv">
                                     <li className="nav-item ">
@@ -38,7 +38,7 @@ function BankMerchantOnboard({zoneCode,referrerLoginId,heading}) {
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> : ""}
                         </div>
                     </section>
 

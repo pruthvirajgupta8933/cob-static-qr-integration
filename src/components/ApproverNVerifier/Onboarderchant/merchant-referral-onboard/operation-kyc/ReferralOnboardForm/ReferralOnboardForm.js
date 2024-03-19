@@ -110,6 +110,8 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     password: password,
                     username: username,
                     created_by: auth?.user?.loginId,
+                    referrer_login_id:auth?.user?.loginId
+                    
                 };
 
                 if (referrerLoginId) {

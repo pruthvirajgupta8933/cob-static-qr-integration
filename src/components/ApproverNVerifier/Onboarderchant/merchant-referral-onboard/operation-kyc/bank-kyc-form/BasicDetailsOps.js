@@ -14,8 +14,6 @@ import { updateBasicDetails } from '../../../../../../services/approver-dashboar
 
 
 function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }) {
-    console.log("bankLoginId",bankLoginId)
-    console.log("zoneCode",zoneCode);
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -85,7 +83,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
         const {
-            fullName, mobileNumber, email_id, business_category, password, business_type, username
+            fullName, mobileNumber, email_id, business_category, password, business_type, username,
         } = value
         // console.log("merchantOnboardingProcess", merchantOnboardingProcess)
 
@@ -93,11 +91,14 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
         const updateReqBody = {
             "login_id": merchantOnboardingProcess?.merchantLoginId,
             "name": fullName,
+             "email": email_id,
             "mobileNumber": mobileNumber,
             "business_category": business_category,
             "business_type": business_type,
             "updated_by": auth?.user?.loginId,
-            "password": merchantKycData?.secret_key
+            "password": merchantKycData?.secret_key,
+            "zone_code":zoneCode,
+
         }
 
         const saveDetailsReqBody = {
@@ -108,6 +109,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
             business_type: business_type,
             password: password,
             username: username,
+            bank_login_id:auth?.user?.loginId,
             // isDirect: false,
             created_by: auth?.user?.loginId,
             // updated_by: auth?.user?.loginId,

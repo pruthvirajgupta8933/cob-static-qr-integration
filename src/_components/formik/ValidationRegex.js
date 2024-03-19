@@ -12,7 +12,7 @@ export const Regex = {
     ifscRegex : /^[A-Z]{4}0[A-Z0-9]{6}$/,
     accountNoRgex : /^[a-zA-Z0-9]{2,25}$/,
     multipleSpace:/^\S+(\s{1}\S+)*$/,
-    urlFormate:  /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.(com|in)(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.(com|in)(\/[^\s]*)?)$/,
+    urlFormate:  /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.(com|in|org)(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.(com|in|org)(\/[^\s]*)?)$/,
 
 }
 

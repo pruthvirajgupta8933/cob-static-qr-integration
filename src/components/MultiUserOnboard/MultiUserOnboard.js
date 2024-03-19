@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,11 +13,10 @@ import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferral
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([])
   const [selectedValue, setSelectedvalue] = useState("")
-
-
   const [selectedDocType, setSelectedDocType] = useState("");
   const [onboardTypeName, setOnboardTypeName] = useState("")
   const [childList, setChiledList] = useState([])
+  const [selectedName, setSelectedName] = useState("")
   const [showForm, setShowForm] = useState(false);
   const [showSecondDropdown, setShowSecondDropdown] = useState(false);
   const [showBankForm, setShowBankForm] = useState(false)
@@ -76,9 +75,8 @@ const MultiUserOnboard = () => {
 
 
 
-
   useEffect(() => {
-    const validParentTypes = ["bank", "referrer"]
+    const validParentTypes = ["bank", "referrer"]  //here we compare validParentTypes bank or referrer
     if (validParentTypes.includes(onboardTypeName)) {
       const postData = {
         "parent_type": onboardTypeName,
@@ -91,7 +89,7 @@ const MultiUserOnboard = () => {
     }
   }, [onboardTypeName]);
 
-  const isEnable = (label) => onboardTypeName === label && selectedValue //conditio for showing component
+  const isEnable = (label) => onboardTypeName === label && selectedValue //condition for showing component
 
 
   return (
@@ -119,6 +117,7 @@ const MultiUserOnboard = () => {
                     onChange={(e) => {
                       formik.resetForm();
                       setSelectedvalue(e.target.value);
+                      setSelectedName(e.target.options[e.target.selectedIndex].text);
                       setShowSecondDropdown(true);
                       setShowForm(false);
                       setShowBankForm(false);
@@ -139,8 +138,9 @@ const MultiUserOnboard = () => {
                       onChange={(e) => {
                         setOnboardTypeName(e.target.value);
                         setShowForm(false);
+                        setShowBankForm(false)
                         formik.setFieldValue("onboardType", e.target.value);
-                        setSelectedDocType("");  
+                        setSelectedDocType("");
                       }}
                     />
                   </div>
@@ -150,11 +150,9 @@ const MultiUserOnboard = () => {
                     <label className="form-label">{onboardTypeName === "referrer" ? "Add Child" : onboardTypeName === "bank" ? "Bank Child" : null}</label>
                     <select
                       className="form-select"
-                      // documentType={selectedDocType}
                       onChange={handleChange}
                       value={selectedDocType}
                     >
-
                       <option value="">
                         {onboardTypeName === "referrer" ? "Select the merchant" : onboardTypeName === "bank" ? "Select the bank" : "Select a Document"}
                       </option>
@@ -171,12 +169,10 @@ const MultiUserOnboard = () => {
           </Formik>
           <div className="text-primary mb-3">
             {selectedValue && (
-              <span>{`Select Zone ${onboardTypeName ? `/ Onboard Type/${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}` : ''}`}</span>
+              <span>{`${selectedName ? selectedName + "/" : ""}${onboardTypeName ? `${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}` : ''}`}</span>
             )}
-
-
-
           </div>
+
           <div>
           </div>
           {isEnable("normal_merchant") && <OnboardMerchant zoneCode={selectedValue} heading={false} />}
@@ -184,7 +180,7 @@ const MultiUserOnboard = () => {
           {isEnable("normal_referral") && <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={true} />}
 
           {isEnable("referrer") && showForm && (
-            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType}  marginTopCss={true} />
+            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType} marginTopCss={true} />
           )}
 
           {isEnable("bank") && showBankForm && (

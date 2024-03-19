@@ -51,10 +51,8 @@ function SideNavbar() {
 
                 {/* render menu from API */}
                 {menuListReducer?.enableMenu?.map((menu) => (
-                   
                     menu?.is_active &&
                     <React.Fragment key={menu.app_name}>
-                        { console.log("menu",menuListReducer)}
                         <div onClick={(e) => toggleMenu(e)} className={`your-custom-class ${isMenuOpen ? 'open-menu' : 'closed-menu'}`}>
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`}>
                                 <span>{menu.app_name}</span>
