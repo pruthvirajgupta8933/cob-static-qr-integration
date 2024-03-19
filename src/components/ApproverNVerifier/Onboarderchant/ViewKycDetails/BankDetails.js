@@ -131,12 +131,17 @@ const BankDetails = (props) => {
                       <p className="text-success">{field.verificationMessage}</p>
                     )}
                   </span>
-                  
+
                 )}
-                {index < inputFields.length - 1 && <div className='mb-3'></div>}
+
               </>
             ) : (
-              <p className='font-weight-bold'>Loading...</p>
+              <input
+                type="text"
+                className="form-control"
+                disabled="true"
+                value={""}
+              />
             )}
           </div>
         ))}

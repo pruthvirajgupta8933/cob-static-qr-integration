@@ -16,7 +16,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { auth, productCatalogueSlice } = useSelector((state) => state);
   const { user } = auth
-  const { SubscribedPlanData, isLoading, walletCommission } = productCatalogueSlice
+  const { SubscribedPlanData, isLoading, walletCommission,errorState } = productCatalogueSlice
+  
 
   // console.log("SubscribedPlanData", SubscribedPlanData)
   const [walletDisplayData, setWalletDisplayData] = useState([])
@@ -94,12 +95,12 @@ const Profile = () => {
       </a>
 
       {/* Display loader if loading is true or if plan data is not available */}
-      {(loading || (roles.merchant && !walletDisplayData?.length)) && (
-         <div className="d-flex align-items-center justify-content-center py-2">
-         <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
-           <span className="visually-hidden">Loading...</span>
-         </div>
-         </div>
+      {(loading || (roles.merchant && !walletDisplayData?.length)) && !errorState && (
+        <div className="d-flex align-items-center justify-content-center py-2">
+          <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
       )}
 
       {/* Display plan tab only if merchant role and wallet display data is available */}

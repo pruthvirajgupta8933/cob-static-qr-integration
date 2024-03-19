@@ -47,7 +47,7 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 const OnboardMerchant = ({zoneCode,heading}) => {
-    console.log("headind",heading)
+   
     
     // const history = useHistory();
 

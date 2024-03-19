@@ -329,7 +329,7 @@ function MyForm() {
 
                                 <div className="row">
                                     <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Left/Right/Center">
                                             Position<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">
