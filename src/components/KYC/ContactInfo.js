@@ -34,8 +34,7 @@ function ContactInfo(props) {
   const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
-  console.log("KycList",KycList);
-
+  
   const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
