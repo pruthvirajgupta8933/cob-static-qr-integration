@@ -42,11 +42,11 @@ function Sandbox() {
     {
       title: "Test Credentials (JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue)",
       initialValues: [
-        { label: "Client Code", value: "LPSD1" },
-        { label: "User Name", value: "Abh789@sp" },
-        { label: "Password", value: "P8c3WQ7ei" },
-        { label: "Authentication Key", value: "x0xzPnXsgTq0QqXx" },
-        { label: "Authentication IV", value: "oLA38cwT6IYNGqb3" },
+        { label: "Client Code", value: "TM001" },
+        { label: "User Name", value: "spuser_2013" },
+        { label: "Password", value: "RIADA_SP336" },
+        { label: "Authentication Key", value: "kaY9AIhuJZNvKGp2" },
+        { label: "Authentication IV", value: "YN2v8qQcU3rGfA1y" },
         { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" }
       ]
     },
