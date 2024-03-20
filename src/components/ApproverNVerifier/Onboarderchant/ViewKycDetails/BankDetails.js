@@ -97,7 +97,7 @@ const BankDetails = (props) => {
     },
     {
       label: "Bank Name",
-      value: selectedUserData?.bankName,
+      value: selectedUserData?.merchant_account_details?.bankName,
       verificationMessage: ""
     },
     {
