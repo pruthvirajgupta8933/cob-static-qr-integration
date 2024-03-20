@@ -48,7 +48,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
     const validationSchema = Yup.object({
         fullName: Yup.string()
             .trim()
-            .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+            .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
