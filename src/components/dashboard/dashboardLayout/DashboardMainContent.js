@@ -90,6 +90,7 @@ function DashboardMainContent() {
     const { auth } = useSelector((state) => state);
     const { user } = auth;
     const roles = roleBasedAccess();
+    console.log("roles",roles);
     const dispatch = useDispatch();
     const location = useLocation();
 

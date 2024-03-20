@@ -238,7 +238,7 @@ function MyForm() {
                                     </div>
                                    
                                     <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2" data-tip="Enter client URL (e.g., https://www.example.com)">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Website URL (e.g., https://www.example.com)">
                                             Client URL<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">
@@ -272,7 +272,7 @@ function MyForm() {
 
                                 <div className="row">
                                     <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Return URL (e.g., https://https:cob-nf-dev.firebaseapp.com/login-page)">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Response URL">
                                             Return URL<span style={{ color: "red" }}>*</span>
                                         </label>
                                         <div className="input-group">
