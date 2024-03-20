@@ -10,6 +10,7 @@ const BankDetails = (props) => {
   const dispatch = useDispatch();
   const [bankName, setBankName] = useState("")
   const { KycTabStatus, selectedUserData } = props;
+  
   const { auth } = useSelector((state) => state);
 
   const { user } = auth;
@@ -113,7 +114,7 @@ const BankDetails = (props) => {
 
       <div className="form-row g-3">
         {inputFields.map((field, index) => (
-          <div key={index} className="col-sm-12 col-md-12 col-lg-6">
+          <div key={index} className="col-sm-12 col-md-12 col-lg-6 mt-2">
             <label>{field.label}</label>
             {field.value !== undefined ? (
               <>

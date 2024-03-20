@@ -62,7 +62,7 @@ function BankDetails(props) {
 
   const initialValues = {
     account_holder_name: KycList?.merchant_account_details?.account_holder_name? KycList?.merchant_account_details?.account_holder_name : "",
-    account_number: KycList?.merchant_account_details.account_number,
+    account_number: KycList?.merchant_account_details?.account_number,
     oldAccountNumber: KycList?.merchant_account_details?.account_number,
     ifsc_code: KycList?.merchant_account_details?.ifsc_code ,
     oldIfscCode: KycList?.merchant_account_details?.ifsc_code,
