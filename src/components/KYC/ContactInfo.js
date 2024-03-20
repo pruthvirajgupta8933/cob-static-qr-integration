@@ -34,6 +34,7 @@ function ContactInfo(props) {
   const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
+  console.log("KycList",KycList);
 
   const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
 
@@ -65,7 +66,7 @@ function ContactInfo(props) {
   const validationSchema = Yup.object({
     name: Yup.string()
       .trim()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
       .required("Required")
       .wordLength("Word character length exceeded")
       .max(100, "Maximum 100 characters are allowed")

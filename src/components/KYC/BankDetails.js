@@ -56,18 +56,20 @@ function BankDetails(props) {
     { key: "1", value: "Current" },
     { key: "2", value: "Saving" },
   ];
+  
+ 
 
 
   const initialValues = {
-    account_holder_name: KycList?.accountHolderName ? KycList?.accountHolderName : "",
-    account_number: KycList?.accountNumber,
-    oldAccountNumber: KycList?.accountNumber,
-    ifsc_code: KycList?.ifscCode,
-    oldIfscCode: KycList?.ifscCode,
+    account_holder_name: KycList?.merchant_account_details?.account_holder_name? KycList?.merchant_account_details?.account_holder_name : "",
+    account_number: KycList?.merchant_account_details.account_number,
+    oldAccountNumber: KycList?.merchant_account_details?.account_number,
+    ifsc_code: KycList?.merchant_account_details?.ifsc_code ,
+    oldIfscCode: KycList?.merchant_account_details?.ifsc_code,
     bank_id: KycList?.merchant_account_details?.bankId, // change stste
     account_type: KycList?.merchant_account_details?.accountType === "Current" ? 1 : KycList?.merchant_account_details?.accountType === "Saving" ? 2 : "",
     branch: KycList?.merchant_account_details?.branch,
-    isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
+    isAccountNumberVerified: KycList?.merchant_account_details?.account_number !== null ? "1" : "",
   };
 
 

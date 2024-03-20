@@ -66,7 +66,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const validationSchema = Yup.object({
         fullName: Yup.string()
             .trim().allowOneSpace()
-            .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+            .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
