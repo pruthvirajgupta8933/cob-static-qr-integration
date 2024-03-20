@@ -1,6 +1,7 @@
 
 export const Regex = {
     acceptAlphabet : /^[aA-zZ\s]+$/ ,
+    acceptAlphaNumericDot:/^[a-zA-Z0-9. ]+$/,
     acceptNumber : /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
     acceptAlphaNumeric : /^[a-zA-Z0-9\s]+$/, 
     alphaBetwithhyphon:/[a-zA-Z._^%$#!~@,-]+/,
@@ -29,7 +30,8 @@ export const RegexMsg = {
     ifscRegex:"Your IFSC code is Invalid and must be in capital letters",
     accountNoRgex:"Account Number format is invalid",
     multipleSpace:"Invalid input",
-    urlFormate:"Please enter a valid HTTPS URL"
+    urlFormate:"Please enter a valid HTTPS URL",
+    acceptAlphaNumericDot:"AlphaNumeric & dot are allowed"
 }
 
 
