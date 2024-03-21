@@ -90,7 +90,7 @@ function DashboardMainContent() {
     const { auth } = useSelector((state) => state);
     const { user } = auth;
     const roles = roleBasedAccess();
-    console.log("roles",roles);
+    // console.log("roles",roles);
     const dispatch = useDispatch();
     const location = useLocation();
 
@@ -174,7 +174,7 @@ function DashboardMainContent() {
             dispatch(fetchMenuList(postBody));
         }
     }, [user, dispatch]);
-    
+
 
     // menuListReducer.enableMenu.length===0 
 
@@ -574,9 +574,9 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/multi-user-onboard`}
                             Component={MultiUserOnboard}
-                            roleList={{ merchant: true, bank: true, referral: true,accountManager:true }}
+                            roleList={{ merchant: true, bank: true, referral: true, accountManager: true }}
                         >
-                            <MultiUserOnboard/>
+                            <MultiUserOnboard />
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
