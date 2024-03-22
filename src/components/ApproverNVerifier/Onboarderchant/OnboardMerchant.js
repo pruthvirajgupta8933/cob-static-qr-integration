@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
+import API_URL from "../../../config";
 import "../../login/css/home.css"
-// import "../../login/css/homestyle.css"
-// import "../../login/css/style-style.css"
-// import "../../login/css/style.css"
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../../slices/auth";
-// import { useHistory } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
-import API_URL from "../../../config";
 import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import { v4 as uuidv4 } from 'uuid';
-// import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-// import {logout} from "../../../slices/auth";
+
 
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -46,21 +41,14 @@ const FORM_VALIDATION = Yup.object().shape({
     // roleId: Yup.string().required("Required")
 });
 
-const OnboardMerchant = ({zoneCode,heading}) => {
-   
-    
-    // const history = useHistory();
-
-    // let roleShow = roleBasedAccess()
+const OnboardMerchant = ({ zoneCode, heading }) => {
 
     const reduxState = useSelector((state) => state);
     const { message, auth } = reduxState;
     const datar = auth;
     const { isUserRegistered, user } = datar;
     const [btnDisable, setBtnDisable] = useState(false);
-
     const [businessCode, setBusinessCode] = useState([]);
-    const [roles, setRoles] = useState([]);
 
     const [valuesIn, setValuesIn] = useState({
         passwordd: "",
@@ -97,26 +85,23 @@ const OnboardMerchant = ({zoneCode,heading}) => {
     }, []);
 
 
-    useEffect(() => {
-        axiosInstanceJWT
-            .get(API_URL.Roles_DropDown)
-            .then((resp) => {
-                const data = resp.data;
-                // console.log("Roles DropDown",data)
-                setRoles(data);
-            })
-            .catch((err) => console.log(err));
-    }, []);
-   
-   
+    // useEffect(() => {
+    //     axiosInstanceJWT
+    //         .get(API_URL.Roles_DropDown)
+    //         .then((resp) => {
+    //             const data = resp.data;
+    //             // console.log("Roles DropDown",data)
+    //             // setRoles(data);
+    //         })
+    //         .catch((err) => console.log(err));
+    // }, []);
+
+
 
 
     const dispatch = useDispatch();
 
-    const handleRegistration = (formData,{resetForm}) => {
-
-        
-        
+    const handleRegistration = (formData, { resetForm }) => {
 
         let businessType = 1;
         let {
@@ -125,13 +110,12 @@ const OnboardMerchant = ({zoneCode,heading}) => {
             emaill,
             passwordd,
             business_cat_code,
-            roleId
         } = formData;
-       
+
         dispatch(
             register({
                 fullname: fullname,
-                zone_code:zoneCode,
+                zone_code: zoneCode,
                 mobileNumber: mobilenumber,
                 email: emaill,
                 business_cat_code: business_cat_code,
@@ -145,10 +129,8 @@ const OnboardMerchant = ({zoneCode,heading}) => {
         )
             .unwrap()
             .then((res) => {
-                // console.log("res", res)
                 const resLoginId = res.login_id
                 axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${resLoginId}`)
-
                 setBtnDisable(false);
                 resetForm()
             })
@@ -172,10 +154,7 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                 transition: Zoom,
             });
             setTimeout(function () {
-                // window.location.href = ""
             }, 3000)
-
-            // history.push("/dashboard/approver");
         }
 
         if (isUserRegistered === false) {
@@ -192,19 +171,14 @@ const OnboardMerchant = ({zoneCode,heading}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isUserRegistered]);
 
-    // useEffect(() => {
-    //     if (roleShow?.verifier !== true && roleShow?.approver !== true) {
-    //         dispatch(logout())
-    //     }
-    // })
     return (
-        <>
-            <div className="logmod__heading">
-                <div className="mb-2">
-                {heading===false ? null: heading===undefined ? <h5 className=""> Onboard Merchant</h5>:""}
-                </div>
-
-            </div>
+        <React.Fragment>
+            {heading === false ? <></> :
+                <div className="logmod__heading">
+                    <div className="mb-2">
+                        <h5>Onboard Merchant</h5>
+                    </div>
+                </div>}
             <Formik
                 initialValues={{
                     fullname: "",
@@ -214,12 +188,10 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                     business_cat_code: "",
                     confirmpasswordd: "",
                     roleId: "",
-                    zone_code:"",
-                    // termsAndConditions: false,
+                    zone_code: "",
                     terms_and_condition: false,
                 }}
                 validationSchema={FORM_VALIDATION}
-                // onSubmit={handleRegistration}
                 onSubmit={(values, { resetForm }) => {
                     handleRegistration(values, { resetForm });
                 }}
@@ -227,14 +199,13 @@ const OnboardMerchant = ({zoneCode,heading}) => {
 
                 {(formik) => (
 
-                    <Form class="row g-3 mt-4">
-                        <div className="col-md-10"></div>
-                        <div class="col-md-6">
+                    <Form className={`${heading === false ? 'row g-3' : 'row g-3 mt-4'}`}>
+                        <div className="col-md-6">
                             <label htmlFor="full-name" className="form-label font-weight-bold">Full Name
                                 <span style={{ color: "red" }}>*</span>
                             </label>
                             <Field
-                                class="form-control"
+                                className="form-control"
                                 maxLength={230}
                                 id="fullname"
                                 placeholder="Full name of merchant"
@@ -244,20 +215,14 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                             />
                             <ErrorMessage name="fullname">
                                 {(msg) => (
-                                    <p
-                                        className="text-danger"
-
-                                    >
-                                        {msg}
-                                    </p>
+                                    <p className="text-danger"> {msg} </p>
                                 )}
                             </ErrorMessage>
                         </div>
-                        <div class="col-md-6">
+                        <div className="col-md-6">
                             <label htmlFor="mobile" className="form-label font-weight-bold">Mobile Number
                                 <span style={{ color: "red" }}>*</span>
                             </label>
-
                             <Field
                                 className="form-control"
                                 maxLength={10}
@@ -276,18 +241,14 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                             {
                                 <ErrorMessage name="mobilenumber">
                                     {(msg) => (
-                                        <p
-                                            className="text-danger"
-
-                                        >
+                                        <p className="text-danger">
                                             {msg}
                                         </p>
                                     )}
                                 </ErrorMessage>
                             }
-                            {/* <input type="password" class="form-control" id="inputPassword4" /> */}
                         </div>
-                        <div class="col-md-6">
+                        <div className="col-md-6">
                             <label htmlFor="user-email" className="form-label font-weight-bold">Email ID
                                 <span style={{ color: "red" }}>*</span>
                             </label>
@@ -312,7 +273,7 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                                 </ErrorMessage>
                             }
                         </div>
-                        <div class="col-md-6">
+                        <div className="col-md-6">
                             <label htmlFor="business_category" className="form-label font-weight-bold">Business
                                 Category
                                 <span style={{ color: "red" }}>*</span>
@@ -354,50 +315,11 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                                 </ErrorMessage>
                             }
                         </div>
-
-                        {/* <div class="col-md-3">
-                            <label htmlFor="roles" className="form-label font-weight-bold">Roles
-                            <span style={{ color: "red" }}>*</span></label>
-                            <Field
-                                name="roleId"
-                                className="form-select"
-                                component="select"
-                            >
-                                <option
-                                    type="text"
-                                    className="form-control"
-                                    value={""}
-                                >
-                                    Select Roles 
-                                </option>
-                                {roles.map((role, i) => (
-                                    <option
-                                        value={role.roleId}
-                                        key={i}
-                                    >
-                                        {role.roleName.toUpperCase()}
-                                    </option>
-                                ))}
-                            </Field>
-                            {
-                                <ErrorMessage name="roleId">
-                                    {(msg) => (
-                                        <p
-                                            className="text-danger"
-
-                                        >
-                                            {msg}
-                                        </p>
-                                    )}
-                                </ErrorMessage>
-                            }
-                        </div> */}
-
-                        <div class="col-md-6">
-                            <label htmlFor="user-pw" class="form-label font-weight-bold">Create Password
+                        <div className="col-md-6">
+                            <label htmlFor="user-pw" className="form-label font-weight-bold">Create Password
                                 <span style={{ color: "red" }}>*</span>
                             </label>
-                            <div class="input-group">
+                            <div className="input-group">
                                 <Field
                                     className="form-control"
                                     maxLength={255}
@@ -433,11 +355,11 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                             }
                         </div>
 
-                        <div class="col-md-6">
-                            <label htmlFor="user-cpw" class="form-label font-weight-bold">Confirm Password
+                        <div className="col-md-6">
+                            <label htmlFor="user-cpw" className="form-label font-weight-bold">Confirm Password
                                 <span style={{ color: "red" }}>*</span>
                             </label>
-                            <div class="input-group">
+                            <div className="input-group">
                                 <Field
                                     className="form-control"
                                     maxLength={255}
@@ -461,10 +383,7 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                             {
                                 <ErrorMessage name="confirmpasswordd">
                                     {(msg) => (
-                                        <p
-                                            className="text-danger"
-
-                                        >
+                                        <p className="text-danger">
                                             {msg}
                                         </p>
                                     )}
@@ -489,18 +408,11 @@ const OnboardMerchant = ({zoneCode,heading}) => {
                                 data-rel={btnDisable}
                             >Sign in
                             </button>
-
                         </div>
-
-
                     </Form>
                 )}
-
-
             </Formik>
-
-
-        </>
+        </React.Fragment>
     )
 }
 

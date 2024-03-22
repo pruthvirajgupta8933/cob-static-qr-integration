@@ -156,7 +156,7 @@ const MultiUserOnboard = () => {
                       </option>
                       {childList?.map((data) => (
                         <option value={data?.loginMasterId} key={data.value}>
-                            {data?.client_code} - {data?.name}
+                          {data?.client_code} - {data?.name}
                         </option>
                       ))}
                     </select>
@@ -172,24 +172,21 @@ const MultiUserOnboard = () => {
                 <span className={classes.cb_nav}>{`${selectedName ? selectedName : ""}`}</span>
                 {onboardTypeName !== "Select" && onboardTypeName && <span className={classes.cb_nav}>{`${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}`}</span>}
               </React.Fragment>
-
             )}
           </div>
 
-
-          <div className={`${(isEnable("normal_merchant") || isEnable("normal_referral")) && 'card py-2 px-2'}  `}>
-            {isEnable("normal_merchant") && <OnboardMerchant zoneCode={selectedValue} heading={false} />}
-
-            {isEnable("normal_referral") && <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={true} />}
-
-            {isEnable("referrer") && showForm && (
-              <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType} marginTopCss={true} />
-            )}
-
-            {isEnable("bank") && showBankForm && (
-              <BankMerchantOnboard zoneCode={selectedValue} referrerLoginId={selectedDocType} heading={false} />
-            )}
-          </div>
+          {isEnable("normal_merchant") && <div className="card py-2 px-2 mt-5">
+            <OnboardMerchant zoneCode={selectedValue} heading={false} />
+          </div>}
+          {isEnable("normal_referral") && <div className="card py-2 px-2 mt-5">
+            <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={false} />
+          </div>}
+          {isEnable("referrer") && <div className="card py-2 px-2 mt-5">
+            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType} marginTopCss={false} />
+          </div>}
+          {isEnable("bank") && <div className="card py-2 px-2 mt-5">
+            <BankMerchantOnboard zoneCode={selectedValue} referrerLoginId={selectedDocType} heading={false} />
+          </div>}
         </div>
 
       </main>
