@@ -3,6 +3,7 @@
 // $primaryColor: #29205d;
 $primaryColor: #154280;
 $secondaryColor: #FF8F00;
+$lightGrayColor: #D2D2D2;
 
 .webColorBg1 {
     background-color: #EFF5FC;
@@ -50,6 +51,8 @@ $secondaryColor: #FF8F00;
 .cob-secondary-btn{
     background-color: $secondaryColor;
 }
+
+
 
 .active-secondary{
     color: white !important;
