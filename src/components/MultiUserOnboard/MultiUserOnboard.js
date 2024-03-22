@@ -158,7 +158,7 @@ const MultiUserOnboard = () => {
                       </option>
                       {childList?.map((data) => (
                         <option value={data?.loginMasterId} key={data.value}>
-                          {data?.name}
+                            {data?.client_code} - {data?.name}
                         </option>
                       ))}
                     </select>
