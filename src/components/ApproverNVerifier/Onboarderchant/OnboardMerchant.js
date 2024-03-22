@@ -391,11 +391,9 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
                             }
 
                         </div>
-                        <div className="col-md-3">
 
-                        </div>
                         <div className="col-md-9">
-                            <button className="figmabtn  text-white  disabled1 w-50"
+                            <button className="cob-btn-primary btn btn-sm text-white disabled1"
                                 name="commit"
                                 type="submit"
                                 width={50}
@@ -406,7 +404,7 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
                                     : false
                                 }
                                 data-rel={btnDisable}
-                            >Sign in
+                            >Submit
                             </button>
                         </div>
                     </Form>
