@@ -13,6 +13,7 @@ import classes from "./multi-user-onboard.module.css"
 
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([])
+  const [selectedChildName, setSelectedChildName] = useState('');
   const [selectedValue, setSelectedvalue] = useState("")
   const [selectedDocType, setSelectedDocType] = useState("");
   const [onboardTypeName, setOnboardTypeName] = useState("")
@@ -51,6 +52,8 @@ const MultiUserOnboard = () => {
       setShowForm(false)
     }
     setSelectedDocType(event.target.value);
+    const selectedName = event.target.options[event.target.selectedIndex].text;
+    setSelectedChildName(selectedName);
   };
 
 
@@ -70,6 +73,8 @@ const MultiUserOnboard = () => {
         "zoneName",
         res?.payload?.data
       )
+
+     
       setRefferalList(data)
     })
   }, []);
@@ -155,9 +160,10 @@ const MultiUserOnboard = () => {
                         {onboardTypeName === "referrer" ? "Select the merchant" : onboardTypeName === "bank" ? "Select the bank" : ""}
                       </option>
                       {childList?.map((data) => (
-                        <option value={data?.loginMasterId} key={data.value}>
-                            {data?.client_code} - {data?.name}
-                        </option>
+                        <option value={data?.loginMasterId} key={data?.value}>
+                        {data?.client_code ? `${data?.client_code} - ${data?.name}` : data?.name}
+                    </option>
+                    
                       ))}
                     </select>
 
@@ -171,6 +177,7 @@ const MultiUserOnboard = () => {
               <React.Fragment>
                 <span className={classes.cb_nav}>{`${selectedName ? selectedName : ""}`}</span>
                 {onboardTypeName !== "Select" && onboardTypeName && <span className={classes.cb_nav}>{`${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}`}</span>}
+                {selectedDocType &&<span className={classes.cb_nav}>{selectedChildName}</span>}
               </React.Fragment>
 
             )}
