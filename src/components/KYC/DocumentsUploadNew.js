@@ -202,14 +202,14 @@ function DocumentsUpload(props) {
   };
 
   const getKycDocList = () => {
-    if(loginId != undefined && loginId!==""){
-    const postData={
-      login_id: loginId,
-    }
-    
-    dispatch(
-      kycDocumentUploadList(postData)
-    );
+    if (loginId != undefined && loginId !== "") {
+      const postData = {
+        login_id: loginId,
+      }
+
+      dispatch(
+        kycDocumentUploadList(postData)
+      );
     }
   };
 
@@ -424,7 +424,7 @@ function DocumentsUpload(props) {
                   )}
                 </div>
 
-                <div className="form-row">
+                <div className="form-row  overflow-auto">
                   {savedData?.length ? (
                     <>
                       <hr />

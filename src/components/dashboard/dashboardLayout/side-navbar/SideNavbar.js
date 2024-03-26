@@ -5,10 +5,11 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import sideNavClasses from "./sidenavbar.module.css";
 
 function SideNavbar() {
-    const { menuListReducer, auth } = useSelector((state) => state);
+    const { menuListReducer, auth, themeReducer } = useSelector((state) => state);
     const { url } = useRouteMatch();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const headerMenuToggle = themeReducer.dashboardHeader.headerMenuToggle
 
     const roleBasedShowTab = roleBasedAccess();
     const enableSettlementReport = ["5208", "5207", "4304", "795"];
@@ -33,7 +34,7 @@ function SideNavbar() {
     }
 
     return (
-        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob}`}>
+        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob} ${headerMenuToggle ? 'show' : ''}`}>
             <div className="position-sticky pt-3">
                 {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) && (
                     <ul className="nav flex-column">
@@ -57,7 +58,7 @@ function SideNavbar() {
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`}>
                                 <span>{menu.app_name}</span>
                                 <a className="link-secondary" href={false} aria-label="Add a new report">
-                                    <i className={`fa ${isMenuOpen ? 'fa-minus' : 'fa-plus'}`} id={`icon_${menu?.app_code}`}></i>
+                                    <i className={`fa ${isMenuOpen ? 'fa-plus' : 'fa-minus'}`} id={`icon_${menu?.app_code}`}></i>
                                 </a>
                             </h6>
                         </div>

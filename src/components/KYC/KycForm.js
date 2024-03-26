@@ -168,7 +168,7 @@ function KycForm() {
 
                 </div>
 
-                <div className="tab-content w-100" id="v-pills-tabContent">
+                <div className="tab-content w-100 overflow-auto" id="v-pills-tabContent">
                   <div className="card m-0 p-0">
                     <div className="card-body">
                       <h6 className="mb-3 font-weight-bold">{title}</h6>
