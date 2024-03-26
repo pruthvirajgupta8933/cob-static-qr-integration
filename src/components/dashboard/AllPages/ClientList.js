@@ -265,7 +265,7 @@ function ClientList() {
                         <div className="row mt-4">
                             {/* {data.length === 0 ? "" : ( */}
                             <div className='row g-3'>
-                                <div className="col-2">
+                                <div className="col-lg-2 col-md-4 col-sm-4">
                                     <SearchFilter
                                         kycSearch={kycSearch}
                                         searchText={searchText}
@@ -274,7 +274,7 @@ function ClientList() {
                                     />
                                 </div>
 
-                                <div className="col-2">
+                                <div className="col-lg-2 col-md-4 col-sm-4">
                                     <CountPerPageFilter
                                         pageSize={pageSize}
                                         dataCount={dataCount}
@@ -283,7 +283,7 @@ function ClientList() {
                                 </div>
                             </div>
 
-                            <div className="col-2">
+                            <div className="col-lg-2 col-md-4 col-sm-4">
                                 {user?.roleId === 13 &&
                                     <button className="btn btn-sm  mb-3 cob-btn-primary"
                                         onClick={() => setModalToggle(true)}>Add Child
