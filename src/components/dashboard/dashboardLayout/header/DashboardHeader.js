@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { logout } from "../../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 // import profile from "../../../../assets/images/profile.png";
@@ -7,6 +7,8 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import headerClasses from "./dashboard-header.module.css"
 // import themeClasses from "../../../../theme.module.scss"
 import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
+import { dashboardHeaderMenuToggle } from '../../../../slices/theme/themeSlice';
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 // import Notification from '../notification/Notification';
 
 // const Notification = React.lazy(() => import('../notification/Notification'));
@@ -14,24 +16,39 @@ import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
 
 // import Connection from '../../../websocket/Connection';
 
-  function DashboardHeader() {
+function DashboardHeader() {
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth);
+    const { auth, themeReducer } = useSelector((state) => state);
+    const { user } = auth;
     const loginId = user?.loginId;
     const username = user?.clientContactPersonName;
     const roles = roleBasedAccess();
     const loggedUser = Object.keys(roles).find((key) => roles[key] === true);
+    const headerMenuToggle = themeReducer.dashboardHeader.headerMenuToggle
+
+    const location = useLocation();
 
     const exitback = () => {
         dispatch(logout());
     };
 
+    const toggleHandler = (value) => {
+        dispatch(dashboardHeaderMenuToggle(value))
+    }
+
+
+    let urlChagned = useMemo(() => location, [location])
+    useEffect(() => {
+        dispatch(dashboardHeaderMenuToggle(true))
+    }, [urlChagned])
+
+
+
     return (
         <header className={`navbar sticky-top flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}  headerBg`}>
             {/* <Connection /> */}
             <a className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`} href={false}>
-                <button className={`d-md-none collapsed navbar-toggler `} type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                    {/* <span className="navbar-toggler-icon" /> */}
+                <button className={`d-md-none collapsed navbar-toggler `} onClick={() => toggleHandler(headerMenuToggle)} type="button" aria-expanded="false" aria-label="Toggle navigation" >
                     <i className="fa fa-bars"></i>
                 </button>
                 <img src={Sabpaisalogo} alt="profile" title="profile" className={`${headerClasses.navbar_brand_logo}`} />

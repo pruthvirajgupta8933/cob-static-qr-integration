@@ -189,13 +189,12 @@ const MultiUserOnboard = () => {
               </Form>
             )}
           </Formik>
-          <div className="text-primary mb-3">
-
+          <div className="text-primary mb-3 d-flex">
             {selectedValue && (
               <React.Fragment>
-                <span className={classes.cb_nav}>{`${selectedName ? selectedName : ""}`}</span>
-                {onboardTypeName !== "Select" && onboardTypeName && <span className={classes.cb_nav}>{`${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}`}</span>}
-                {selectedUserType && <span className={classes.cb_nav}>{selectedChildName}</span>}
+                <p className={classes.cb_nav}>{`${selectedName ? selectedName : ""}`}</p>
+                {onboardTypeName !== "Select" && onboardTypeName && <p className={classes.cb_nav}>{`${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}`}</p>}
+                {selectedUserType && <p className={classes.cb_nav}>{selectedChildName}</p>}
               </React.Fragment>
             )}
           </div>
