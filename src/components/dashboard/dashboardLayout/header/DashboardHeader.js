@@ -47,12 +47,12 @@ function DashboardHeader() {
     return (
         <header className={`navbar sticky-top flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}  headerBg`}>
             {/* <Connection /> */}
-            <a className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`} href={false}>
+            <div className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`}>
                 <button className={`d-md-none collapsed navbar-toggler `} onClick={() => toggleHandler(headerMenuToggle)} type="button" aria-expanded="false" aria-label="Toggle navigation" >
                     <i className="fa fa-bars"></i>
                 </button>
                 <img src={Sabpaisalogo} alt="profile" title="profile" className={`${headerClasses.navbar_brand_logo}`} />
-            </a>
+            </div>
 
             <div className={`d-flex justify-content-between ${headerClasses.navbar_mobile}`}>
                 <div className={`${headerClasses.cob_d_none_mobile}`}>
