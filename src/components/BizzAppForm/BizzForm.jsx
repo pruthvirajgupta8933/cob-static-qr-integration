@@ -1,15 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import axios from "axios";
 import API_URL from "../../config";
 import * as Yup from "yup";
-// import { toast } from "react-toastify";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-import FormikController from '../../_components/formik/FormikController'
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
 import { v4 as uuidv4 } from 'uuid';
-// import { useEffect } from "react";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
 
@@ -66,7 +62,7 @@ const BizzAppForm = (props) => {
             .required("Required")
             .matches(phoneRegExp, "Phone number is not valid")
             .min(10, "Phone number is not valid")
-            .max(10, "too long")
+            .max(10, "Phone number is too long")
             .nullable(),
         authorized_contact_person_email_id: Yup.string()
             .required("Required")
@@ -77,7 +73,7 @@ const BizzAppForm = (props) => {
             .required("Required")
             .matches(phoneRegExp, "Phone number is not valid")
             .min(10, "Phone number is not valid")
-            .max(10, "too long")
+            .max(10, "Phone number is too long")
             .nullable(),
         technical_contact_person_email_id: Yup.string()
             .required("Required")
@@ -210,23 +206,25 @@ const BizzAppForm = (props) => {
                             <h5 className="card-title">Please enter the detatils. </h5>
                             <Formik initialValues={initialValues}
                                 validationSchema={validationSchema}
-                                onSubmit={onSubmit}>{(formik) => (
+                                onSubmit={onSubmit}>
+                                {(formik) => (
                                     <Form>
                                         {InputArray.map((singleData) => (
-                                            <div className="form-group" key={uuidv4()}>
+                                            <div className="form-group" key={singleData.name}>
                                                 <label>{singleData.label}</label>
                                                 {singleData.control === 'input' ?
                                                     <Field
                                                         control={'input'}
                                                         name={singleData.name}
                                                         className="form-control"
-                                                    /> : <Field
+                                                    /> :
+                                                    <Field
                                                         as="select"
                                                         name={singleData.name}
                                                         className="form-select"
                                                     >  {singleData.options.map((option, i) => (
                                                         <option
-                                                            key={uuidv4()}
+                                                            key={i}
                                                             value={props.valueFlag ? option.value : option.key}
                                                             datakey={i}
                                                             disabled={option?.disabled}
