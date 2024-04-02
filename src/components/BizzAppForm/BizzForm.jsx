@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 // import axios from "axios";
 import API_URL from "../../config";
 import * as Yup from "yup";
@@ -57,8 +57,7 @@ const BizzAppForm = (props) => {
                 'ERROR: The number must be greater than 0!',
                 (value) => value > 0
             ),
-        // question: Yup.string()
-        //     .required("Required"),
+        // question: Yup.string().required("Required"),
         authorized_contact_person_name: Yup.string()
             .required("Required"),
         authorized_contact_person_contact_number: Yup.string()
@@ -109,7 +108,7 @@ const BizzAppForm = (props) => {
         expected_transactions_numbers: "",
         account_details: "",
         annual_transaction_value: "",
-        question: "default static question",
+        question: "NA",
         authorized_contact_person_name: "",
         authorized_contact_person_contact_number: "",
         authorized_contact_person_email_id: "",
@@ -209,36 +208,36 @@ const BizzAppForm = (props) => {
                         <div className="card-header text-center"><h3>SabPaisa Biz App Form</h3></div>
                         <div className="card-body mt-3">
                             <h5 className="card-title">Please enter the detatils. </h5>
-                            <Formik
-                                initialValues={initialValues}
+                            <Formik initialValues={initialValues}
                                 validationSchema={validationSchema}
-                                onSubmit={onSubmit}
-                            >
-                                {({ formik }) => (
+                                onSubmit={onSubmit}>{(formik) => (
                                     <Form>
-                                        <div className="form-group">
-                                            {InputArray.map((singleData) => {
-                                                return (
-                                                    <div className="form-group" key={uuidv4()}>
-                                                        {singleData.control === "input" ? <FormikController
-                                                            control={singleData.control}
-                                                            label={singleData.label}
-                                                            name={singleData.name}
-                                                            className="form-control rounded-0"
-                                                            placeholder={singleData.placeholder}
-                                                            type={singleData.type}
-                                                        /> : <FormikController
-                                                            control={singleData.control}
-                                                            label={singleData.label}
-                                                            name={singleData.name}
-                                                            className="form-control rounded-0"
-                                                            options={singleData.options}
-
-                                                            type={singleData.type}
-                                                        />}
-                                                    </div>)
-                                            })}
-                                        </div>
+                                        {InputArray.map((singleData) => (
+                                            <div className="form-group" key={uuidv4()}>
+                                                <label>{singleData.label}</label>
+                                                {singleData.control === 'input' ?
+                                                    <Field
+                                                        control={'input'}
+                                                        name={singleData.name}
+                                                        className="form-control"
+                                                    /> : <Field
+                                                        as="select"
+                                                        name={singleData.name}
+                                                        className="form-select"
+                                                    >  {singleData.options.map((option, i) => (
+                                                        <option
+                                                            key={uuidv4()}
+                                                            value={props.valueFlag ? option.value : option.key}
+                                                            datakey={i}
+                                                            disabled={option?.disabled}
+                                                        >
+                                                            {option?.value}
+                                                        </option>
+                                                    )
+                                                    )}</Field>}
+                                                <p className="text-danger m-0 p-0" ><ErrorMessage name={singleData.name} /></p>
+                                            </div>
+                                        ))}
                                         <button
                                             type="submit"
                                             className="btn cob-btn-primary btn-sm text-white mt-3"
