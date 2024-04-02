@@ -128,8 +128,7 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
-    saveBafData(kyc.kycUserList)
-    return false
+
     // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
     // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
     if (selectedUserData?.roleId !== 13) {
