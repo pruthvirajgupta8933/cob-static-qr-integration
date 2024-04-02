@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
 
@@ -203,7 +203,7 @@ const BizzAppForm = (props) => {
                     <div className="card ">
                         <div className="card-header text-center"><h3>SabPaisa Biz App Form</h3></div>
                         <div className="card-body mt-3">
-                            <h5 className="card-title">Please enter the detatils. </h5>
+                            <h5 className="card-title">Please enter the details. </h5>
                             <Formik initialValues={initialValues}
                                 validationSchema={validationSchema}
                                 onSubmit={onSubmit}>
