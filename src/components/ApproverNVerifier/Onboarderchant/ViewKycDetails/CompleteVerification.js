@@ -50,6 +50,7 @@ const CompleteVerification = (props) => {
 
 
   // save BAF data
+
   const saveBafData = async (data) => {
 
     const expectedTxn = data.expectedTransactions?.split("-");
@@ -62,28 +63,28 @@ const CompleteVerification = (props) => {
 
 
     const bafData = {
-      merchant_business_name: data?.companyName,
-      merchant_legal_name: data?.companyName,
+      merchant_business_name: data?.companyName ?? "NA",
+      merchant_legal_name: data?.companyName ?? "NA",
       merchant_address: `${data?.merchant_address_details?.address}, ${data?.merchant_address_details?.city}, ${data?.merchant_address_details?.state_name}, , ${data?.merchant_address_details?.pin_code}`,
       product_name: "NA",
-      types_of_entity: data?.businessType,
-      year_of_establishment: "NA",
-      merchant_portal: data?.website_app_url,
-      average_transaction_amount: data.avg_ticket_size,
-      expected_transactions_numbers: data.expectedTransactions,
-      annual_transaction_value: avgCount,
-      account_details: `${data?.merchant_account_details?.account_number}/ ${data?.merchant_account_details?.ifsc_code}`,
+      types_of_entity: data?.businessType ?? "NA",
+      year_of_establishment: 1,
+      merchant_portal: data?.website_app_url ?? "NA",
+      average_transaction_amount: data.avg_ticket_size ?? "NA",
+      expected_transactions_numbers: data.expectedTransactions ?? "NA",
+      annual_transaction_value: avgCount ?? "NA",
+      account_details: `${data?.merchant_account_details?.account_number}/ ${data?.merchant_account_details?.ifsc_code}` ?? "NA",
       question: "NA",
-      authorized_contact_person_name: data?.name,
-      authorized_contact_person_contact_number: data?.contactNumber,
-      authorized_contact_person_email_id: data?.emailId,
-      technical_contact_person_contact_number: data?.contactNumber,
-      technical_contact_person_email_id: data?.emailId,
-      technical_contact_person_name: data?.name,
-      gst_number: data?.gstNumber,
-      entity_pan_card_number: data?.signatoryPAN,
-      zone: data.zone_code,
-      nature_of_business: data.businessCategory,
+      authorized_contact_person_name: data?.name ?? "NA",
+      authorized_contact_person_contact_number: data?.contactNumber ?? "NA",
+      authorized_contact_person_email_id: data?.emailId ?? "NA",
+      technical_contact_person_contact_number: data?.contactNumber ?? "NA",
+      technical_contact_person_email_id: data?.emailId ?? "NA",
+      technical_contact_person_name: data?.name ?? "NA",
+      gst_number: data?.gstNumber ?? "NA",
+      entity_pan_card_number: data?.signatoryPAN ?? "NA",
+      zone: data.zone_code ?? "NA",
+      nature_of_business: data.businessCategory ?? "NA",
       mcc: "NA"
     }
 
@@ -127,6 +128,8 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
+    saveBafData(kyc.kycUserList)
+    return false
     // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
     // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
     if (selectedUserData?.roleId !== 13) {
