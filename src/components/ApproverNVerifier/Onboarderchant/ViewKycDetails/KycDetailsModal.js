@@ -63,14 +63,14 @@ const KycDetailsModal = (props) => {
   // console.log("selectedUserData", selectedUserData)
   // 10974
   useEffect(() => {
-    if (merchantLoginLogin !== null  && merchantLoginLogin !== undefined && merchantLoginLogin !== "" ) {
+    if (merchantLoginLogin !== null && merchantLoginLogin !== undefined && merchantLoginLogin !== "") {
       dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
     }
   }, [merchantLoginLogin])
 
 
   useEffect(() => {
-    if (selectedUserData?.loginMasterId  !== undefined && selectedUserData?.loginMasterId !== "") {
+    if (selectedUserData?.loginMasterId !== undefined && selectedUserData?.loginMasterId !== "") {
       dispatch(
         kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
       )
@@ -149,12 +149,12 @@ const KycDetailsModal = (props) => {
 
           {/* business overview */}
           <BusinessOverview
-          
+
             selectedUserData={selectedUserData}
-           
+
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
-            
+
           />
 
           {/* business details */}
@@ -190,7 +190,7 @@ const KycDetailsModal = (props) => {
               merchantKycId={merchantKycId}
               role={roles}
             />}
-
+      
 
           <CompleteVerification
             merchantKycId={merchantKycId}
@@ -230,7 +230,7 @@ const KycDetailsModal = (props) => {
     [props]
   )
 
-
+ 
 
   return (
     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />

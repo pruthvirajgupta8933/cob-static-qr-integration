@@ -14,11 +14,14 @@ import toastConfig from '../../../../utilities/toastTypes'
 import ReactSelect from 'react-select';
 
 const GeneralForm = ({ selectedUserData, role }) => {
+    
 
     const dispatch = useDispatch()
     const [parentClientCode, setParentClientCode] = useState([])
+    const [referByValue, setReferByValue] = useState(null);
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
+    // console.log("kyc.kycUserList",kyc.kycUserList);
 
 
     useEffect(() => {
@@ -27,19 +30,19 @@ const GeneralForm = ({ selectedUserData, role }) => {
         axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
             setParentClientCode(resp.data)
         }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
-
-
     }, [])
 
+  
 
     const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
-        refer_by: kyc.kycUserList?.refer_by,
+        refer_by: kyc.kycUserList?.refer_by ,
         rolling_reserve_type: "Percentage",
-        parent_client_code: "COBED"
+        parent_client_code: ""
 
     }
+    
 
 
 
@@ -56,7 +59,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         const saveGenData = {
             rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
             business_cat_type: val.business_cat_type,
-            parent_client_code: val?.parent_client_code, // if not selected
+            parent_client_code: val?.parent_client_code ?? 'COBED', // if not selected
             refer_by: val.refer_by,
             rolling_reserve_type: "Percentage",
             isFinalSubmit: true
@@ -66,15 +69,18 @@ const GeneralForm = ({ selectedUserData, role }) => {
         toast.success("Successfully updated")
     }
 
+   
+
 
 
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
     const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
     const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
+    const options = clientCodeOption.map(option => ({ value: option.key, label: option.value }));
+    
+   
 
-    // console.log("parentClientCodeOption", parentClientCodeOption)
-
-    return (
+return (
         <div className="row mb-4 border p-1">
             <Formik
                 initialValues={initialValues}
@@ -120,7 +126,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                 </div>
 
                                 <div className="col-md-4">
-                                    {/* <FormikController
+                                    <FormikController
                                         control="select"
                                         name="refer_by"
                                         options={clientCodeOption}
@@ -131,19 +137,8 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                             formik.setFieldValue("refer_by", e.target.value)
                                             formik.setStatus(false);
                                         }}
-                                    /> */}
-                                    <label htmlFor="refer_by">Referred By (if any)</label>
-                                    <ReactSelect
-                                        id="refer_by"
-                                        name="refer_by"
-                                        options={clientCodeOption.map(option => ({ value: option.key, label: option.value }))}
-                                        onChange={(selectedOption) => {
-                                        formik.setFieldValue("refer_by", selectedOption.value);
-                                            formik.setStatus(false);
-                                        }}
-                                        isDisabled={!role?.approver}
                                     />
-                                </div>
+                                   </div>
 
                                 <div className="col-md-4">
                                     <FormikController

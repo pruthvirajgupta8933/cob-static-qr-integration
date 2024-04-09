@@ -62,7 +62,7 @@ const approverDashboardSlice = createSlice({
   initialState: InitialState,
   reducers: {
     generalFormData: (state, action) => {
-      // console.log(action.payload)
+       console.log(action.payload)
       state.generalFormData = action.payload
     }
   },
