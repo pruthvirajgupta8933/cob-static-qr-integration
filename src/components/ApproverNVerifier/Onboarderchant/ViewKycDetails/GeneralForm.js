@@ -14,12 +14,14 @@ import toastConfig from '../../../../utilities/toastTypes'
 import ReactSelect from 'react-select';
 
 const GeneralForm = ({ selectedUserData, role }) => {
+    
 
     const dispatch = useDispatch()
     const [parentClientCode, setParentClientCode] = useState([])
     const [referByValue, setReferByValue] = useState(null);
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
+    // console.log("kyc.kycUserList",kyc.kycUserList);
 
 
     useEffect(() => {
@@ -28,8 +30,6 @@ const GeneralForm = ({ selectedUserData, role }) => {
         axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
             setParentClientCode(resp.data)
         }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
-
-
     }, [])
 
   
@@ -39,7 +39,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         business_cat_type: kyc.kycUserList?.business_category_type,
         refer_by: kyc.kycUserList?.refer_by ,
         rolling_reserve_type: "Percentage",
-        parent_client_code: "COBED"
+        parent_client_code: ""
 
     }
     
@@ -59,7 +59,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         const saveGenData = {
             rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
             business_cat_type: val.business_cat_type,
-            parent_client_code: val?.parent_client_code, // if not selected
+            parent_client_code: val?.parent_client_code ?? 'COBED', // if not selected
             refer_by: val.refer_by,
             rolling_reserve_type: "Percentage",
             isFinalSubmit: true
@@ -80,12 +80,12 @@ const GeneralForm = ({ selectedUserData, role }) => {
     
    
 
-    useEffect(() => {
-        if (kyc.kycUserList?.refer_by) {
-            const defaultOption = options.find(option => option.value === kyc.kycUserList?.refer_by);
-            setReferByValue(defaultOption);
-        }
-    }, [kyc.kycUserList?.refer_by, options]);
+    // useEffect(() => {
+    //     if (kyc.kycUserList?.refer_by) {
+    //         const defaultOption = options.find(option => option.value === kyc.kycUserList?.refer_by);
+    //         setReferByValue(defaultOption);
+    //     }
+    // }, []);
 
     
     return (
@@ -134,7 +134,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                 </div>
 
                                 <div className="col-md-4">
-                                    {/* <FormikController
+                                    <FormikController
                                         control="select"
                                         name="refer_by"
                                         options={clientCodeOption}
@@ -145,12 +145,12 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                             formik.setFieldValue("refer_by", e.target.value)
                                             formik.setStatus(false);
                                         }}
-                                    /> */}
-                                    <label htmlFor="refer_by">Referred By (if any)</label>
+                                    />
+                                    {/* <label htmlFor="refer_by">Referred By (if any)</label>
                                     <ReactSelect
                                         id="refer_by"
                                         name="refer_by"
-                                        value={referByValue}
+                                        value={kyc.kycUserList?.refer_by}
                                         options={options}
                                         onChange={(selectedOption) => {
                                             formik.setFieldValue("refer_by", selectedOption.value);
@@ -159,7 +159,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                         }}
                                         isDisabled={!role?.approver}
                                        
-                                    />
+                                    /> */}
                                 </div>
 
                                 <div className="col-md-4">
