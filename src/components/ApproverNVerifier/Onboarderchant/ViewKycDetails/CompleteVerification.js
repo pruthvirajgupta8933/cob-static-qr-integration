@@ -7,10 +7,11 @@ import {
 } from "../../../../slices/kycOperationSlice"
 import { approvekyc, clearApproveKyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-// import { generalFormData } from '../../../../slices/approver-dashboard/approverDashboardSlice';
 import { ratemapping } from '../../../../slices/approver-dashboard/rateMappingSlice';
 import toastConfig from '../../../../utilities/toastTypes';
 import { KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
+import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
+import API_URL from '../../../../config';
 
 
 const CompleteVerification = (props) => {
@@ -18,14 +19,11 @@ const CompleteVerification = (props) => {
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
-  // let renderToPendingKyc = props?.renderToPendingKyc
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
-
   const { selectedUserData } = props;
-  // console.log("props", props)
 
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
@@ -39,9 +37,6 @@ const CompleteVerification = (props) => {
 
 
   const { auth, approverDashboard, kyc, verifierApproverTab } = useSelector((state) => state);
-  // const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
-  // console.log("verifierApproverTab", verifierApproverTab)
-
   const { user } = auth;
   const { loginId } = user;
   const { approveKyc } = kyc
@@ -49,14 +44,66 @@ const CompleteVerification = (props) => {
 
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
-
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
 
 
-  useEffect(() => {
+  // save BAF data
 
+  const saveBafData = async (data) => {
+
+    const expectedTxn = data.expectedTransactions?.split("-");
+    const numbers = expectedTxn && expectedTxn.map(part => parseInt(part));
+    const maxValueTxn = numbers && Math.max(...numbers);
+    const ticketSize = data.avg_ticket_size?.split("-");
+    const avgTicket = ticketSize && ticketSize.map(part => parseInt(part))
+    const maxTicketSize = avgTicket && Math.max(...avgTicket);
+    const avgCount = maxValueTxn * maxTicketSize;
+
+
+    const bafData = {
+      merchant_business_name: data?.companyName ?? "NA",
+      merchant_legal_name: data?.companyName ?? "NA",
+      merchant_address: `${data?.merchant_address_details?.address}, ${data?.merchant_address_details?.city}, ${data?.merchant_address_details?.state_name}, , ${data?.merchant_address_details?.pin_code}`,
+      product_name: "NA",
+      types_of_entity: data?.businessType ?? "NA",
+      year_of_establishment: 1,
+      merchant_portal: data?.website_app_url ?? "NA",
+      average_transaction_amount: data.avg_ticket_size ?? "NA",
+      expected_transactions_numbers: data.expectedTransactions ?? "NA",
+      annual_transaction_value: avgCount ?? "NA",
+      account_details: `${data?.merchant_account_details?.account_number}/ ${data?.merchant_account_details?.ifsc_code}` ?? "NA",
+      question: "NA",
+      authorized_contact_person_name: data?.name ?? "NA",
+      authorized_contact_person_contact_number: data?.contactNumber ?? "NA",
+      authorized_contact_person_email_id: data?.emailId ?? "NA",
+      technical_contact_person_contact_number: data?.contactNumber ?? "NA",
+      technical_contact_person_email_id: data?.emailId ?? "NA",
+      technical_contact_person_name: data?.name ?? "NA",
+      gst_number: data?.gstNumber ?? "NA",
+      entity_pan_card_number: data?.signatoryPAN ?? "NA",
+      zone: data.zone_code ?? "NA",
+      nature_of_business: data.businessCategory ?? "NA",
+      mcc: "NA"
+    }
+
+    await axiosInstanceAuth.post(API_URL.BizzAPPForm, bafData)
+      .then((response) => {
+        if (response.status === 200) {
+          toastConfig.successToast("BAF data saved");
+        } else {
+          toastConfig.errorToast("BAF data not saved");
+        }
+      }).catch((error) => {
+        toastConfig.errorToast("Data not saved");
+      })
+  }
+
+
+
+
+  useEffect(() => {
     return () => {
       // console.log("clear state approver")
       dispatch(clearApproveKyc())
@@ -64,19 +111,7 @@ const CompleteVerification = (props) => {
   }, [])
 
 
-  // useEffect(() => {
-  //   // dispatch(generalFormData({
-  //   //   rr_amount: kyc.kycUserList?.rolling_reserve,
-  //   //   business_cat_type: kyc.kycUserList?.business_category_type,
-  //   //   refer_by: kyc.kycUserList?.refer_by
-  //   // }))
-
-  // }, [kyc])
-
-  // const approveKycState = useMemo(() => first, [second])
-
   useEffect(() => {
-
     if (kyc?.approveKyc.isApproved && !kyc?.approveKyc.isError) {
       dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
       dispatch(ratemapping({ merchantLoginId: selectedUserData?.loginMasterId }))
@@ -93,6 +128,7 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
+
     // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
     // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
     if (selectedUserData?.roleId !== 13) {
@@ -175,8 +211,9 @@ const CompleteVerification = (props) => {
             GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
             dispatch(approvekyc(dataAppr))
               .then((resp) => {
-                // console.log("resp", resp)
                 setDisable(false);
+                saveBafData(kyc.kycUserList)
+
                 // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
                 // dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
                 // dispatch(ratemapping({merchantLoginId : selectedUserData?.loginMasterId}))
