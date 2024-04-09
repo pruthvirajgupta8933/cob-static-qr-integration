@@ -80,15 +80,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
     
    
 
-    // useEffect(() => {
-    //     if (kyc.kycUserList?.refer_by) {
-    //         const defaultOption = options.find(option => option.value === kyc.kycUserList?.refer_by);
-    //         setReferByValue(defaultOption);
-    //     }
-    // }, []);
-
-    
-    return (
+return (
         <div className="row mb-4 border p-1">
             <Formik
                 initialValues={initialValues}
@@ -146,21 +138,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                             formik.setStatus(false);
                                         }}
                                     />
-                                    {/* <label htmlFor="refer_by">Referred By (if any)</label>
-                                    <ReactSelect
-                                        id="refer_by"
-                                        name="refer_by"
-                                        value={kyc.kycUserList?.refer_by}
-                                        options={options}
-                                        onChange={(selectedOption) => {
-                                            formik.setFieldValue("refer_by", selectedOption.value);
-                                            formik.setStatus(false)
-                                            setReferByValue(selectedOption);
-                                        }}
-                                        isDisabled={!role?.approver}
-                                       
-                                    /> */}
-                                </div>
+                                   </div>
 
                                 <div className="col-md-4">
                                     <FormikController
