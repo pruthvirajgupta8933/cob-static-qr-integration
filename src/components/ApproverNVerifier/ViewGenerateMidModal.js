@@ -146,12 +146,12 @@ const ViewGenerateMidModal = (props) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <h6 className="">
+                  <p className="">
                     Client Name: {props?.userData?.clientName}
-                  </h6>
-                  <h6 className="">
+                  </p>
+                  <p className="">
                     Client Code: {props?.userData?.clientCode}
-                  </h6>
+                  </p>
                   <div className="container">
                     <Form>
                       <div className="row">
@@ -181,7 +181,7 @@ const ViewGenerateMidModal = (props) => {
                       <div className="">
                         <button
                           type="subbmit"
-                          className="submit-btn cob-btn-primary text-white mb-2"
+                          className="submit-btn cob-btn-primary text-white mt-3"
                         // disabled={disable}
                         >
                           {loading ? "Loading..." : "Generate MID"}
@@ -189,8 +189,8 @@ const ViewGenerateMidModal = (props) => {
                       </div>
 
                       <div
-                        className="modal-footer">
-                        <table className="table table-bordered">
+                        className="modal-footer mt-3">
+                        <table className="table table-bordered ">
                           <thead>
                             <tr>
                               <th>Client Code</th>
