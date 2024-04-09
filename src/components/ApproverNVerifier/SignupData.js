@@ -36,8 +36,7 @@ const SignupData = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
 
-  // const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
-
+  
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {

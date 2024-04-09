@@ -230,7 +230,7 @@ const KycDetailsModal = (props) => {
     [props]
   )
 
-  console.log("hell")
+ 
 
   return (
     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
