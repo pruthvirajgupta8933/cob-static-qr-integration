@@ -12,6 +12,8 @@ import toastConfig from '../../../../utilities/toastTypes';
 import { KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
 import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
 import API_URL from '../../../../config';
+import approverDashboardService from '../../../../services/approver-dashboard/approverDashboard.service';
+import { isEmpty } from 'lodash';
 
 
 const CompleteVerification = (props) => {
@@ -69,7 +71,7 @@ const CompleteVerification = (props) => {
       product_name: "NA",
       types_of_entity: data?.businessType ?? "NA",
       year_of_establishment: 1,
-      merchant_portal: data?.website_app_url ?? "NA",
+      merchant_portal: isEmpty(data?.website_app_url) ? "NA" : data?.website_app_url,
       average_transaction_amount: data.avg_ticket_size ?? "NA",
       expected_transactions_numbers: data.expectedTransactions ?? "NA",
       annual_transaction_value: avgCount ?? "NA",
@@ -81,12 +83,13 @@ const CompleteVerification = (props) => {
       technical_contact_person_contact_number: data?.contactNumber ?? "NA",
       technical_contact_person_email_id: data?.emailId ?? "NA",
       technical_contact_person_name: data?.name ?? "NA",
-      gst_number: data?.gstNumber ?? "NA",
+      gst_number: isEmpty(data?.gstNumber) ? "NA" : data?.gstNumber,
       entity_pan_card_number: data?.signatoryPAN ?? "NA",
       zone: data.zone_code ?? "NA",
       nature_of_business: data.businessCategory ?? "NA",
       mcc: "NA"
     }
+
 
     await axiosInstanceAuth.post(API_URL.BizzAPPForm, bafData)
       .then((response) => {
@@ -128,7 +131,6 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
-
     // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
     // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
     if (selectedUserData?.roleId !== 13) {
@@ -209,22 +211,24 @@ const CompleteVerification = (props) => {
             // update the redux state - for the ratemapping
 
             GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
-            dispatch(approvekyc(dataAppr))
-              .then((resp) => {
-                setDisable(false);
-                saveBafData(kyc.kycUserList)
+            dispatch(approvekyc(dataAppr)).then((resp) => {
 
-                // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
-                // dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
-                // dispatch(ratemapping({merchantLoginId : selectedUserData?.loginMasterId}))
-                // pendingApporvalTable()
-                // closeVerificationModal(false)
-                setButtonLoader(false)
-                if (selectedUserData?.roleId === 13) {
-                  pendingApporvalTable()
-                  closeVerificationModal(false)
-                }
-              })
+              setDisable(false);
+
+              // save baf data
+              saveBafData(kyc.kycUserList)
+              // console.log(resp?.payload?.status_code)
+              // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
+              // dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
+              // dispatch(ratemapping({merchantLoginId : selectedUserData?.loginMasterId}))
+              // pendingApporvalTable()
+              // closeVerificationModal(false)
+              setButtonLoader(false)
+              if (selectedUserData?.roleId === 13) {
+                pendingApporvalTable()
+                closeVerificationModal(false)
+              }
+            })
               .catch((e) => {
                 console.log(e)
                 setDisable(false);
