@@ -11,6 +11,7 @@ import axios from 'axios'
 import { axiosInstance } from '../../../../utilities/axiosInstance'
 import API_URL from '../../../../config'
 import toastConfig from '../../../../utilities/toastTypes'
+import ReactSelect from 'react-select';
 
 const GeneralForm = ({ selectedUserData, role }) => {
 
@@ -118,8 +119,8 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
-                                <div className="col-md-4 mt-1">
-                                    <FormikController
+                                <div className="col-md-4">
+                                    {/* <FormikController
                                         control="select"
                                         name="refer_by"
                                         options={clientCodeOption}
@@ -130,6 +131,17 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                             formik.setFieldValue("refer_by", e.target.value)
                                             formik.setStatus(false);
                                         }}
+                                    /> */}
+                                    <label htmlFor="refer_by">Referred By (if any)</label>
+                                    <ReactSelect
+                                        id="refer_by"
+                                        name="refer_by"
+                                        options={clientCodeOption.map(option => ({ value: option.key, label: option.value }))}
+                                        onChange={(selectedOption) => {
+                                        formik.setFieldValue("refer_by", selectedOption.value);
+                                            formik.setStatus(false);
+                                        }}
+                                        isDisabled={!role?.approver}
                                     />
                                 </div>
 
