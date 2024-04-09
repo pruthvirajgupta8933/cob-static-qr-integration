@@ -1340,7 +1340,9 @@ export const kycSlice = createSlice({
             state.status = "pending";
         },
         [kycUserList.fulfilled]: (state, action) => {
+            
             state.kycUserList = action.payload;
+
         },
         [kycUserList.rejected]: (state, action) => {
             state.status = "failed";

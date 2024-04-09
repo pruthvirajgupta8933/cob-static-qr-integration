@@ -10,10 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, KycTabStatus, platform, selectedUserData } = props;
+ 
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
-  let isVerified = KycTabStatus?.business_info_status === "Verified" ? true : false;
+  const { kycUserList } = useSelector(state => state?.kyc || {});
+ let isVerified = KycTabStatus?.business_info_status === "Verified" ? true : false;
   let isRejected = KycTabStatus?.business_info_status === "Verified" ? true : false;
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
@@ -76,7 +78,7 @@ const BusinessOverview = (props) => {
       label: "Business Type",
       required: true,
       color: "red",
-      value: businessTypeResponse,
+      value:kycUserList?.business_type_name,
       inputType: "text"
     },
     {
@@ -84,7 +86,7 @@ const BusinessOverview = (props) => {
       label: "Business Category",
       required: true,
       color: "red",
-      value: businessCategoryResponse,
+      value: kycUserList?.business_category_name,
       inputType: "text"
     },
     {
@@ -116,7 +118,7 @@ const BusinessOverview = (props) => {
       label: "Platform Type",
       required: false,            // mandotry stars
       color: "",
-      value: platform,
+      value: kycUserList?.platform_name,
       inputType: "text"
     },
     {
@@ -141,7 +143,7 @@ const BusinessOverview = (props) => {
 
       <h5 className="">Business Overview</h5>
       {formElements.map((element, index) => (
-        <div className={`${element.className}`} key={uuidv4()}>
+        <div className={`${element.className} mb-3`} key={uuidv4()}>
           {element.inputType === "textarea" && element.isConditional ? (
             selectedUserData?.is_website_url === true ? (
               <div>
@@ -179,8 +181,9 @@ const BusinessOverview = (props) => {
                 disabled="true"
                 value={element.value}
               />
-              {index < formElements.length - 1 && <div className='mb-3'></div>}
+              
             </>
+            
 
 
           )}
