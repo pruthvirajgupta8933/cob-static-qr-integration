@@ -28,22 +28,16 @@ const FORM_VALIDATION = Yup.object().shape({
 
 function Registration({ hideDetails, getPendingDetails, fullName, email }) {
   const history = useHistory();
-
-  const reduxState = useSelector((state) => state);
-  const { message, auth } = reduxState;
-  const authData = auth;
-  const { isUserRegistered } = authData;
-
   const [btnDisable, setBtnDisable] = useState(false);
   const [businessCode, setBusinessCode] = useState([]);
   const [queryString, setQueryString] = useState({});
   const [mobileNumber, setMobileNumber] = useState("");
   const [businessCategoryCode, setBussinessCategoryCode] = useState("");
 
-  const [valuesIn, setValuesIn] = useState({
-    password: "",
-    showPassword: false,
-  });
+  // const [valuesIn, setValuesIn] = useState({
+  //   password: "",
+  //   showPassword: false,
+  // });
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -81,8 +75,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
   }, []);
 
   const handleRegistration = async (formData) => {
-    setBtnDisable(false);
-    //Function passing as props to Registration for social login
+    setBtnDisable(true);
     getPendingDetails(mobileNumber, businessCategoryCode);
     let businessType = 1;
     const data = {
@@ -100,111 +93,110 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
       const response = await AuthService.register(data);
       if (response.status === 200) {
         toast.success(response.data.message);
+        setBtnDisable(false);
         history.push("/login");
       }
     } catch (err) {
+      setBtnDisable(false);
       toast.error(err.response.data.message);
     }
   };
 
   return (
-    <>
-      <div className="container-fluid">
-        <div className={hideDetails ? "" : `col-sm-12 col-md-12 col-lg-6`}>
-          <div className="text-center">
-            <h5>Welcome to SabPaisa</h5>
-          </div>
-          <Formik
-            initialValues={{
-              fullname: "",
-              mobilenumber: "",
-              emaill: "",
-              passwordd: "",
-              business_cat_code: "",
-              confirmpasswordd: "",
-              terms_and_condition: false,
-            }}
-            validationSchema={FORM_VALIDATION}
-            onSubmit={(values, { resetForm }) => {
-              handleRegistration(values);
-            }}
-          >
-            {(formik, resetForm) => (
-              <Form acceptCharset="utf-8" action="#" className="simform">
-                <div className="row m-5">
-                  <div className="col-lg-6">
-                    <label className="form-label" htmlFor="mobile">
-                      Mobile Number
-                    </label>
-                    <Field
-                      className="form-control"
-                      maxLength={10}
-                      id="mobilenumber"
-                      placeholder="Mobile Number"
-                      name="mobilenumber"
-                      type="text"
-                      pattern="\d{10}"
-                      size={10}
-                      onKeyDown={(e) =>
-                        ["e", "E", "+", "-", "."].includes(e.key) &&
-                        e.preventDefault()
-                      }
-                    />
-                    {
-                      <ErrorMessage name="mobilenumber">
-                        {(msg) => <p className="text-danger errortxt">{msg}</p>}
-                      </ErrorMessage>
-                    }
-                  </div>
-
-                  <div className="col-lg-6">
-                    <label className="form-label" htmlFor="business_category">
-                      Business Category
-                    </label>
-                    <Field
-                      name="business_cat_code"
-                      className="form-select"
-                      component="select"
-                    >
-                      <option type="text" id="businesscode" value={""}>
-                        Select Business
-                      </option>
-                      {businessCode?.map((business, i) => (
-                        <option value={business.category_id} key={business.category_id}>
-                          {business.category_name}
-                        </option>
-                      ))}
-                    </Field>
-                    {
-                      <ErrorMessage name="business_cat_code">
-                        {(msg) => <p className="text-danger">{msg}</p>}
-                      </ErrorMessage>
-                    }
-                  </div>
-                </div>
-                <div className="d-flex justify-content-center">
-                  <button
-                    className="cob-btn-primary btn text-white disabled1 w-50"
-                    name="commit"
-                    type="submit"
-                    defaultValue="Create Account"
-                    disabled={
-                      btnDisable || !(formik.isValid && formik.dirty)
-                        ? true
-                        : false
-                    }
-                    data-rel={btnDisable}
-                  // onClick={()=>handleRegistration()}
-                  >
-                    Create an account
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+    <div className="container-fluid">
+      <div className={hideDetails ? "" : `col-sm-12 col-md-12 col-lg-6`}>
+        <div className="text-center">
+          <h5>Welcome to SabPaisa</h5>
         </div>
+        <Formik
+          initialValues={{
+            fullname: "",
+            mobilenumber: "",
+            emaill: "",
+            passwordd: "",
+            business_cat_code: "",
+            confirmpasswordd: "",
+            terms_and_condition: false,
+          }}
+          validationSchema={FORM_VALIDATION}
+          onSubmit={(values, { resetForm }) => {
+            handleRegistration(values);
+          }}
+        >
+          {(formik, resetForm) => (
+            <Form acceptCharset="utf-8" action="#" className="simform">
+              <div className="row m-5">
+                <div className="col-lg-6">
+                  <label className="form-label" htmlFor="mobile">
+                    Mobile Number
+                  </label>
+                  <Field
+                    className="form-control"
+                    maxLength={10}
+                    id="mobilenumber"
+                    placeholder="Mobile Number"
+                    name="mobilenumber"
+                    type="text"
+                    pattern="\d{10}"
+                    size={10}
+                    onKeyDown={(e) =>
+                      ["e", "E", "+", "-", "."].includes(e.key) &&
+                      e.preventDefault()
+                    }
+                  />
+                  {
+                    <ErrorMessage name="mobilenumber">
+                      {(msg) => <p className="text-danger errortxt">{msg}</p>}
+                    </ErrorMessage>
+                  }
+                </div>
+
+                <div className="col-lg-6">
+                  <label className="form-label" htmlFor="business_category">
+                    Business Category
+                  </label>
+                  <Field
+                    name="business_cat_code"
+                    className="form-select"
+                    component="select"
+                  >
+                    <option type="text" id="businesscode" value={""}>
+                      Select Business
+                    </option>
+                    {businessCode?.map((business, i) => (
+                      <option value={business.category_id} key={business.category_id}>
+                        {business.category_name}
+                      </option>
+                    ))}
+                  </Field>
+                  {
+                    <ErrorMessage name="business_cat_code">
+                      {(msg) => <p className="text-danger">{msg}</p>}
+                    </ErrorMessage>
+                  }
+                </div>
+              </div>
+              <div className="d-flex justify-content-center">
+                <button
+                  className="cob-btn-primary btn text-white disabled1 w-50"
+                  name="commit"
+                  type="submit"
+                  defaultValue="Create Account"
+                  disabled={
+                    btnDisable || !(formik.isValid && formik.dirty)
+                      ? true
+                      : false
+                  }
+                  data-rel={btnDisable}
+                >
+                  Create an account
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
-    </>
+    </div>
   );
 }
 
