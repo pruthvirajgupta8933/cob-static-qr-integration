@@ -114,7 +114,7 @@ function MerchantContactInfo(props) {
                     </p>
                   )}
                 </span>
-                {/* {index < inputFields.length - 1 && <div className='mb-3'></div>} */}
+                
               </>
             ) : (
               <p className='font-weight-bold'>Loading...</p>
