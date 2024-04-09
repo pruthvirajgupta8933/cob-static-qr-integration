@@ -17,6 +17,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
     const dispatch = useDispatch()
     const [parentClientCode, setParentClientCode] = useState([])
+    const [referByValue, setReferByValue] = useState(null);
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
 
@@ -31,15 +32,17 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
     }, [])
 
+  
 
     const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
-        refer_by: kyc.kycUserList?.refer_by,
+        refer_by: kyc.kycUserList?.refer_by ,
         rolling_reserve_type: "Percentage",
         parent_client_code: "COBED"
 
     }
+    
 
 
 
@@ -66,14 +69,25 @@ const GeneralForm = ({ selectedUserData, role }) => {
         toast.success("Successfully updated")
     }
 
+   
+
 
 
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
     const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
     const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
+    const options = clientCodeOption.map(option => ({ value: option.key, label: option.value }));
+    
+   
 
-    // console.log("parentClientCodeOption", parentClientCodeOption)
+    useEffect(() => {
+        if (kyc.kycUserList?.refer_by) {
+            const defaultOption = options.find(option => option.value === kyc.kycUserList?.refer_by);
+            setReferByValue(defaultOption);
+        }
+    }, [kyc.kycUserList?.refer_by, options]);
 
+    
     return (
         <div className="row mb-4 border p-1">
             <Formik
@@ -136,12 +150,15 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     <ReactSelect
                                         id="refer_by"
                                         name="refer_by"
-                                        options={clientCodeOption.map(option => ({ value: option.key, label: option.value }))}
+                                        value={referByValue}
+                                        options={options}
                                         onChange={(selectedOption) => {
-                                        formik.setFieldValue("refer_by", selectedOption.value);
-                                            formik.setStatus(false);
+                                            formik.setFieldValue("refer_by", selectedOption.value);
+                                            formik.setStatus(false)
+                                            setReferByValue(selectedOption);
                                         }}
                                         isDisabled={!role?.approver}
+                                       
                                     />
                                 </div>
 

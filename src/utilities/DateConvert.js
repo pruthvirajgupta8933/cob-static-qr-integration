@@ -1,14 +1,16 @@
 import moment from "moment";
-const DateFormatter = (date, time=true) => {
+
+const DateFormatter = (date, time = true) => {
   if (!date) {
-    return null; 
+    return null;
   }
-  let DateFormat = "DD/MM/YYYY"
-  if(time){
-    DateFormat = "DD/MM/YYYY hh:mm a"
+  
+  let DateFormat = "DD/MM/YYYY";
+  if (time) {
+    DateFormat = "DD/MM/YYYY hh:mm A";
   }
 
-const formattedDate = moment(date).format(DateFormat).toUpperCase();
+  const formattedDate = moment(date).format(DateFormat).toUpperCase();
   return <span>{formattedDate}</span>;
 };
 
