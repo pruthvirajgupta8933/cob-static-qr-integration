@@ -26,7 +26,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
     const [bankList, setBankList] = useState([]);
     const dispatch = useDispatch();
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
-    // console.log("merchantReferralOnboardReducer", merchantReferralOnboardReducer)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { bankDetails } = merchantReferralOnboardReducer
     const { merchantKycData } = kyc
@@ -132,11 +131,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
     }, []);
 
-    // useEffect(() => {
-    //     if (merchantLoginId !== "") {
-    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId, password_required: true }))
-    //     }
-    // }, [merchantLoginId]);
+   
 
     const ifscValidationNo = (values, setFieldValue) => {
         setLoading(true)
@@ -161,15 +156,14 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
                         }
 
-                        // console.log(resp?.payload?.bankId)
+                        
                     }).catch(err => {
                         // console.log(err?.payload?.bankName)
                     })
                     setFieldValue("branch", res?.payload?.branch)
                     setFieldValue("ifsc_code", values)
                     setFieldValue("isIfscVerified", 1)
-                    // setFieldValue("oldIfscCode", values)
-                    // toast.success(res?.payload?.message);
+                   
                 } else {
                     setLoading(false)
                     setFieldValue("isIfscVerified", "")
@@ -193,8 +187,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                 res?.payload?.valid === true
             ) {
                 setLoading(false)
-                // console.log(res?.payload)
-                // setFieldValue()
+                
                 const fullName = res?.payload?.first_name + ' ' + res?.payload?.last_name;
                 setFieldValue("account_holder_name", fullName);
 
@@ -456,7 +449,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                         </div>
                         <div className="row">
                             <div className="col-lg-6 mt-2">
-                                {/*{console.log(submitLoader)}*/}
+                                
                                 {!isEditableInput &&
                                     <button
                                         className="cob-btn-primary btn text-white btn-sm"

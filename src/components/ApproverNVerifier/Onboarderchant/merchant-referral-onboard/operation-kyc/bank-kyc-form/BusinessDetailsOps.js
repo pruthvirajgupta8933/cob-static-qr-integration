@@ -23,7 +23,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
 
-    // console.log("merchantKycData", merchantKycData)
     const initialValues = {
         pan_card: merchantKycData?.signatoryPAN ?? "",
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
@@ -196,13 +195,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         }
     };
 
-    // useEffect(() => {
-    //     if (merchantLoginId !== "") {
-    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId ,password_required: true}))
-    //     }
-    // }, [merchantLoginId]);
-
-    return (
+   
+return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">
             <Formik
                 initialValues={initialValues}

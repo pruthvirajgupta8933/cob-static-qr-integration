@@ -1,7 +1,6 @@
 import React, { useEffect, useState,useMemo,useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
