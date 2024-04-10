@@ -53,12 +53,7 @@ const BizzAppForm = (props) => {
                 'ERROR: The number must be greater than 0!',
                 (value) => value > 0
             ),
-<<<<<<< HEAD
-        // question: Yup.string()
-        //     .required("Required"),
-=======
         // question: Yup.string().required("Required"),
->>>>>>> dev_ui_update
         authorized_contact_person_name: Yup.string()
             .required("Required"),
         authorized_contact_person_contact_number: Yup.string()
@@ -109,11 +104,7 @@ const BizzAppForm = (props) => {
         expected_transactions_numbers: "",
         account_details: "",
         annual_transaction_value: "",
-<<<<<<< HEAD
-        question: "default static question",
-=======
         question: "NA",
->>>>>>> dev_ui_update
         authorized_contact_person_name: "",
         authorized_contact_person_contact_number: "",
         authorized_contact_person_email_id: "",
@@ -254,7 +245,6 @@ const BizzAppForm = (props) => {
                                     </Form>
                                 )}
                             </Formik>
-
                         </div>
                         <div className="card-footer text-muted text-center">
                             sabpaisa.in
