@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
-import UseGoogleLogout from "./GoogleLogout";
+// import UseGoogleLogout from "./GoogleLogout";
 import { useGoogleLogout } from "react-google-login";
 
 const GoogleLoginButton = (props) => {
@@ -28,18 +28,16 @@ const GoogleLoginButton = (props) => {
     signOut();
   };
 
-  const LoginFailure = (response) => {};
+  const LoginFailure = (response) => { };
 
   return (
-    <>
-      <GoogleLogin
-        clientId={clientId}
-        onSuccess={responseGoogle}
-        onFailure={LoginFailure}
-        buttonText={btnText}
-        cookiePolicy={"single_host_origin"}
-      />
-    </>
+    <GoogleLogin
+      clientId={clientId}
+      onSuccess={responseGoogle}
+      onFailure={LoginFailure}
+      buttonText={btnText}
+      cookiePolicy={"single_host_origin"}
+    />
   );
 };
 

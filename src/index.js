@@ -14,12 +14,11 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 
 ReactDOM.render(
+
   <Provider store={store}>
-    {/* <HashRouter> */}
     <BrowserRouter>
-        <App />
+      <App />
     </BrowserRouter>
-    {/* </HashRouter> */}
   </Provider>,
   document.getElementById("root")
 );

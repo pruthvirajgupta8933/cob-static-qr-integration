@@ -16,12 +16,13 @@ import merchantReportSlice from "./slices/merchant-slice/reportSlice";
 import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 import { DebitReportsDataReducer } from "./slices/subscription-slice/debitSlice";
 import { createMandateReducer } from "./slices/subscription-slice/createMandateSlice";
-import  approverDashboardSlice  from "./slices/approver-dashboard/approverDashboardSlice"
+import approverDashboardSlice from "./slices/approver-dashboard/approverDashboardSlice"
 import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice"
 import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice"
 import notificationSlice from "./slices/notification-slice/notificationSlice"
 import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice"
 import { widgetReducer } from "./slices/widgetSlice";
+import { themeReducer } from "./slices/theme/themeSlice";
 
 
 
@@ -32,7 +33,7 @@ const reducer = {
   subscription: reducerSubscription,
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
-  widget:widgetReducer,
+  widget: widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
   payout: payoutReducer,
@@ -49,16 +50,19 @@ const reducer = {
 
   // approver
   approverDashboard: approverDashboardSlice,
-  rateMappingSlice:rateMappingSlice,
+  rateMappingSlice: rateMappingSlice,
 
   //merchantOnboardByOps
-  merchantReferralOnboardReducer:merchantReferralOnboardReducer,
+  merchantReferralOnboardReducer: merchantReferralOnboardReducer,
 
   //notification
-  notificationSlice:notificationSlice,
+  notificationSlice: notificationSlice,
 
-//   product subscription
-  productSubscriptionServiceAdminReducer:productSubscriptionServiceAdminReducer
+  //   product subscription
+  productSubscriptionServiceAdminReducer: productSubscriptionServiceAdminReducer,
+
+  // theme
+  themeReducer: themeReducer
 };
 
 const store = configureStore({

@@ -11,7 +11,7 @@ import ViewKycCollapse from './ViewKycCollapse';
 import CustomLoader from '../../../../_components/loader';
 
 const BusinessDetails = (props) => {
-  const { merchantKycId, KycTabStatus, selectedUserData } = props;
+  const {  KycTabStatus, selectedUserData } = props;
   const { classifications, nic_codes: nicCodes } = selectedUserData?.udyam_data || {};
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
@@ -74,27 +74,29 @@ const { user } = auth;
       }
     }
   };
+  
 
-  useEffect(()=>{
-    // console.log(selectedUserData?.panCard)
-    if(selectedUserData?.panCard || selectedUserData?.signatoryPAN){
-      displayPanData(selectedUserData);
-    }
+  // useEffect(()=>{
+  //   // console.log(selectedUserData?.panCard)
+  //   if(selectedUserData?.panCard || selectedUserData?.signatoryPAN){
+  //     displayPanData(selectedUserData);
+  //   }
 
-  },[selectedUserData])
+  // },[selectedUserData])
 
   const displayPanData = async (data) => {
+    
     try {
       const panDetails = {
-        "pan": data?.panCard,
-        "signatory_pan": data?.signatoryPAN
+        "pan": selectedUserData?.panCard,
+        "signatory_pan": selectedUserData?.signatoryPAN
       };
 
       const resp = await dispatch(getMerchantpanData(panDetails));
 
     } catch (error) {
       
-      toast.error("Try Again Network Error");
+      // toast.error("Try Again Network Error");
     }
   };
 
@@ -538,7 +540,12 @@ const formFields = [
           }
 
           isOpen={isCollapseOpen === 2}
-          onToggle={() => toggleCollapse(2)}
+          onToggle={() => {
+            toggleCollapse(2);
+            if (!isCollapseOpen) {
+                displayPanData(); // Call displayPanData() only when the toggle is being opened
+            }
+        }}
         />
 
       </>

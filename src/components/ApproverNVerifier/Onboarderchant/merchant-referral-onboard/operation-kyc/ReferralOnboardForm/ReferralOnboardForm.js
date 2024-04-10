@@ -10,7 +10,7 @@ import { addReferralService } from "../../../../../../services/approver-dashboar
 import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
 
-function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode,marginTopCss }) {
+function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode, marginTopCss }) {
 
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
@@ -42,15 +42,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         return password;
     };
 
-    // const [zoneCode, setZoneCode] = useState("");
-
-    // useEffect(() => {
-    //     const storedValue = sessionStorage.getItem('selectedValue');
-    //     if (storedValue) {
-    //         setZoneCode(storedValue);
-    //     }
-    // }, []);
-
 
     const initialValues = {
         fullName: "",
@@ -70,8 +61,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-
-
         username: Yup.string().when('isPasswordReq', {
             is: true,
             then: Yup.string().required('Required'),
@@ -110,8 +99,8 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     password: password,
                     username: username,
                     created_by: auth?.user?.loginId,
-                    referrer_login_id:auth?.user?.loginId
-                    
+                    referrer_login_id: auth?.user?.loginId
+
                 };
 
                 if (referrerLoginId) {
@@ -199,7 +188,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 enableReinitialize={true}>
                 {(formik) => (<Form>
                     <div className={`row g-3 ${marginTopCss ? "mt-5" : ""}`}>
-                    <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+                        <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
                                 type="text"

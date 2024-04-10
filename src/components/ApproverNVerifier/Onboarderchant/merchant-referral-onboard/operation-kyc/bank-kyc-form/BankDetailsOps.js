@@ -350,7 +350,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                     }
 
                                     {/* if found any error in validation */}
-                                    {/* {console.log("values",values)} */}
+                                    
                                     {(values?.ifsc_code !== null && (errors.hasOwnProperty("isAccountNumberVerified") || errors.hasOwnProperty("isIfscVerified"))) &&
                                         <div className="input-group-append">
                                             <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"

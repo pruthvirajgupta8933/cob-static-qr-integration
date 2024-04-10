@@ -63,14 +63,14 @@ const KycDetailsModal = (props) => {
   // console.log("selectedUserData", selectedUserData)
   // 10974
   useEffect(() => {
-    if (merchantLoginLogin !== null  && merchantLoginLogin !== undefined && merchantLoginLogin !== "" ) {
+    if (merchantLoginLogin !== null && merchantLoginLogin !== undefined && merchantLoginLogin !== "") {
       dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
     }
   }, [merchantLoginLogin])
 
 
   useEffect(() => {
-    if (selectedUserData?.loginMasterId  !== undefined && selectedUserData?.loginMasterId !== "") {
+    if (selectedUserData?.loginMasterId !== undefined && selectedUserData?.loginMasterId !== "") {
       dispatch(
         kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
       )
@@ -89,30 +89,30 @@ const KycDetailsModal = (props) => {
         });
 
 
-        dispatch(
-          businessTypeById({ business_type_id: selectedUserData?.businessType })
-        ).then((resp) => {
-          setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
-        });
+        // dispatch(
+        //   businessTypeById({ business_type_id: selectedUserData?.businessType })
+        // ).then((resp) => {
+        //   setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
+        // });
 
 
       }
 
-      const busnCatId = parseInt(selectedUserData?.businessCategory);
-      if (isNumber(busnCatId) && busnCatId !== "" && selectedUserData?.businessCategory !== null && busnCatId !== undefined) {
-        dispatch(
-          businessCategoryById({ category_id: selectedUserData?.businessCategory })
-        ).then((resp) => {
-          // console.log(resp,"response")
-          setBusinessCategoryResponse(resp?.payload[0]?.category_name);
-        });
-      }
+      // const busnCatId = parseInt(selectedUserData?.businessCategory);
+      // if (isNumber(busnCatId) && busnCatId !== "" && selectedUserData?.businessCategory !== null && busnCatId !== undefined) {
+      //   dispatch(
+      //     businessCategoryById({ category_id: selectedUserData?.businessCategory })
+      //   ).then((resp) => {
+      //     // console.log(resp,"response")
+      //     setBusinessCategoryResponse(resp?.payload[0]?.category_name);
+      //   });
+      // }
 
       // console.log("selectedUserData?.platformId", selectedUserData?.platformId)
 
-      selectedUserData?.platformId && approverDashboardService.getPlatformById(selectedUserData?.platformId).then(resp => {
-        setPlatform(resp.data.platformName)
-      })
+      // selectedUserData?.platformId && approverDashboardService.getPlatformById(selectedUserData?.platformId).then(resp => {
+      //   setPlatform(resp.data.platformName)
+      // })
 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,12 +149,12 @@ const KycDetailsModal = (props) => {
 
           {/* business overview */}
           <BusinessOverview
-            businessTypeResponse={businessTypeResponse}
+
             selectedUserData={selectedUserData}
-            businessCategoryResponse={businessCategoryResponse}
+
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
-            platform={platform}
+
           />
 
           {/* business details */}
@@ -190,7 +190,7 @@ const KycDetailsModal = (props) => {
               merchantKycId={merchantKycId}
               role={roles}
             />}
-
+      
 
           <CompleteVerification
             merchantKycId={merchantKycId}
@@ -212,7 +212,7 @@ const KycDetailsModal = (props) => {
           </div>}
       </>
     )
-  }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, businessTypeResponse, businessCategoryResponse, platform, KycDocUpload, setDocList, docTypeList])
+  }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, KycDocUpload, setDocList, docTypeList])
 
   const modalFooter = useCallback(() => {
     return (
@@ -230,7 +230,7 @@ const KycDetailsModal = (props) => {
     [props]
   )
 
-
+ 
 
   return (
     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />

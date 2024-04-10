@@ -36,8 +36,7 @@ const SignupData = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
 
-  // const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
-
+  
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
@@ -210,6 +209,7 @@ useEffect(() => {
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
+  
 
   const rowSignUpData = [
     { id: "1", 
@@ -223,6 +223,7 @@ useEffect(() => {
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
+      width:"150px"
     },
     {
       id: "3",
@@ -238,8 +239,9 @@ useEffect(() => {
     {
       id: "5",
       name: "Registered Date",
-      selector: (row) => DateFormatter(row.createdDate,false),
+      selector: (row) => DateFormatter(row.createdDate,true),
       sortable: true,
+      width:"170px"
     },
     {
       id: "6",
@@ -348,12 +350,11 @@ useEffect(() => {
               </Form>
             )}
           </Formik>
-          {signupData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
-            No Data Found
-          </h5>}
-          {!loadingState && signupData?.length !== 0 && (
+        
+          {/* {!loadingState && signupData?.length !== 0 && ( */}
             <>
               <div className="row mt-4">
+              {signupData.length === 0 ? "" :
                 <div className="form-group col-lg-3 ml-2">
                   <SearchFilter
                     kycSearch={kycSearch}
@@ -361,20 +362,23 @@ useEffect(() => {
                     searchByText={searchByText}
                     setSearchByDropDown={setSearchByDropDown}
                   />
-                  <div></div>
-                </div>
-
+                  
+                </div>}
+                {signupData.length === 0 ? "" :
                 <div className="form-group col-lg-3">
                   <CountPerPageFilter
                     pageSize={pageSize}
                     dataCount={dataCount}
                     changePageSize={changePageSize}
                   />
-                </div>
+                </div>}
               </div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
-                <h6>Total Count : {dataCount}</h6>
+                {signupData.length === 0 ? "" :<h6>Total Count : {dataCount}</h6>}
+                {signupData.length === 0  && <h5 className="text-center font-weight-bold mt-5">
+            No Data Found
+          </h5>}
                   {!loadingState && signupData?.length !== 0 && (
                     <Table
                       row={rowSignUpData}
@@ -389,7 +393,7 @@ useEffect(() => {
                 <CustomLoader loadingState={loadingState} />
               </div>
             </>
-          )}
+          {/* )} */}
         </div>
       </main>
     </section>

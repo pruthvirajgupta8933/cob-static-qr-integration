@@ -31,7 +31,7 @@ function ChangePassword() {
     showPasswords: false,
   });
 
-  console.log("passwordType", passwordType)
+  // console.log("passwordType", passwordType)
 
 
 
@@ -39,7 +39,7 @@ function ChangePassword() {
     old_password: "",
     showPasswordss: false,
   })
-  console.log("oldPasswordType", oldPasswordType)
+  // console.log("oldPasswordType", oldPasswordType)
 
 
   const oldTogglePassword = () => {

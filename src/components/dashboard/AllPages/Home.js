@@ -54,7 +54,7 @@ function Home() {
 
   }, []);
 
-  
+
 
   useEffect(() => {
     // comment unwanted api call
@@ -78,7 +78,7 @@ function Home() {
     return <Redirect to={`${path}/Internal-dashboard`} />;
   }
 
- 
+
 
   // filter only subscription plan
 
@@ -124,12 +124,12 @@ function Home() {
       {/* Dashboard Update  */}
       {roles?.merchant &&
         <div className="row mt-3">
-          <div className="col-lg-7 col-sm-12 col-md-3">
+          <div className="col-lg-7 col-sm-12 col-md-12">
             {/* chart */}
             <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />
           </div>
 
-          <div className="col-lg-5 col-sm-12 col-md-5">
+          <div className="col-lg-5 col-sm-12 col-md-12">
             <h6 className="bg-secondary p-2 text-white">Dashboard Update</h6>
 
             {/* KYC alert */}
@@ -149,8 +149,8 @@ function Home() {
 
 
             {/* KYC Status -Update Message */}
-            <KycStatusUpdateMessage/>
-             
+            <KycStatusUpdateMessage />
+
 
           </div>
         </div>
@@ -163,7 +163,7 @@ function Home() {
       {/* Display the products  */}
       <HomeProduct />
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      <HomeOpenModal/>
+      <HomeOpenModal />
       {/* <HomeOpenModal/> */}
 
     </section>

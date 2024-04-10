@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 
@@ -52,10 +52,10 @@ function UserDetails() {
                             </div>
                         </form>
                         {roleBasedShowTab.merchant ?
-                            <div className="col-lg-12 text-right">
+                            <div className="col-lg-3 text-right p-0 float-right">
                                 {/* <label><strong>Change Password</strong></label> -<br/> */}
                                 <Link to={`/dashboard/change-password`}>
-                                    <button type="button" className="form-control btn  cob-btn-primary w-25  text-white" >
+                                    <button type="button" className="form-control btn  cob-btn-primary text-white" >
                                         Change Password
                                     </button>
                                 </Link>

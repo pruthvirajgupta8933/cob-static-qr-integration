@@ -9,16 +9,19 @@ import { fetchParentTypeData } from "../../slices/approver-dashboard/merchantRef
 import * as Yup from 'yup';
 import BankMerchantOnboard from "../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
 import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import classes from "./multi-user-onboard.module.css"
+
 
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([])
+  const [selectedChildName, setSelectedChildName] = useState('');
   const [selectedValue, setSelectedvalue] = useState("")
-  const [selectedDocType, setSelectedDocType] = useState("");
+  const [selectedUserType, setSelectedUserType] = useState("");
   const [onboardTypeName, setOnboardTypeName] = useState("")
   const [childList, setChiledList] = useState([])
   const [selectedName, setSelectedName] = useState("")
   const [showForm, setShowForm] = useState(false);
-  const [showSecondDropdown, setShowSecondDropdown] = useState(false);
+  // const [showSecondDropdown, setShowSecondDropdown] = useState(false);
   const [showBankForm, setShowBankForm] = useState(false)
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
@@ -42,14 +45,23 @@ const MultiUserOnboard = () => {
   });
 
   const handleChange = (event) => {
-    if (onboardTypeName === "referrer") {
-      setShowForm(true)
-      setShowBankForm(false)
+    if (event.target.value) {
+      if (onboardTypeName === "referrer") {
+        setShowForm(true)
+        setShowBankForm(false)
+      } else {
+        setShowBankForm(true)
+        setShowForm(false)
+      }
     } else {
-      setShowBankForm(true)
+      setShowBankForm(false)
       setShowForm(false)
     }
-    setSelectedDocType(event.target.value);
+
+    setSelectedUserType(event.target.value);
+    const selectedName = event.target.options[event.target.selectedIndex].text;
+    setSelectedChildName(selectedName);
+
   };
 
 
@@ -64,11 +76,21 @@ const MultiUserOnboard = () => {
 
   useEffect(() => {
     dispatch(getAllZoneName()).then(res => {
-      const data = convertToFormikSelectJson(
+      let data = convertToFormikSelectJson(
         "zoneCode",
         "zoneName",
         res?.payload?.data
       )
+
+      data.sort((a, b) => {
+        if (a.value === "Select") {
+          return -1;
+        } else if (b.value === "Select") {
+          return 1;
+        }
+        return a.value.localeCompare(b.value);
+      });
+
       setRefferalList(data)
     })
   }, []);
@@ -93,17 +115,15 @@ const MultiUserOnboard = () => {
 
 
   return (
-    <section className="">
+    <section>
       <main className="">
         <div className="">
-          <h5 className="ml-4">Multi User Onboard</h5>
+          <h5 className="ml-4">Clientegration</h5>
         </div>
         <div className="container-fluid mt-5">
-
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-
           >
             {(formik) => (
               <Form className="row mt-5">
@@ -118,11 +138,10 @@ const MultiUserOnboard = () => {
                       formik.resetForm();
                       setSelectedvalue(e.target.value);
                       setSelectedName(e.target.options[e.target.selectedIndex].text);
-                      setShowSecondDropdown(true);
                       setShowForm(false);
                       setShowBankForm(false);
                       setOnboardTypeName('');
-                      setSelectedDocType('');
+                      setSelectedUserType('');
                       formik.setFieldValue("zone", e.target.value);
                     }}
                   />
@@ -140,57 +159,62 @@ const MultiUserOnboard = () => {
                         setShowForm(false);
                         setShowBankForm(false)
                         formik.setFieldValue("onboardType", e.target.value);
-                        setSelectedDocType("");
+                        setSelectedUserType("");
                       }}
                     />
                   </div>
                 }
                 {onboardTypeName === "referrer" || onboardTypeName === "bank" ? (
                   <div className="form-group col-md-3">
-                    <label className="form-label">{onboardTypeName === "referrer" ? "Add Child" : onboardTypeName === "bank" ? "Bank Child" : null}</label>
+                    <label className="form-label">{onboardTypeName === "referrer" ? "Select Referral" : onboardTypeName === "bank" ? "Select Bank" : null}</label>
                     <select
                       className="form-select"
-                      onChange={handleChange}
-                      value={selectedDocType}
+                      onChange={(e) => {
+                        handleChange(e)
+
+                      }
+                      }
+                      value={selectedUserType}
                     >
                       <option value="">
-                        {onboardTypeName === "referrer" ? "Select the merchant" : onboardTypeName === "bank" ? "Select the bank" : "Select a Document"}
+                        {onboardTypeName === "referrer" ? "Select" : onboardTypeName === "bank" ? "Select" : ""}
                       </option>
                       {childList?.map((data) => (
-                        <option value={data?.loginMasterId} key={data.value}>
-                          {data?.name}
+                        <option value={data?.loginMasterId} key={data?.value}>
+                          {data?.client_code ? `${data?.client_code?.toUpperCase()} - ${data?.name?.toUpperCase()}` : data?.name?.toUpperCase()}
                         </option>
                       ))}
                     </select>
-
-                  </div>) : null}
+                  </div>) : <></>}
               </Form>
             )}
           </Formik>
-          <div className="text-primary mb-3">
+          <div className="text-primary mb-3 d-flex">
             {selectedValue && (
-              <span>{`${selectedName ? selectedName + "/" : ""}${onboardTypeName ? `${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}` : ''}`}</span>
+              <React.Fragment>
+                <p className={classes.cb_nav}>{`${selectedName ? selectedName : ""}`}</p>
+                {onboardTypeName !== "Select" && onboardTypeName && <p className={classes.cb_nav}>{`${onboardTypeName === "Select" ? "" : ` ${selectOnboardType.find(option => option.key === onboardTypeName)?.value}`}`}</p>}
+                {selectedUserType && <p className={classes.cb_nav}>{selectedChildName}</p>}
+              </React.Fragment>
             )}
           </div>
 
-          <div>
-          </div>
-          {isEnable("normal_merchant") && <OnboardMerchant zoneCode={selectedValue} heading={false} />}
-
-          {isEnable("normal_referral") && <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={true} />}
-
-          {isEnable("referrer") && showForm && (
-            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedDocType} marginTopCss={true} />
-          )}
-
-          {isEnable("bank") && showBankForm && (
-            <BankMerchantOnboard zoneCode={selectedValue} referrerLoginId={selectedDocType} heading={false} />
-          )}
-
+          {isEnable("normal_merchant") && <div className="card py-2 px-2 mt-5">
+            <OnboardMerchant zoneCode={selectedValue} heading={false} />
+          </div>}
+          {isEnable("normal_referral") && <div className="card py-2 px-2 mt-5">
+            <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={false} />
+          </div>}
+          {isEnable("referrer") && showForm && <div className="card py-2 px-2 mt-5">
+            <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedUserType} marginTopCss={false} />
+          </div>}
+          {isEnable("bank") && showBankForm && <div className="card py-2 px-2 mt-5">
+            <BankMerchantOnboard zoneCode={selectedValue} referrerLoginId={selectedUserType} heading={false} />
+          </div>}
         </div>
 
       </main>
-    </section >
+    </section>
   )
 }
 export default MultiUserOnboard;

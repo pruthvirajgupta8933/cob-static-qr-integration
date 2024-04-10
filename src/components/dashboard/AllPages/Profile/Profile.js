@@ -16,8 +16,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { auth, productCatalogueSlice } = useSelector((state) => state);
   const { user } = auth
-  const { SubscribedPlanData, isLoading, walletCommission,errorState } = productCatalogueSlice
-  
+  const { SubscribedPlanData, isLoading, walletCommission, errorState } = productCatalogueSlice
+
 
   // console.log("SubscribedPlanData", SubscribedPlanData)
   const [walletDisplayData, setWalletDisplayData] = useState([])
@@ -89,31 +89,31 @@ const Profile = () => {
       <div className="row">
         <div className="col-2 bg-light p-1">
           {/* Tab navs */}
-          <div className="nav flex-column nav-pills text-start" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 1 && 'active-secondary'}`} onClick={() => handleTabClick(1)} id="v-pills-link1-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link1" aria-selected="true">
-        Profile
-      </a>
+          <div className="nav flex-column nav-pills text-start " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 1 && 'active-secondary'}`} onClick={() => handleTabClick(1)} id="v-pills-link1-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link1" aria-selected="true">
+              Profile
+            </a>
 
-      {/* Display loader if loading is true or if plan data is not available */}
-      {(loading || (roles.merchant && !walletDisplayData?.length)) && !errorState && (
-        <div className="d-flex align-items-center justify-content-center py-2">
-          <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
-            <span className="visually-hidden">Loading...</span>
+            {/* Display loader if loading is true or if plan data is not available */}
+            {(loading || (roles.merchant && !walletDisplayData?.length)) && !errorState && (
+              <div className="d-flex align-items-center justify-content-center py-2">
+                <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
+
+            {/* Display plan tab only if merchant role and wallet display data is available */}
+            {roles.merchant && walletDisplayData?.length > 0 && (
+              <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 2 && 'active-secondary'}`} onClick={() => handleTabClick(2)} id="v-pills-link2-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">
+                Plan
+              </a>
+            )}
           </div>
-        </div>
-      )}
-
-      {/* Display plan tab only if merchant role and wallet display data is available */}
-      {roles.merchant && walletDisplayData?.length > 0 && (
-        <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 2 && 'active-secondary'}`} onClick={() => handleTabClick(2)} id="v-pills-link2-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">
-          Plan
-        </a>
-      )}
-    </div>
 
           {/* Tab navs */}
         </div>
-        <div className="col-8">
+        <div className="col-lg-8 col-md-10 col-sm-10">
           {/* Tab content */}
           <div className="tab-content" id="v-pills-tabContent">
             {currentTab === 1 && <UserDetails />}
