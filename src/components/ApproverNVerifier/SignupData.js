@@ -354,6 +354,7 @@ useEffect(() => {
           {/* {!loadingState && signupData?.length !== 0 && ( */}
             <>
               <div className="row mt-4">
+              {signupData.length === 0 ? "" :
                 <div className="form-group col-lg-3 ml-2">
                   <SearchFilter
                     kycSearch={kycSearch}
@@ -361,8 +362,8 @@ useEffect(() => {
                     searchByText={searchByText}
                     setSearchByDropDown={setSearchByDropDown}
                   />
-                  <div></div>
-                </div>
+                  
+                </div>}
                 {signupData.length === 0 ? "" :
                 <div className="form-group col-lg-3">
                   <CountPerPageFilter
