@@ -2,14 +2,10 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import widgetService from '../../services/widget.service';
-import axios from 'axios';
-import { WIDGET_URL } from '../../config';
 import FormikController from '../../_components/formik/FormikController';
-import { FaCopy } from 'react-icons/fa';
 import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
 import { toast } from "react-toastify";
-import ReactTooltip from 'react-tooltip';
+
 
 
 
@@ -19,29 +15,14 @@ function MyForm() {
     const codeSnippetRef = useRef(null);
     const [isCopied, setIsCopied] = useState(false);
     const [show, setShow] = useState(true)
-    const [clientKey, setClientKey] = useState("")
-    const [disable, setDisable] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+     const [isLoading, setIsLoading] = useState(true)
     const { user } = useSelector((state) => state.auth);
     const widgetDetail = useSelector((state) => state?.widget?.widgetDetail?.data)
 
     const activeStatus = widgetDetail?.status
-    const postDataSlice = useSelector(state => state?.widget?.postdata);
-    const client_key = postDataSlice?.data?.client_key;
     
-
-
-
-
-    // useEffect(() => {
-    //     sessionStorage.setItem('client_key', client_key);
-    // }, [client_key]); 
-
-
-
-
-
-    let clientMerchantDetailsList = [];
+    
+ let clientMerchantDetailsList = [];
     let clientCode = "";
     if (user && user.clientMerchantDetailsList === null) {
 
@@ -89,7 +70,7 @@ function MyForm() {
 
     const handleSubmit = (values) => {
 
-        setDisable(true);
+       
         const postData = {
 
             "client_name": values.client_name,
@@ -113,10 +94,10 @@ function MyForm() {
                     res?.meta?.requestStatus === "fulfilled"
 
                 ) {
-                    setDisable(false);
-                    const data = res?.payload?.data?.client_key
+                    
+                   
                     dispatch(widgetDetails(clientCode))
-                    setClientKey(data)
+                   
                     setShow(false)
                     toast.success(res.payload?.message);
 
@@ -126,9 +107,7 @@ function MyForm() {
             }).catch((error) => {
                 toast.error(error?.res?.data.message);
 
-                // console.log("error",error);
-                // console.log("error", error)
-                // toast.error("Something went wrong");
+               
             })
 
 
@@ -154,11 +133,7 @@ function MyForm() {
 
     };
 
-    // useEffect(() => {
-    //     // Access the DOM element and set the client_key attribute
-    //     const sabpaisaDiv = document.getElementById('sabpaisa');
-    //     sabpaisaDiv.setAttribute('client_key', clientKey);
-    //   }, [clientKey]);
+   
 
 
     return (

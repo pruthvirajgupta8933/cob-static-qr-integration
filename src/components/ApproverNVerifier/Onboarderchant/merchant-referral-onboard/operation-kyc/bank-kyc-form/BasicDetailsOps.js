@@ -8,9 +8,8 @@ import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { saveMerchantBasicDetails, updateBasicDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
+import {  kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
-import { updateBasicDetails } from '../../../../../../services/approver-dashboard/merchantReferralOnboard.service';
 
 
 function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }) {

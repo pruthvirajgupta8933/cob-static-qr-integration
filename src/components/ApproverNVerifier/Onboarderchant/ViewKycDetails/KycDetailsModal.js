@@ -2,8 +2,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   kycDocumentUploadList,
-  businessCategoryById,
-  businessTypeById,
   documentsUpload,
   GetKycTabsStatus,
   kycUserList,
@@ -88,31 +86,9 @@ const KycDetailsModal = (props) => {
           setDocTypeList(data);
         });
 
+}
 
-        // dispatch(
-        //   businessTypeById({ business_type_id: selectedUserData?.businessType })
-        // ).then((resp) => {
-        //   setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
-        // });
-
-
-      }
-
-      // const busnCatId = parseInt(selectedUserData?.businessCategory);
-      // if (isNumber(busnCatId) && busnCatId !== "" && selectedUserData?.businessCategory !== null && busnCatId !== undefined) {
-      //   dispatch(
-      //     businessCategoryById({ category_id: selectedUserData?.businessCategory })
-      //   ).then((resp) => {
-      //     // console.log(resp,"response")
-      //     setBusinessCategoryResponse(resp?.payload[0]?.category_name);
-      //   });
-      // }
-
-      // console.log("selectedUserData?.platformId", selectedUserData?.platformId)
-
-      // selectedUserData?.platformId && approverDashboardService.getPlatformById(selectedUserData?.platformId).then(resp => {
-      //   setPlatform(resp.data.platformName)
-      // })
+     
 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
