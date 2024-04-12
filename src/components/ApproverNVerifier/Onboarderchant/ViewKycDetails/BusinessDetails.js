@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import { verifyKycEachTab, GetKycTabsStatus, getMerchantpanData } from "../../../../slices/kycSlice"
 import { v4 as uuidv4 } from 'uuid';
-import Collapse from 'react-collapse';
-import { clearMessage } from '../../../../slices/message';
+
 import ViewKycCollapse from './ViewKycCollapse';
 import CustomLoader from '../../../../_components/loader';
 
@@ -96,7 +95,7 @@ const { user } = auth;
 
     } catch (error) {
       
-      // toast.error("Try Again Network Error");
+     
     }
   };
 

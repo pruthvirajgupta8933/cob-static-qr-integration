@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId, saveKycConsent } from "../../../../../../slices/kycSlice";
-import { checkClientCodeSlice, createClientProfile } from "../../../../../../slices/auth";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { resetFormState } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { axiosInstanceJWT } from "../../../../../../utilities/axiosInstance";
@@ -67,39 +66,11 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
             await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
 
 
-            // const postData = {
-            //     clientId: stepRespTwo?.data?.clientId,
-            //     applicationName: "Paymentgateway",
-            //     planId: "1",
-            //     planName: "SME",
-            //     applicationId: "10"
-            // }
-
-            // await axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData)
+           
 
             setIsDisable(false);
 
-            // dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
-            //     let newClientCode = ""
-            //     // if client code available return status true, then make request with the given client
-            //     if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-            //         newClientCode = res?.payload?.clientCode
-            //     } else {
-            //         newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-            //     }
-
-            //     // update new client code
-            //     const data = {
-            //         loginId: merchantKycData?.loginMasterId,
-            //         clientName: merchantKycData?.name,
-            //         clientCode: newClientCode,
-            //     };
-
-            //     const stepRespTwo = await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
-
-            //     dispatch(createClientProfile(data)).then(clientProfileRes => {
-            //     }).catch(err => console.log(err));
-            // })
+           
 
         }
 
