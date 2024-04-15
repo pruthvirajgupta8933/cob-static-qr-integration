@@ -29,9 +29,10 @@ let purchaseAmt = 0;
                     data={walletDisplayData}
                 
                 />
+                
             </div>
 
-            {isLoading && <h6 className='text-center'>Loading...</h6>}
+            
         </div>
     )
 }

@@ -56,15 +56,15 @@ function BankDetails(props) {
     { key: "1", value: "Current" },
     { key: "2", value: "Saving" },
   ];
-  
- 
+
+
 
 
   const initialValues = {
-    account_holder_name: KycList?.merchant_account_details?.account_holder_name? KycList?.merchant_account_details?.account_holder_name : "",
+    account_holder_name: KycList?.merchant_account_details?.account_holder_name ? KycList?.merchant_account_details?.account_holder_name : "",
     account_number: KycList?.merchant_account_details?.account_number,
     oldAccountNumber: KycList?.merchant_account_details?.account_number,
-    ifsc_code: KycList?.merchant_account_details?.ifsc_code ,
+    ifsc_code: KycList?.merchant_account_details?.ifsc_code,
     oldIfscCode: KycList?.merchant_account_details?.ifsc_code,
     bank_id: KycList?.merchant_account_details?.bankId, // change stste
     account_type: KycList?.merchant_account_details?.accountType === "Current" ? 1 : KycList?.merchant_account_details?.accountType === "Saving" ? 2 : "",
@@ -320,7 +320,7 @@ function BankDetails(props) {
 
                   {/* if found any error in validation */}
                   {/* {console.log("errors",errors)} */}
-                  {(values?.ifsc_code !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
+                  {(values?.ifsc_code !== null && values?.ifsc_code !== undefined && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -365,7 +365,7 @@ function BankDetails(props) {
                   />
 
                   {/* if both values are same then display verified icon */}
-                  {(values?.account_number !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
+                  {(values?.account_number !== null && values?.account_number !== undefined && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
                     <img
                       src={gotVerified}
                       alt=""
@@ -496,8 +496,8 @@ function BankDetails(props) {
                   >
                     {disable && <>
                       <span className="mr-2">
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      <span className="sr-only">Loading...</span>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="sr-only">Loading...</span>
                       </span>
                     </>}
                     {buttonText}
