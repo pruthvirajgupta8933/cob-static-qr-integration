@@ -42,9 +42,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string()
-        .nullable()
-        .required("Required")
-        .max(10, "PAN should be exactly 10 characters long"),
+            .nullable()
+            .required("Required")
+            .max(10, "PAN should be exactly 10 characters long"),
         website: Yup.string()
             .nullable()
             .required('Website is required')
@@ -195,8 +195,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         }
     };
 
-   
-return (
+
+    return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel" aria-labelledby="v-pills-link1-tab">
             <Formik
                 initialValues={initialValues}
@@ -215,7 +215,7 @@ return (
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label mt-0 py-1">
-                                    PAN <span className="text-danger"></span>
+                                    Authorized Signatory PAN <span className="text-danger"></span>
                                 </label>
                                 <div className="input-group">
                                     <Field
