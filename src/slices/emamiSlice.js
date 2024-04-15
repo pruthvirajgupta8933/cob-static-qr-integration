@@ -74,7 +74,7 @@ export const challanTransactions = createAsyncThunk(
         
       },
       [challanTransactions.fulfilled]: (state, action) => {
-        console.log("action",action)
+        
         state.isLoading = false;
         state.challanTransactionData=action.payload
        

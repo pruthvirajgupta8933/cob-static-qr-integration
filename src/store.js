@@ -23,6 +23,7 @@ import notificationSlice from "./slices/notification-slice/notificationSlice"
 import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice"
 import { widgetReducer } from "./slices/widgetSlice";
 import { themeReducer } from "./slices/theme/themeSlice";
+import { signupDataReducer } from "./slices/signupDataSlice";
 
 
 
@@ -33,6 +34,7 @@ const reducer = {
   subscription: reducerSubscription,
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
+  signupData:signupDataReducer,
   widget: widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,

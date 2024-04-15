@@ -268,7 +268,7 @@ const OnboardedReport = () => {
           )}
         </Formik>
 
-        {searchingData?.length === 0 && (
+        {!searchingData?.length === 0 && (
           <h6 className="text-center font-weight-bold">No Data Found</h6>
         )}
 
