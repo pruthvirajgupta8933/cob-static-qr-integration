@@ -8,11 +8,11 @@ import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { saveMerchantBasicDetails, updateBasicDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import {  kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
+import { kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
 
-function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }) {
+function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
@@ -38,8 +38,8 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
         password: merchantBasicDetails?.resp?.password ?? "",
         username: merchantKycData?.username ?? "",
         isEditTable: loginIdFromState,
-        zone_code:"",
-        bank_login_id:""
+        zone_code: "",
+        bank_login_id: ""
 
     };
 
@@ -76,6 +76,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
             .required("Required")
             .min(6, "Minimum 6 characters are allowed")
             .max(100, "Maximum 100 characters are allowed")
+            .matches(Regex.userNameRegex, RegexMsg.userNameRegex)
             .nullable(),
     });
 
@@ -90,13 +91,13 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
         const updateReqBody = {
             "login_id": merchantOnboardingProcess?.merchantLoginId,
             "name": fullName,
-             "email": email_id,
+            "email": email_id,
             "mobileNumber": mobileNumber,
             "business_category": business_category,
             "business_type": business_type,
             "updated_by": auth?.user?.loginId,
             "password": merchantKycData?.secret_key,
-            "zone_code":zoneCode,
+            "zone_code": zoneCode,
 
         }
 
@@ -108,16 +109,16 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput,zoneCode,bankLoginId }
             business_type: business_type,
             password: password,
             username: username,
-            bank_login_id:auth?.user?.loginId,
+            bank_login_id: auth?.user?.loginId,
             // isDirect: false,
             created_by: auth?.user?.loginId,
             // updated_by: auth?.user?.loginId,
-           
+
         }
         if (bankLoginId) {
             saveDetailsReqBody.bank_login_id = bankLoginId;
         }
-        
+
         if (zoneCode) {
             saveDetailsReqBody.zone_code = zoneCode;
         }

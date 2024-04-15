@@ -9,9 +9,10 @@ import { Prompt } from "react-router-dom";
 import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId } from "../../../../../slices/kycSlice";
 import { resetStateMfo, updateOnboardingStatus } from '../../../../../slices/approver-dashboard/merchantReferralOnboardSlice'
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from '../../../../../utilities/enums'
+import classes from "./OperationKycModalForOnboard.module.css"
 
 
-function OperationKycModalForOnboard({zoneCode,bankLoginId,heading}) {
+function OperationKycModalForOnboard({ zoneCode, bankLoginId, heading }) {
     const dispatch = useDispatch()
     const [currentTab, setCurrentTab] = useState(1)
     const { merchantReferralOnboardReducer, kyc } = useSelector(state => state)
@@ -23,7 +24,10 @@ function OperationKycModalForOnboard({zoneCode,bankLoginId,heading}) {
     const edit = searchParams.get('edit')
 
     const handleTabClick = (currenTabVal) => {
-        setCurrentTab(currenTabVal)
+        if (isOnboardStartM) {
+            setCurrentTab(currenTabVal)
+        }
+
     };
 
     useEffect(() => {
@@ -64,6 +68,7 @@ function OperationKycModalForOnboard({zoneCode,bankLoginId,heading}) {
 
 
     const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart;
+    console.log("isOnboardStartM", isOnboardStartM)
 
     const kycStatusArr = [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].toString().toLowerCase().split(",");
 
@@ -93,19 +98,19 @@ function OperationKycModalForOnboard({zoneCode,bankLoginId,heading}) {
                     onClick={() => handleTabClick(1)} id="v-pills-link1-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link1" aria-selected="true">Basic
                     Details</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 2 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}  //yha par cursor css dalni hai "disabled" par
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 2 && 'active-secondary'}  ${!isOnboardStartM && classes.not_allowed}`}
                     onClick={() => handleTabClick(2)} id="v-pills-link2-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">Bank
                     Details</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 3 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 3 && 'active-secondary'} ${!isOnboardStartM && classes.not_allowed}`}
                     onClick={() => handleTabClick(3)} id="v-pills-link3-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link3" aria-selected="false">Business
                     Details</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 4 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 4 && 'active-secondary'} ${!isOnboardStartM && classes.not_allowed}`}
                     onClick={() => handleTabClick(4)} id="v-pills-link4-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link4" aria-selected="false">Document
                     Center</a>
-                <a className={`nav-link cursor_pointer px-2 ${currentTab === 5 && 'active-secondary'} ${!isOnboardStartM && 'not-allowed'}`}
+                <a className={`nav-link cursor_pointer px-2 ${currentTab === 5 && 'active-secondary'} ${!isOnboardStartM && classes.not_allowed}`}
                     onClick={() => handleTabClick(5)} id="v-pills-link4-tab" data-mdb-toggle="pill"
                     href={() => false} role="tab" aria-controls="v-pills-link4" aria-selected="false">Submit KYC</a>
             </div>
@@ -115,7 +120,7 @@ function OperationKycModalForOnboard({zoneCode,bankLoginId,heading}) {
             {/* Tab content */}
 
             <div className="tab-content" id="v-pills-tabContent">
-                {currentTab === 1 && <BasicDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} zoneCode={zoneCode} bankLoginId={bankLoginId}  />}
+                {currentTab === 1 && <BasicDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} zoneCode={zoneCode} bankLoginId={bankLoginId} />}
                 {currentTab === 2 && <BankDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
                 {currentTab === 3 && <BusinessDetailsOps setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}
                 {currentTab === 4 && <DocumentCenter setCurrentTab={setCurrentTab} isEditableInput={isEditableInput} />}

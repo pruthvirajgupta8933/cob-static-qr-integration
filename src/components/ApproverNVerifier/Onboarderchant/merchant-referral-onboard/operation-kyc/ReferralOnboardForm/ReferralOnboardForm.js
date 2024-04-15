@@ -63,7 +63,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .nullable(),
         username: Yup.string().when('isPasswordReq', {
             is: true,
-            then: Yup.string().required('Required'),
+            then: Yup.string().matches(Regex.userNameRegex, RegexMsg.userNameRegex).required('Required'),
             otherwise: Yup.string(),
         }),
         mobileNumber: Yup.string()

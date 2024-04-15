@@ -131,7 +131,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
     }, []);
 
-   
+
 
     const ifscValidationNo = (values, setFieldValue) => {
         setLoading(true)
@@ -156,14 +156,14 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
                         }
 
-                        
+
                     }).catch(err => {
                         // console.log(err?.payload?.bankName)
                     })
                     setFieldValue("branch", res?.payload?.branch)
                     setFieldValue("ifsc_code", values)
                     setFieldValue("isIfscVerified", 1)
-                   
+
                 } else {
                     setLoading(false)
                     setFieldValue("isIfscVerified", "")
@@ -187,7 +187,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                 res?.payload?.valid === true
             ) {
                 setLoading(false)
-                
+
                 const fullName = res?.payload?.first_name + ' ' + res?.payload?.last_name;
                 setFieldValue("account_holder_name", fullName);
 
@@ -343,7 +343,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                     }
 
                                     {/* if found any error in validation */}
-                                    
+
                                     {(values?.ifsc_code !== null && (errors.hasOwnProperty("isAccountNumberVerified") || errors.hasOwnProperty("isIfscVerified"))) &&
                                         <div className="input-group-append">
                                             <button className="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
@@ -373,17 +373,17 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                 {
                                     <ErrorMessage name="account_number">
                                         {(msg) => (
-                                            <p className="text-danger">
+                                            <span className="text-danger">
                                                 {msg}
-                                            </p>
+                                            </span>
                                         )}
                                     </ErrorMessage>
                                 }
 
                                 {errors?.isAccountNumberVerified && (
-                                    <p className="notVerifiedtext- text-danger">
+                                    <span className="text-danger">
                                         {errors?.isAccountNumberVerified}
-                                    </p>
+                                    </span>
                                 )}
                             </div>
                         </div>
@@ -449,7 +449,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                         </div>
                         <div className="row">
                             <div className="col-lg-6 mt-2">
-                                
+
                                 {!isEditableInput &&
                                     <button
                                         className="cob-btn-primary btn text-white btn-sm"
