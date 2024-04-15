@@ -147,6 +147,7 @@ function DashboardMainContent() {
                 };
 
                 await axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData).then((res) => {
+                    
                     dispatch(merchantSubscribedPlanData({ "clientId": stepRespTwo?.data?.clientId }))
 
                 })
@@ -180,7 +181,7 @@ function DashboardMainContent() {
 
     useEffect(() => {
         // fetch subscribe product data
-        if (location?.pathname === "/dashboard") {
+        if ( roles.merchant && location?.pathname === "/dashboard") {
             dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
         }
     }, [location])

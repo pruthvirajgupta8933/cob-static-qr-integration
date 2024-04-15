@@ -13,6 +13,8 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
 import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
+import { fetchSignupData } from "../../slices/signupDataSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -22,21 +24,42 @@ const validationSchema = Yup.object({
 });
 
 const SignupData = () => {
+ 
   const [signupData, setSignupData] = useState([]);
+  console.log("signupData",signupData);
+  console.log("signupData",signupData.length);
+  
   const [filterSignupData, setFilterSignupData] = useState([]);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
 
+  const dispatch = useDispatch();
+
 
   const [loadingState, setLoadingState] = useState(false);
   const [dataCount, setDataCount] = useState(0);
+  
 
   const [pageSize, setPageSize] = useState(10);
+  
   const [currentPage, setCurrentPage] = useState(1);
+  const [buttonClicked, isButtonClicked] = useState(false);
+
+  const signupDataList = useSelector(
+    (state) => state?.signupData.signupDataDetails
+
+      )
+  
+   console.log("signupDataList",signupDataList );
+
 
 
   
+
+
+
+
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
@@ -56,7 +79,7 @@ const SignupData = () => {
     fieldType === "text"
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
-    setSearchText(e); 
+    setSearchText(e);
   };
 
   const searchByText = (text) => {
@@ -70,59 +93,69 @@ const SignupData = () => {
     );
   };
 
-useEffect(() => {
-    const postData = {
-     
-      from_date:  moment(saveData?.from_date).startOf('day').format('YYYY-MM-DD'),
-      to_date:  moment(saveData?.to_date).startOf('day').format('YYYY-MM-DD'),
-    };
-     axiosInstanceJWT
-      .post(
-        `${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,
-        postData
-      )
-      .then((resp) => {
-        setSignupData(resp?.data?.Merchant_Info);
-        setFilterSignupData(resp?.data?.Merchant_Info);
-        
-        setShow(true);
+
+  useEffect(() => {
+    const signupDataDataList = signupDataList?.Merchant_Info
+    
+    const dataCount =  signupDataList?.count;
+   
+if (signupDataDataList) {
+      setSignupData(signupDataDataList);
+      setFilterSignupData(signupDataDataList);
+     setDataCount(dataCount)
+    }
+  }, [signupDataList]); //
+
+  
+
+
+
+
+  useEffect(() => {
+    if (saveData?.from_date && saveData?.to_date) {
+      const postData = {
+        from_date: moment(saveData.from_date).startOf('day').format('YYYY-MM-DD'),
+        to_date: moment(saveData.to_date).startOf('day').format('YYYY-MM-DD'),
+        page: currentPage,
+        pageSize: pageSize
+      };
+      setLoadingState(true)
+  
+      dispatch(fetchSignupData(postData)).then((resp)=>{
         setLoadingState(false);
-        setDataCount(resp?.data?.count);
       })
-      .catch((error) => {
-        setLoadingState(false);
-      });
-  }, [currentPage, pageSize]);
+       
+        .catch((error) => {
+          setLoadingState(false);
+        });
+    }
+  }, [pageSize, currentPage]);
+  
+
 
   const handleSubmit = (values) => {
-
-    setSaveData(values);
+    
     setLoadingState(true);
     const postData = {
       from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
+      page: currentPage,
+      pageSize: pageSize
     };
-    let apiRes = axiosInstanceJWT
-      .post(
-        `${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,
-        postData
-      )
+    setSaveData(values);
+    dispatch(fetchSignupData(postData))
       .then((resp) => {
-        setSignupData(resp?.data?.Merchant_Info);
-        setFilterSignupData(resp?.data?.Merchant_Info);
-        
-        setShow(true);
+        isButtonClicked(true)
         setLoadingState(false);
-        setDataCount(resp?.data?.count);
+        
       })
       .catch((error) => {
         setLoadingState(false);
-        apiRes = error.response;
-        toast.error(apiRes?.data?.message);
+        
       });
   };
 
-  const exportToExcelFn = () => {      
+  const exportToExcelFn = () => {
     const excelHeaderRow = [
       "S.No",
       "Name",
@@ -192,10 +225,10 @@ useEffect(() => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       return state
-  }
+    }
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
@@ -209,27 +242,28 @@ useEffect(() => {
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
-  
+
 
   const rowSignUpData = [
-    { id: "1", 
-    name: "S. No.", 
-    selector: (row) => row.sno, 
-    sortable: true ,
-    width:"80px"
-  },
+    {
+      id: "1",
+      name: "S. No.",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "80px"
+    },
     {
       id: "2",
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      width:"150px"
+      width: "150px"
     },
     {
       id: "3",
       name: "Email",
       selector: (row) => row.email,
-      width:"180px"
+      width: "180px"
     },
     {
       id: "4",
@@ -239,9 +273,9 @@ useEffect(() => {
     {
       id: "5",
       name: "Registered Date",
-      selector: (row) => DateFormatter(row.createdDate,true),
+      selector: (row) => DateFormatter(row.createdDate, true),
       sortable: true,
-      width:"170px"
+      width: "170px"
     },
     {
       id: "6",
@@ -294,37 +328,37 @@ useEffect(() => {
           >
             {(formik) => (
               <Form>
-                  <div className="row">
-                    <div className="form-group  col-md-3 ">
+                <div className="row">
+                  <div className="form-group  col-md-3 ">
                     <FormikController
-                          control="date"
-                          label="From Date"
-                          id="from_date"
-                          name="from_date"
-                          value={formik.values.from_date ? new Date(formik.values.from_date) : null}
-                          onChange={date => formik.setFieldValue('from_date', date)}
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["from_date"]}
-                        />
-                    </div>
-                    <div className="form-group col-md-3 ml-3">
+                      control="date"
+                      label="From Date"
+                      id="from_date"
+                      name="from_date"
+                      value={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                      onChange={date => formik.setFieldValue('from_date', date)}
+                      format="dd-MM-y"
+                      clearIcon={null}
+                      className="form-control rounded-0 p-0"
+                      required={true}
+                      errorMsg={formik.errors["from_date"]}
+                    />
+                  </div>
+                  <div className="form-group col-md-3 ml-3">
                     <FormikController
-                          control="date"
-                          label="End Date"
-                          id="to_date"
-                          name="to_date"
-                          value={formik.values.to_date ? new Date(formik.values.to_date) : null}
-                          onChange={date => formik.setFieldValue('to_date', date)}
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["to_date"]}
-                        />
-                    </div>
+                      control="date"
+                      label="End Date"
+                      id="to_date"
+                      name="to_date"
+                      value={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                      onChange={date => formik.setFieldValue('to_date', date)}
+                      format="dd-MM-y"
+                      clearIcon={null}
+                      className="form-control rounded-0 p-0"
+                      required={true}
+                      errorMsg={formik.errors["to_date"]}
+                    />
+                  </div>
                   <div className="row">
                     <div className="col-md-4">
                       <button
@@ -350,49 +384,49 @@ useEffect(() => {
               </Form>
             )}
           </Formik>
-        
+
           {/* {!loadingState && signupData?.length !== 0 && ( */}
-            <>
-              <div className="row mt-4">
-              {signupData.length === 0 ? "" :
-                <div className="form-group col-lg-3 ml-2">
-                  <SearchFilter
-                    kycSearch={kycSearch}
-                    searchText={searchText}
-                    searchByText={searchByText}
-                    setSearchByDropDown={setSearchByDropDown}
-                  />
-                  
-                </div>}
-                {signupData.length === 0 ? "" :
-                <div className="form-group col-lg-3">
-                  <CountPerPageFilter
-                    pageSize={pageSize}
-                    dataCount={dataCount}
-                    changePageSize={changePageSize}
-                  />
-                </div>}
-              </div>
-              <div className="container-fluid ">
-                <div className="scroll overflow-auto">
-                {signupData.length === 0 ? "" :<h6>Total Count : {dataCount}</h6>}
-                {signupData.length === 0  && <h5 className="text-center font-weight-bold mt-5">
-            No Data Found
-          </h5>}
-                  {!loadingState && signupData?.length !== 0 && (
-                    <Table
-                      row={rowSignUpData}
-                      data={signupData}
-                      dataCount={dataCount}
-                      pageSize={pageSize}
-                      currentPage={currentPage}
-                      changeCurrentPage={changeCurrentPage}
-                    />
-                  )}
-                </div>
-                <CustomLoader loadingState={loadingState} />
-              </div>
-            </>
+
+          <div className="row mt-4">
+            {signupData.length === 0 ? "" :
+              <div className="form-group col-lg-3 ml-2">
+                <SearchFilter
+                  kycSearch={kycSearch}
+                  searchText={searchText}
+                  searchByText={searchByText}
+                  setSearchByDropDown={setSearchByDropDown}
+                />
+
+              </div>}
+            {signupData.length === 0 ? "" :
+              <div className="form-group col-lg-3">
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={dataCount}
+                  changePageSize={changePageSize}
+                />
+              </div>}
+          </div>
+          <div className="container-fluid ">
+            <div className="scroll overflow-auto">
+              {signupData.length === 0 ? "" : <h6>Total Count : {dataCount}</h6>}
+              {buttonClicked === true && signupData.length === 0 && <h5 className="text-center font-weight-bold mt-5">
+                No Data Found
+              </h5>}
+              {!loadingState && signupData?.length !== 0 && (
+                <Table
+                  row={rowSignUpData}
+                  data={signupData}
+                  dataCount={dataCount}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={changeCurrentPage}
+                />
+              )}
+            </div>
+            <CustomLoader loadingState={loadingState} />
+          </div>
+
           {/* )} */}
         </div>
       </main>
