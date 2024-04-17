@@ -20,6 +20,7 @@
     "file-saver": "^2.0.5",
     "formik": "^2.2.9",
     "gapi-script": "^1.2.0",
+    "highlight.js": "^11.9.0",
     "history": "^5.0.1",
     "jquery": "^3.6.4",
     "js-loader": "^0.1.1",
