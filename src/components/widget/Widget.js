@@ -5,24 +5,21 @@ import * as Yup from 'yup';
 import FormikController from '../../_components/formik/FormikController';
 import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
 import { toast } from "react-toastify";
-
-
-
-
+import hljs from 'highlight.js';
 
 function MyForm() {
     const dispatch = useDispatch();
     const codeSnippetRef = useRef(null);
     const [isCopied, setIsCopied] = useState(false);
     const [show, setShow] = useState(true)
-     const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const { user } = useSelector((state) => state.auth);
     const widgetDetail = useSelector((state) => state?.widget?.widgetDetail?.data)
 
     const activeStatus = widgetDetail?.status
-    
-    
- let clientMerchantDetailsList = [];
+
+
+    let clientMerchantDetailsList = [];
     let clientCode = "";
     if (user && user.clientMerchantDetailsList === null) {
 
@@ -70,7 +67,7 @@ function MyForm() {
 
     const handleSubmit = (values) => {
 
-       
+
         const postData = {
 
             "client_name": values.client_name,
@@ -94,10 +91,10 @@ function MyForm() {
                     res?.meta?.requestStatus === "fulfilled"
 
                 ) {
-                    
-                   
+
+
                     dispatch(widgetDetails(clientCode))
-                   
+
                     setShow(false)
                     toast.success(res.payload?.message);
 
@@ -107,7 +104,7 @@ function MyForm() {
             }).catch((error) => {
                 toast.error(error?.res?.data.message);
 
-               
+
             })
 
 
@@ -132,8 +129,15 @@ function MyForm() {
 
 
     };
+  
+
+    useEffect(() => {
+        hljs.highlightAll();
+    }, []);
 
    
+
+
 
 
     return (
@@ -211,7 +215,7 @@ function MyForm() {
                                             </ErrorMessage>
                                         }
                                     </div>
-                                   
+
                                     <div className="col-sm-6 col-md-6 col-lg-6 ">
                                         <label className="col-form-label mt-0 p-2" data-tip="Enter Website URL (e.g., https://www.example.com)">
                                             Client URL<span style={{ color: "red" }}>*</span>
@@ -237,10 +241,10 @@ function MyForm() {
                                             )}
                                         </ErrorMessage>
                                         }
-                                       
+
 
                                     </div>
-                                    
+
 
 
                                 </div>
@@ -400,15 +404,17 @@ function MyForm() {
                                             <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                                         </span>
                                     </div>
-                                    <pre ref={codeSnippetRef}>
-                                        <code>
-                                            &lt;div id="sabpaisa" client_code="{clientCode}" client_key="{widgetDetail?.client_key}"&gt;&lt;/div&gt; <br /><br />
-                                            &lt;script id="widget-1" src="https://pg-widget-button-staging.web.app/src/widgets/Widget1/Widget1.js"
-                                            <br />
-                                            &nbsp;data-config="https://pg-widget-button-staging.web.app/src/widgets/Widget1/config.json"&gt;&lt;/script&gt;
-                                            <br />
-                                            &lt;script src="https://payment-widget-sabpaisa.web.app/widget-bundle.js"&gt;&lt;/script&gt;
-                                            <br />
+                                    <pre>
+                                        <code className="html" ref={(node) => {
+                                            if (node) {
+                                                codeSnippetRef.current = node;
+                                                hljs.highlightBlock(node);
+                                            }
+                                        }}>
+                                            &lt;div id="sabpaisa" client_code="{clientCode}" client_key="{widgetDetail?.client_key}"&gt;&lt;/div&gt; {'\n'}
+                                            &lt;script id="widget-1" src="https://pg-widget-button-staging.web.app/src/widgets/Widget1/Widget1.js" {'\n'}
+                                            &nbsp;data-config="https://pg-widget-button-staging.web.app/src/widgets/Widget1/config.json"&gt;&lt;/script&gt; {'\n'}
+                                            &lt;script src="https://payment-widget-sabpaisa.web.app/widget-bundle.js"&gt;&lt;/script&gt; {'\n'}
                                         </code>
                                     </pre>
                                 </div>

@@ -6,11 +6,15 @@ import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
 import { toast } from "react-toastify";
 import { logout } from "../../../slices/auth";
+import {
+  useRouteMatch, Link
+} from "react-router-dom";
 
 function ChangePassword() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { loginId, userName } = user;
+  let { path } = useRouteMatch();
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,
@@ -108,7 +112,7 @@ function ChangePassword() {
           <div className="right_layout my_account_wrapper">
             <h5 className="right_side_heading">Change Password</h5>
 
-            <div className="row">
+            <div className="row mt-3">
 
 
               <div className="col-lg-12">
@@ -210,15 +214,23 @@ function ChangePassword() {
                       </ErrorMessage>
 
                     </div>
-                    <div className="col-lg-4 mb-3">
-                      <button
-                        type="sumbit"
-                        className=" btn bttn font-weight-bold cob-btn-primary w-100"
-
-                      >
-                        Update Password
-                      </button>
+                      <div className="row">
+                      <div className="col-lg-2 mb-3 ">
+                        <button
+                          type="submit"
+                          className="btn bttn font-weight-bold cob-btn-primary ml-3"
+                        >
+                          Update Password
+                        </button>
+                      </div>
+                      <div className="col-lg-4 mb-3">
+                        <Link to={`${path}/profile`} className="btn btn-light ml-3">
+                          Cancel
+                        </Link>
+                      </div>
                     </div>
+
+
 
 
                     <br />
