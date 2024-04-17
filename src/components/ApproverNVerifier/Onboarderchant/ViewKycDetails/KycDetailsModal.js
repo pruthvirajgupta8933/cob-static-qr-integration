@@ -42,9 +42,9 @@ const KycDetailsModal = (props) => {
 
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
-  const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
-  const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
-  const [platform, setPlatform] = useState("");
+  // const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
+  // const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
+  // const [platform, setPlatform] = useState("");
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
 
@@ -86,9 +86,9 @@ const KycDetailsModal = (props) => {
           setDocTypeList(data);
         });
 
-}
+      }
 
-     
+
 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -166,7 +166,7 @@ const KycDetailsModal = (props) => {
               merchantKycId={merchantKycId}
               role={roles}
             />}
-      
+
 
           <CompleteVerification
             merchantKycId={merchantKycId}
@@ -206,7 +206,7 @@ const KycDetailsModal = (props) => {
     [props]
   )
 
- 
+
 
   return (
     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
