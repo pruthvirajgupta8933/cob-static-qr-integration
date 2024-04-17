@@ -4,8 +4,6 @@ import { Formik, Form } from "formik";
 import API_URL from "../../config";
 import moment from "moment";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
-import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
@@ -26,10 +24,7 @@ const validationSchema = Yup.object({
 const SignupData = () => {
  
   const [signupData, setSignupData] = useState([]);
-  console.log("signupData",signupData);
-  console.log("signupData",signupData.length);
-  
-  const [filterSignupData, setFilterSignupData] = useState([]);
+ const [filterSignupData, setFilterSignupData] = useState([]);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
@@ -51,7 +46,7 @@ const SignupData = () => {
 
       )
   
-   console.log("signupDataList",signupDataList );
+  
 
 
 
