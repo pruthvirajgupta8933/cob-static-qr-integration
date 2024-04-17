@@ -51,13 +51,33 @@ const CompleteVerification = (props) => {
   // save BAF data
   const saveBafData = async (data) => {
 
-    const expectedTxn = data.expectedTransactions?.split("-");
-    const numbers = expectedTxn && expectedTxn.map(part => parseInt(part));
-    const maxValueTxn = numbers && Math.max(...numbers);
-    const ticketSize = data.avg_ticket_size?.split("-");
-    const avgTicket = ticketSize && ticketSize.map(part => parseInt(part))
-    const maxTicketSize = avgTicket && Math.max(...avgTicket);
+    // const expectedTxn = data.expectedTransactions?.split("-");
+    // const numbers = expectedTxn && expectedTxn.map(part => parseInt(part));
+    // const maxValueTxn = numbers && Math.max(...numbers);
+    // const ticketSize = data.avg_ticket_size?.split("-");
+    // const avgTicket = ticketSize && ticketSize.map(part => parseInt(part))
+    // const maxTicketSize = avgTicket && Math.max(...avgTicket);
+    // const avgCount = maxValueTxn * maxTicketSize;
+
+
+    let expectedTxn = data.expectedTransactions.split("-");
+    let numbers = {};
+    let maxValueTxn = 0;
+
+    if (expectedTxn?.length === 1) {
+      if (data.expectedTransactions.includes("500000")) {
+        maxValueTxn = 500000
+      }
+    } else {
+      numbers = expectedTxn.map(part => parseInt(part));
+      maxValueTxn = Math.max(...numbers);
+    }
+    const ticketSize = data.avg_ticket_size.split("-");
+    const avgTicket = ticketSize.map(part => parseInt(part))
+    const maxTicketSize = Math.max(...avgTicket);
     const avgCount = maxValueTxn * maxTicketSize;
+
+
 
 
     const bafData = {
