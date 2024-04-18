@@ -23,9 +23,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.total_records_fontSize{
-font-size: 15px;
+.total_records_fontSize {
+  font-size: 15px;
 }
+
 /* Apply primary button styles */
 .btn-sm.cob-btn-primary:not(.client_code_not_available) {
   background-color: #0156b3 !important;
@@ -37,12 +38,13 @@ font-size: 15px;
   background-color: #00000033 !important;
 }
 
-.pan_title{
+.pan_title {
   font-family: "Sofia-Pro-Regular";
-    font-weight: 500;
-    font-style: normal;
+  font-weight: 500;
+  font-style: normal;
 }
-.table_maxheight{
+
+.table_maxheight {
   max-height: 400px;
   overflow: auto;
 }
@@ -79,7 +81,8 @@ select {
 }
 
 .not-allowed {
-  cursor: not-allowed;}
+  cursor: not-allowed;
+}
 
 
 .profile-img-card {
@@ -120,35 +123,37 @@ select {
   top: 264px;
   left: 10px;
 }
+
 .code-snippet {
   background-color: #f8f9fa;
-  padding: 30px; 
+  padding: 30px;
   border-radius: 5px;
   border: 1px solid #dee2e6;
-  overflow-x: auto; 
-  width: 100%; 
-  height: 400px; 
+  overflow-x: auto;
+  width: 100%;
+  height: 400px;
 }
 
 .code-snippet pre {
   margin: 0;
   padding: 0;
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
 }
 
 .code-snippet code {
   color: #495057;
-  font-size: 16px; 
+  font-size: 16px;
   line-height: 1.6;
-  
+
 }
 
-.instructions{
-  font-size:"20px";
+.instructions {
+  font-size: "20px";
   margin-top: "12px";
   color: #dc3545;
 }
-.alertcss{
+
+.alertcss {
   margin-top: 75px;
 }
 
@@ -163,7 +168,8 @@ select {
   z-index: 999;
   width: 100%;
 }
-.zindexforDropdown{
+
+.zindexforDropdown {
   z-index: 999;
 
 }
@@ -417,11 +423,10 @@ h1, h2, h3, h4, h5, h6{
 
 /* cursor */
 
-.cursor_pointer{
+.cursor_pointer {
   cursor: pointer;
 }
 
-.font_Size input[type="radio"] + label {
+.font_Size input[type="radio"]+label {
   font-weight: bold;
 }
-

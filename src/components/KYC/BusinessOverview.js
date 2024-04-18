@@ -18,11 +18,12 @@ import {
   GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import kycOperationService from "../../services/kycOperation.service";
+import { includes } from "lodash";
 
 function BusinessOverview(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  const { role } = props;
+  // const { role } = props;
   const [data, setData] = useState([]);
   const [businessCategory, setBusinessCategory] = useState([]);
   const [platform, setPlatform] = useState([]);
@@ -219,14 +220,22 @@ function BusinessOverview(props) {
 
   const onSubmit = (values) => {
 
-    const expectedTxn = values.expected_transactions.split("-");
-    const numbers = expectedTxn.map(part => parseInt(part));
-    const maxValueTxn = Math.max(...numbers);
+    let expectedTxn = values.expected_transactions.split("-");
+    let numbers = {};
+    let maxValueTxn = 0;
+
+    if (expectedTxn?.length === 1) {
+      if (values.expected_transactions.includes("500000")) {
+        maxValueTxn = 500000
+      }
+    } else {
+      numbers = expectedTxn.map(part => parseInt(part));
+      maxValueTxn = Math.max(...numbers);
+    }
     const ticketSize = values.avg_ticket_size.split("-");
     const avgTicket = ticketSize.map(part => parseInt(part))
     const maxTicketSize = Math.max(...avgTicket);
     const avgCount = maxValueTxn * maxTicketSize;
-
 
     if (
       window.confirm(
@@ -537,8 +546,8 @@ function BusinessOverview(props) {
                   >
                     {disabled && <>
                       <span className="mr-2">
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      <span className="sr-only">Loading...</span>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="sr-only">Loading...</span>
                       </span>
                     </>}
                     {buttonText}

@@ -12,7 +12,6 @@ import toastConfig from '../../../../utilities/toastTypes';
 import { KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
 import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
 import API_URL from '../../../../config';
-import approverDashboardService from '../../../../services/approver-dashboard/approverDashboard.service';
 import { isEmpty } from 'lodash';
 
 
@@ -49,19 +48,36 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-
-
   // save BAF data
-
   const saveBafData = async (data) => {
 
-    const expectedTxn = data.expectedTransactions?.split("-");
-    const numbers = expectedTxn && expectedTxn.map(part => parseInt(part));
-    const maxValueTxn = numbers && Math.max(...numbers);
-    const ticketSize = data.avg_ticket_size?.split("-");
-    const avgTicket = ticketSize && ticketSize.map(part => parseInt(part))
-    const maxTicketSize = avgTicket && Math.max(...avgTicket);
+    // const expectedTxn = data.expectedTransactions?.split("-");
+    // const numbers = expectedTxn && expectedTxn.map(part => parseInt(part));
+    // const maxValueTxn = numbers && Math.max(...numbers);
+    // const ticketSize = data.avg_ticket_size?.split("-");
+    // const avgTicket = ticketSize && ticketSize.map(part => parseInt(part))
+    // const maxTicketSize = avgTicket && Math.max(...avgTicket);
+    // const avgCount = maxValueTxn * maxTicketSize;
+
+
+    let expectedTxn = data.expectedTransactions.split("-");
+    let numbers = {};
+    let maxValueTxn = 0;
+
+    if (expectedTxn?.length === 1) {
+      if (data.expectedTransactions.includes("500000")) {
+        maxValueTxn = 500000
+      }
+    } else {
+      numbers = expectedTxn.map(part => parseInt(part));
+      maxValueTxn = Math.max(...numbers);
+    }
+    const ticketSize = data.avg_ticket_size.split("-");
+    const avgTicket = ticketSize.map(part => parseInt(part))
+    const maxTicketSize = Math.max(...avgTicket);
     const avgCount = maxValueTxn * maxTicketSize;
+
+
 
 
     const bafData = {
@@ -69,7 +85,7 @@ const CompleteVerification = (props) => {
       merchant_legal_name: data?.companyName ?? "NA",
       merchant_address: `${data?.merchant_address_details?.address}, ${data?.merchant_address_details?.city}, ${data?.merchant_address_details?.state_name}, , ${data?.merchant_address_details?.pin_code}`,
       product_name: "NA",
-      types_of_entity: data?.businessType ?? "NA",
+      types_of_entity: data?.business_type_name ?? "NA",
       year_of_establishment: 1,
       merchant_portal: isEmpty(data?.website_app_url) ? "NA" : data?.website_app_url,
       average_transaction_amount: data.avg_ticket_size ?? "NA",
@@ -86,7 +102,7 @@ const CompleteVerification = (props) => {
       gst_number: isEmpty(data?.gstNumber) ? "NA" : data?.gstNumber,
       entity_pan_card_number: data?.signatoryPAN ?? "NA",
       zone: data.zone_code ?? "NA",
-      nature_of_business: data.businessCategory ?? "NA",
+      nature_of_business: data.business_category_name ?? "NA",
       mcc: "NA"
     }
 
@@ -131,8 +147,6 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
-    // console.log("generalFormData.isFinalSubmit", generalFormData.isFinalSubmit)
-    // console.log("generalFormData.parent_client_code", generalFormData.parent_client_code)
     if (selectedUserData?.roleId !== 13) {
       if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
         alert("Please Select the parent client code for the rate mapping");
@@ -217,12 +231,6 @@ const CompleteVerification = (props) => {
 
               // save baf data
               saveBafData(kyc.kycUserList)
-              // console.log(resp?.payload?.status_code)
-              // resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
-              // dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }))
-              // dispatch(ratemapping({merchantLoginId : selectedUserData?.loginMasterId}))
-              // pendingApporvalTable()
-              // closeVerificationModal(false)
               setButtonLoader(false)
               if (selectedUserData?.roleId === 13) {
                 pendingApporvalTable()
