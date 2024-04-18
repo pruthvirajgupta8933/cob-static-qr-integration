@@ -234,9 +234,7 @@ function ClientList() {
         setCurrentPage(1);
     };
 
-    const handleChange = (e) => {
-        SetSearch(e);
-    }
+  
 
 
     // console.log(user?.roleId)

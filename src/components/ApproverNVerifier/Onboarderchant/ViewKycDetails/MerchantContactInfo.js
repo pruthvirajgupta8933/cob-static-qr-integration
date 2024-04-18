@@ -48,7 +48,7 @@ function MerchantContactInfo(props) {
       const resp = await dispatch(verifyKycEachTab(verifierDetails));
 
       if (resp?.payload?.general_info_status) {
-        toast.success("Kyc Status has been updated");
+        toast.success("Verified");
         dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }))
       } else if (resp?.payload?.detail) {
         toast.error(resp.payload.detail);

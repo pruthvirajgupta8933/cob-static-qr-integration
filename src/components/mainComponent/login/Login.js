@@ -256,7 +256,7 @@ function Login() {
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-3 ">
-                    <div className="p-2 bd-highlight sp-font-12 text-center">Copyright @ 2023 SabPaisa All Rights Reserved version 1.0</div>
+                    <div className="p-2 bd-highlight sp-font-12 text-center">Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0</div>
                 </div>
             </main>
 
