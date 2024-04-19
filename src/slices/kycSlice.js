@@ -19,13 +19,14 @@ const initialState = {
     isLoadingForPendingApproval: false,
     isLoadingForApproved: false,
     isLoadingForRejected: false,
-    documentByloginId: {},
-    kycApproved: {
-        count: null,
-        next: null,
-        previous: null,
-        results: null,
-    },
+
+    // documentByloginId: {},
+    // kycApproved: {
+    //     count: null,
+    //     next: null,
+    //     previous: null,
+    //     results: null,
+    // },
     kycUserList: {},
     notFilledUserList: {},
     pendingVerificationKycList: {
@@ -60,11 +61,11 @@ const initialState = {
         results: [],
         count: 0
     },
-    rateMappingData: {},
-    configurationData: {
-        results: [],
-        count: 0
-    },
+    // rateMappingData: {},
+    // configurationData: {
+    //     results: [],
+    //     count: 0
+    // },
     KycDocUpload: [],
     compareDocListArray: {
         finalArray: [],
@@ -98,9 +99,9 @@ const initialState = {
     kycForRejectedMerchants: [],
     kycForVerified: [],
     kycForApproved: [],
-    kycForCompleted: [],
+    // kycForCompleted: [],
     // UploadLoginId: [],
-    enableKycTab: false,
+    // enableKycTab: false,
     kycModalClose: true,
 
     allTabsValidate: {
@@ -165,12 +166,12 @@ const initialState = {
         },
     },
 
-    GetBankid: [],
+    // GetBankid: [],
 
-    consentKyc: {
-        message: "",
-        status: false,
-    },
+    // consentKyc: {
+    //     message: "",
+    //     status: false,
+    // },
 
     OtpResponse: {
         status: "",
@@ -201,56 +202,28 @@ const initialState = {
 
 };
 
-//--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
-// export const updateContactInfo = createAsyncThunk(
-//     "UpdateContactInfo/updateContactInfo",
-//     async (requestParam) => {
-//         // console.log("reqt")
-//         try {
-//             const response = await merchantKycService.updateContactInfo(requestParam)
-//             console.log("response")
-//             return response.data
-//         } catch (error) {
-//             console.log("err")
-//             return error
-//         }
-
-//         // const response = await axiosInstanceJWT
-//         //     .put(`${API_URL.Save_General_Info}`, requestParam).then(resp => console.log(resp))
-//         //     .catch((error) => {
-//         //         console.log(error)
-//         //         return error.response;
-//         //     });
-//         // console.log(response)
-//         // return response.data;
-//     }
-// );
-
 
 
 export const updateContactInfo = createAsyncThunk(
-    "widget/updateContactInfo",
-    async ( requestParam,thunkAPI) => {
-      
-      try {
-        const response = await merchantKycService.updateContactInfo(requestParam);
-        // thunkAPI.dispatch(setMessage(response.data.message));
-        return response.data;
-      } catch (error) {
-        const message =
-        ( error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString() || error.request.toString();
-        console.log("message",message);
-        thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue(message); 
-        
-        
-      }
+    "kyc/updateContactInfo",
+    async (requestParam, thunkAPI) => {
+        try {
+            const response = await merchantKycService.updateContactInfo(requestParam);
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString() || error.request.toString();
+            thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue(message);
+
+
+        }
     }
-  );
+);
 
 // KYC OTP function
 
@@ -788,20 +761,20 @@ export const kycForApproved = createAsyncThunk(
 );
 ///////////////////////////////////////////
 
-export const kycForCompleted = createAsyncThunk(
-    "kyc/kycForCompleted",
-    async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .get(`${API_URL.KYC_FOR_COMPLETED}`, {
-                headers: {},
-            })
-            .catch((error) => {
-                return error.response;
-            });
+// export const kycForCompleted = createAsyncThunk(
+//     "kyc/kycForCompleted",
+//     async (requestParam) => {
+//         const response = await axiosInstanceJWT
+//             .get(`${API_URL.KYC_FOR_COMPLETED}`, {
+//                 headers: {},
+//             })
+//             .catch((error) => {
+//                 return error.response;
+//             });
 
-        return response.data;
-    }
-);
+//         return response.data;
+//     }
+// );
 
 /////////////////////////////////////////
 // export const UploadLoginId = createAsyncThunk(
@@ -1335,7 +1308,7 @@ export const kycSlice = createSlice({
         [kycForApproved.fulfilled]: (state, action) => {
             // console.log("action==================>", action)
             // state.kycUserList = action.payload;
-            state.rateMappingData = action.payload
+            // state.rateMappingData = action.payload
 
             state.isLoadingForApproved = false;
         },
@@ -1367,7 +1340,7 @@ export const kycSlice = createSlice({
             state.status = "pending";
         },
         [kycUserList.fulfilled]: (state, action) => {
-            
+
             state.kycUserList = action.payload;
 
         },
@@ -1520,7 +1493,7 @@ export const kycSlice = createSlice({
 
         [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
             if (action.payload?.status === true) {
-                state.OtpVerificationResponseForPhone = action.payload;
+                // state.OtpVerificationResponseForPhone = action.payload;
                 state.kycUserList.isContactNumberVerified = 1;
                 state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
                 state.OtpResponse.tempPhone = "";
@@ -1531,7 +1504,7 @@ export const kycSlice = createSlice({
 
         [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
             if (action.payload?.status === true) {
-                state.OtpVerificationResponseForEmail = action.payload;
+                // state.OtpVerificationResponseForEmail = action.payload;
                 state.kycUserList.isEmailVerified = 1;
                 state.kycUserList.emailId = state.OtpResponse.tempEmail;
                 state.OtpResponse.tempEmail = "";

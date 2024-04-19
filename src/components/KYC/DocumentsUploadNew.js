@@ -214,7 +214,10 @@ function DocumentsUpload(props) {
   };
 
   useEffect(() => {
-    getKycDocList()
+    if (KycList?.businessType !== null &&
+      KycList?.businessType !== undefined) {
+      getKycDocList()
+    }
   }, []);
 
 
