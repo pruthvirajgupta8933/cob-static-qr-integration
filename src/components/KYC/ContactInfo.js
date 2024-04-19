@@ -207,11 +207,8 @@ function ContactInfo(props) {
           errors,
           setFieldError,
           setFieldValue
-
         }) => (
           <Form>
-            {/* {console.log(values)}
-            {console.log(errors)} */}
             <div className="row">
               <div className="col-lg-6 col-sm-12 col-md-12">
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_person_name}>
@@ -224,7 +221,6 @@ function ContactInfo(props) {
                   name="name"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
-                // readOnly={readOnly}
                 />
               </div>
 
@@ -238,13 +234,9 @@ function ContactInfo(props) {
                   name="aadhar_number"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   className="form-control maskedInput"
-                // readOnly={readOnly}
                 />
               </div>
             </div>
-
-
-
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_phone}>
@@ -261,7 +253,6 @@ function ContactInfo(props) {
                     }}
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
-
                   {KycList?.contactNumber !== null &&
                     KycList?.isContactNumberVerified === 1 &&
                     values?.isContactNumberVerified === 1 &&
@@ -279,7 +270,7 @@ function ContactInfo(props) {
                     </span>
                   ) :
                     <div className="input-group-append">
-                      <button
+                      <a
                         href={() => false}
                         className={`btn cob-btn-primary btn-sm text-white ${isLoading ? 'disabled' : ''}`}
                         onClick={() => {
@@ -301,7 +292,7 @@ function ContactInfo(props) {
                         ) : (
                           "Send OTP"
                         )}
-                      </button>
+                      </a>
                     </div>}
                 </div>
 
