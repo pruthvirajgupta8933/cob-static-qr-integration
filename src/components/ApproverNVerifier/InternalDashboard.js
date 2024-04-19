@@ -102,7 +102,7 @@ function InternalDashboard() {
                 </div>
             )}
 
-            {(roles.verifier || roles.approver ) &&
+            {(roles.verifier || roles.approver) &&
 
                 <div className="col-lg-4">
                     <div className="card webColorBg1">

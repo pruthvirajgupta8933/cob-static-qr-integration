@@ -9,6 +9,7 @@ import {
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 import { merchantKycService } from "../services/kyc/merchant-kyc";
+import { setMessage } from "./message";
 
 const initialState = {
     isLoadingForpanDetails: false,
@@ -201,29 +202,55 @@ const initialState = {
 };
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
-export const updateContactInfo = createAsyncThunk(
-    "UpdateContactInfo/updateContactInfo",
-    async (requestParam) => {
-        // console.log("reqt")
-        try {
-            const response = await merchantKycService.updateContactInfo(requestParam)
-            console.log("response")
-            return response.data
-        } catch (error) {
-            console.log("err")
-            return error
-        }
+// export const updateContactInfo = createAsyncThunk(
+//     "UpdateContactInfo/updateContactInfo",
+//     async (requestParam) => {
+//         // console.log("reqt")
+//         try {
+//             const response = await merchantKycService.updateContactInfo(requestParam)
+//             console.log("response")
+//             return response.data
+//         } catch (error) {
+//             console.log("err")
+//             return error
+//         }
 
-        // const response = await axiosInstanceJWT
-        //     .put(`${API_URL.Save_General_Info}`, requestParam).then(resp => console.log(resp))
-        //     .catch((error) => {
-        //         console.log(error)
-        //         return error.response;
-        //     });
-        // console.log(response)
-        // return response.data;
+//         // const response = await axiosInstanceJWT
+//         //     .put(`${API_URL.Save_General_Info}`, requestParam).then(resp => console.log(resp))
+//         //     .catch((error) => {
+//         //         console.log(error)
+//         //         return error.response;
+//         //     });
+//         // console.log(response)
+//         // return response.data;
+//     }
+// );
+
+
+
+export const updateContactInfo = createAsyncThunk(
+    "widget/updateContactInfo",
+    async ( requestParam,thunkAPI) => {
+      
+      try {
+        const response = await merchantKycService.updateContactInfo(requestParam);
+        // thunkAPI.dispatch(setMessage(response.data.message));
+        return response.data;
+      } catch (error) {
+        const message =
+        ( error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() || error.request.toString();
+        console.log("message",message);
+        thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
+      }
     }
-);
+  );
 
 // KYC OTP function
 
