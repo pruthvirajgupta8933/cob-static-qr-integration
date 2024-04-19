@@ -18,12 +18,14 @@ import {
   GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import kycOperationService from "../../services/kycOperation.service";
-import { includes } from "lodash";
+// import { includes } from "lodash";
 
 function BusinessOverview(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  // const { role } = props;
+
+  const dispatch = useDispatch();
+
   const [data, setData] = useState([]);
   const [businessCategory, setBusinessCategory] = useState([]);
   const [platform, setPlatform] = useState([]);
@@ -48,10 +50,7 @@ function BusinessOverview(props) {
   const KycTabStatusStore = kyc?.KycTabStatusStore;
 
   const { business_cat_code } = clientMerchantDetailsList[0];
-
   const { loginId } = user;
-
-  const dispatch = useDispatch();
 
   const WebsiteAppUrl = [
     { key: "Without website/app", value: "No" },
@@ -113,10 +112,7 @@ function BusinessOverview(props) {
         .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
         .required('Required')
         .nullable(),
-      // company_website: Yup.string().trim()
-      //   .matches(urlRegex, "Website Url is not Valid")
-      //   .required("Required")
-      //   .nullable(),
+
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
         then: Yup.string()
@@ -148,6 +144,7 @@ function BusinessOverview(props) {
 
   ////Get Api for Buisness overview///////////
   useEffect(() => {
+    // business type
     dispatch(businessType())
       .then((resp) => {
         const data = convertToFormikSelectJson(
@@ -156,13 +153,9 @@ function BusinessOverview(props) {
           resp.payload
         );
         setData(data);
-      })
+      }).catch((err) => console.log(err));
 
-      .catch((err) => console.log(err));
-  }, []);
-
-  //////////////////////BusinessCategory//////////
-  useEffect(() => {
+    // busniessCategory
     dispatch(busiCategory())
       .then((resp) => {
         const data = convertToFormikSelectJson(
@@ -174,10 +167,8 @@ function BusinessOverview(props) {
         setBusinessCategory(data);
       })
       .catch((err) => console.log(err));
-  }, []);
 
-  //////////////////APi for Platform
-  useEffect(() => {
+    // platform type
     dispatch(platformType())
       .then((resp) => {
         const data = convertToFormikSelectJson(
@@ -188,35 +179,16 @@ function BusinessOverview(props) {
         setPlatform(data);
       })
       .catch((err) => console.log(err));
+
+    // get slab data
+    getExpectedTransactions("1");
+    getExpectedTransactions("2");
+
   }, []);
 
-  ////////////////////////////////////////
-  useEffect(() => {
-    dispatch(collectionFrequency())
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "collectionFrequencyId",
-          "collectionFrequencyName",
-          resp.payload
-        );
 
-        // setCollectFreqency(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
-  useEffect(() => {
-    dispatch(collectionType())
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "collectionTypeId",
-          "collectionTypeName",
-          resp.payload
-        );
-        // setCollection(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+
 
   const onSubmit = (values) => {
 
@@ -294,10 +266,9 @@ function BusinessOverview(props) {
   //   }
 
   // }
-  useEffect(() => {
-    getExpectedTransactions("1");
-    getExpectedTransactions("2");
-  }, []);
+  // useEffect(() => {
+
+  // }, []);
 
   const getExpectedTransactions = async (slabId) => {
     try {
@@ -444,7 +415,6 @@ function BusinessOverview(props) {
                   }}
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
-                  // className="form-control pull-left mr-2"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   className="form-check-input"
@@ -500,17 +470,14 @@ function BusinessOverview(props) {
 
                 <FormikController
                   control="select"
-                  // type="text"
                   name="expected_transactions"
                   valueFlag={true}
                   className="form-select form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={slabOptions}
-                  onClick={() => getExpectedTransactions(1)}
-                />
 
-                {/* <span className="font-weight-bold m-0">{textWord}</span> */}
+                />
               </div>
 
               <div className="col-sm-12 col-md-12 col-lg-4">
