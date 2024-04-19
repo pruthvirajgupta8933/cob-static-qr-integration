@@ -14,7 +14,8 @@ export const Regex = {
   accountNoRgex: /^[a-zA-Z0-9]{2,25}$/,
   multipleSpace: /^\S+(\s{1}\S+)*$/,
   urlFormate: /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.(com|in|org)(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.(com|in|org)(\/[^\s]*)?)$/,
-  userNameRegex: /^[a-zA-Z0-9_.@]+$/
+  userNameRegex: /^[a-zA-Z0-9_.@]+$/,
+  aadhaarRegex: /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/
 
 }
 
@@ -33,7 +34,8 @@ export const RegexMsg = {
   multipleSpace: "Invalid input",
   urlFormate: "Please enter a valid HTTPS URL",
   acceptAlphaNumericDot: "AlphaNumeric & dot are allowed",
-  userNameRegex: "Username accept only alphanumeric and (`.`_ @) special characters"
+  userNameRegex: "Username accept only alphanumeric and (`.`_ @) special characters",
+  aadhaarRegex: "Aadhaar Number is Invalid"
 }
 
 
