@@ -17,9 +17,8 @@ function MyForm() {
     const widgetDetail = useSelector((state) => state?.widget?.widgetDetail?.data)
 
     const activeStatus = widgetDetail?.status
-
-
-    let clientMerchantDetailsList = [];
+    
+     let clientMerchantDetailsList = [];
     let clientCode = "";
     if (user && user.clientMerchantDetailsList === null) {
 
@@ -66,10 +65,7 @@ function MyForm() {
 
 
     const handleSubmit = (values) => {
-
-
-        const postData = {
-
+     const postData = {
             "client_name": values.client_name,
             "client_code": clientCode,
             "client_type": values.client_type,
@@ -80,9 +76,7 @@ function MyForm() {
             "company_name": values.company_name
 
         }
-
-
-        dispatch(
+       dispatch(
             widgetClientKeys(postData)
         )
             .then((res) => {

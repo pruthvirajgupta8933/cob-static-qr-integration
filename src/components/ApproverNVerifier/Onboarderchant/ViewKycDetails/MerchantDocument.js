@@ -72,6 +72,7 @@ const MerchantDocument = (props) => {
   const [documentsIdList, setdocumentsIdList] = useState([])
   const [checkedClicked, setCheckedClicked] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
+  
 
 
   const getDocTypeName = (id) => {

@@ -128,6 +128,7 @@ function ContactInfo(props) {
           aadhar_number: values.aadhar_number,
         })
       ).then((res) => {
+        console.log("res",res);
         if (
           res?.meta?.requestStatus === "fulfilled" &&
           res.payload?.status === true
