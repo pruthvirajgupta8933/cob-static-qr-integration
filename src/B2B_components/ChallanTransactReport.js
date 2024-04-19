@@ -118,8 +118,7 @@ const ChallanTransactReport = () => {
   };
 
   const searchByText = (text) => {
-    console.log("text", text)
-    console.log("searchText", searchText)
+   
     // console.log("verfiedMerchant-s", verfiedMerchant)
     // console.log("data-s", data)
     if (searchText) {

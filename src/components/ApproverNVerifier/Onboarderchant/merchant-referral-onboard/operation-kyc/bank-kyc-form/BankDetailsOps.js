@@ -4,7 +4,6 @@ import Yup from '../../../../../../_components/formik/Yup';
 import FormikController from '../../../../../../_components/formik/FormikController';
 import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex';
 import verifiedIcon from "../../../../../../assets/images/verified.png";
-
 import {
     bankAccountVerification,
     getBankId,
@@ -60,7 +59,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
             .matches(Regex.accountNoRgex, RegexMsg.accountNoRgex)
             .required("Required")
             .nullable(),
-
         account_type: Yup.string()
             .required("Required")
             .nullable(),
@@ -106,7 +104,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
             })
 
         setSubmitLoader(false)
-
     }
 
 
@@ -126,7 +123,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                 resp.data
             );
             setBankList(convertResp)
-
         }).catch(err => console.log(err))
 
     }, []);
@@ -150,20 +146,16 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                     setLoading(false)
                     const postData = { bank_name: res?.payload?.bank };
                     dispatch(getBankId(postData)).then(resp => {
-
                         if (resp?.payload?.length > 0) {
                             setFieldValue("bank_id", resp?.payload[0]?.bankId)
 
                         }
-
-
                     }).catch(err => {
                         // console.log(err?.payload?.bankName)
                     })
                     setFieldValue("branch", res?.payload?.branch)
                     setFieldValue("ifsc_code", values)
                     setFieldValue("isIfscVerified", 1)
-
                 } else {
                     setLoading(false)
                     setFieldValue("isIfscVerified", "")
@@ -381,7 +373,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                 }
 
                                 {errors?.isAccountNumberVerified && (
-                                    <span className="text-danger">
+                                    <span className="text-danger imp_css">
                                         {errors?.isAccountNumberVerified}
                                     </span>
                                 )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Formik } from "formik";
 import FormikController from "../../../../../../_components/formik/FormikController";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,10 +14,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
-
-
-
-
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails } = merchantReferralOnboardReducer
@@ -41,7 +37,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         password = password.split('').sort(() => Math.random() - 0.5).join('');
         return password;
     };
-
 
     const initialValues = {
         fullName: "",
@@ -82,8 +77,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     });
 
 
-
-
     const handleSubmitContact = async (value) => {
         const { fullName, mobileNumber, email_id, password, username } = value;
         // alert(3)
@@ -119,7 +112,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     zone_code: zoneCode,
                 };
             } const resp1 = await addReferralService(postData, referralChild);
-            // console.log("resp1",resp1)
+
             resp1?.data?.status && toastConfig.successToast("Data Saved")
             // create user
             const refLoginId = resp1?.data?.data?.loginMasterId
@@ -172,7 +165,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
 
     }
-
 
     return (
         <div className="tab-pane fade show active" id="v-pills-link1" role="tabpanel"
