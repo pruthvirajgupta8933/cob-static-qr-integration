@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import classes from "../../approver.module.css"
 import BankRefMerchantList from './merchant-product-subscription/BankRefMerchantList';
 import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard";
@@ -7,12 +7,12 @@ import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard
 function MerchantReferralOnboard() {
     const [currentTab, setCurrentTab] = useState(2)
     const handleTabClick = (currenTab) => {
-      setCurrentTab(currenTab)
+        setCurrentTab(currenTab)
     };
 
 
     return (
-        // <ThemeContext.Provider value="dark">
+
         <section>
             <main >
                 <div className="container-fluid">
@@ -54,8 +54,8 @@ function MerchantReferralOnboard() {
 
                     <section>
                         <div className="row">
-                            {currentTab === 2 && <ReferralOnboard/>}
-                            {currentTab === 3 && <BankRefMerchantList/>}
+                            {currentTab === 2 && <ReferralOnboard />}
+                            {currentTab === 3 && <BankRefMerchantList />}
 
                         </div>
                     </section>

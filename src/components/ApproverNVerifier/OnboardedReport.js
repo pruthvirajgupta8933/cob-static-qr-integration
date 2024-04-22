@@ -13,17 +13,11 @@ import DateFormatter from "../../utilities/DateConvert";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import { exportToExcelOnboard } from "../../services/kyc/export-data.service";
 
-
-
-
 const OnboardedReport = () => {
- 
-  const [searchingData, setSearchingData] = useState([]);
+ const [searchingData, setSearchingData] = useState([]);
   // const [dataCount, setDataCount] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  
-
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardValue, setOnboradValue] = useState({});
   const [searchText, setSearchText] = useState("");
@@ -31,9 +25,7 @@ const OnboardedReport = () => {
   const [disabled, setDisabled] = useState(false);
   // const [dataClick, setDataClick] = useState(false);
 
-
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const { kyc } = useSelector(state => state)
   const { allKycData } = kyc
   const { result, loading, count } = allKycData
@@ -122,9 +114,7 @@ const OnboardedReport = () => {
 
   };
 
-
-
-  let now = moment().format("YYYY-M-D");
+let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
@@ -171,17 +161,13 @@ const OnboardedReport = () => {
     }
   }, [])
 
-
-
-
-  // only two date coloum is available in the db, 
+// only two date coloum is available in the db, 
   const selectStatus = [
     { key: KYC_STATUS_VERIFIED, value: KYC_STATUS_VERIFIED },
     { key: KYC_STATUS_APPROVED, value: KYC_STATUS_APPROVED }
   ];
 
-
-  const exportToExcelFn = () => {
+const exportToExcelFn = () => {
     exportToExcelOnboard({
       status: onboardValue.status,
       from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
@@ -189,9 +175,7 @@ const OnboardedReport = () => {
     })
   };
 
-    
-
-  return (
+    return (
 
     <section className="">
       <div className="">

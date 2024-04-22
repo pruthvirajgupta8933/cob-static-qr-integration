@@ -28,16 +28,10 @@ const SignupData = () => {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
-
   const dispatch = useDispatch();
-
-
   const [loadingState, setLoadingState] = useState(false);
   const [dataCount, setDataCount] = useState(0);
-  
-
   const [pageSize, setPageSize] = useState(10);
-  
   const [currentPage, setCurrentPage] = useState(1);
   const [buttonClicked, isButtonClicked] = useState(false);
 
@@ -46,15 +40,6 @@ const SignupData = () => {
 
       )
   
-  
-
-
-
-  
-
-
-
-
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
@@ -88,8 +73,7 @@ const SignupData = () => {
     );
   };
 
-
-  useEffect(() => {
+useEffect(() => {
     const signupDataDataList = signupDataList?.Merchant_Info
     
     const dataCount =  signupDataList?.count;
@@ -102,11 +86,7 @@ if (signupDataDataList) {
   }, [signupDataList]); //
 
   
-
-
-
-
-  useEffect(() => {
+useEffect(() => {
     if (saveData?.from_date && saveData?.to_date) {
       const postData = {
         from_date: moment(saveData.from_date).startOf('day').format('YYYY-MM-DD'),
@@ -127,9 +107,7 @@ if (signupDataDataList) {
   }, [pageSize, currentPage]);
   
 
-
-  const handleSubmit = (values) => {
-    
+const handleSubmit = (values) => {
     setLoadingState(true);
     const postData = {
       from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),

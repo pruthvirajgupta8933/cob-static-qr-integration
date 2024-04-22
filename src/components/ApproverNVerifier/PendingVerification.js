@@ -15,10 +15,8 @@ import DateFormatter from "../../utilities/DateConvert";
 
 function PendingVerification() { 
   const roles = roleBasedAccess();
-
   const [onboardType, setOnboardType] = useState("");
-
-  function capitalizeFirstLetter(param) {
+ function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   const PendingVerificationData = [
@@ -171,13 +169,10 @@ function PendingVerification() {
   const Allow_To_Do_Verify_Kyc_details =
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
 
-  //  const [dataCount, setDataCount] = useState("");
-
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(100);
-
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
@@ -230,26 +225,6 @@ function PendingVerification() {
     fetchData();
 
   };
-
-  //---------------GET Api for KycPending-------------------
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, [currentPage, searchText, searchText, pageSize, onboardType]);
-
-  // const fetchData = () => {
-  //   dispatch(
-  //     kycForPending({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: searchText,
-  //       merchantStatus: "Processing",
-  //       isDirect: onboardType,
-  //     })
-  //   )
-
-  // };
-
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(

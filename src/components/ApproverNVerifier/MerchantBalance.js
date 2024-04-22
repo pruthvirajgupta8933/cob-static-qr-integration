@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice"
 import WalletDetail from "../dashboard/AllPages/Profile/WalletDetail"
 import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice"
-
 import { getSubscribedDetails } from "../../slices/merchant-slice/productCatalogueSlice"
 import ReactSelect, { createFilter } from 'react-select';
 

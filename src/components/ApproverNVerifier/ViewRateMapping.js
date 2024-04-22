@@ -25,13 +25,13 @@ const validationSchema = Yup.object({
 
 const ViewRateMapping = (props) => {
 
-    
+
     const [businessTemplate, setBusinessTemplate] = useState("")
     const [businessTemplates, setBusinessTemplates] = useState([])
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
-    
+
 
     const [disable, setDisable] = useState(false)
 
@@ -55,8 +55,8 @@ const ViewRateMapping = (props) => {
         // .catch((err) => console.log(err));
     }, []);
 
-   
-///////////////////////////////////////////////////////////new Work
+
+    ///////////////////////////////////////////////////////////new Work
     useEffect(() => {
 
         if (businessTemplate !== "") {
@@ -79,23 +79,22 @@ const ViewRateMapping = (props) => {
     const handleSubmit = async (values) => {
         setDisable(true);
         const postData = {
-          "rate_template_code": values?.business_category,
-          "business_cat_code": values?.risk_category_name,
-          // "risk_cat_code": values.rate_template_name
+            "rate_template_code": values?.business_category,
+            "business_cat_code": values?.risk_category_name,
+            // "risk_cat_code": values.rate_template_name
         };
-      
+
         try {
-          const resp = await dispatch(viewRateMap(postData));
-          setRisktemplate(resp?.payload);
-          setDisable(true);
-          // toast.success(resp?.data?.message);
-          setShow(true);
+            const resp = await dispatch(viewRateMap(postData));
+            setRisktemplate(resp?.payload);
+            setDisable(true);
+            setShow(true);
         } catch (error) {
-          setDisable(true);
-         
+            setDisable(true);
+
         }
-      };
-      
+    };
+
     return (
         <div>
 
@@ -105,7 +104,7 @@ const ViewRateMapping = (props) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
-                           
+
                             onSubmit={(values, { resetForm }) => {
                                 handleSubmit(values)
 
@@ -115,7 +114,6 @@ const ViewRateMapping = (props) => {
                             {(formik) => (
 
                                 <>
-
                                     <div className="modal-header">
                                         <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Rate Mapping</h5>
 
@@ -153,11 +151,11 @@ const ViewRateMapping = (props) => {
                                                                 setBusinessTemplate(formik?.values?.business_category),
 
                                                             )}
-                                                            
+
 
                                                         </div>
                                                     </div>
-                                                                                                        <div className="col-lg-6">
+                                                    <div className="col-lg-6">
                                                         <div className="">
                                                             <label
                                                                 className="string optional"
@@ -179,10 +177,10 @@ const ViewRateMapping = (props) => {
 
                                                 </div>
 
-                                                    <div >
+                                                <div >
                                                     <button disabled={disable} type="submit" className="btn cob-btn-primary mt-2  text-white">View</button>
 
-                                                    </div>
+                                                </div>
                                             </Form>
 
                                             {show === true ? (

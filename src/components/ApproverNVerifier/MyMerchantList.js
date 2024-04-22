@@ -11,8 +11,6 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { v4 as uuidv4 } from 'uuid';
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
-// import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown"
-
 
 const MyMerchantList = () => {
     const roles = roleBasedAccess();
@@ -39,11 +37,7 @@ const MyMerchantList = () => {
     const [dataCount, setDataCount] = useState("")
     const [kycIdClick, setKycIdClick] = useState([]);
 
-    // console.log("kycIdClick", kycIdClick)
-
-
-    // const viewStatusbyId=kycIdClick?.master_client_id
-    useEffect(() => {
+   useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
         const dataCount = myMerchantListData?.count;
         if (myAllMerchantDataList) {
@@ -93,18 +87,7 @@ const MyMerchantList = () => {
 
     };
 
-    // const fetchData = (startingSerialNumber) => {
-    //     dispatch(
-    //         MyMerchantListData({
-    //             page: currentPage,
-    //             page_size: pageSize,
-    //             created_by: loginId,
-    //             searchquery: searchText,
-    //             kyc_status: kycSearchStatus
-    //         })
-    //     )
-
-    // };
+    
 
 
     const fetchData = useCallback((startingSerialNumber) => {

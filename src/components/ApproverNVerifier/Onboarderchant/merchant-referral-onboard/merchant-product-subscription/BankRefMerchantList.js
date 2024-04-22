@@ -5,7 +5,6 @@ import { roleBasedAccess } from "../../../../../_components/reuseable_components
 import Table from "../../../../../_components/table_components/table/Table";
 import SearchFilter from "../../../../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage";
-import SkeletonTable from "../../../../../_components/table_components/table/skeleton-table";
 import CustomLoader from "../../../../../_components/loader"
 import {
     fetchMerchantProductSubscribeList
