@@ -343,7 +343,8 @@ const filteredData = useMemo(() => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={"export-excel/?search=processing"}
+              
+              URL={`export-excel/?search=processing&isDirect=${onboardType}`}
               filename={"Pending-Verification"}
             />
           }

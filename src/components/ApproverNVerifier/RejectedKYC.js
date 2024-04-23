@@ -319,7 +319,8 @@ const RejectedKYC = () => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={"export-excel/?search=Rejected"}
+              
+              URL={`export-excel/?search=Rejected&isDirect=${onboardType}`}
               filename={"Rejected"}
             />
           }

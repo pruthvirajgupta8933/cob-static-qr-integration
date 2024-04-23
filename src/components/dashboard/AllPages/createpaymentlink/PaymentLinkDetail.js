@@ -9,6 +9,7 @@ import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
 import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
+import ReactTooltip from 'react-tooltip';
 
 const PaymentLinkDetail = () => {
 
@@ -23,6 +24,17 @@ const PaymentLinkDetail = () => {
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode } = clientMerchantDetailsList[0];
   const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
+  const [copied, setCopied] = useState(false);
+  console.log("copied",);
+
+
+  const handleCopyToClipboard = (link) => {
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000); // Reset copied state after 1.5 seconds
+  };
 
 
   let now = moment().format("YYYY-M-D");
@@ -187,7 +199,37 @@ const PaymentLinkDetail = () => {
                       <td>{user?.remarks}</td>
                       {/* <td>{user.customer_id}</td> */}
                       <td>{user?.customer_name}</td>
-                      <td>{user?.full_link}</td>
+                      <td>
+                        <div id={`link_${i}`} className="d-flex align-items-center">
+                          <span
+                            className="p-2  d-inline-block cursor_pointer copy_clipboard"
+                            // style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                            title={user?.full_link}
+                            
+                          >
+                            {user?.full_link}
+                          </span>
+                          <span
+                            className="input-group-text"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleCopyToClipboard(user?.full_link)}
+                            
+                            data-tip={copied ? "Copied!" : "Copy"}
+                          >
+                            <i
+                              className="fa fa-copy ml-2 text-primary align-middle"
+                             
+                        ></i>
+                          </span>
+                          {/* <i
+                className="fa fa-copy ml-2 text-primary align-middle"
+                onClick={() => handleCopyToClipboard(user?.full_link)}
+                style={{ cursor: 'pointer' }}
+                data-tip={copied ? "Copied!" : "Copy"}
+              ></i> */}
+                        </div>
+                       
+                      </td>
                     </tr>
                   ))}
 

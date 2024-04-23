@@ -310,9 +310,8 @@ const dispatch = useDispatch();
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={
-                "export-excel/?search=Verified"
-              }
+             
+              URL={`export-excel/?search=Verified&isDirect=${onboardType}`}
               filename={"Pending-Approval"}
             />
           }

@@ -292,7 +292,8 @@ const PendindKyc = () => {
         <div className="">
         {!loadingState &&
           <MerchnatListExportToxl
-            URL={"export-excel/?search=Pending"}
+           
+            URL={`export-excel/?search=Pending&isDirect=${onboardType}`}
             filename={"Pending-KYC"}
           />
         }
