@@ -43,10 +43,7 @@ function RateMapping() {
   }, [approvedMerchantList]); //
 
 
-
-
-
-  useEffect(() => {
+ useEffect(() => {
     dispatch(
       kycForApproved({
         page: currentPage,
@@ -74,19 +71,7 @@ function RateMapping() {
   }, [searchText]);
 
 
-
-  // const searchByText = (text) => {
-  //   setData(
-  //     rateMappingList?.filter((item) =>
-  //       Object.values(item)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchText?.toLocaleLowerCase())
-  //     )
-  //   );
-  // };
-
-  const filteredData = useMemo(() => {
+const filteredData = useMemo(() => {
     return rateMappingList?.filter((item) =>
       Object.values(item)
         .join(' ')

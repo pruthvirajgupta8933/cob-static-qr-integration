@@ -12,10 +12,8 @@ function ManualRateMapping() {
   const { loginid } = param
 
   useEffect(() => {
-    // console.log("component Mounted")
     rateMappingFn(loginid).then(
       function (value) {
-        // console.log("success-found")
         setRateMappingSuccess(true)
         setErrorRm(false)
   
@@ -31,7 +29,6 @@ function ManualRateMapping() {
       setErrorRm(false)
       setRateMappingSuccess(false)
       setErrorMsg("")
-      console.log("component unmounted")
     }
   }, [])
   return (

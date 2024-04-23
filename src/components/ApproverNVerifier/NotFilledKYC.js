@@ -17,11 +17,13 @@ const NotFilledKYC = () => {
 
   // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
+  console.log("searchText",searchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const [onboardType, setOnboardType] = useState("")
+  console.log("onboardType",onboardType);
 
   const dispatch = useDispatch();
 
@@ -82,18 +84,7 @@ const searchByText = () => {
     setNotFilledData(filterData)
   };
 
-  // const fetchData = (startingSerialNumber) => {
-  //   dispatch(
-  //     kycForNotFilled({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: searchText,
-  //       merchantStatus: "Not-Filled",
-  //       isDirect: onboardType
-  //     })
-  //   )
-
-  // };
+ 
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
@@ -108,7 +99,7 @@ const searchByText = () => {
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
  
-  // ...
+  
   
   useEffect(() => {
     fetchData();
@@ -140,6 +131,7 @@ const searchByText = () => {
       value: "offline",
     },
   ];
+ 
 
 
   return (
@@ -180,7 +172,7 @@ const searchByText = () => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={"export-excel/?search=Not-Filled"}
+            URL={`export-excel/?search=Not-Filled&isDirect=${onboardType}`}
               filename={"Not-Filled-KYC"}
             />
           }

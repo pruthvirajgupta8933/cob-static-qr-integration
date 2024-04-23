@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSubscribedMerchantList } from "../../services/approver-dashboard/productSubscriptionServiceAdmin";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
-import { merchantReferralOnboardSlice, saveMerchantBasicDetails } from "./merchantReferralOnboardSlice";
 
 
 export const fetchMerchantProductSubscribeList = createAsyncThunk(
@@ -24,7 +22,8 @@ export const fetchMerchantProductSubscribeList = createAsyncThunk(
 );
 
 const initialState = {
-    merchantProductSubscribeList: []
+    merchantProductSubscribeList: [],
+    isLoading: false
 }
 
 export const productSubscriptionServiceAdminSlice = createSlice({
@@ -32,11 +31,24 @@ export const productSubscriptionServiceAdminSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
+
         builder
+        .addCase(fetchMerchantProductSubscribeList.pending, (state) => {
+            state. isLoading=true
+
+           
+        })
             .addCase(fetchMerchantProductSubscribeList.fulfilled, (state, action) => {
                 // state.loading = 'loading';
                 state.merchantProductSubscribeList = action.payload;
+                state. isLoading=false
             })
+
+           .addCase(fetchMerchantProductSubscribeList.rejected, (state) => {
+                state. isLoading=false
+    
+            })
+
     }
 }
 )

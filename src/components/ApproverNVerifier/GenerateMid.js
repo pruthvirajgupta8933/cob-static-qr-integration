@@ -9,11 +9,9 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
-import Yup from "../../_components/formik/Yup";
 import { Formik, Form } from "formik";
 import { fetchParentTypeData } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import API_URL from "../../config";
-import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
 import { axiosInstance } from "../../utilities/axiosInstance"
@@ -109,30 +107,11 @@ function AssignZone() {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
-    // {
-    //   id: "9",
-    //   name: "Generate MID",
-    //   cell: (row) => (
-    //     <button
-    //       type="submit"
-    //       onClick={() => {
-    //         setModalDisplayData(row);
-    //         setOpenModal(true);
-    //       }}
-    //       className="approve cob-btn-primary text-white"
-    //       data-toggle="modal"
-    //       data-target="#exampleModalCenter"
-    //     >
-    //       Action
-    //     </button>
-    //   ),
-    // },
+    
   ];
   let initialValues = {
-
-    transaction_from: "",
-
-  };
+  transaction_from: "",
+};
   useEffect(() => {
 
 
@@ -147,11 +126,11 @@ function AssignZone() {
 
   }, []);
 
-  const approvedMerchantList = useSelector(
+const approvedMerchantList = useSelector(
     (state) => state.kyc.kycApprovedList
   );
 
-  // [{id,name}, {id,name}, {id,name}, {id,name}] 
+   
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
   const [bankList, setBankList] = useState([])
@@ -165,8 +144,7 @@ function AssignZone() {
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
-
+  
 
 
   const handleSelectAll = (checked) => {
@@ -213,17 +191,7 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-    // .then((resp) => {
-    //   const data = resp?.payload?.results;
-    //   const dataCoun = resp?.payload?.count;
-    //   setData(data);
-    //   setDataCount(dataCoun);
-    //   setAssignzone(data);
-    // })
-
-    // .catch((err) => {
-    //   toastConfig.errorToast("Data not loaded");
-    // });
+   
   };
 
   useEffect(() => {
@@ -235,17 +203,7 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-    // .then((resp) => {
-    //   const data = resp?.payload?.results;
-    //   const dataCoun = resp?.payload?.count;
-    //   setData(data);
-    //   setDataCount(dataCoun);
-    //   setAssignzone(data);
-    // })
-
-    // .catch((err) => {
-    //   toastConfig.errorToast("Data not loaded");
-    // });
+   
   }, [currentPage, pageSize]);
 
   ////////////////////////////////////////////////// Search filter start here

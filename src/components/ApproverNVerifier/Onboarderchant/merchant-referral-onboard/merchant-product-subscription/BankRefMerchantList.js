@@ -5,8 +5,7 @@ import { roleBasedAccess } from "../../../../../_components/reuseable_components
 import Table from "../../../../../_components/table_components/table/Table";
 import SearchFilter from "../../../../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage";
-import SkeletonTable from "../../../../../_components/table_components/table/skeleton-table";
-
+import CustomLoader from "../../../../../_components/loader"
 import {
     fetchMerchantProductSubscribeList
 } from "../../../../../slices/approver-dashboard/productSubscriptionServiceAdminSlice";
@@ -159,8 +158,9 @@ function BankRefMerchantList() {
 
     const dispatch = useDispatch();
     const loadingState = useSelector(
-        (state) => state.kyc.isLoadingForPendingVerification
+        (state) => state.productSubscriptionServiceAdminReducer.isLoading
     );
+  
 
     
 
@@ -269,6 +269,7 @@ function BankRefMerchantList() {
             <div>
                 <div className="scroll overflow-auto">
                     <h6>Total Count : {dataCount}</h6>
+                    
                     {!loadingState && data?.length !== 0 && (
                         <Table
                             row={PendingVerificationData}
@@ -280,11 +281,13 @@ function BankRefMerchantList() {
                         />
                     )}
                 </div>
-                {/* <CustomLoader loadingState={loadingState} /> */}
-                {loadingState && <SkeletonTable />}
+                
+                {/* {loadingState && <SkeletonTable />} */}
+                <CustomLoader loadingState={loadingState} />
                 {data?.length == 0 && !loadingState && (
                     <h6 className="text-center font-weight-bold">No Data Found</h6>
                 )}
+               
             </div>
         </div>
     );

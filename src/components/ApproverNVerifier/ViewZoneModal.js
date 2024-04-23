@@ -15,14 +15,11 @@ import { riskCategory } from '../../slices/rateMappingSlice';
 
 
 const ViewZoneModal = (props) => {
-  // console.log("props",props)
-
+  
   const [riskCategoryCode, setRiskCategoryCode] = useState([])
   const [employeeName, setEmployeeName] = useState([])
   const [mccCode, setMccCode] = useState([])
   const[buttonDisable,setButtonDisable]=useState(false)
- 
-
   const [zoneInfo, setZoneinfo] = useState([])
   const dispatch = useDispatch();
 
@@ -113,14 +110,9 @@ useEffect(() => {
         setButtonDisable(false)
       }
 
+}).catch((resp) => {
 
-
-
-      // setShow(true)
-    }).catch((resp) => {
-
-
-    })
+})
   }
 
 
@@ -135,8 +127,7 @@ useEffect(() => {
   }, [props])
 
 
-
-  const getZoneInfobyClientCode = (clientCode) => {
+const getZoneInfobyClientCode = (clientCode) => {
     const postData = {
       client_code: clientCode,
     };

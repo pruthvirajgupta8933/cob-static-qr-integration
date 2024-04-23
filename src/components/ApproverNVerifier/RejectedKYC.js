@@ -16,10 +16,6 @@ const RejectedKYC = () => {
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoadingForRejected);
 
-
-  // const [dataCount, setDataCount] = useState("");
-
-
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -323,7 +319,8 @@ const RejectedKYC = () => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={"export-excel/?search=Rejected"}
+              
+              URL={`export-excel/?search=Rejected&isDirect=${onboardType}`}
               filename={"Rejected"}
             />
           }

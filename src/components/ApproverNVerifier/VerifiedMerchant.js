@@ -13,13 +13,10 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 
 function VerifiedMerchant() {
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const verifiedList = useSelector(
     (state) => state.kyc.kycVerifiedList
   );
-
-
 
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
@@ -231,25 +228,7 @@ function VerifiedMerchant() {
     );
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentPage, searchText, pageSize, onboardType]);
-
-  // const fetchData = () => {
-  //   dispatch(
-  //     kycForVerified({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: searchText,
-  //       merchantStatus: "Verified",
-  //       isDirect: onboardType
-  //     })
-  //   )
-
-  // };
-
-  const fetchData = useCallback((startingSerialNumber) => {
+ const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForVerified({
         page: currentPage,
@@ -331,9 +310,8 @@ function VerifiedMerchant() {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={
-                "export-excel/?search=Verified"
-              }
+             
+              URL={`export-excel/?search=Verified&isDirect=${onboardType}`}
               filename={"Pending-Approval"}
             />
           }

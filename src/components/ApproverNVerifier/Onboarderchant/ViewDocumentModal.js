@@ -14,7 +14,6 @@ import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from 'uuid';
 
 const ViewDocumentModal = (props) => {
-
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -34,8 +33,7 @@ const ViewDocumentModal = (props) => {
   const commentUpdate = () => {
     dispatch(
       forGettingDocumentList({
-        // login_id: "5443"
-        login_id: props?.documentData?.loginMasterId
+      login_id: props?.documentData?.loginMasterId
       })
     )
       .then((resp) => {
@@ -337,6 +335,7 @@ const ViewDocumentModal = (props) => {
       </div>
     )
   }
+
   const modalFooter = () => {
     return (
       <>

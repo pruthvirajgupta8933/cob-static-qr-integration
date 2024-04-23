@@ -15,34 +15,24 @@ import DateFormatter from "../../utilities/DateConvert";
 
 const PendindKyc = () => {
   const roles = roleBasedAccess();
-
   const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   
-  
-const [commentId, setCommentId] = useState({});
+  const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("");
-
-  
-
 
   const pendindKycList = useSelector(
     (state) => state.kyc.pendingKycuserList 
   );
 
- 
-
- 
-  // );
   const [data, setData] = useState([]);
   const [pendingKycData, setPendingKycData] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
@@ -302,7 +292,8 @@ const [commentId, setCommentId] = useState({});
         <div className="">
         {!loadingState &&
           <MerchnatListExportToxl
-            URL={"export-excel/?search=Pending"}
+           
+            URL={`export-excel/?search=Pending&isDirect=${onboardType}`}
             filename={"Pending-KYC"}
           />
         }

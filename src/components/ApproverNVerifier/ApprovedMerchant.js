@@ -17,8 +17,6 @@ import DateFormatter from "../../utilities/DateConvert";
 
 
 function ApprovedMerchant() {
-
-  // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
@@ -253,24 +251,7 @@ function ApprovedMerchant() {
   }
 
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [currentPage, searchText, pageSize, onboardType]);
-  // const fetchData = () => {
-  //   dispatch(
-  //     kycForApproved({
-  //       page: currentPage,
-  //       page_size: pageSize,
-  //       searchquery: searchText,
-  //       merchantStatus: "Approved",
-  //       isDirect: onboardType
-  //     })
-  //   )
-
-  // };
-
-
-  const fetchData = useCallback((startingSerialNumber) => {
+ const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForApproved({
         page: currentPage,
@@ -377,9 +358,10 @@ function ApprovedMerchant() {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              URL={
-                "export-excel/?search=Approved"
-              }
+              // URL={
+              //   "export-excel/?search=Approved"
+              // }
+              URL={`export-excel/?search=Approved&isDirect=${onboardType}`}
               filename={"Approved"}
             />
           }

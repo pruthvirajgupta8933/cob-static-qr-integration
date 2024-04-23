@@ -59,31 +59,11 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-    // .then((resp) => {
-    //   const data = resp?.payload?.results;
-    //   const dataCoun = resp?.payload?.count;
-    //   setData(data);
-    //   setDataCount(dataCoun);
-    //   setAssignzone(data);
-    // })
-
-    // .catch((err) => {
-    //   toastConfig.errorToast("Data not loaded");
-    // });
+    
   }, [currentPage, pageSize]);
 
-  // const searchByText = (text) => {
-  //   setData(
-  //     assignZone?.filter((item) =>
-  //       Object.values(item)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchText?.toLocaleLowerCase())
-  //     )
-  //   );
-  // };
-
-  const filteredData = useMemo(() => {
+  
+const filteredData = useMemo(() => {
     return assignZone?.filter((item) =>
       Object.values(item)
         .join(' ')
@@ -95,8 +75,7 @@ function AssignZone() {
 
 
   const searchByText = () => {
-    // Set data with the memoized filteredData
-    setData(filteredData);
+setData(filteredData);
   };
 
 
