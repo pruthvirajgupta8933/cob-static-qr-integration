@@ -5,7 +5,6 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import { useDispatch, useSelector } from "react-redux";
 import { merchantSubscribedPlanData } from "../../../../slices/merchant-slice/productCatalogueSlice";
 import moment from "moment";
-// import { KYC_STATUS_PENDING } from "../../../../utilities/enums";
 import { isNull } from "lodash";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,16 +16,11 @@ const Profile = () => {
   const { auth, productCatalogueSlice } = useSelector((state) => state);
   const { user } = auth
   const { SubscribedPlanData, isLoading, walletCommission, errorState } = productCatalogueSlice
-
-
-  // console.log("SubscribedPlanData", SubscribedPlanData)
   const [walletDisplayData, setWalletDisplayData] = useState([])
   const [loading, setLoading] = useState(false);
-
   const clientId = user.clientMerchantDetailsList[0]?.clientId
 
-
-  const handleTabClick = (currenTabVal) => {
+const handleTabClick = (currenTabVal) => {
     setCurrentTab(currenTabVal)
   };
 

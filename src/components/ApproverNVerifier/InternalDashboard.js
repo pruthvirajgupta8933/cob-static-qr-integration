@@ -7,26 +7,26 @@ import { getMyMerchantsCount } from '../../services/internalDashboard.service';
 
 function InternalDashboard() {
     const roles = roleBasedAccess();
+    
     const [approved, setApproved] = useState(0)
     const [myMerchants, setMymerchants] = useState(0)
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
 
     useEffect(() => {
-        const todayDate = new Date()
-        const from_date = moment(todayDate).startOf('day').format('YYYY-MM-DD')
-        const to_date = moment(todayDate).startOf('day').format('YYYY-MM-DD')
-
+        
+       
         // approved data 
-        roles.approver &&
-            getApprovedCount(from_date, to_date)
+        {(roles.verifier
+             || roles.approver) &&
+            getApprovedCount()
                 .then((count) => {
                     setApproved(count);
                 })
                 .catch((error) => {
                     // Handle errors as needed
-                });
-
+                })};
+    
         // My Merchant List
         (roles.viewer || roles?.accountManager) &&
             getMyMerchantsCount(loginId)
@@ -37,6 +37,7 @@ function InternalDashboard() {
                     // Handle errors as needed
                 })
     }, [])
+    
 
     return (
         <div className='row'>
@@ -67,10 +68,17 @@ function InternalDashboard() {
                         <div className="card-body">
                             <h5>Approved Merchants</h5>
                         </div>
-
                         <div className="card-footer d-flex justify-content-between">
-                            <h6>Total</h6>
-                            <h6>{approved}</h6>
+                            <h6>Total Approved</h6>
+                            <div className="d-flex align-items-center justify-content-center py-2">
+                                {approved ? ( // Check if Approved is available
+                                    <h6>{approved}</h6> // If available, display the value
+                                ) : (
+                                    <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

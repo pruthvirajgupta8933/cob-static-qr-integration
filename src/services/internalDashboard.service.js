@@ -4,7 +4,7 @@ import { axiosInstanceJWT } from "../utilities/axiosInstance";
 export const getApprovedCount = async (fromDate, toDate) => {
   try {
     const response = await axiosInstanceJWT.get(
-      `${API_URL.KYC_FOR_ONBOARDED}?search=Approved&order_by=-approved_date&search_map=approved_date&page=1&page_size=10&from_date=${fromDate}&to_date=${toDate}`
+      `${API_URL.KYC_FOR_ONBOARDED}?search=Approved&order_by=-approved_date&search_map=approved_date&page=1&page_size=10`
     );
 
     return response.data.count;

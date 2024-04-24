@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import HeaderPage from "../login/HeaderPage";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Yup from "../../../_components/formik/Yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,8 +13,6 @@ import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
 import signupBnr from "../../../assets/images/sb-front-bnrr.png"
 import { v4 as uuidv4 } from 'uuid';
-// import { toast, Zoom } from "react-toastify";
-// import 'react-toastify/dist/ReactToastify.css';
 import toastConfig from "../../../utilities/toastTypes";
 
 
@@ -195,7 +192,6 @@ function Signup() {
             toastConfig.errorToast(message.message);
         }
         return () => {
-            // console.log("clear state")
             dispatch(udpateRegistrationStatus());
         };
     }, [isUserRegistered, dispatch, history, message]);
@@ -221,7 +217,6 @@ function Signup() {
                     mobileNumber: mobileNumber,
                     email: email,
                     business_cat_code: businessCategoryCode,
-                    // password: passwordd,
                     businessType,
                     isDirect: true,
                     created_by: null,
@@ -231,9 +226,7 @@ function Signup() {
             )
                 .unwrap()
                 .then((res) => {
-                    // console.log(res);
                     setBtnDisable(false);
-                    // resetForm();
                 })
                 .catch((err) => {
                     setBtnDisable(false);
@@ -440,7 +433,7 @@ function Signup() {
                                                     name="terms_and_condition"
                                                     type="checkbox"
                                                     id="flexCheckDefault"
-                                                // onChange={(e)=>checkBoxHandler(e, formik.setFieldValue)}
+                                                
                                                 />
 
                                                 <lable>
@@ -497,7 +490,7 @@ function Signup() {
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-4">
-                    <div className="p-1 bd-highlight sp-font-12 text-center"><p className="m-0">Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0</p></div>
+                    <div className="p-1 bd-highlight sp-font-12 text-center"><p className="m-0">Copyright @ 2023 SabPaisa All Rights Reserved version 1.0</p></div>
                 </div>
             </main>
         </React.Fragment>

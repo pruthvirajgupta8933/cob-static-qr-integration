@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState,useMemo,useCallback} from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
@@ -13,29 +13,16 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
   const loadingState = useSelector((state) => state.kyc.isLoading);
-
-
-  // const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
-  console.log("searchText",searchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-
   const [onboardType, setOnboardType] = useState("")
-  console.log("onboardType",onboardType);
-
   const dispatch = useDispatch();
-
   const { results: notFilledKycData, count: dataCount } = useSelector(
     (state) => state.kyc.notFilledUserList
 
   );
-
-
-
-
-
   const [notFilledData, setNotFilledData] = useState(notFilledKycData);
   const [data, setData] = useState(notFilledKycData);
 
@@ -56,23 +43,23 @@ const NotFilledKYC = () => {
 
   const mappedData = useMemo(() => {
     return notFilledKycData?.map((item) => {
-        return {
-            sno: item.sno,
-            name: item.name,
-            clientCode: item.clientCode,
-            emailId: item.emailId,
-            contactNumber: item.contactNumber,
-            status: item.status,
-            signUpDate: item.signUpDate,
-            isDirect: item.isDirect,
-        };
+      return {
+        sno: item.sno,
+        name: item.name,
+        clientCode: item.clientCode,
+        emailId: item.emailId,
+        contactNumber: item.contactNumber,
+        status: item.status,
+        signUpDate: item.signUpDate,
+        isDirect: item.isDirect,
+      };
     });
-}, [notFilledKycData]);
+  }, [notFilledKycData]);
 
- 
-const searchByText = () => {
 
-    
+  const searchByText = () => {
+
+
     const filterData = setData(
       notFilledData?.filter((item) =>
         Object.values(item)
@@ -84,7 +71,7 @@ const searchByText = () => {
     setNotFilledData(filterData)
   };
 
- 
+
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
@@ -98,9 +85,9 @@ const searchByText = () => {
     );
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
- 
-  
-  
+
+
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -131,7 +118,7 @@ const searchByText = () => {
       value: "offline",
     },
   ];
- 
+
 
 
   return (
@@ -172,7 +159,7 @@ const searchByText = () => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-            URL={`export-excel/?search=Not-Filled&isDirect=${onboardType}`}
+              URL={`export-excel/?search=Not-Filled&isDirect=${onboardType}`}
               filename={"Not-Filled-KYC"}
             />
           }

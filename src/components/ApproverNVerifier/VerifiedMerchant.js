@@ -30,6 +30,7 @@ const dispatch = useDispatch();
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("")
+ 
 
   useEffect(() => {
     const verifiedDataList = verifiedList?.results;
@@ -308,10 +309,9 @@ const dispatch = useDispatch();
           />
         </div>
         <div className="">
-          {!loadingState &&
+          {!loadingState  && dataCount===0 ? "" :
             <MerchnatListExportToxl
-             
-              URL={`export-excel/?search=Verified&isDirect=${onboardType}`}
+             URL={`export-excel/?search=Verified&isDirect=${onboardType}`}
               filename={"Pending-Approval"}
             />
           }
