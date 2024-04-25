@@ -14,7 +14,7 @@ import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums"
 import { exportToExcelOnboard } from "../../services/kyc/export-data.service";
 
 const OnboardedReport = () => {
- const [searchingData, setSearchingData] = useState([]);
+  const [searchingData, setSearchingData] = useState([]);
   // const [dataCount, setDataCount] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -25,7 +25,7 @@ const OnboardedReport = () => {
   const [disabled, setDisabled] = useState(false);
   // const [dataClick, setDataClick] = useState(false);
 
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { kyc } = useSelector(state => state)
   const { allKycData } = kyc
   const { result, loading, count } = allKycData
@@ -114,7 +114,7 @@ const dispatch = useDispatch();
 
   };
 
-let now = moment().format("YYYY-M-D");
+  let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
@@ -147,9 +147,9 @@ let now = moment().format("YYYY-M-D");
       onboardedReport({
         page: currentPage,
         page_size: pageSize,
-        kyc_status: values.status,
-        from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
-        to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
+        kyc_status: values.status
+        // from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
+        // to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
       })
     )
   };
@@ -161,13 +161,13 @@ let now = moment().format("YYYY-M-D");
     }
   }, [])
 
-// only two date coloum is available in the db, 
+  // only two date coloum is available in the db, 
   const selectStatus = [
     { key: KYC_STATUS_VERIFIED, value: KYC_STATUS_VERIFIED },
     { key: KYC_STATUS_APPROVED, value: KYC_STATUS_APPROVED }
   ];
 
-const exportToExcelFn = () => {
+  const exportToExcelFn = () => {
     exportToExcelOnboard({
       status: onboardValue.status,
       from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
@@ -175,7 +175,7 @@ const exportToExcelFn = () => {
     })
   };
 
-    return (
+  return (
 
     <section className="">
       <div className="">
@@ -194,7 +194,7 @@ const exportToExcelFn = () => {
         >
           {(formik) => (
             <Form className="row mt-5">
-              <div className="form-group col-md-3">
+              {/* <div className="form-group col-md-3">
                 <FormikController
                   control="date"
                   label="From Date"
@@ -224,7 +224,7 @@ const exportToExcelFn = () => {
                   required={true}
                   errorMsg={formik.errors["to_date"]}
                 />
-              </div>
+              </div> */}
               <div className="form-group col-md-3">
                 <FormikController
                   control="select"
@@ -245,7 +245,7 @@ const exportToExcelFn = () => {
                   className="btn cob-btn-primary mt-4 approve text-white btn-sm"
                   disabled={disabled}
                 >
-                  Submit
+                  Search
                 </button>
               </div>
             </Form>
@@ -270,13 +270,13 @@ const exportToExcelFn = () => {
               </div>
 
               <div className="form-group col-lg-3">
-              <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={count}
-            currentPage={currentPage}
-            changePageSize={changePageSize}
-            changeCurrentPage={changeCurrentPage}
-          />
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={count}
+                  currentPage={currentPage}
+                  changePageSize={changePageSize}
+                  changeCurrentPage={changeCurrentPage}
+                />
               </div>
               <div className="form-group col-lg-3">
                 <button
@@ -291,7 +291,7 @@ const exportToExcelFn = () => {
 
             <div className="container p-0">
               <div className="scroll overflow-auto">
-              <h6>Total Count : {count}</h6>
+                <h6>Total Count : {count}</h6>
                 {!loading && searchingData?.length !== 0 && (
                   <Table
                     row={rowSignUpData}

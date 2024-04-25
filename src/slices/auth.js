@@ -376,114 +376,201 @@ const authSlice = createSlice({
 
     }
   },
-  extraReducers: {
-    [checkClientCodeSlice.fulfilled]: (state, action) => {
-      state.avalabilityOfClientCode = action.payload
-    },
-    [register.pending]: (state, action) => {
-      state.isLoggedIn = null
-      state.isUserRegistered = null;
-    },
-    [register.fulfilled]: (state, action) => {
-      state.isLoggedIn = null
-      state.isUserRegistered = true;
-    },
-    [register.rejected]: (state, action) => {
-      state.isLoggedIn = null
-      state.isUserRegistered = false;
-    },
-    [udpateRegistrationStatus.fulfilled]: (state, action) => {
-      state.isLoggedIn = null
-      state.isUserRegistered = null;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(checkClientCodeSlice.fulfilled, (state, action) => {
+        state.avalabilityOfClientCode = action.payload
+      })
 
-    [successTxnSummary.fulfilled]: (state, action) => {
-      state.successTxnsumry = action.payload;
-    },
-    [successTxnSummary.rejected]: (state, action) => {
-      //code 
-    },
-    [sendEmail.fulfilled]: (state, action) => {
-      state.sendEmail = action.payload.data;
-    },
-    [sendEmail.rejected]: (state, action) => {
-      //code 
-    },
-    [login.fulfilled]: (state, action) => {
-      // console.log("action",action)
+      .addCase(register.pending, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = true;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = false;
+      })
+      .addCase(udpateRegistrationStatus.fulfilled, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = null;
+      })
+      .addCase(successTxnSummary.fulfilled, (state, action) => {
+        state.successTxnsumry = action.payload;
+      })
+      .addCase(sendEmail.fulfilled, (state, action) => {
+        state.sendEmail = action.payload.data;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        let loggedInStatus = false;
+        let isValidData = '';
+        const loginState = action.payload?.user?.loginStatus;
+        if (loginState === "Activate") {
+          loggedInStatus = true;
+          isValidData = 'Yes';
+          state.userAlreadyLoggedIn = true;
+        } else {
+          loggedInStatus = false;
+          isValidData = 'No';
+        }
+        state.isLoggedIn = loggedInStatus;
+        state.user = action.payload.user;
+        sessionStorage.setItem("user", JSON.stringify(state.user))
+        sessionStorage.setItem("categoryId", 1)
+        state.isValidUser = isValidData;
+      })
+      .addCase(login.pending, (state) => {
+        state.isLoggedIn = null;
+        // state.userAlreadyLoggedIn = false;
+        state.isValidUser = '';
+        state.user = null;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.userAlreadyLoggedIn = false;
+        state.isValidUser = '';
+        state.user = null;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoggedIn = null;
+        state.userAlreadyLoggedIn = false;
+        state.isValidUser = '';
+        state.user = null;
+        state = {}
+      })
 
-      let loggedInStatus = false;
-      let isValidData = '';
-      const loginState = action.payload?.user?.loginStatus;
-      loggedInStatus = false;
-      if (loginState === "Activate") {
-        loggedInStatus = true;
-        isValidData = 'Yes';
-        state.userAlreadyLoggedIn = true;
-      } else {
-        loggedInStatus = false;
-        isValidData = 'No';
-      }
-      state.isLoggedIn = loggedInStatus;
-      state.user = action.payload.user;
-      sessionStorage.setItem("user", JSON.stringify(state.user))
-      sessionStorage.setItem("categoryId", 1)
-      state.isValidUser = isValidData;
-    },
-    [login.pending]: (state) => {
-      state.isLoggedIn = null;
-      // state.userAlreadyLoggedIn = false;
-      state.isValidUser = '';
-      state.user = null;
-    },
-    [login.rejected]: (state, action) => {
-      state.isLoggedIn = false;
-      state.userAlreadyLoggedIn = false;
-      state.isValidUser = '';
-      state.user = null;
-    },
-    [logout.fulfilled]: (state, action) => {
-      state.isLoggedIn = null;
-      state.userAlreadyLoggedIn = false;
-      state.isValidUser = '';
-      state.user = null;
-      state = {};
-    },
+      .addCase(changePasswordSlice.fulfilled, (state, action) => {
+        state.passwordChange = true;
+      })
+      .addCase(changePasswordSlice.pending, (state) => {
+        state.passwordChange = null;
+      })
+      .addCase(changePasswordSlice.rejected, (state) => {
+        state.passwordChange = false;
+      })
+      .addCase(getEmailToSendOtpSlice.fulfilled, (state, action) => {
+        state.forgotPassword.otpResponse = action.payload;
+        const username = action.payload.username;
+        const status = action.payload.status;
+        state.forgotPassword.sendUserName.username = username;
+        state.forgotPassword.sendUserName.isValid = status ? true : false;
+      })
+      .addCase(getEmailToSendOtpSlice.rejected, (state, action) => {
+        state.forgotPassword.sendUserName.isValid = false;
+      })
 
-    [createClientProfile.fulfilled]: (state, action) => {
-      // state.createClientProfile = action.payload
-      // state.user = action.payload
-    },
-    [changePasswordSlice.fulfilled]: (state, action) => {
-      state.passwordChange = true;
-    },
-    [changePasswordSlice.pending]: (state) => {
-      state.passwordChange = null;
-    },
-    [changePasswordSlice.rejected]: (state) => {
-      state.passwordChange = false;
-    },
-
-    [getEmailToSendOtpSlice.fulfilled]: (state, action) => {
-      state.forgotPassword.otpResponse = action.payload;
-      const username = action.payload.username;
-      const status = action.payload.status;
-      state.forgotPassword.sendUserName.username = username;
-      state.forgotPassword.sendUserName.isValid = status ? true : false;
-    },
-    [getEmailToSendOtpSlice.pending]: (state) => {
-    },
-    [getEmailToSendOtpSlice.rejected]: (state, action) => {
-      state.forgotPassword.sendUserName.isValid = false;
-    },
+      .addCase(checkPermissionSlice.fulfilled, (state, action) => {
+        state.payLinkPermission = action.payload
+      })
 
 
-    [checkPermissionSlice.fulfilled]: (state, action) => {
+    // [checkClientCodeSlice.fulfilled]: (state, action) => {
+    //   state.avalabilityOfClientCode = action.payload
+    // },
+    // [register.pending]: (state, action) => {
+    //   state.isLoggedIn = null
+    //   state.isUserRegistered = null;
+    // },
+    // [register.fulfilled]: (state, action) => {
+    //   state.isLoggedIn = null
+    //   state.isUserRegistered = true;
+    // },
+    // [register.rejected]: (state, action) => {
+    //   state.isLoggedIn = null
+    //   state.isUserRegistered = false;
+    // },
+    // [udpateRegistrationStatus.fulfilled]: (state, action) => {
+    //   state.isLoggedIn = null
+    //   state.isUserRegistered = null;
+    // },
 
-      // state.passwordChange = false;
-      state.payLinkPermission = action.payload
-    }
-},
+    // [successTxnSummary.fulfilled]: (state, action) => {
+    //   state.successTxnsumry = action.payload;
+    // },
+    // [successTxnSummary.rejected]: (state, action) => {
+    //   //code 
+    // },
+    // [sendEmail.fulfilled]: (state, action) => {
+    //   state.sendEmail = action.payload.data;
+    // },
+    // [sendEmail.rejected]: (state, action) => {
+    //   //code 
+    // },
+    // [login.fulfilled]: (state, action) => {
+    //   // console.log("action",action)
+
+    //   let loggedInStatus = false;
+    //   let isValidData = '';
+    //   const loginState = action.payload?.user?.loginStatus;
+    //   loggedInStatus = false;
+    //   if (loginState === "Activate") {
+    //     loggedInStatus = true;
+    //     isValidData = 'Yes';
+    //     state.userAlreadyLoggedIn = true;
+    //   } else {
+    //     loggedInStatus = false;
+    //     isValidData = 'No';
+    //   }
+    //   state.isLoggedIn = loggedInStatus;
+    //   state.user = action.payload.user;
+    //   sessionStorage.setItem("user", JSON.stringify(state.user))
+    //   sessionStorage.setItem("categoryId", 1)
+    //   state.isValidUser = isValidData;
+    // },
+    // [login.pending]: (state) => {
+    //   state.isLoggedIn = null;
+    //   // state.userAlreadyLoggedIn = false;
+    //   state.isValidUser = '';
+    //   state.user = null;
+    // },
+    // [login.rejected]: (state, action) => {
+    //   state.isLoggedIn = false;
+    //   state.userAlreadyLoggedIn = false;
+    //   state.isValidUser = '';
+    //   state.user = null;
+    // },
+    // [logout.fulfilled]: (state, action) => {
+    //   state.isLoggedIn = null;
+    //   state.userAlreadyLoggedIn = false;
+    //   state.isValidUser = '';
+    //   state.user = null;
+    //   state = {};
+    // },
+
+    // [createClientProfile.fulfilled]: (state, action) => {
+    //   // state.createClientProfile = action.payload
+    //   // state.user = action.payload
+    // },
+    // [changePasswordSlice.fulfilled]: (state, action) => {
+    //   state.passwordChange = true;
+    // },
+    // [changePasswordSlice.pending]: (state) => {
+    //   state.passwordChange = null;
+    // },
+    // [changePasswordSlice.rejected]: (state) => {
+    //   state.passwordChange = false;
+    // },
+
+    // [getEmailToSendOtpSlice.fulfilled]: (state, action) => {
+    //   state.forgotPassword.otpResponse = action.payload;
+    //   const username = action.payload.username;
+    //   const status = action.payload.status;
+    //   state.forgotPassword.sendUserName.username = username;
+    //   state.forgotPassword.sendUserName.isValid = status ? true : false;
+    // },
+    // [getEmailToSendOtpSlice.pending]: (state) => {
+    // },
+    // [getEmailToSendOtpSlice.rejected]: (state, action) => {
+    //   state.forgotPassword.sendUserName.isValid = false;
+    // },
+
+    // [checkPermissionSlice.fulfilled]: (state, action) => {
+    //   state.payLinkPermission = action.payload
+    // }
+  },
 });
 
 

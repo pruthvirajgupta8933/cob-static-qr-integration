@@ -2,20 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory, Link } from "react-router-dom";
-// import * as Yup from "yup";
 import Yup from "../../../_components/formik/Yup";
-// import { toast } from "react-toastify";
-// import FormikController from "../../../_components/formik/FormikController";
-
 import { login, logout } from "../../../slices/auth";
 import { clearMessage } from "../../../slices/message";
 import sbbnner from "../../../assets/images/sb-front-bnrr.png"
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from '../header/Header'
 import classes from "./login.module.css"
-// import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
-
-// import api from './api';
 import toastConfig from "../../../utilities/toastTypes";
 
 const INITIAL_FORM_STATE = {
@@ -37,26 +30,19 @@ function Login() {
     const authentication = useSelector((state) => state.auth);
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [auth, setAuthData] = useState(authentication);
-    // const [namee, setNamee] = useState("");
-
     const [values, setValues] = useState({
         password: "",
         showPassword: false,
     });
 
     const dispatch = useDispatch();
-
-    const { user, userAlreadyLoggedIn } = auth;
+    const { user, userAlreadyLoggedIn } = authentication;
 
     useEffect(() => {
         const userLocalData = JSON.parse(sessionStorage.getItem("user"));
         const isLoggedInLc =
             userLocalData && userLocalData.loginId !== null ? true : false;
-        // console.log("isLoggedInLc",isLoggedInLc)
         if (isLoggedInLc) {
-            // console.log("userAlreadyLoggedIn",userAlreadyLoggedIn)
-            // console.log("user?.loginStatus",user?.loginStatus)
             if (userAlreadyLoggedIn && user?.loginStatus === "Activate") {
                 // console.log("push to dashboard")
                 history.push("/dashboard");
@@ -66,9 +52,9 @@ function Login() {
         }
     }, [userAlreadyLoggedIn, user, dispatch, history]);
 
-    useEffect(() => {
-        setAuthData(authentication);
-    }, [authentication]);
+    // useEffect(() => {
+    //     setAuthData(authentication);
+    // }, [authentication]);
 
     useEffect(() => {
         dispatch(clearMessage());
@@ -76,7 +62,6 @@ function Login() {
 
     const handleLogin = (formValue) => {
         const { clientUserId, userPassword } = formValue;
-
         const username = clientUserId;
         const password = userPassword;
 
@@ -87,7 +72,6 @@ function Login() {
                 const loginMessage = res?.payload?.user?.loginMessage;
                 if (activeStatus === "Activate" && loginMessage === "success") {
                     history.push("/dashboard");
-                    // customLogin();
                     setLoading(false);
                 } else {
                     if (loginMessage === "Pending") {
@@ -108,7 +92,6 @@ function Login() {
 
     const queryString = window.location.search;
     const enableSocialLogin = (flag, response) => {
-        // console.log("response", response)
         const username = response?.profileObj?.email;
         const is_social = true;
         if (flag) {
@@ -118,7 +101,6 @@ function Login() {
                     const loginMessage = res?.payload?.user?.loginMessage;
                     if (activeStatus === "Activate" && loginMessage === "success") {
                         history.push("/dashboard");
-                        // customLogin();
                         setLoading(false);
                     } else {
                         if (loginMessage === "Pending") {
@@ -200,7 +182,7 @@ function Login() {
                                         // onClick={() => setNamee("userPassword")}
                                         />
                                         <div className="input-group-append">
-                                            <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">  {values.showPassword ? (
+                                            <span className="input-group-text" onClick={handleClickShowPassword}>  {values.showPassword ? (
                                                 <i
                                                     className="fa fa-eye"
                                                     aria-hidden="true"
@@ -224,18 +206,15 @@ function Login() {
                                         </Link>
                                     </div>
                                     <div className="d-flex">
-                                        <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 " disabled={
-                                            !(formik.isValid && formik.dirty)
-                                                ? true
-                                                : false
-                                        }> {loading && (
-                                            <span
-                                                className="spinner-grow spinner-grow-sm text-light mr-1"
-                                                role="status"
-                                                aria-hidden="true"
-                                            ></span>
-                                        )}
-                                            Login <i className="fa fa-sign-in" aria-hidden="true"></i></button>
+                                        <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 "
+                                            disabled={loading}
+                                        >
+                                            {loading && (
+                                                <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
+                                            )}
+
+                                            Login
+                                            <i className="fa fa-sign-in" aria-hidden="true"></i></button>
                                     </div>
 
                                 </Form>

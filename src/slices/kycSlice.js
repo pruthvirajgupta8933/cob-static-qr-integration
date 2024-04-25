@@ -716,8 +716,8 @@ export const onboardedReport = createAsyncThunk(
     async (data) => {
         const requestParam = data.page;
         const requestParam1 = data.page_size;
-        const from_date = data.from_date;
-        const to_date = data?.to_date
+        // const from_date = data.from_date;
+        // const to_date = data?.to_date
         const kyc_status = data?.kyc_status;
 
         let order_by = kyc_status.toLowerCase() + "_date"
@@ -728,7 +728,7 @@ export const onboardedReport = createAsyncThunk(
 
         const response = await axiosInstanceJWT
             .get(
-                `${API_URL.KYC_FOR_ONBOARDED}?search=${kyc_status}&order_by=-${order_by}&search_map=${order_by}&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
+                `${API_URL.KYC_FOR_ONBOARDED}?search=${kyc_status}&order_by=-${order_by}&search_map=${order_by}&page=${requestParam}&page_size=${requestParam1}`,
             )
             .catch((error) => {
                 return error.response;
