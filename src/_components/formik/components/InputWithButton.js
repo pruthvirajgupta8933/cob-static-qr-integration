@@ -2,10 +2,10 @@ import React from "react";
 import { Field, ErrorMessage } from "formik";
 
 function InputWithButton(props) {
-  const {type, className, onChange , name, label, lableClassName, inputValue, placeholder } = props;
-  const {buttonComponent, buttonIcon, isVerified , inputVerification } = props;
+  const { type, className, onChange, name, label, lableClassName, inputValue, placeholder } = props;
+  const { buttonComponent, buttonIcon, isVerified, inputVerification } = props;
 
-  const verifyHandler = (val)=>{
+  const verifyHandler = (val) => {
     inputVerification(val)
   }
   return (
@@ -14,10 +14,10 @@ function InputWithButton(props) {
       {typeof label !== "undefined" && (
         <label htmlFor={name} className={lableClassName}> {label}</label>
       )}
-      <div class="input-group mb-3">
+      <div className="input-group mb-3">
         <Field type={type} className={className} onChange={onChange} name={name} placeholder={placeholder} />
-        {isVerified ? buttonIcon : 
-        <button class="btn cob-btn-primary btn-sm" type="button" id="button-addon2" onClick={()=>verifyHandler(inputValue)}>verify</button> }
+        {isVerified ? buttonIcon :
+          <button className="btn cob-btn-primary btn-sm" type="button" id="button-addon2" onClick={() => verifyHandler(inputValue)}>verify</button>}
       </div>
 
       <ErrorMessage name={name}>{msg => <p className="text-danger">{msg}</p>}</ErrorMessage>

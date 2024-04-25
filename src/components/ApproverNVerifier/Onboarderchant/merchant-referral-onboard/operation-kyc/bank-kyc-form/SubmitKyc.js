@@ -66,11 +66,11 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
             await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
 
 
-           
+
 
             setIsDisable(false);
 
-           
+
 
         }
 
@@ -89,7 +89,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
 
     };
     const backToFirstScreen = () => {
-        sessionStorage.removeItem("onboardingStatusByAdmin");
+        localStorage.removeItem("onboardingStatusByAdmin");
         dispatch(resetFormState());
         dispatch(clearKycDetailsByMerchantLoginId())
         setCurrentTab(1)

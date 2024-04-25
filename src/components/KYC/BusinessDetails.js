@@ -43,7 +43,7 @@ function BusinessDetails(props) {
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const[isLoader,setIsloader]=useState(false)
+  const [isLoader, setIsloader] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   // const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
   // const [bussinessPanFromGST, setBussinessPanFromGST] = useState("")
@@ -87,10 +87,10 @@ function BusinessDetails(props) {
       registerd_with_udyam = JSON.parse(KycList.is_udyam);
     } catch (error) {
       // console.error('Error parsing JSON:', error);
-      registerd_with_udyam = {}; 
+      registerd_with_udyam = {};
     }
   } else {
-    registerd_with_udyam = {}; 
+    registerd_with_udyam = {};
   }
 
 
@@ -242,14 +242,14 @@ function BusinessDetails(props) {
 
   const panValidate = (values, key, setFieldValue) => {
     setIsLoading(true)
-    
+
     dispatch(
       panValidation({
         pan_number: values,
       })
     ).then((res) => {
       if (
-       
+
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
@@ -312,7 +312,7 @@ function BusinessDetails(props) {
   // const udyamValidation = (values, key, setFieldValue) => {
   //   setIsloader(true)
   //   setUdyamData("")
-    
+
   //   udyamValidate({ "reg_number": values }).then(
   //     resp => {
   //       if (resp?.data?.valid === true) {
@@ -331,13 +331,13 @@ function BusinessDetails(props) {
   //       }
   //     }).catch(err => 
   //       toastConfig.errorToast(err.response?.data?.detail)
-        
+
   //       )
   // }
   const udyamValidation = (values, key, setFieldValue, setIsloader) => {
     setIsloader(true);
     setUdyamData("");
-  
+
     udyamValidate({ "reg_number": values }).then(
       resp => {
         if (resp?.data?.valid === true) {
@@ -350,15 +350,15 @@ function BusinessDetails(props) {
           setUdyamResponseData({});
           toastConfig.errorToast("Detail is not valid");
         }
-      setIsloader(false); 
+        setIsloader(false);
       }).catch(err => {
-        setIsloader(false); 
+        setIsloader(false);
         toastConfig.errorToast(err.response?.data?.detail);
       });
   };
-  
- 
-  
+
+
+
 
   const authValidation = (values, key, setFieldValue) => {
     setIsLoading(true)
@@ -395,7 +395,7 @@ function BusinessDetails(props) {
 
 
   const checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = () => { }) => {
-    
+
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -410,7 +410,7 @@ function BusinessDetails(props) {
       }
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
-     
+
       // for  -Business PAN 
       panValidate(val[key], "company_name", setFieldValue, setIsLoading);
       setIsLoading(true)
@@ -418,13 +418,13 @@ function BusinessDetails(props) {
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       // auth signatory pan
       // console.log("dfdfdf")
-      authValidation(val[key], "signatory_pan", setFieldValue,setIsLoading);
+      authValidation(val[key], "signatory_pan", setFieldValue, setIsLoading);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
       gstinValidate(val[key], "company_name", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "udyam_number") {
-      udyamValidation(val[key], "udyam_number", setFieldValue,setIsloader);
+      udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
       setIsloader(true)
     }
   };
@@ -635,7 +635,7 @@ function BusinessDetails(props) {
                     <label>
                       Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
                     </label>
-                    <a className="btn cob-btn-primary text-white btn-sm mb-1" href="https://sp2-partner.sabpaisa.in/SRS+GST+Declaration.pdf" target="_blank" rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
+                    <a className="btn cob-btn-primary text-white btn-sm mb-1" href="https://firebasestorage.googleapis.com/v0/b/cob-staging.appspot.com/o/SRS-GST-Declaration.pdf?alt=media&token=9eaae583-b357-4146-b7d9-96b58073d075" target="_blank" rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
                   </div>
 
                 }
@@ -680,12 +680,12 @@ function BusinessDetails(props) {
                             }}
                           >
                             {isLoader ?
-                          <span className="spinner-border spinner-border-sm" role="status">
-                            <span className="sr-only">Loading...</span>
-                          </span>
-                          :
-                          "Verify"
-                        }
+                              <span className="spinner-border spinner-border-sm" role="status">
+                                <span className="sr-only">Loading...</span>
+                              </span>
+                              :
+                              "Verify"
+                            }
                           </button>
                         </div>
                       )}
@@ -957,8 +957,8 @@ function BusinessDetails(props) {
                   >
                     {disable && <>
                       <span className="mr-2">
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                      <span className="sr-only">Loading...</span>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="sr-only">Loading...</span>
                       </span>
                     </>}
 

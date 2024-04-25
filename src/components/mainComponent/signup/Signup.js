@@ -169,13 +169,13 @@ function Signup() {
     };
 
     useEffect(() => {
-        const userLocalData = JSON.parse(sessionStorage.getItem("user"));
+        const userLocalData = JSON.parse(localStorage.getItem("user"));
         const isLoggedInLc =
             userLocalData && userLocalData.loginId !== null ? true : false;
         if (isLoggedInLc) {
             history.push("/dashboard");
         } else {
-            dispatch(logout()); 
+            dispatch(logout());
         }
     }, []);
 
@@ -433,7 +433,7 @@ function Signup() {
                                                     name="terms_and_condition"
                                                     type="checkbox"
                                                     id="flexCheckDefault"
-                                                
+
                                                 />
 
                                                 <lable>

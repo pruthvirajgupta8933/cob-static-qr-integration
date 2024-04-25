@@ -37,7 +37,7 @@ const MyMerchantList = () => {
     const [dataCount, setDataCount] = useState("")
     const [kycIdClick, setKycIdClick] = useState([]);
 
-   useEffect(() => {
+    useEffect(() => {
         const myAllMerchantDataList = myMerchantListData?.results;
         const dataCount = myMerchantListData?.count;
         if (myAllMerchantDataList) {
@@ -87,7 +87,7 @@ const MyMerchantList = () => {
 
     };
 
-    
+
 
 
     const fetchData = useCallback((startingSerialNumber) => {
@@ -267,7 +267,7 @@ const MyMerchantList = () => {
                 {/* {console.log(kycStatus)} */}
                 <div className="form-group col-lg-3 col-md-12 mt-2">
                     <label>Select KYC Status</label>
-                    <select class="form-select" onChange={(e) => KycStatusHandler(e.currentTarget.value)}>
+                    <select className="form-select" onChange={(e) => KycStatusHandler(e.currentTarget.value)}>
                         {kycStatus?.map((d, i) => (
                             <option value={d?.key} key={uuidv4()} selected={kycSearchStatus === d.key}>{d.values}</option>
                         ))}

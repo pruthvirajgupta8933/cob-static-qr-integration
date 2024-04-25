@@ -68,7 +68,7 @@
 //         planId:formData.planId,
 //         planName:formData.planName,
 //       }
-//       sessionStorage.setItem("selectedPlan",JSON.stringify(planData))
+//       localStorage.setItem("selectedPlan",JSON.stringify(planData))
 
 //       if(typeof formData.planId==='undefined'){
 //         alert("please Select the valid plan");

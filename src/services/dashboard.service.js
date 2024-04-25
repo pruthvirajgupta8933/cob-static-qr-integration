@@ -1,29 +1,29 @@
 import API_URL from "../config";
-import { axiosInstance, axiosInstanceJWT,axiosInstanceAuth } from "../utilities/axiosInstance"
+import { axiosInstance, axiosInstanceJWT, axiosInstanceAuth } from "../utilities/axiosInstance"
 
 // Home - successTxnSummary 
 
 const successTxnSummary = (object) => {
   // console.log("object", object)
-  return axiosInstance.post(API_URL.SUCCESS_TXN_SUMMARY, object ).then((response) => {
+  return axiosInstance.post(API_URL.SUCCESS_TXN_SUMMARY, object).then((response) => {
     return response.data;
   }).catch(err => console.log(err));
 };
 
 
-  // Graph 
-  const getTxnDataForGraph = (object) => {
-    return axiosInstance.post(API_URL.GET_TRANSACTION_DATA_CHART,object)
-  }
+// Graph 
+const getTxnDataForGraph = (object) => {
+  return axiosInstance.post(API_URL.GET_TRANSACTION_DATA_CHART, object)
+}
 
 const subscriptionplan = () => {
   return axiosInstance.get(API_URL.FETCH_APP_AND_PLAN)
     .then((response) => {
       // console.log("subscribe data - service", response )
       if (response.data) {
-        sessionStorage.setItem("subscriptionplan", JSON.stringify(response.data));
+        localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
       } else {
-        sessionStorage.setItem("subscriptionplan", JSON.stringify(response.data));
+        localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
       }
       return response.data;
     });
@@ -33,9 +33,9 @@ const subscriptionPlanDetail = () => {
   return axiosInstance.post(API_URL.SUBSCRIBE_SERVICE)
     .then((response) => {
       if (response.data) {
-        sessionStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       } else {
-        sessionStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       }
 
       return response.data;

@@ -1,36 +1,36 @@
 class TokenService {
   getLocalrefreshToken() {
-    const authToken = JSON.parse(sessionStorage.getItem("rt"));
+    const authToken = JSON.parse(localStorage.getItem("rt"));
     return authToken;
   }
 
   getLocalAccessToken() {
-    const authToken = JSON.parse(sessionStorage.getItem("at"));
+    const authToken = JSON.parse(localStorage.getItem("at"));
     return authToken;
   }
 
   updateLocalAccessToken(token) {
-    let authToken = JSON.parse(sessionStorage.getItem("at"));
+    let authToken = JSON.parse(localStorage.getItem("at"));
     authToken = token;
-    sessionStorage.setItem("at", JSON.stringify(authToken));
+    localStorage.setItem("at", JSON.stringify(authToken));
   }
 
 
   setUser(data) {
-    sessionStorage.setItem("at", JSON.stringify(data?.accessToken));
-    sessionStorage.setItem("rt", JSON.stringify(data.refreshToken));
+    localStorage.setItem("at", JSON.stringify(data?.accessToken));
+    localStorage.setItem("rt", JSON.stringify(data.refreshToken));
   }
 
   setCategory() {
-    sessionStorage.setItem("categoryId", 1)
+    localStorage.setItem("categoryId", 1)
   }
 
   setUserData(data) {
-    sessionStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("user", JSON.stringify(data));
   }
 
   removeUser() {
-    sessionStorage.removeItem("authToken");
+    localStorage.removeItem("authToken");
   }
 }
 

@@ -32,7 +32,7 @@
 //             .then((resp) => {
 //                 const data = resp.data;
 //                 setRateCloneStatus(data[0].ID)
-//                 sessionStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
+//                 localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
 //             })
 //             .catch((err) => { console.log(err) })
 
@@ -68,7 +68,7 @@
 //             const loginId = user?.loginId;
 //             const clientUserName = user?.userName;
 //             // console.log(user);
-//             const passwrod = sessionStorage.getItem('p');
+//             const passwrod = localStorage.getItem('p');
 
 //             const inputData = {
 //                 clientId: clientId,
@@ -99,14 +99,14 @@
 //              axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
 //                 // console.log("1 api run")
 
-//                 sessionStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
+//                 localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
 //                 //2 - rate map clone   // parent client code / new client code / login id
 //                  axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
                    
-//                     sessionStorage.setItem('enablePaylink', "api trigger");
+//                     localStorage.setItem('enablePaylink', "api trigger");
 //                     // 3- enable pay link
 //                      axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
-//                         sessionStorage.setItem('enablePaylink', "api trigger");
+//                         localStorage.setItem('enablePaylink', "api trigger");
 //                         // console.log("3 api run")
 //                         dispatch(checkPermissionSlice(clientCode));
 //                     })
