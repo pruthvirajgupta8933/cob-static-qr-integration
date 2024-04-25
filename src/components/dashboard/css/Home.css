@@ -300,30 +300,7 @@ table.tables tr:nth-child(odd) {
   color: #ffffff;
   width: 100%;
 }
-#fullname:focus {
-  outline: none !important;
-  border-bottom: 2px solid #54e28d;
-}
-#mobilenumber:focus {
-  outline: none !important;
-  border-bottom: 2px solid #54e28d;
-}
-#email:focus {
-  outline: none !important;
-  border-bottom: 2px solid #54e28d;
-}
-#businesscode:focus {
-  outline: none !important;
-  border-bottom: 2px solid #54e28d;
-}
-#user-pws:focus {
-  outline: none !important;
-  border-bottom: 2px solid #54e28d;
-}
-#user-cpw:focus {
-  outline: none !important;
-  border-bottom: 2px solid #54e28d;
-}
+
 
 .mymodals {
   background: rgba(0, 0, 0, 0.5);
@@ -916,7 +893,7 @@ a.sidenavFonts {
 #clientName:focus {
   outline: none !important;
   box-shadow: none;
-  border-bottom: 5px solid #54e28d;
+  /* border-bottom: 5px solid #54e28d; */
   border-radius: 0px 0px 5px 5px;
 }
 .edit_nop {

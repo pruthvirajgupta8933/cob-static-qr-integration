@@ -7,16 +7,19 @@ import Blob from "blob";
 const MerchnatListExportToxl = (props) => {
   
   const [loading, setLoading] = useState(false);
+  const[disable,setDisable]=useState(false)
 
   const exportToExcelFn = async () => {
     
     setLoading(true)
+    setDisable(true)
     await axiosInstanceJWT.get(`${API_URL?.Export_FOR_MERCHANT_LIST}${props.URL}`,{
       responseType: 'arraybuffer'
     }).then((res) => {
       if (res.status === 200) {
         const data = res?.data;
          setLoading(false)
+         setDisable(false)
         const blob = new Blob([data], {
           type:
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -40,7 +43,7 @@ const MerchnatListExportToxl = (props) => {
         <p>&nbsp;</p>
         <button
           className="btn btn-sm text-white  cob-btn-primary"
-          // disabled={isexcelDataLoaded}
+          disabled={disable}
           type="button"
           onClick={() => exportToExcelFn()}
           style={{ backgroundColor: "rgb(1, 86, 179)" }}

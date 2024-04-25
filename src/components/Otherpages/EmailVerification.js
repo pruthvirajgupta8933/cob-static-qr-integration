@@ -1,7 +1,6 @@
 import React, { useEffect ,useState} from 'react';
 import { Link ,useParams} from 'react-router-dom';
 import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
-// import axios from 'axios';
 import API_URL from '../../config';
 import {axiosInstanceAuth} from '../../utilities/axiosInstance';
 
@@ -28,8 +27,8 @@ const EmailVerification = () => {
   <div className="row d-flex justify-content-center">
     <div className="col-lg-6 col-md-6 col-sm-12 ">
       <div className="card text-center" >
-        <div className="card-header" style={{"background":"black"}}>
-          <img  src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"}/>
+        <div className="card-header headerBg" >
+          <img  src={sabpaisalogo} alt="logo" width={"80px"} height={"19px"}/>
         </div>
       <div className="card-header" style={{"fontSize":"44px","fontWeight":"700"}}>
       <h5>Account {data ? "Activated":"is not activate"}</h5>
