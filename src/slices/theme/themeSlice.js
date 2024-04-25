@@ -15,7 +15,7 @@ export const themeSlice = createSlice({
             state.dashboardHeader.headerMenuToggle = !data
         }
     },
-    extraReducers: {}
+    // extraReducers: {}
 });
 export const { dashboardHeaderMenuToggle } = themeSlice.actions;
 export const themeReducer = themeSlice.reducer;

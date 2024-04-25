@@ -4,7 +4,7 @@ import API_URL from "../../config";
 
 
 const initialState = {
-  isLoadingMandateHistory : false,
+  isLoadingMandateHistory: false,
 };
 
 // 1)----------------------------------------------------------------------------------||
@@ -24,7 +24,7 @@ export const fetchFilterForAllMandatesReportsSlice = createAsyncThunk(
 
     const response = await axios
       .post(
-        `${API_URL.filterMandateReport}?page=${requestParam}&size=${requestParam1}`,{fromDate,toDate,m_id,status,mandatecategorycode,aggregatecode,merchantcode})
+        `${API_URL.filterMandateReport}?page=${requestParam}&size=${requestParam1}`, { fromDate, toDate, m_id, status, mandatecategorycode, aggregatecode, merchantcode })
       .catch((error) => {
         return error.response;
       });
@@ -42,29 +42,26 @@ export const fetchFilterForAllMandatesReportsSlice = createAsyncThunk(
 const reportsDataSlice = createSlice({
   name: "userManagement",
   initialState,
-  reducers: {  },
-  extraReducers: {
+  reducers: {},
+  extraReducers: (builder) => {
     ///For Mandate Filter Data with Filters---
-    [fetchFilterForAllMandatesReportsSlice.fulfilled]: (state, action) => {
-      state.isLoadingMandateHistory = false;
-     
-    },
+    builder
+      .addCase(fetchFilterForAllMandatesReportsSlice.fulfilled, (state, action) => {
+        state.isLoadingMandateHistory = false;
+      })
+      .addCase(fetchFilterForAllMandatesReportsSlice.pending, (state) => {
+        state.isLoadingMandateHistory = true
 
-    [fetchFilterForAllMandatesReportsSlice.pending]: (state) => {
-      state.isLoadingMandateHistory = true
-     
-    },
-
-    [fetchFilterForAllMandatesReportsSlice.rejected]: (state) => {
-      state.isLoadingMandateHistory = false;
-    
-    },
+      })
+      .addCase(fetchFilterForAllMandatesReportsSlice.rejected, (state) => {
+        state.isLoadingMandateHistory = false;
+      })
   },
 });
 
 // Exporting uiState actions
-export const {
-} = reportsDataSlice.actions;
+// export const {
+// } = reportsDataSlice.actions;
 
 // Exporting slice reducer
 // export default reportsDataSlice.reducer;
