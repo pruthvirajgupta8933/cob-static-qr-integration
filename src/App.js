@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "./slices/auth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import "./components/login/Login.css"
+// import "./components/login/Login.css"
 import "./theme.scss"
 import AllRoutes from "./AllRoutes";
 import IdleTimerContainer from "./utilities/IdleTimer";
@@ -29,7 +29,7 @@ const App = () => {
 
   }, [])
 
-// logout session expireTime if user not idle
+  // logout session expireTime if user not idle
   const logOutUser = (isLoggedIn) => {
     setLogin(isLoggedIn)
   }
