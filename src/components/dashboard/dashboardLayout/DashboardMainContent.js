@@ -118,7 +118,7 @@ function DashboardMainContent() {
             const stepRespTwo = await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
             // console.log("stepRespTwo", stepRespTwo)
 
-            let userLocalData = JSON.parse(sessionStorage?.getItem("user"));
+            let userLocalData = JSON.parse(localStorage?.getItem("user"));
             // console.log("before update - userLocalData", userLocalData)
             let clientMerchantDetailsListLocal = userLocalData.clientMerchantDetailsList[0]
             let mergeClientMerchantDetailsList = Object.assign(clientMerchantDetailsListLocal, stepRespTwo.data);
@@ -127,7 +127,7 @@ function DashboardMainContent() {
             userLocalData.clientMerchantDetailsList = [mergeClientMerchantDetailsList]
             // console.log("after update - userLocalData", userLocalData)
             dispatch(updateClientDataInLocal(userLocalData))
-            sessionStorage?.setItem("user", JSON.stringify(userLocalData))
+            localStorage?.setItem("user", JSON.stringify(userLocalData))
             // fetch the details selected product by users
             const postData = { login_id: user?.loginId }
 
@@ -147,7 +147,7 @@ function DashboardMainContent() {
                 };
 
                 await axiosInstanceJWT.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData).then((res) => {
-                    
+
                     dispatch(merchantSubscribedPlanData({ "clientId": stepRespTwo?.data?.clientId }))
 
                 })
@@ -181,7 +181,7 @@ function DashboardMainContent() {
 
     useEffect(() => {
         // fetch subscribe product data
-        if ( roles.merchant && location?.pathname === "/dashboard") {
+        if (roles.merchant && location?.pathname === "/dashboard") {
             dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
         }
     }, [location])

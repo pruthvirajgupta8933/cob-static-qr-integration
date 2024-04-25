@@ -110,7 +110,7 @@ const CreatePassword = (props) => {
                             autoComplete="off"
                           />
 
-                          <span class="input-group-text">
+                          <span className="input-group-text">
                             <a
                               href={() => false}
                               onClick={handleClickShowPassword}
@@ -158,7 +158,7 @@ const CreatePassword = (props) => {
                             size={50}
                           />
 
-                          <span class="input-group-text">
+                          <span className="input-group-text">
                             <a
                               href={() => false}
                               onClick={togglePassword}

@@ -1,7 +1,7 @@
-import {ALLOW_ROLE_AS_VERIFIER} from "../../utilities/permisson";
+import { ALLOW_ROLE_AS_VERIFIER } from "../../utilities/permisson";
 
 export const roleBasedAccess = () => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
     const roleId = user?.roleId;
     const loginId = user?.loginId;
 
@@ -25,28 +25,28 @@ export const roleBasedAccess = () => {
 
     if (roleId === 14) {
         // user is verifier 
-        roleAccessObj = {...roleAccessObj, verifier: true};
+        roleAccessObj = { ...roleAccessObj, verifier: true };
     } else if (roleId === 15) {
         // user is approver
-        roleAccessObj = {...roleAccessObj, approver: true};
+        roleAccessObj = { ...roleAccessObj, approver: true };
     } else if (roleId === 3) {
         // bank
-        roleAccessObj = {...roleAccessObj, bank: true};
+        roleAccessObj = { ...roleAccessObj, bank: true };
     } else if (roleId === 13) {
         // referral
-        roleAccessObj = {...roleAccessObj, referral: true};
+        roleAccessObj = { ...roleAccessObj, referral: true };
     } else if (roleId === 4 || roleId === 5) {
         // client and merchant
-        roleAccessObj = {...roleAccessObj, merchant: true};
+        roleAccessObj = { ...roleAccessObj, merchant: true };
     } else if (roleId === 16) {
         // user is viewer
-        roleAccessObj = {...roleAccessObj, viewer: true};
+        roleAccessObj = { ...roleAccessObj, viewer: true };
     } else if (roleId === 100) {
         // b2b - emammi
-        roleAccessObj = {...roleAccessObj, b2b: true};
+        roleAccessObj = { ...roleAccessObj, b2b: true };
     } else if (roleId === 101) {
         // accountManager
-        roleAccessObj = {...roleAccessObj, accountManager: true};
+        roleAccessObj = { ...roleAccessObj, accountManager: true };
     } else {
         // console.log("Permission not match with these roles");
     }

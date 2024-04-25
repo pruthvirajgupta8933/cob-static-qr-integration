@@ -5,7 +5,7 @@ import AuthService from "../services/auth.service";
 import TokenService from "../services/token.service";
 // import { socketConnection } from "../services/notification-service/notification.service";
 
-const user = JSON.parse(sessionStorage.getItem("user"));
+const user = JSON.parse(localStorage.getItem("user"));
 // console.log("user",user)
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
@@ -178,7 +178,7 @@ export const createClientProfile = createAsyncThunk(
       const response = await AuthService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
 
-      // const userLocalData = JSON.parse(sessionStorage?.getItem("user"));
+      // const userLocalData = JSON.parse(localStorage?.getItem("user"));
       // const allData = Object.assign(userLocalData, response.data);
       // // first time need to assign all request data into temp data
       // const clientMerchantDetailsListObj = {
@@ -217,10 +217,10 @@ export const createClientProfile = createAsyncThunk(
       // allData.clientMerchantDetailsList = clientMerchantDetailsList;
 
       // console.log("allData-updated", allData)
-      // console.log(sessionStorage.setItem("user"))
-      // sessionStorage.setItem("user", JSON.stringify(allData))
+      // console.log(localStorage.setItem("user"))
+      // localStorage.setItem("user", JSON.stringify(allData))
       // console.log("Profile update after :", JSON.stringify(allData))
-      // sessionStorage.setItem("categoryId", 1)
+      // localStorage.setItem("categoryId", 1)
       return response?.data;
     } catch (error) {
       const message =
@@ -418,8 +418,8 @@ const authSlice = createSlice({
         }
         state.isLoggedIn = loggedInStatus;
         state.user = action.payload.user;
-        sessionStorage.setItem("user", JSON.stringify(state.user))
-        sessionStorage.setItem("categoryId", 1)
+        localStorage.setItem("user", JSON.stringify(state.user))
+        localStorage.setItem("categoryId", 1)
         state.isValidUser = isValidData;
       })
       .addCase(login.pending, (state) => {
@@ -516,8 +516,8 @@ const authSlice = createSlice({
     //   }
     //   state.isLoggedIn = loggedInStatus;
     //   state.user = action.payload.user;
-    //   sessionStorage.setItem("user", JSON.stringify(state.user))
-    //   sessionStorage.setItem("categoryId", 1)
+    //   localStorage.setItem("user", JSON.stringify(state.user))
+    //   localStorage.setItem("categoryId", 1)
     //   state.isValidUser = isValidData;
     // },
     // [login.pending]: (state) => {

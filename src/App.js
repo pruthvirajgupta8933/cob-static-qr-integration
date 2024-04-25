@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     // login session expireTime if user not idle
-    const expireTime = parseInt(sessionStorage.getItem("expiredTime"), 10);
+    const expireTime = parseInt(localStorage.getItem("expiredTime"), 10);
     if (expireTime > 0 && expireTime > Date.now()) {
       setLogin(true)
     }

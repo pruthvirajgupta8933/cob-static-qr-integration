@@ -3,7 +3,7 @@ import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
 
 
-const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social,zone_code }) => {
+const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social, zone_code }) => {
   const requestData = {
     name: fullname,
     mobileNumber: mobileNumber,
@@ -35,9 +35,9 @@ const login = async (username, password, is_social) => {
 };
 
 const logout = () => {
-  sessionStorage.removeItem("user");
-  sessionStorage.clear();
-  sessionStorage.clear();
+  localStorage.removeItem("user");
+  localStorage.clear();
+  localStorage.clear();
 
 };
 

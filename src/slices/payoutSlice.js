@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import { Payoutservice } from "../services/payoutService";
 import API_URL from "../config";
-import {axiosInstanceJWT} from "../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../utilities/axiosInstance";
 
 const initialState = {
   ledgerDetails: [],
@@ -18,8 +18,8 @@ export const fetchClientCode = createAsyncThunk(
   async (thunkAPI) => {
     try {
       const response = await Payoutservice.fetchClientCode();
-      sessionStorage.setItem("ap", JSON.stringify(response?.data?.data?.auth_token));
-      sessionStorage.setItem("mid", JSON.stringify(response?.data?.data?.id));
+      localStorage.setItem("ap", JSON.stringify(response?.data?.data?.auth_token));
+      localStorage.setItem("mid", JSON.stringify(response?.data?.data?.id));
       return response.data;
     } catch (error) {
       const message =
@@ -32,7 +32,7 @@ export const fetchClientCode = createAsyncThunk(
       return thunkAPI.rejectWithValue();
     }
   }
-  );
+);
 
 export const fetchledgerMerchantData = createAsyncThunk(
   "dashbaord/ledger",
@@ -56,7 +56,7 @@ export const fetchledgerMerchantData = createAsyncThunk(
 export const fetchPayoutLedgerReportSlice = createAsyncThunk(
   "dashbaord/fetchPayoutLedgerReport",
   async (data) => {
-    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const authToken = JSON.parse(localStorage.getItem("ap"));
     const response = await axiosInstanceJWT
       .post(
         `${API_URL.getLedgersMerchantList}/?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
@@ -78,8 +78,8 @@ export const fetchPayoutLedgerReportSlice = createAsyncThunk(
 export const fetchBeneficiaryDetails = createAsyncThunk(
   "dashbaord/beneficiary",
   async (data) => {
-    const authToken = JSON.parse(sessionStorage.getItem("ap"));
-    const merchantID = JSON.parse(sessionStorage.getItem("mid"));
+    const authToken = JSON.parse(localStorage.getItem("ap"));
+    const merchantID = JSON.parse(localStorage.getItem("mid"));
     const response = await axiosInstanceJWT
       .get(
         `${API_URL.fetchBeneficiary}/${merchantID}?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
@@ -99,7 +99,7 @@ export const fetchBeneficiaryDetails = createAsyncThunk(
 export const fetchTransactionModes = createAsyncThunk(
   "dashbaord/payment_status",
   async (data) => {
-    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const authToken = JSON.parse(localStorage.getItem("ap"));
     const param = {
       query: {
         merchant_id: authToken,
@@ -122,7 +122,7 @@ export const fetchTransactionModes = createAsyncThunk(
 export const PaymentRequest = createAsyncThunk(
   "dashbaord/payment_status",
   async (data) => {
-    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const authToken = JSON.parse(localStorage.getItem("ap"));
     const response = await axiosInstanceJWT
       .post(`${API_URL.paymentRequest}/`, data, {
         headers: {

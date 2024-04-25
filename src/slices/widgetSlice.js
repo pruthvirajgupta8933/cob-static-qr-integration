@@ -5,28 +5,28 @@ import axios from "axios"
 import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
 import { setMessage } from "./message";
 
-const initialState = { 
+const initialState = {
   postdata: {
-    message: '', 
+    message: '',
     data: {
-        client_key: sessionStorage.getItem('client_key') || ''
+      client_key: localStorage.getItem('client_key') || ''
     }
-},
+  },
 
-    widgetDetail:{
-      data:{
-        client_name: "",
-        client_code: "",
-        client_type: "",
-        client_url: "",
-        return_url:"",
-        image_URL: "",
-        position: "",
-        company_name: ""
+  widgetDetail: {
+    data: {
+      client_name: "",
+      client_code: "",
+      client_type: "",
+      client_url: "",
+      return_url: "",
+      image_URL: "",
+      position: "",
+      company_name: ""
 
-      }
     }
-   
+  }
+
 };
 
 
@@ -44,23 +44,23 @@ const initialState = {
 
 export const widgetClientKeys = createAsyncThunk(
   "widget/widgetClientKeys",
-  async ( requestParam,thunkAPI) => {
-    
+  async (requestParam, thunkAPI) => {
+
     try {
       const response = await widgetService.createClientkey(requestParam);
       // thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
       const message =
-      ( error.response &&
-        error.response.data &&
-        error.response.data.message) ||
-      error.message ||
-      error.toString() || error.request.toString();
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() || error.request.toString();
       thunkAPI.dispatch(setMessage(message));
-    return thunkAPI.rejectWithValue(message); 
-      
-      
+      return thunkAPI.rejectWithValue(message);
+
+
     }
   }
 );
@@ -79,64 +79,63 @@ export const widgetClientKeys = createAsyncThunk(
 //     }
 //   );
 
-  export const widgetDetails = createAsyncThunk(
-    "widget/widgetDetails",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${WIDGET_URL.WIDGET_DETAILS}?client_code=${requestParam}`,
-        requestParam,
-        {
-          headers: {
-           
-          },
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
+export const widgetDetails = createAsyncThunk(
+  "widget/widgetDetails",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${WIDGET_URL.WIDGET_DETAILS}?client_code=${requestParam}`,
+      requestParam,
+      {
+        headers: {
 
-    }
-  );
+        },
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+
+  }
+);
 
 export const widgetSlice = createSlice({
-    name: "widget",
-    initialState,
-    reducers: {},
-     
-    extraReducers: {
-      [widgetClientKeys.pending]: (state, action) => {
-        state.status = "pending";
-        
-      },
-      [widgetClientKeys.fulfilled]: (state, action) => {
-        state.postdata.data.client_key = action.payload.data.client_key
-       
-       
+  name: "widget",
+  initialState,
+  reducers: {},
 
-      },
-      [widgetClientKeys.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      //////////////////////////////////////////
+  extraReducers: {
+    [widgetClientKeys.pending]: (state, action) => {
+      state.status = "pending";
 
-      [ widgetDetails.pending]: (state, action) => {
-        state.status = "pending";
-        
-      },
-      [ widgetDetails.fulfilled]: (state, action) => {
-        state.widgetDetail=action?.payload
-       
+    },
+    [widgetClientKeys.fulfilled]: (state, action) => {
+      state.postdata.data.client_key = action.payload.data.client_key
 
-      },
-      [ widgetDetails.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      
-    }
-  });
-  export const {} = widgetSlice.actions;
-  export const widgetReducer = widgetSlice.reducer;
-  
+
+
+    },
+    [widgetClientKeys.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    //////////////////////////////////////////
+
+    [widgetDetails.pending]: (state, action) => {
+      state.status = "pending";
+
+    },
+    [widgetDetails.fulfilled]: (state, action) => {
+      state.widgetDetail = action?.payload
+
+
+    },
+    [widgetDetails.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+
+  }
+});
+export const { } = widgetSlice.actions;
+export const widgetReducer = widgetSlice.reducer;

@@ -10,10 +10,10 @@ import { TIMEOUT } from '../config'
 // console.log(TIMEOUT)
 Modal.setAppElement('#root')
 
-function IdleTimerContainer (props) {
+function IdleTimerContainer(props) {
 
-  const dispatch  = useDispatch();  
-  const {fnLogout} = props
+  const dispatch = useDispatch();
+  const { fnLogout } = props
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const idleTimerRef = useRef(null)
@@ -45,31 +45,31 @@ function IdleTimerContainer (props) {
 
   const onAction = e => {
     // console.log("user did something");
-    if(isLoggedIn){
-        
-        sessionStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
-        // console.log("log-1")
-        // console.log("date-1",Date.now())
-        // console.log("date-2",Date.now() + 1000*10 )
+    if (isLoggedIn) {
+
+      localStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
+      // console.log("log-1")
+      // console.log("date-1",Date.now())
+      // console.log("date-2",Date.now() + 1000*10 )
     }
   };
 
   useEffect(() => {
-    if(isLoggedIn){
-        sessionStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT );
-        // console.log("log-2")
-        // console.log(Date.now())
+    if (isLoggedIn) {
+      localStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
+      // console.log("log-2")
+      // console.log(Date.now())
     }
-  
-   
+
+
     return () => {
-        sessionStorage.removeItem("expiredTime")
-    //   console.log("run fall back function")
+      localStorage.removeItem("expiredTime")
+      //   console.log("run fall back function")
     }
 
 
   }, [isLoggedIn])
-  
+
 
   return (
     <div>
@@ -80,18 +80,18 @@ function IdleTimerContainer (props) {
         onIdle={onIdle}
         onAction={onAction}
         crossTab={{
-            type: 'simulate'
+          type: 'simulate'
         }}
 
       />
       <Modal isOpen={modalIsOpen}>
 
-      {/* <div className="" tabIndex={-1} role="dialog"> */}
+        {/* <div className="" tabIndex={-1} role="dialog"> */}
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">You've been idle for a while!</h5>
-              
+
             </div>
             <div className="modal-body">
               <p>You will be logged out soon</p>
@@ -102,8 +102,8 @@ function IdleTimerContainer (props) {
             </div>
           </div>
         </div>
-      {/* </div> */}
-      {/* <div className="" >
+        {/* </div> */}
+        {/* <div className="" >
         <h2>You've been idle for a while!</h2>
         <p>You will be logged out soon</p>
         <div>

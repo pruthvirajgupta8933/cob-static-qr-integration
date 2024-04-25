@@ -12,7 +12,7 @@ import {
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
 
-const sessionDataI = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
+const sessionDataI = JSON.parse(localStorage.getItem("onboardingStatusByAdmin"))
 const initialState = {
     isLoading: false,
     merchantOnboardingProcess: {
@@ -39,8 +39,8 @@ const initialState = {
     },
     referral: {},
 
-    getAllZoneCode:{
-        zoneCode:{}
+    getAllZoneCode: {
+        zoneCode: {}
 
     }
 }
@@ -115,7 +115,7 @@ export const saveBankDetails = createAsyncThunk(
 export const getAllZoneName = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/getAllZoneName",
     async (requestParam) => {
-        const response = await  getAllZoneCode(requestParam)
+        const response = await getAllZoneCode(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -191,7 +191,7 @@ export const merchantReferralOnboardSlice = createSlice({
             state.merchantOnboardingProcess.isOnboardStart = false
             state.merchantOnboardingProcess.isOnboardComplete = false
             state.merchantOnboardingProcess.merchantLoginId = ""
-            sessionStorage.removeItem("onboardingStatusByAdmin")
+            localStorage.removeItem("onboardingStatusByAdmin")
         },
         clearErrorMerchantReferralOnboardSlice: (state) => {
             state.merchantBasicDetails.resp.error = false
@@ -203,14 +203,14 @@ export const merchantReferralOnboardSlice = createSlice({
             state.merchantOnboardingProcess.isOnboardComplete = true
             state.merchantOnboardingProcess.isOnboardStart = action.payload?.isOnboardStart
             state.merchantOnboardingProcess.merchantLoginId = action.payload?.merchantLoginId
-            // const sessionDataC = JSON.parse(sessionStorage.getItem("onboardingStatusByAdmin"))
+            // const sessionDataC = JSON.parse(localStorage.getItem("onboardingStatusByAdmin"))
             const onboardingStatusComplete = {
                 merchantLoginId: action.payload?.merchantLoginId,
                 isOnboardStart: action.payload?.isOnboardStart,
                 isOnboardComplete: true
             }
             // console.log("onboardingStatusComplete", onboardingStatusComplete)
-            sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusComplete))
+            localStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusComplete))
         }
     },
     extraReducers: (builder) => {
@@ -227,7 +227,7 @@ export const merchantReferralOnboardSlice = createSlice({
                         merchantLoginId: action.payload.merchant_data?.loginMasterId,
                         isOnboardStart: true
                     }
-                    sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusByAdmin))
+                    localStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusByAdmin))
                 }
             })
             .addCase(saveMerchantBasicDetails.rejected, (state, action) => {
@@ -248,7 +248,7 @@ export const merchantReferralOnboardSlice = createSlice({
                         merchantLoginId: action.payload.merchant_data?.loginMasterId,
                         isOnboardStart: true
                     }
-                    sessionStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusByAdmin))
+                    localStorage.setItem("onboardingStatusByAdmin", JSON.stringify(onboardingStatusByAdmin))
                 }
             })
             .addCase(updateBasicDetailsSlice.rejected, (state, action) => {
