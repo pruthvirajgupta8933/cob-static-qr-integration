@@ -13,7 +13,7 @@ export const Regex = {
   ifscRegex: /^[A-Z]{4}0[A-Z0-9]{6}$/,
   accountNoRgex: /^[a-zA-Z0-9]{2,25}$/,
   multipleSpace: /^\S+(\s{1}\S+)*$/,
-  urlFormate: /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.(com|in|org)(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.(com|in|org)(\/[^\s]*)?)$/,
+  urlFormate: /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.[a-z]+(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.[a-z]+(\/[^\s]*)?)$/,
   userNameRegex: /^[a-zA-Z0-9_.@]+$/,
   aadhaarRegex: /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/
 

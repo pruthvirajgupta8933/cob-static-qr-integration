@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { roleBasedAccess } from "../_components/reuseable_components/roleBasedAccess";
 import { Route, useHistory } from "react-router-dom";
+// import CustomModal from "../_components/custom_modal";
 // import { useHistory } from "react-router-dom";
 
 
@@ -33,7 +34,10 @@ const AuthorizedRoute = (props) => {
 
     useEffect(() => {
         if (isValid === false) {
-            // history.push('/login-page')
+            setTimeout(() => {
+                localStorage.clear()
+                history.push("/login");
+            }, 2000);
         }
     })
 
@@ -41,7 +45,12 @@ const AuthorizedRoute = (props) => {
 
     return (
         <>
-            {isValid === true ? <Route><Component /></Route> : <></>}
+            {isValid === true ? <Route><Component /></Route> :
+                <div className="card p-3">
+                    <h5>It seems your session has expired. Please log in again.
+                        You will be redirected to the login page.
+                    </h5>
+                </div>}
         </>
     );
 };
