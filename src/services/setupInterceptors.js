@@ -30,7 +30,8 @@ const setup = async (store) => {
       return response;
     },
     (error) => {
-      // console.log("error-setup--->", error.response)
+
+
       const refreshToken = TokenService.getLocalrefreshToken();
       // This promise handles the refresh logic for 401 errors specifically
       if (error.response && error.response.status === 401 && error.config && !error.config.__isRetryRequest && refreshToken) {
@@ -67,6 +68,13 @@ const setup = async (store) => {
             return Promise.reject(err); // Ensure the promise chain correctly handles the error
           });
 
+      }
+
+      // if token not send on the request
+      if (error.response && error.response.status === 403) {
+        console.error("Token not found.");
+        authService.logout();
+        window.location.reload();
       }
 
       // For other types of errors, including 500, directly reject the promise with the error
