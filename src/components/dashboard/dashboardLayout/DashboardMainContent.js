@@ -159,7 +159,6 @@ function DashboardMainContent() {
 
     // create new client code
     useEffect(() => {
-
         createAndSaveClientCode()
     }, []);
 
@@ -172,7 +171,12 @@ function DashboardMainContent() {
             const postBody = {
                 LoginId: user?.loginId
             };
-            dispatch(fetchMenuList(postBody));
+
+            dispatch(fetchMenuList(postBody))
+                .then(resp => console.log("working"))
+                .catch(err => {
+                    console.log(err)
+                });
         }
     }, [user, dispatch]);
 

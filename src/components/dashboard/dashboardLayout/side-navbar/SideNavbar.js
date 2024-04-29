@@ -17,10 +17,6 @@ function SideNavbar() {
     // Determine the selected menu based on the current path
     const selectedMenu = location.pathname.split("/").pop();
 
-    useEffect(() => {
-        // Additional logic if needed when the selected menu changes
-
-    }, [selectedMenu]);
 
     const toggleMenu = (e) => {
         const menuElement = e.currentTarget.nextSibling;
