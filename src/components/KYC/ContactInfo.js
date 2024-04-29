@@ -108,7 +108,7 @@ function ContactInfo(props) {
         aadhar_number: values.aadhar_number,
       })
     ).then((res) => {
-      console.log(res)
+     
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res.payload?.status === true
@@ -126,7 +126,7 @@ function ContactInfo(props) {
         setIsDisable(false);
       }
     }).catch((error) => {
-      console.log("error", error)
+     
       toast.error("Something went wrong");
     })
 

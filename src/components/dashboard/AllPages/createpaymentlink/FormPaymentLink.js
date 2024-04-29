@@ -312,7 +312,10 @@ function FormPaymentLink(props) {
                         className="btn btn-sm cob-btn-primary  mb-3 text-white"
                         disabled={disable}
                       >
-                        SUBMIT
+                        {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Submit
                       </button>
                       <button onClick={resetForm}
                         type="button"

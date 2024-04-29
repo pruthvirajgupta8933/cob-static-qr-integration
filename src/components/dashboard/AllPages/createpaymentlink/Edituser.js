@@ -148,6 +148,7 @@ export const Edituser = (props) => {
                 <button
                   type="submit"
                   className=" mt-3 btn cob-btn-primary text-white btn-sm"
+                  disabled={disable}
                 >
                    {disable && (
                             <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
@@ -158,7 +159,7 @@ export const Edituser = (props) => {
                   type="button"
                   className=" mt-3 btn cob-btn-secondary ml-2 text-white btn-sm"
                   onClick={()=>props.fnSetModalToggle(false)}
-                  disabled={disable}
+                  
                 >
                   Cancel
                 </button>

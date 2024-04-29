@@ -173,7 +173,10 @@ function DashboardMainContent() {
             };
 
             dispatch(fetchMenuList(postBody))
-                .then(resp => console.log("working"))
+                .then(resp => 
+                    // console.log("working")
+                    ""
+                    )
                 .catch(err => {
                     console.log(err)
                 });
