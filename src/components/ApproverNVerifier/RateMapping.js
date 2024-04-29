@@ -16,7 +16,6 @@ function RateMapping() {
   const approvedMerchantList = useSelector(
     (state) => state.kyc.kycApprovedList
   );
-
   const [data, setData] = useState([]);
   const [rateMappingList, setRateMappingList] = useState([]);
   const [dataCount, setDataCount] = useState("");

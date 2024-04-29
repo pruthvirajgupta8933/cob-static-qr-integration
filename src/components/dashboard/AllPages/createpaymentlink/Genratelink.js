@@ -6,7 +6,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
-// import "./index.css";
 
 
 const validationSchema = Yup.object().shape({
@@ -21,6 +20,7 @@ const Genratelink = (props) => {
 const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
+  const[disable,setDisable]=useState(false)
 
 const { user } = useSelector((state) => state.auth);
 
@@ -39,6 +39,7 @@ let clientMerchantDetailsList = [];
 
 
   const generateHandler = async (e) => {
+    setDisable(true)
    toast.info("Please Wait...")
     await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
@@ -53,10 +54,12 @@ let clientMerchantDetailsList = [];
 
       .then((response) => {
         toast.success(response.data.message)
+        setDisable(false)
         
       })
       .catch((error) => {
         toast.error("Payment Link Creation Failed ")
+        setDisable(false)
       });
 
 
@@ -295,8 +298,12 @@ let clientMerchantDetailsList = [];
                         <button
                           type="submit"
                           className="btn cob-btn-primary btn-primary text-white btn-sm"
+                          disabled={disable}
                         >
-                          SUBMIT
+                          {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Submit
                         </button>
                         <button
                           type="button"

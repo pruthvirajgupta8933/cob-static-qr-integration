@@ -34,6 +34,7 @@ const SignupData = () => {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [buttonClicked, isButtonClicked] = useState(false);
+  const[disable,setDisable]=useState(false)
 
   const signupDataList = useSelector(
     (state) => state?.signupData.signupDataDetails
@@ -109,6 +110,7 @@ useEffect(() => {
 
 const handleSubmit = (values) => {
     setLoadingState(true);
+    setDisable(true)
     const postData = {
       from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
@@ -120,10 +122,12 @@ const handleSubmit = (values) => {
       .then((resp) => {
         isButtonClicked(true)
         setLoadingState(false);
+        setDisable(false)
         
       })
       .catch((error) => {
         setLoadingState(false);
+        setDisable(false)
         
       });
   };
@@ -336,8 +340,13 @@ const handleSubmit = (values) => {
                     <div className="col-md-4">
                       <button
                         type="submit"
-                        className="btn cob-btn-primary approve text-white">
-                        Submit
+                        className="btn cob-btn-primary approve text-white"
+                        disabled={disable}
+                        >
+                        {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Submit
                       </button>
                       {signupData?.length > 0 ? (
                         <button

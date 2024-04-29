@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
-// import * as Yup from "yup";
 import Yup from "../../../../_components/formik/Yup";
 import Genratelink from "./Genratelink";
 import { Edituser } from "./Edituser";
@@ -14,9 +13,8 @@ import API_URL from "../../../../config";
 import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
-// import "./index.css";
 import { v4 as uuidv4 } from 'uuid';
-import classes from "./paylink.module.css"
+
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -58,6 +56,7 @@ const PayerDetails = () => {
   const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalToggle, setEditModalToggle] = useState(false);
+  const [disable, setDisable] = useState(false)
   const [pageCount, setPageCount] = useState(
     data ? Math.ceil(data.length / pageSize) : 0
   );
@@ -150,6 +149,7 @@ const PayerDetails = () => {
   //ADD user API Integration
 
   const onSubmit = async (e) => {
+    setDisable(true)
     // console.log(e)
     const res = await axiosInstance.post(API_URL.ADD_CUSTOMER, {
       name: e.name,
@@ -161,8 +161,10 @@ const PayerDetails = () => {
     loadUser();
     if (res.status === 200) {
       toastConfig.successToast("Payee added successfully");
+      setDisable(false)
     } else {
       toastConfig.errorToast("something went wrong");
+      setDisable(false)
     }
   };
 
@@ -397,8 +399,12 @@ const PayerDetails = () => {
                       <div className="modal-footer">
                         <button
                           type="submit"
-                          className="btn cob-btn-primary text-white btn-sm"
+                          disabled={disable}
+                          className="btn cob-btn-primary text-white btn-sm position-relative"
                         >
+                          {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
                           Submit
                         </button>
                         <button

@@ -24,8 +24,6 @@ const validationSchema = Yup.object({
 
 
 const ViewRateMapping = (props) => {
-
-
     const [businessTemplate, setBusinessTemplate] = useState("")
     const [businessTemplates, setBusinessTemplates] = useState([])
     const [show, setShow] = useState(false)
@@ -178,7 +176,10 @@ const ViewRateMapping = (props) => {
                                                 </div>
 
                                                 <div >
-                                                    <button disabled={disable} type="submit" className="btn cob-btn-primary mt-2  text-white">View</button>
+                                                    <button disabled={disable} type="submit" className="btn cob-btn-primary mt-2  text-white">
+                                                        View
+
+                                                    </button>
 
                                                 </div>
                                             </Form>

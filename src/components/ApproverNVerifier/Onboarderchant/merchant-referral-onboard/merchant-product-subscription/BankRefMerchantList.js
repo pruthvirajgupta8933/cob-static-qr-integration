@@ -12,6 +12,8 @@ import {
 import { axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../config";
 import toastConfig from "../../../../../utilities/toastTypes";
+// import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+import SkeletonTable from "../../../../../_components/table_components/table/skeleton-table";
 
 function BankRefMerchantList() {
     const roles = roleBasedAccess();

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import Yup from "../../../_components/formik/Yup";
 import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
 import { toast } from "react-toastify";
@@ -67,18 +67,18 @@ function ChangePassword() {
     loginId: Yup.string().required("Required"),
     email: Yup.string().required("Required"),
 
-    old_password: Yup.string().required("Old Password Required"),
+    old_password: Yup.string().required("Old Password Required").allowOneSpace(),
 
     new_password: Yup.string()
       .required("New Password Required")
       .matches(
         /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-      ),
+      ).allowOneSpace(),
 
     confirm_password: Yup.string()
       .oneOf([Yup.ref("new_password"), null], "Passwords must match")
-      .required("Confirm Password Required"),
+      .required("Confirm Password Required").allowOneSpace(),
   });
 
   const handleClickShowPassword = () => {
@@ -111,11 +111,8 @@ function ChangePassword() {
         <div className="container-fluid">
           <div className="right_layout my_account_wrapper">
             <h5 className="right_side_heading">Change Password</h5>
-
             <div className="row mt-3">
-
-
-              <div className="col-lg-12">
+            <div className="col-lg-12">
 
                 <Formik
                   enableReintialize="true"

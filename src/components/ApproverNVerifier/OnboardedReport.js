@@ -142,16 +142,17 @@ const OnboardedReport = () => {
 
 
   const handleSubmit = (values) => {
+    setDisabled(true)
     setOnboradValue(values);
     dispatch(
       onboardedReport({
         page: currentPage,
         page_size: pageSize,
         kyc_status: values.status
-        // from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
-        // to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
       })
-    )
+    ).then((res)=>{
+      setDisabled(false)
+    })
   };
 
   useEffect(() => {
@@ -245,7 +246,10 @@ const OnboardedReport = () => {
                   className="btn cob-btn-primary mt-4 approve text-white btn-sm"
                   disabled={disabled}
                 >
-                  Search
+                   {disabled && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Search
                 </button>
               </div>
             </Form>

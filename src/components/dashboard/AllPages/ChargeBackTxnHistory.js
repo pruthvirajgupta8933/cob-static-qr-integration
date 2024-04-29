@@ -335,6 +335,9 @@ const ChargeBackTxnHistory = () => {
                           className="btn btn-sm cob-btn-primary  text-white"
                           type="submit"
                         >
+                         {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
                           Search
                         </button>
                       </div>

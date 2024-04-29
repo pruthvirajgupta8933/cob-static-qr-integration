@@ -14,6 +14,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
+    const[disable,setDisable]=useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails } = merchantReferralOnboardReducer
@@ -78,6 +79,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
 
     const handleSubmitContact = async (value) => {
+        setDisable(true)
         const { fullName, mobileNumber, email_id, password, username } = value;
         // alert(3)
         setSubmitLoader(true)
@@ -145,22 +147,26 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 await dispatch(createClientProfile(data)).then(clientProfileRes => {
                     toastConfig.successToast("Client Code Created")
                     setSubmitLoader(false)
+                    setDisable(false)
                     // after create the client update the subscribe product
                     // console.log("clientProfileRes", clientProfileRes)
                 }).catch(err => {
                     toastConfig.errorToast("Error : Client Code not Create")
                     setSubmitLoader(false)
+                    setDisable(false)
                 });
 
                 if (referralChild) {
                     await fetchData()
                     setSubmitLoader(false)
+                    setDisable(false)
                 }
             }
         } catch (error) {
             // console.log("catch-error", error.response)
             toastConfig.errorToast(error.response.data.detail)
             setSubmitLoader(false)
+            setDisable(false)
         }
 
 
@@ -228,7 +234,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     <div className="row g-3">
                         <div className="col-6">
                             {merchantBasicDetails?.resp?.status !== "Activate" &&
-                                <button type="submit" className="btn cob-btn-primary btn-sm m-2">
+                                <button type="submit" className="btn cob-btn-primary btn-sm m-2" disabled={disable}>
                                     {submitLoader && <>
                                         <span className="spinner-border spinner-border-sm" aria-hidden="true" />
                                         <span className="sr-only">Loading...</span>

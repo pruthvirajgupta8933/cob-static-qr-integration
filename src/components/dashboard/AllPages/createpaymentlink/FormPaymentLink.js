@@ -15,6 +15,7 @@ function FormPaymentLink(props) {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
+  const[disable,setDisable]=useState(false)
 
   let history = useHistory();
 
@@ -64,6 +65,7 @@ function FormPaymentLink(props) {
 
 
   const submitHandler = async (e) => {
+    setDisable(true)
     toast.info("In process", {
       position: "top-right",
       autoClose: 2000,
@@ -80,6 +82,7 @@ function FormPaymentLink(props) {
             transition: Zoom,
             limit: 2,
           })
+          setDisable(false)
         loaduser();
       })
       .catch((error) => {
@@ -89,6 +92,7 @@ function FormPaymentLink(props) {
           transition: Zoom,
           limit: 2,
         })
+        setDisable(false)
 
       });
   };
@@ -306,8 +310,12 @@ function FormPaymentLink(props) {
                       <button
                         type="submit"
                         className="btn btn-sm cob-btn-primary  mb-3 text-white"
+                        disabled={disable}
                       >
-                        SUBMIT
+                        {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Submit
                       </button>
                       <button onClick={resetForm}
                         type="button"
