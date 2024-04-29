@@ -17,6 +17,7 @@ export const Edituser = (props) => {
   let history = useHistory();
   const { myname, email, phone, editCustomerTypeId, id } = props.items;
   const callBackFn = props.callBackFn;
+  const [disable,setDisable]=useState(false)
 
   const initialValues = {
     name: myname,
@@ -52,6 +53,7 @@ export const Edituser = (props) => {
   }
 
   const editHandler = (values) => {
+    setDisable(true)
     axiosInstance
       .put(API_URL.EDIT_CUSTOMER, {
         name: values.name,
@@ -69,6 +71,7 @@ export const Edituser = (props) => {
           autoClose: 2000,
           transition: Zoom,
         });
+        setDisable(false)
       })
       .catch((e) => {
         // console.log(e);
@@ -77,6 +80,7 @@ export const Edituser = (props) => {
           autoClose: 2000,
           transition: Zoom,
         });
+        setDisable(false)
       });
   };
   const getDrop = async (e) => {
@@ -143,14 +147,18 @@ export const Edituser = (props) => {
                 />
                 <button
                   type="submit"
-                  className="btn cob-btn-primary text-white btn-sm"
+                  className=" mt-3 btn cob-btn-primary text-white btn-sm"
                 >
-                  Update
+                   {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Update
                 </button>
                 <button
                   type="button"
-                  className="btn cob-btn-secondary ml-2 text-white btn-sm"
+                  className=" mt-3 btn cob-btn-secondary ml-2 text-white btn-sm"
                   onClick={()=>props.fnSetModalToggle(false)}
+                  disabled={disable}
                 >
                   Cancel
                 </button>

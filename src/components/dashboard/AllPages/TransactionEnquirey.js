@@ -244,7 +244,10 @@ function TransactionEnquirey() {
                             className="btn btn-sm text-white cob-btn-primary mt-4"
                             type="submit"
                           >
-                            View
+                            {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          View
                           </button>
                           {(show && printData?.length > 0) && <button
                             Value="click"

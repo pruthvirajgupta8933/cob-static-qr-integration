@@ -35,7 +35,7 @@ const SettlementReportNew = () => {
     const [dataFound, setDataFound] = useState(false);
     const [buttonClicked, isButtonClicked] = useState(false);
     const [disable, setIsDisable] = useState(false)
-    
+
 
     const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { user } = auth;
@@ -72,6 +72,7 @@ const SettlementReportNew = () => {
             dispatch(fetchChiledDataList(postObj));
         }
     };
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -127,11 +128,11 @@ const SettlementReportNew = () => {
     };
     if (roles.merchant === true && clientCodeListArr && clientCodeListArr.length > 0 && clientCodeListArr[0] && clientCodeListArr[0][fnKey]) {
         initialValues.clientCode = clientCodeListArr[0][fnKey];
-      }
+    }
 
-   
 
-    
+
+
 
     const validationSchema = Yup.object({
         clientCode: Yup.string().required("Required"),
@@ -198,9 +199,7 @@ const SettlementReportNew = () => {
                 toast.info("No data found");
             }
         } catch (error) {
-
-
-            toast.error("An error occurred");
+           toast.error("An error occurred");
         }
 
         setIsDisable(false);
@@ -209,8 +208,6 @@ const SettlementReportNew = () => {
     useEffect(() => {
         // Remove initiated from transaction history response
         const TxnListArrUpdated = dashboard.settlementReport;
-
-
         setUpdateTxnList(TxnListArrUpdated);
         setShowData(TxnListArrUpdated);
         SetTxnList(TxnListArrUpdated);
@@ -490,6 +487,9 @@ const SettlementReportNew = () => {
                                                     className="btn cob-btn-primary text-white btn-sm"
                                                     type="submit"
                                                 >
+                                                    {disable && (
+                                                        <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                                                    )} {/* Show spinner if disabled */}
                                                     Search{" "}
                                                 </button>
                                             </div>

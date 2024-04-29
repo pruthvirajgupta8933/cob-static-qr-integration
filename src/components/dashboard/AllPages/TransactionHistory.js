@@ -46,6 +46,8 @@ const TransactionHistory = () => {
     const [pageCount, setPageCount] = useState(0);
     const [clientCodeList, setClientCodeList] = useState([]);
     const [buttonClicked, isButtonClicked] = useState(false);
+    const [disable, setDisable] = useState(false)
+
 
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
@@ -202,6 +204,7 @@ const TransactionHistory = () => {
     // console.log("clientCodeList",clientCodeList)
     const submitHandler = (values) => {
         isButtonClicked(true);
+        setDisable(true)
         const { fromDate, endDate, transaction_status, payment_mode } = values;
         const dateRangeValid = checkValidation(fromDate, endDate);
         if (dateRangeValid) {
@@ -233,7 +236,10 @@ const TransactionHistory = () => {
 
             // console.log(paramData,"this is paramdata value")
 
-            dispatch(fetchTransactionHistorySlice(paramData));
+            dispatch(fetchTransactionHistorySlice(paramData)).then((res) => {
+                setDisable(false)
+
+            });
         }
     };
     const checkValidation = (fromDate = "", toDate = "") => {
@@ -564,7 +570,11 @@ const TransactionHistory = () => {
                                                 <button
                                                     className="btn btn-sm cob-btn-primary text-white"
                                                     type="submit"
+                                                    disable={disable}
                                                 >
+                                                    {disable && (
+                                                        <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                                                    )} {/* Show spinner if disabled */}
                                                     Search
                                                 </button>
                                                 {/* <p className="text-danger">{formik?.errors?.clientCode}</p> */}
