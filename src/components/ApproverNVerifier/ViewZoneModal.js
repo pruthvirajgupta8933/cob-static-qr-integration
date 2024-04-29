@@ -252,7 +252,12 @@ const getZoneInfobyClientCode = (clientCode) => {
                          <button 
                           type="submit"
                            onClick={resetForm} 
-                           className="btn cob-btn-primary  text-white" disabled={buttonDisable}>Submit</button>
+                           className="btn cob-btn-primary  text-white" disabled={buttonDisable}>
+                            
+                            {buttonDisable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          Submit</button>
                         </div>
                       </Form>
                     </div>

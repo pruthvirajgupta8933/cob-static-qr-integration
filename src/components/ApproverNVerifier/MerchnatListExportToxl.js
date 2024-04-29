@@ -3,9 +3,9 @@ import React, { useState} from 'react'
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import API_URL from '../../config';
 import Blob from "blob";
+import toastConfig from '../../utilities/toastTypes';
 
 const MerchnatListExportToxl = (props) => {
-  
   const [loading, setLoading] = useState(false);
   const[disable,setDisable]=useState(false)
 
@@ -34,6 +34,13 @@ const MerchnatListExportToxl = (props) => {
        
 
       }
+    }).catch((err)=>{
+      if(err.response?.status===500){
+        toastConfig.errorToast("Something went wrong.")
+      }
+      setLoading(false)
+      setDisable(false)
+
     })
   }
 

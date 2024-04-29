@@ -4,7 +4,7 @@ import API_URL from "../config";
 import { axiosInstance, axiosInstanceJWT } from "./axiosInstance";
 
 export const rateMappingFn = (loginId, parentClientCode) => {
-    console.log("---rate mapping start---", loginId)
+   
     let loader = true
 
     // const initialValue = {

@@ -35,12 +35,14 @@ const BizzAppData = () => {
   };
 
   const [show, setShow] = useState(false);
+  const[disable,setDisable]=useState(false)
   const initialValues = {
     start_date: splitDate,
     end_date: splitDate,
   };
 
   const handleSubmit = (values) => {
+    setDisable(true)
     const postData = {
       start_date: moment(values.start_date).startOf('day').format('YYYY-MM-DD'),
       end_date: moment(values.end_date).startOf('day').format('YYYY-MM-DD'),
@@ -51,9 +53,11 @@ const BizzAppData = () => {
       .then((resp) => {
         setFormData(resp?.data.results);
         setShow(true);
+        setDisable(false)
       })
       .catch((error) => {
         apiRes = error.response;
+        setDisable(false)
         toast.error(apiRes?.data?.message);
       });
   };
@@ -246,7 +250,11 @@ const BizzAppData = () => {
                         <button
                           type="submit"
                           className="btn cob-btn-primary approve text-white"
+                          disabled={disable}
                         >
+                          {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
                           Submit
                         </button>
                         {FormData?.length > 0 ? (
