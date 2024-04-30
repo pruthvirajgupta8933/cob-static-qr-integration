@@ -68,7 +68,7 @@ function OperationKycModalForOnboard({ zoneCode, bankLoginId, heading }) {
 
 
     const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart;
-    console.log("isOnboardStartM", isOnboardStartM)
+   
 
     const kycStatusArr = [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].toString().toLowerCase().split(",");
 

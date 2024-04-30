@@ -23,6 +23,7 @@ const OnboardedReport = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedvalue, setSelectedvalue] = useState(KYC_STATUS_APPROVED);
   const [disabled, setDisabled] = useState(false);
+  const[exportDisable,setExportDisable]=useState(false)
   // const [dataClick, setDataClick] = useState(false);
 
   const dispatch = useDispatch();
@@ -169,10 +170,14 @@ const OnboardedReport = () => {
   ];
 
   const exportToExcelFn = () => {
+    setExportDisable(true)
     exportToExcelOnboard({
       status: onboardValue.status,
       from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
+    }).then((res)=>{
+      setExportDisable(false)
+
     })
   };
 
@@ -287,8 +292,12 @@ const OnboardedReport = () => {
                   className="btn btn-sm text-white mt-4 cob-btn-primary "
                   type="button"
                   onClick={() => exportToExcelFn()}
+                  disabled={exportDisable}
                 >
-                  Export
+                  {exportDisable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )}
+                          Export
                 </button>
               </div>
             </div>
@@ -320,10 +329,3 @@ export default OnboardedReport;
 
 
 
-// function OnboardedReport() {
-//   return (
-//     <div>OnboardedReport</div>
-//   )
-// }
-
-// export default OnboardedReport

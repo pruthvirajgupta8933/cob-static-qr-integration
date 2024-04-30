@@ -60,7 +60,7 @@ const PayerDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalToggle, setEditModalToggle] = useState(false);
   const [disable, setDisable] = useState(false)
-  console.log("disable", disable);
+  
   const [pageCount, setPageCount] = useState(
     data ? Math.ceil(data.length / pageSize) : 0
   );

@@ -15,6 +15,7 @@ import toastConfig from "../../../../../../utilities/toastTypes";
 function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
+    const[disable,setDisable]=useState(false)
     const [businessCode, setBusinessCode] = useState([]);
     const [businessTypeData, setBusinessTypeData] = useState([]);
     const [passwordType, setPasswordType] = useState({ showPasswords: false });
@@ -82,6 +83,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
     const handleSubmitContact = async (value) => {
         setSubmitLoader(true)
+        setDisable(true)
         const {
             fullName, mobileNumber, email_id, business_category, password, business_type, username,
         } = value
@@ -127,6 +129,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
             dispatch(saveMerchantBasicDetails(saveDetailsReqBody)).then((resp) => {
                 setSubmitLoader(false)
+                setDisable(false)
                 // console.log(resp?.payload?.merchant_data?.loginMasterId)
                 if (resp?.error?.message) {
                     toastConfig.errorToast(resp?.error?.message)
@@ -142,10 +145,12 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                 toastConfig.errorToast("Something went wrong!")
                 // console.log(err)
                 setSubmitLoader(false)
+                setDisable(false)
             })
         } else {
             dispatch(updateBasicDetailsSlice(updateReqBody)).then((resp) => {
                 setSubmitLoader(false)
+                setDisable(false)
                 if (resp?.error?.message) {
                     toastConfig.errorToast(resp?.error?.message)
                     toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase())
@@ -159,6 +164,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                 toastConfig.errorToast("Something went wrong!")
                 // console.log(err)
                 setSubmitLoader(false)
+                setDisable(false)
             })
         }
 
@@ -310,7 +316,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                     </div>
                     <div className="col-6">
 
-                        {!isEditableInput && <button type="submit" className="btn cob-btn-primary btn-sm m-2">
+                        {!isEditableInput && <button type="submit" className="btn cob-btn-primary btn-sm m-2" disabled={disable}>
                             {submitLoader && <>
                                 <span className="spinner-border spinner-border-sm" role="status"
                                     aria-hidden="true" />
