@@ -9,6 +9,7 @@ import { axiosInstance } from '../../../../utilities/axiosInstance';
 import CustomLoader from '../../../../_components/loader';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
+import ReactPaginate from 'react-paginate';
 
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -78,32 +79,19 @@ const Reports = () => {
   }
 
   useEffect(() => {
-    setPaginatedData(_(displayList).slice(0).take(pageSize).value())
-    setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0)
+    setPaginatedData(_(displayList).slice(0).take(pageSize).value());
+    setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0);
   }, [pageSize, displayList]);
 
-
   useEffect(() => {
-    // console.log("page chagne no")
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
+  }, [currentPage]);
 
-  }, [currentPage])
+ 
 
-  const pages = _.range(1, pageCount + 1)
-
-  // console.log("==========================")
-  // console.log("pages",pages)
-  // console.log("pageSize",pageSize)
-  // console.log("data.length",data.length)
-  // console.log("paginatedata",paginatedata)
-  // console.log("paginatedata.length",paginatedata.length)
-  // console.log("displayList",displayList)
-
-
-
-  return (
+return (
 
     <React.Fragment>
       {/* filter area */}
@@ -174,33 +162,30 @@ const Reports = () => {
               <CustomLoader loadingState={loadingState} />
             </div>
           </div>
-            <div>
+          
+            {!loadingState && (
+              <div className="d-flex justify-content-center mt-2">
+                <ReactPaginate
+                  previousLabel={'Previous'}
+                  nextLabel={'Next'}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                  pageRangeDisplayed={5}
+                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                  containerClassName={'pagination justify-content-center'}
+                  activeClassName={'active'}
+                  previousLinkClassName={'page-link'}
+                  nextLinkClassName={'page-link'}
+                  disabledClassName={'disabled'}
+                  breakClassName={'page-item'}
+                  breakLinkClassName={'page-link'}
+                  pageClassName={'page-item'}
+                  pageLinkClassName={'page-link'}
+                />
+              </div>
+            )}
 
-              {pages.length > 1 ?
-                <nav aria-label="Page navigation example"  >
-                  <ul className="pagination">
-
-                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1)} href={() => false}>Previous</a>
-                    {
-                      pages.slice(currentPage - 1, currentPage + 6).map((page, i) => (
-                        <li key={uuidv4()} className={
-                          page === currentPage ? " page-item active" : "page-item"
-                        }>
-                          <a href={() => false} className={`page-link data_${i}`} >
-                            <p onClick={() => pagination(page)}>
-                              {page}
-                            </p>
-                          </a>
-                        </li>
-
-                      ))
-                    }
-                    {pages.length !== currentPage ? <a className="page-link" onClick={(nex) => setCurrentPage((nex) => nex === (pages.length > 9) ? nex : nex + 1)} href={() => false}>
-                      Next</a> : <></>}
-                  </ul>
-                </nav>
-                : <></>}
-            </div>
           </React.Fragment>
           )}
         </div>

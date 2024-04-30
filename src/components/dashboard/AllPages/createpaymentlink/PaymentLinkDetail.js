@@ -9,8 +9,7 @@ import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
 import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
-import ReactTooltip from 'react-tooltip';
-
+import ReactPaginate from 'react-paginate';
 const PaymentLinkDetail = () => {
 
   const [pageSize, setPageSize] = useState(10);
@@ -205,7 +204,7 @@ const PaymentLinkDetail = () => {
                             className="p-2  d-inline-block cursor_pointer copy_clipboard"
                             // style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                             title={user?.full_link}
-                            
+
                           >
                             {user?.full_link}
                           </span>
@@ -213,13 +212,13 @@ const PaymentLinkDetail = () => {
                             className="input-group-text"
                             style={{ cursor: 'pointer' }}
                             onClick={() => handleCopyToClipboard(user?.full_link)}
-                            
+
                             data-tip={copied ? "Copied!" : "Copy"}
                           >
                             <i
                               className="fa fa-copy ml-2 text-primary align-middle"
-                             
-                        ></i>
+
+                            ></i>
                           </span>
                           {/* <i
                 className="fa fa-copy ml-2 text-primary align-middle"
@@ -228,7 +227,7 @@ const PaymentLinkDetail = () => {
                 data-tip={copied ? "Copied!" : "Copy"}
               ></i> */}
                         </div>
-                       
+
                       </td>
                     </tr>
                   ))}
@@ -245,31 +244,28 @@ const PaymentLinkDetail = () => {
               <h2 className="text-center">No data Found</h2>
             )}
           </div>
-            <div>
-              {pages.length > 1 ?
-                <nav aria-label="Page navigation example"  >
-                  <ul className="pagination">
-                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1)} href={() => false}>Previous</a>
-                    {
-                      pages.slice(currentPage - 1, currentPage + 6).map((page, i) => (
-                        <li key={uuidv4()} className={
-                          page === currentPage ? " page-item active" : "page-item"
-                        }>
-                          <a className={`page-link data_${i}`} href={() => false}>
-                            <p onClick={() => pagination(page)}>
-                              {page}
-                            </p>
-                          </a>
-                        </li>
-
-                      ))
-                    }
-                    {pages.length !== currentPage ? <a className="page-link" onClick={(nex) => setCurrentPage((nex) => nex === (pages.length > 9) ? nex : nex + 1)} href={() => false}>
-                      Next</a> : <></>}
-                  </ul>
-                </nav>
-                : <></>}
-            </div>
+            {!loadingState && (
+              <div className="d-flex justify-content-center mt-2">
+                <ReactPaginate
+                  previousLabel={'Previous'}
+                  nextLabel={'Next'}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                  pageRangeDisplayed={5}
+                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                  containerClassName={'pagination justify-content-center'}
+                  activeClassName={'active'}
+                  previousLinkClassName={'page-link'}
+                  nextLinkClassName={'page-link'}
+                  disabledClassName={'disabled'}
+                  breakClassName={'page-item'}
+                  breakLinkClassName={'page-link'}
+                  pageClassName={'page-item'}
+                  pageLinkClassName={'page-link'}
+                />
+              </div>
+            )}
           </React.Fragment>
           )}
         </div>
