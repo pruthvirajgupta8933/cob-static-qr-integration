@@ -111,6 +111,7 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
             passwordd,
             business_cat_code,
         } = formData;
+        setBtnDisable(true);
 
         dispatch(
             register({
@@ -404,7 +405,10 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
                                     : false
                                 }
                                 data-rel={btnDisable}
-                            >Submit
+                            >
+                                {btnDisable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}Submit
                             </button>
                         </div>
                     </Form>

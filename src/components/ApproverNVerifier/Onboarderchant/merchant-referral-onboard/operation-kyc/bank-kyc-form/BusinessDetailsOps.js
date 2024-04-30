@@ -18,6 +18,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const [avgTicketAmount, setAvgTicketAmount] = useState([]);
     const [transactionRangeOption, setTransactionRangeOption] = useState([]);
     const [platform, setPlatform] = useState([]);
+    const[disable,setDisable]=useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
@@ -107,6 +108,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const handleSubmit = (value) => {
         setSubmitLoader(true)
+        setDisable(true)
 
         if (value.is_pan_verified === "") {
             // PAN card is not verified, show an error message and stop submission
@@ -130,6 +132,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
 
         dispatch(businessDetailsSlice(postData)).then((resp) => {
+            setDisable(false)
+            setSubmitLoader(false)
             if (resp?.payload?.detail) {
                 toastConfig.errorToast(resp?.payload?.detail)
             }
@@ -139,8 +143,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId, password_required: true }))
             }
         }).catch(err => toastConfig.errorToast("Something went wrong!"))
-        setSubmitLoader(false)
-        // tabHandler(4)
+       
 
     }
 
@@ -340,19 +343,41 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 />
                             </div>
                         </div>
-                        <div className="col-12 mt-4 mr-5">
+                        {/* <div className="col-12 mt-4 ">
                             {!isEditableInput &&
-                                <button type="submit" className="btn cob-btn-primary btn-sm">Save
+                                <button type="submit" className="btn cob-btn-primary btn-sm" disabled={disable}>Save
                                     {submitLoader && <>
-                                        <span className="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true" />
-                                        <span className="sr-only">Loading...</span>
-                                    </>}
+                                            <span className="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true" />
+                                            <span className="sr-only">Loading...</span>
+                                        </>}
                                 </button>
                             }
                             {businessDetails?.resp?.status === true &&
                                 <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
                             }
+                        </div> */}
+                          <div className="row">
+                            <div className="col-lg-6 mt-2">
+
+                                {!isEditableInput &&
+                                    <button
+                                        className="cob-btn-primary btn text-white btn-sm"
+                                        type="submit"
+                                        disabled={disable} >
+                                        {submitLoader && <>
+                                            <span className="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true" />
+                                            <span className="sr-only">Loading...</span>
+                                        </>}
+                                        Save
+                                    </button>}
+
+                                    {businessDetails?.resp?.status === true &&
+                                <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
+                            }
+
+                            </div>
                         </div>
                     </Form>
                 )}

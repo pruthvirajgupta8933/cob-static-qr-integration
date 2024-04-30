@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
+// import * as Yup from "yup";
 import Yup from "../../../../_components/formik/Yup";
 import Genratelink from "./Genratelink";
 import { Edituser } from "./Edituser";
@@ -13,8 +14,10 @@ import API_URL from "../../../../config";
 import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
+// import "./index.css";
 import { v4 as uuidv4 } from 'uuid';
-
+import classes from "./paylink.module.css"
+import ReactPaginate from 'react-paginate';
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -57,6 +60,7 @@ const PayerDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalToggle, setEditModalToggle] = useState(false);
   const [disable, setDisable] = useState(false)
+  
   const [pageCount, setPageCount] = useState(
     data ? Math.ceil(data.length / pageSize) : 0
   );
@@ -114,24 +118,38 @@ const PayerDetails = () => {
     setSearchText(e.target.value);
   };
 
+  // useEffect(() => {
+  //   setPaginatedData(_(displayList).slice(0).take(pageSize).value());
+  //   setPageCount(
+  //     displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0
+  //   );
+  // }, [pageSize, displayList]);
+
+  // useEffect(() => {
+  //   // console.log("page chagne no")
+  //   const startIndex = (currentPage - 1) * pageSize;
+  //   const paginatedPost = _(displayList)
+  //     .slice(startIndex)
+  //     .take(pageSize)
+  //     .value();
+  //   setPaginatedData(paginatedPost);
+  // }, [currentPage]);
+
+  // const pages = _.range(1, pageCount + 1);
+
+
   useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value());
-    setPageCount(
-      displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0
-    );
+    setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0);
   }, [pageSize, displayList]);
 
   useEffect(() => {
-    // console.log("page chagne no")
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(displayList)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
+    const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
   }, [currentPage]);
 
-  const pages = _.range(1, pageCount + 1);
+  
 
   // ADD User Dropdown api integration
 
@@ -402,9 +420,7 @@ const PayerDetails = () => {
                           disabled={disable}
                           className="btn cob-btn-primary text-white btn-sm position-relative"
                         >
-                          {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
-                          )} {/* Show spinner if disabled */}
+                          {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status" aria-hidden="true"></span>}
                           Submit
                         </button>
                         <button
@@ -535,7 +551,7 @@ const PayerDetails = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             {paginatedata.length > 0 ? (
               <nav aria-label="Page navigation example">
                 <ul className="pagination">
@@ -584,7 +600,30 @@ const PayerDetails = () => {
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
+
+          {!loadingState && (
+            <div className="d-flex justify-content-center">
+              <ReactPaginate
+                previousLabel={'Previous'}
+                nextLabel={'Next'}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                pageRangeDisplayed={5}
+                onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                containerClassName={'pagination justify-content-center'}
+                activeClassName={'active'}
+                previousLinkClassName={'page-link'}
+                nextLinkClassName={'page-link'}
+                disabledClassName={'disabled'}
+                breakClassName={'page-item'}
+                breakLinkClassName={'page-link'}
+                pageClassName={'page-item'}
+                pageLinkClassName={'page-link'}
+              />
+            </div>
+          )}
         </div>
       </section>
     </React.Fragment>

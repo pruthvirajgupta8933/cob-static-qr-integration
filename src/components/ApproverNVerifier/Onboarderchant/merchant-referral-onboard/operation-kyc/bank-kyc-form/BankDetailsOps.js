@@ -22,12 +22,16 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const [loading, setLoading] = useState(false);
     const [submitLoader, setSubmitLoader] = useState(false);
+    const [disable, setDisable] = useState(false)
     const [bankList, setBankList] = useState([]);
     const dispatch = useDispatch();
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { bankDetails } = merchantReferralOnboardReducer
     const { merchantKycData } = kyc
+   
+
+
 
     const initialValues = {
         account_holder_name: merchantKycData?.merchant_account_details?.account_holder_name ?? "",
@@ -78,8 +82,13 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
     });
 
     const handleSubmit = (values) => {
-        setSubmitLoader(true)
+
+        setSubmitLoader(prev=>true)
+        setDisable(prev=>true)
+
         let selectedAccType = values.account_type?.toString() === "1" ? "Current" : values.account_type?.toString() === "2" ? "Saving" : "";
+
+
         dispatch(
             saveBankDetails({
                 account_holder_name: values.account_holder_name,
@@ -91,6 +100,8 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                 login_id: merchantLoginId,
                 modified_by: auth?.user?.loginId,
             })).then((resp) => {
+                setDisable(false)
+                setSubmitLoader(false)
                 if (resp?.payload?.detail) {
                     toastConfig.errorToast(resp?.payload?.detail)
                 }
@@ -103,7 +114,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                 console.log(err)
             })
 
-        setSubmitLoader(false)
+       
     }
 
 
@@ -445,7 +456,8 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                 {!isEditableInput &&
                                     <button
                                         className="cob-btn-primary btn text-white btn-sm"
-                                        type="submit" >
+                                        type="submit"
+                                        disabled={disable} >
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true" />

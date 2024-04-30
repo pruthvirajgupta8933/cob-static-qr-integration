@@ -11,10 +11,12 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 const ViewReferZoneModal = (props) => {
   const [selectedValue, setSelectedvalue] = useState("");
   const [refferalList, setRefferalList] = useState([])
+  const [disable, setDisable] = useState(false)
+  console.log("disable",disable);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
-   const initialValues = {
+  const initialValues = {
     sourcing_point: "",
     sourcing_code: ""
   };
@@ -50,23 +52,27 @@ const ViewReferZoneModal = (props) => {
 
 
   const handleSubmit = (values) => {
-  let saveRefData = {
+    
+    let saveRefData = {
       login_id: props.userData.loginMasterId,
       approver_id: loginId,
       sourcing_point: selectedValue,
       sourcing_code: values.sourcing_code,
       emp_code: values.sourcing_code
     };
-   dispatch(saveReferingMerchant(saveRefData))
+    setDisable(true)
+    dispatch(saveReferingMerchant(saveRefData))
       .then((resp) => {
 
         toastConfig.successToast(resp.payload.message);
         props.setOpenModal(false)
+        setDisable(false)
 
         props.refreshAfterRefer(true)
       })
       .catch((err) => {
         toastConfig.errorToast(err);
+        setDisable(false)
       });
   };
 
@@ -169,9 +175,13 @@ const ViewReferZoneModal = (props) => {
                       <div className="col-lg-12">
 
                         <button
-                          type="subbmit"
-                          className="submit-btn cob-btn-primary text-white"
+                          type="submit"
+                          className="btn cob-btn-primary mt-4 approve text-white btn-sm"
+                          disabled={disable}
                         >
+                          {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                          )} {/* Show spinner if disabled */}
                           Refer Merchant
                         </button>
                       </div>
