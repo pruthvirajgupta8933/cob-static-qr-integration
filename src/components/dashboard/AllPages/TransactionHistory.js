@@ -208,7 +208,7 @@ const TransactionHistory = () => {
         setCurrentPage(pageNo);
     };
 
-    // console.log("clientCodeList",clientCodeList)
+    
     const submitHandler = (values) => {
         isButtonClicked(true);
         setDisable(true)
@@ -617,7 +617,7 @@ const TransactionHistory = () => {
                     </section>
 
                     <section className="">
-                        <div className="container-fluid p-3 my-3 ">
+                        <div className="container-fluid p-3 my-3 ml-3 ">
                             {txnList.length > 0 ? (
                                 <>
                                     <div className="row">
