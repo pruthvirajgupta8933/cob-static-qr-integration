@@ -7,6 +7,9 @@ import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 
+// import FormikController from "../../_components/formik/FormikController";
+
+
 
 const validationSchema = Yup.object().shape({
   Amount: Yup.string().required("Required"),
@@ -151,7 +154,7 @@ const Genratelink = (props) => {
                           className="form-control"
                         />
                         <ErrorMessage name="Amount">
-                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          {msg => <div className="abhitest text-danger" >{msg}</div>}
                         </ErrorMessage>
                       </div>
                       <div className="col-lg-4">
@@ -166,7 +169,7 @@ const Genratelink = (props) => {
                           placeholder="Payment Purpose"
                         />
                         <ErrorMessage name="Remarks">
-                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          {msg => <div className="abhitest text-danger" >{msg}</div>}
                         </ErrorMessage>
 
                       </div>
@@ -176,13 +179,11 @@ const Genratelink = (props) => {
                           type="date"
                           name="Date"
                           autoComplete="off"
-
-
                           className="form-control"
                           min={new Date().toLocaleDateString('en-ca')}
                         />
                         <ErrorMessage name="Date">
-                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          {msg => <div className="abhitest text-danger" >{msg}</div>}
                         </ErrorMessage>
                       </div>
                     </div>

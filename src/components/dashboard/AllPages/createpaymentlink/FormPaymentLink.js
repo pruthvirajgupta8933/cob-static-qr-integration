@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
 import { v4 as uuidv4 } from 'uuid';
+import FormikController from "../../../../_components/formik/FormikController";
 
 function FormPaymentLink(props) {
   const { loaduser } = props;
@@ -14,7 +15,7 @@ function FormPaymentLink(props) {
   const [drop, setDrop] = useState([]);
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
- 
+
   const [passwordcheck, setPasswordCheck] = useState(false);
   const [disable, setDisable] = useState(false)
 
@@ -39,6 +40,7 @@ function FormPaymentLink(props) {
     Remarks: Yup.string().required("Required!"),
     Date: Yup.string().required("Required!"),
     Customer_id: Yup.string().required("Required!"),
+    
 
   })
 
@@ -174,7 +176,7 @@ function FormPaymentLink(props) {
                           ))}
                         </Field>
                         {<ErrorMessage name="Customer_id">
-                          {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                          {msg => <p className="abhitest text-danger" >{msg}</p>}
                         </ErrorMessage>}
                       </div>
                       <div className="form-group col-md-6">
@@ -192,7 +194,7 @@ function FormPaymentLink(props) {
                           placeholder="Enter Payment Amount"
                         />
                         {<ErrorMessage name="Amount">
-                          {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                          {msg => <p className="abhitest text-danger">{msg}</p>}
                         </ErrorMessage>}
                       </div>
                     </div>
@@ -209,7 +211,7 @@ function FormPaymentLink(props) {
                           placeholder="Enter Purpose of Payment"
                         />
                         {<ErrorMessage name="Remarks">
-                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          {msg => <div className="abhitest text-danger" >{msg}</div>}
                         </ErrorMessage>}
 
                       </div>
@@ -223,7 +225,7 @@ function FormPaymentLink(props) {
                           placeholder="From Date"
                         />
                         {<ErrorMessage name="Date">
-                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          {msg => <div className="abhitest text-danger" >{msg}</div>}
                         </ErrorMessage>}
                       </div>
                     </div>
@@ -237,6 +239,8 @@ function FormPaymentLink(props) {
                             <option value={val} key={uuidv4()}>{val}</option>
                           ))}
                         </Field>
+                        
+
                       </div>
                       <div className="form-group col-md-6">
                         <label>Minutes</label>
