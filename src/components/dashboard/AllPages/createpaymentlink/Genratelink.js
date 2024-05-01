@@ -17,30 +17,30 @@ const validationSchema = Yup.object().shape({
 const Genratelink = (props) => {
   let history = useHistory();
   var { customer_id } = props.generatedata;
-const [hours, setHours] = useState("");
+  const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
-  const[disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false)
 
-const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
 
-let clientMerchantDetailsList = [];
+  let clientMerchantDetailsList = [];
   let clientCode = '';
-  if (user && user.clientMerchantDetailsList === null) {  
+  if (user && user.clientMerchantDetailsList === null) {
     history.push('/dashboard/profile');
 
   } else {
     clientMerchantDetailsList = user.clientMerchantDetailsList;
     clientCode = clientMerchantDetailsList[0].clientCode;
   }
-  
+
 
 
 
   const generateHandler = async (e) => {
     setDisable(true)
-   toast.info("Please Wait...")
+    toast.info("Please Wait...")
     await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount: e.Amount,
@@ -55,7 +55,7 @@ let clientMerchantDetailsList = [];
       .then((response) => {
         toast.success(response.data.message)
         setDisable(false)
-        
+
       })
       .catch((error) => {
         toast.error("Payment Link Creation Failed ")
@@ -75,7 +75,7 @@ let clientMerchantDetailsList = [];
       enteredDate + '%20' + hours + ':' + minutes
     );
   };
-  const handleCheck = (e) => {                 
+  const handleCheck = (e) => {
     setPasswordCheck(e.target.checked);
   };
   return (
@@ -156,7 +156,7 @@ let clientMerchantDetailsList = [];
                       </div>
                       <div className="col-lg-4">
                         <label htmlFor="exampleInputEmail1">
-                        Purpose of Payment 
+                          Purpose of Payment
                         </label>
                         <Field
                           type="text"
@@ -170,14 +170,14 @@ let clientMerchantDetailsList = [];
                         </ErrorMessage>
 
                       </div>
-                       <div className="col-lg-4">
+                      <div className="col-lg-4">
                         <label>Link Validity</label>
                         <Field
                           type="date"
                           name="Date"
                           autoComplete="off"
-                         
-                          
+
+
                           className="form-control"
                           min={new Date().toLocaleDateString('en-ca')}
                         />
@@ -188,108 +188,29 @@ let clientMerchantDetailsList = [];
                     </div>
 
                     <div className="row mt-4">
-                      
+
                       <div className="col-lg-4">
                         <label>Hours</label>
                         <br />
-                        <select  value={hours} onChange={(e) => setHours(e.target.value)} className="form-select">
+                        <select value={hours} onChange={(e) => setHours(e.target.value)} className="form-select">
                           <option value="">Hours</option>
-                          <option value="00">00</option>
-                          <option value="01">01</option>
-                          <option value="02">02</option>
-                          <option value="03">03</option>
-                          <option value="04">04</option>
-                          <option value="05">04</option>
-                          <option value="06">05</option>
-                          <option value="06">06</option>
-                          <option value="07">07</option>
-                          <option value="08">08</option>
-                          <option value="09">09</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
-                          <option value="16">16</option>
-                          <option value="17">17</option>
-                          <option value="18">18</option>
-                          <option value="19">19</option>
-                          <option value="20">20</option>
-                          <option value="21">21</option>
-                          <option value="22">22</option>
-                          <option value="23">23</option>
-
-
-
+                          {Array.from({ length: 24 }, (_, i) => (
+                            <option key={i} value={i.toString().padStart(2, '0')}>
+                              {i.toString().padStart(2, '0')}
+                            </option>
+                          ))}
                         </select>
                       </div>
                       <div className="col-lg-4">
                         <label>Minutes</label>
                         <br />
-                        <select  value={minutes} onChange={(e) => setMinutes(e.target.value)} className="form-select">
+                        <select value={minutes} onChange={(e) => setMinutes(e.target.value)} className="form-select">
                           <option value=''>Minutes</option>
-                          <option value='00'>00</option>
-                          <option value="01">01</option>
-                          <option value="02">02</option>
-                          <option value="03">03</option>
-                          <option value="04">04</option>
-                          <option value="05">04</option>
-                          <option value="06">05</option>
-                          <option value="06">06</option>
-                          <option value="07">07</option>
-                          <option value="08">08</option>
-                          <option value="09">09</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
-                          <option value="16">16</option>
-                          <option value="17">17</option>
-                          <option value="18">18</option>
-                          <option value="19">19</option>
-                          <option value="20">20</option>
-                          <option value="21">21</option>
-                          <option value="22">22</option>
-                          <option value="23">23</option>
-                          <option value="24">24</option>
-                          <option value="25">25</option>
-                          <option value="26">26</option>
-                          <option value="27">27</option>
-                          <option value="28">28</option>
-                          <option value="29">29</option>
-                          <option value="30">30</option>
-                          <option value="31">31</option>
-                          <option value="32">32</option>
-                          <option value="33">33</option>
-                          <option value="34">34</option>
-                          <option value="35">35</option>
-                          <option value="35">36</option>
-                          <option value="37">37</option>
-                          <option value="38">38</option>
-                          <option value="39">39</option>
-                          <option value="40">40</option>
-                          <option value="41">41</option>
-                          <option value="42">42</option>
-                          <option value="43">43</option>
-                          <option value="44">44</option>
-                          <option value="45">45</option>
-                          <option value="46">46</option>
-                          <option value="47">47</option>
-                          <option value="48">48</option>
-                          <option value="49">49</option>
-                          <option value="50">50</option>
-                          <option value="51">51</option>
-                          <option value="52">52</option>
-                          <option value="53">53</option>
-                          <option value="54">54</option>
-                          <option value="55">55</option>
-                          <option value="55">56</option>
-                          <option value="57">57</option>
-                          <option value="58">58</option>
-                          <option value="59">59</option>
+                          {[...Array(60).keys()].map((minute) => (
+                            <option key={minute} value={minute.toString().padStart(2, '0')}>
+                              {minute.toString().padStart(2, '0')}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>

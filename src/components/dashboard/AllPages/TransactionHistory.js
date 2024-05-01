@@ -22,6 +22,11 @@ import Notification from "../../../_components/reuseable_components/Notification
 import moment from "moment";
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { v4 as uuidv4 } from 'uuid';
+import ReactPaginate from 'react-paginate';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaCalendarAlt } from 'react-icons/fa';
+
 
 const TransactionHistory = () => {
     const dispatch = useDispatch();
@@ -47,6 +52,8 @@ const TransactionHistory = () => {
     const [clientCodeList, setClientCodeList] = useState([]);
     const [buttonClicked, isButtonClicked] = useState(false);
     const [disable, setDisable] = useState(false)
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
 
     let now = moment().format("YYYY-M-D");
@@ -242,34 +249,37 @@ const TransactionHistory = () => {
             });
         }
     };
-    const checkValidation = (fromDate = "", toDate = "") => {
+    const checkValidation = (fromDate, toDate) => {
         let flag = true;
-        if (fromDate === 0 || toDate === "") {
-            alert("Please select the date.");
+
+        if (!fromDate || !toDate) {
+            alert("Please select both start and end dates.");
             flag = false;
-        } else if (fromDate !== "" || toDate !== "") {
+        } else {
             const date1 = new Date(fromDate);
             const date2 = new Date(toDate);
+
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            let allowedTxnViewDays = 31
-            let monthAllowed = 1
+            let allowedTxnViewDays = 31;
+            let monthAllowed = 1;
+
             if (user?.roleId === 3) {
-                allowedTxnViewDays = 92
-                monthAllowed = 3
+                allowedTxnViewDays = 92;
+                monthAllowed = 3;
             }
 
             if (diffDays < 0 || diffDays > allowedTxnViewDays) {
                 flag = false;
-                alert(`Please choose a ${monthAllowed}-month date range. `);
+                alert(`Please choose a ${monthAllowed}-month date range.`);
+                setDisable(false)
             }
-        } else {
-            flag = true;
         }
 
         return flag;
     };
+
 
     useEffect(() => {
         // Remove initiated from transaction history response
@@ -309,6 +319,9 @@ const TransactionHistory = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
+
+
+
 
     useEffect(() => {
         getPaymentStatusList();
@@ -487,7 +500,7 @@ const TransactionHistory = () => {
             <main className="">
                 <div className="">
                     {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-                    <h5 className="">Transaction History</h5>
+                    <h5 className="ml-4">Transaction History</h5>
                     {/* </div> */}
                     <section className="">
                         <div className="container-fluid">
@@ -512,36 +525,34 @@ const TransactionHistory = () => {
                                                 </div>
                                             )}
 
-                                            <div className="form-group col-lg-3">
-                                                <FormikController
-                                                    control="date"
-                                                    label="From Date"
-                                                    id="fromDate"
-                                                    name="fromDate"
-                                                    value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                                                    onChange={date => formik.setFieldValue('fromDate', date)}
-                                                    format="dd-MM-y"
-                                                    clearIcon={null}
-                                                    className="form-control rounded-0 p-0"
-                                                    required={true}
-                                                    errorMsg={formik.errors["fromDate"]}
-                                                />
-                                            </div>
-
-                                            <div className="form-group col-lg-3">
-                                                <FormikController
-                                                    control="date"
-                                                    label="End Date"
-                                                    id="endDate"
-                                                    name="endDate"
-                                                    value={formik.values.endDate ? new Date(formik.values.endDate) : null}
-                                                    onChange={date => formik.setFieldValue('endDate', date)}
-                                                    format="dd-MM-y"
-                                                    clearIcon={null}
-                                                    className="form-control rounded-0 p-0"
-                                                    required={true}
-                                                    errorMsg={formik.errors["endDate"]}
-                                                />
+                                            <div className="form-group col-lg-3 ml-4">
+                                                <label htmlFor="dateRange" className="form-label">Date Range</label>
+                                                <div className="input-group">
+                                                    <DatePicker
+                                                        id="dateRange"
+                                                        selectsRange={true}
+                                                        startDate={startDate}
+                                                        endDate={endDate}
+                                                        onChange={(update) => {
+                                                            const [start, end] = update;
+                                                            setStartDate(start);
+                                                            setEndDate(end);
+                                                            formik.setFieldValue('fromDate', start);
+                                                            formik.setFieldValue('endDate', end);
+                                                        }}
+                                                        dateFormat="dd-MM-yyyy"
+                                                        placeholderText="Select Date Range"
+                                                        className="form-control rounded-0 p-0 date_picker"
+                                                        showPopperArrow={false}
+                                                    />
+                                                    <div className="input-group-append">
+                                                        <div className="input-group-text bg-white border-left-0" onClick={() => {
+                                                            document.getElementById('dateRange').click();
+                                                        }}>
+                                                            <FaCalendarAlt />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div className="form-group col-lg-3">
@@ -566,7 +577,7 @@ const TransactionHistory = () => {
                                         </div>
 
                                         <div className="form-row">
-                                            <div className="form-group col-lg-1">
+                                            <div className="form-group col-lg-1 ml-4">
                                                 <button
                                                     className="btn btn-sm cob-btn-primary text-white"
                                                     type="submit"
@@ -745,56 +756,27 @@ const TransactionHistory = () => {
                             <div>
 
                                 {txnList.length > 0 ? (
-                                    <nav aria-label="Page navigation example">
-                                        <ul className="pagination">
-                                            <a
-                                                className="page-link"
-                                                onClick={(prev) =>
-                                                    setCurrentPage((prev) =>
-                                                        prev === 1 ? prev : prev - 1
-                                                    )
-                                                }
-                                                href={() => false}
-                                            >
-                                                Previous
-                                            </a>
-                                            {pages
-                                                .slice(currentPage - 1, currentPage + 6)
-                                                .map((page, i) => (
-                                                    <li
-                                                        key={uuidv4()}
-                                                        className={
-                                                            page === currentPage
-                                                                ? " page-item active"
-                                                                : "page-item"
-                                                        }
-                                                    >
+                                    <div className="d-flex justify-content-center mt-2">
+                                        <ReactPaginate
+                                            previousLabel={'Previous'}
+                                            nextLabel={'Next'}
+                                            breakLabel={'...'}
+                                            pageCount={pageCount}
+                                            marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                                            pageRangeDisplayed={5}
+                                            onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                                            containerClassName={'pagination justify-content-center'}
+                                            activeClassName={'active'}
+                                            previousLinkClassName={'page-link'}
+                                            nextLinkClassName={'page-link'}
+                                            disabledClassName={'disabled'}
+                                            breakClassName={'page-item'}
+                                            breakLinkClassName={'page-link'}
+                                            pageClassName={'page-item'}
+                                            pageLinkClassName={'page-link'}
+                                        />
+                                    </div>
 
-                                                        <a
-                                                            className={`page-link data_${i}`}
-                                                            href={() => false}
-                                                        >
-                                                            <p onClick={() => pagination(page)}>{page}</p>
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            {pages.length !== currentPage ? (
-                                                <a
-                                                    className="page-link"
-                                                    onClick={(nex) => {
-                                                        setCurrentPage((nex) =>
-                                                            nex === pages.length > 9 ? nex : nex + 1
-                                                        );
-                                                    }}
-                                                    href={() => false}
-                                                >
-                                                    Next
-                                                </a>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </ul>
-                                    </nav>
                                 ) : (
                                     <></>
                                 )}
