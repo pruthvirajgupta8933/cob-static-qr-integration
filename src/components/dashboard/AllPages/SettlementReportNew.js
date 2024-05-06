@@ -356,19 +356,13 @@ const SettlementReportNew = () => {
 
                 'client_name': item.client_name === null ? "" : item.client_name,
                 'gr_number': item.gr_number === null ? "" : item.gr_number,
-                // 'paid_amount': item.paid_amount === null ? "" : Number.parseFloat(item.paid_amount),
-                // 'act_amount': item.act_amount === null ? "" : Number.parseFloat(item.act_amount),
-                // 'pag_response_code': item.pag_response_code === null ? "" : item.pag_response_code,
-                // 'resp_msg': item.resp_msg === null ? "" : item.resp_msg,
+               
                 'bank_message': item.bank_message === null ? "" : item.bank_message,
                 'fee_forward': item.fee_forward === null ? "" : item.fee_forward,
                 'ifsc_code': item.ifsc_code === null ? "" : item.ifsc_code,
                 'payer_acount_number': item.payer_acount_number === null ? "" : item.payer_acount_number,
                 'bank_txn_id': item.bank_txn_id === null ? "" : item.bank_txn_id,
-                // 'pg_return_amount': item.pg_return_amount === null ? "" : Number.parseFloat(item.pg_return_amount),
-                // 'p_convcharges': item.p_convcharges === null ? "" : item.p_convcharges,
-                // 'p_ep_charges': item.p_ep_charges === null ? "" : item.p_ep_charges,
-                // 'p_gst': item.p_gst === null ? "" : item.p_gst,
+               
                 'settlement_date': item.settlement_date === null ? "" : item.settlement_date,
                 'settlement_amount': item.settlement_amount === null ? "" : Number.parseFloat(item.settlement_amount),
                 'settlement_status': item.settlement_status === null ? "" : item.settlement_status,
