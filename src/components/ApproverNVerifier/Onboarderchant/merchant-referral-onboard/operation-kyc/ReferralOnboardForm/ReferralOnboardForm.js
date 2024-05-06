@@ -9,6 +9,7 @@ import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { addReferralService } from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
+import { values } from 'lodash';
 
 function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode, marginTopCss }) {
 
@@ -79,6 +80,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
 
     const handleSubmitContact = async (value) => {
+      
         setDisable(true)
         const { fullName, mobileNumber, email_id, password, username } = value;
         // alert(3)
@@ -181,7 +183,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 // onSubmit={(values) => handleSubmitContact(values)}
                 onSubmit={async (values) => {
                     await handleSubmitContact(values)
-                    // resetForm()
+                    
                 }}
                 enableReinitialize={true}>
                 {(formik) => (<Form>

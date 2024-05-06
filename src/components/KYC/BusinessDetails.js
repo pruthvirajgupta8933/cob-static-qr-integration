@@ -275,6 +275,7 @@ function BusinessDetails(props) {
 
 
   const gstinValidate = (values, key, setFieldValue) => {
+    setIsLoading(true)
     dispatch(
       gstValidation({
         gst_number: values,
@@ -287,6 +288,7 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
+       
         const fullName = trimFullName(res?.payload?.trade_name, "")
         setFieldValue(key, fullName)
         setFieldValue("gst_number", values)
@@ -299,11 +301,13 @@ function BusinessDetails(props) {
         setFieldValue("registerd_with_gst", true)
         setFieldValue("registerd_with_udyam", false)
         setFieldValue("udyam_number", "")
+        setIsLoading(false)
 
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "")
         toast.error(res?.payload?.message);
+        setIsLoading(false)
       }
     })
   };
@@ -421,7 +425,8 @@ function BusinessDetails(props) {
       authValidation(val[key], "signatory_pan", setFieldValue, setIsLoading);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
-      gstinValidate(val[key], "company_name", setFieldValue);
+      gstinValidate(val[key], "company_name", setFieldValue, setIsLoading);
+      setIsLoading(true)
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "udyam_number") {
       udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
@@ -610,7 +615,13 @@ function BusinessDetails(props) {
 
                             }
                           >
-                            Verify
+                            {isLoading ? (
+                          <span className="spinner-border spinner-border-sm">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                        ) : (
+                          "Verify"
+                        )}
                           </a>
                         </div>
                       )}

@@ -197,7 +197,7 @@ const dispatch = useDispatch();
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
-  // console.log(currenTab," Current Tab")
+  
   const roles = roleBasedAccess();
 
   const kycSearch = (e, fieldType) => {

@@ -358,10 +358,7 @@ function ApprovedMerchant() {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              // URL={
-              //   "export-excel/?search=Approved"
-              // }
-              URL={`export-excel/?search=Approved&isDirect=${onboardType}`}
+             URL={`export-excel/?search=Approved&isDirect=${onboardType}`}
               filename={"Approved"}
             />
           }

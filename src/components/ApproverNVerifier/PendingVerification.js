@@ -343,7 +343,6 @@ const filteredData = useMemo(() => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              
               URL={`export-excel/?search=processing&isDirect=${onboardType}`}
               filename={"Pending-Verification"}
             />
@@ -365,7 +364,6 @@ const filteredData = useMemo(() => {
             />
           )}
         </div>
-        {/* <CustomLoader loadingState={loadingState} /> */}
         {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center font-weight-bold">No Data Found</h6>

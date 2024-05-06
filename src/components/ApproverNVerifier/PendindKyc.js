@@ -19,7 +19,6 @@ const PendindKyc = () => {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
-  
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -292,7 +291,6 @@ const PendindKyc = () => {
         <div className="">
         {!loadingState &&
           <MerchnatListExportToxl
-           
             URL={`export-excel/?search=Pending&isDirect=${onboardType}`}
             filename={"Pending-KYC"}
           />

@@ -197,7 +197,7 @@ const BizzAppData = () => {
     <section className="">
       <main className="">
         <div className="">
-          <div className="">
+          <div className="mb-5">
             <h5>Bizz App Data</h5>
           </div>
           <Formik
