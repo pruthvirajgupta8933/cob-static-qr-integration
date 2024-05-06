@@ -194,27 +194,214 @@ const BizzAppData = () => {
   };
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="mb-5">
-            <h5>Bizz App Data</h5>
-          </div>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-            }}
-            enableReinitialize={true}
-          >
-            {(formik) => (
-              <Form>
+    // <section className="">
+    //   <main className="">
+    //     <div className="">
+    //       <div className="mb-5">
+    //         <h5>Bizz App Data</h5>
+    //       </div>
+    //       <Formik
+    //         initialValues={initialValues}
+    //         validationSchema={validationSchema}
+    //         onSubmit={(values, { resetForm }) => {
+    //           handleSubmit(values);
+    //         }}
+    //         enableReinitialize={true}
+    //       >
+    //         {(formik) => (
+    //           <Form>
 
-                <div className="container mt-5">
-                  <div className="row">
-                    <div className="form-group  col-md-3">
-                      <FormikController
+    //             <div className="container mt-5">
+    //               <div className="row">
+    //                 <div className="form-group  col-md-3">
+    //                   <FormikController
+    //                     control="date"
+    //                     label="From Date"
+    //                     id="start_date"
+    //                     name="start_date"
+    //                     value={formik.values.start_date ? new Date(formik.values.start_date) : null}
+    //                     onChange={date => formik.setFieldValue('start_date', date)}
+    //                     format="dd-MM-y"
+    //                     clearIcon={null}
+    //                     className="form-control rounded-0 p-0"
+    //                     required={true}
+    //                     errorMsg={formik.errors["start_date"]}
+    //                   />
+
+    //                 </div>
+
+    //                 <div className="form-group col-md-3 ">
+    //                   <FormikController
+    //                     control="date"
+    //                     label="End Date"
+    //                     id="end_date"
+    //                     name="end_date"
+    //                     value={formik.values.end_date ? new Date(formik.values.end_date) : null}
+    //                     onChange={date => formik.setFieldValue('end_date', date)}
+    //                     format="dd-MM-y"
+    //                     clearIcon={null}
+    //                     className="form-control rounded-0 p-0"
+    //                     required={true}
+    //                     errorMsg={formik.errors["end_date"]}
+    //                   />
+    //                 </div>
+    //                 <div className="row">
+    //                   <div className="col-lg-12">
+    //                     <button
+    //                       type="submit"
+    //                       className="btn cob-btn-primary approve text-white"
+    //                       disabled={disable}
+    //                     >
+    //                       {disable && (
+    //                         <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+    //                       )} {/* Show spinner if disabled */}
+    //                       Submit
+    //                     </button>
+    //                     {FormData?.length > 0 ? (
+    //                       <button
+    //                         className="btn cob-btn-primary approve text-white ml-3"
+    //                         type="button"
+    //                         onClick={() => exportToExcelFn()}
+    //                         style={{ backgroundColor: "rgb(1, 86, 179)" }}
+    //                       >
+    //                         Export
+    //                       </button>
+    //                     ) : (
+    //                       <></>
+    //                     )}
+    //                   </div>
+    //                 </div>
+    //               </div>
+    //               {FormData?.length === 0 || FormData?.length === undefined ? (
+    //                 <></>
+    //               ) : (
+    //                 <h5 className="mt-4" >Total Records : {FormData?.length}</h5>
+    //               )}
+    //             </div>
+    //           </Form>
+    //         )}
+    //       </Formik>
+    //       {FormData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
+    //         No Data Found
+    //       </h5>}
+    //       <div className="col-md-12">
+    //         <div className="scroll overflow-auto">
+    //           {show === true && FormData?.length !== 0 ? (
+    //             <table className="table table-bordered">
+    //               <thead>
+    //                 <tr>
+    //                   <th>S. No.</th>
+    //                   <th>Merchant Business Name</th>
+    //                   <th>Merchant Legal Name</th>
+    //                   <th>Merchant Address</th>
+    //                   <th>Product Name</th>
+    //                   <th>Types Of Entity</th>
+    //                   <th>Year Of Establishment</th>
+    //                   <th>Merchant Portal</th>
+    //                   <th>Average Transaction Amount</th>
+    //                   <th>Expected Transactions Numbers</th>
+    //                   <th>Annual Transaction Value</th>
+    //                   <th>Account Details</th>
+    //                   <th>Authorized Person Name</th>
+    //                   <th>Authorized Person Email Id</th>
+    //                   <th>Authorized Person Contact Number</th>
+    //                   <th>Technical Person Name</th>
+    //                   <th>Technical Person Email Id</th>
+    //                   <th>Technical Person Contact Number</th>
+    //                   <th>Mcc</th>
+    //                   <th>Nature of Business</th>
+    //                   <th>Zone</th>
+    //                   <th>Entity Pan Card Number</th>
+    //                   <th>GST Number</th>
+    //                   <th>Created On</th>
+    //                 </tr>
+    //               </thead>
+    //               <tbody>
+    //                 {FormData?.length === 0 ||
+    //                   FormData?.length === undefined ? (
+    //                   <tr>
+    //                     {/* <td colSpan={"8"}>
+    //                       <h1 className="nodatafound">No data found</h1>
+    //                     </td> */}
+    //                   </tr>
+    //                 ) : (
+    //                   FormData?.map((SingleFormData, i) => (
+    //                     <tr key={uuidv4()}>
+    //                       <td>{i + 1}</td>
+    //                       <td>{SingleFormData?.merchant_business_name}</td>
+    //                       <td>{SingleFormData?.merchant_legal_name}</td>
+    //                       <td>{SingleFormData?.merchant_address}</td>
+    //                       <td>{SingleFormData?.product_name}</td>
+    //                       <td>{SingleFormData?.types_of_entity}</td>
+    //                       <td>{SingleFormData?.year_of_establishment}</td>
+    //                       <td>{SingleFormData?.merchant_portal}</td>
+    //                       <td>{SingleFormData?.average_transaction_amount}</td>
+    //                       <td>
+    //                         {SingleFormData?.expected_transactions_numbers}
+    //                       </td>
+    //                       <td>{SingleFormData?.annual_transaction_value}</td>
+    //                       <td>{SingleFormData?.account_details}</td>
+    //                       <td>
+    //                         {SingleFormData?.authorized_contact_person_name}
+    //                       </td>
+    //                       <td>
+    //                         {SingleFormData?.authorized_contact_person_email_id}
+    //                       </td>
+    //                       <td>
+    //                         {
+    //                           SingleFormData?.authorized_contact_person_contact_number
+    //                         }
+    //                       </td>
+    //                       <td>
+    //                         {SingleFormData?.technical_contact_person_name}
+    //                       </td>
+    //                       <td>
+    //                         {SingleFormData?.technical_contact_person_email_id}
+    //                       </td>
+    //                       <td>
+    //                         {
+    //                           SingleFormData?.technical_contact_person_contact_number
+    //                         }
+    //                       </td>
+    //                       <td>{SingleFormData?.mcc}</td>
+    //                       <td>{SingleFormData?.nature_of_business}</td>
+    //                       <td>{SingleFormData?.zone}</td>
+    //                       <td>{SingleFormData?.entity_pan_card_number}</td>
+    //                       <td>{SingleFormData?.gst_number}</td>
+    //                       <td>{convertDate(SingleFormData?.created_on)}</td>
+    //                     </tr>
+    //                   ))
+    //                 )}
+    //               </tbody>
+    //             </table>
+    //           ) : (
+    //             <></>
+    //           )}
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </main>
+    // </section>
+    <section className="">
+    <main className="">
+      <div className="">
+        <div className="mb-5">
+          <h5 className="">Bizz App Data</h5>
+        </div>
+
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={(values, { resetForm }) => {
+            handleSubmit(values);
+          }}
+          enableReinitialize={true}
+        >
+          {(formik) => (
+            <Form>
+              <div className="row">
+                <div className="form-group  col-md-3 ">
+                <FormikController
                         control="date"
                         label="From Date"
                         id="start_date"
@@ -227,11 +414,9 @@ const BizzAppData = () => {
                         required={true}
                         errorMsg={formik.errors["start_date"]}
                       />
-
-                    </div>
-
-                    <div className="form-group col-md-3 ">
-                      <FormikController
+                </div>
+                <div className="form-group col-md-3 ml-3">
+                <FormikController
                         control="date"
                         label="End Date"
                         id="end_date"
@@ -244,9 +429,9 @@ const BizzAppData = () => {
                         required={true}
                         errorMsg={formik.errors["end_date"]}
                       />
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-12">
+                </div>
+                <div className="row">
+                     <div className="col-lg-12">
                         <button
                           type="submit"
                           className="btn cob-btn-primary approve text-white"
@@ -271,20 +456,15 @@ const BizzAppData = () => {
                         )}
                       </div>
                     </div>
-                  </div>
-                  {FormData?.length === 0 || FormData?.length === undefined ? (
-                    <></>
-                  ) : (
-                    <h5 className="mt-4" >Total Records : {FormData?.length}</h5>
-                  )}
-                </div>
-              </Form>
-            )}
-          </Formik>
-          {FormData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
-            No Data Found
+                  
+              </div>
+            </Form>
+          )}
+        </Formik>
+    {FormData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
+             No Data Found
           </h5>}
-          <div className="col-md-12">
+           <div className="col-md-12 mt-4">
             <div className="scroll overflow-auto">
               {show === true && FormData?.length !== 0 ? (
                 <table className="table table-bordered">
@@ -378,10 +558,10 @@ const BizzAppData = () => {
                 <></>
               )}
             </div>
-          </div>
-        </div>
-      </main>
-    </section>
+            </div>
+      </div>
+    </main>
+  </section>
   );
 };
 
