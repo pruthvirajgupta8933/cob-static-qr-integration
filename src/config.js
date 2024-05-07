@@ -8,7 +8,7 @@ let url,
   widget_url,
   widget_script,
   payLinkAPIURL = "";
- 
+
 
 
 if (ENV_PROD) {
@@ -19,8 +19,8 @@ if (ENV_PROD) {
   b2b_url = "https://b2becollect.sabpaisa.in";
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
-  widget_url="https://paywidget.sabpaisa.in"
-  widget_script="https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
+  widget_url = "https://paywidget.sabpaisa.in"
+  widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
 
 } else {
   url = "https://stgcobapi.sabpaisa.in";
@@ -33,7 +33,7 @@ if (ENV_PROD) {
   widget_url = "https://stage-widget.sabpaisa.in"
   payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
-  widget_script="https://payment-widget-sabpaisa.web.app/widget-bundle.js"
+  widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js"
 
 }
 
@@ -377,6 +377,9 @@ const WIDGET_LIVE = {
   WIDGET_CLIENT_KEY: `${widget_url}/widget/client-master/create-client/`,
   WIDGET_DETAILS: `${widget_url}/widget/client-master/get_client_details/`
 }
+const WIDGET_SCRIPT_LIVE = {
+  SCRIPT_URL: `${widget_script}`
+}
 
 
 export const wsConnectUrl = {
@@ -385,7 +388,10 @@ export const wsConnectUrl = {
 }
 
 const API_URL = API_LIVE;
+
 export const WIDGET_URL = WIDGET_LIVE;
+
+export const WIDGET_SCRIPT_URL = WIDGET_SCRIPT_LIVE
 
 export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
