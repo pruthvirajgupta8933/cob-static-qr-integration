@@ -172,7 +172,6 @@ function DashboardMainContent() {
             const postBody = {
                 LoginId: user?.loginId
             };
-
             dispatch(fetchMenuList(postBody))
         } else {
             toastConfig.errorToast("Session Expired")

@@ -30,7 +30,7 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
-  widget_url="https://stage-widget.sabpaisa.in"
+  widget_url = "https://stage-widget.sabpaisa.in"
   payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_script="https://payment-widget-sabpaisa.web.app/widget-bundle.js"
@@ -226,7 +226,7 @@ const API_LIVE = {
   Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
   // PAN API FOR DISPLAY DATA
 
-  GET_MERCHANT_PAN:`${kyc_url}/kyc/get-merchants-by-pan/`,
+  GET_MERCHANT_PAN: `${kyc_url}/kyc/get-merchants-by-pan/`,
   /* KYC VERIFICATION FOR ALL TABS */
   KYC_TAB_STATUS_URL: `${kyc_url}/kyc/verify-kyc`,
   /*Image Preview API */
@@ -242,7 +242,7 @@ const API_LIVE = {
   Get_Subscribed_Plan_Detail_By_ClientId: `${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
   UPDATE_SUBSCRIBED_PLAN_DETAILS: `${url}/subscribed/update-detail`,
   PRE_UPDATE_SUBSCRIBE_DETAILS: `${url}/subscribed/Pre-update-subscribed-detail`,
-  SUBSCRIBED_DETAILS:`${url}/merchant/get-subscribed-details`,
+  SUBSCRIBED_DETAILS: `${url}/merchant/get-subscribed-details`,
 
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
@@ -363,8 +363,8 @@ const API_LIVE = {
   addReferralChild: `${kyc_url}/kyc/referrer/add-referrer-child/`,
   fetchReferralChild: `${kyc_url}/kyc/get-merchant-data/offline-merchant/`,
   fetchParentClientCodes: `${adminAPIURL}/getDataByCommonProc/getCommonData/35/0`,
-  perentTypeMerchantData:`${kyc_url}/kyc/get-merchant-data/parent-type/`,
-  getAllzone:`${kyc_url}/kyc/refer-zone/get-all-zone/`,
+  perentTypeMerchantData: `${kyc_url}/kyc/get-merchant-data/parent-type/`,
+  getAllzone: `${kyc_url}/kyc/refer-zone/get-all-zone/`,
 
 };
 
@@ -373,14 +373,9 @@ const B2B_API_LIVE = {
   challanTransactionExport: `${b2b_url}/e-collection/challan/get_mis`,
 };
 
-const WIDGET_LIVE={
-  WIDGET_CLIENT_KEY:`${widget_url}/widget/client-master/create-client/`,
-  WIDGET_DETAILS:`${widget_url}/widget/client-master/get_client_details/`,
-  // WIDGET_SCRIPT_URL:`${ widget_script}`
-}
-
-const WIDGET_SCRIPT_LIVE={
-  SCRIPT_URL:`${widget_script}`
+const WIDGET_LIVE = {
+  WIDGET_CLIENT_KEY: `${widget_url}/widget/client-master/create-client/`,
+  WIDGET_DETAILS: `${widget_url}/widget/client-master/get_client_details/`
 }
 
 
@@ -390,8 +385,7 @@ export const wsConnectUrl = {
 }
 
 const API_URL = API_LIVE;
-export const WIDGET_URL=WIDGET_LIVE;
-export const WIDGET_SCRIPT_URL=WIDGET_SCRIPT_LIVE
+export const WIDGET_URL = WIDGET_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
