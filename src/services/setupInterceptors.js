@@ -16,6 +16,7 @@ const setup = async (store) => {
       return config;
     },
     (error) => {
+      console.log("error", error)
       return Promise.reject(error);
     }
   );
@@ -26,12 +27,13 @@ const setup = async (store) => {
 
   axiosInstanceJWT.interceptors.response.use(
     (response) => {
+      console.log("response1", response)
       // Successfully received response, simply return it
       return response;
     },
     (error) => {
 
-
+      console.log("error1", error)
       const refreshToken = TokenService.getLocalrefreshToken();
       // This promise handles the refresh logic for 401 errors specifically
       if (error.response && error.response.status === 401 && error.config && !error.config.__isRetryRequest && refreshToken) {

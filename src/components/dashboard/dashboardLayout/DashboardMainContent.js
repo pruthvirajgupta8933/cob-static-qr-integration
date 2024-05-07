@@ -168,11 +168,12 @@ function DashboardMainContent() {
 
 
     useEffect(() => {
+        console.log("user", user)
         if (user?.loginId != null && user?.loginId !== undefined && user?.loginId !== "") {
             const postBody = {
                 LoginId: user?.loginId
             };
-
+            console.log("user-1", postBody)
             dispatch(fetchMenuList(postBody))
         } else {
             toastConfig.errorToast("Session Expired")
