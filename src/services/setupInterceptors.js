@@ -8,6 +8,9 @@ const setup = async (store) => {
   axiosInstanceJWT.interceptors.request.use(
     (config) => {
       const token = TokenService.getLocalAccessToken();
+      console.log("token", token)
+      console.log("tokent", typeof token)
+
       if (token) {
         config.headers["Authorization"] = 'Bearer ' + token;
       } else {
@@ -33,7 +36,7 @@ const setup = async (store) => {
     },
     (error) => {
 
-      console.log("error1", error)
+      console.log("error1", error.response)
       const refreshToken = TokenService.getLocalrefreshToken();
       // This promise handles the refresh logic for 401 errors specifically
       if (error.response && error.response.status === 401 && error.config && !error.config.__isRetryRequest && refreshToken) {
