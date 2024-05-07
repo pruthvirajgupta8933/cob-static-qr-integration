@@ -31,7 +31,7 @@ import OnboardMerchant from "../../ApproverNVerifier/Onboarderchant/OnboardMerch
 import RefundTransactionHistory from "../AllPages/RefundTransactionHistory";
 import ChargeBackTxnHistory from "../AllPages/ChargeBackTxnHistory";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { updateClientDataInLocal } from "../../../slices/auth";
+import { logout, updateClientDataInLocal } from "../../../slices/auth";
 import Sandbox from "../../SandBox/SendBox";
 import AssignZone from "../../ApproverNVerifier/AssignZone";
 import AdditionalKYC from "../../ApproverNVerifier/AdditionalKYC";
@@ -81,6 +81,7 @@ import InternalDashboard from "../../ApproverNVerifier/InternalDashboard";
 import Widget from "../../widget/Widget";
 import MerchantBalance from "../../ApproverNVerifier/MerchantBalance";
 import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
+import toastConfig from "../../../utilities/toastTypes";
 
 
 function DashboardMainContent() {
@@ -173,13 +174,9 @@ function DashboardMainContent() {
             };
 
             dispatch(fetchMenuList(postBody))
-                .then(resp => 
-                    // console.log("working")
-                    ""
-                    )
-                .catch(err => {
-                    console.log(err)
-                });
+        } else {
+            toastConfig.errorToast("Session Expired")
+            dispatch(logout())
         }
     }, [user, dispatch]);
 
