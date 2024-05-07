@@ -6,6 +6,7 @@ import FormikController from '../../_components/formik/FormikController';
 import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
 import { toast } from "react-toastify";
 import hljs from 'highlight.js';
+import { WIDGET_SCRIPT_URL } from '../../config';
 
 function MyForm() {
     const dispatch = useDispatch();
@@ -393,7 +394,7 @@ function MyForm() {
                                             <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                                         </span>
                                     </div>
-                                    <pre>
+                                    <pre className='scroll-overflow'>
                                         <code className="html" ref={(node) => {
                                             if (node) {
                                                 codeSnippetRef.current = node;
@@ -401,9 +402,7 @@ function MyForm() {
                                             }
                                         }}>
                                             &lt;div id="sabpaisa" client_code="{clientCode}" client_key="{widgetDetail?.client_key}"&gt;&lt;/div&gt; {'\n'}
-                                            &lt;script id="widget-1" src="https://pg-widget-button-staging.web.app/src/widgets/Widget1/Widget1.js" {'\n'}
-                                            &nbsp;data-config="https://pg-widget-button-staging.web.app/src/widgets/Widget1/config.json"&gt;&lt;/script&gt; {'\n'}
-                                            &lt;script src="https://payment-widget-sabpaisa.web.app/widget-bundle.js"&gt;&lt;/script&gt; {'\n'}
+                                            &lt;script src={WIDGET_SCRIPT_URL.SCRIPT_URL}&gt;&lt;/script&gt; {'\n'}
                                         </code>
                                     </pre>
                                 </div>
