@@ -211,10 +211,7 @@ function Login() {
                                         >
                                             {loading && (
                                                 <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
-                                            )}
-
-                                            Login
-                                            <i className="fa fa-sign-in" aria-hidden="true"></i></button>
+                                            )}Login <i className="fa fa-sign-in" aria-hidden="true"></i></button>
                                     </div>
 
                                 </Form>
