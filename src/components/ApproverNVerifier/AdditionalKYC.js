@@ -173,10 +173,7 @@ const AdditionalKYC = () => {
 
 
   const handleBankAccountSubmit = async (values) => {
-    if (!values=="") {
-      toast.error("Enter IFSC & Account Number.");
-      return;
-    }
+   
 
     setButtonDisable(true);
 
