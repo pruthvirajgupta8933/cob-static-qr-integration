@@ -12,7 +12,6 @@ const ViewReferZoneModal = (props) => {
   const [selectedValue, setSelectedvalue] = useState("");
   const [refferalList, setRefferalList] = useState([])
   const [disable, setDisable] = useState(false)
-  console.log("disable",disable);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;

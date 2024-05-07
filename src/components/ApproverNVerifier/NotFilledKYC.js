@@ -181,7 +181,7 @@ const NotFilledKYC = () => {
             />
           )}
         </div>
-        {/* <CustomLoader loadingState={loadingState} /> */}
+       
         {loadingState &&
           <SkeletonTable />
         }

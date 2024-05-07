@@ -14,11 +14,8 @@ function Paylink() {
     const {user} = auth;
     let history = useHistory();
 
-    // if(user && user.clientMerchantDetailsList===null){
-    //       history.push('/dashboard/profile');
-    // } 
-
-  if(user.roleId!==3 && user.roleId!==13){
+  
+if(user.roleId!==3 && user.roleId!==13){
     if(user.clientMerchantDetailsList===null){
       // console.log("paylink");
       history.push('/dashboard/profile');

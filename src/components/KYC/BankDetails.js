@@ -408,15 +408,15 @@ function BankDetails(props) {
                 {
                   <ErrorMessage name="account_number">
                     {(msg) => (
-                      <p className="abhitest- errortxt- text-danger">
+                      <span className="abhitest- errortxt- text-danger">
                         {msg}
-                      </p>
+                      </span>
                     )}
                   </ErrorMessage>
                 }
 
                 {errors?.oldAccountNumber && (
-                  <p className="notVerifiedtext- text-danger">
+                  <p className="notVerifiedtext- text-danger imp_css">
                     {errors?.oldAccountNumber}
                   </p>
                 )}

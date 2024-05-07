@@ -436,3 +436,8 @@ h1, h2, h3, h4, h5, h6{
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.date_picker{
+  line-height: 33px;
+  padding: 0px 0px 0px 8px !important;
+}

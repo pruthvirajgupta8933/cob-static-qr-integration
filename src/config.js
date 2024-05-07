@@ -1,4 +1,4 @@
-const ENV_PROD = false; // For proudction make it true, don't change in the local environment
+const ENV_PROD = true; // For proudction make it true, don't change in the local environment
 let url,
   kyc_url,
   b2b_url,
@@ -17,6 +17,7 @@ if (ENV_PROD) {
   b2b_url = "https://b2becollect.sabpaisa.in";
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
+  widget_url="https://paywidget.sabpaisa.in"
 
 } else {
   url = "https://stgcobapi.sabpaisa.in";

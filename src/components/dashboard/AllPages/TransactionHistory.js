@@ -22,6 +22,11 @@ import Notification from "../../../_components/reuseable_components/Notification
 import moment from "moment";
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { v4 as uuidv4 } from 'uuid';
+import ReactPaginate from 'react-paginate';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaCalendarAlt } from 'react-icons/fa';
+
 
 const TransactionHistory = () => {
     const dispatch = useDispatch();
@@ -47,6 +52,8 @@ const TransactionHistory = () => {
     const [clientCodeList, setClientCodeList] = useState([]);
     const [buttonClicked, isButtonClicked] = useState(false);
     const [disable, setDisable] = useState(false)
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
 
     let now = moment().format("YYYY-M-D");
@@ -201,7 +208,7 @@ const TransactionHistory = () => {
         setCurrentPage(pageNo);
     };
 
-    // console.log("clientCodeList",clientCodeList)
+
     const submitHandler = (values) => {
         isButtonClicked(true);
         setDisable(true)
@@ -242,34 +249,37 @@ const TransactionHistory = () => {
             });
         }
     };
-    const checkValidation = (fromDate = "", toDate = "") => {
+    const checkValidation = (fromDate, toDate) => {
         let flag = true;
-        if (fromDate === 0 || toDate === "") {
-            alert("Please select the date.");
+
+        if (!fromDate || !toDate) {
+            alert("Please select both start and end dates.");
             flag = false;
-        } else if (fromDate !== "" || toDate !== "") {
+        } else {
             const date1 = new Date(fromDate);
             const date2 = new Date(toDate);
+
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            let allowedTxnViewDays = 31
-            let monthAllowed = 1
+            let allowedTxnViewDays = 31;
+            let monthAllowed = 1;
+
             if (user?.roleId === 3) {
-                allowedTxnViewDays = 92
-                monthAllowed = 3
+                allowedTxnViewDays = 92;
+                monthAllowed = 3;
             }
 
             if (diffDays < 0 || diffDays > allowedTxnViewDays) {
                 flag = false;
-                alert(`Please choose a ${monthAllowed}-month date range. `);
+                alert(`Please choose a ${monthAllowed}-month date range.`);
+                setDisable(false)
             }
-        } else {
-            flag = true;
         }
 
         return flag;
     };
+
 
     useEffect(() => {
         // Remove initiated from transaction history response
@@ -310,6 +320,9 @@ const TransactionHistory = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
+
+
+
     useEffect(() => {
         getPaymentStatusList();
         paymodeList();
@@ -344,17 +357,7 @@ const TransactionHistory = () => {
         SetSearchText(e.target.value);
     };
 
-    // console.log("isExportData",isExportData)
-    // if(isExportData){
-    //   console.log("data exporting, Please wait")
-    // }
-
-    // useEffect(() => {
-    //   console.log("isExportData",isExportData)
-    //   return ()=>{
-    //     dispatch(exportTxnLoadingState(false))
-    //   }
-    // }, [isExportData, dispatch])
+   
 
     let handleExportLoading = (state) => {
         // console.log(state)
@@ -367,7 +370,6 @@ const TransactionHistory = () => {
 
 
     const exportToExcelFn = () => {
-
         const excelHeaderRow = [
             "S.No",
             "Trans ID",
@@ -375,7 +377,7 @@ const TransactionHistory = () => {
             "Challan Number / VAN",
             "Amount",
             "Transaction Date",
-            "Payment Status	",
+            "Payment Status",
             "Payee First Name",
             "Payee Last Name",
             "Payee Mob number",
@@ -410,62 +412,100 @@ const TransactionHistory = () => {
             "Payer Account No",
             "Bank Txn Id",
         ];
-        let excelArr = [excelHeaderRow];
-        // eslint-disable-next-line array-callback-return
-        txnList.map((item, index) => {
-            const allowDataToShow = {
-                srNo: item.srNo === null ? "" : index + 1,
-                txn_id: item.txn_id === null ? "" : item.txn_id,
-                client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-                challan_no: item.challan_no === null ? "" : item.challan_no,
-                payee_amount:
-                    item.payee_amount === null
-                        ? ""
-                        : Number.parseFloat(item.payee_amount),
-                trans_complete_date: item.trans_date === null ? "" : item.trans_date,
-                status: item.status === null ? "" : item.status,
-                payee_first_name:
-                    item.payee_first_name === null ? "" : item.payee_first_name,
-                payee_lst_name: item.payee_lst_name === null ? "" : item.payee_lst_name,
-                payee_mob: item.payee_mob === null ? "" : item.payee_mob,
-                payee_email: item.payee_email === null ? "" : item.payee_email,
-                client_code: item.client_code === null ? "" : item.client_code,
-                payment_mode: item.payment_mode === null ? "" : item.payment_mode,
-                payee_address: item.payee_address === null ? "" : item.payee_address,
-                encrypted_pan: item.encrypted_pan === null ? "" : item.encrypted_pan,
-                udf1: item.udf1 === null ? "" : item.udf1,
-                udf2: item.udf2 === null ? "" : item.udf2,
-                udf3: item.udf3 === null ? "" : item.udf3,
-                udf4: item.udf4 === null ? "" : item.udf4,
-                udf5: item.udf5 === null ? "" : item.udf5,
-                udf6: item.udf6 === null ? "" : item.udf6,
-                udf7: item.udf7 === null ? "" : item.udf7,
-                udf8: item.udf8 === null ? "" : item.udf8,
-                udf9: item.udf9 === null ? "" : item.udf9,
-                udf10: item.udf10 === null ? "" : item.udf10,
-                udf11: item.udf11 === null ? "" : item.udf11,
-                udf12: item.udf12 === null ? "" : item.udf12,
-                udf13: item.udf13 === null ? "" : item.udf13,
-                udf14: item.udf14 === null ? "" : item.udf14,
-                udf15: item.udf15 === null ? "" : item.udf15,
-                udf16: item.udf16 === null ? "" : item.udf16,
-                udf17: item.udf17 === null ? "" : item.udf17,
-                udf18: item.udf18 === null ? "" : item.udf18,
-                udf19: item.udf19 === null ? "" : item.udf19,
-                udf20: item.udf20 === null ? "" : item.udf20,
-                gr_number: item.gr_number === null ? "" : item.gr_number,
-                bank_message: item.bank_message === null ? "" : item.bank_message,
-                ifsc_code: item.ifsc_code === null ? "" : item.ifsc_code,
-                payer_acount_number:
-                    item.payer_acount_number === null ? "" : item.payer_acount_number,
-                bank_txn_id: item.bank_txn_id === null ? "" : item.bank_txn_id,
-            };
-
-            excelArr.push(Object.values(allowDataToShow));
+    
+        const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
+        txnList.forEach((item, index) => {
+            const {
+                srNo = index + 1,
+                txn_id = "",
+                client_txn_id = "",
+                challan_no = "",
+                payee_amount = "",
+                trans_complete_date = "",
+                status = "",
+                payee_first_name = "",
+                payee_lst_name = "",
+                payee_mob = "",
+                payee_email = "",
+                client_code = "",
+                payment_mode = "",
+                payee_address = "",
+                encrypted_pan = "",
+                udf1 = "",
+                udf2 = "",
+                udf3 = "",
+                udf4 = "",
+                udf5 = "",
+                udf6 = "",
+                udf7 = "",
+                udf8 = "",
+                udf9 = "",
+                udf10 = "",
+                udf11 = "",
+                udf12 = "",
+                udf13 = "",
+                udf14 = "",
+                udf15 = "",
+                udf16 = "",
+                udf17 = "",
+                udf18 = "",
+                udf19 = "",
+                udf20 = "",
+                gr_number = "",
+                bank_message = "",
+                ifsc_code = "",
+                payer_acount_number = "",
+                bank_txn_id = ""
+            } = item;
+    
+            excelArr.push([
+                srNo,
+                txn_id,
+                client_txn_id,
+                challan_no,
+                payee_amount ? Number.parseFloat(payee_amount) : "",
+                trans_complete_date,
+                status,
+                payee_first_name,
+                payee_lst_name,
+                payee_mob,
+                payee_email,
+                client_code,
+                payment_mode,
+                payee_address,
+                encrypted_pan,
+                udf1,
+                udf2,
+                udf3,
+                udf4,
+                udf5,
+                udf6,
+                udf7,
+                udf8,
+                udf9,
+                udf10,
+                udf11,
+                udf12,
+                udf13,
+                udf14,
+                udf15,
+                udf16,
+                udf17,
+                udf18,
+                udf19,
+                udf20,
+                gr_number,
+                bank_message,
+                ifsc_code,
+                payer_acount_number,
+                bank_txn_id
+            ]);
         });
+    
         const fileName = "Transactions-Report";
         exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     };
+    
 
     const today = new Date();
     const lastThreeMonth = new Date(today);
@@ -487,7 +527,7 @@ const TransactionHistory = () => {
             <main className="">
                 <div className="">
                     {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-                    <h5 className="">Transaction History</h5>
+                    <h5 className="ml-4">Transaction History</h5>
                     {/* </div> */}
                     <section className="">
                         <div className="container-fluid">
@@ -512,36 +552,34 @@ const TransactionHistory = () => {
                                                 </div>
                                             )}
 
-                                            <div className="form-group col-lg-3">
-                                                <FormikController
-                                                    control="date"
-                                                    label="From Date"
-                                                    id="fromDate"
-                                                    name="fromDate"
-                                                    value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                                                    onChange={date => formik.setFieldValue('fromDate', date)}
-                                                    format="dd-MM-y"
-                                                    clearIcon={null}
-                                                    className="form-control rounded-0 p-0"
-                                                    required={true}
-                                                    errorMsg={formik.errors["fromDate"]}
-                                                />
-                                            </div>
-
-                                            <div className="form-group col-lg-3">
-                                                <FormikController
-                                                    control="date"
-                                                    label="End Date"
-                                                    id="endDate"
-                                                    name="endDate"
-                                                    value={formik.values.endDate ? new Date(formik.values.endDate) : null}
-                                                    onChange={date => formik.setFieldValue('endDate', date)}
-                                                    format="dd-MM-y"
-                                                    clearIcon={null}
-                                                    className="form-control rounded-0 p-0"
-                                                    required={true}
-                                                    errorMsg={formik.errors["endDate"]}
-                                                />
+                                            <div className="form-group col-lg-3 ml-4">
+                                                <label htmlFor="dateRange" className="form-label">Start Date - End Date</label>
+                                                <div className="input-group">
+                                                    <DatePicker
+                                                        id="dateRange"
+                                                        selectsRange={true}
+                                                        startDate={startDate}
+                                                        endDate={endDate}
+                                                        onChange={(update) => {
+                                                            const [start, end] = update;
+                                                            setStartDate(start);
+                                                            setEndDate(end);
+                                                            formik.setFieldValue('fromDate', start);
+                                                            formik.setFieldValue('endDate', end);
+                                                        }}
+                                                        dateFormat="dd-MM-yyyy"
+                                                        placeholderText="Select Date Range"
+                                                        className="form-control rounded-0 p-0 date_picker"
+                                                        showPopperArrow={false}
+                                                    />
+                                                    <div className="input-group-append">
+                                                        <div className="input-group-text bg-white border-left-0" onClick={() => {
+                                                            document.getElementById('dateRange').click();
+                                                        }}>
+                                                            <FaCalendarAlt />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div className="form-group col-lg-3">
@@ -554,7 +592,7 @@ const TransactionHistory = () => {
                                                 />
                                             </div>
 
-                                            <div className="form-group col-lg-3">
+                                            <div className="form-group col-lg-3 ml-3">
                                                 <FormikController
                                                     control="select"
                                                     label="Payment Mode"
@@ -566,7 +604,7 @@ const TransactionHistory = () => {
                                         </div>
 
                                         <div className="form-row">
-                                            <div className="form-group col-lg-1">
+                                            <div className="form-group col-lg-1 ml-4">
                                                 <button
                                                     className="btn btn-sm cob-btn-primary text-white"
                                                     type="submit"
@@ -606,7 +644,7 @@ const TransactionHistory = () => {
                     </section>
 
                     <section className="">
-                        <div className="container-fluid p-3 my-3 ">
+                        <div className="container-fluid p-3 my-3 ml-3 ">
                             {txnList.length > 0 ? (
                                 <>
                                     <div className="row">
@@ -745,56 +783,27 @@ const TransactionHistory = () => {
                             <div>
 
                                 {txnList.length > 0 ? (
-                                    <nav aria-label="Page navigation example">
-                                        <ul className="pagination">
-                                            <a
-                                                className="page-link"
-                                                onClick={(prev) =>
-                                                    setCurrentPage((prev) =>
-                                                        prev === 1 ? prev : prev - 1
-                                                    )
-                                                }
-                                                href={() => false}
-                                            >
-                                                Previous
-                                            </a>
-                                            {pages
-                                                .slice(currentPage - 1, currentPage + 6)
-                                                .map((page, i) => (
-                                                    <li
-                                                        key={uuidv4()}
-                                                        className={
-                                                            page === currentPage
-                                                                ? " page-item active"
-                                                                : "page-item"
-                                                        }
-                                                    >
+                                    <div className="d-flex justify-content-center mt-2">
+                                        <ReactPaginate
+                                            previousLabel={'Previous'}
+                                            nextLabel={'Next'}
+                                            breakLabel={'...'}
+                                            pageCount={pageCount}
+                                            marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                                            pageRangeDisplayed={5}
+                                            onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                                            containerClassName={'pagination justify-content-center'}
+                                            activeClassName={'active'}
+                                            previousLinkClassName={'page-link'}
+                                            nextLinkClassName={'page-link'}
+                                            disabledClassName={'disabled'}
+                                            breakClassName={'page-item'}
+                                            breakLinkClassName={'page-link'}
+                                            pageClassName={'page-item'}
+                                            pageLinkClassName={'page-link'}
+                                        />
+                                    </div>
 
-                                                        <a
-                                                            className={`page-link data_${i}`}
-                                                            href={() => false}
-                                                        >
-                                                            <p onClick={() => pagination(page)}>{page}</p>
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            {pages.length !== currentPage ? (
-                                                <a
-                                                    className="page-link"
-                                                    onClick={(nex) => {
-                                                        setCurrentPage((nex) =>
-                                                            nex === pages.length > 9 ? nex : nex + 1
-                                                        );
-                                                    }}
-                                                    href={() => false}
-                                                >
-                                                    Next
-                                                </a>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </ul>
-                                    </nav>
                                 ) : (
                                     <></>
                                 )}

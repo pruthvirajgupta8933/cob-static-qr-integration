@@ -35,7 +35,7 @@ const BizzAppData = () => {
   };
 
   const [show, setShow] = useState(false);
-  const[disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false)
   const initialValues = {
     start_date: splitDate,
     end_date: splitDate,
@@ -197,9 +197,10 @@ const BizzAppData = () => {
     <section className="">
       <main className="">
         <div className="">
-          <div className="">
-            <h5>Bizz App Data</h5>
+          <div className="mb-5">
+            <h5 className="">Bizz App Data</h5>
           </div>
+
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -210,73 +211,64 @@ const BizzAppData = () => {
           >
             {(formik) => (
               <Form>
-
-                <div className="container mt-5">
+                <div className="row">
+                  <div className="form-group  col-md-3 ">
+                    <FormikController
+                      control="date"
+                      label="From Date"
+                      id="start_date"
+                      name="start_date"
+                      value={formik.values.start_date ? new Date(formik.values.start_date) : null}
+                      onChange={date => formik.setFieldValue('start_date', date)}
+                      format="dd-MM-y"
+                      clearIcon={null}
+                      className="form-control rounded-0 p-0"
+                      required={true}
+                      errorMsg={formik.errors["start_date"]}
+                    />
+                  </div>
+                  <div className="form-group col-md-3 ml-3">
+                    <FormikController
+                      control="date"
+                      label="End Date"
+                      id="end_date"
+                      name="end_date"
+                      value={formik.values.end_date ? new Date(formik.values.end_date) : null}
+                      onChange={date => formik.setFieldValue('end_date', date)}
+                      format="dd-MM-y"
+                      clearIcon={null}
+                      className="form-control rounded-0 p-0"
+                      required={true}
+                      errorMsg={formik.errors["end_date"]}
+                    />
+                  </div>
                   <div className="row">
-                    <div className="form-group  col-md-3">
-                      <FormikController
-                        control="date"
-                        label="From Date"
-                        id="start_date"
-                        name="start_date"
-                        value={formik.values.start_date ? new Date(formik.values.start_date) : null}
-                        onChange={date => formik.setFieldValue('start_date', date)}
-                        format="dd-MM-y"
-                        clearIcon={null}
-                        className="form-control rounded-0 p-0"
-                        required={true}
-                        errorMsg={formik.errors["start_date"]}
-                      />
-
-                    </div>
-
-                    <div className="form-group col-md-3 ">
-                      <FormikController
-                        control="date"
-                        label="End Date"
-                        id="end_date"
-                        name="end_date"
-                        value={formik.values.end_date ? new Date(formik.values.end_date) : null}
-                        onChange={date => formik.setFieldValue('end_date', date)}
-                        format="dd-MM-y"
-                        clearIcon={null}
-                        className="form-control rounded-0 p-0"
-                        required={true}
-                        errorMsg={formik.errors["end_date"]}
-                      />
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-12">
+                    <div className="col-lg-12">
+                      <button
+                        type="submit"
+                        className="btn cob-btn-primary approve text-white"
+                        disabled={disable}
+                      >
+                        {disable && (
+                          <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                        )} {/* Show spinner if disabled */}
+                        Submit
+                      </button>
+                      {FormData?.length > 0 ? (
                         <button
-                          type="submit"
-                          className="btn cob-btn-primary approve text-white"
-                          disabled={disable}
+                          className="btn cob-btn-primary approve text-white ml-3"
+                          type="button"
+                          onClick={() => exportToExcelFn()}
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         >
-                          {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
-                          )} {/* Show spinner if disabled */}
-                          Submit
+                          Export
                         </button>
-                        {FormData?.length > 0 ? (
-                          <button
-                            className="btn cob-btn-primary approve text-white ml-3"
-                            type="button"
-                            onClick={() => exportToExcelFn()}
-                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                          >
-                            Export
-                          </button>
-                        ) : (
-                          <></>
-                        )}
-                      </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
-                  {FormData?.length === 0 || FormData?.length === undefined ? (
-                    <></>
-                  ) : (
-                    <h5 className="mt-4" >Total Records : {FormData?.length}</h5>
-                  )}
+
                 </div>
               </Form>
             )}
@@ -284,7 +276,7 @@ const BizzAppData = () => {
           {FormData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
             No Data Found
           </h5>}
-          <div className="col-md-12">
+          <div className="col-md-12 mt-4">
             <div className="scroll overflow-auto">
               {show === true && FormData?.length !== 0 ? (
                 <table className="table table-bordered">

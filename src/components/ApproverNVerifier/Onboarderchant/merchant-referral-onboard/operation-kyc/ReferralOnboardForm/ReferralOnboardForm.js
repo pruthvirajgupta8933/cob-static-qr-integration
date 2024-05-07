@@ -9,6 +9,7 @@ import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { addReferralService } from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
+import { values } from 'lodash';
 
 function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode, marginTopCss }) {
 
@@ -78,7 +79,8 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     });
 
 
-    const handleSubmitContact = async (value) => {
+    const handleSubmitContact = async (value,{resetForm}) => {
+      
         setDisable(true)
         const { fullName, mobileNumber, email_id, password, username } = value;
         // alert(3)
@@ -116,12 +118,14 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             } const resp1 = await addReferralService(postData, referralChild);
 
             resp1?.data?.status && toastConfig.successToast("Data Saved")
+            // resetForm()
             // create user
             const refLoginId = resp1?.data?.data?.loginMasterId
             // user account activation
             const resp2 = await authService.emailVerification(refLoginId)
             // const resp
             resp2?.data && toastConfig.successToast("Account Activate")
+            resetForm()
             if (merchantKycData?.clientCode === null || merchantKycData?.clientCode === undefined) {
                 // console.log("1.4")
                 const clientFullName = fullName
@@ -179,11 +183,13 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 // onSubmit={(values) => handleSubmitContact(values)}
-                onSubmit={async (values) => {
-                    await handleSubmitContact(values)
-                    // resetForm()
+                onSubmit={async (values, { resetForm }) => {
+                    await handleSubmitContact(values,{ resetForm })
+                    
                 }}
-                enableReinitialize={true}>
+                enableReinitialize={false
+                }
+                >
                 {(formik) => (<Form>
                     <div className={`row g-3 ${marginTopCss ? "mt-5" : ""}`}>
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
