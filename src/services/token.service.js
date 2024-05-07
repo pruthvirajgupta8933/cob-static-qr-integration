@@ -5,7 +5,11 @@ class TokenService {
   }
 
   getLocalAccessToken() {
-    const authToken = JSON.parse(localStorage.getItem("at"));
+    const accessToken = localStorage.getItem("at")
+    let authToken;
+    if (accessToken !== 'undefined') {
+      authToken = JSON.parse(accessToken)
+    }
     return authToken;
   }
 
