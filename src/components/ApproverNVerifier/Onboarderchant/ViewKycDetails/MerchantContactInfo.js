@@ -71,7 +71,7 @@ function MerchantContactInfo(props) {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
         // console.log(resp)
         if (resp?.payload?.general_info_status) {
-          toast.success("Kyc Status has been updated");
+          toast.success("Rejected");
           dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }))
         } else if (resp?.payload) {
           toast.error(resp.payload);

@@ -56,6 +56,7 @@ function MerchantReferralOnboard() {
                         <div className="row">
                             {currentTab === 2 && <ReferralOnboard />}
                             {currentTab === 3 && <BankRefMerchantList />}
+                            
 
                         </div>
                     </section>
