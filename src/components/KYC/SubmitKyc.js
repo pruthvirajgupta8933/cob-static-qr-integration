@@ -170,7 +170,7 @@ function SubmitKyc(props) {
 
                     >
                       {disable && <>
-                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
                         <span className="sr-only">Loading...</span>
                       </>}
                       Submit

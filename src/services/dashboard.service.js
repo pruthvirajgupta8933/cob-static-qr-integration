@@ -13,6 +13,7 @@ const successTxnSummary = (object) => {
 
 // Graph 
 const getTxnDataForGraph = (object) => {
+  console.log(object)
   return axiosInstance.post(API_URL.GET_TRANSACTION_DATA_CHART, object)
 }
 

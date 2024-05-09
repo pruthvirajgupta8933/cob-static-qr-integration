@@ -15,9 +15,9 @@ function PaymentAlertBox(props) {
         <div className={`card-header p-0 text-white ${bgColor}`} id="headingOne">
           <h5 className="mb-0">
             <button className="btn btn-link  font-size-16" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              {/* <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" />
+              {/* <span className="spinner-grow spinner-grow-sm" role="status"ariaHidden="true" />
                 <span className="sr-only">Loading...</span> */}
-              <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <span className="spinner-grow spinner-grow-sm" role="status" ariaHidden="true"></span>
               <span className="sr-only">Loading...</span>
               <span className="ml-1 tooltip-custom" data-tip={text1}>{heading} <i className="fa fa-exclamation-circle" ariaHidden="true"></i>
               </span>

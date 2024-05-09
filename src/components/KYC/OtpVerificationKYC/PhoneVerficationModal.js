@@ -80,7 +80,7 @@ const PhoneVerficationModal = ({ show, setShow, setFieldValue }) => {
       // id="forPhone"
       // role="dialog"
       aria-labelledby="phoneModal"
-      aria-hidden="true"
+     ariaHidden="true"
       style={{ display: show ? "block" : "none", backgroundColor: "#000000a8" }}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -95,7 +95,7 @@ const PhoneVerficationModal = ({ show, setShow, setFieldValue }) => {
               aria-label="Close"
               onClick={() => { setShow(false, "phone") }}
             >
-              <span aria-hidden="true">&times;</span>
+              <span ariaHidden="true">&times;</span>
             </button>
           </div>
           <div className="mx-auto p-3">

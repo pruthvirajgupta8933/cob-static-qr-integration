@@ -26,7 +26,7 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
       id="web"
       role="dialog"
       aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+     ariaHidden="true"
     >
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">
@@ -39,7 +39,7 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
               className="close"
               onClick={() => fnSetModalToggle(false)}
             >
-              <span aria-hidden="true">&times;</span>
+              <span ariaHidden="true">&times;</span>
             </button>
           </div>
 

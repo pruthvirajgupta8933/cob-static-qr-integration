@@ -41,18 +41,18 @@ function SideNavbarNav() {
           </li>
           <li className="timeline">
             <Link to={`${url}`} className="txt-white">
-              <i className="fa fa-home" aria-hidden="true" /> Home
+              <i className="fa fa-home"ariaHidden="true" /> Home
             </Link>
           </li>
           <li className="events">
             <Link to={`${url}/transaction-history`} className="txt-white">
-              <i className="fa fa-calendar" aria-hidden="true" /> Transaction
+              <i className="fa fa-calendar"ariaHidden="true" /> Transaction
               History{" "}
             </Link>
           </li>
           <li className="calendar">
             <Link to={`${url}/transaction-enquiry`} className="txt-white">
-              <i className="fa fa-university" aria-hidden="true" /> Transaction
+              <i className="fa fa-university"ariaHidden="true" /> Transaction
               Enquiry{" "}
             </Link>
           </li>
@@ -60,14 +60,14 @@ function SideNavbarNav() {
           {roleId === 3 || roleId === 13 ? (
             <li className="calendar" role="menuitem">
               <Link to={`${url}/client-list`} className="txt-white">
-                <i className="fa fa-university" aria-hidden="true" /> Client
+                <i className="fa fa-university"ariaHidden="true" /> Client
                 List{" "}
               </Link>
             </li>
           ) : (
             <li className="ant-menu-item" role="menuitem">
               <Link to={`${url}/settlement-report`} className="txt-white">
-                <i className="fa fa-bars" aria-hidden="true" />
+                <i className="fa fa-bars"ariaHidden="true" />
                 &nbsp; Settlement Report
               </Link>
             </li>
@@ -79,14 +79,14 @@ function SideNavbarNav() {
               style={{ paddingLeft: "48px" }}
             >
               <Link to={`${url}/client-list`} className="txt-white">
-                <i className="fa fa-university" aria-hidden="true" /> Client
+                <i className="fa fa-university"ariaHidden="true" /> Client
                 List{" "}
               </Link>
             </li>
           ) : (
             <li className="ant-menu-item" role="menuitem">
               <Link to={`${url}/settlement-report`} className="txt-white">
-                <i className="fa fa-bars" aria-hidden="true" />
+                <i className="fa fa-bars" ariaHidden="true" />
                 &nbsp; Settlement Report
               </Link>
             </li>
@@ -96,13 +96,13 @@ function SideNavbarNav() {
             <React.Fragment>
               <li className="ant-menu-item" role="menuitem">
                 <Link to={`${url}/subscription`} className="txt-white">
-                  <i className="fa fa-bell" aria-hidden="true" />
+                  <i className="fa fa-bell" ariaHidden="true" />
                   &nbsp; Subscription
                 </Link>
               </li>
               <li className="ant-menu-item" role="menuitem">
                 <Link to={`${url}/paylink`} className="txt-white">
-                  <i className="fa fa-address-book" aria-hidden="true" />
+                  <i className="fa fa-address-book" ariaHidden="true" />
                   &nbsp; Create Payment Link
                 </Link>
               </li>

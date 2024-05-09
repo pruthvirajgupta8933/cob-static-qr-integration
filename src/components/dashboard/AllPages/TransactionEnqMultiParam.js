@@ -203,7 +203,7 @@ function TransactionEnqMultiParam() {
         id="exampleModalCenter"
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
+       ariaHidden="true"
       // style={{ display: toggleModal ? "block" : "none" }}
       >
         <div
@@ -225,7 +225,7 @@ function TransactionEnqMultiParam() {
                   setViewTxnId(null);
                 }}
               >
-                <span aria-hidden="true">×</span>
+                <span ariaHidden="true">×</span>
               </button>
             </div>
             <div className="modal-body">

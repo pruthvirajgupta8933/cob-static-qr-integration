@@ -101,7 +101,7 @@ const ViewRateMapping = (props) => {
     return (
         <div>
 
-            <div className="modal fade mymodals" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div className="modal fade mymodals" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"ariaHidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <Formik
@@ -121,7 +121,7 @@ const ViewRateMapping = (props) => {
                                         <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Rate Mapping</h5>
 
                                         <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setShow(false)}>
-                                            <span aria-hidden="true">&times;
+                                            <span ariaHidden="true">&times;
                                             </span>
                                         </button>
                                     </div>
@@ -186,7 +186,7 @@ const ViewRateMapping = (props) => {
                                                             isLoading ?  (<span
                                                             className="spinner-border spinner-border-sm"
                                                             role="status"
-                                                            aria-hidden="true"
+                                                           ariaHidden="true"
                                                           ></span>
                                                         ) : (
                                                           "View"

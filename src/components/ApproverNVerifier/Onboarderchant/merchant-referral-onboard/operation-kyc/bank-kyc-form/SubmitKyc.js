@@ -171,7 +171,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
                             >
                                 {disable && <>
                                     <span className="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true" />
+                                       ariaHidden="true" />
                                     <span className="sr-only">Loading...</span>
                                 </>}
                                 Submit

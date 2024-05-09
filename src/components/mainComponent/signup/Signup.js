@@ -387,7 +387,7 @@ function Signup() {
                                                     />
                                                     <div className="input-group-append">
                                                         <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">
-                                                            {valuesIn.showPassword ? (<i className="fa fa-eye" aria-hidden="true" ></i>) : (<i className="fa fa-eye-slash" aria-hidden="true"></i>
+                                                            {valuesIn.showPassword ? (<i className="fa fa-eye" ariaHidden="true" ></i>) : (<i className="fa fa-eye-slash"ariaHidden="true"></i>
                                                             )}</span>
                                                     </div>
                                                 </div>
@@ -414,7 +414,7 @@ function Signup() {
                                                     />
                                                     <div className="input-group-append">
                                                         <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
-                                                            {passwordType.showPasswords ? (<i className="fa fa-eye" aria-hidden="true" ></i>) : (<i className="fa fa-eye-slash" aria-hidden="true"></i>
+                                                            {passwordType.showPasswords ? (<i className="fa fa-eye" ariaHidden="true" ></i>) : (<i className="fa fa-eye-slash"ariaHidden="true"></i>
                                                             )}</span>
                                                     </div>
 

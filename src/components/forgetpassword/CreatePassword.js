@@ -118,12 +118,12 @@ const CreatePassword = (props) => {
                               {valuesIn.showPassword ? (
                                 <i
                                   className="fa fa-eye"
-                                  aria-hidden="true"
+                                 ariaHidden="true"
                                 ></i>
                               ) : (
                                 <i
                                   className="fa fa-eye-slash"
-                                  aria-hidden="true"
+                                 ariaHidden="true"
                                 ></i>
                               )}
                             </a>
@@ -166,12 +166,12 @@ const CreatePassword = (props) => {
                               {passwordType.showPasswords ? (
                                 <i
                                   className="fa fa-eye"
-                                  aria-hidden="true"
+                                 ariaHidden="true"
                                 ></i>
                               ) : (
                                 <i
                                   className="fa fa-eye-slash"
-                                  aria-hidden="true"
+                                 ariaHidden="true"
                                 ></i>
                               )}
                             </a>

@@ -247,7 +247,7 @@ const PayerDetails = () => {
         id="exampleModal"
         role="dialog"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+       ariaHidden="true"
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
@@ -277,7 +277,7 @@ const PayerDetails = () => {
                       data-dismiss="modal"
                       aria-label="Close"
                     >
-                      <span aria-hidden="true">&times;</span>
+                      <span ariaHidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
@@ -420,7 +420,7 @@ const PayerDetails = () => {
                           disabled={disable}
                           className="btn cob-btn-primary text-white btn-sm position-relative"
                         >
-                          {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status" aria-hidden="true"></span>}
+                          {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status"ariaHidden="true"></span>}
                           Submit
                         </button>
                         <button

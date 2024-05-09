@@ -172,7 +172,7 @@ const AuthMandate = () => {
                 E-Mandate Summary
                 <i
                   className="fa fa-chevron-down "
-                  aria-hidden="true"
+                 ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -201,7 +201,7 @@ const AuthMandate = () => {
                 Mandate Summary
                 <i
                   className="fa fa-chevron-down"
-                  aria-hidden="true"
+                 ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -229,7 +229,7 @@ const AuthMandate = () => {
                 Personal Details
                 <i
                   className="fa fa-chevron-down"
-                  aria-hidden="true"
+                 ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -256,7 +256,7 @@ const AuthMandate = () => {
                 Bank Details
                 <i
                   className="fa fa-chevron-down"
-                  aria-hidden="true"
+                 ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -361,7 +361,7 @@ const AuthMandate = () => {
                               <span
                                 className="spinner-border spinner-border-sm"
                                 role="status"
-                                aria-hidden="true"
+                               ariaHidden="true"
                               ></span>
                               &nbsp;  Please wait...
                             </>

@@ -629,13 +629,13 @@ const Subsciption = () => {
                             >
                               Subscribe
                             </button>
-                            <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"ariaHidden="true">
                               <div className="modal-dialog" role="document">
                                 <div className="modal-content">
 
                                   <div className="modal-header">
                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
+                                      <span ariaHidden="true">&times;</span>
                                     </button>
                                   </div>
                                   <div className="modal-body">

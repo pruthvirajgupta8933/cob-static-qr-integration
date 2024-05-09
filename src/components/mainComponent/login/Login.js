@@ -185,12 +185,12 @@ function Login() {
                                             <span className="input-group-text" onClick={handleClickShowPassword}>  {values.showPassword ? (
                                                 <i
                                                     className="fa fa-eye"
-                                                    aria-hidden="true"
+                                                   ariaHidden="true"
                                                 ></i>
                                             ) : (
                                                 <i
                                                     className="fa fa-eye-slash"
-                                                    aria-hidden="true"
+                                                   ariaHidden="true"
                                                 ></i>
                                             )}</span>
                                         </div>
@@ -211,7 +211,7 @@ function Login() {
                                         >
                                             {loading && (
                                                 <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
-                                            )}Login <i className="fa fa-sign-in" aria-hidden="true"></i></button>
+                                            )}Login <i className="fa fa-sign-in"ariaHidden="true"></i></button>
                                     </div>
 
                                 </Form>

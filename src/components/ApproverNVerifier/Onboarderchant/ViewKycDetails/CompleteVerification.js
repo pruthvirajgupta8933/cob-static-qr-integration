@@ -407,7 +407,7 @@ const CompleteVerification = (props) => {
             submitHandler()
           }} className="btn  cob-btn-primary  btn-sm text-white m-2">
             {buttonLoader && <>
-              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+              <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
               <span className="sr-only">Loading...</span>
             </>} {buttonText}</button>
 
@@ -422,7 +422,7 @@ const CompleteVerification = (props) => {
         <div className="col-lg-3">
           <button type="button" disabled={disable} onClick={() => { submitHandler() }} className="btn  cob-btn-primary  btn-sm text-white m-2">
             {buttonLoader && <>
-              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+              <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
               <span className="sr-only">Loading...</span>
             </>} {buttonText}</button>
 
@@ -448,7 +448,7 @@ const CompleteVerification = (props) => {
               disabled={disable}
               onClick={() => handleRejectClick(commetText)}
               className="btn btn-danger btn-sm text-white pull-left m-2"> {buttonLoader && <>
-                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
                 <span className="sr-only">Loading...</span>
               </>} Submit</button></> : <></>}
       </div>

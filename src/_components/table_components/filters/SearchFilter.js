@@ -54,7 +54,7 @@ const SearchFilter = ({
           {searchTextByApiCall && (
             <div onClick={() => showfilterbtn(true)} className="input-group-append">
               <button className="search_butn" type="submit" title="search">
-                <i className="fa fa-search" aria-hidden="true"></i>
+                <i className="fa fa-search" ariaHidden="true"></i>
               </button>
             </div>
           )}
@@ -69,7 +69,7 @@ const SearchFilter = ({
             }}
             className="border p-1 clearfilter"
           >
-            <i className="fa fa-times" aria-hidden="true">
+            <i className="fa fa-times"ariaHidden="true">
               {" Clear Filter"}
             </i>
           </div>

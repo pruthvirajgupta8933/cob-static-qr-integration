@@ -4,7 +4,7 @@ const Loader = () => {
   return (
     <div>
         <button className="btn btn-primary" type="button" disabled>
-  <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+  <span className="spinner-grow spinner-grow-sm" role="status" ariaHidden="true"></span>
   Loading...
 </button>
       

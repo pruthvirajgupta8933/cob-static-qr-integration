@@ -18,7 +18,7 @@ function TermCondition({acceptTnC,callbackHandler, setFieldValues}) {
     id="exampleModal"
     role="dialog"
     aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
+   ariaHidden="true"
     style={{display: acceptTnC ? "block" : "none"}}
   >
     <div className="modal-dialog" role="document">
@@ -34,7 +34,7 @@ function TermCondition({acceptTnC,callbackHandler, setFieldValues}) {
             aria-label="Close"
             onClick={()=>onChangeHandler()}
           >
-            <span aria-hidden="true">×</span>
+            <span ariaHidden="true">×</span>
           </button>
         </div>
         <div className="modal-body overflow-auto max-height-signup">

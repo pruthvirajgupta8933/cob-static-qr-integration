@@ -252,7 +252,7 @@ const OnboardedReport = () => {
                   disabled={disabled}
                 >
                    {disabled && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Search
                 </button>
@@ -295,7 +295,7 @@ const OnboardedReport = () => {
                   disabled={exportDisable}
                 >
                   {exportDisable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
                           )}
                           Export
                 </button>

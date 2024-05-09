@@ -141,7 +141,7 @@ const CommentModal = (props) => {
             props?.setModalState(false);
           }}
         >
-          <span aria-hidden="true">&times;</span>
+          <span ariaHidden="true">&times;</span>
         </button>
       </>
     );

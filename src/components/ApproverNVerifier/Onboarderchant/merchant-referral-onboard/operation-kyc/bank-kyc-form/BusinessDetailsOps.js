@@ -348,7 +348,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 <button type="submit" className="btn cob-btn-primary btn-sm" disabled={disable}>Save
                                     {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true" />
+                                               ariaHidden="true" />
                                             <span className="sr-only">Loading...</span>
                                         </>}
                                 </button>
@@ -367,7 +367,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         disabled={disable} >
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true" />
+                                               ariaHidden="true" />
                                             <span className="sr-only">Loading...</span>
                                         </>}
                                         Save
