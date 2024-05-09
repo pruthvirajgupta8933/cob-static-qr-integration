@@ -72,16 +72,16 @@ function KycForm() {
   const kycStatusIcon = (tabStatus, currentTab, merchantConsent, isLastAction = false) => {
     // console.log("tabStatus",tabStatus)
     if (tabStatus && merchantConsent === false && isLastAction) {
-      return <i className={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-exclamation`} ariaHidden="true"></i>
     }
     if (tabStatus === KYC_STATUS_REJECTED) {
-      return <i className={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-exclamation`} ariaHidden="true"></i>
     }
     if (tabStatus === KYC_STATUS_PENDING || tabStatus === KYC_STATUS_PROCESSING) {
-      return <i className={`fa kyc-form-status-icon fa-check`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-check`} ariaHidden="true"></i>
     }
     if (tabStatus === KYC_STATUS_VERIFIED || tabStatus === KYC_STATUS_APPROVED) {
-      return <i className={`fa kyc-form-status-icon fa-check-square-o`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-check-square-o`} ariaHidden="true"></i>
     }
 
   }

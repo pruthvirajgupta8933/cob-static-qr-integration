@@ -55,7 +55,7 @@ const MailVerificationModal = ({ show, setShow }) => {
         id="forEmail"
         role="dialog"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+       ariaHidden="true"
         style={{ display: show ? "block" : "none",marginLeft:"233px",marginTop:"42px" }}
       >
         <div className="modal-dialog" role="document">
@@ -74,7 +74,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                   aria-label="Close"
                   onClick={() =>setShow(false,"email")}
                 >
-                  <span aria-hidden="true">&times;</span>
+                  <span ariaHidden="true">&times;</span>
                 </button>
               </div>
               <div className="mx-auto py-3">

@@ -135,7 +135,7 @@ function SideNavbar() {
                             to={`${url}/faq`}
                             className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "faq" ? sideNavClasses.selected_memu : ""}`}
                         >
-                            <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            <i className="fa fa-question-circle mr-1" ariaHidden="true"></i>
                             FAQ/Help
                         </Link>
                     </li>
@@ -149,7 +149,7 @@ function SideNavbar() {
                             to={`${url}/widget`}
                             className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "widget" ? sideNavClasses.selected_memu : ""}`}
                         >
-                            <i className="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            <i className="fa fa-question-circle mr-1"ariaHidden="true"></i>
                             Create Widget
                         </Link>
                     </li>
@@ -161,7 +161,7 @@ function SideNavbar() {
                             to={`${url}/merchant-balance`}
                             className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "merchant-balance" ? sideNavClasses.selected_memu : ""}`}
                         >
-                            <i className="fa fa-bank mr-1" aria-hidden="true"></i>
+                            <i className="fa fa-bank mr-1"ariaHidden="true"></i>
                             Subscription Wallet
                         </Link>
                     </li>

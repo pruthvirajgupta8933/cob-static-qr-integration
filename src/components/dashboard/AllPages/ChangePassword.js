@@ -141,9 +141,9 @@ function ChangePassword() {
                         <div className="input-group-append">
                           <span className="input-group-text" id="basic-addon2" onClick={oldTogglePassword}>
                             {oldPasswordType.showPasswordss ? (
-                              <i className="fa fa-eye" aria-hidden="true"></i>
+                              <i className="fa fa-eye" ariaHidden="true"></i>
                             ) : (
-                              <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                              <i className="fa fa-eye-slash" ariaHidden="true"></i>
                             )}
                           </span>
                         </div>
@@ -169,9 +169,9 @@ function ChangePassword() {
                         <div className="input-group-append">
                           <span className="input-group-text" id="basic-addon2" onClick={togglePassword}>
                             {passwordType.showPasswords ? (
-                              <i className="fa fa-eye" aria-hidden="true"></i>
+                              <i className="fa fa-eye"ariaHidden="true"></i>
                             ) : (
-                              <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                              <i className="fa fa-eye-slash"ariaHidden="true"></i>
                             )}
                           </span>
                         </div>
@@ -197,9 +197,9 @@ function ChangePassword() {
                         <div className="input-group-append">
                           <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
                             {values.showPassword ? (
-                              <i className="fa fa-eye" aria-hidden="true"></i>
+                              <i className="fa fa-eye"ariaHidden="true"></i>
                             ) : (
-                              <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                              <i className="fa fa-eye-slash"ariaHidden="true"></i>
                             )}
                           </span>
                         </div>

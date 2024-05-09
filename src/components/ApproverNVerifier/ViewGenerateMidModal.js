@@ -110,7 +110,7 @@ const ViewGenerateMidModal = (props) => {
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
+     ariaHidden="true"
     >
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
@@ -139,7 +139,7 @@ const ViewGenerateMidModal = (props) => {
                     data-dismiss="modal"
                     aria-label="Close"
                   >
-                    <span aria-hidden="true">&times;</span>
+                    <span ariaHidden="true">&times;</span>
                   </button>
                 </div>
                 <div className="modal-body">

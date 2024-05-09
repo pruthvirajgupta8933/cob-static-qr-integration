@@ -49,7 +49,7 @@ const HomeOpenModal = () => {
                                             data-dismiss="modal"
                                             aria-label="Close"
                                         >
-                                            <span aria-hidden="true">&times;</span>
+                                            <span ariaHidden="true">&times;</span>
                                         </button>
 
                                         <div className="row text-center">

@@ -96,7 +96,7 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
                         <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
                             {submitLoader && <>
                                 <span className="spinner-border spinner-border-sm" role="status"
-                                    aria-hidden="true" />
+                                   ariaHidden="true" />
                                 <span className="sr-only">Loading...</span>
                             </>} Upload Files
                         </button>} {documentUploadResponse === true &&

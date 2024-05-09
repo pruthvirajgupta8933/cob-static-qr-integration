@@ -87,7 +87,7 @@ const Genratelink = (props) => {
       id="bhuvi"
       role="dialog"
       aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+     ariaHidden="true"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -115,7 +115,7 @@ const Genratelink = (props) => {
                     aria-label="Close"
                     onClick={resetForm}
                   >
-                    <span aria-hidden="true">&times;</span>
+                    <span ariaHidden="true">&times;</span>
                   </button>
 
                   <div className="form-check">
@@ -223,7 +223,7 @@ const Genratelink = (props) => {
                           disabled={disable}
                         >
                           {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Submit
                         </button>

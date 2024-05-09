@@ -513,7 +513,7 @@ function BusinessOverview(props) {
                   >
                     {disabled && <>
                       <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
                         <span className="sr-only">Loading...</span>
                       </span>
                     </>}

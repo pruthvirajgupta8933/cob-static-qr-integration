@@ -242,7 +242,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                             {merchantBasicDetails?.resp?.status !== "Activate" &&
                                 <button type="submit" className="btn cob-btn-primary btn-sm m-2" disabled={disable}>
                                     {submitLoader && <>
-                                        <span className="spinner-border spinner-border-sm" aria-hidden="true" />
+                                        <span className="spinner-border spinner-border-sm" ariaHidden="true" />
                                         <span className="sr-only">Loading...</span>
                                     </>}
                                     Save

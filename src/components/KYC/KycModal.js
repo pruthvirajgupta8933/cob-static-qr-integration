@@ -16,7 +16,7 @@ export const KycModal = () => {
         id="exampleModal"
         role="dialog"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+       ariaHidden="true"
         style={{
           display: closeModal ? "block" : "none",
           opacity: "1",
@@ -36,7 +36,7 @@ export const KycModal = () => {
                 aria-label="Close"
                 onClick={() => setCloseModal(!closeModal)}
               >
-                <span aria-hidden="true">×</span>
+                <span ariaHidden="true">×</span>
               </button>
             </div>
             <div className="modal-body  max-height-signup">

@@ -93,7 +93,7 @@ function SelectProductPlan(props) {
             <hr />
             <button className="btn cob-btn-primary text-white btn-sm" disabled={buttonLoader} onClick={() => getSubscribedPlan(plans?.applicationId)}>
                 Make Payment {buttonLoader && <>
-                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                    <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
                     <span className="sr-only">Loading...</span>
                 </>}
             </button>

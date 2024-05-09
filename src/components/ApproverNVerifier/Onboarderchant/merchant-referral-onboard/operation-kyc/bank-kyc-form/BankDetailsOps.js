@@ -460,7 +460,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                         disabled={disable} >
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true" />
+                                               ariaHidden="true" />
                                             <span className="sr-only">Loading...</span>
                                         </>}
                                         Save

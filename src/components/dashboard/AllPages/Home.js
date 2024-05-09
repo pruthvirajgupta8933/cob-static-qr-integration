@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TxnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
-import { useRouteMatch, Redirect } from "react-router-dom";
-// import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
+import { txnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
+import { useRouteMatch, Redirect, Link } from "react-router-dom";
+import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
@@ -60,7 +60,11 @@ function Home() {
     if (roles.merchant) {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
       dispatch(kycUserList({ login_id: user?.loginId }));
-      dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
+
+      // graph data
+      const clientCode = user?.clientMerchantDetailsList[0]?.clientCode
+      const postGraphData = { p_client_code: clientCode }
+      dispatch(txnChartDataSlice(postGraphData))
     }
 
   }, []);

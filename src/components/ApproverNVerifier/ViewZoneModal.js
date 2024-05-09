@@ -149,7 +149,7 @@ const getZoneInfobyClientCode = (clientCode) => {
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
+       ariaHidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
@@ -173,7 +173,7 @@ const getZoneInfobyClientCode = (clientCode) => {
                       data-dismiss="modal"
                       aria-label="Close"
                     >
-                      <span aria-hidden="true">&times;</span>
+                      <span ariaHidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
@@ -255,7 +255,7 @@ const getZoneInfobyClientCode = (clientCode) => {
                            className="btn cob-btn-primary  text-white" disabled={buttonDisable}>
                             
                             {buttonDisable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Submit</button>
                         </div>

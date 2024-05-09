@@ -84,7 +84,7 @@ const ViewReferZoneModal = (props) => {
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
+     ariaHidden="true"
     >
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
@@ -115,7 +115,7 @@ const ViewReferZoneModal = (props) => {
                     }
                     }
                   >
-                    <span aria-hidden="true">&times;</span>
+                    <span ariaHidden="true">&times;</span>
                   </button>
                 </div>
                 <div className="modal-body">
@@ -179,7 +179,7 @@ const ViewReferZoneModal = (props) => {
                           disabled={disable}
                         >
                           {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Refer Merchant
                         </button>

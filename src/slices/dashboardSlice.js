@@ -39,14 +39,12 @@ export const successTxnSummary = createAsyncThunk(
   );
 
 
-export const TxnChartDataSlice = createAsyncThunk(
-    "dashbaord/TxnChartDataSlice",
+export const txnChartDataSlice = createAsyncThunk(
+    "dashbaord/txnChartDataSlice",
     async (obj, thunkAPI ) => {
         try {
             const response = await Dashboardservice.getTxnDataForGraph(obj);
-            console.log("response",response);
-            
-            return response;
+            return response?.data;
           } catch (error) {
             const message =
               (error.response &&
@@ -256,15 +254,13 @@ export const TxnChartDataSlice = createAsyncThunk(
         state.transactionHistory=[];
       },
 
-      [TxnChartDataSlice.fulfilled]: (state, action) => {
-        state.txnChartData = action.payload.data;
+      [txnChartDataSlice.fulfilled]: (state, action) => {
+        state.txnChartData = action.payload;
       },
-      [TxnChartDataSlice.pending]: (state) => {
-        // state.isLoadingTxnHistory = true;
+      [txnChartDataSlice.pending]: (state) => {
         state.txnChartData=[];
       },
-      [TxnChartDataSlice.rejected]: (state) => {
-        // state.isLoadingTxnHistory = false;
+      [txnChartDataSlice.rejected]: (state) => {
         state.txnChartData=[];
       },
 
