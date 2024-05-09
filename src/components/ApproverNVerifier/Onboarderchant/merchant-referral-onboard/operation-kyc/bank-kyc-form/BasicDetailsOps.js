@@ -307,8 +307,8 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                             />
                             <span className="input-group-text" onClick={togglePassword} id="basic-addon2">
                                 {passwordType.showPasswords ? (
-                                    <i className="fa fa-eye" aria-hidden="true"></i>) : (
-                                    <i className="fa fa-eye-slash" aria-hidden="true"></i>)}
+                                    <i className="fa fa-eye" ariaHidden="true"></i>) : (
+                                    <i className="fa fa-eye-slash" ariaHidden="true"></i>)}
                             </span>
                         </div>
                         <ErrorMessage name={"password"}>{msg => <p
@@ -319,7 +319,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                         {!isEditableInput && <button type="submit" className="btn cob-btn-primary btn-sm m-2" disabled={disable}>
                             {submitLoader && <>
                                 <span className="spinner-border spinner-border-sm" role="status"
-                                    aria-hidden="true" />
+                                   ariaHidden="true" />
                                 <span className="sr-only">Loading...</span>
                             </>}
                             Save

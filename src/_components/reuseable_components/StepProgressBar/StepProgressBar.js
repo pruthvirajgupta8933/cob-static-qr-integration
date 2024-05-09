@@ -43,20 +43,24 @@ function StepProgressBar(props) {
   const [kycStatusData, setKycStatusData] = useState([]);
   const [percentage, setPercentage] = useState(0);
 
-  let status = props?.status?.toLocaleLowerCase();
+  // let status = props?.status?.toLocaleLowerCase();
 
+  let { status } = props
   const getProgressByStatus = (status) => {
 
     let percent = 0;
-    if (status === KYC_STATUS_PENDING.toLocaleLowerCase() || status === KYC_STATUS_NOT_FILLED.toLocaleLowerCase()) {
-      percent = 1
-    } else if (status === KYC_STATUS_PROCESSING.toLocaleLowerCase()) {
-      percent = 33.3;
-    } else if (status === KYC_STATUS_VERIFIED.toLocaleLowerCase()) {
-      percent = 66.6;
-    } else if (status === KYC_STATUS_APPROVED.toLocaleLowerCase()) {
-      percent = 100;
+    if (status) {
+      if (status?.toLocaleLowerCase() === KYC_STATUS_PENDING.toLocaleLowerCase() || status?.toLocaleLowerCase() === KYC_STATUS_NOT_FILLED.toLocaleLowerCase()) {
+        percent = 1
+      } else if (status?.toLocaleLowerCase() === KYC_STATUS_PROCESSING.toLocaleLowerCase()) {
+        percent = 33.3;
+      } else if (status?.toLocaleLowerCase() === KYC_STATUS_VERIFIED.toLocaleLowerCase()) {
+        percent = 66.6;
+      } else if (status?.toLocaleLowerCase() === KYC_STATUS_APPROVED.toLocaleLowerCase()) {
+        percent = 100;
+      }
     }
+
     return percent;
   }
 

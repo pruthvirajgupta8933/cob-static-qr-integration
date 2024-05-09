@@ -141,7 +141,7 @@
 //     // }
 
 //     return (
-//         <div className="modal" id="bussiness" style={{ top: "25%", display: `${modalClose ? 'block' : 'none'}` }}  role="dialog" aria-labelledby="bussinessLable" aria-hidden="true" >
+//         <div className="modal" id="bussiness" style={{ top: "25%", display: `${modalClose ? 'block' : 'none'}` }}  role="dialog" aria-labelledby="bussinessLable" ariaHidden="true" >
 
 
 //             <div className="modal-dialog" role="document">
@@ -153,7 +153,7 @@
 //                         <button type="button" className="close" data-dismiss="modal" aria-label="Close"
 //                             onClick={() => modalHandler(false)}
 //                         >
-//                             <span aria-hidden="true">&times;</span>
+//                             <spanariaHidden="true">&times;</span>
 //                         </button>
 //                     </div>
 //                     <div className="modal-body">

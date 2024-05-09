@@ -49,7 +49,7 @@ const NavBar = () => {
           aria-expanded="false"
         >
           <i className="fa fa-user fa-2xl"
-            aria-hidden="true"
+           ariaHidden="true"
             style={{ fontSize: "24px", color: "white" }}
           ></i>
           <span

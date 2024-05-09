@@ -235,7 +235,7 @@ const ViewDocumentModal = (props) => {
                             aria-label="Close"
                             onClick={resetUploadFile}
                           >
-                            <span aria-hidden="true">&times;</span>
+                            <span ariaHidden="true">&times;</span>
                           </button>
                         </>
                       )}
@@ -317,7 +317,7 @@ const ViewDocumentModal = (props) => {
                                 removeDocument(remark?.document_id);
                               }}
                             >
-                              <i className="fa fa-trash-o" aria-hidden="true"></i>
+                              <i className="fa fa-trash-o"ariaHidden="true"></i>
                             </button>
                           </td>
                         </tr>

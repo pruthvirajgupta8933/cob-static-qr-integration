@@ -14,10 +14,12 @@ import API_URL from "../../../../config";
 import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
+import FormikController from "../../../../_components/formik/FormikController";
 // import "./index.css";
 import { v4 as uuidv4 } from 'uuid';
 import classes from "./paylink.module.css"
 import ReactPaginate from 'react-paginate';
+import moment from "moment";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -60,10 +62,34 @@ const PayerDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalToggle, setEditModalToggle] = useState(false);
   const [disable, setDisable] = useState(false)
-  
+  const [submitted, setSubmitted] = useState(false);
+ 
+
+
   const [pageCount, setPageCount] = useState(
     data ? Math.ceil(data.length / pageSize) : 0
   );
+
+  const validationSchemaa = Yup.object({
+    fromDate: Yup.date().required("Required").nullable(),
+    toDate: Yup.date()
+      .min(Yup.ref("fromDate"), "End date can't be before Start date")
+      .required("Required"),
+  });
+
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+  const initialValues = {
+    fromDate: splitDate,
+    toDate: splitDate,
+  };
 
   let clientMerchantDetailsList = [];
   let clientCode = "";
@@ -78,13 +104,14 @@ const PayerDetails = () => {
   // Alluser data API INTEGRATION
   const loadUser = async () => {
     await axiosInstance
-      .get(API_URL.GET_CUSTOMERS + clientCode)
+    .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${splitDate}/${splitDate}`)
       .then((res) => {
         // console.log(res)
         setData(res.data);
         setLoadingState(false)
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+        
       })
       .catch((err) => {
         // console.log(err)
@@ -93,9 +120,35 @@ const PayerDetails = () => {
 
   useEffect(() => {
     loadUser();
-    getDrop();
+    // getDrop();
     // setEditModalToggle(false)
   }, []);
+
+
+  const formSubmit = (values) => {
+    setDisable(true)
+    setSubmitted(true)
+
+    const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
+    const toDate = moment(values.toDate).format('YYYY-MM-DD');
+    axiosInstance
+      // .get(API_URL.GET_CUSTOMERS + clientCode)
+      .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${fromDate}/${toDate}`)
+      .then((res) => {
+        // console.log(res)
+        setData(res.data);
+        setLoadingState(false)
+        setDisplayList(res.data);
+        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+        setDisable(false)
+        setSubmitted(false);
+      })
+      .catch((err) => {
+        // console.log(err)
+        setDisable(false)
+        setSubmitted(false);
+      });
+  };
 
   // SEARCH FILTER
 
@@ -149,7 +202,7 @@ const PayerDetails = () => {
     setPaginatedData(paginatedPost);
   }, [currentPage]);
 
-  
+
 
   // ADD User Dropdown api integration
 
@@ -163,6 +216,12 @@ const PayerDetails = () => {
         // console.log(err)
       });
   };
+
+  const handleAddPayerButtonClick = () => {
+    getDrop();
+    // Optionally, you can open the modal here if needed
+  };
+
 
   //ADD user API Integration
 
@@ -247,7 +306,7 @@ const PayerDetails = () => {
         id="exampleModal"
         role="dialog"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+        ariaHidden="true"
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
@@ -277,7 +336,7 @@ const PayerDetails = () => {
                       data-dismiss="modal"
                       aria-label="Close"
                     >
-                      <span aria-hidden="true">&times;</span>
+                      <span ariaHidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
@@ -420,7 +479,7 @@ const PayerDetails = () => {
                           disabled={disable}
                           className="btn cob-btn-primary text-white btn-sm position-relative"
                         >
-                          {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status" aria-hidden="true"></span>}
+                          {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status" ariaHidden="true"></span>}
                           Submit
                         </button>
                         <button
@@ -452,180 +511,198 @@ const PayerDetails = () => {
                 className="btn cob-btn-primary btn-primary text-white btn-sm"
                 data-toggle="modal"
                 data-target="#exampleModal"
+                onClick={handleAddPayerButtonClick}
               >
                 Add Single Payer
               </button>
             </div>
           </div>
 
-          <div className="row">
-            <div className={`col-lg-3 mt-3`}>
-              {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
-              <label>Search</label>
-              <input
-                className="form-control"
-                onChange={getSearchTerm}
-                type="text"
-                placeholder="Search Here"
-              />
-            </div>
-            <div className={`col-lg-3 mt-3`}>
-              <label>Count Per Page</label>
-              <select
-                value={pageSize}
-                rel={pageSize}
-                className="form-control"
-                onChange={(e) => setPageSize(parseInt(e.target.value))}
-              >
-                <DropDownCountPerPage datalength={data.length} />
-              </select>
-            </div>
-          </div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchemaa}
+            onSubmit={(values, { resetForm }) => {
+              formSubmit(values);
+            }}
+            enableReinitialize={true}
+          >
+            {(formik) => (
+              <Form>
+                <div className="row mt-4">
+                  <div className="form-group  col-md-3 ">
+                    <FormikController
+                      control="date"
+                      label="From Date"
+                      id="fromDate"
+                      name="fromDate"
+                      value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                      onChange={date => formik.setFieldValue('fromDate', date)}
+                      format="dd-MM-y"
+                      clearIcon={null}
+                      className="form-control rounded-0 p-0"
+                      required={true}
+                      errorMsg={formik.errors["fromDate"]}
+                    />
+                  </div>
+                  <div className="form-group col-md-3 ml-3">
+                    <FormikController
+                      control="date"
+                      label="End Date"
+                      id="to_date"
+                      name="toDate"
+                      value={formik.values.toDate ? new Date(formik.values.toDate) : null}
+                      onChange={date => formik.setFieldValue('toDate', date)}
+                      format="dd-MM-y"
+                      clearIcon={null}
+                      className="form-control rounded-0 p-0"
+                      required={true}
+                      errorMsg={formik.errors["toDate"]}
+                    />
+                  </div>
+
+                  <div className="col-md-3 mt-4">
+                    <button
+                      type="submit"
+                      className="btn cob-btn-primary approve text-white"
+                      disabled={disable}
+                    >
+                      {disable && (
+                        <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                      )}
+                      Submit
+                    </button>
+
+                  </div>
+
+                </div>
+              </Form>
+            )}
+          </Formik>
+
+          {data?.length !== 0 &&
+            <div className="row">
+              <div className={`col-lg-3 mt-3`}>
+                {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
+                <label>Search</label>
+                <input
+                  className="form-control"
+                  onChange={getSearchTerm}
+                  type="text"
+                  placeholder="Search Here"
+                />
+              </div>
+              <div className={`col-lg-3 mt-3`}>
+                <label>Count Per Page</label>
+                <select
+                  value={pageSize}
+                  rel={pageSize}
+                  className="form-control"
+                  onChange={(e) => setPageSize(parseInt(e.target.value))}
+                >
+                  <DropDownCountPerPage datalength={data.length} />
+                </select>
+              </div>
+            </div>}
         </div>
       </section>
+
 
       <section className="">
         <div className="container-fluid p-3 my-3 ">
-          <h6>Total Records:{data.length}</h6>
+          {data?.length !== 0 && <h6>Total Records:{data.length}</h6>}
 
-          <div className="scroll overflow-auto">
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col">S.No</th>
-                  <th scope="col">Name of Payer</th>
-                  <th scope="col">Mobile No.</th>
-                  <th scope="col">Email ID</th>
-                  <th scope="col">Payer Category</th>
-                  <th scope="col">Edit</th>
+          { data?.length !== 0 ? (
+            <>
+              <div className="scroll overflow-auto">
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Name of Payer</th>
+                      <th scope="col">Mobile No.</th>
+                      <th scope="col">Email ID</th>
+                      <th scope="col">Payer Category</th>
+                      <th scope="col">Edit</th>
 
-                  <th scope="col">Action</th>
-                  <th scope="col">Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedata.map((user, i) => (
-                  <tr key={uuidv4()}>
-                    <td>{i + 1}</td>
-                    <td>{user.name}</td>
-                    <td>{user.phone_number}</td>
-                    <td>{user.email}</td>
-                    <td>{user.customer_type}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn cob-btn-primary btn-primary text-white btn-sm"
-                        onClick={(e) => handleClick(user.id)}
-                      >
-                        Edit
-                      </button>
-                    </td>
+                      <th scope="col">Action</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedata.map((user, i) => (
+                      <tr key={uuidv4()}>
+                        <td>{i + 1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.phone_number}</td>
+                        <td>{user.email}</td>
+                        <td>{user.customer_type}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn cob-btn-primary btn-primary text-white btn-sm"
+                            onClick={(e) => handleClick(user.id)}
+                          >
+                            Edit
+                          </button>
+                        </td>
 
-                    <td>
-                      <button
-                        onClick={(e) => generateli(user.id)}
-                        type="button"
-                        className="btn cob-btn-primary  text-white btn-sm"
-                        data-toggle="modal"
-                        data-target="#bhuvi"
-                        data-whatever="@getbootstrap"
-                      >
-                        Generate Link
-                      </button>
-                      <div></div>
-                    </td>
-                    <td>
-                      <button
-                        className="btn  cob-btn-secondary btn-danger text-white btn-sm"
-                        onClick={() => deleteUser(user.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="d-flex justify-content-center align-items-center loader-container">
-              <CustomLoader loadingState={loadingState} />
-            </div>
-          </div>
-
-          {/* <div>
-            {paginatedata.length > 0 ? (
-              <nav aria-label="Page navigation example">
-                <ul className="pagination">
-                  <a
-                    className="page-link"
-                    onClick={(prev) =>
-                      setCurrentPage((prev) => (prev === 1 ? prev : prev - 1))
-                    }
-                    href={() => false}
-                  >
-                    Previous
-                  </a>
-                  {pages
-                    .slice(currentPage - 1, currentPage + 6)
-                    .map((page, i) => (
-                      <li
-                        key={uuidv4()}
-                        className={
-                          page === currentPage
-                            ? " page-item active"
-                            : "page-item"
-                        }
-                      >
-                        <a href={() => false} className={`page-link data_${i}`}>
-                          <p onClick={() => pagination(page)}>{page}</p>
-                        </a>
-                      </li>
+                        <td>
+                          <button
+                            onClick={(e) => generateli(user.id)}
+                            type="button"
+                            className="btn cob-btn-primary  text-white btn-sm"
+                            data-toggle="modal"
+                            data-target="#bhuvi"
+                            data-whatever="@getbootstrap"
+                          >
+                            Generate Link
+                          </button>
+                          <div></div>
+                        </td>
+                        <td>
+                          <button
+                            className="btn  cob-btn-secondary btn-danger text-white btn-sm"
+                            onClick={() => deleteUser(user.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
                     ))}
-                  {pages.length !== currentPage ? (
-                    <a
-                      className="page-link"
-                      onClick={(nex) =>
-                        setCurrentPage((nex) =>
-                          nex === pages.length > 9 ? nex : nex + 1
-                        )
-                      }
-                      href={() => false}
-                    >
-                      Next
-                    </a>
-                  ) : (
-                    <></>
-                  )}
-                </ul>
-              </nav>
-            ) : (
-              <></>
-            )}
-          </div> */}
+                  </tbody>
+                </table>
+                <div className="d-flex justify-content-center align-items-center loader-container">
+                  <CustomLoader loadingState={loadingState} />
+                </div>
+              </div>
 
-          {!loadingState && (
-            <div className="d-flex justify-content-center">
-              <ReactPaginate
-                previousLabel={'Previous'}
-                nextLabel={'Next'}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                pageRangeDisplayed={5}
-                onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                containerClassName={'pagination justify-content-center'}
-                activeClassName={'active'}
-                previousLinkClassName={'page-link'}
-                nextLinkClassName={'page-link'}
-                disabledClassName={'disabled'}
-                breakClassName={'page-item'}
-                breakLinkClassName={'page-link'}
-                pageClassName={'page-item'}
-                pageLinkClassName={'page-link'}
-              />
-            </div>
-          )}
+              {!loadingState && (
+                <div className="d-flex justify-content-center">
+                  <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                    pageRangeDisplayed={5}
+                    onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                    containerClassName={'pagination justify-content-center'}
+                    activeClassName={'active'}
+                    previousLinkClassName={'page-link'}
+                    nextLinkClassName={'page-link'}
+                    disabledClassName={'disabled'}
+                    breakClassName={'page-item'}
+                    breakLinkClassName={'page-link'}
+                    pageClassName={'page-item'}
+                    pageLinkClassName={'page-link'}
+                  />
+                </div>
+              )}
+            </>) : <h6 className="text-center font-weight-bold mt-5">No data Found</h6>}
         </div>
+
       </section>
+
     </React.Fragment>
   );
 };

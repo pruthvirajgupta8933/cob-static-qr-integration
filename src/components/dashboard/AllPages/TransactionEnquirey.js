@@ -245,7 +245,7 @@ function TransactionEnquirey() {
                             type="submit"
                           >
                             {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           View
                           </button>
@@ -254,7 +254,7 @@ function TransactionEnquirey() {
                             onClick={onClick}
                             className="btn btn-secondary text-white mt-4 ml-3 btn-sm"
                           >
-                            <i className="fa fa-print" aria-hidden="true"></i> Print
+                            <i className="fa fa-print" ariaHidden="true"></i> Print
                           </button>}
 
                         </div>

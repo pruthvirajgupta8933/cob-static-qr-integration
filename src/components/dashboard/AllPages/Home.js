@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TxnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
+import { txnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
 import { useRouteMatch, Redirect, Link } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import "../css/Home.css";
@@ -60,7 +60,11 @@ function Home() {
     if (roles.merchant) {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
       dispatch(kycUserList({ login_id: user?.loginId }));
-      dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
+
+      // graph data
+      const clientCode = user?.clientMerchantDetailsList[0]?.clientCode
+      const postGraphData = { p_client_code: clientCode }
+      dispatch(txnChartDataSlice(postGraphData))
     }
 
   }, []);
@@ -68,60 +72,12 @@ function Home() {
 
 
   useEffect(() => {
-    // comment unwanted api call
-    // dispatch(kycUserList({ login_id: user?.loginId }));
     return () => {
       dispatch(clearSuccessTxnsummary());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
-  // useEffect(() => {
-  //   if (roles.merchant) {
-  //     getLocation()
-  //   }
-
-  // }, [])
-
-
-
-  // const geoCordVal = useMemo(() => {
-  //   return { geoCord, kyc, roles };
-  // }, [geoCord, kyc?.kycUserList?.latitude, kyc?.kycUserList?.longitude, roles]);
-
-  // useEffect(() => {
-  //   const { latitude, longitude } = kyc?.kycUserList || {};
-
-  //   if (latitude === null && longitude === null && roles.merchant) {
-  //     const saveCord = {
-  //       merchant_latitude: geoCord.latitude,
-  //       merchant_longitude: geoCord.longitude,
-  //       merchant_coordinate_capture_mode: "Dynamic",
-  //       login_id: user?.loginId,
-  //       coordinates_modified_by: user?.loginId
-  //     };
-
-  //     console.log("trigger api to save lat and long", saveCord);
-  //     // Uncomment the line below to execute the API call when ready
-  //     // menulistService.saveGeoLocation(saveCord).then(resp => console.log(resp)).catch(err => console.log(err));
-  //   }
-  // }, []);
-
-
-
-  // if (roles.merchant === true) {
-  //   if (user.clientMerchantDetailsList === null) {
-  //     // return <Redirect to={`${path}/profile`} />;
-  //   }
-  // } else if (
-  //   roles.approver === true ||
-  //   roles.verifier === true ||
-  //   roles.viewer === true ||
-  //   roles.accountManager === true
-  // ) {
-  //   return <Redirect to={`${path}/Internal-dashboard`} />;
-  // }
 
   // redirect to the internal dashboard
   if (roles.approver === true ||
@@ -131,11 +87,6 @@ function Home() {
     return <Redirect to={`${path}/Internal-dashboard`} />;
 
   }
-
-
-
-  // filter only subscription plan
-
 
 
   // prepare chart data
@@ -224,27 +175,17 @@ function Home() {
   }
 
 
-  // console.log(kyc.kycUserList?.latitude)
-  // console.log(kyc.kycUserList?.longitude)
-  // if (!kyc?.kycUserList?.latitude && kyc?.kycUserList?.longitude) {
-  //   console.log("dfdfd")
-  // }
 
 
 
-
-  const longitude = kyc?.kycUserList?.longitude || null
-  const latitude = kyc?.kycUserList?.latitude || null
-
-  console.log(longitude, latitude)
   return (
     <section>
       {/* KYC container start from here */}
       {/* {console.log("kyc.kycUserList?.latitude", kyc?.kycUserList?.latitude)} */}
       {(kyc?.kycUserList?.latitude === null && kyc?.kycUserList?.longitude === null) &&
-        <div className="row important-notification">
-          <div className="alert alert-warning d-flex justify-content-between" role="alert">
-            <h6><i className="fa fa-warning" /> Please allow location access for the KYC process. This permission is essential for completing your KYC verification.</h6>
+        <div className="row">
+          <div className="alert important-notification d-flex justify-content-between " role="alert">
+            <h6 className="fw-bold"><i className="fa fa-warning" /> Please allow location access for the KYC process. This permission is essential for completing your KYC verification.</h6>
             <button className="btn btn-sm cob-btn-primary" disabled={locationLoader} onClick={getLocation}>
               Grant Access
               {locationLoader && <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
@@ -311,7 +252,6 @@ function Home() {
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       <HomeOpenModal />
       {/* <HomeOpenModal/> */}
-
     </section>
   );
 }

@@ -264,7 +264,7 @@ const AdditionalKYC = () => {
                         <span
                           className="spinner-border spinner-border-sm"
                           role="status"
-                          aria-hidden="true"
+                         ariaHidden="true"
                         ></span>
                       ) : (
                         "Verify"
@@ -304,7 +304,7 @@ const AdditionalKYC = () => {
                         <span
                           className="spinner-border spinner-border-sm"
                           role="status"
-                          aria-hidden="true"
+                         ariaHidden="true"
                         ></span>
                       ) : (
                         "Verify" ? "Verify" : ""
@@ -361,7 +361,7 @@ const AdditionalKYC = () => {
                           <span
                             className="spinner-border spinner-border-sm"
                             role="status"
-                            aria-hidden="true"
+                           ariaHidden="true"
                           ></span>
                         ) : (
                           "Verify" ? "Verify" : ""
@@ -405,7 +405,7 @@ const AdditionalKYC = () => {
                         <span
                           className="spinner-border spinner-border-sm"
                           role="status"
-                          aria-hidden="true"
+                         ariaHidden="true"
                         ></span>
                       ) : (
                         "Verify"
