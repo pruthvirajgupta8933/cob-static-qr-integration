@@ -13,6 +13,7 @@ import ReactPaginate from 'react-paginate';
 import FormikController from '../../../../_components/formik/FormikController';
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
+import toastConfig from '../../../../utilities/toastTypes';
 
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -118,11 +119,15 @@ const Reports = () => {
     if (dateRangeValid) {
     axiosInstance.get(`${API_URL.GET_REPORTS}${clientCode}/${fromDate}/${toDate}`)
       .then((res) => {
+        if(res?.data?.length===0){
+          toastConfig.errorToast("No Data Found")
+        }else{
         // toastConfig.successToast("Payment Link Data Loaded");
         setData(res.data);
         setLoadingState(false);
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+        }
         setDisable(false)
 
       })
@@ -321,7 +326,7 @@ const Reports = () => {
               )}
 
             </React.Fragment>) :
-            <h6 className="text-center font-weight-bold mt-5">No data Found</h6>
+            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
           }
 
         </div>

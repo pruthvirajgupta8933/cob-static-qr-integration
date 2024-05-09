@@ -13,6 +13,8 @@ import moment from "moment";
 import ReactPaginate from 'react-paginate';
 import FormikController from "../../../../_components/formik/FormikController";
 import * as Yup from "yup";
+import { error } from "jquery";
+import toastConfig from "../../../../utilities/toastTypes";
 const PaymentLinkDetail = () => {
 
 
@@ -92,32 +94,35 @@ const PaymentLinkDetail = () => {
 
 
   const handleSubmit = (values) => {
-    setDisable(true)
+    setDisable(true);
 
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
     const dateRangeValid = checkValidation(fromDate, toDate);
-    if (dateRangeValid) {
-    axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${fromDate}/${toDate}`)
-      .then((res) => {
-        // toastConfig.successToast("Payment Link Data Loaded");
-        setData(res.data);
-        setLoadingState(false);
-        setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-        setShow(true)
-        setDisable(false)
 
-      })
-    
-      .catch((err) => {
-        console.error("Error loading data:", err);
-        setShow(false)
-        setDisable(false)
-        // toastConfig.errorToast("Data not loaded");
-      });
+    if (dateRangeValid) {
+        axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${fromDate}/${toDate}`)
+            .then((res) => {
+                if (res.data.length === 0) {
+                    toastConfig.errorToast("No Data Found");
+                    setShow(false);
+                } else {
+                    setData(res.data);
+                    setLoadingState(false);
+                    setDisplayList(res.data);
+                    setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+                    setShow(true);
+                }
+                setDisable(false);
+            })
+            .catch((err) => {
+                console.error("Error loading data:", err);
+                setShow(false);
+                setDisable(false);
+                // toastConfig.errorToast("Data not loaded");
+            });
     }
-  };
+};
 
 
   const checkValidation = (fromDate, toDate) => {
@@ -385,7 +390,7 @@ const PaymentLinkDetail = () => {
               )}
             </React.Fragment>
           ) :  
-            <h6 className="text-center font-weight-bold mt-5">No data Found</h6>
+            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
           }
 
         </div>
