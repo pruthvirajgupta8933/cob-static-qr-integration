@@ -29,6 +29,7 @@ const ViewRateMapping = (props) => {
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
+    const[isLoading,setIsloading]=useState(false)
 
 
     const [disable, setDisable] = useState(false)
@@ -61,7 +62,7 @@ const ViewRateMapping = (props) => {
             const postData = {
                 business_cat_code: businessTemplate
             };
-            setDisable(false)
+           
             dispatch(templateRate(postData)).then((resp) => {
                 const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
                 setBusinessTemplates(data)
@@ -76,6 +77,7 @@ const ViewRateMapping = (props) => {
 
     const handleSubmit = async (values) => {
         setDisable(true);
+        setIsloading(true)
         const postData = {
             "rate_template_code": values?.business_category,
             "business_cat_code": values?.risk_category_name,
@@ -85,10 +87,13 @@ const ViewRateMapping = (props) => {
         try {
             const resp = await dispatch(viewRateMap(postData));
             setRisktemplate(resp?.payload);
-            setDisable(true);
+            setDisable(false);
+            setIsloading(false)
             setShow(true);
+            
         } catch (error) {
             setDisable(true);
+            setIsloading(false)
 
         }
     };
@@ -177,7 +182,16 @@ const ViewRateMapping = (props) => {
 
                                                 <div >
                                                     <button disabled={disable} type="submit" className="btn cob-btn-primary mt-2  text-white">
-                                                        View
+                                                    {
+                                                            isLoading ?  (<span
+                                                            className="spinner-border spinner-border-sm"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                          ></span>
+                                                        ) : (
+                                                          "View"
+                                                        )}
+                                                        
 
                                                     </button>
 

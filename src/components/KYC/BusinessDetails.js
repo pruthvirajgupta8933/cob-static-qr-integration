@@ -43,6 +43,8 @@ function BusinessDetails(props) {
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const[loadingForGst,setLoadingForGst]=useState(false)
+  const[loadingForSiganatory,setLoadingForSignatory]=useState(false)
   const [isLoader, setIsloader] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   // const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
@@ -275,7 +277,7 @@ function BusinessDetails(props) {
 
 
   const gstinValidate = (values, key, setFieldValue) => {
-    setIsLoading(true)
+    setLoadingForGst(true)
     dispatch(
       gstValidation({
         gst_number: values,
@@ -301,13 +303,13 @@ function BusinessDetails(props) {
         setFieldValue("registerd_with_gst", true)
         setFieldValue("registerd_with_udyam", false)
         setFieldValue("udyam_number", "")
-        setIsLoading(false)
+        setLoadingForGst(false)
 
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "")
         toast.error(res?.payload?.message);
-        setIsLoading(false)
+        setLoadingForGst(false)
       }
     })
   };
@@ -365,7 +367,7 @@ function BusinessDetails(props) {
 
 
   const authValidation = (values, key, setFieldValue) => {
-    setIsLoading(true)
+    setLoadingForSignatory(true)
     // console.log("auth", "auth pan")
     dispatch(
       authPanValidation({
@@ -373,7 +375,7 @@ function BusinessDetails(props) {
       })
     ).then((res) => {
       if (
-        setIsLoading(false),
+        setLoadingForSignatory(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
@@ -381,7 +383,7 @@ function BusinessDetails(props) {
         const authName = res.payload.first_name + ' ' + res.payload?.last_name
 
         setFieldValue(key, values)
-        setIsLoading(false)
+        setLoadingForSignatory(false)
         setFieldValue("prevSignatoryPan", values)
         setFieldValue("name_on_pancard", authName)
         setFieldValue("isSignatoryPanVerified", 1)
@@ -390,8 +392,8 @@ function BusinessDetails(props) {
       } else {
 
         toast.error(res?.payload?.message);
-        setIsLoading(false)
-        setIsLoading(false)
+        setLoadingForSignatory(false)
+        // setIsLoading(false)
       }
     });
   };
@@ -422,11 +424,11 @@ function BusinessDetails(props) {
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       // auth signatory pan
       // console.log("dfdfdf")
-      authValidation(val[key], "signatory_pan", setFieldValue, setIsLoading);
+      authValidation(val[key], "signatory_pan", setFieldValue, setLoadingForSignatory);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
-      gstinValidate(val[key], "company_name", setFieldValue, setIsLoading);
-      setIsLoading(true)
+      gstinValidate(val[key], "company_name", setFieldValue, setLoadingForGst);
+      setLoadingForGst(true)
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "udyam_number") {
       udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
@@ -615,7 +617,7 @@ function BusinessDetails(props) {
 
                             }
                           >
-                            {isLoading ? (
+                            {loadingForGst ? (
                           <span className="spinner-border spinner-border-sm">
                             <span className="sr-only">Loading...</span>
                           </span>
@@ -844,7 +846,7 @@ function BusinessDetails(props) {
                           );
                         }}
                       >
-                        {isLoading ?
+                        {loadingForSiganatory ?
                           <span className="spinner-border spinner-border-sm" role="status">
                             <span className="sr-only">Loading...</span>
                           </span>
