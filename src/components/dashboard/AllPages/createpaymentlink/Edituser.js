@@ -83,6 +83,7 @@ export const Edituser = (props) => {
         setDisable(false)
       });
   };
+  
   const getDrop = async (e) => {
     await axiosInstance
       .get(API_URL.GET_CUSTOMER_TYPE)
