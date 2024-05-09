@@ -37,37 +37,6 @@ function StepComplete(props) {
     </svg>
   );
 }
-// #140633
-// #ed7d31
-
-function StepCurrent() {
-  return (
-    <svg
-      style={{ marginLeft: 15 }}
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle cx="12" cy="12" r="9" stroke="#ED7D31" stroke-width="6" />
-    </svg>
-  );
-}
-
-function StepNext() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle cx="12" cy="12" r="12" fill="#D8D8D8" />
-    </svg>
-  );
-}
 
 function StepProgressBar(props) {
 
@@ -168,18 +137,6 @@ function StepProgressBar(props) {
         </div>
         <br />
         <br />
-        {/* <div className="Placeholder" style={{ color: "#191919" }}>
-            Predesign done on 12/17/2020
-        </div> */}
-        <br />
-        {/* <div className="Placeholder2">
-            Pre-design ready. In case you need, you can request a new redesign
-        </div>
-        <div className="PlaceholderRemember" style={{ marginTop: 50 }}>
-            <AlertCircle />
-            &nbsp; &nbsp; Remember that it takes at least 48 hours to be done
-        </div> */}
-        {/* <div className="button">Request New Predesign</div> */}
       </div>
     </div>
   );
