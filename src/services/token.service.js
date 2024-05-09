@@ -1,28 +1,24 @@
 class TokenService {
   getLocalrefreshToken() {
-    const authToken = JSON.parse(localStorage.getItem("rt"));
+    const authToken = localStorage.getItem("rt");
     return authToken;
   }
 
   getLocalAccessToken() {
-    const accessToken = localStorage.getItem("at")
-    let authToken;
-    if (accessToken !== 'undefined') {
-      authToken = JSON.parse(accessToken)
-    }
+    let authToken = localStorage.getItem("at")
     return authToken;
   }
 
   updateLocalAccessToken(token) {
-    let authToken = JSON.parse(localStorage.getItem("at"));
+    let authToken = localStorage.getItem("at");
     authToken = token;
-    localStorage.setItem("at", JSON.stringify(authToken));
+    localStorage.setItem("at", authToken);
   }
 
 
   setUser(data) {
-    localStorage.setItem("at", JSON.stringify(data?.accessToken));
-    localStorage.setItem("rt", JSON.stringify(data.refreshToken));
+    localStorage.setItem("at", data?.accessToken);
+    localStorage.setItem("rt", data.refreshToken);
   }
 
   setCategory() {
@@ -30,7 +26,7 @@ class TokenService {
   }
 
   setUserData(data) {
-    localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("user", data);
   }
 
   removeUser() {

@@ -30,8 +30,7 @@ const setup = async (store) => {
       return response;
     },
     (error) => {
-
-
+      console.log("error", error)
       const refreshToken = TokenService.getLocalrefreshToken();
       // This promise handles the refresh logic for 401 errors specifically
       if (error.response && error.response.status === 401 && error.config && !error.config.__isRetryRequest && refreshToken) {
@@ -50,16 +49,15 @@ const setup = async (store) => {
         })
           .then((res) => res.json())
           .then((res) => {
-            TokenService.updateLocalAccessToken(res.access);
-            axiosInstanceJWT.defaults.headers.common["Authorization"] = 'Bearer ' + res.access;
-            return axiosInstanceJWT(originalRequest);
+            if (res.access) {
+              TokenService.updateLocalAccessToken(res.access);
+              axiosInstanceJWT.defaults.headers.common["Authorization"] = 'Bearer ' + res.access;
+              return axiosInstanceJWT(originalRequest);
+            }
           })
           .catch((err) => {
             if (error.response.status === 401) {
-
-              // console.log(err.config.url)
               if (err.config.url.includes("/auth-service/auth/refresh-token")) {
-                // Log or handle logout error scenario
                 console.error("Refresh token failure, logging out.", err);
                 authService.logout();
                 window.location.reload();
