@@ -44,6 +44,8 @@ export const TxnChartDataSlice = createAsyncThunk(
     async (obj, thunkAPI ) => {
         try {
             const response = await Dashboardservice.getTxnDataForGraph(obj);
+            console.log("response",response);
+            
             return response;
           } catch (error) {
             const message =

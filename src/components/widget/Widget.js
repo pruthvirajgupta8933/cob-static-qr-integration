@@ -383,7 +383,7 @@ function MyForm() {
                     ) : (
                         activeStatus === "Active" ? (
                             <React.Fragment>
-                                <div className="code-snippet mt-5">
+                                <div className="code-snippet">
                                     <div className="d-flex justify-content-end align-items-center mb-3">
                                         <span
                                             className="input-group-text"
@@ -406,11 +406,11 @@ function MyForm() {
                                         </code>
                                     </pre>
                                 </div>
-                                <div className="instructions">
+                                <div className="instructions mt-2">
                                     <h6>
-                                        Instruction : To use this widget, please copy the <span className="ml-1 mr-1">above</span>
+                                        Instruction : To use this widget, please copy the following <span className="ml-1 mr-1"></span>
                                         <span className="html-tag">&lt;div&gt;</span> and
-                                        <span className="ml-1 mr-1">above</span>
+                                        <span className="ml-1 mr-1"></span>
                                         <span className="html-tag">&lt;script&gt;</span>
                                         <span className="ml-1 mr-1">into the &lt;body&gt; tag of your HTML document.</span>
                                     </h6>

@@ -366,6 +366,10 @@ const API_LIVE = {
   perentTypeMerchantData: `${kyc_url}/kyc/get-merchant-data/parent-type/`,
   getAllzone: `${kyc_url}/kyc/refer-zone/get-all-zone/`,
 
+
+  // Geo location saving
+  saveGeoCord: `${kyc_url}/kyc/coordinate/save/`,
+
 };
 
 const B2B_API_LIVE = {

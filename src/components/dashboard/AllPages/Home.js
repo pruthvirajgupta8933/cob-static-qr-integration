@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TxnChartDataSlice, clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
 import { useRouteMatch, Redirect, Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
   GetKycTabsStatus,
+  kycUserList,
 
 } from "../../../slices/kycSlice";
 
@@ -23,14 +24,20 @@ import HomeContent from "./HomeContent";
 import HomeProduct from "./HomeProduct";
 import HomeOpenModal from "./HomeOpenModal";
 import KycStatusUpdateMessage from "./KycStatusUpdateMesssage";
+import menulistService from "../../../services/cob-dashboard/menulist.service";
+import toastConfig from "../../../utilities/toastTypes";
 
 
 function Home() {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
+  const [locationLoader, setLocationLoader] = useState(false)
+
   const { path } = useRouteMatch();
+
+
   const { auth, kyc, productCatalogueSlice, dashboard } = useSelector((state) => state);
-  const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
+  const { KycTabStatusStore } = kyc;
   const { user } = auth;
   const { txnChartData } = dashboard
 
@@ -45,10 +52,14 @@ function Home() {
     );
   }, [SubscribedPlanData])
 
+
+
+
   useEffect(() => {
     // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
     if (roles.merchant) {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
+      dispatch(kycUserList({ login_id: user?.loginId }));
       dispatch(TxnChartDataSlice({ "p_client_code": user?.clientMerchantDetailsList[0]?.clientCode }))
     }
 
@@ -65,17 +76,60 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (roles.merchant === true) {
-    if (user.clientMerchantDetailsList === null) {
-      // return <Redirect to={`${path}/profile`} />;
-    }
-  } else if (
-    roles.approver === true ||
+
+  // useEffect(() => {
+  //   if (roles.merchant) {
+  //     getLocation()
+  //   }
+
+  // }, [])
+
+
+
+  // const geoCordVal = useMemo(() => {
+  //   return { geoCord, kyc, roles };
+  // }, [geoCord, kyc?.kycUserList?.latitude, kyc?.kycUserList?.longitude, roles]);
+
+  // useEffect(() => {
+  //   const { latitude, longitude } = kyc?.kycUserList || {};
+
+  //   if (latitude === null && longitude === null && roles.merchant) {
+  //     const saveCord = {
+  //       merchant_latitude: geoCord.latitude,
+  //       merchant_longitude: geoCord.longitude,
+  //       merchant_coordinate_capture_mode: "Dynamic",
+  //       login_id: user?.loginId,
+  //       coordinates_modified_by: user?.loginId
+  //     };
+
+  //     console.log("trigger api to save lat and long", saveCord);
+  //     // Uncomment the line below to execute the API call when ready
+  //     // menulistService.saveGeoLocation(saveCord).then(resp => console.log(resp)).catch(err => console.log(err));
+  //   }
+  // }, []);
+
+
+
+  // if (roles.merchant === true) {
+  //   if (user.clientMerchantDetailsList === null) {
+  //     // return <Redirect to={`${path}/profile`} />;
+  //   }
+  // } else if (
+  //   roles.approver === true ||
+  //   roles.verifier === true ||
+  //   roles.viewer === true ||
+  //   roles.accountManager === true
+  // ) {
+  //   return <Redirect to={`${path}/Internal-dashboard`} />;
+  // }
+
+  // redirect to the internal dashboard
+  if (roles.approver === true ||
     roles.verifier === true ||
     roles.viewer === true ||
-    roles.accountManager === true
-  ) {
+    roles.accountManager === true) {
     return <Redirect to={`${path}/Internal-dashboard`} />;
+
   }
 
 
@@ -107,11 +161,103 @@ function Home() {
   }
 
   // console.log("unPaidProduct", unPaidProduct)
+  function getLocation() {
+    setLocationLoader(true)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+      setLocationLoader(false)
+      toastConfig.errorToast("Geolocation is not supported by this browser.")
+    }
+  }
 
+  function showPosition(position) {
+    setLocationLoader(true)
+    const saveCord = {
+      merchant_latitude: position.coords.latitude,
+      merchant_longitude: position.coords.longitude,
+      merchant_coordinate_capture_mode: "Dynamic",
+      login_id: user?.loginId,
+      coordinates_modified_by: user?.loginId
+    };
+
+
+    menulistService.saveGeoLocation(saveCord).then(resp => {
+      if (resp?.data?.status) {
+        toastConfig.successToast("Data saved successfully")
+        dispatch(kycUserList({ login_id: user?.loginId }));
+        setLocationLoader(false)
+      }
+    }).catch(err => {
+      setLocationLoader(false)
+      toastConfig.errorToast("Data is not saved. Please try again after some time")
+    }
+    );
+
+
+  }
+
+  function showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        // x.innerHTML = "User denied the request for Geolocation."
+        toastConfig.warningToast("It appears that location services are disabled. Please enable location access.")
+        break;
+      case error.POSITION_UNAVAILABLE:
+        // x.innerHTML = "Location information is unavailable."
+        toastConfig.warningToast("Location information is unavailable.")
+        break;
+      case error.TIMEOUT:
+        // x.innerHTML = "The request to get user location timed out."
+        toastConfig.warningToast("The request to get user location timed out.")
+        break;
+      case error.UNKNOWN_ERROR:
+        // x.innerHTML = "An unknown error occurred."
+        toastConfig.warningToast("An unknown error occurred.")
+        break;
+      default:
+        toastConfig.warningToast("Location: Something went wrong.")
+        break;
+    }
+
+    setLocationLoader(false)
+  }
+
+
+  // console.log(kyc.kycUserList?.latitude)
+  // console.log(kyc.kycUserList?.longitude)
+  // if (!kyc?.kycUserList?.latitude && kyc?.kycUserList?.longitude) {
+  //   console.log("dfdfd")
+  // }
+
+
+
+
+  const longitude = kyc?.kycUserList?.longitude || null
+  const latitude = kyc?.kycUserList?.latitude || null
+
+  console.log(longitude, latitude)
   return (
-    <section className="">
+    <section>
       {/* KYC container start from here */}
+      {/* {console.log("kyc.kycUserList?.latitude", kyc?.kycUserList?.latitude)} */}
+      {(kyc?.kycUserList?.latitude === null && kyc?.kycUserList?.longitude === null) &&
+        <div className="row important-notification">
+          <div className="alert alert-warning d-flex justify-content-between" role="alert">
+            <h6><i className="fa fa-warning" /> Please allow location access for the KYC process. This permission is essential for completing your KYC verification.</h6>
+            <button className="btn btn-sm cob-btn-primary" disabled={locationLoader} onClick={getLocation}>
+              Grant Access
+              {locationLoader && <div className="spinner-border spinner-border-sm text-primary me-2" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>}
+            </button>
+          </div>
+        </div>}
+
+
+
       <div className="row">
+
         {/* hide when login by bank and if businees category b2b */}
         {roles?.bank === true || roles?.b2b === true ? (
           <></>

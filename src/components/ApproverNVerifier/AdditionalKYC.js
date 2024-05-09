@@ -52,7 +52,6 @@ const AdditionalKYC = () => {
   const [gstinData, setGstinData] = useState([]);
   const [udyamRegistrationData, setUdyamRegistrationData] = useState({})
   const [bankAccount, setBankAccount] = useState([]);
-
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
   const [buttonDisable, setButtonDisable] = useState(false);
@@ -63,12 +62,6 @@ const AdditionalKYC = () => {
   const bankAccountInfo = Object.entries(bankAccount);
   const nicCodes = udyamRegistrationData?.nic_codes ?? [];
   const classifications = udyamRegistrationData.classifications
-  
- 
-
-
-
-
 
   // Helper functions
   const handleChange = (event) => {
@@ -173,9 +166,10 @@ const AdditionalKYC = () => {
 
 
   const handleBankAccountSubmit = async (values) => {
-   
+
 
     setButtonDisable(true);
+    setIsLoading(true);
 
     try {
       const res = await dispatch(
@@ -194,8 +188,10 @@ const AdditionalKYC = () => {
         res?.payload?.valid === true
       ) {
         setBankStatus(res?.payload?.status);
+        setIsLoading(false);
       } else {
         toast.error(res?.payload?.message);
+        setIsLoading(false);
       }
     } catch (error) {
 
@@ -216,8 +212,7 @@ const AdditionalKYC = () => {
   return (
     <section className="">
       <main className="">
-
-        <div className="">
+     <div className="">
           <h5 className="ml-4">Additional KYC</h5>
         </div>
         <div className="container-fluid mt-5">
@@ -282,21 +277,21 @@ const AdditionalKYC = () => {
               {selectedDocType === "2" && (
                 <div className="form-inline">
                   <div className="form-group">
-                    
-                      <input
-                        type="text"
-                        name="gst_number"
-                        className="form-control mr-4"
-                        placeholder="Enter your GSTIN Number"
-                        value={initialValuesForGSTIN.gst_number}
-                        onChange={(e) => {
-                          setInitialValuesForGSTIN({ gst_number: e.target.value });
-                          
-                        }}
-                      />
-                      
 
-                   
+                    <input
+                      type="text"
+                      name="gst_number"
+                      className="form-control mr-4"
+                      placeholder="Enter your GSTIN Number"
+                      value={initialValuesForGSTIN.gst_number}
+                      onChange={(e) => {
+                        setInitialValuesForGSTIN({ gst_number: e.target.value });
+
+                      }}
+                    />
+
+
+
                   </div>
                   <div className="form-group">
                     <button
@@ -323,13 +318,13 @@ const AdditionalKYC = () => {
                 <Formik
                   initialValues={initialValuesForBankAccount}
                   onSubmit={handleBankAccountSubmit}
-                  
+
                   enableReinitialize={true}
                 >
                   <Form className="form-inline">
                     <div className="form-group mr-3">
-                    <div className="input-container">
-                      
+                      <div className="input-container">
+
                         <FormikController
                           control="input"
                           type="text"
@@ -337,14 +332,12 @@ const AdditionalKYC = () => {
                           className="form-control"
                           placeholder="Enter your IFSC Code"
                         />
-                        
-                      </div>
-                      </div>
-                  
 
+                      </div>
+                    </div>
                     <div className="form-group mr-3">
-                    <div className="input-container">
-                     
+                      <div className="input-container">
+
                         <FormikController
                           control="input"
                           type="text"
@@ -352,11 +345,11 @@ const AdditionalKYC = () => {
                           className="form-control"
                           placeholder="Enter Account Number"
                         />
-                       
+
                       </div>
-                      </div>
-                      
-                   
+                    </div>
+
+
 
                     <div className="form-group">
                       <button
@@ -364,7 +357,15 @@ const AdditionalKYC = () => {
                         className="btn cob-btn-primary text-white"
                         disabled={buttonDisable}
                       >
-                        Verify
+                        {isLoading ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : (
+                          "Verify" ? "Verify" : ""
+                        )}
                       </button>
                     </div>
                   </Form>
@@ -378,20 +379,20 @@ const AdditionalKYC = () => {
               {selectedDocType === "4" && (
                 <div className="form-inline">
                   <div className="form-group">
-                   
+
                     <input
                       type="text"
                       name="reg_number"
                       className="form-control mr-4"
                       placeholder="Enter Udyam Reg. Number"
                       value={intialValuesForRegistration.reg_number}
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         setIntialValuesForRegistration({ reg_number: e.target.value });
-                       
+
                       }}
                     />
-                   
-                     
+
+
                   </div>
                   <div className="form-group">
                     <button

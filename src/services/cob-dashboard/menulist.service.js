@@ -7,9 +7,14 @@ const menulist = (object) => {
   return axiosInstanceJWT.post(`${API_URL.menuListByLoginId}`, object)
 }
 
+const saveGeoLocation = (object) => {
+  return axiosInstanceJWT.post(`${API_URL.saveGeoCord}`, object)
+}
+
 
 const menulistService = {
-  menulist
+  menulist,
+  saveGeoLocation
 };
 
 export default menulistService;
