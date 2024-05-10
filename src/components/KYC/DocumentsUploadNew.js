@@ -134,7 +134,9 @@ function DocumentsUpload(props) {
   const onSubmit = (values, action) => {
 
     setDisable(true);
-    if (!isNull(selectedFile) && !isUndefined(selectedFile)) {
+    console.log("selectedFile", selectedFile)
+
+    if (!isNull(selectedFile) && !isUndefined(selectedFile) && selectedFile !== null) {
       const bodyFormData = new FormData();
       let docType = values?.docType;
       bodyFormData.append("files", selectedFile);
@@ -152,6 +154,14 @@ function DocumentsUpload(props) {
             setTitle("SUBMIT KYC");
             dispatch(GetKycTabsStatus({ login_id: loginId }));
             toast.success(response?.payload?.message);
+            setImgAttr("#");
+            setSelectedFile(null);
+
+            // update doc list after the upload the document
+            setTimeout(() => {
+              getKycDocList();
+            }, 2000);
+
           } else {
             const message =
               response?.payload?.message ||
@@ -169,11 +179,6 @@ function DocumentsUpload(props) {
       setDisable(false);
     }
 
-
-    // update doc list after the upload the document
-    setTimeout(() => {
-      getKycDocList();
-    }, 2000);
   };
 
   const removeDoc = (doc_id, doc_type) => {
