@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import API_URL from "../../config";
 import moment from "moment";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
@@ -13,6 +13,8 @@ import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
 import { fetchSignupData } from "../../slices/signupDataSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Yup from "../../_components/formik/Yup";
+
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -22,9 +24,9 @@ const validationSchema = Yup.object({
 });
 
 const SignupData = () => {
- 
+
   const [signupData, setSignupData] = useState([]);
- const [filterSignupData, setFilterSignupData] = useState([]);
+  const [filterSignupData, setFilterSignupData] = useState([]);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
@@ -34,13 +36,13 @@ const SignupData = () => {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [buttonClicked, isButtonClicked] = useState(false);
-  const[disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false)
 
   const signupDataList = useSelector(
     (state) => state?.signupData.signupDataDetails
 
-      )
-  
+  )
+
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
@@ -74,20 +76,20 @@ const SignupData = () => {
     );
   };
 
-useEffect(() => {
+  useEffect(() => {
     const signupDataDataList = signupDataList?.Merchant_Info
-    
-    const dataCount =  signupDataList?.count;
-   
-if (signupDataDataList) {
+
+    const dataCount = signupDataList?.count;
+
+    if (signupDataDataList) {
       setSignupData(signupDataDataList);
       setFilterSignupData(signupDataDataList);
-     setDataCount(dataCount)
+      setDataCount(dataCount)
     }
   }, [signupDataList]); //
 
-  
-useEffect(() => {
+
+  useEffect(() => {
     if (saveData?.from_date && saveData?.to_date) {
       const postData = {
         from_date: moment(saveData.from_date).startOf('day').format('YYYY-MM-DD'),
@@ -96,19 +98,19 @@ useEffect(() => {
         pageSize: pageSize
       };
       setLoadingState(true)
-  
-      dispatch(fetchSignupData(postData)).then((resp)=>{
+
+      dispatch(fetchSignupData(postData)).then((resp) => {
         setLoadingState(false);
       })
-       
+
         .catch((error) => {
           setLoadingState(false);
         });
     }
   }, [pageSize, currentPage]);
-  
 
-const handleSubmit = (values) => {
+
+  const handleSubmit = (values) => {
     setLoadingState(true);
     setDisable(true)
     const postData = {
@@ -123,12 +125,12 @@ const handleSubmit = (values) => {
         isButtonClicked(true)
         setLoadingState(false);
         setDisable(false)
-        
+
       })
       .catch((error) => {
         setLoadingState(false);
         setDisable(false)
-        
+
       });
   };
 
@@ -342,11 +344,11 @@ const handleSubmit = (values) => {
                         type="submit"
                         className="btn cob-btn-primary approve text-white"
                         disabled={disable}
-                        >
+                      >
                         {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}
-                          Submit
+                          <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                        )} {/* Show spinner if disabled */}
+                        Submit
                       </button>
                       {signupData?.length > 0 ? (
                         <button

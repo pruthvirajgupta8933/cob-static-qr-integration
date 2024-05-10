@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
 import { axiosInstance } from "../../utilities/axiosInstance";
 import subAPIURL from "../../config"
 import { Link } from 'react-router-dom'
-
-// import CustomModal from "../../../_components/custom_modal";
 import CustomModal from "../../_components/custom_modal";
-// import {
-//   fetchFrequency,
-//   fetchMandateType,
-//   fetchMandatePurpose,
-//   fetchRequestType,
-//   fetchBankName,
-// } from "../../slices/subscription-slice/createMandateSlice";
-// import fetchMandateType from "../../slices/subscription-slice/createMandateSlice"
-
 import FormikController from "../../_components/formik/FormikController";
 import Progress from "../../_components/progress_bar/Progress";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
@@ -25,6 +13,7 @@ import AuthMandate from "./Mandate_Submission/authMandate";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom"
 import { fetchFrequency, fetchMandatePurpose, fetchMandateType, fetchRequestType, saveFormFirstData } from "../../slices/subscription-slice/createMandateSlice";
+import Yup from "../../_components/formik/Yup";
 
 const options1 = [
   { key: "Select", value: "Select" },
@@ -34,8 +23,8 @@ const options1 = [
 const FORM_VALIDATION = Yup.object().shape({
   mandateType: Yup.string().required("Required"),
   mandateMaxAmount: Yup.string()
-  .required('Required')
-  .matches(/^[0-9]+$/, 'Only numbers are allowed'),
+    .required('Required')
+    .matches(/^[0-9]+$/, 'Only numbers are allowed'),
   mandateCategory: Yup.string().required("Required"),
   frequency: Yup.string().required("Required"),
   emiamount: Yup.string().required("Required"),
@@ -118,8 +107,8 @@ const MandateForm = () => {
   const location = useLocation();
   const { search } = location;
   const mendateRegId = search.split("?mendateRegId=")[1];
-  
- useEffect(() => {
+
+  useEffect(() => {
     handleResponseApi()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mendateRegId])
@@ -190,18 +179,18 @@ const MandateForm = () => {
 
 
   const handleResponseApi = () => {
-    if(mendateRegId){
-    axiosInstance
-      .get(subAPIURL.HANDLE_RESPONSE + mendateRegId)
-      .then((response) => {
-      setHandleResponseData(response.data)
-        if (response.status === 200) {
-          setShowMandateModal(true)
-        }
-        // console.log(response.data,"this is response");
-      })
+    if (mendateRegId) {
+      axiosInstance
+        .get(subAPIURL.HANDLE_RESPONSE + mendateRegId)
+        .then((response) => {
+          setHandleResponseData(response.data)
+          if (response.status === 200) {
+            setShowMandateModal(true)
+          }
+          // console.log(response.data,"this is response");
+        })
     }
-    
+
 
   };
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import _ from 'lodash';
 import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
@@ -13,6 +13,7 @@ import API_URL from '../../../config';
 import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
 import { axiosInstance } from '../../../utilities/axiosInstance';
 import { v4 as uuidv4 } from 'uuid';
+import Yup from '../../../_components/formik/Yup';
 
 
 function TransactionHistoryDownload() {

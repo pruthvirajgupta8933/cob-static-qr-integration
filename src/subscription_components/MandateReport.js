@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/dashboard/NavBar/NavBar";
 import FormikController from "../_components/formik/FormikController";
-import { Formik,Form } from "formik";
-import * as Yup from "yup";
+import { Formik, Form } from "formik";
+// import * as Yup from "yup";
+
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { axiosInstance } from "../utilities/axiosInstance";
@@ -14,6 +15,7 @@ import toastConfig from "../utilities/toastTypes";
 import { fetchFilterForAllMandatesReportsSlice } from "../slices/subscription-slice/registeredMandateSlice";
 import CountPerPageFilter from "../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../_components/loader";
+import Yup from "../_components/formik/Yup";
 
 
 
@@ -49,8 +51,8 @@ const MandateReport = () => {
 
   // To get m_id
   const { user } = useSelector((state) => state.auth);
-  const subscription_merchant_id= user?.subscription_details?.subscription_merchant_id
-const [todayDate, setTodayDate] = useState(splitDate);
+  const subscription_merchant_id = user?.subscription_details?.subscription_merchant_id
+  const [todayDate, setTodayDate] = useState(splitDate);
 
 
   // Hardcoded value for Registration status dropdown
@@ -77,9 +79,9 @@ const [todayDate, setTodayDate] = useState(splitDate);
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
-      status: Yup.string().required("Required"),
-      mandatecategorycode: Yup.string().required("Required"),
-      pfrequency: Yup.string().required("Required"),
+    status: Yup.string().required("Required"),
+    mandatecategorycode: Yup.string().required("Required"),
+    pfrequency: Yup.string().required("Required"),
   });
 
 
@@ -141,7 +143,7 @@ const [todayDate, setTodayDate] = useState(splitDate);
         setMandateReport(data);
       })
 
-      .catch((err) => {});
+      .catch((err) => { });
   }, [currentPage, pageSize]);
 
 
@@ -350,10 +352,10 @@ const [todayDate, setTodayDate] = useState(splitDate);
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-          alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...")
       }
       return state
-  }
+    }
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
@@ -392,7 +394,7 @@ const [todayDate, setTodayDate] = useState(splitDate);
 
 
 
-  const submitHandler = (values) => { 
+  const submitHandler = (values) => {
     setDisable(true);
 
     const {
@@ -422,201 +424,201 @@ const [todayDate, setTodayDate] = useState(splitDate);
 
 
 
-    
-    dispatch(fetchFilterForAllMandatesReportsSlice(paramData))
-      .then((resp) => {
-        const data = resp?.payload?.records;
-        const dataCoun = resp?.payload?.count;
-        setShowData(true);
-        setMandateData(data);
-        setDataCount(dataCoun);
-        setMandateReport(data);
-        setDisable(false);
-      })
 
-      .catch((err) => {
-        toastConfig.errorToast(err);
-        setDisable(false);
-      });
+      dispatch(fetchFilterForAllMandatesReportsSlice(paramData))
+        .then((resp) => {
+          const data = resp?.payload?.records;
+          const dataCoun = resp?.payload?.count;
+          setShowData(true);
+          setMandateData(data);
+          setDataCount(dataCoun);
+          setMandateReport(data);
+          setDisable(false);
+        })
+
+        .catch((err) => {
+          toastConfig.errorToast(err);
+          setDisable(false);
+        });
 
     }
   }
 
-return (
+  return (
     <section className="ant-layout">
-    <div>
-      
-    </div>
+      <div>
 
-    <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-      <div className="gx-main-content-wrapper">
-        
+      </div>
+
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+        <div className="gx-main-content-wrapper">
+
           <h5 className="ml-4">Registered Mandate Reports</h5>
-       
 
-        <section className="features8 cid-sg6XYTl25a flleft w-100">
-          <div className="container-fluid">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={submitHandler}
-            >
-              {(formik) => (
-                <Form>
-                  <div className="form-row mt-2">
-                    <div className="form-group col-md-3 mx-4">
-                      <FormikController
-                        control="select"
-                        label="Registration Status"
-                        name="status"
-                        className="form-control form-select rounded-0 mt-0"
-                        options={options1}
-                      />
+
+          <section className="features8 cid-sg6XYTl25a flleft w-100">
+            <div className="container-fluid">
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={submitHandler}
+              >
+                {(formik) => (
+                  <Form>
+                    <div className="form-row mt-2">
+                      <div className="form-group col-md-3 mx-4">
+                        <FormikController
+                          control="select"
+                          label="Registration Status"
+                          name="status"
+                          className="form-control form-select rounded-0 mt-0"
+                          options={options1}
+                        />
+                      </div>
+
+                      <div className="form-group col-md-3 mx-4">
+                        <FormikController
+                          control="select"
+                          label="Mandate Category"
+                          name="mandatecategorycode"
+                          className="form-control form-select rounded-0 mt-0"
+                          options={tempMandateCategory}
+                        />
+                      </div>
+
+                      <div className="form-group col-md-3 mx-4">
+                        <FormikController
+                          control="select"
+                          label="Frequency"
+                          name="pfrequency"
+                          className="form-control form-select rounded-0 mt-0"
+                          options={tempFrequency}
+                        />
+                      </div>
+
+                      <div className="form-group col-md-3 mx-4">
+                        <FormikController
+                          control="input"
+                          type="date"
+                          label="From Date"
+                          name="fromDate"
+                          className="form-control rounded-0"
+                        />
+                      </div>
+
+                      <div className="form-group col-md-3 mx-4">
+                        <FormikController
+                          control="input"
+                          type="date"
+                          label="End Date"
+                          name="endDate"
+                          className="form-control rounded-0"
+                        />
+                      </div>
                     </div>
 
-                    <div className="form-group col-md-3 mx-4">
-                      <FormikController
-                        control="select"
-                        label="Mandate Category"
-                        name="mandatecategorycode"
-                        className="form-control form-select rounded-0 mt-0"
-                        options={tempMandateCategory}
-                      />
+                    <div className="form-row">
+                      <div className="form-group col-md-1 ml-4">
+                        <button
+                          type="submit"
+                          disabled={disable}
+                          className="btn btn-sm text-white"
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                        >
+                          Submit
+                        </button>
+                      </div>
+
+                      {showData === true ? mandateData?.length === 0 ? "" : (
+                        <div className="container-fluid flleft">
+                          <div className="row">
+                            <div className="form-group col-md-3 mt-2 ml-3 mt-4">
+                              <label>Search</label>
+                              <input
+                                className="form-control"
+                                onChange={debitReportSearch}
+                                type="text"
+                                placeholder="Search Here"
+                              />
+                            </div>
+
+                            <div className="form-group col-md-3 mt-4">
+                              <CountPerPageFilter
+                                pageSize={pageSize}
+                                dataCount={dataCount}
+                                changePageSize={changePageSize}
+                              />
+                            </div>
+
+                            <div className="form-group col-md-3 mt-5 ">
+                              <button
+                                className="btn btn-sm text-white"
+                                type="button"
+                                disabled={isexcelDataLoaded}
+                                onClick={() => exportToExcelFn()}
+                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              >
+                                Export
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      ) : (
+                        <></>
+                      )}
                     </div>
-
-                    <div className="form-group col-md-3 mx-4">
-                      <FormikController
-                        control="select"
-                        label="Frequency"
-                        name="pfrequency"
-                        className="form-control form-select rounded-0 mt-0"
-                        options={tempFrequency}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3 mx-4">
-                      <FormikController
-                        control="input"
-                        type="date"
-                        label="From Date"
-                        name="fromDate"
-                        className="form-control rounded-0"
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3 mx-4">
-                      <FormikController
-                        control="input"
-                        type="date"
-                        label="End Date"
-                        name="endDate"
-                        className="form-control rounded-0"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group col-md-1 ml-4">
-                      <button
-                        type="submit"
-                        disabled={disable}
-                        className="btn btn-sm text-white"
-                        style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                      >
-                        Submit
-                      </button>
-                    </div>
-
-                    {showData === true  ? mandateData?.length===0 ? "" :  (
-                       <div className="container-fluid flleft">
-                        <div className="row">
-                    <div className="form-group col-md-3 mt-2 ml-3 mt-4">
-                      <label>Search</label>
-                      <input
-                        className="form-control"
-                        onChange={debitReportSearch}
-                        type="text"
-                        placeholder="Search Here"
-                      />
-                    </div>
-                   
-                    <div className="form-group col-md-3 mt-4">
-                      <CountPerPageFilter
-                        pageSize={pageSize}
-                        dataCount={dataCount}
-                        changePageSize={changePageSize}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3 mt-5 ">
-                      <button
-                        className="btn btn-sm text-white"
-                        type="button"
-                        disabled={isexcelDataLoaded}
-                        onClick={() => exportToExcelFn()}
-                        style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                      >
-                        Export
-                      </button>
-                    </div>
-                  </div>
-                  </div>
-
-                       
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </section>
-
-        <section className="features8 cid-sg6XYTl25a flleft w-100">
-          <div className="container-fluid  p-3 my-3 ">
-            {/* To search specific data and count total number of records */}
-            
-
-          {showData === true  ? (
-
-            
-          <div className="col-md-12 col-md-offset-4">
-           
-            <p className="font-weight-bold">Total Records: {mandateData?.length}</p>
-            
-          
-            <div className="scroll overflow-auto">
-              <Table
-                row={rowData}
-                data={mandateData}
-                dataCount={dataCount}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                changeCurrentPage={changeCurrentPage}
-               
-              />
+                  </Form>
+                )}
+              </Formik>
             </div>
+          </section>
+
+          <section className="features8 cid-sg6XYTl25a flleft w-100">
+            <div className="container-fluid  p-3 my-3 ">
+              {/* To search specific data and count total number of records */}
 
 
-            <CustomLoader loadingState={loadingState} />
-            {/* {data?.length == 0 && !loadingState && (
+              {showData === true ? (
+
+
+                <div className="col-md-12 col-md-offset-4">
+
+                  <p className="font-weight-bold">Total Records: {mandateData?.length}</p>
+
+
+                  <div className="scroll overflow-auto">
+                    <Table
+                      row={rowData}
+                      data={mandateData}
+                      dataCount={dataCount}
+                      pageSize={pageSize}
+                      currentPage={currentPage}
+                      changeCurrentPage={changeCurrentPage}
+
+                    />
+                  </div>
+
+
+                  <CustomLoader loadingState={loadingState} />
+                  {/* {data?.length == 0 && !loadingState && (
               <h2 className="text-center font-weight-bold">No Data Found</h2>
             )} */}
-          
+
+                </div>
+
+
+              ) : (
+                <></>
+              )}
+
+
             </div>
-          
-
-          ) : (
-          <></>
-        )}
-
-
-          </div>
-        </section>
-      </div>
-    </main>
-  </section>
+          </section>
+        </div>
+      </main>
+    </section>
   )
 }
 

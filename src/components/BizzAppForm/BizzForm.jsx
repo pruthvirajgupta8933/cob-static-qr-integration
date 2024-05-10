@@ -1,10 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import API_URL from "../../config";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
+import Yup from "../../_components/formik/Yup";
 // import { v4 as uuidv4 } from 'uuid';
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 
@@ -9,6 +9,8 @@ import RateRadioMapping from './RateRadioMapping';
 import { useDispatch } from "react-redux";
 import { templateRate, viewRateMap } from '../../slices/rateMappingSlice';
 import { busiCategory } from '../../slices/kycSlice';
+import Yup from '../../_components/formik/Yup';
+
 
 const initialValues = {
     business_category: "",
@@ -29,7 +31,7 @@ const ViewRateMapping = (props) => {
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
-    const[isLoading,setIsloading]=useState(false)
+    const [isLoading, setIsloading] = useState(false)
 
 
     const [disable, setDisable] = useState(false)
@@ -62,7 +64,7 @@ const ViewRateMapping = (props) => {
             const postData = {
                 business_cat_code: businessTemplate
             };
-           
+
             dispatch(templateRate(postData)).then((resp) => {
                 const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
                 setBusinessTemplates(data)
@@ -90,7 +92,7 @@ const ViewRateMapping = (props) => {
             setDisable(false);
             setIsloading(false)
             setShow(true);
-            
+
         } catch (error) {
             setDisable(true);
             setIsloading(false)
@@ -101,7 +103,7 @@ const ViewRateMapping = (props) => {
     return (
         <div>
 
-            <div className="modal fade mymodals" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"ariaHidden="true">
+            <div className="modal fade mymodals" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" ariaHidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <Formik
@@ -182,16 +184,16 @@ const ViewRateMapping = (props) => {
 
                                                 <div >
                                                     <button disabled={disable} type="submit" className="btn cob-btn-primary mt-2  text-white">
-                                                    {
-                                                            isLoading ?  (<span
-                                                            className="spinner-border spinner-border-sm"
-                                                            role="status"
-                                                           ariaHidden="true"
-                                                          ></span>
-                                                        ) : (
-                                                          "View"
-                                                        )}
-                                                        
+                                                        {
+                                                            isLoading ? (<span
+                                                                className="spinner-border spinner-border-sm"
+                                                                role="status"
+                                                                ariaHidden="true"
+                                                            ></span>
+                                                            ) : (
+                                                                "View"
+                                                            )}
+
 
                                                     </button>
 

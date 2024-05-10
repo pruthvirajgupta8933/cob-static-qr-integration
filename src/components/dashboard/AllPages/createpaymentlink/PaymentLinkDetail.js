@@ -12,9 +12,10 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
 import ReactPaginate from 'react-paginate';
 import FormikController from "../../../../_components/formik/FormikController";
-import * as Yup from "yup";
-import { error } from "jquery";
+// import * as Yup from "yup";
+
 import toastConfig from "../../../../utilities/toastTypes";
+import Yup from "../../../../_components/formik/Yup";
 const PaymentLinkDetail = () => {
 
 

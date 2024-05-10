@@ -11,9 +11,11 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ReactPaginate from 'react-paginate';
 import FormikController from '../../../../_components/formik/FormikController';
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { Formik, Form } from "formik";
 import toastConfig from '../../../../utilities/toastTypes';
+import Yup from '../../../../_components/formik/Yup';
 
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);

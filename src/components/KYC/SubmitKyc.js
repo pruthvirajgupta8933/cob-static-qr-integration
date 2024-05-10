@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 
 import { KYC_STATUS_APPROVED, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import { toLower } from "lodash";
 import toastConfig from "../../utilities/toastTypes";
+import Yup from "../../_components/formik/Yup";
 
 function SubmitKyc(props) {
   const { role } = props;
@@ -46,7 +48,7 @@ function SubmitKyc(props) {
 
   const onSubmit = (value) => {
     setIsDisable(true);
-  
+
     if (rejectedDocList?.length > 0) {
       toast.error("Kindly Remove / Update the rejected document from the document list.")
       setIsDisable(false);
@@ -170,7 +172,7 @@ function SubmitKyc(props) {
 
                     >
                       {disable && <>
-                        <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
+                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
                         <span className="sr-only">Loading...</span>
                       </>}
                       Submit

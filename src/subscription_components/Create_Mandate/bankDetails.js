@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { bankAccountVerification } from "../../slices/kycSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { fetchMandateBankName, saveFormThirdData } from "../../slices/subscription-slice/createMandateSlice";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
+import Yup from "../../_components/formik/Yup";
 
 
 const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmission, setBankScreen, showbankData }) => {
@@ -103,8 +105,8 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
       }).nullable(),
     payerBank: Yup.string().required("Required").nullable(),
     payerAccountNumber: Yup.string()
-    .required('Required')
-    .matches(/^[0-9]+$/, 'Only numbers are allowed'),
+      .required('Required')
+      .matches(/^[0-9]+$/, 'Only numbers are allowed'),
 
     payerAccountType: Yup.string().test(
       "isRequired",
@@ -124,14 +126,14 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
 
     // console.log(values,"=====================>");
 
-      const verifyBankAccount= async()=> {
+    const verifyBankAccount = async () => {
       const res = await dispatch(
         bankAccountVerification({
           account_number: values?.payerAccountNumber,
           ifsc: values?.payerBankIfscCode,
         })
       );
-    
+
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
@@ -147,88 +149,88 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
         toast.error(res?.payload?.message);
       } else if (res?.payload?.detail) {
         toast.error(res?.payload?.detail);
-      } 
+      }
     }
-     verifyBankAccount();
-    
+    verifyBankAccount();
+
 
 
 
   };
   return (
-      <div className="col-lg-8">
-        {" "}
-        <Formik
-          initialValues={initialValues}
-          validationSchema={FORM_VALIDATION}
-          onSubmit={handleSubmit}
-          enableReinitialize={true}
-        >
-          <Form>
-            <div className="row">
-              <div className="col-lg-6 form-group">
-                <FormikController
-                  control="select"
-                  label="Authentication Mode"
-                  name="authenticationMode"
-                  className="form-control rounded-0 mt-0"
-                  options={authModeOptions}
-                />
-              </div>
-              <div className="col-lg-6 form-group">
-                <FormikController
-                  control="select"
-                  label="Bank Name"
-                  name="payerBank"
-                  className="form-control rounded-0 mt-0"
-                  options={bankName}
-                />
-              </div>
+    <div className="col-lg-8">
+      {" "}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={FORM_VALIDATION}
+        onSubmit={handleSubmit}
+        enableReinitialize={true}
+      >
+        <Form>
+          <div className="row">
+            <div className="col-lg-6 form-group">
+              <FormikController
+                control="select"
+                label="Authentication Mode"
+                name="authenticationMode"
+                className="form-control rounded-0 mt-0"
+                options={authModeOptions}
+              />
             </div>
-            <div className="row">
-              <div className="col-lg-6 form-group">
-                <FormikController
-                  control="input"
-                  label="IFSC Code"
-                  name="payerBankIfscCode"
-                  className="form-control rounded-0 mt-0"
-                />
-              </div>
-              <div className="col-lg-6 form-group">
-                <FormikController
-                  control="input"
-                  label="Account Number"
-                  name="payerAccountNumber"
-                  className="form-control rounded-0 mt-0"
-                // options={frequencyOptionsData}
-                />
-              </div>
+            <div className="col-lg-6 form-group">
+              <FormikController
+                control="select"
+                label="Bank Name"
+                name="payerBank"
+                className="form-control rounded-0 mt-0"
+                options={bankName}
+              />
             </div>
-            <div className="row">
-              <div className="col-lg-6 form-group">
-                <FormikController
-                  control="select"
-                  label="Account Type"
-                  name="payerAccountType"
-                  className="form-control rounded-0 mt-0"
-                  options={accuntTypeOptions}
-                />
-              </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-6 form-group">
+              <FormikController
+                control="input"
+                label="IFSC Code"
+                name="payerBankIfscCode"
+                className="form-control rounded-0 mt-0"
+              />
             </div>
-            <button
-              type="button"
-              className="btn btn-light"
-              onClick={() => backToPersonalScreen("personalScreen")}
-            >
-              Back
-            </button>
-            <button className="btn bttn cob-btn-primary ml-2" type="submit">
-              Next
-            </button>
-          </Form>
-        </Formik>
+            <div className="col-lg-6 form-group">
+              <FormikController
+                control="input"
+                label="Account Number"
+                name="payerAccountNumber"
+                className="form-control rounded-0 mt-0"
+              // options={frequencyOptionsData}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-6 form-group">
+              <FormikController
+                control="select"
+                label="Account Type"
+                name="payerAccountType"
+                className="form-control rounded-0 mt-0"
+                options={accuntTypeOptions}
+              />
+            </div>
+          </div>
+          <button
+            type="button"
+            className="btn btn-light"
+            onClick={() => backToPersonalScreen("personalScreen")}
+          >
+            Back
+          </button>
+          <button className="btn bttn cob-btn-primary ml-2" type="submit">
+            Next
+          </button>
+        </Form>
+      </Formik>
 
-      </div>
+    </div>
   );
 };
 export default BankDetails;

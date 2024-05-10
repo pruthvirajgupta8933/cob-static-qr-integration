@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
 import {
@@ -20,6 +21,7 @@ import moment from "moment";
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../_components/formik/Yup";
 
 const SettlementReportNew = () => {
     const dispatch = useDispatch();
@@ -199,7 +201,7 @@ const SettlementReportNew = () => {
                 toast.info("No data found");
             }
         } catch (error) {
-           toast.error("An error occurred");
+            toast.error("An error occurred");
         }
 
         setIsDisable(false);
@@ -356,13 +358,13 @@ const SettlementReportNew = () => {
 
                 'client_name': item.client_name === null ? "" : item.client_name,
                 'gr_number': item.gr_number === null ? "" : item.gr_number,
-               
+
                 'bank_message': item.bank_message === null ? "" : item.bank_message,
                 'fee_forward': item.fee_forward === null ? "" : item.fee_forward,
                 'ifsc_code': item.ifsc_code === null ? "" : item.ifsc_code,
                 'payer_acount_number': item.payer_acount_number === null ? "" : item.payer_acount_number,
                 'bank_txn_id': item.bank_txn_id === null ? "" : item.bank_txn_id,
-               
+
                 'settlement_date': item.settlement_date === null ? "" : item.settlement_date,
                 'settlement_amount': item.settlement_amount === null ? "" : Number.parseFloat(item.settlement_amount),
                 'settlement_status': item.settlement_status === null ? "" : item.settlement_status,

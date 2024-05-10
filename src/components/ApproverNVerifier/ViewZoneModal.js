@@ -1,30 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch } from "react-redux";
 import { updateZoneData, getZoneInfo, getZoneEmployeName, getMccCodeMaster } from '../../slices/merchantZoneMappingSlice';
 import { riskCategory } from '../../slices/rateMappingSlice';
-  const validationSchema = Yup.object({
+import Yup from "../../_components/formik/Yup";
+
+
+
+const validationSchema = Yup.object({
   emp_name: Yup.string().required("Required"),
   riskCategoryCode: Yup.string().required("Required").nullable(),
   mccCode: Yup.string().required("Required").nullable()
 })
 
 
+
 const ViewZoneModal = (props) => {
-  
+
   const [riskCategoryCode, setRiskCategoryCode] = useState([])
   const [employeeName, setEmployeeName] = useState([])
   const [mccCode, setMccCode] = useState([])
-  const[buttonDisable,setButtonDisable]=useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
   const [zoneInfo, setZoneinfo] = useState([])
   const dispatch = useDispatch();
 
-   const empNameFilterVal = employeeName.filter((item) => { 
-   
+  const empNameFilterVal = employeeName.filter((item) => {
+
     if (item.value?.toLowerCase() === zoneInfo.employee_name?.toLowerCase()) {
       return item
     }
@@ -46,7 +51,7 @@ const ViewZoneModal = (props) => {
   }
 
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(riskCategory())
       .then((resp) => {
         const data = convertToFormikSelectJson(
@@ -60,9 +65,9 @@ useEffect(() => {
   }, [])
 
 
-useEffect(() => {
+  useEffect(() => {
 
-  dispatch(getZoneEmployeName()).then((resp) => {
+    dispatch(getZoneEmployeName()).then((resp) => {
       const data = convertToFormikSelectJson("empCode", "empName", resp?.payload);
       setEmployeeName(data)
     }).catch(() => {
@@ -82,20 +87,20 @@ useEffect(() => {
     })
 
   }, []);
-  
+
 
   const handleSubmit = (values, { resetForm }) => {
     setButtonDisable(true)
-    
+
     const postData = {
       "client_code": props?.userData?.clientCode,
-       "emp_code": values?.emp_name,
+      "emp_code": values?.emp_name,
       "risk_category_code": values?.riskCategoryCode,
       "mcc_code": values?.mccCode
 
     };
 
-      dispatch(updateZoneData(postData)).then((resp) => {
+    dispatch(updateZoneData(postData)).then((resp) => {
 
 
       if (resp.meta.requestStatus === "fulfilled") {
@@ -110,9 +115,9 @@ useEffect(() => {
         setButtonDisable(false)
       }
 
-}).catch((resp) => {
+    }).catch((resp) => {
 
-})
+    })
   }
 
 
@@ -123,18 +128,18 @@ useEffect(() => {
     }
 
 
-  
+
   }, [props])
 
 
-const getZoneInfobyClientCode = (clientCode) => {
+  const getZoneInfobyClientCode = (clientCode) => {
     const postData = {
       client_code: clientCode,
     };
-     dispatch(getZoneInfo(postData)).then((resp) => {
-     setZoneinfo(resp?.payload)
+    dispatch(getZoneInfo(postData)).then((resp) => {
+      setZoneinfo(resp?.payload)
 
-}).catch(() => {
+    }).catch(() => {
 
     })
 
@@ -149,7 +154,7 @@ const getZoneInfobyClientCode = (clientCode) => {
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
-       ariaHidden="true"
+        ariaHidden="true"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
@@ -177,15 +182,15 @@ const getZoneInfobyClientCode = (clientCode) => {
                     </button>
                   </div>
                   <div className="modal-body">
-                  <div className="mb-3">
-                  <p className="m-0">
-                      Client Name: {props?.userData?.clientName}
-                    </p>
-                    <p className="m-0">
-                      Client Code: {props?.userData?.clientCode}
-                    </p>
-                  </div>
-                    
+                    <div className="mb-3">
+                      <p className="m-0">
+                        Client Name: {props?.userData?.clientName}
+                      </p>
+                      <p className="m-0">
+                        Client Code: {props?.userData?.clientCode}
+                      </p>
+                    </div>
+
                     <div className="container">
                       <Form>
                         <div className="row">
@@ -220,7 +225,7 @@ const getZoneInfobyClientCode = (clientCode) => {
                                 control="select"
                                 name="riskCategoryCode"
                                 options={riskCategoryCode}
-                              
+
                                 className="form-select"
                               />
 
@@ -246,50 +251,50 @@ const getZoneInfobyClientCode = (clientCode) => {
                             </div>
                           </div>
 
-                         </div>
+                        </div>
                         <div className="modal-footer">
 
-                         <button 
-                          type="submit"
-                           onClick={resetForm} 
-                           className="btn cob-btn-primary  text-white" disabled={buttonDisable}>
-                            
+                          <button
+                            type="submit"
+                            onClick={resetForm}
+                            className="btn cob-btn-primary  text-white" disabled={buttonDisable}>
+
                             {buttonDisable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}
-                          Submit</button>
+                              <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                            )} {/* Show spinner if disabled */}
+                            Submit</button>
                         </div>
                       </Form>
                     </div>
                   </div>
                 </>
               )}
-              </Formik>
-              <div className="container mr-2">
-            <table className="table mr-2">
+            </Formik>
+            <div className="container mr-2">
+              <table className="table mr-2">
 
-              <thead>
-                <tr>
+                <thead>
+                  <tr>
 
-                  <th scope="col">Employee Name</th>
-                  <th scope="col">Risk Category</th>
-                  <th scope="col">MCC Code</th>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Risk Category</th>
+                    <th scope="col">MCC Code</th>
 
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{zoneInfo?.employee_name}</td>
-                  <td>{zoneInfo?.risk_name}</td>
-                  <td>{zoneInfo?.mcc_elaboration}</td>
-                </tr>
-              </tbody>
-            </table>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{zoneInfo?.employee_name}</td>
+                    <td>{zoneInfo?.risk_name}</td>
+                    <td>{zoneInfo?.mcc_elaboration}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            </div>
+          </div>
 
-          
- 
+
+
         </div>
       </div>
     </div>

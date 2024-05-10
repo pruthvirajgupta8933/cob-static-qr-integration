@@ -105,6 +105,7 @@ function TransactionEnquirey() {
   };
 
   const onSubmit = async (input) => {
+    console.log(input)
     setLoadingState(true);
     setData({});
     setIsDisable(true);
@@ -182,22 +183,22 @@ function TransactionEnquirey() {
 
 
   const txnOption = [
-    { key: "Sabpaisa Transaction ID", value: "1" },
-    { key: "Client Transaction ID", value: "2" }
+    { key: "1", value: "Sabpaisa Transaction ID" },
+    { key: "2", value: "Client Transaction ID" }
   ];
 
 
   return (
     <section className="">
-      
+
       <main className="">
         <div className="">
-         
+
           <h5 className="">Transaction Enquiry</h5>
           {/* </div> */}
           <section className="">
             <div className="container-fluid p-0">
-            
+
               <div className="row">
 
                 <Formik
@@ -207,32 +208,38 @@ function TransactionEnquirey() {
                 >
                   {(formik) => (
                     <Form className="col-lg-12">
-
                       <div className="form-row mt-4 ml-1">
-                        <div className="col-lg-12">
-                          <div className="form-group col-lg-3">
-                            <FormikController
-                              control="select"
-                              label="Client Code"
-                              name="clientCode"
-                              className="form-select rounded-0 mt-0"
-                              options={clientCodeOption}
-                            />
-                          </div>
-                          <div className="form-group col-md-12 col-sm-12 p-0 col-lg-5 d-flex justify-content-between">
-                            <FormikController
-                              control="radio"
-                              className="form-check-input"
-                              options={txnOption}
-                              name="transaction_from"
-                            />
-                          </div>
+
+                        <div className="form-group col-lg-2">
+                          <FormikController
+                            control="select"
+                            label="Client Code"
+                            name="clientCode"
+                            className="form-select rounded-0 mt-0"
+                            options={clientCodeOption}
+                          />
                         </div>
 
+                        <div className="form-group col-lg-3">
+                          <FormikController
+                            control="select"
+                            label="Search By"
+                            name="transaction_from"
+                            className="form-select rounded-0 mt-0"
+                            onChange={(e) => {
+                              formik.setFieldValue("transaction_from", e.target.value)
+                              formik.setFieldValue("transaction_id", "")
+                            }}
+                            options={txnOption}
+                          />
+                        </div>
+
+                      </div>
+                      <div className="form-row mt-4 ml-1">
                         <div className="form-group col-md-12 col-sm-12 col-lg-5">
                           <FormikController
                             control="input"
-                            // label="Transaction ID  *"
+                            label="Transaction ID"
                             lableClassName="font-weight-bold"
                             name="transaction_id"
                             placeholder="Enter Transaction ID"
@@ -245,9 +252,9 @@ function TransactionEnquirey() {
                             type="submit"
                           >
                             {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}
-                          View
+                              <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                            )} {/* Show spinner if disabled */}
+                            View
                           </button>
                           {(show && printData?.length > 0) && <button
                             Value="click"

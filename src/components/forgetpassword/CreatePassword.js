@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import API_URL from "../../config";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import Yup from "../../_components/formik/Yup";
 
 const CreatePassword = (props) => {
   const { auth } = useSelector((state) => state);
@@ -118,12 +120,12 @@ const CreatePassword = (props) => {
                               {valuesIn.showPassword ? (
                                 <i
                                   className="fa fa-eye"
-                                 ariaHidden="true"
+                                  ariaHidden="true"
                                 ></i>
                               ) : (
                                 <i
                                   className="fa fa-eye-slash"
-                                 ariaHidden="true"
+                                  ariaHidden="true"
                                 ></i>
                               )}
                             </a>
@@ -166,12 +168,12 @@ const CreatePassword = (props) => {
                               {passwordType.showPasswords ? (
                                 <i
                                   className="fa fa-eye"
-                                 ariaHidden="true"
+                                  ariaHidden="true"
                                 ></i>
                               ) : (
                                 <i
                                   className="fa fa-eye-slash"
-                                 ariaHidden="true"
+                                  ariaHidden="true"
                                 ></i>
                               )}
                             </a>

@@ -3,9 +3,10 @@ import axios from 'axios'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
+// import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
+import Yup from '../../../../_components/formik/Yup';
 
 // import FormikController from "../../_components/formik/FormikController";
 
@@ -87,7 +88,7 @@ const Genratelink = (props) => {
       id="bhuvi"
       role="dialog"
       aria-labelledby="exampleModalLabel"
-     ariaHidden="true"
+      ariaHidden="true"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -223,7 +224,7 @@ const Genratelink = (props) => {
                           disabled={disable}
                         >
                           {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Submit
                         </button>

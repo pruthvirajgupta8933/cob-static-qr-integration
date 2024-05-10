@@ -5,7 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
@@ -19,6 +20,7 @@ import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
 // import { exportTxnLoadingState } from "../../../../slices/dashboardSlice";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../../_components/formik/Yup";
 
 
 const TransactionHistoryDoitc = () => {

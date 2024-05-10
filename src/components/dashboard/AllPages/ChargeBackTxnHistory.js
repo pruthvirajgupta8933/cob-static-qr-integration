@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
 import {
@@ -18,6 +19,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import Yup from "../../../_components/formik/Yup";
 
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
@@ -335,7 +337,7 @@ const ChargeBackTxnHistory = () => {
                           className="btn btn-sm cob-btn-primary  text-white"
                           type="submit"
                         >
-                         {disable && (
+                          {disable && (
                             <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Search

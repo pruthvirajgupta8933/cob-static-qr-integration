@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
+// import * as Yup from 'yup'
 import axios from "axios";
 import { toast, Zoom } from 'react-toastify';
 import { useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import FormikController from "../../../../_components/formik/FormikController";
 import moment from "moment";
 import toastConfig from "../../../../utilities/toastTypes";
+import Yup from "../../../../_components/formik/Yup";
 
 function FormPaymentLink(props) {
   const { loaduser } = props;

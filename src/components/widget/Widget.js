@@ -1,12 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
+
 import FormikController from '../../_components/formik/FormikController';
 import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
 import { toast } from "react-toastify";
 import hljs from 'highlight.js';
 import { WIDGET_SCRIPT_URL } from '../../config';
+import Yup from '../../_components/formik/Yup';
 
 function MyForm() {
     const dispatch = useDispatch();

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { clearKycDetailsByMerchantLoginId, kycDetailsByMerchantLoginId, saveKycConsent } from "../../../../../../slices/kycSlice";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
 import { resetFormState } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { axiosInstanceJWT } from "../../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../../config";
 import authService from "../../../../../../services/auth.service";
+import Yup from "../../../../../../_components/formik/Yup";
+
 
 function SubmitKyc({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch();
@@ -171,7 +173,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
                             >
                                 {disable && <>
                                     <span className="spinner-border spinner-border-sm" role="status"
-                                       ariaHidden="true" />
+                                        ariaHidden="true" />
                                     <span className="sr-only">Loading...</span>
                                 </>}
                                 Submit
