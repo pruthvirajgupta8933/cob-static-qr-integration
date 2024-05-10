@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingComments,
@@ -15,6 +15,8 @@ import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../_components/formik/Yup";
+
 
 const CommentModal = (props) => {
   // console.log(props)

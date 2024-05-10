@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/dashboard/NavBar/NavBar";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { Regex, RegexMsg } from "../_components/formik/ValidationRegex";
 import {
   fetchBeneficiaryDetails,
@@ -14,6 +15,7 @@ import { Encrypt, Decrypt } from "../utilities/aes";
 import BankResponse from "./BankResponse";
 import FormikController from "../_components/formik/FormikController";
 import toastConfig from "../utilities/toastTypes";
+import Yup from "../_components/formik/Yup";
 
 
 const MakePayment = (props) => {

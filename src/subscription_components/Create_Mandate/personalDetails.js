@@ -1,19 +1,18 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { useDispatch, useSelector } from "react-redux";
 import { saveFormSecondData } from "../../slices/subscription-slice/createMandateSlice";
-import { useParams } from "react-router-dom";
+import Yup from "../../_components/formik/Yup";
+
 const PersonalDetails = ({ showBankDetails, backToPreviousScreen }) => {
   const handleSubmitPersonal = (values) => {
     showBankDetails("showPersonalDetails", values);
     dispatch(saveFormSecondData({ values }))
-
-
-    // console.log(values,'values');
   };
- 
+
 
 
 

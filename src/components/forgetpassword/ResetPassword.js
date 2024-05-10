@@ -1,8 +1,10 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { useSelector } from "react-redux";
 import API_URL from "../../config";
+import Yup from "../../_components/formik/Yup";
 
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
@@ -154,7 +156,7 @@ const ResetPassword = (props) => {
                       <button
                         type="submit"
                         className="btn  cob-btn-primary "
-                        // onClick={() => props.props("a4")}
+                      // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>

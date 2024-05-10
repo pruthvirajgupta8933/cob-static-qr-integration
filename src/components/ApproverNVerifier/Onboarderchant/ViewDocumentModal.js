@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { forSavingDocument, forGettingDocumentList, removeDocumentSlice } from "../../../slices/merchantZoneMappingSlice";
 import toastConfig from "../../../utilities/toastTypes";
@@ -12,6 +12,7 @@ import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../_components/formik/Yup";
 
 const ViewDocumentModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
@@ -33,7 +34,7 @@ const ViewDocumentModal = (props) => {
   const commentUpdate = () => {
     dispatch(
       forGettingDocumentList({
-      login_id: props?.documentData?.loginMasterId
+        login_id: props?.documentData?.loginMasterId
       })
     )
       .then((resp) => {
@@ -317,7 +318,7 @@ const ViewDocumentModal = (props) => {
                                 removeDocument(remark?.document_id);
                               }}
                             >
-                              <i className="fa fa-trash-o"ariaHidden="true"></i>
+                              <i className="fa fa-trash-o" ariaHidden="true"></i>
                             </button>
                           </td>
                         </tr>

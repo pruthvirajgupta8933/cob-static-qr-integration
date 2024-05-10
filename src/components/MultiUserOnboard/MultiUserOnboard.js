@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import OnboardMerchant from "../ApproverNVerifier/Onboarderchant/OnboardMerchant";
 import ReferralOnboardForm from "../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
 import { fetchParentTypeData } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
+
 import BankMerchantOnboard from "../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
 import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import classes from "./multi-user-onboard.module.css"
+import Yup from "../../_components/formik/Yup";
 
 
 const MultiUserOnboard = () => {

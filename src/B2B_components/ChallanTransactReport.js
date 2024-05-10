@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import moment from "moment";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import Yup from "../_components/formik/Yup";
 import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../_components/reuseable_components/convertToFormikSelectJson";
@@ -17,6 +18,7 @@ import Table from "../_components/table_components/table/Table";
 import CountPerPageFilter from "../../src/_components/table_components/filters/CountPerPage";
 import SearchFilter from "../_components/table_components/filters/SearchFilter";
 import CustomLoader from "../_components/loader";
+
 
 const ChallanTransactReport = () => {
   const dispatch = useDispatch();
@@ -118,7 +120,7 @@ const ChallanTransactReport = () => {
   };
 
   const searchByText = (text) => {
-   
+
     // console.log("verfiedMerchant-s", verfiedMerchant)
     // console.log("data-s", data)
     if (searchText) {

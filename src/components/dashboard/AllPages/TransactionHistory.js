@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import FormikController from "../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
@@ -26,6 +27,7 @@ import ReactPaginate from 'react-paginate';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
+import Yup from "../../../_components/formik/Yup";
 
 
 const TransactionHistory = () => {
@@ -357,7 +359,7 @@ const TransactionHistory = () => {
         SetSearchText(e.target.value);
     };
 
-   
+
 
     let handleExportLoading = (state) => {
         // console.log(state)
@@ -412,7 +414,7 @@ const TransactionHistory = () => {
             "Payer Account No",
             "Bank Txn Id",
         ];
-    
+
         const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
         txnList.forEach((item, index) => {
             const {
@@ -457,7 +459,7 @@ const TransactionHistory = () => {
                 payer_acount_number = "",
                 bank_txn_id = ""
             } = item;
-    
+
             excelArr.push([
                 srNo,
                 txn_id,
@@ -501,11 +503,11 @@ const TransactionHistory = () => {
                 bank_txn_id
             ]);
         });
-    
+
         const fileName = "Transactions-Report";
         exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     };
-    
+
 
     const today = new Date();
     const lastThreeMonth = new Date(today);

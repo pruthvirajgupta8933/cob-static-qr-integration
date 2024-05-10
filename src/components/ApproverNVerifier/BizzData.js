@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import API_URL from "../../config";
 import moment from "moment";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { toast } from "react-toastify";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import FormikController from "../../_components/formik/FormikController";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../_components/formik/Yup";
 
 
 const validationSchema = Yup.object({

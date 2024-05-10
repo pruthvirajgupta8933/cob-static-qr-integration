@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { clearFetchAllByKycStatus, onboardedReport } from "../../slices/kycSlice";
 import moment from "moment";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
@@ -12,6 +12,7 @@ import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import { exportToExcelOnboard } from "../../services/kyc/export-data.service";
+import Yup from "../../_components/formik/Yup";
 
 const OnboardedReport = () => {
   const [searchingData, setSearchingData] = useState([]);
@@ -23,7 +24,7 @@ const OnboardedReport = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedvalue, setSelectedvalue] = useState(KYC_STATUS_APPROVED);
   const [disabled, setDisabled] = useState(false);
-  const[exportDisable,setExportDisable]=useState(false)
+  const [exportDisable, setExportDisable] = useState(false)
   // const [dataClick, setDataClick] = useState(false);
 
   const dispatch = useDispatch();
@@ -151,7 +152,7 @@ const OnboardedReport = () => {
         page_size: pageSize,
         kyc_status: values.status
       })
-    ).then((res)=>{
+    ).then((res) => {
       setDisabled(false)
     })
   };
@@ -175,7 +176,7 @@ const OnboardedReport = () => {
       status: onboardValue.status,
       from_date: moment(onboardValue.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: moment(onboardValue.to_date).startOf('day').format('YYYY-MM-DD'),
-    }).then((res)=>{
+    }).then((res) => {
       setExportDisable(false)
 
     })
@@ -251,10 +252,10 @@ const OnboardedReport = () => {
                   className="btn cob-btn-primary mt-4 approve text-white btn-sm"
                   disabled={disabled}
                 >
-                   {disabled && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}
-                          Search
+                  {disabled && (
+                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                  )} {/* Show spinner if disabled */}
+                  Search
                 </button>
               </div>
             </Form>
@@ -295,9 +296,9 @@ const OnboardedReport = () => {
                   disabled={exportDisable}
                 >
                   {exportDisable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
-                          )}
-                          Export
+                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                  )}
+                  Export
                 </button>
               </div>
             </div>

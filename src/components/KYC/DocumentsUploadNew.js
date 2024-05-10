@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Form, Formik } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
@@ -20,6 +21,7 @@ import "../../assets/css/kyc-document.css";
 import { isNull, isUndefined } from "lodash";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED, } from "../../utilities/enums";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../_components/formik/Yup";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;

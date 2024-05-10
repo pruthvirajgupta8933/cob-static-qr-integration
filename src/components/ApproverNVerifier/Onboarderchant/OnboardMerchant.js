@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import API_URL from "../../../config";
 import "../../login/css/home.css"
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../../slices/auth";
 import { toast, Zoom } from "react-toastify";
 import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../_components/formik/Yup";
 
 
 
@@ -376,8 +377,8 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
                                 />
 
                                 <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">
-                                    {valuesIn.showPassword ? (<i className="fa fa-eye"ariaHidden="true"></i>) : (
-                                        <i className="fa fa-eye-slash"ariaHidden="true"></i>
+                                    {valuesIn.showPassword ? (<i className="fa fa-eye" ariaHidden="true"></i>) : (
+                                        <i className="fa fa-eye-slash" ariaHidden="true"></i>
                                     )}</span>
                             </div>
 
@@ -407,8 +408,8 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
                                 data-rel={btnDisable}
                             >
                                 {btnDisable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}Submit
+                                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                                )} {/* Show spinner if disabled */}Submit
                             </button>
                         </div>
                     </Form>

@@ -7,14 +7,16 @@ import "./mandateDetails/mandateSubmission.css";
 import npciLogo from "../../../assets/images/npci.png";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import FormikController from "../../../_components/formik/FormikController";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { useSelector } from "react-redux";
-import subAPIURL from "../../../config"
-import { axiosInstance } from "../../../utilities/axiosInstance";
+// import subAPIURL from "../../../config"
+// import { axiosInstance } from "../../../utilities/axiosInstance";
 import "../Mandate_Submission/mandateDetails/mandateSubmission.css";
 import CustomModal from "../../../_components/custom_modal";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../config";
+import Yup from "../../../_components/formik/Yup";
 
 
 const AuthMandate = () => {
@@ -24,19 +26,10 @@ const AuthMandate = () => {
   const [postData, setPostData] = useState({})
   const history = useHistory()
   const form = useRef()
-  
+
 
   const { createMandate } = useSelector((state) => state);
-  
-  // console.log(createMandate.createMandate
-  //   ?.mergedForm?.firstForm ,"this is createmen")
 
-
-  // console.log("firstForm",firstForm)
-  // console.log("secondForm",secondForm)
-  // console.log("thirdForm",thirdForm)
-
-  // console.log(createMandate?.createMandate?.formData)
   const { firstForm, secondForm, thirdForm } = createMandate?.createMandate?.formData;
   const mergedForm = {
     ...firstForm,
@@ -113,15 +106,15 @@ const AuthMandate = () => {
       emiamount: mergedForm?.emiamount,
     };
     setPostData(mandateSubmissionDetails);
-    
+
     // history.push("/")
 
     form.current.submit();
-   
+
     // history.push("/dashboard/subscription/mandate-reg-response")
 
   };
- 
+
 
 
   const pushToDashboard = () => {
@@ -172,7 +165,7 @@ const AuthMandate = () => {
                 E-Mandate Summary
                 <i
                   className="fa fa-chevron-down "
-                 ariaHidden="true"
+                  ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -201,7 +194,7 @@ const AuthMandate = () => {
                 Mandate Summary
                 <i
                   className="fa fa-chevron-down"
-                 ariaHidden="true"
+                  ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -229,7 +222,7 @@ const AuthMandate = () => {
                 Personal Details
                 <i
                   className="fa fa-chevron-down"
-                 ariaHidden="true"
+                  ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -256,7 +249,7 @@ const AuthMandate = () => {
                 Bank Details
                 <i
                   className="fa fa-chevron-down"
-                 ariaHidden="true"
+                  ariaHidden="true"
                 ></i>
               </button>
             </h3>
@@ -361,7 +354,7 @@ const AuthMandate = () => {
                               <span
                                 className="spinner-border spinner-border-sm"
                                 role="status"
-                               ariaHidden="true"
+                                ariaHidden="true"
                               ></span>
                               &nbsp;  Please wait...
                             </>
@@ -444,7 +437,7 @@ const AuthMandate = () => {
           action={API_URL.MANDATE_REGISTRATION}
           method="POST"
           name="mandateRegForm"
-          // target="_blank"
+        // target="_blank"
 
         >
           <div style={{ display: "none" }}>
@@ -475,8 +468,8 @@ const AuthMandate = () => {
             <input type="text" name="telePhone" value={postData?.telePhone} />
             <input type="text" name="untilCancelled" value={postData?.untilCancelled} />
             <input type="text" name="userType" value={postData?.userType} />
-            <input type="submit"  value="submit" />
-           
+            <input type="submit" value="submit" />
+
           </div>
         </form>
       </div>

@@ -336,9 +336,7 @@ const PayerDetails = () => {
               {({ resetForm }) => (
                 <>
                   <div className="modal-header">
-                    <h3 className="modal-title" id="exampleModalLabel">
-                      Add Payer Details
-                    </h3>
+                    <h6 className="fw-bold" >Add Payer </h6>
                     <button
                       type="button"
                       className="close"
@@ -606,7 +604,7 @@ const PayerDetails = () => {
                 <select
                   value={pageSize}
                   rel={pageSize}
-                  className="form-control"
+                  className="form-select"
                   onChange={(e) => setPageSize(parseInt(e.target.value))}
                 >
                   <DropDownCountPerPage datalength={data.length} />

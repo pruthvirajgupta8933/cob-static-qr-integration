@@ -1,14 +1,15 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import * as Yup from "yup"
+// import * as Yup from "yup"
 import { Formik, Form } from "formik"
 import API_URL from '../../config';
 import FormikController from '../../_components/formik/FormikController';
 import Header from "../mainComponent/header/Header"
 import toastConfig from '../../utilities/toastTypes';
+import Yup from '../../_components/formik/Yup';
 
- const Recipts = () => {
+const Recipts = () => {
 
 
   const initialValues = {
@@ -26,7 +27,7 @@ import toastConfig from '../../utilities/toastTypes';
   const [data, setData] = useState([])
   const [btnDisable, setBtnDisable] = useState(false)
 
-  
+
   const txnOption = [
     { key: "Sabpaisa Transaction ID", value: "1" },
     { key: "Client Transaction ID", value: "2" }
@@ -35,7 +36,7 @@ import toastConfig from '../../utilities/toastTypes';
   const onSubmit = (input) => {
     setData({});
     setBtnDisable(true)
-    
+
     let spTxnId = 0
     let clientTxnId = 0
 
@@ -60,7 +61,7 @@ import toastConfig from '../../utilities/toastTypes';
           toastConfig.successToast("Data Found")
           setBtnDisable(false)
           //  setErrMessage(false);
-        } 
+        }
       })
       .catch((e) => {
         setIsShow(false);
@@ -101,7 +102,7 @@ import toastConfig from '../../utilities/toastTypes';
                     <Form>
                       <div className="form-row">
                         <div className="form-group col-md-12 col-sm-12 col-lg-12">
-                        <FormikController
+                          <FormikController
                             control="radio"
                             className="form-check-input"
                             options={txnOption}
@@ -136,7 +137,7 @@ import toastConfig from '../../utilities/toastTypes';
                 <div className="card ">
                   <div className="card-body">
                     <div className="d-flex justify-content-end">
-                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                      <a onClick={onClick} className="btn btn-light btn-sm" href={false}><i className="fa fa-print font-size-16"></i></a>
                     </div>
                     <table className="table table-striped" id="receipt_table" style={{ border: "1px solid #ccc", width: "100%", maxWidth: "100%", marginBottom: "1rem", backgroundColor: "initial", color: "#212529" }} >
                       <tbody>

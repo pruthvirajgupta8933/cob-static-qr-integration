@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import API_URL from "../../../config";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import FormikController from "../../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
@@ -11,6 +12,7 @@ import PrintDocument from "../../../_components/reuseable_components/PrintDocume
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import toastConfig from "../../../utilities/toastTypes";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../_components/formik/Yup";
 
 function TransactionEnqMultiParam() {
   const [txnList, SetTxnList] = useState([]);
@@ -203,7 +205,7 @@ function TransactionEnqMultiParam() {
         id="exampleModalCenter"
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
-       ariaHidden="true"
+        ariaHidden="true"
       // style={{ display: toggleModal ? "block" : "none" }}
       >
         <div
@@ -479,7 +481,7 @@ function TransactionEnqMultiParam() {
                         <th> Payment Status </th>
                         <th> Payer Name </th>
                         <th> Payer Email </th>
-                        <th> &nbsp;</th>
+                        <th> Action</th>
                       </tr>
                     ) : (
                       <></>

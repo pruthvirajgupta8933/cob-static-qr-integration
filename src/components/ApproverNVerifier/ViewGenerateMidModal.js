@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
@@ -10,6 +10,8 @@ import { forGeneratingMid } from "../../slices/referralAndMidOperationSlice";
 import { getallGenrateMidData } from "../../slices/referralAndMidOperationSlice";
 import DateFormatter from "../../utilities/DateConvert";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../_components/formik/Yup";
+
 
 const ViewGenerateMidModal = (props) => {
   const [bankData, setBankData] = useState([]);
@@ -110,7 +112,7 @@ const ViewGenerateMidModal = (props) => {
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
-     ariaHidden="true"
+      ariaHidden="true"
     >
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch, useSelector } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
 import { saveReferingMerchant } from "../../slices/referralAndMidOperationSlice";
 import { getRefferal } from "../../services/kyc/merchant-kyc";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
+import Yup from "../../_components/formik/Yup";
+
 
 const ViewReferZoneModal = (props) => {
   const [selectedValue, setSelectedvalue] = useState("");
@@ -51,7 +53,7 @@ const ViewReferZoneModal = (props) => {
 
 
   const handleSubmit = (values) => {
-    
+
     let saveRefData = {
       login_id: props.userData.loginMasterId,
       approver_id: loginId,
@@ -84,7 +86,7 @@ const ViewReferZoneModal = (props) => {
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
-     ariaHidden="true"
+      ariaHidden="true"
     >
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
@@ -179,7 +181,7 @@ const ViewReferZoneModal = (props) => {
                           disabled={disable}
                         >
                           {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                           )} {/* Show spinner if disabled */}
                           Refer Merchant
                         </button>

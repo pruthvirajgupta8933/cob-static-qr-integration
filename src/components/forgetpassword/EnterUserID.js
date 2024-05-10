@@ -1,9 +1,11 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { getEmailToSendOtpSlice } from "../../slices/auth";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import Yup from "../../_components/formik/Yup";
 
 
 const EnterUserID = (props) => {

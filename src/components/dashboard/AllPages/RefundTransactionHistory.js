@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
 import {
@@ -19,6 +19,7 @@ import moment from "moment";
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { v4 as uuidv4 } from 'uuid';
+import Yup from "../../../_components/formik/Yup";
 
 const RefundTransactionHistory = () => {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const RefundTransactionHistory = () => {
     const clientCodeData = refrerChiledList?.resp?.results ?? []
     const { isLoadingTxnHistory } = dashboard;
 
-    
+
 
     var clientMerchantDetailsList = [];
     if (
@@ -73,7 +74,7 @@ const RefundTransactionHistory = () => {
 
     const [todayDate, setTodayDate] = useState(splitDate);
 
-    
+
 
     const validationSchema = Yup.object({
         clientCode: Yup.string().required("Required"),
@@ -112,7 +113,7 @@ const RefundTransactionHistory = () => {
         isExtraDataRequired,
         forClientCode
     );
-    
+
 
     const initialValues = {
         clientCode: "",
@@ -123,7 +124,7 @@ const RefundTransactionHistory = () => {
     };
     if (roles.merchant === true && clientCodeListArr && clientCodeListArr.length > 0 && clientCodeListArr[0] && clientCodeListArr[0][fnKey]) {
         initialValues.clientCode = clientCodeListArr[0][fnKey];
-      }
+    }
 
 
     const fetchData = () => {

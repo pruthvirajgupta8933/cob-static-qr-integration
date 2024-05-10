@@ -11,9 +11,11 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ReactPaginate from 'react-paginate';
 import FormikController from '../../../../_components/formik/FormikController';
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { Formik, Form } from "formik";
 import toastConfig from '../../../../utilities/toastTypes';
+import Yup from '../../../../_components/formik/Yup';
 
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -117,25 +119,25 @@ const Reports = () => {
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
     const dateRangeValid = checkValidation(fromDate, toDate);
     if (dateRangeValid) {
-    axiosInstance.get(`${API_URL.GET_REPORTS}${clientCode}/${fromDate}/${toDate}`)
-      .then((res) => {
-        if(res?.data?.length===0){
-          toastConfig.errorToast("No Data Found")
-        }else{
-        // toastConfig.successToast("Payment Link Data Loaded");
-        setData(res.data);
-        setLoadingState(false);
-        setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-        }
-        setDisable(false)
+      axiosInstance.get(`${API_URL.GET_REPORTS}${clientCode}/${fromDate}/${toDate}`)
+        .then((res) => {
+          if (res?.data?.length === 0) {
+            toastConfig.errorToast("No Data Found")
+          } else {
+            // toastConfig.successToast("Payment Link Data Loaded");
+            setData(res.data);
+            setLoadingState(false);
+            setDisplayList(res.data);
+            setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+          }
+          setDisable(false)
 
-      })
-      .catch((err) => {
-        console.error("Error loading data:", err);
-        setDisable(false)
-        // toastConfig.errorToast("Data not loaded");
-      });
+        })
+        .catch((err) => {
+          console.error("Error loading data:", err);
+          setDisable(false)
+          // toastConfig.errorToast("Data not loaded");
+        });
     }
   };
 
@@ -143,27 +145,27 @@ const Reports = () => {
     let flag = true;
 
     if (!fromDate || !toDate) {
-        alert("Please select both start and end dates.");
-        flag = false;
+      alert("Please select both start and end dates.");
+      flag = false;
     } else {
-        const date1 = new Date(fromDate);
-        const date2 = new Date(toDate);
+      const date1 = new Date(fromDate);
+      const date2 = new Date(toDate);
 
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        let allowedTxnViewDays = 60; // Two months * 31 days per month
-        let monthAllowed = 2; // Two months
+      let allowedTxnViewDays = 60; // Two months * 31 days per month
+      let monthAllowed = 2; // Two months
 
-        if (diffDays < 0 || diffDays > allowedTxnViewDays) {
-            flag = false;
-            alert(`Please choose a ${monthAllowed}-month date range.`);
-            setDisable(false);
-        }
+      if (diffDays < 0 || diffDays > allowedTxnViewDays) {
+        flag = false;
+        alert(`Please choose a ${monthAllowed}-month date range.`);
+        setDisable(false);
+      }
     }
 
     return flag;
-};
+  };
 
 
 
@@ -174,7 +176,7 @@ const Reports = () => {
     <React.Fragment>
       {/* filter area */}
       <section className="" id="">
-      <div className="container-fluid">
+        <div className="container-fluid">
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -249,7 +251,7 @@ const Reports = () => {
                 </select>
               </div>
             </div>
-            }
+          }
 
         </div>
       </section>

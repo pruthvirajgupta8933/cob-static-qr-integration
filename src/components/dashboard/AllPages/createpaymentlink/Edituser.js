@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+
 import { toast, Zoom } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
@@ -12,12 +13,13 @@ import {
 } from "../../../../_components/formik/ValidationRegex";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomModal from "../../../../_components/custom_modal";
+import Yup from "../../../../_components/formik/Yup";
 
 export const Edituser = (props) => {
   let history = useHistory();
   const { myname, email, phone, editCustomerTypeId, id } = props.items;
   const callBackFn = props.callBackFn;
-  const [disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false)
 
   const initialValues = {
     name: myname,
@@ -83,7 +85,7 @@ export const Edituser = (props) => {
         setDisable(false)
       });
   };
-  
+
   const getDrop = async (e) => {
     await axiosInstance
       .get(API_URL.GET_CUSTOMER_TYPE)
@@ -151,16 +153,16 @@ export const Edituser = (props) => {
                   className=" mt-3 btn cob-btn-primary text-white btn-sm"
                   disabled={disable}
                 >
-                   {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}
-                          Update
+                  {disable && (
+                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                  )} {/* Show spinner if disabled */}
+                  Update
                 </button>
                 <button
                   type="button"
                   className=" mt-3 btn cob-btn-secondary ml-2 text-white btn-sm"
-                  onClick={()=>props.fnSetModalToggle(false)}
-                  
+                  onClick={() => props.fnSetModalToggle(false)}
+
                 >
                   Cancel
                 </button>
