@@ -136,12 +136,17 @@ const PayerDetails = () => {
       .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${fromDate}/${toDate}`)
       .then((res) => {
         // console.log(res)
+        if (res.data.length === 0) {
+          toastConfig.errorToast("No Data Found")
+        }else{
         setData(res.data);
         setLoadingState(false)
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+       
+        setSubmitted(false)
+        }
         setDisable(false)
-        setSubmitted(false);
       })
       .catch((err) => {
         // console.log(err)
@@ -698,7 +703,7 @@ const PayerDetails = () => {
                   />
                 </div>
               )}
-            </>) : <h6 className="text-center font-weight-bold mt-5">No data Found</h6>}
+            </>) : <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>}
         </div>
 
       </section>
