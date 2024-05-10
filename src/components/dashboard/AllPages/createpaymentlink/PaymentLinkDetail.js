@@ -21,7 +21,7 @@ const PaymentLinkDetail = () => {
 
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
- 
+
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
@@ -33,7 +33,7 @@ const PaymentLinkDetail = () => {
   const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
   const [copied, setCopied] = useState(false);
   const [show, setShow] = useState(false)
-  const[disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false)
 
 
   const validationSchema = Yup.object({
@@ -77,14 +77,14 @@ const PaymentLinkDetail = () => {
     // toastConfig.infoToast("Loading")
     axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${splitDate}/${splitDate}`)
       .then((res) => {
-        //  toastConfig.successToast("Payment Link Data Loaded")
         setData(res.data);
+        setShow(true)
         setLoadingState(false)
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value())
       })
       .catch((err) => {
-        //  toastConfig.errorToast("Data not loaded")
+        toastConfig.errorToast("Something went wrong")
       });
 
   }
@@ -101,55 +101,54 @@ const PaymentLinkDetail = () => {
     const dateRangeValid = checkValidation(fromDate, toDate);
 
     if (dateRangeValid) {
-        axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${fromDate}/${toDate}`)
-            .then((res) => {
-                if (res.data.length === 0) {
-                    toastConfig.errorToast("No Data Found");
-                    setShow(false);
-                } else {
-                    setData(res.data);
-                    setLoadingState(false);
-                    setDisplayList(res.data);
-                    setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-                    setShow(true);
-                }
-                setDisable(false);
-            })
-            .catch((err) => {
-                console.error("Error loading data:", err);
-                setShow(false);
-                setDisable(false);
-                // toastConfig.errorToast("Data not loaded");
-            });
+      axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${fromDate}/${toDate}`)
+        .then((res) => {
+          if (res.data.length === 0) {
+            toastConfig.errorToast("No Data Found");
+            setShow(false);
+          } else {
+            setData(res.data);
+            setLoadingState(false);
+            setDisplayList(res.data);
+            setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+            setShow(true);
+          }
+          setDisable(false);
+        })
+        .catch((err) => {
+          console.error("Error loading data:", err);
+          setShow(false);
+          setDisable(false);
+        });
     }
-};
+  };
 
 
   const checkValidation = (fromDate, toDate) => {
     let flag = true;
 
     if (!fromDate || !toDate) {
-        alert("Please select both start and end dates.");
-        flag = false;
+      alert("Please select both start and end dates.");
+      flag = false;
     } else {
-        const date1 = new Date(fromDate);
-        const date2 = new Date(toDate);
+      const date1 = new Date(fromDate);
+      const date2 = new Date(toDate);
 
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        let allowedTxnViewDays = 60; // Two months * 31 days per month
-        let monthAllowed = 2; // Two months
+      let allowedTxnViewDays = 60; // Two months * 31 days per month
+      let monthAllowed = 2; // Two months
 
-        if (diffDays < 0 || diffDays > allowedTxnViewDays) {
-            flag = false;
-            alert(`Please choose a ${monthAllowed}-month date range.`);
-            setDisable(false);
-        }
+      if (diffDays < 0 || diffDays > allowedTxnViewDays) {
+        flag = false;
+        alert(`Please choose a ${monthAllowed}-month date range.`);
+        setDisable(false);
+      }
     }
 
     return flag;
-};
+  };
 
 
 
@@ -173,9 +172,7 @@ const PaymentLinkDetail = () => {
 
   }
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-  }
+
 
   useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value())
@@ -262,11 +259,11 @@ const PaymentLinkDetail = () => {
                     <button
                       type="submit"
                       className="btn cob-btn-primary approve text-white"
-                     disabled={disable}
+                      disabled={disable}
                     >
                       {disable && (
-                       <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span> 
-                       )}
+                        <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                      )}
                       Submit
                     </button>
 
@@ -276,30 +273,30 @@ const PaymentLinkDetail = () => {
               </Form>
             )}
           </Formik>
-         {data?.length !== 0  &&
-          <div className="row">
-            <div className={`col-lg-3 mt-3`}>
-              {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
-              <label>Search</label>
-              <input
-                className="form-control"
-                onChange={getSearchTerm}
-                type="text"
-                placeholder="Search Here"
-              />
-            </div>
-            <div className={`col-lg-3 mt-3`}>
-              <label>Count Per Page</label>
-              <select
-                value={pageSize}
-                rel={pageSize}
-                className="form-control"
-                onChange={(e) => setPageSize(parseInt(e.target.value))}
-              >
-                <DropDownCountPerPage datalength={data.length} />
-              </select>
-            </div>
-          </div>}
+          {data?.length !== 0 &&
+            <div className="row">
+              <div className={`col-lg-3 mt-3`}>
+                {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
+                <label>Search</label>
+                <input
+                  className="form-control"
+                  onChange={getSearchTerm}
+                  type="text"
+                  placeholder="Search Here"
+                />
+              </div>
+              <div className={`col-lg-3 mt-3`}>
+                <label>Count Per Page</label>
+                <select
+                  value={pageSize}
+                  rel={pageSize}
+                  className="form-control"
+                  onChange={(e) => setPageSize(parseInt(e.target.value))}
+                >
+                  <DropDownCountPerPage datalength={data.length} />
+                </select>
+              </div>
+            </div>}
         </div>
       </section>
 
@@ -364,7 +361,7 @@ const PaymentLinkDetail = () => {
                 <div className="d-flex justify-content-center align-items-center loader-container">
                   <CustomLoader loadingState={loadingState} />
                 </div>
-               
+
               </div>
               {!loadingState && (
                 <div className="d-flex justify-content-center mt-2">
@@ -389,7 +386,7 @@ const PaymentLinkDetail = () => {
                 </div>
               )}
             </React.Fragment>
-          ) :  
+          ) :
             <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
           }
 

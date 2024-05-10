@@ -63,7 +63,7 @@ const PayerDetails = () => {
   const [editModalToggle, setEditModalToggle] = useState(false);
   const [disable, setDisable] = useState(false)
   const [submitted, setSubmitted] = useState(false);
- 
+
 
 
   const [pageCount, setPageCount] = useState(
@@ -104,14 +104,14 @@ const PayerDetails = () => {
   // Alluser data API INTEGRATION
   const loadUser = async () => {
     await axiosInstance
-    .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${splitDate}/${splitDate}`)
+      .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${splitDate}/${splitDate}`)
       .then((res) => {
         // console.log(res)
         setData(res.data);
         setLoadingState(false)
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-        
+
       })
       .catch((err) => {
         // console.log(err)
@@ -138,13 +138,13 @@ const PayerDetails = () => {
         // console.log(res)
         if (res.data.length === 0) {
           toastConfig.errorToast("No Data Found")
-        }else{
-        setData(res.data);
-        setLoadingState(false)
-        setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-       
-        setSubmitted(false)
+        } else {
+          setData(res.data);
+          setLoadingState(false)
+          setDisplayList(res.data);
+          setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+
+          setSubmitted(false)
         }
         setDisable(false)
       })
@@ -233,21 +233,26 @@ const PayerDetails = () => {
   const onSubmit = async (e) => {
     setDisable(true)
     // console.log(e)
-    const res = await axiosInstance.post(API_URL.ADD_CUSTOMER, {
+    await axiosInstance.post(API_URL.ADD_CUSTOMER, {
       name: e.name,
       email: e.email,
       phone_number: e.phone_number,
       client_code: clientCode,
       customer_type_id: e.customer_type_id,
-    });
-    loadUser();
-    if (res.status === 200) {
-      toastConfig.successToast("Payee added successfully");
+    }).then(resp => {
+      if (resp.data?.response_code === '1') {
+        toastConfig.successToast(resp.data?.message?.toUpperCase());
+        loadUser();
+      } else {
+        toastConfig.errorToast(resp.data?.message?.toUpperCase());
+      }
       setDisable(false)
-    } else {
-      toastConfig.errorToast("something went wrong");
+    }).catch(err => {
       setDisable(false)
-    }
+      toastConfig.errorToast("something went wrong")
+    })
+
+
   };
 
   // USE FOR EDIT FORM
@@ -289,9 +294,9 @@ const PayerDetails = () => {
     }
   };
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-  };
+  // const pagination = (pageNo) => {
+  //   setCurrentPage(pageNo);
+  // };
 
   const edit = () => {
     loadUser();
@@ -616,7 +621,7 @@ const PayerDetails = () => {
         <div className="container-fluid p-3 my-3 ">
           {data?.length !== 0 && <h6>Total Records:{data.length}</h6>}
 
-          { data?.length !== 0 ? (
+          {data?.length !== 0 ? (
             <>
               <div className="scroll overflow-auto">
                 <table className="table table-bordered">
