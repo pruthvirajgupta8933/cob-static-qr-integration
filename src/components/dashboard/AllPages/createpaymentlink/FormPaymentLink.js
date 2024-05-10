@@ -132,7 +132,7 @@ function FormPaymentLink(props) {
               <>
                 <div className="modal-header">
                   <div className="modal-title" id="exampleModalLabel">
-                    <h5>Payment Link New Details (New Payer)</h5>
+                    <h6 className="fw-bold">Create Payment Link</h6>
                   </div>
                   <button
                     type="button"
