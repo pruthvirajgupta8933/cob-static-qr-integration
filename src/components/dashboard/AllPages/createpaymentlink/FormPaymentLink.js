@@ -8,6 +8,8 @@ import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
 import { v4 as uuidv4 } from 'uuid';
 import FormikController from "../../../../_components/formik/FormikController";
+import moment from "moment";
+import toastConfig from "../../../../utilities/toastTypes";
 
 function FormPaymentLink(props) {
   const { loaduser } = props;
@@ -40,14 +42,17 @@ function FormPaymentLink(props) {
     Remarks: Yup.string().required("Required!"),
     Date: Yup.string().required("Required!"),
     Customer_id: Yup.string().required("Required!"),
-    
+
 
   })
 
 
+
   const getDrop = async (e) => {
+    const currentData = moment().format('YYYY-MM-DD');
+
     await axios
-      .get(`${API_URL.GET_CUSTOMERS}${clientCode}`)
+      .get(`${API_URL.GET_CUSTOMERS}${clientCode}/2015-01-01/${currentData}`)
       .then((res) => {
         setDrop(res.data);
       })
@@ -77,27 +82,18 @@ function FormPaymentLink(props) {
     })
     await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
-      .then((response) => {
-        toast.success(response.data.message,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            transition: Zoom,
-            limit: 2,
-          })
+      .then(resp => {
+        if (resp.data?.response_code === '1') {
+          toastConfig.successToast(resp.data?.message?.toUpperCase());
+          loaduser();
+        } else {
+          toastConfig.errorToast(resp.data?.message?.toUpperCase());
+        }
         setDisable(false)
-        loaduser();
+      }).catch(err => {
+        setDisable(false)
+        toastConfig.errorToast("something went wrong")
       })
-      .catch((error) => {
-        toast.error('Payment Link Creation Failed', {
-          position: "top-right",
-          autoClose: 1000,
-          transition: Zoom,
-          limit: 2,
-        })
-        setDisable(false)
-
-      });
   };
 
   const dateFormat = (enteredDate) => {
@@ -109,6 +105,7 @@ function FormPaymentLink(props) {
 
   const hoursArr = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
 
+
   return (
 
     <div
@@ -116,7 +113,7 @@ function FormPaymentLink(props) {
       id="exampleModal"
       role="dialog"
       aria-labelledby="exampleModalLabel"
-     ariaHidden="true"
+      ariaHidden="true"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -239,7 +236,7 @@ function FormPaymentLink(props) {
                             <option value={val} key={uuidv4()}>{val}</option>
                           ))}
                         </Field>
-                        
+
 
                       </div>
                       <div className="form-group col-md-6">
@@ -263,7 +260,7 @@ function FormPaymentLink(props) {
                         disabled={disable}
                       >
                         {disable && (
-                          <span className="spinner-border spinner-border-sm mr-1" role="status"ariaHidden="true"></span>
+                          <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                         )} {/* Show spinner if disabled */}
                         Submit
                       </button>
