@@ -11,6 +11,8 @@ import FormikController from "../../../../_components/formik/FormikController";
 import moment from "moment";
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
+import { axiosInstance } from "../../../../utilities/axiosInstance";
+import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 
 function FormPaymentLink(props) {
   const { loaduser } = props;
@@ -75,15 +77,24 @@ function FormPaymentLink(props) {
 
   const submitHandler = async (e) => {
     setDisable(true)
-    toast.info("In process", {
-      position: "top-right",
-      autoClose: 2000,
-      transition: Zoom,
-      limit: 2,
-    })
-    await axios
-      .post(`${API_URL.ADD_LINK}?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
-      .then(resp => {
+    // toast.info("In process", {
+    //   position: "top-right",
+    //   autoClose: 2000,
+    //   transition: Zoom,
+    //   limit: 2,
+    // })
+
+    const postData={
+      Customer_id:e.Customer_id,
+      Remarks:e.Remarks,
+      Amount:e.Amount,
+      clientCode,
+      valid_to:dateFormat(e.Date),
+      isPasswordProtected:passwordcheck
+
+    }
+    createPaymentLinkService.createPaymentLink(postData)
+    .then(resp => {
         if (resp.data?.response_code === '1') {
           toastConfig.successToast(resp.data?.message?.toUpperCase());
           loaduser();

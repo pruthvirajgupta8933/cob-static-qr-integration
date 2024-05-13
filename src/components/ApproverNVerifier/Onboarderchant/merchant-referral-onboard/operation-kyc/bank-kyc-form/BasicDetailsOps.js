@@ -44,11 +44,12 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
     };
 
-
+    console.log(Yup)
     const validationSchema = Yup.object({
         fullName: Yup.string()
             .trim()
-            .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+            .allowOneSpace("Test space")
+            // .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
@@ -224,7 +225,6 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                     <div className="col-md-6">
                         <FormikController
                             control="input"
-                            type="text"
                             name="fullName"
                             className="form-control"
                             placeholder="Enter Merchant Name"
@@ -237,7 +237,6 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                     <div className="col-md-6">
                         <FormikController
                             control="input"
-                            type="text"
                             name="mobileNumber"
                             placeholder="Enter Mobile Number"
                             className="form-control"

@@ -16,13 +16,13 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 const FORM_VALIDATION = Yup.object().shape({
     fullname: Yup.string()
-        .matches(/^[a-zA-Z\s.0-9]+$/, "Only alphabets, full stops, and numbers are allowed for this field")
+        .matches(/^[a-zA-Z\s.0-9]+$/, "Only alphabets, full stops, and numbers are allowed for this field").allowOneSpace()
         .required("Required"),
 
     // lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
     mobilenumber: Yup.string()
         .required("Required")
-        .matches(phoneRegExp, "Phone number is not valid")
+        .matches(phoneRegExp, "Phone number is not valid").allowOneSpace()
         .min(10, "Phone number in not valid")
         .max(10, "too long"),
     emaill: Yup.string()
@@ -34,10 +34,10 @@ const FORM_VALIDATION = Yup.object().shape({
         .matches(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
-        ),
+        ).allowOneSpace(),
     confirmpasswordd: Yup.string()
         .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
-        .required("Confirm Password Required"),
+        .required("Confirm Password Required").allowOneSpace(),
     business_cat_code: Yup.string().required("Required"),
     // roleId: Yup.string().required("Required")
 });

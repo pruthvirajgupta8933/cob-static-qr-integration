@@ -15,7 +15,8 @@ Yup.addMethod(Yup.string, "wordLength", function (errorMessage) {
 });
 
 Yup.addMethod(Yup.string, "allowOneSpace", function (errorMessage) {
-    return this.matches(Regex.multipleSpace, RegexMsg.multipleSpace , errorMessage);
+   const response = this.matches(Regex.multipleSpace, RegexMsg.multipleSpace , errorMessage); 
+   return response
 });
 
 
