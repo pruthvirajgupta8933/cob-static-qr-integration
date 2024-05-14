@@ -16,13 +16,14 @@ import BankDetails from "./BankDetails";
 import MerchantDocument from "./MerchantDocument";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import CompleteVerification from "./CompleteVerification";
-import { isNumber } from "lodash";
+// import { isNumber } from "lodash";
 import CustomModal from "../../../../_components/custom_modal";
 import GeneralForm from "./GeneralForm";
-import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
+// import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
 import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
 import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMappingSlice";
 import { APP_ENV } from "../../../../config";
+import SaveLocation from "./SaveLocation";
 
 
 
@@ -158,6 +159,9 @@ const KycDetailsModal = (props) => {
           />
 
 
+          <SaveLocation
+            role={roles}
+          />
 
           {/* Extra field required when merhcant goes to approved */}
           {selectedUserData?.roleId !== 13 &&
