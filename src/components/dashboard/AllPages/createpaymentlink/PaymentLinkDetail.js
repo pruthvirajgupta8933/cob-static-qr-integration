@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
 import ReactPaginate from 'react-paginate';
 import FormikController from "../../../../_components/formik/FormikController";
+import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 // import * as Yup from "yup";
 
 import toastConfig from "../../../../utilities/toastTypes";
@@ -102,7 +103,7 @@ const PaymentLinkDetail = () => {
     const dateRangeValid = checkValidation(fromDate, toDate);
 
     if (dateRangeValid) {
-      axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${fromDate}/${toDate}`)
+      createPaymentLinkService.paymentLinkDetails(clientCode,fromDate,toDate)
         .then((res) => {
           if (res.data.length === 0) {
             toastConfig.errorToast("No Data Found");

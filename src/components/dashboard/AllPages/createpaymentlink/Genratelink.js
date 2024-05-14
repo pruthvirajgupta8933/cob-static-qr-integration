@@ -7,6 +7,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 import Yup from '../../../../_components/formik/Yup';
+import createPaymentLinkService from '../../../../services/create-payment-link/payment-link.service';
 
 // import FormikController from "../../_components/formik/FormikController";
 
@@ -44,16 +45,21 @@ const Genratelink = (props) => {
 
   const generateHandler = async (e) => {
     setDisable(true)
-    toast.info("Please Wait...")
-    await axios
-      .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
-        Amount: e.Amount,
-        Remarks: e.Remarks,
-        Date: e.Date,
-        client_code: clientCode,
-        LinkValidToDate: e.LinkValidToDate
+    const postData={
+      Customer_id:customer_id,
+      Remarks:e.Remarks,
+      Amount:e.Amount,
+      clientCode,
+      valid_to:dateFormat(e.Date),
+      isPasswordProtected:passwordcheck
+    }
+   
+    // await axios
+    //   .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
+       
 
-      })
+    //   })
+    createPaymentLinkService.createPaymentLink(postData)
 
 
       .then((response) => {
