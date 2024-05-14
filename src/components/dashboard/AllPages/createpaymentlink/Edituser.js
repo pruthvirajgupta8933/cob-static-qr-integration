@@ -14,6 +14,7 @@ import {
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomModal from "../../../../_components/custom_modal";
 import Yup from "../../../../_components/formik/Yup";
+import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 
 export const Edituser = (props) => {
   let history = useHistory();
@@ -56,17 +57,17 @@ export const Edituser = (props) => {
 
   const editHandler = (values) => {
     setDisable(true)
-    axiosInstance
-      .put(API_URL.EDIT_CUSTOMER, {
-        name: values.name,
+    const postData={
+      name: values.name,
         email: values.email,
         phone_number: values.phone_number,
         client_code: clientCode,
         customer_type_id: values.customer_type_id,
         id: id,
-      })
+
+    }
+    createPaymentLinkService.editCustomer(postData)
       .then((res) => {
-        // console.log(res)
         callBackFn();
         toast.success("User Updated Successfully", {
           position: "top-right",

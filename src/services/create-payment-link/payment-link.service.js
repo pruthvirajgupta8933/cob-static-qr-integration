@@ -42,6 +42,11 @@ const createPaymentLink = (postData) => {
     return axiosInstance.post(url)
 }
 
+const editCustomer=(postData)=>{
+    const url =`${API_URL.EDIT_CUSTOMER}`
+    return axiosInstance.put(url,postData)
+
+}
 const createPaymentLinkService = {
     getCustomerDetails,
     addCustomer,
@@ -49,6 +54,8 @@ const createPaymentLinkService = {
     getCustomerType,
     paymentLinkDetails,
     getReports,
-    createPaymentLink
+    createPaymentLink,
+    editCustomer
+
 };
 export default createPaymentLinkService

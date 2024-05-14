@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form,  } from "formik";
 import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
 import Yup from "../../../../_components/formik/Yup";
@@ -16,28 +16,12 @@ import { axiosInstance } from "../../../../utilities/axiosInstance";
 import FormikController from "../../../../_components/formik/FormikController";
 // import "./index.css";
 import { v4 as uuidv4 } from 'uuid';
-import classes from "./paylink.module.css"
 import ReactPaginate from 'react-paginate';
 import moment from "moment";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
+import AddSinglePayer from "./AddSinglePayer";
 
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(3, "It's too short")
-    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-    .required("Required")
-    .allowOneSpace(),
-  phone_number: Yup.string()
-    .required("Required")
-    .matches(phoneRegExp, "Phone number is not valid")
-    .min(10, "to short")
-    .max(10, "to long"),
-  email: Yup.string().email("Enter valid email").required("Required").allowOneSpace(),
-  customer_type_id: Yup.string().required("Required"),
-});
 
 const PayerDetails = () => {
   let history = useHistory();
@@ -193,6 +177,7 @@ const PayerDetails = () => {
   const getDrop = async (e) => {
     await createPaymentLinkService.getCustomerType()
       .then((res) => {
+       
         setCustomerType(res.data);
       })
       .catch((err) => {
@@ -208,34 +193,7 @@ const PayerDetails = () => {
 
   //ADD user API Integration
 
-  const onSubmit = async (e) => {
-    setDisable(true)
-
-    const postData={
-      name: e.name,
-      email: e.email,
-      phone_number: e.phone_number,
-      client_code: clientCode,
-      customer_type_id: e.customer_type_id
-
-    }
-   
-    await createPaymentLinkService.addCustomer(postData)
-    .then(resp => {
-      if (resp.data?.response_code === '1') {
-        toastConfig.successToast(resp.data?.message?.toUpperCase());
-        loadUser();
-      } else {
-        toastConfig.errorToast(resp.data?.message?.toUpperCase());
-      }
-      setDisable(false)
-    }).catch(err => {
-      setDisable(false)
-      toastConfig.errorToast("something went wrong")
-    })
-
-
-  };
+  
 
   // USE FOR EDIT FORM
   const handleClick = (id) => {
@@ -294,205 +252,8 @@ const PayerDetails = () => {
         fnSetModalToggle={setEditModalToggle}
       />
       <Genratelink generatedata={genrateform} />
-      <div
-        className="mymodals modal fade"
-        id="exampleModal"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        ariaHidden="true"
-      >
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <Formik
-              initialValues={{
-                name: "",
-                email: "",
-                phone_number: "",
-                customer_type_id: "",
-              }}
-              validationSchema={validationSchema}
-              onSubmit={(values, { resetForm }) => {
-                onSubmit(values); // this onsubmit used for api integration
-                resetForm();
-              }}
-            >
-              {({ resetForm }) => (
-                <>
-                  <div className="modal-header">
-                    <h6 className="fw-bold" >Add Payer </h6>
-                    <button
-                      type="button"
-                      className="close"
-                      onClick={resetForm}
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span ariaHidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <Form>
-                      <div className="form-group">
-                        <label
-                          htmlFor="recipient-name"
-                          className="col-form-label"
-                        >
-                          Name of Payer:
-                        </label>
-                        <Field
-                          name="name"
-                          placeholder="Enter Name of Payer"
-                          className="form-control"
-                          autoComplete="off"
-                        />
-                        <ErrorMessage name="name">
-                          {(msg) => (
-                            <div
-                              className="abhitest"
-                              style={{
-                                color: "red",
-                                position: "absolute",
-                                zIndex: " 999",
-                              }}
-                            >
-                              {msg}
-                            </div>
-                          )}
-                        </ErrorMessage>
-                      </div>
-                      <div className="form-group">
-                        <label
-                          htmlFor="recipient-name"
-                          className="col-form-label"
-                        >
-                          Mobile No.:
-                        </label>
-                        <Field
-                          name="phone_number"
-                          id="phoneNumber"
-                          onKeyDown={(e) =>
-                            ["e", "E", "+", "-", "."].includes(e.key) &&
-                            e.preventDefault()
-                          }
-                          type="text"
-                          autoComplete="off"
-                          placeholder="Enter Mobile No."
-                          className="form-control"
-                          pattern="\d{10}"
-                          minLength="4"
-                          maxLength="10"
-                        />
-                        <ErrorMessage name="phone_number">
-                          {(msg) => (
-                            <div
-                              className="abhitest"
-                              style={{
-                                color: "red",
-                                position: "absolute",
-                                zIndex: " 999",
-                              }}
-                            >
-                              {msg}
-                            </div>
-                          )}
-                        </ErrorMessage>
-                      </div>
-                      <div className="form-group">
-                        <label
-                          htmlFor="recipient-name"
-                          className="col-form-label"
-                        >
-                          Email ID:
-                        </label>
-                        <Field
-                          name="email"
-                          autoComplete="off"
-                          placeholder="Enter Email"
-                          id="pairphn"
-                          className="form-control"
-                        />
-                        <ErrorMessage name="email">
-                          {(msg) => (
-                            <div
-                              className="abhitest"
-                              style={{
-                                color: "red",
-                                position: "absolute",
-                                zIndex: " 999",
-                              }}
-                            >
-                              {msg}
-                            </div>
-                          )}
-                        </ErrorMessage>
-                      </div>
-                      <div className="form-group">
-                        <label
-                          htmlFor="recipient-name"
-                          className="col-form-label"
-                        >
-                          Payer Category:
-                        </label>
-                        <Field
-                          name="customer_type_id"
-                          className="form-select"
-                          component="select"
-                        >
-                          <option type="text" id="recipient-name">
-                            Select Your Payer Category
-                          </option>
-                          {customerType.map((payer, i) => (
-                            <option value={payer.id} key={uuidv4()}>
-                              {payer.type?.toUpperCase()}
-                            </option>
-                          ))}
-                        </Field>
-                        {
-                          <ErrorMessage name="customer_type_id">
-                            {(msg) => (
-                              <p
-                                className="abhitest"
-                                style={{
-                                  color: "red",
-                                  position: "absolute",
-                                  zIndex: " 999",
-                                }}
-                              >
-                                {msg}
-                              </p>
-                            )}
-                          </ErrorMessage>
-                        }
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="submit"
-                          disabled={disable}
-                          className="btn cob-btn-primary text-white btn-sm position-relative"
-                        >
-                          {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status" ariaHidden="true"></span>}
-                          Submit
-                        </button>
-                        <button
-                          type="button"
-                          className="btn cob-btn-secondary btn-danger text-white btn-sm"
-                          data-dismiss="modal"
-                          onClick={resetForm}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </Form>
-                  </div>
-                </>
-              )}
-            </Formik>
-          </div>
-        </div>
-
-      </div>
-
-      {/* filter area */}
+      <AddSinglePayer loadUser={loadUser} customerType={customerType}/>
+      
       <section >
         <div className="container-fluid">
           <div className="row">
