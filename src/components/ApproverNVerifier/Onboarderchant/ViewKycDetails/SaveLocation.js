@@ -5,6 +5,7 @@ import Yup from '../../../../_components/formik/Yup';
 import { useSelector } from 'react-redux';
 import menulistService from '../../../../services/cob-dashboard/menulist.service';
 import toastConfig from '../../../../utilities/toastTypes';
+import { Regex, RegexMsg } from '../../../../_components/formik/ValidationRegex';
 
 
 function SaveLocation({ role }) {
@@ -25,8 +26,8 @@ function SaveLocation({ role }) {
 
 
     const validationSchema = Yup.object({
-        latitude: Yup.string().nullable(),
-        longitude: Yup.string().nullable()
+        latitude: Yup.string().matches(Regex.latitudeRegex, RegexMsg.latitudeRegex).nullable(),
+        longitude: Yup.string().matches(Regex.longitudeRegex, RegexMsg.longitudeRegex).nullable()
     })
 
     const handleSubmit = (v) => {

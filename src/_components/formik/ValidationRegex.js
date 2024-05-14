@@ -16,7 +16,10 @@ export const Regex = {
   emailRegexForSpace: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   urlFormate: /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.[a-z]+(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.[a-z]+(\/[^\s]*)?)$/,
   userNameRegex: /^[a-zA-Z0-9_.@]+$/,
-  aadhaarRegex: /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/
+  aadhaarRegex: /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/,
+
+  latitudeRegex: /^-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)/,
+  longitudeRegex: /^-?((1[0-7][0-9]|[1-9]?[0-9])(\.\d+)?|180(\.0+)?)/,
 
 }
 
@@ -36,7 +39,10 @@ export const RegexMsg = {
   urlFormate: "Please enter a valid HTTPS URL",
   acceptAlphaNumericDot: "AlphaNumeric & dot are allowed",
   userNameRegex: "Username accept only alphanumeric and (`.`_ @) special characters",
-  aadhaarRegex: "Aadhaar Number is Invalid"
+  aadhaarRegex: "Aadhaar Number is Invalid",
+
+  latitudeRegex: "Invalid Latitude",
+  longitudeRegex: "Invalid Longitude"
 }
 
 
