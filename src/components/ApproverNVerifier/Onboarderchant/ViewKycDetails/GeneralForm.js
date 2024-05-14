@@ -14,7 +14,7 @@ import toastConfig from '../../../../utilities/toastTypes'
 import ReactSelect from 'react-select';
 
 const GeneralForm = ({ selectedUserData, role }) => {
-    
+
 
     const dispatch = useDispatch()
     const [parentClientCode, setParentClientCode] = useState([])
@@ -32,17 +32,17 @@ const GeneralForm = ({ selectedUserData, role }) => {
         }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
     }, [])
 
-  
+
 
     const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
-        refer_by: kyc.kycUserList?.refer_by ,
+        refer_by: kyc.kycUserList?.refer_by,
         rolling_reserve_type: "Percentage",
         parent_client_code: ""
 
     }
-    
+
 
 
 
@@ -69,7 +69,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         toast.success("Successfully updated")
     }
 
-   
+
 
 
 
@@ -77,10 +77,10 @@ const GeneralForm = ({ selectedUserData, role }) => {
     const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
     const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
     const options = clientCodeOption.map(option => ({ value: option.key, label: option.value }));
-    
-   
 
-return (
+
+
+    return (
         <div className="row mb-4 border p-1">
             <Formik
                 initialValues={initialValues}
@@ -138,7 +138,7 @@ return (
                                             formik.setStatus(false);
                                         }}
                                     />
-                                   </div>
+                                </div>
 
                                 <div className="col-md-4">
                                     <FormikController

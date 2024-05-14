@@ -14,7 +14,7 @@ import { merchantTab } from "../../slices/approverVerifierTabSlice";
 import classes from "./approver.module.css"
 
 const Approver = () => {
-  
+
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   // console.log(verifierApproverTab?.currenTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab);
@@ -56,19 +56,6 @@ const Approver = () => {
                 Merchant List
               </h5>
             </div>
-            {/* <div className="col-6 d-flex justify-content-end">
-              {roles?.viewer === true ? (
-                <></>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-sm cob-btn-primary "
-                  onClick={() => redirect()}
-                >
-                  Onboard Merchant
-                </button>
-              )}
-            </div> */}
           </div>
 
           <section>
@@ -87,7 +74,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 2 ? `${classes.active_tab} active`  : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 2 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(2)}
                     >
@@ -117,7 +104,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 5 ? `${classes.active_tab} active`  : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 5 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(5)}
                     >
@@ -127,7 +114,7 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${currenTab === 6 ? classes.active_tab  : "inactive"} ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 6 ? classes.active_tab : "inactive"} ${classes.cursor_pointer}`}
 
                       onClick={() => handleTabClick(6)}
                     >

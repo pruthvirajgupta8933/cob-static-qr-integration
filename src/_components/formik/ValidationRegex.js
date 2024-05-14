@@ -20,6 +20,9 @@ export const Regex = {
   phoneRegExp :/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
 
 
+  latitudeRegex: /^-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)/,
+  longitudeRegex: /^-?((1[0-7][0-9]|[1-9]?[0-9])(\.\d+)?|180(\.0+)?)/,
+
 }
 
 export const RegexMsg = {
@@ -39,8 +42,9 @@ export const RegexMsg = {
   acceptAlphaNumericDot: "AlphaNumeric & dot are allowed",
   userNameRegex: "Username accept only alphanumeric and (`.`_ @) special characters",
   aadhaarRegex: "Aadhaar Number is Invalid",
-  phoneRegExp :"Phone number is not valid"
-
+  phoneRegExp :"Phone number is not valid",
+latitudeRegex: "Invalid Latitude",
+  longitudeRegex: "Invalid Longitude"
 }
 
 
