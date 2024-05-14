@@ -11,6 +11,7 @@ import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ReactPaginate from 'react-paginate';
 import FormikController from '../../../../_components/formik/FormikController';
+import createPaymentLinkService from '../../../../services/create-payment-link/payment-link.service';
 // import * as Yup from "yup";
 
 import { Formik, Form } from "formik";
@@ -64,7 +65,7 @@ const Reports = () => {
 
   useEffect(() => {
     // toastConfig.infoToast("Report Loading")
-    axiosInstance.get(`${API_URL.GET_REPORTS}${clientCode}/${splitDate}/${splitDate}`)
+   createPaymentLinkService.getReports(clientCode,splitDate,splitDate)
       .then(res => {
         // toastConfig.successToast("Report Data loaded")
         setData(res.data);
@@ -119,7 +120,7 @@ const Reports = () => {
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
     const dateRangeValid = checkValidation(fromDate, toDate);
     if (dateRangeValid) {
-      axiosInstance.get(`${API_URL.GET_REPORTS}${clientCode}/${fromDate}/${toDate}`)
+      createPaymentLinkService.getReports(clientCode,fromDate,toDate)
         .then((res) => {
           if (res?.data?.length === 0) {
             toastConfig.errorToast("No Data Found")

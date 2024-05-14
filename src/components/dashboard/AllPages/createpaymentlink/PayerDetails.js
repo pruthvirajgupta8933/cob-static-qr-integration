@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
-// import * as Yup from "yup";
 import Yup from "../../../../_components/formik/Yup";
 import Genratelink from "./Genratelink";
 import { Edituser } from "./Edituser";
@@ -20,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 import classes from "./paylink.module.css"
 import ReactPaginate from 'react-paginate';
 import moment from "moment";
+import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -29,13 +29,13 @@ const validationSchema = Yup.object().shape({
     .min(3, "It's too short")
     .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
     .required("Required")
-    .allowOneSpace("Invalid inputs"),
+    .allowOneSpace(),
   phone_number: Yup.string()
     .required("Required")
     .matches(phoneRegExp, "Phone number is not valid")
     .min(10, "to short")
     .max(10, "to long"),
-  email: Yup.string().email("Enter valid email").required("Required").allowOneSpace("Invalid inputs"),
+  email: Yup.string().email("Enter valid email").required("Required").allowOneSpace(),
   customer_type_id: Yup.string().required("Required"),
 });
 
@@ -126,34 +126,31 @@ const PayerDetails = () => {
 
 
   const formSubmit = (values) => {
-    setDisable(true)
-    setSubmitted(true)
+    
+    setDisable(true);
+    setSubmitted(true);
 
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
-    axiosInstance
-      // .get(API_URL.GET_CUSTOMERS + clientCode)
-      .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${fromDate}/${toDate}`)
+
+    createPaymentLinkService.getCustomerDetails(fromDate, toDate, clientCode)
       .then((res) => {
-        // console.log(res)
         if (res.data.length === 0) {
-          toastConfig.errorToast("No Data Found")
+          toastConfig.errorToast("No Data Found");
         } else {
           setData(res.data);
-          setLoadingState(false)
+          setLoadingState(false);
           setDisplayList(res.data);
           setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-
-          setSubmitted(false)
+          setSubmitted(false);
         }
-        setDisable(false)
+        setDisable(false);
       })
       .catch((err) => {
-        // console.log(err)
-        setDisable(false)
+        setDisable(false);
         setSubmitted(false);
       });
-  };
+};
 
   // SEARCH FILTER
 
@@ -176,25 +173,7 @@ const PayerDetails = () => {
     setSearchText(e.target.value);
   };
 
-  // useEffect(() => {
-  //   setPaginatedData(_(displayList).slice(0).take(pageSize).value());
-  //   setPageCount(
-  //     displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0
-  //   );
-  // }, [pageSize, displayList]);
-
-  // useEffect(() => {
-  //   // console.log("page chagne no")
-  //   const startIndex = (currentPage - 1) * pageSize;
-  //   const paginatedPost = _(displayList)
-  //     .slice(startIndex)
-  //     .take(pageSize)
-  //     .value();
-  //   setPaginatedData(paginatedPost);
-  // }, [currentPage]);
-
-  // const pages = _.range(1, pageCount + 1);
-
+ 
 
   useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value());
@@ -212,8 +191,7 @@ const PayerDetails = () => {
   // ADD User Dropdown api integration
 
   const getDrop = async (e) => {
-    await axiosInstance
-      .get(API_URL.GET_CUSTOMER_TYPE)
+    await createPaymentLinkService.getCustomerType()
       .then((res) => {
         setCustomerType(res.data);
       })
@@ -232,14 +210,18 @@ const PayerDetails = () => {
 
   const onSubmit = async (e) => {
     setDisable(true)
-    // console.log(e)
-    await axiosInstance.post(API_URL.ADD_CUSTOMER, {
+
+    const postData={
       name: e.name,
       email: e.email,
       phone_number: e.phone_number,
       client_code: clientCode,
-      customer_type_id: e.customer_type_id,
-    }).then(resp => {
+      customer_type_id: e.customer_type_id
+
+    }
+   
+    await createPaymentLinkService.addCustomer(postData)
+    .then(resp => {
       if (resp.data?.response_code === '1') {
         toastConfig.successToast(resp.data?.message?.toUpperCase());
         loadUser();
@@ -287,9 +269,10 @@ const PayerDetails = () => {
     // confirm("do you confirm to delete it");
     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
     if (iscConfirm) {
-      await axiosInstance.delete(
-        `${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`
-      );
+      // await axiosInstance.delete(
+      //   `${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`
+      // );
+      await createPaymentLinkService.deleteCustomer(clientCode,id)
       loadUser();
     }
   };
