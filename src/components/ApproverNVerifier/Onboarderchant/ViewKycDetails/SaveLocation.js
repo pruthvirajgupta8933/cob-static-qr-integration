@@ -26,8 +26,8 @@ function SaveLocation({ role }) {
 
 
     const validationSchema = Yup.object({
-        latitude: Yup.string().matches(Regex.latitudeRegex, RegexMsg.latitudeRegex).nullable(),
-        longitude: Yup.string().matches(Regex.longitudeRegex, RegexMsg.longitudeRegex).nullable()
+        latitude: Yup.string().matches(Regex.latitudeRegex, RegexMsg.latitudeRegex).required("Required").nullable(),
+        longitude: Yup.string().matches(Regex.longitudeRegex, RegexMsg.longitudeRegex).required("Required").nullable()
     })
 
     const handleSubmit = (v) => {
