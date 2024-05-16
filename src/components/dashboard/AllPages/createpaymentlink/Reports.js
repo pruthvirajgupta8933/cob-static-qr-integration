@@ -116,6 +116,9 @@ const Reports = () => {
   const handleSubmit = (values) => {
     setDisable(true)
     setLoadingState(true)
+    setData([]);
+    setDisplayList([]);
+    setPaginatedData([]);
 
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');

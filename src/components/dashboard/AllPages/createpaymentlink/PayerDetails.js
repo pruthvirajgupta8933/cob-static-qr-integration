@@ -114,6 +114,11 @@ const PayerDetails = () => {
     setSubmitted(true);
     setLoadingState(true);
     
+    // Clear setData state
+    setData([]);
+    setDisplayList([]);
+    setPaginatedData([]);
+    
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
 
