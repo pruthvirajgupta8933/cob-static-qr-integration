@@ -528,7 +528,7 @@ const SettlementReportNew = () => {
                                         <select
                                             value={pageSize}
                                             rel={pageSize}
-                                            className="form-control rounded-0"
+                                            className="form-select"
                                             onChange={(e) => setPageSize(parseInt(e.target.value))}
                                         >
                                             <DropDownCountPerPage datalength={txnList.length} />
