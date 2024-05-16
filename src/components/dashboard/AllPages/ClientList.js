@@ -182,6 +182,8 @@ function ClientList() {
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
 
         clientListExportApi({ bank_login_id: user?.loginId ,type}).then((res) => {
+           
+            console.log(res)
             if (res.status === 200) {
                 const data = res?.data;
                 setLoading(false);
@@ -192,7 +194,7 @@ function ClientList() {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `Merchant referrer Report.xlsx`;
+                a.download = `Client-List-Report.xlsx`;
                 a.click();
                 window.URL.revokeObjectURL(url);
             }
