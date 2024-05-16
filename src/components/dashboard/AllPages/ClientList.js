@@ -24,7 +24,7 @@ function ClientList() {
 
     const PasswordCell = ({ password }) => {
         const [visible, setVisible] = useState(false);
-        const [loading, setIsLoading] = useState(false)
+
 
         const toggleVisibility = () => {
             setVisible((prevVisible) => !prevVisible);
@@ -37,8 +37,7 @@ function ClientList() {
             </button>
         </div>);
     };
-    // const [isLoading,setIsLoading] = useState(false);
-    const [search, SetSearch] = useState("");
+
 
     const [modalToggle, setModalToggle] = useState(false)
     const [modalToggleFormessage, setModalTogalforMessage] = useState(false)
@@ -47,17 +46,11 @@ function ClientList() {
     const [searchText, setSearchText] = useState("");
     const [loading, setLoading] = useState(false);
     const [disable, setDisable] = useState(false)
-
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-
-    // var {user} = useSelector((state) => state.auth);
     const { auth } = useSelector(state => state)
     const { user } = auth
 
     const dispatch = useDispatch();
-
-
-
 
     const RefrerChiledList = [
 
@@ -66,13 +59,24 @@ function ClientList() {
             name: "S.No",
             selector: (row) => row.s_no,
             sortable: true,
-            width: "120px",
+            width: "90px",
             cell: (row) => <div className="removeWhiteSpace">{row?.s_no}</div>,
+        },
+
+        {
+            id: "2",
+            key: "client_code", // id: "3",P
+            name: "Client Code",
+            selector: (row) => row?.client_code,
+            sortable: true,
+            cell: (row) => (<div className="removeWhiteSpace">
+                {row?.client_code}
+            </div>), // width: "200px",
         },
 
 
         {
-            id: "2",
+            id: "3",
             key: "name", // id: "3",P
             name: "Merchant Name",
             selector: (row) => row?.name,
@@ -83,16 +87,7 @@ function ClientList() {
             width: "200px",
         },
 
-        {
-            id: "3",
-            key: "client_code", // id: "3",P
-            name: "Client Code",
-            selector: (row) => row?.client_code,
-            sortable: true,
-            cell: (row) => (<div className="removeWhiteSpace">
-                {row?.client_code}
-            </div>), // width: "200px",
-        },
+
 
         {
             id: "4",
@@ -101,7 +96,7 @@ function ClientList() {
             cell: (row) => <div className="removeWhiteSpace">{row?.mobileNumber}</div>, // width: "250px",
         }, {
             id: "5",
-            name: "Create Date",
+            name: "Created Date",
             selector: (row) => row.createdDate,
             cell: (row) => <div className="removeWhiteSpace">{row?.createdDate}</div>,
             width: "180px",
@@ -181,8 +176,8 @@ function ClientList() {
         const roleType = roleBasedAccess();
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
 
-        clientListExportApi({ bank_login_id: user?.loginId ,type}).then((res) => {
-           
+        clientListExportApi({ bank_login_id: user?.loginId, type }).then((res) => {
+
             console.log(res)
             if (res.status === 200) {
                 const data = res?.data;
@@ -251,7 +246,7 @@ function ClientList() {
     useEffect(() => {
         fetchData();
     }, [currentPage, pageSize]);
-    
+
 
     const fetchData = () => {
         // Determine the type based on the result of roleBasedAccess()
@@ -302,7 +297,7 @@ function ClientList() {
                 <section className="">
                     <div className="container">
                         <div className="row mt-4">
-                            <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0">
+                            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
                                 <SearchFilter
                                     kycSearch={kycSearch}
                                     searchText={searchText}
@@ -310,36 +305,36 @@ function ClientList() {
                                     setSearchByDropDown={setSearchByDropDown}
                                 />
                             </div>
-                            <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0">
+                            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
                                 <CountPerPageFilter
                                     pageSize={pageSize}
                                     dataCount={dataCount}
                                     changePageSize={changePageSize}
                                 />
                             </div>
-                            
+
                             <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
-                            {data.length > 0 && (
-                                <button
-                                    className="btn btn-sm cob-btn-primary"
-                                    type="button"
-                                    disabled={disable}
-                                    onClick={() => exportToExcelFn()}
-                                >
-                                     <i className="fa fa-download"/> {loading ? "Downloading..." : "Export"}
-                                </button>
-                                 )}
+                                {data.length > 0 && (
+                                    <button
+                                        className="btn btn-sm cob-btn-primary"
+                                        type="button"
+                                        disabled={disable}
+                                        onClick={() => exportToExcelFn()}
+                                    >
+                                        <i className="fa fa-download" /> {loading ? "Downloading..." : "Export"}
+                                    </button>
+                                )}
                             </div>
-                            
-                           
+
+
                         </div>
                         {user?.roleId === 13 && (
-                                <div className="col-lg-2 col-md-4 col-sm-4 mb-3 mb-md-0 mt-4">
-                                    <button className="btn btn-sm cob-btn-primary w-100" onClick={() => setModalToggle(true)}>
-                                        Add Child Client
-                                    </button>
-                                </div>
-                            )}
+                            <div className="col-lg-2 col-md-4 col-sm-4 mb-3 mb-md-0 mt-4">
+                                <button className="btn btn-sm cob-btn-primary w-100" onClick={() => setModalToggle(true)}>
+                                    Add Child Client
+                                </button>
+                            </div>
+                        )}
 
                         {!loadingState && data?.length !== 0 && (
                             <>

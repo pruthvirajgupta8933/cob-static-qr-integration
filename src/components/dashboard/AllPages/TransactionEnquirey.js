@@ -148,14 +148,14 @@ function TransactionEnquirey() {
     const tempArr = [
       { key: "Txn Id", value: data.txn_id },
       { key: "Payment Mode", value: data.payment_mode },
-      { key: "Payee Name", value: data.payee_name },
-      { key: "Payee Mobile", value: data.payee_mob },
-      { key: "Payee Email", value: data.payee_email },
+      { key: "Payer Name", value: data.payee_name },
+      { key: "Payer Mobile", value: data.payee_mob },
+      { key: "Payer Email", value: data.payee_email },
       { key: "Status ", value: data.status },
       { key: "Bank Txn Id", value: data.bank_txn_id },
       { key: "Client Name", value: data.client_name },
       { key: "Client Id", value: data.client_id },
-      { key: "Payee Amount", value: data.payee_amount },
+      { key: "Payer Amount", value: data.payee_amount },
       { key: "Paid Amount", value: data.paid_amount },
       { key: "Transaction Date", value: convertDate(data.trans_date) },
 
