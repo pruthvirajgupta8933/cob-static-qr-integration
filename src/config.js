@@ -343,6 +343,8 @@ const API_LIVE = {
   // for chart
   GET_TRANSACTION_DATA_CHART: reportAPIURL + "/REST/getSuccessGraph",
 
+//////  client list export to xl
+exportOflineMerchant:`${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`,
 
 
   // bank merchant onboard API's // kyc_url 'http://192.168.34.91:8000'
@@ -371,6 +373,10 @@ const API_LIVE = {
   saveGeoCord: `${kyc_url}/kyc/coordinate/save/`,
 
 };
+
+
+
+
 
 const B2B_API_LIVE = {
   challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`,

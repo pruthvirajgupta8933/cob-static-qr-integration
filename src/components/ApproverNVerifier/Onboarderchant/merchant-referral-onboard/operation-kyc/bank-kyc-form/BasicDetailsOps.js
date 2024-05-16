@@ -44,7 +44,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
     };
 
-    console.log(Yup)
+   
     const validationSchema = Yup.object({
         fullName: Yup.string()
             .trim()

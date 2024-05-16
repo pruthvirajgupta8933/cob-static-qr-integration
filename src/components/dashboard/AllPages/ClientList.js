@@ -9,6 +9,8 @@ import CountPerPageFilter from "../../../_components/table_components/filters/Co
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 import { Link } from 'react-router-dom';
 import CustomLoader from '../../../_components/loader';
+import { clientListExportApi } from '../../../services/approver-dashboard/merchantReferralOnboard.service';
+import toastConfig from '../../../utilities/toastTypes';
 
 
 function ClientList() {
@@ -43,6 +45,8 @@ function ClientList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(100);
     const [searchText, setSearchText] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [disable, setDisable] = useState(false)
 
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
@@ -169,6 +173,40 @@ function ClientList() {
 
     ]
 
+
+
+    const exportToExcelFn = async () => {
+        setLoading(true);
+        setDisable(true);
+        const roleType = roleBasedAccess();
+        const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+
+        clientListExportApi({ bank_login_id: user?.loginId ,type}).then((res) => {
+            if (res.status === 200) {
+                const data = res?.data;
+                setLoading(false);
+                setDisable(false);
+                const blob = new Blob([data], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `Merchant referrer Report.xlsx`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        }).catch((err) => {
+            if (err.response?.status === 500) {
+                toastConfig.errorToast("Something went wrong.");
+            }
+            setLoading(false);
+            setDisable(false);
+        });
+    }
+
+
+
     const refrerDataList = useSelector((state) => state.merchantReferralOnboardReducer.refrerChiledList.resp);
 
     const loadingState = useSelector((state) => state.merchantReferralOnboardReducer.isLoading)
@@ -211,6 +249,7 @@ function ClientList() {
     useEffect(() => {
         fetchData();
     }, [currentPage, pageSize]);
+    
 
     const fetchData = () => {
         // Determine the type based on the result of roleBasedAccess()
@@ -234,7 +273,7 @@ function ClientList() {
         setCurrentPage(1);
     };
 
-  
+
 
 
     // console.log(user?.roleId)
@@ -261,50 +300,61 @@ function ClientList() {
                 <section className="">
                     <div className="container">
                         <div className="row mt-4">
-                            {/* {data.length === 0 ? "" : ( */}
-                            <div className='row g-3'>
-                                <div className="col-lg-2 col-md-4 col-sm-4">
-                                    <SearchFilter
-                                        kycSearch={kycSearch}
-                                        searchText={searchText}
-                                        searchByText={searchByText}
-                                        setSearchByDropDown={setSearchByDropDown}
-                                    />
-                                </div>
-
-                                <div className="col-lg-2 col-md-4 col-sm-4">
-                                    <CountPerPageFilter
-                                        pageSize={pageSize}
-                                        dataCount={dataCount}
-                                        changePageSize={changePageSize}
-                                    />
-                                </div>
+                            <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0">
+                                <SearchFilter
+                                    kycSearch={kycSearch}
+                                    searchText={searchText}
+                                    searchByText={searchByText}
+                                    setSearchByDropDown={setSearchByDropDown}
+                                />
                             </div>
-
-                            <div className="col-lg-2 col-md-4 col-sm-4">
-                                {user?.roleId === 13 &&
-                                    <button className="btn btn-sm  mb-3 cob-btn-primary"
-                                        onClick={() => setModalToggle(true)}>Add Child
-                                        Client</button>}
+                            <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0">
+                                <CountPerPageFilter
+                                    pageSize={pageSize}
+                                    dataCount={dataCount}
+                                    changePageSize={changePageSize}
+                                />
                             </div>
-                            {!loadingState && data?.length !== 0 && (
-                                <>
-                                    <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
-                                        <div><h6>Number of Record: {dataCount}</h6></div>
-                                    </div>
-                                    <Table
-                                        row={RefrerChiledList}
-                                        dataCount={dataCount}
-                                        pageSize={pageSize}
-                                        currentPage={currentPage}
-                                        changeCurrentPage={changeCurrentPage}
-                                        data={data}
-                                    />
-                                </>
-
+                            
+                            <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
+                            {data.length > 0 && (
+                                <button
+                                    className="btn btn-sm cob-btn-primary"
+                                    type="button"
+                                    disabled={disable}
+                                    onClick={() => exportToExcelFn()}
+                                >
+                                     <i className="fa fa-download"/> {loading ? "Downloading..." : "Export"}
+                                </button>
+                                 )}
+                            </div>
+                            
+                           
+                        </div>
+                        {user?.roleId === 13 && (
+                                <div className="col-lg-2 col-md-4 col-sm-4 mb-3 mb-md-0 mt-4">
+                                    <button className="btn btn-sm cob-btn-primary w-100" onClick={() => setModalToggle(true)}>
+                                        Add Child Client
+                                    </button>
+                                </div>
                             )}
 
-                        </div>
+                        {!loadingState && data?.length !== 0 && (
+                            <>
+                                <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
+                                    <div><h6>Number of Record: {dataCount}</h6></div>
+                                </div>
+                                <Table
+                                    row={RefrerChiledList}
+                                    dataCount={dataCount}
+                                    pageSize={pageSize}
+                                    currentPage={currentPage}
+                                    changeCurrentPage={changeCurrentPage}
+                                    data={data}
+                                />
+                            </>
+                        )}
+
                         <CustomLoader loadingState={loadingState} />
                     </div>
                 </section>

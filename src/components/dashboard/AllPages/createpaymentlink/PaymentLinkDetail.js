@@ -17,6 +17,7 @@ import createPaymentLinkService from "../../../../services/create-payment-link/p
 
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
+
 const PaymentLinkDetail = () => {
 
 
@@ -97,6 +98,10 @@ const PaymentLinkDetail = () => {
 
   const handleSubmit = (values) => {
     setDisable(true);
+    setLoadingState(true)
+    setData([]);
+    setDisplayList([]);
+    setPaginatedData([]);
 
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
@@ -107,6 +112,7 @@ const PaymentLinkDetail = () => {
         .then((res) => {
           if (res.data.length === 0) {
             toastConfig.errorToast("No Data Found");
+          
             setShow(false);
           } else {
             setData(res.data);
@@ -114,14 +120,18 @@ const PaymentLinkDetail = () => {
             setDisplayList(res.data);
             setPaginatedData(_(res.data).slice(0).take(pageSize).value());
             setShow(true);
+            
           }
           setDisable(false);
+          setLoadingState(false)
         })
         .catch((err) => {
           console.error("Error loading data:", err);
           setShow(false);
           setDisable(false);
+          setLoadingState(false)
         });
+        
     }
   };
 
@@ -304,95 +314,91 @@ const PaymentLinkDetail = () => {
 
 
       <section className="">
-        <div className="container-fluid p-3 my-3">
-          {data?.length !== 0 && <h6>Total Records:{data.length}</h6>}
+      <div className="container-fluid p-3 my-3">
+  {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
 
-          {show && data?.length !== 0 ? (
-            <React.Fragment>
-              <div className="scroll" style={{ overflow: "auto" }}>
-                <table className="table table-bordered nowrap">
-                  <thead>
-                    <tr>
-                      <th>Serial No.</th>
-                      <th>Phone No.</th>
-                      <th>Amount</th>
-                      <th>Customer Type</th>
-                      <th>Customer Email</th>
-                      <th>Created At</th>
-                      <th>Remarks</th>
-                      <th>Customer Name</th>
-                      <th>Full Link</th>
-                    </tr>
-                  </thead>
+  {loadingState ? (
+    <div className="d-flex justify-content-center align-items-center loader-container">
+      <CustomLoader loadingState={loadingState} />
+    </div>
+  ) : data?.length === 0 ? (
+    <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
+  ) : show && data?.length !== 0 ? (
+    <React.Fragment>
+      <div className="scroll" style={{ overflow: "auto" }}>
+        <table className="table table-bordered nowrap">
+          <thead>
+            <tr>
+              <th>Serial No.</th>
+              <th>Phone No.</th>
+              <th>Amount</th>
+              <th>Customer Type</th>
+              <th>Customer Email</th>
+              <th>Created At</th>
+              <th>Remarks</th>
+              <th>Customer Name</th>
+              <th>Full Link</th>
+            </tr>
+          </thead>
 
-                  {!loadingState && paginatedata?.length !== 0 && (
-                    <tbody>
-                      {paginatedata.map((user, i) => (
-                        <tr key={uuidv4()}>
-                          <td>{i + 1}</td>
-                          <td>{user?.customer_phoneNumber}</td>
-                          <td>{user?.amount}</td>
-                          <td>{user?.customer_type}</td>
-                          <td>{user?.customer_email}</td>
-                          <td>{convertDate(user?.created_at)}</td>
-                          <td>{user?.remarks}</td>
-                          <td>{user?.customer_name}</td>
-                          <td>
-                            <div id={`link_${i}`} className="d-flex align-items-center">
-                              <span
-                                className="p-2 d-inline-block cursor_pointer copy_clipboard"
-                                title={user?.full_link}
-                              >
-                                {user?.full_link}
-                              </span>
-                              <span
-                                className="input-group-text"
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => handleCopyToClipboard(user?.full_link)}
-                                data-tip={copied ? "Copied!" : "Copy"}
-                              >
-                                <i className="fa fa-copy ml-2 text-primary align-middle"></i>
-                              </span>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  )}
-                </table>
-                <div className="d-flex justify-content-center align-items-center loader-container">
-                  <CustomLoader loadingState={loadingState} />
-                </div>
+          <tbody>
+            {paginatedata.map((user, i) => (
+              <tr key={uuidv4()}>
+                <td>{i + 1}</td>
+                <td>{user?.customer_phoneNumber}</td>
+                <td>{user?.amount}</td>
+                <td>{user?.customer_type}</td>
+                <td>{user?.customer_email}</td>
+                <td>{convertDate(user?.created_at)}</td>
+                <td>{user?.remarks}</td>
+                <td>{user?.customer_name}</td>
+                <td>
+                  <div id={`link_${i}`} className="d-flex align-items-center">
+                    <span
+                      className="p-2 d-inline-block cursor_pointer copy_clipboard"
+                      title={user?.full_link}
+                    >
+                      {user?.full_link}
+                    </span>
+                    <span
+                      className="input-group-text"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleCopyToClipboard(user?.full_link)}
+                      data-tip={copied ? "Copied!" : "Copy"}
+                    >
+                      <i className="fa fa-copy ml-2 text-primary align-middle"></i>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="d-flex justify-content-center mt-2">
+        <ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+          containerClassName={'pagination justify-content-center'}
+          activeClassName={'active'}
+          previousLinkClassName={'page-link'}
+          nextLinkClassName={'page-link'}
+          disabledClassName={'disabled'}
+          breakClassName={'page-item'}
+          breakLinkClassName={'page-link'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+        />
+      </div>
+    </React.Fragment>
+  ) : null}
+</div>
 
-              </div>
-              {!loadingState && (
-                <div className="d-flex justify-content-center mt-2">
-                  <ReactPaginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
-                    breakLabel={'...'}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                    containerClassName={'pagination justify-content-center'}
-                    activeClassName={'active'}
-                    previousLinkClassName={'page-link'}
-                    nextLinkClassName={'page-link'}
-                    disabledClassName={'disabled'}
-                    breakClassName={'page-item'}
-                    breakLinkClassName={'page-link'}
-                    pageClassName={'page-item'}
-                    pageLinkClassName={'page-link'}
-                  />
-                </div>
-              )}
-            </React.Fragment>
-          ) :
-            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
-          }
-
-        </div>
       </section>
     </React.Fragment>
 

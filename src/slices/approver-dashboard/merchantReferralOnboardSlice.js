@@ -3,7 +3,6 @@ import {
     bankDetails,
     saveBasicDetails,
     saveBusinessDetails,
-    fetchReferralChildList,
     updateBasicDetails,
     fetchPerentTypeMerchantData,
     getAllZoneCode
@@ -137,8 +136,7 @@ export const fetchChiledDataList = createAsyncThunk(
     "merchantReferralOnboardSlice/bank/fetchChiledDataList",
     async (data) => {
 
-        const requestParam = data?.page;
-        const requestParam1 = data?.page_size;
+       
         const login_id = data?.login_id
         const refrerType = data?.type
         let param = ""
