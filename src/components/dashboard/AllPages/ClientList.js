@@ -11,21 +11,20 @@ import { Link } from 'react-router-dom';
 import CustomLoader from '../../../_components/loader';
 import { clientListExportApi } from '../../../services/approver-dashboard/merchantReferralOnboard.service';
 import toastConfig from '../../../utilities/toastTypes';
+import moment from "moment";
 
 
 function ClientList() {
+    const convertDate = (yourDate) => {
+        let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+        return date;
+      };
 
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
     }
-
-
-
-
     const PasswordCell = ({ password }) => {
         const [visible, setVisible] = useState(false);
-
-
         const toggleVisibility = () => {
             setVisible((prevVisible) => !prevVisible);
         };
@@ -98,7 +97,7 @@ function ClientList() {
             id: "5",
             name: "Created Date",
             selector: (row) => row.createdDate,
-            cell: (row) => <div className="removeWhiteSpace">{row?.createdDate}</div>,
+            cell: (row) => <div className="removeWhiteSpace">{convertDate(row?.createdDate)}</div>,
             width: "180px",
         },
 
