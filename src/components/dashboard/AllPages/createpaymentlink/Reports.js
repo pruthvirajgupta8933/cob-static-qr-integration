@@ -115,6 +115,7 @@ const Reports = () => {
 
   const handleSubmit = (values) => {
     setDisable(true)
+    setLoadingState(true)
 
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
@@ -130,8 +131,10 @@ const Reports = () => {
             setLoadingState(false);
             setDisplayList(res.data);
             setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+            
           }
           setDisable(false)
+          setLoadingState(false)
 
         })
         .catch((err) => {
@@ -258,81 +261,80 @@ const Reports = () => {
       </section>
 
       <section className="">
-        <div className="container-fluid p-3 my-3">
-          {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
+      <div className="container-fluid p-3 my-3">
+  {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
 
-          {data?.length !== 0 ? (
-            <React.Fragment>  <div className="scroll" style={{ overflow: "auto" }}>
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>S. No.</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th >Mobile No.</th>
-                    <th> Action</th>
-                    <th>Status</th>
-                    <th>Client Txn Id</th>
-                    <th>Link Id</th>
-                    <th colSpan={1}>Link Valid Date </th>
-                    <th>Created At</th>
-                    <th>Payment Collected</th>
-                    <th>Numeric Link Id</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedata.map((report, i) => (
-                    <tr key={uuidv4()}>
-                      <td>{i + 1}</td>
-                      <td>{report.customer_name}</td>
-                      <td>{report.customer_email}</td>
-                      <td>{report.customer_phone_number}</td>
-                      <td>{report.type}</td>
-                      <td>{report.transaction_status}</td>
-                      <td>{report.client_transaction_id}</td>
-                      <td>{report.link_id}</td>
-                      <td>{convertDate(report?.link_valid_date?.replace("T", " "))}</td>
-                      <td>{report.created_at}</td>
-                      <td>{report.payment_collected}</td>
-                      <td>{report.numeric_link_id}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+  {loadingState ? (
+    <div className="d-flex justify-content-center align-items-center loader-container">
+      <CustomLoader loadingState={loadingState} />
+    </div>
+  ) : data?.length === 0 ? (
+    <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
+  ) : (
+    <>
+      <div className="scroll" style={{ overflow: "auto" }}>
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>S. No.</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile No.</th>
+              <th>Action</th>
+              <th>Status</th>
+              <th>Client Txn Id</th>
+              <th>Link Id</th>
+              <th colSpan={1}>Link Valid Date</th>
+              <th>Created At</th>
+              <th>Payment Collected</th>
+              <th>Numeric Link Id</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedata.map((report, i) => (
+              <tr key={uuidv4()}>
+                <td>{i + 1}</td>
+                <td>{report.customer_name}</td>
+                <td>{report.customer_email}</td>
+                <td>{report.customer_phone_number}</td>
+                <td>{report.type}</td>
+                <td>{report.transaction_status}</td>
+                <td>{report.client_transaction_id}</td>
+                <td>{report.link_id}</td>
+                <td>{convertDate(report?.link_valid_date?.replace("T", " "))}</td>
+                <td>{report.created_at}</td>
+                <td>{report.payment_collected}</td>
+                <td>{report.numeric_link_id}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-              <div className="d-flex justify-content-center align-items-center loader-container">
-                <CustomLoader loadingState={loadingState} />
-              </div>
-            </div>
+      <div className="d-flex justify-content-center mt-2">
+        <ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+          containerClassName={'pagination justify-content-center'}
+          activeClassName={'active'}
+          previousLinkClassName={'page-link'}
+          nextLinkClassName={'page-link'}
+          disabledClassName={'disabled'}
+          breakClassName={'page-item'}
+          breakLinkClassName={'page-link'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+        />
+      </div>
+    </>
+  )}
+</div>
 
-              {!loadingState && (
-                <div className="d-flex justify-content-center mt-2">
-                  <ReactPaginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
-                    breakLabel={'...'}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                    pageRangeDisplayed={5}
-                    onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                    containerClassName={'pagination justify-content-center'}
-                    activeClassName={'active'}
-                    previousLinkClassName={'page-link'}
-                    nextLinkClassName={'page-link'}
-                    disabledClassName={'disabled'}
-                    breakClassName={'page-item'}
-                    breakLinkClassName={'page-link'}
-                    pageClassName={'page-item'}
-                    pageLinkClassName={'page-link'}
-                  />
-                </div>
-              )}
-
-            </React.Fragment>) :
-            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
-          }
-
-        </div>
       </section>
     </React.Fragment>
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 // import * as Yup from "yup";
-
 import { toast, Zoom } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
@@ -15,9 +14,13 @@ import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomModal from "../../../../_components/custom_modal";
 import Yup from "../../../../_components/formik/Yup";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
+import toastConfig from "../../../../utilities/toastTypes";
 
 export const Edituser = (props) => {
-  let history = useHistory();
+  
+let history = useHistory();
+  
+
   const { myname, email, phone, editCustomerTypeId, id } = props.items;
   const callBackFn = props.callBackFn;
   const [disable, setDisable] = useState(false)
@@ -68,12 +71,20 @@ export const Edituser = (props) => {
     }
     createPaymentLinkService.editCustomer(postData)
       .then((res) => {
-        callBackFn();
-        toast.success("User Updated Successfully", {
-          position: "top-right",
-          autoClose: 2000,
-          transition: Zoom,
-        });
+        
+        if (res.data?.response_code === '1') {
+          toastConfig.successToast(res.data?.message?.toUpperCase());
+          callBackFn()
+      } else {
+          toastConfig.errorToast(res.data?.message?.toUpperCase());
+      }
+      
+       
+        // toast.success("User Updated Successfully", {
+        //   position: "top-right",
+        //   autoClose: 2000,
+        //   transition: Zoom,
+        // });
         setDisable(false)
       })
       .catch((e) => {

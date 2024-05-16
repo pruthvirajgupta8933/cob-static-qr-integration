@@ -110,10 +110,10 @@ const PayerDetails = () => {
 
 
   const formSubmit = (values) => {
-    
     setDisable(true);
     setSubmitted(true);
-
+    setLoadingState(true);
+    
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
 
@@ -123,18 +123,20 @@ const PayerDetails = () => {
           toastConfig.errorToast("No Data Found");
         } else {
           setData(res.data);
-          setLoadingState(false);
           setDisplayList(res.data);
           setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-          setSubmitted(false);
         }
+        setLoadingState(false);
+        setSubmitted(false);
         setDisable(false);
       })
       .catch((err) => {
+        setLoadingState(false);
         setDisable(false);
         setSubmitted(false);
       });
 };
+
 
   // SEARCH FILTER
 
@@ -250,6 +252,7 @@ const PayerDetails = () => {
         callBackFn={edit}
         modalToggle={editModalToggle}
         fnSetModalToggle={setEditModalToggle}
+        
       />
       <Genratelink generatedata={genrateform} />
       <AddSinglePayer loadUser={loadUser} customerType={customerType}/>
@@ -360,98 +363,97 @@ const PayerDetails = () => {
 
 
       <section className="">
-        <div className="container-fluid p-3 my-3 ">
-          {data?.length !== 0 && <h6>Total Records:{data.length}</h6>}
+      <div className="container-fluid p-3 my-3">
+  {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
 
-          {data?.length !== 0 ? (
-            <>
-              <div className="scroll overflow-auto">
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th scope="col">S.No</th>
-                      <th scope="col">Name of Payer</th>
-                      <th scope="col">Mobile No.</th>
-                      <th scope="col">Email ID</th>
-                      <th scope="col">Payer Category</th>
-                      <th scope="col">Edit</th>
+  {loadingState ? (
+    <div className="d-flex justify-content-center align-items-center loader-container">
+      <CustomLoader loadingState={loadingState} />
+    </div>
+  ) : data?.length === 0 ? (
+    <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
+  ) : (
+    <>
+      <div className="scroll overflow-auto">
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Name of Payer</th>
+              <th scope="col">Mobile No.</th>
+              <th scope="col">Email ID</th>
+              <th scope="col">Payer Category</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Action</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedata.map((user, i) => (
+              <tr key={uuidv4()}>
+                <td>{i + 1}</td>
+                <td>{user.name}</td>
+                <td>{user.phone_number}</td>
+                <td>{user.email}</td>
+                <td>{user.customer_type}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn cob-btn-primary btn-primary text-white btn-sm"
+                    onClick={(e) => handleClick(user.id)}
+                  >
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={(e) => generateli(user.id)}
+                    type="button"
+                    className="btn cob-btn-primary text-white btn-sm"
+                    data-toggle="modal"
+                    data-target="#bhuvi"
+                    data-whatever="@getbootstrap"
+                  >
+                    Generate Link
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn cob-btn-secondary btn-danger text-white btn-sm"
+                    onClick={() => deleteUser(user.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="d-flex justify-content-center">
+        <ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+          containerClassName={'pagination justify-content-center'}
+          activeClassName={'active'}
+          previousLinkClassName={'page-link'}
+          nextLinkClassName={'page-link'}
+          disabledClassName={'disabled'}
+          breakClassName={'page-item'}
+          breakLinkClassName={'page-link'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+        />
+      </div>
+    </>
+  )}
+</div>
 
-                      <th scope="col">Action</th>
-                      <th scope="col">Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedata.map((user, i) => (
-                      <tr key={uuidv4()}>
-                        <td>{i + 1}</td>
-                        <td>{user.name}</td>
-                        <td>{user.phone_number}</td>
-                        <td>{user.email}</td>
-                        <td>{user.customer_type}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn cob-btn-primary btn-primary text-white btn-sm"
-                            onClick={(e) => handleClick(user.id)}
-                          >
-                            Edit
-                          </button>
-                        </td>
-
-                        <td>
-                          <button
-                            onClick={(e) => generateli(user.id)}
-                            type="button"
-                            className="btn cob-btn-primary  text-white btn-sm"
-                            data-toggle="modal"
-                            data-target="#bhuvi"
-                            data-whatever="@getbootstrap"
-                          >
-                            Generate Link
-                          </button>
-                          <div></div>
-                        </td>
-                        <td>
-                          <button
-                            className="btn  cob-btn-secondary btn-danger text-white btn-sm"
-                            onClick={() => deleteUser(user.id)}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="d-flex justify-content-center align-items-center loader-container">
-                  <CustomLoader loadingState={loadingState} />
-                </div>
-              </div>
-
-              {!loadingState && (
-                <div className="d-flex justify-content-center">
-                  <ReactPaginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
-                    breakLabel={'...'}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                    pageRangeDisplayed={5}
-                    onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                    containerClassName={'pagination justify-content-center'}
-                    activeClassName={'active'}
-                    previousLinkClassName={'page-link'}
-                    nextLinkClassName={'page-link'}
-                    disabledClassName={'disabled'}
-                    breakClassName={'page-item'}
-                    breakLinkClassName={'page-link'}
-                    pageClassName={'page-item'}
-                    pageLinkClassName={'page-link'}
-                  />
-                </div>
-              )}
-            </>) : <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>}
-        </div>
 
       </section>
 

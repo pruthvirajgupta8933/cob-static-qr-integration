@@ -23,6 +23,8 @@ export const fetchBankList = () => {
 }
 
 
+
+
 export const saveBusinessDetails = (obj) => {
     return axiosInstanceJWT.post(API_URL.saveBusinesDetails, obj)
 }
@@ -37,6 +39,24 @@ export const getAllZoneCode= () => {
 export const fetchPerentTypeMerchantData = (obj) => {
     return axiosInstanceJWT.post(API_URL.perentTypeMerchantData, obj)
 }
+
+
+
+export const clientListExportApi = (postData) => {
+ const { bank_login_id,type } = postData;
+    let param = ""
+    if (type === "bank") {
+            param += `&bank_login_id=${bank_login_id}`
+        }
+        if (type === "referrer") {
+            param += `&referrer_login_id=${bank_login_id}`
+        }
+    const url = `${API_URL.exportOflineMerchant}?type=${type}${param}&order_by=-loginMasterId`;
+    return axiosInstanceJWT.get(url, {
+        responseType: 'arraybuffer'
+    });
+}
+
 
 
 

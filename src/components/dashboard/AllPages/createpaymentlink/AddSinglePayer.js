@@ -10,6 +10,7 @@ import createPaymentLinkService from "../../../../services/create-payment-link/p
 import { Regex, RegexMsg } from '../../../../_components/formik/ValidationRegex';
 
 const AddSinglePayer = ({ loadUser, customerType }) => {
+    
     const { user } = useSelector((state) => state.auth);
     const [disable, setDisable] = useState(false)
 
@@ -36,8 +37,8 @@ const AddSinglePayer = ({ loadUser, customerType }) => {
         phone_number: Yup.string()
             .required("Required")
             .matches(Regex.phoneRegExp, RegexMsg.phoneRegExp)
-            .min(10, "to short")
-            .max(10, "to long"),
+            .min(10, "Mobile number should be of 10 digits")
+            .max(10, "Too long"),
         email: Yup.string().email("Enter valid email").required("Required").allowOneSpace(),
         customer_type_id: Yup.string().required("Required"),
     });
