@@ -26,16 +26,19 @@ const FORM_VALIDATION = Yup.object().shape({
         .min(10, "Phone number in not valid")
         .max(10, "too long"),
     emaill: Yup.string()
+        .allowOneSpace()
         .email("Must be a valid email")
         .max(255)
         .required("Required"),
     passwordd: Yup.string()
+        .allowOneSpace()
         .required("Password Required")
         .matches(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
-        ).allowOneSpace(),
+        ),
     confirmpasswordd: Yup.string()
+        .allowOneSpace()
         .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
         .required("Confirm Password Required").allowOneSpace(),
     business_cat_code: Yup.string().required("Required"),
@@ -259,7 +262,6 @@ const OnboardMerchant = ({ zoneCode, heading }) => {
                                 maxLength={255}
                                 id="email"
                                 placeholder="Enter your email"
-                                type="email"
                                 name="emaill"
                                 size={50}
                             />
