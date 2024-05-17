@@ -155,6 +155,10 @@ select {
 .alertcss {
   margin-top: 75px;
 }
+.user_info{
+  cursor: pointer;
+  margin-left: "8px";
+}
 
 
 

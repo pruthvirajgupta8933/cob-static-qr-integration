@@ -354,6 +354,9 @@ exportOflineMerchant:`${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`
   uploadDocuement: `${kyc_url}/kyc/bank-merchant/upload-doc/`,
   // `{{url}}/kyc/bank-merchant/basic-detail/`
 
+  /// userInfo api
+  userInfoLoginData:`${kyc_url}/kyc/get-merchant-data/login-data/`,
+
 
   //   merchant list with the subscription data
   fetchAllMerchantListWithSubscriptionData: `${url}/subscription/?order_by=-id`,

@@ -82,6 +82,7 @@ import Widget from "../../widget/Widget";
 import MerchantBalance from "../../ApproverNVerifier/MerchantBalance";
 import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
 import toastConfig from "../../../utilities/toastTypes";
+import UserInfo from "../../ApproverNVerifier/UserInfo";
 
 
 function DashboardMainContent() {
@@ -429,6 +430,15 @@ function DashboardMainContent() {
                             roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}
                         >
                             <AdditionalKYC />
+                        </AuthorizedRoute>
+
+                        <AuthorizedRoute
+                            exact
+                            path={`${path}/user-info`}
+                            Component={UserInfo}
+                            roleList={{approver: true}}
+                        >
+                            <UserInfo/>
                         </AuthorizedRoute>
 
                         <Route exact path={`${path}/thanks`}>

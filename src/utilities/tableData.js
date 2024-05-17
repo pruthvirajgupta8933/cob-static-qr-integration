@@ -884,3 +884,5 @@ export const subscriptionWalletTableCol = [
   { id: "4", name: "Mandate status" , width:"140px", cell: (row) => <div className="removeWhiteSpace">{row?.mandateStatus}</div> },
   { id: "4", name: "Purchase amount" , cell: (row) => <div className="removeWhiteSpace">{row?.purchaseAmount}</div> }
 ]
+
+
