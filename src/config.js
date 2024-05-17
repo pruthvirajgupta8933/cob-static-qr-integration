@@ -69,6 +69,10 @@ const API_LIVE = {
   BizzAPPForm: `${url}/biz-app-form/`,
   Business_Category_Type: `${url}/auth-service/auth/business-category`,
 
+  ///////////Payment mode for mid
+  GET_PAYMENT_MODE_LIST:`${url}/mid/payment-mode/`,
+  GET_ALL_BANK_NAME:`${url}/mid/bank/`,
+
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
