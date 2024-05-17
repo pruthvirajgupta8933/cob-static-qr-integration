@@ -15,7 +15,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
-    const[disable,setDisable]=useState(false)
+    const [disable, setDisable] = useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails } = merchantReferralOnboardReducer
@@ -51,27 +51,30 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     };
 
 
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         fullName: Yup.string()
-            .trim().allowOneSpace()
+            .allowOneSpace()
             .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
             .required("Required").wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
             .nullable(),
-        username: Yup.string().when('isPasswordReq', {
-            is: true,
-            then: Yup.string().matches(Regex.userNameRegex, RegexMsg.userNameRegex).required('Required'),
-            otherwise: Yup.string(),
-        }),
+        username: Yup.string()
+            .allowOneSpace()
+            .when('isPasswordReq', {
+                is: true,
+                then: Yup.string().matches(Regex.userNameRegex, RegexMsg.userNameRegex).required('Required'),
+                otherwise: Yup.string(),
+            }),
         mobileNumber: Yup.string()
-            .trim()
-            .required("Required")
+
+            .allowOneSpace()
             .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
             .min(10, "Phone number is not valid")
             .max(10, "Only 10 digits are allowed ")
+            .required("Required")
             .nullable(),
         email_id: Yup.string()
-            .trim()
+        .allowOneSpace()
             .email("Invalid email")
             .required("Required")
             .nullable(),
@@ -79,8 +82,8 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     });
 
 
-    const handleSubmitContact = async (value,{resetForm}) => {
-      
+    const handleSubmitContact = async (value, { resetForm }) => {
+
         setDisable(true)
         const { fullName, mobileNumber, email_id, password, username } = value;
         // alert(3)
@@ -184,12 +187,12 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 validationSchema={validationSchema}
                 // onSubmit={(values) => handleSubmitContact(values)}
                 onSubmit={async (values, { resetForm }) => {
-                    await handleSubmitContact(values,{ resetForm })
-                    
+                    await handleSubmitContact(values, { resetForm })
+
                 }}
                 enableReinitialize={false
                 }
-                >
+            >
                 {(formik) => (<Form>
                     <div className={`row g-3 ${marginTopCss ? "mt-5" : ""}`}>
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
@@ -216,7 +219,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                         <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                             <FormikController
                                 control="input"
-                                type="email"
                                 name="email_id"
                                 placeholder="Enter Email"
                                 className="form-control"

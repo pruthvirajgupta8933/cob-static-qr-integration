@@ -18,7 +18,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const [avgTicketAmount, setAvgTicketAmount] = useState([]);
     const [transactionRangeOption, setTransactionRangeOption] = useState([]);
     const [platform, setPlatform] = useState([]);
-    const[disable,setDisable]=useState(false)
+    const [disable, setDisable] = useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
@@ -43,15 +43,16 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string()
-            .nullable()
-            .required("Required")
-            .max(10, "PAN should be exactly 10 characters long"),
+            .allowOneSpace()
+            .max(10, "PAN should be exactly 10 characters long")
+            .nullable().required("Required"),
         website: Yup.string()
-            .nullable()
-            .required('Website is required')
+            .allowOneSpace()
             .matches(
                 Regex.urlFormate, RegexMsg.urlFormate
-            ),
+            )
+            .nullable()
+            .required('Website is required'),
         is_pan_verified: Yup.string().nullable(),
         platform_id: Yup.string()
             .required("Select the platform")
@@ -143,7 +144,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 dispatch(kycDetailsByMerchantLoginId({ login_id: merchantLoginId, password_required: true }))
             }
         }).catch(err => toastConfig.errorToast("Something went wrong!"))
-       
+
 
     }
 
@@ -357,7 +358,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
                             }
                         </div> */}
-                          <div className="row">
+                        <div className="row">
                             <div className="col-lg-6 mt-2">
 
                                 {!isEditableInput &&
@@ -367,15 +368,15 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         disabled={disable} >
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
-                                               ariaHidden="true" />
+                                                ariaHidden="true" />
                                             <span className="sr-only">Loading...</span>
                                         </>}
                                         Save
                                     </button>}
 
-                                    {businessDetails?.resp?.status === true &&
-                                <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
-                            }
+                                {businessDetails?.resp?.status === true &&
+                                    <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
+                                }
 
                             </div>
                         </div>

@@ -106,7 +106,7 @@ function BusinessOverview(props) {
         .required("Select the platform")
         .nullable(),
       billing_label: Yup.string()
-        .trim()
+        .allowOneSpace()
         .min(1, 'Please enter more than 1 character')
         .max(250, 'Please do not enter more than 250 characters')
         .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)

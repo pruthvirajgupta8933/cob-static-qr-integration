@@ -50,9 +50,9 @@ function ContactInfo(props) {
 
 
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .trim()
+      .allowOneSpace()
       .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
       .required("Required")
       .wordLength("Word character length exceeded")
@@ -60,7 +60,7 @@ function ContactInfo(props) {
       .nullable()
       .allowOneSpace(),
     contact_number: Yup.string()
-      .trim()
+    .allowOneSpace()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .required("Required")
       .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
@@ -76,7 +76,7 @@ function ContactInfo(props) {
       .required("You need to verify Your Contact Number")
       .nullable(),
     email_id: Yup.string()
-      .trim()
+    .allowOneSpace()
       .email("Invalid email")
       .required("Required")
       .nullable(),
@@ -86,7 +86,7 @@ function ContactInfo(props) {
       .required("You need to verify Your Email Id")
       .nullable(),
     aadhar_number: Yup.string()
-      .trim()
+      .allowOneSpace()
       .max(18, "Exceeds the limit")
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
@@ -108,7 +108,7 @@ function ContactInfo(props) {
         aadhar_number: values.aadhar_number,
       })
     ).then((res) => {
-     
+
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res.payload?.status === true
@@ -126,7 +126,7 @@ function ContactInfo(props) {
         setIsDisable(false);
       }
     }).catch((error) => {
-     
+
       toast.error("Something went wrong");
     })
 

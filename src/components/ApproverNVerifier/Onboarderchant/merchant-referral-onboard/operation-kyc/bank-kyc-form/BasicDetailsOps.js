@@ -67,13 +67,19 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
         business_category: Yup.string().required("Required"),
         business_type: Yup.string().required("Required"),
 
-        password: Yup.string().when("isEditTable", {
+        password: Yup.string()
+        .allowOneSpace()
+        .when("isEditTable", {
+            
             is: true,
             then: Yup.string(),
-            otherwise: (Yup) => Yup.matches(Regex.password, RegexMsg.password).required("Required")
+            
+            otherwise: (Yup) => Yup.matches(Regex.password, RegexMsg.password)
+           
+            .required("Required")
         }),
         username: Yup.string()
-            .trim()
+            .allowOneSpace()
             .required("Required")
             .min(6, "Minimum 6 characters are allowed")
             .max(100, "Maximum 100 characters are allowed")
