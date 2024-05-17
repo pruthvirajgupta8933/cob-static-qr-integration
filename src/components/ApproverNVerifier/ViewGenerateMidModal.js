@@ -37,48 +37,48 @@ const ViewGenerateMidModal = (props) => {
       .nullable(),
   });
 
-  useEffect(() => {
-    dispatch(kycBankNames())
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "bankId",
-          "bankName",
-          resp.payload
-        );
-        setBankData(data);
-      })
+  // useEffect(() => {
+  //   dispatch(kycBankNames())
+  //     .then((resp) => {
+  //       const data = convertToFormikSelectJson(
+  //         "bankId",
+  //         "bankName",
+  //         resp.payload
+  //       );
+  //       setBankData(data);
+  //     })
 
-      .catch((err) => console.log(err));
-  }, []);
-
-
-  useEffect(() => {
-    dispatch(kycpaymentModeType())
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "payment_id",
-          "payment_mode",
-          resp.payload.PaymentModeData
-        );
-        setPaymentMode(data);
-      })
-
-      .catch((err) => console.log(err));
-  }, []);
+  //     .catch((err) => console.log(err));
+  // }, []);
 
 
-  useEffect(() => {
-    dispatch(getallGenrateMidData({ clientCode: props?.userData?.clientCode }))
-      .then((resp) => {
-        const data = resp?.payload?.MidData;
-        setGenrateMidData(data)
+  // useEffect(() => {
+  //   dispatch(kycpaymentModeType())
+  //     .then((resp) => {
+  //       const data = convertToFormikSelectJson(
+  //         "payment_id",
+  //         "payment_mode",
+  //         resp.payload.PaymentModeData
+  //       );
+  //       setPaymentMode(data);
+  //     })
 
-      })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
-      .catch((err) => {
 
-      });
-  }, [props?.userData?.clientCode]);
+  // useEffect(() => {
+  //   dispatch(getallGenrateMidData({ clientCode: props?.userData?.clientCode }))
+  //     .then((resp) => {
+  //       const data = resp?.payload?.MidData;
+  //       setGenrateMidData(data)
+
+  //     })
+
+  //     .catch((err) => {
+
+  //     });
+  // }, [props?.userData?.clientCode]);
 
   const handleSubmit = (values, resetForm) => {
     setLoading(true);
@@ -151,7 +151,7 @@ const ViewGenerateMidModal = (props) => {
                   <p className="">
                     Client Code: {props?.userData?.clientCode}
                   </p>
-                  <div className="container">
+                  {/* <div className="container">
                     <Form>
                       <div className="row">
                         <div className="col-lg-6">
@@ -181,7 +181,6 @@ const ViewGenerateMidModal = (props) => {
                         <button
                           type="subbmit"
                           className="submit-btn cob-btn-primary text-white mt-3"
-                        // disabled={disable}
                         >
                           {loading ? "Loading..." : "Generate MID"}
                         </button>
@@ -218,7 +217,7 @@ const ViewGenerateMidModal = (props) => {
                       </div>
 
                     </Form>
-                  </div>
+                  </div> */}
                 </div>
               </>
             )}

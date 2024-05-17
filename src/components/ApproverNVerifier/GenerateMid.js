@@ -10,9 +10,8 @@ import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
-import { fetchParentTypeData } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import API_URL from "../../config";
 import * as XLSX from 'xlsx';
+import { fetchPaymentMode,fetchBankName } from "../../services/generate-mid/generate-mid.service";
 
 import { axiosInstance } from "../../utilities/axiosInstance"
 function AssignZone() {
@@ -21,8 +20,8 @@ function AssignZone() {
   }
   const [selectedRows, setSelectedRows] = useState([]);
   const [data, setData] = useState([]);
-  const [isChecked, setIsChecked] = useState(false); 
-  
+  const [isChecked, setIsChecked] = useState(false);
+
 
   const AssignZoneData = [
     {
@@ -107,36 +106,41 @@ function AssignZone() {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
-    
+    {
+      id: "9",
+      name: "Generate MID",
+      cell: (row) => (
+        <button
+          type="submit"
+          onClick={() => {
+            setModalDisplayData(row);
+            setOpenModal(true);
+          }}
+          className="approve cob-btn-primary text-white"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+        >
+          Action
+        </button>
+      ),
+    },
+
   ];
   let initialValues = {
-  transaction_from: "",
-};
-  useEffect(() => {
+    transaction_from: "",
+  };
 
 
-    const postData = {
-      "parent_type": "bank",
-      "created_by": "10829"
-    }
-    dispatch(fetchParentTypeData(postData)).then((res) => {
-      setBankList(res?.payload?.data)
 
-    })
-
-  }, []);
-
-const approvedMerchantList = useSelector(
+  const approvedMerchantList = useSelector(
     (state) => state.kyc.kycApprovedList
   );
 
-   
+
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
-  const [bankList, setBankList] = useState([])
-  const [midList, setMidList] = useState([]);
+const [midList, setMidList] = useState([]);
   const [dataCount, setDataCount] = useState("");
-  const [paymentModeList, SetPaymentModeList] = useState([]);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -144,7 +148,31 @@ const approvedMerchantList = useSelector(
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  
+  const [merchantData, setMerchantData] = useState([]);
+  const[bankName,setBankName]=useState([])
+
+  useEffect(() => {
+    fetchPaymentMode()
+      .then(response => {
+        setMerchantData(response?.data?.result);
+      })
+      .catch(error => {
+        console.error('Error fetching merchant data:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetchBankName()
+      .then(response => {
+        console.log("resp",response)
+        setBankName(response?.data?.result);
+      })
+      .catch(error => {
+        console.error('Error fetching merchant data:', error);
+      });
+  }, []);
+
+
 
 
   const handleSelectAll = (checked) => {
@@ -191,7 +219,7 @@ const approvedMerchantList = useSelector(
         merchantStatus: "Approved",
       })
     )
-   
+
   };
 
   useEffect(() => {
@@ -203,7 +231,7 @@ const approvedMerchantList = useSelector(
         merchantStatus: "Approved",
       })
     )
-   
+
   }, [currentPage, pageSize]);
 
   ////////////////////////////////////////////////// Search filter start here
@@ -240,32 +268,14 @@ const approvedMerchantList = useSelector(
   };
 
   const txnOption = [
-    {key:'',value:"Select"},
+    { key: '', value: "Select" },
     { key: "1", value: "Bank" },
     { key: "2", value: "Manual" }
   ];
 
-  const tempPaymode = [{ key: "", value: "Select" }];
-  paymentModeList.map((item) => {
-    tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
-  });
+ 
 
-  const paymodeList = async () => {
-    await axiosInstance
-      .get(API_URL.PAY_MODE_LIST)
-      .then((res) => {
-
-        SetPaymentModeList(res.data);
-      })
-      .catch((err) => {
-
-      });
-  };
-
-  useEffect(() => {
-    paymodeList();
-
-  }, []);
+ 
 
 
   const handleExport = () => {
@@ -299,7 +309,7 @@ const approvedMerchantList = useSelector(
                       <FormikController
                         control="select"
                         className="form-select"
-                        label="Select "
+                        label="Select Type "
                         options={txnOption}
                         name="transaction_from"
                       />
@@ -309,11 +319,9 @@ const approvedMerchantList = useSelector(
                         <label className="form-label">Select Bank</label>
                         <select className="form-select">
                           <option value="">Select</option>
-                          {bankList?.map((data) => (
-                            <option value={data?.loginMasterId} key={data?.value}>
-                              {data?.client_code
-                                ? `${data?.client_code?.toUpperCase()} - ${data?.name?.toUpperCase()}`
-                                : data?.name?.toUpperCase()}
+                          {bankName?.map((data) => (
+                            <option value={data?.id} key={data?.id}>
+                            {data?.bank_name}
                             </option>
                           ))}
                         </select>
@@ -321,13 +329,17 @@ const approvedMerchantList = useSelector(
                     </div>
                     <div className="col-lg-3">
                       <div className="form-group">
-                        <FormikController
-                          control="select"
-                          label="Payment Mode"
-                          name="payment_mode"
-                          className="form-select"
-                          options={tempPaymode}
-                        />
+                      <label className="form-label">Payment Mode</label>
+                        <select className="form-select">
+                          <option value="">Select</option>
+                          {merchantData?.map((data) => (
+                            <option value={data?.id} key={data?.id}>
+                             {data?.mode_name}
+                            </option>
+                          ))}
+                        
+                       
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -359,7 +371,7 @@ const approvedMerchantList = useSelector(
                 />
 
               </div>
-              {isChecked && 
+              {isChecked &&
                 <div className="form-group col-lg-3">
                   <button
                     className="btn btn-sm text-white mt-4 cob-btn-primary "
