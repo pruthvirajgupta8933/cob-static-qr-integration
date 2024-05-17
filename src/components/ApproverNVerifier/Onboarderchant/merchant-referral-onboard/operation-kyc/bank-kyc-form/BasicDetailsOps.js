@@ -15,7 +15,7 @@ import toastConfig from "../../../../../../utilities/toastTypes";
 function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
-    const[disable,setDisable]=useState(false)
+    const [disable, setDisable] = useState(false)
     const [businessCode, setBusinessCode] = useState([]);
     const [businessTypeData, setBusinessTypeData] = useState([]);
     const [passwordType, setPasswordType] = useState({ showPasswords: false });
@@ -44,14 +44,13 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
     };
 
-   
-    const validationSchema = Yup.object({
+
+    const validationSchema = Yup.object().shape({
         fullName: Yup.string()
-            .trim()
-            .allowOneSpace("Test space")
-            // .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
-            .required("Required").wordLength("Word character length exceeded", 100)
+            .allowOneSpace()
+            .wordLength("Word character length exceeded", 100)
             .max(100, "Maximum 100 characters are allowed")
+            .required("Required")
             .nullable(),
         mobileNumber: Yup.string()
             .trim()
@@ -61,7 +60,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
             .max(10, "Only 10 digits are allowed ")
             .nullable(),
         email_id: Yup.string()
-            .trim()
+            .allowOneSpace()
             .email("Invalid email")
             .required("Required")
             .nullable(),
@@ -248,7 +247,6 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                     <div className="col-md-6">
                         <FormikController
                             control="input"
-                            type="email"
                             name="email_id"
                             className="form-control"
                             placeholder="Enter Email Id"
@@ -318,7 +316,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
                         {!isEditableInput && <button type="submit" className="btn cob-btn-primary btn-sm m-2" disabled={disable}>
                             {submitLoader && <>
                                 <span className="spinner-border spinner-border-sm" role="status"
-                                   ariaHidden="true" />
+                                    ariaHidden="true" />
                                 <span className="sr-only">Loading...</span>
                             </>}
                             Save

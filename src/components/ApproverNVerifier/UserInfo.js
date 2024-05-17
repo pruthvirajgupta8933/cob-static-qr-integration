@@ -160,7 +160,7 @@ const UserInfo = () => {
                                             control="select"
                                             label="Search By"
                                             name="searchBy"
-                                            className="form-control"
+                                            className="form-select"
                                             options={options1}
                                             onChange={(e) => {
                                                 formik.handleChange(e);

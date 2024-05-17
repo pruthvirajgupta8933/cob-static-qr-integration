@@ -29,7 +29,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { bankDetails } = merchantReferralOnboardReducer
     const { merchantKycData } = kyc
-   
+
 
 
 
@@ -45,11 +45,8 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
     };
 
 
-    const validationSchema = Yup.object({
-        account_holder_name: Yup.string()
-            .trim()
-            .required("Required")
-            .nullable(),
+    const validationSchema = Yup.object().shape({
+        account_holder_name: Yup.string().allowOneSpace().required("Required").nullable(),
         ifsc_code: Yup.string()
             .trim()
             .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
@@ -83,8 +80,8 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const handleSubmit = (values) => {
 
-        setSubmitLoader(prev=>true)
-        setDisable(prev=>true)
+        setSubmitLoader(prev => true)
+        setDisable(prev => true)
 
         let selectedAccType = values.account_type?.toString() === "1" ? "Current" : values.account_type?.toString() === "2" ? "Saving" : "";
 
@@ -114,7 +111,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                 console.log(err)
             })
 
-       
+
     }
 
 
@@ -460,7 +457,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
                                         disabled={disable} >
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" role="status"
-                                               ariaHidden="true" />
+                                                ariaHidden="true" />
                                             <span className="sr-only">Loading...</span>
                                         </>}
                                         Save
