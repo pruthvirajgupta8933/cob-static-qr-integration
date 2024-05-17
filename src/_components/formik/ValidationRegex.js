@@ -17,7 +17,7 @@ export const Regex = {
   urlFormate: /^(https:\/\/(?!www)[^\s/$.?#].[^\s]*\.[a-z]+(\/[^\s]*)?)|(https:\/\/www\.[^\s/$.?#].[^\s]*\.[a-z]+(\/[^\s]*)?)$/,
   userNameRegex: /^[a-zA-Z0-9_.@]+$/,
   aadhaarRegex: /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/,
-  phoneRegExp :/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+  phoneRegExp: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
 
 
   latitudeRegex: /^-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)/,
@@ -37,13 +37,13 @@ export const RegexMsg = {
   password: "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character",
   ifscRegex: "Your IFSC code is Invalid and must be in capital letters",
   accountNoRgex: "Account Number format is invalid",
-  multipleSpace: "Invalid input",
+  multipleSpace: "Invalid input : Extra space not allowed",
   urlFormate: "Please enter a valid HTTPS URL",
   acceptAlphaNumericDot: "AlphaNumeric & dot are allowed",
   userNameRegex: "Username accept only alphanumeric and (`.`_ @) special characters",
   aadhaarRegex: "Aadhaar Number is Invalid",
-  phoneRegExp :"Phone number is not valid",
-latitudeRegex: "Invalid Latitude",
+  phoneRegExp: "Phone number is not valid",
+  latitudeRegex: "Invalid Latitude",
   longitudeRegex: "Invalid Longitude"
 }
 
