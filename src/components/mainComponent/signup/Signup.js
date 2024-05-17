@@ -325,7 +325,6 @@ function Signup() {
                                                     maxLength={255}
                                                     id="email"
                                                     placeholder="Enter your email"
-                                                    type="email"
                                                     name="emaill"
                                                     size={50}
                                                 />
