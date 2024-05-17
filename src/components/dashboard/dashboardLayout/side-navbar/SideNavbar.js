@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import sideNavClasses from "./sidenavbar.module.css";
+import ProgressBar from "../../../../_components/reuseable_components/ProgressBar";
 
 function SideNavbar() {
     const { menuListReducer, auth, themeReducer } = useSelector((state) => state);
@@ -31,7 +32,8 @@ function SideNavbar() {
 
     return (
         <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob} ${headerMenuToggle ? 'show' : ''}`}>
-            <div className="position-sticky pt-3">
+
+            {menuListReducer?.isLoading ? <div className="position-sticky pt-3">
                 {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) && (
                     <ul className="nav flex-column">
                         <li className="nav-item">
@@ -140,33 +142,13 @@ function SideNavbar() {
                         </Link>
                     </li>
                 </ul>
+            </div> :
+                <div className="text-white">
+                    <ProgressBar />
+                </div>
 
+            }
 
-                {/* {roleBasedShowTab?.merchant === true &&
-                 <ul className="nav flex-column" role="menu">
-                    <li className="nav-item" role="menuitem">
-                        <Link
-                            to={`${url}/widget`}
-                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "widget" ? sideNavClasses.selected_memu : ""}`}
-                        >
-                            <i className="fa fa-question-circle mr-1"ariaHidden="true"></i>
-                            Create Widget
-                        </Link>
-                    </li>
-                </ul>} */}
-
-                {/* <ul className="nav flex-column" role="menu">
-                    <li className="nav-item" role="menuitem">
-                        <Link
-                            to={`${url}/merchant-balance`}
-                            className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "merchant-balance" ? sideNavClasses.selected_memu : ""}`}
-                        >
-                            <i className="fa fa-bank mr-1"ariaHidden="true"></i>
-                            Subscription Wallet
-                        </Link>
-                    </li>
-                </ul> */}
-            </div>
         </nav>
     );
 }
