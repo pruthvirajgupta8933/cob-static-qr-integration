@@ -59,11 +59,11 @@ function AssignZone() {
         merchantStatus: "Approved",
       })
     )
-    
+
   }, [currentPage, pageSize]);
 
-  
-const filteredData = useMemo(() => {
+
+  const filteredData = useMemo(() => {
     return assignZone?.filter((item) =>
       Object.values(item)
         .join(' ')
@@ -75,7 +75,7 @@ const filteredData = useMemo(() => {
 
 
   const searchByText = () => {
-setData(filteredData);
+    setData(filteredData);
   };
 
 
@@ -193,7 +193,7 @@ setData(filteredData);
 
           <div className="row mt-5">
 
-            <div className="col-lg-3">
+            <div className="form-group col-lg-3 col-md-12 mt-2">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
@@ -202,7 +202,7 @@ setData(filteredData);
                 searchTextByApiCall={true}
               />
             </div>
-            <div className="col-lg-3">
+            <div className="form-group col-lg-3 col-md-12 mt-2">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
@@ -211,7 +211,7 @@ setData(filteredData);
                 changeCurrentPage={changeCurrentPage}
               />
             </div>
-            <div className="col-lg-3">
+            <div className="form-group col-lg-3 col-md-12 mt-2">
               <SearchbyDropDown
                 kycSearch={kycSearch}
                 searchText={searchText}

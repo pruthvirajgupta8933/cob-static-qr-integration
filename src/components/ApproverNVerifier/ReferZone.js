@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAllByKycStatus, clearFetchAllByKycStatus} from "../../slices/kycSlice";
+import { FetchAllByKycStatus, clearFetchAllByKycStatus } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal";
 import Table from "../../_components/table_components/table/Table";
@@ -182,7 +182,7 @@ const ReferZone = () => {
     setAssignzone(allKycData?.result);
 
     allKycData?.error && toastConfig.successToast("Data is not loading, Try again")
-    
+
   }, [allKycData])
 
 
@@ -231,7 +231,7 @@ const ReferZone = () => {
 
           <div className="container-fluid mt-5">
             <div className="row">
-              <div className="col-lg-3">
+              <div className="form-group col-lg-3 col-md-12 mt-2">
                 <SearchFilter
                   kycSearch={kycSearch}
                   searchText={searchText}
@@ -241,17 +241,17 @@ const ReferZone = () => {
                 />
               </div>
 
-              <div className="col-lg-3">
-              <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            currentPage={currentPage}
-            changePageSize={changePageSize}
-            changeCurrentPage={changeCurrentPage}
-          />
+              <div className="form-group col-lg-3 col-md-12 mt-2">
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={dataCount}
+                  currentPage={currentPage}
+                  changePageSize={changePageSize}
+                  changeCurrentPage={changeCurrentPage}
+                />
               </div>
 
-              <div className="col-lg-3">
+              <div className="form-group col-lg-3 col-md-12 mt-2">
                 <label className="form-label">Merchant KYC Status</label>
                 <select className="form-select" onChange={e => setMerchantStatus(e.target.value)} value={merchantStatus}>
                   {selectStatus?.map(item => (<option key={item.key} value={item.value}>{item.value}</option>))}
@@ -262,7 +262,7 @@ const ReferZone = () => {
 
             <div className="">
               <div className="scroll overflow-auto">
-              <h6>Total Count : {dataCount}</h6>
+                <h6>Total Count : {dataCount}</h6>
                 {!allKycData?.loading && data?.length !== 0 && (
                   <Table
                     row={ReferZoneData}
