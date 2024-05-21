@@ -17,11 +17,23 @@ const SearchFilter = ({
 
   const [searchQueryText, setsearchQueryText] = useState("");
   const [filterbtn, showfilterbtn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // const handleSearchSubmit = (e) => {
+  //   e.preventDefault();
+  //   kycSearch(searchQueryText, "text");
+  //   searchByText(searchQueryText);
+  // };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    kycSearch(searchQueryText, "text");
-    searchByText(searchQueryText);
+    if (searchQueryText.length < 3) {
+      setErrorMessage("Please enter at least 3 characters.");
+    } else {
+      kycSearch(searchQueryText, "text");
+      searchByText(searchQueryText);
+      setErrorMessage("");
+    }
   };
   const clearFilter = () => {
     kycSearch("", "text");
@@ -31,7 +43,7 @@ const SearchFilter = ({
     <React.Fragment>
       <label>Search</label>
       <form onSubmit={handleSearchSubmit}>
-        <div className="input-group mb-3 ">
+        <div className="input-group mb-0 ">
           {searchTextByApiCall && (
             <input
               className="form-control search-filter"
@@ -59,6 +71,11 @@ const SearchFilter = ({
             </div>
           )}
         </div>
+        {errorMessage && (
+          <div className="error-message text-danger mt-1">
+            {errorMessage}
+          </div>
+        )}
 
         {filterbtn && searchText !== "" && (
           <div

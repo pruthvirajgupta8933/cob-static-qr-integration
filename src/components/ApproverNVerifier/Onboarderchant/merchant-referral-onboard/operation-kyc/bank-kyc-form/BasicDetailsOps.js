@@ -53,9 +53,9 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
             .required("Required")
             .nullable(),
         mobileNumber: Yup.string()
-            .trim()
-            .required("Required")
+            .allowOneSpace()
             .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+            .required("Required")
             .min(10, "Phone number is not valid")
             .max(10, "Only 10 digits are allowed ")
             .nullable(),
@@ -68,16 +68,16 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
         business_type: Yup.string().required("Required"),
 
         password: Yup.string()
-        .allowOneSpace()
-        .when("isEditTable", {
-            
-            is: true,
-            then: Yup.string(),
-            
-            otherwise: (Yup) => Yup.matches(Regex.password, RegexMsg.password)
-           
-            .required("Required")
-        }),
+            .allowOneSpace()
+            .when("isEditTable", {
+
+                is: true,
+                then: Yup.string(),
+
+                otherwise: (Yup) => Yup.matches(Regex.password, RegexMsg.password)
+
+                    .required("Required")
+            }),
         username: Yup.string()
             .allowOneSpace()
             .required("Required")

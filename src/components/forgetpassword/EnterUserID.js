@@ -13,7 +13,7 @@ const EnterUserID = (props) => {
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
+    email: Yup.string().allowOneSpace()
       .email("Must be a valid email")
       .max(255)
       .required("Required"),

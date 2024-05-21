@@ -173,7 +173,7 @@ const RejectedKYC = () => {
             roles?.viewer === true ? (
             <button
               type="button"
-              className="approve text-white  cob-btn-primary  btn-sm "
+              className="approve text-white"
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);
