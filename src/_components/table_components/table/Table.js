@@ -1,5 +1,5 @@
-import React from "react";
-import Paginataion from "../pagination/Pagination";
+import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import DataTable from "react-data-table-component";
 import "./index.css";
 // import SkeletonTable from "./skeleton-table";
@@ -11,6 +11,22 @@ const Table = (props) => {
     footerOffset: 40,
     scrollX: true,
     scrollY: true,
+  };
+  const [pageCount, setPageCount] = useState(Math.ceil(props.dataCount / props.pageSize));
+  const [currentPage, setCurrentPage] = useState(props.currentPage || 1);
+
+  useEffect(() => {
+    setPageCount(Math.ceil(props.dataCount / props.pageSize));
+  }, [props.dataCount, props.pageSize]);
+
+  useEffect(() => {
+    setCurrentPage(props.currentPage);
+  }, [props.currentPage]);
+
+  const handlePageClick = (selectedItem) => {
+    const newPage = selectedItem.selected + 1;
+    setCurrentPage(newPage);
+    props.changeCurrentPage(newPage);
   };
 
   return (
@@ -25,12 +41,25 @@ const Table = (props) => {
       // selectableRows
       />{" "}
       {props?.dataCount > 0 && (
-        <Paginataion
-          dataCount={props.dataCount}
-          pageSize={props.pageSize}
-          currentPage={props.currentPage}
-          changeCurrentPage={props.changeCurrentPage}
-        />
+         <ReactPaginate
+         previousLabel={'Previous'}
+         nextLabel={'Next'}
+         breakLabel={'...'}
+         pageCount={pageCount}
+         marginPagesDisplayed={2}
+         pageRangeDisplayed={5}
+         onPageChange={handlePageClick}
+         containerClassName={'pagination justify-content-center'}
+         activeClassName={'active'}
+         previousLinkClassName={'page-link'}
+         nextLinkClassName={'page-link'}
+         disabledClassName={'disabled'}
+         breakClassName={'page-item'}
+         breakLinkClassName={'page-link'}
+         pageClassName={'page-item'}
+         pageLinkClassName={'page-link'}
+         forcePage={currentPage - 1}
+       />
       )}
     </>
   );

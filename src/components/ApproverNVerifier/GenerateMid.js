@@ -10,8 +10,11 @@ import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
+import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import * as XLSX from 'xlsx';
-import { fetchPaymentMode,fetchBankName } from "../../services/generate-mid/generate-mid.service";
+import { fetchPaymentMode, fetchBankName } from "../../services/generate-mid/generate-mid.service";
+import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
+import ReactSelect, { createFilter } from 'react-select';
 function AssignZone() {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -19,6 +22,16 @@ function AssignZone() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [data, setData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [clientCodeList, setCliencodeList] = useState([])
+
+  const { approverDashboard } = useSelector(state => state)
+
+  useEffect(() => {
+
+    dispatch(getAllCLientCodeSlice()).then((resp) => {
+      setCliencodeList(resp?.payload?.result)
+    })
+  }, [])
 
 
   const AssignZoneData = [
@@ -137,7 +150,7 @@ function AssignZone() {
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
-const [midList, setMidList] = useState([]);
+  const [midList, setMidList] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -147,12 +160,14 @@ const [midList, setMidList] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [merchantData, setMerchantData] = useState([]);
-  const[bankName,setBankName]=useState([])
+  const [bankName, setBankName] = useState([])
+  const [selectedClientId, setSelectedClientId] = useState(null);
+  console.log(selectedClientId)
 
   useEffect(() => {
     fetchPaymentMode()
       .then(response => {
-        const data=response?.data?.result
+        const data = response?.data?.result
         setMerchantData(data);
       })
       .catch(error => {
@@ -163,7 +178,7 @@ const [midList, setMidList] = useState([]);
   useEffect(() => {
     fetchBankName()
       .then(response => {
-        const data=response?.data?.result
+        const data = response?.data?.result
         setBankName(data);
       })
       .catch(error => {
@@ -271,10 +286,13 @@ const [midList, setMidList] = useState([]);
     { key: "1", value: "Bank" },
     { key: "2", value: "Manual" }
   ];
+  const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", clientCodeList, {}, false, false, true, "name")
 
- 
 
- 
+
+
+
+
 
 
   const handleExport = () => {
@@ -283,6 +301,18 @@ const [midList, setMidList] = useState([]);
     XLSX.utils.book_append_sheet(workbook, worksheet, 'selectedRows');
     XLSX.writeFile(workbook, 'Mid Report.xlsx');
   };
+
+  const options = [
+    { value: '', label: 'Select Client Code' },
+    ...clientCodeList.map((data) => ({
+      value: data.clientCode,
+      label: `${data.clientCode} - ${data.name}`
+    }))
+  ]
+
+  const handleSelectChange = (selectedOption) => {
+    setSelectedClientId(selectedOption ? selectedOption.value : null)
+  }
 
 
 
@@ -305,13 +335,42 @@ const [midList, setMidList] = useState([]);
                   <div className="row">
                     <div className="col-lg-3">
 
-                      <FormikController
+                      {/* <FormikController
                         control="select"
+                        name="refer_by"
+                        options={clientCodeOption}
                         className="form-select"
-                        label="Select Type "
-                        options={txnOption}
-                        name="transaction_from"
+                        label="Client Code"
+                        onChange={(e) => {
+                          formik.setFieldValue("refer_by", e.target.value)
+                          formik.setStatus(false);
+                        }}
+                      /> */}
+                      <label className="form-label">Client Code</label>
+                      <ReactSelect
+                        className="zindexforDropdown"
+                        onChange={handleSelectChange}
+                        value={selectedClientId ? { value: selectedClientId, label: selectedClientId } : null}
+                        options={options}
+                        placeholder="Select Client Code"
+                        filterOption={createFilter({ ignoreAccents: false })}
                       />
+                    </div>
+
+                    <div className="col-lg-3">
+                      <div className="form-group">
+                        <label className="form-label">Payment Mode</label>
+                        <select className="form-select">
+                          <option value="">Select</option>
+                          {merchantData?.map((data) => (
+                            <option value={data?.id} key={data?.id}>
+                              {data?.mode_name}
+                            </option>
+                          ))}
+
+
+                        </select>
+                      </div>
                     </div>
                     <div className="col-lg-3">
                       <div className="form-group">
@@ -320,35 +379,37 @@ const [midList, setMidList] = useState([]);
                           <option value="">Select</option>
                           {bankName?.map((data) => (
                             <option value={data?.id} key={data?.id}>
-                            {data?.bank_name}
+                              {data?.bank_name}
                             </option>
                           ))}
                         </select>
                       </div>
                     </div>
-                    <div className="col-lg-3">
-                      <div className="form-group">
-                      <label className="form-label">Payment Mode</label>
-                        <select className="form-select">
-                          <option value="">Select</option>
-                          {merchantData?.map((data) => (
-                            <option value={data?.id} key={data?.id}>
-                             {data?.mode_name}
-                            </option>
-                          ))}
-                        
-                       
-                        </select>
-                      </div>
+                    <div className="col-lg-3 mt-4">
+                      <button
+                        type="submit"
+                        onClick={() => {
+                          setModalDisplayData();
+                          setOpenModal(true);
+                        }}
+                        className="approve cob-btn-primary text-white"
+                        data-toggle="modal"
+                        data-target="#exampleModalCenter"
+                      >
+                        Submit
+                      </button>
                     </div>
+
+
                   </div>
+
                 </Form>
               )}
             </Formik>
 
 
 
-            <div className="row mt-3">
+            {/* <div className="row mt-3">
               <div className="form-group col-md-3">
                 <SearchFilter
                   kycSearch={kycSearch}
@@ -400,7 +461,7 @@ const [midList, setMidList] = useState([]);
                   <h2 className="text-center font-weight-bold">No Data Found</h2>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div>
@@ -409,6 +470,7 @@ const [midList, setMidList] = useState([]);
               userData={modalDisplayData}
               setOpenModal={setOpenModal}
               afterGeneratingMid={afterGeneratingMid}
+              selectedClientId={selectedClientId}
             />
           ) : (
             <></>
