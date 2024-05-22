@@ -127,11 +127,11 @@ function BusinessDetails(props) {
 
   // console.log("initialValues-----reupdate", initialValues)
   const validationSchema = Yup.object({
-    company_name: Yup.string().trim()
+    company_name: Yup.string().allowOneSpace()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    gst_number: Yup.string().when(["registerd_with_gst"], {
+    gst_number: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
       is: true,
       then: Yup.string()
         .trim()
@@ -143,7 +143,7 @@ function BusinessDetails(props) {
         .notRequired()
         .nullable(),
     }),
-    prevGstNumber: Yup.string().when(["registerd_with_gst"], {
+    prevGstNumber: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
       is: true,
       then: Yup.string().oneOf(
         [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
@@ -151,10 +151,10 @@ function BusinessDetails(props) {
         .nullable(),
       otherwise: Yup.string().notRequired().nullable()
     }),
-    udyam_number: Yup.string().when(["registerd_with_udyam"], {
+    udyam_number: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
       is: true,
       then: Yup.string()
-        .trim()
+        
         .max(25, "Invalid Format")
         .required("Required")
         .nullable(),
@@ -162,7 +162,7 @@ function BusinessDetails(props) {
         .notRequired()
         .nullable(),
     }),
-    prevUdyamNumber: Yup.string().when(["registerd_with_udyam"], {
+    prevUdyamNumber: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
       is: true,
       then: Yup.string().oneOf(
         [Yup.ref("udyam_number"), null], "You need to verify Your Udyam Reg. Number")
@@ -170,19 +170,19 @@ function BusinessDetails(props) {
         .nullable(),
       otherwise: Yup.string().notRequired().nullable()
     }),
-    pan_card: Yup.string()
+    pan_card: Yup.string().allowOneSpace()
       .matches(reqexPAN, "PAN number is invalid")
       .required("Required")
       .nullable(),
     isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
 
     signatory_pan: Yup.string()
-      .trim()
+    .allowOneSpace()
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
-    isSignatoryPanVerified: Yup.string().required("Please verify the signatory pan number").nullable(),
-    prevSignatoryPan: Yup.string()
+    isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
+    prevSignatoryPan: Yup.string().allowOneSpace()
       .oneOf(
         [Yup.ref("signatory_pan"), null],
         "You need to verify Your Authorized Signatory PAN Number"
@@ -191,27 +191,27 @@ function BusinessDetails(props) {
       .nullable(),
 
     name_on_pancard: Yup.string()
-      .trim()
+    .allowOneSpace()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
     city_id: Yup.string()
-      .trim()
+    .allowOneSpace()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .max(50, "City name character length exceeded")
       .wordLength("Word character length exceeded")
       .nullable(),
-    state_id: Yup.string()
+    state_id: Yup.string().allowOneSpace()
       .required("Required")
       .nullable(),
     pin_code: Yup.string()
-      .trim()
+    .allowOneSpace()
       .matches(reqexPinCode, "Pin Code is Invalid")
       .required("Required")
       .nullable(),
     operational_address: Yup.string()
-      .trim()
+    .allowOneSpace()
       .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
       .required("Required")
       .wordLength("Word character length exceeded")

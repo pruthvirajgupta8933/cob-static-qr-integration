@@ -12,8 +12,6 @@ import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
 import * as XLSX from 'xlsx';
 import { fetchPaymentMode,fetchBankName } from "../../services/generate-mid/generate-mid.service";
-
-import { axiosInstance } from "../../utilities/axiosInstance"
 function AssignZone() {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -154,7 +152,8 @@ const [midList, setMidList] = useState([]);
   useEffect(() => {
     fetchPaymentMode()
       .then(response => {
-        setMerchantData(response?.data?.result);
+        const data=response?.data?.result
+        setMerchantData(data);
       })
       .catch(error => {
         console.error('Error fetching merchant data:', error);
@@ -164,8 +163,8 @@ const [midList, setMidList] = useState([]);
   useEffect(() => {
     fetchBankName()
       .then(response => {
-        console.log("resp",response)
-        setBankName(response?.data?.result);
+        const data=response?.data?.result
+        setBankName(data);
       })
       .catch(error => {
         console.error('Error fetching merchant data:', error);

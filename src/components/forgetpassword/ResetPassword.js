@@ -10,14 +10,14 @@ const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
 
   const validationSchema = Yup.object().shape({
-    password: Yup.string().required(" Old Password Required"),
-    newpassword: Yup.string()
+    password: Yup.string().allowOneSpace().required(" Old Password Required"),
+    newpassword: Yup.string().allowOneSpace()
       .required("Password Required")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-    confirmpassword: Yup.string()
+    confirmpassword: Yup.string().allowOneSpace()
       .oneOf([Yup.ref("newpassword"), null], "Passwords must match")
       .required("Confirm Password Required"),
   });

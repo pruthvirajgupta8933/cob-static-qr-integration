@@ -113,7 +113,7 @@ function BusinessOverview(props) {
         .required('Required')
         .nullable(),
 
-      website_app_url: Yup.string().when(["seletcted_website_app_url"], {
+      website_app_url: Yup.string().allowOneSpace().when(["seletcted_website_app_url"], {
         is: "Yes",
         then: Yup.string()
           .matches(
