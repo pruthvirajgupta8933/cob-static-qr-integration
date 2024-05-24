@@ -24,15 +24,15 @@ const ViewGenerateMidModal = (props) => {
 
 
   const initialValues = {
-    bank_id: "",
-    payment_mode: ""
+    name: "",
+    email: ""
   };
 
   const validationSchema = Yup.object({
-    bank_id: Yup.string()
+    name: Yup.string()
       .required("Required")
       .nullable(),
-    payment_mode: Yup.string()
+    email: Yup.string()
       .required("Required")
       .nullable(),
   });
@@ -145,35 +145,37 @@ const ViewGenerateMidModal = (props) => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <p className="">
+                  {/* <p className="">
                     Client Name: {props?.userData?.clientName}
-                  </p>
+                  </p> */}
                   <p className="">
-                    Client Code: {props?.userData?.clientCode}
+                    Client Code: {props?.selectedClientId}
                   </p>
-                  {/* <div className="container">
+                  <div className="container">
                     <Form>
                       <div className="row">
                         <div className="col-lg-6">
                           <label className="col-form-label mt-0 p-2">
-                            Bank Name<span style={{ color: "red" }}>*</span>
+                             Name<span style={{ color: "red" }}>*</span>
                           </label>
                           <FormikController
-                            control="select"
-                            name="bank_id"
+                            control="input"
+                            type="text"
+                            name="name"
+                            placeholder="Enter Name"
                             className="form-control"
-                            options={bankData}
                           />
                         </div>
                         <div className="col-lg-6">
                           <label className="col-form-label mt-0 p-2">
-                            Mode<span style={{ color: "red" }}>*</span>
+                            Email<span style={{ color: "red" }}>*</span>
                           </label>
                           <FormikController
-                            control="select"
-                            name="payment_mode"
+                            control="input"
+                            type="text"
+                            name="email"
+                            placeholder="Enter Email"
                             className="form-control"
-                            options={paymentMode}
                           />
                         </div>
                       </div>
@@ -182,42 +184,13 @@ const ViewGenerateMidModal = (props) => {
                           type="subbmit"
                           className="submit-btn cob-btn-primary text-white mt-3"
                         >
-                          {loading ? "Loading..." : "Generate MID"}
+                          Confirm
                         </button>
                       </div>
 
-                      <div
-                        className="modal-footer mt-3">
-                        <table className="table table-bordered ">
-                          <thead>
-                            <tr>
-                              <th>Client Code</th>
-                              <th>Payment Mode</th>
-                              <th>Bank Name</th>
-                              <th>Sub Merchant Id</th>
-                              <th>Created Date</th>
-
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {genrateMidData?.map((data, i) => (
-                              <tr key={uuidv4()}>
-                                <td>{data?.client_code}</td>
-                                <td>{data?.PaymentMode}</td>
-                                <td>{data?.BankName}</td>
-                                <td>{data?.sub_merchant_id}</td>
-                                <td>{DateFormatter(data?.created_date, false)}</td>
-
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
-
-                      </div>
 
                     </Form>
-                  </div> */}
+                  </div>
                 </div>
               </>
             )}

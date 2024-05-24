@@ -394,12 +394,6 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
 
-                        <AuthorizedRoute exact path={`${path}/approver`} Component={Approver}
-                            roleList={{ approver: true, verifier: true, viewer: true }}
-                        >
-                            <Approver />
-                        </AuthorizedRoute>
-
                         <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone} roleList={{ approver: true, verifier: true }}>
                             <AssignZone />
                         </AuthorizedRoute>
@@ -435,9 +429,9 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/user-info`}
                             Component={UserInfo}
-                            roleList={{approver: true}}
+                            roleList={{ approver: true }}
                         >
-                            <UserInfo/>
+                            <UserInfo />
                         </AuthorizedRoute>
 
                         <Route exact path={`${path}/thanks`}>
