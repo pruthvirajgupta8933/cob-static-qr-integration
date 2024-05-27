@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
-// import * as Yup from "yup";
+import Yup from "../../../_components/formik/Yup";
 
 import FormikController from "../../../_components/formik/FormikController";
 import _ from "lodash";
@@ -27,7 +27,8 @@ import ReactPaginate from 'react-paginate';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
-import Yup from "../../../_components/formik/Yup";
+import classes from "./allpage.module.css"
+
 
 
 const TransactionHistory = () => {
@@ -513,10 +514,10 @@ const TransactionHistory = () => {
     const lastThreeMonth = new Date(today);
     lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
     lastThreeMonth.toLocaleDateString("en-ca");
-    let month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
-    let day = lastThreeMonth.getUTCDate();
-    let year = lastThreeMonth.getUTCFullYear();
-    const finalDate = year + "-" + month + "-" + day;
+    // let month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
+    // let day = lastThreeMonth.getUTCDate();
+    // let year = lastThreeMonth.getUTCFullYear();
+    // const finalDate = year + "-" + month + "-" + day;
 
 
     return (
@@ -526,11 +527,9 @@ const TransactionHistory = () => {
                 <Notification />
             </div>
 
-            <main className="">
-                <div className="">
-                    {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <main>
+                <div>
                     <h5 className="ml-4">Transaction History</h5>
-                    {/* </div> */}
                     <section className="">
                         <div className="container-fluid">
 
@@ -543,7 +542,7 @@ const TransactionHistory = () => {
                                     <Form>
                                         <div className="form-row mt-5">
                                             {(roles?.bank || roles?.referral) && (
-                                                <div className="form-group col-lg-3">
+                                                <div className="form-group col-lg-2">
                                                     <FormikController
                                                         control="select"
                                                         label="Client Code"
@@ -554,9 +553,9 @@ const TransactionHistory = () => {
                                                 </div>
                                             )}
 
-                                            <div className="form-group col-lg-3 ml-4">
+                                            <div className="form-group col-lg-3">
                                                 <label htmlFor="dateRange" className="form-label">Start Date - End Date</label>
-                                                <div className="input-group">
+                                                {/* <div className="input-group">
                                                     <DatePicker
                                                         id="dateRange"
                                                         selectsRange={true}
@@ -581,10 +580,36 @@ const TransactionHistory = () => {
                                                             <FaCalendarAlt />
                                                         </div>
                                                     </div>
+                                                </div> */}
+                                                <div className={`input-group mb-3 d-flex justify-content-between ${classes.calendar_border}`} >
+                                                    <DatePicker
+                                                        id="dateRange"
+                                                        selectsRange={true}
+                                                        startDate={startDate}
+                                                        endDate={endDate}
+                                                        onChange={(update) => {
+                                                            const [start, end] = update;
+                                                            setStartDate(start);
+                                                            setEndDate(end);
+                                                            formik.setFieldValue('fromDate', start);
+                                                            formik.setFieldValue('endDate', end);
+                                                        }}
+                                                        dateFormat="dd-MM-yyyy"
+                                                        placeholderText="Select Date Range"
+                                                        className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+                                                        showPopperArrow={false}
+                                                    />
+                                                    <div className="input-group-append" onClick={() => {
+                                                        document.getElementById('dateRange').click();
+                                                    }}>
+                                                        <span className={`input-group-text ${classes.calendar_input_border}`}>  <FaCalendarAlt /></span>
+                                                    </div>
+
                                                 </div>
+
                                             </div>
 
-                                            <div className="form-group col-lg-3">
+                                            <div className="form-group col-lg-2">
                                                 <FormikController
                                                     control="select"
                                                     label="Transactions Status"
@@ -594,7 +619,7 @@ const TransactionHistory = () => {
                                                 />
                                             </div>
 
-                                            <div className="form-group col-lg-3 ml-3">
+                                            <div className="form-group col-lg-2">
                                                 <FormikController
                                                     control="select"
                                                     label="Payment Mode"

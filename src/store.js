@@ -19,7 +19,7 @@ import { createMandateReducer } from "./slices/subscription-slice/createMandateS
 import approverDashboardSlice from "./slices/approver-dashboard/approverDashboardSlice"
 import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice"
 import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice"
-import notificationSlice from "./slices/notification-slice/notificationSlice"
+// import notificationSlice from "./slices/notification-slice/notificationSlice"
 import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice"
 import { widgetReducer } from "./slices/widgetSlice";
 import { themeReducer } from "./slices/theme/themeSlice";
@@ -34,7 +34,7 @@ const reducer = {
   subscription: reducerSubscription,
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
-  signupData:signupDataReducer,
+  signupData: signupDataReducer,
   widget: widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
@@ -58,7 +58,7 @@ const reducer = {
   merchantReferralOnboardReducer: merchantReferralOnboardReducer,
 
   //notification
-  notificationSlice: notificationSlice,
+  // notificationSlice: notificationSlice,
 
   //   product subscription
   productSubscriptionServiceAdminReducer: productSubscriptionServiceAdminReducer,

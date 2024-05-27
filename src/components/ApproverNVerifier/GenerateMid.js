@@ -162,7 +162,7 @@ function AssignZone() {
   const [merchantData, setMerchantData] = useState([]);
   const [bankName, setBankName] = useState([])
   const [selectedClientId, setSelectedClientId] = useState(null);
-  console.log(selectedClientId)
+  // console.log(selectedClientId)
 
   useEffect(() => {
     fetchPaymentMode()
@@ -399,10 +399,7 @@ function AssignZone() {
                         Submit
                       </button>
                     </div>
-
-
                   </div>
-
                 </Form>
               )}
             </Formik>
@@ -465,18 +462,17 @@ function AssignZone() {
           </div>
         </div>
         <div>
-          {openZoneModal === true ? (
-            <ViewGenerateMidModal
-              userData={modalDisplayData}
-              setOpenModal={setOpenModal}
-              afterGeneratingMid={afterGeneratingMid}
-              selectedClientId={selectedClientId}
-            />
-          ) : (
-            <></>
-          )}
         </div>
       </main>
+
+      {openZoneModal === true && (
+        <ViewGenerateMidModal
+          userData={modalDisplayData}
+          setOpenModal={setOpenModal}
+          afterGeneratingMid={afterGeneratingMid}
+          selectedClientId={selectedClientId}
+        />
+      )}
     </section>
   );
 }
