@@ -17,6 +17,7 @@ import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../../_components/formik/Yup";
+import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 
 const TransactionHistoryDoitc = () => {
@@ -24,9 +25,12 @@ const TransactionHistoryDoitc = () => {
   const history = useHistory();
   const roles = roleBasedAccess();
 
-  const { auth, merchantReportSlice } = useSelector((state) => state);
+  const { auth, merchantReportSlice, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const { refrerChiledList } = merchantReferralOnboardReducer
+  const clientCodeData = refrerChiledList?.resp?.results ?? []
+  // console.log("clientCodeData", clientCodeData)
   const { user } = auth;
-  console.log(user)
+
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   const [txnList, SetTxnList] = useState([]);
@@ -40,6 +44,8 @@ const TransactionHistoryDoitc = () => {
   const [pageCount, setPageCount] = useState(0);
   const [buttonClicked, isButtonClicked] = useState(false);
 
+
+  // Date split
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
@@ -50,6 +56,9 @@ const TransactionHistoryDoitc = () => {
   }
   splitDate = splitDate.join("-");
 
+
+
+  // client code list
   let clientMerchantDetailsList = [];
   if (
     user &&
@@ -68,22 +77,22 @@ const TransactionHistoryDoitc = () => {
       ? clientMerchantDetailsList[0]?.clientCode
       : "";
 
-  const [clientCode, SetClientCode] = useState(clientcode_rolebased);
-  const [todayDate, setTodayDate] = useState(splitDate);
 
 
+  // formik initial values
   const initialValues = {
-    clientCode: clientCode,
-    fromDate: todayDate,
-    endDate: todayDate,
+    clientCode: clientcode_rolebased,
+    fromDate: splitDate,
+    endDate: splitDate,
     transaction_status: "All",
     payment_mode: "All",
   };
 
-  console.log(clientMerchantDetailsList)
+
+  // formik validation
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
-    clientCode: Yup.string().required("Client code not found").nullable(),
+    clientCode: Yup.string().required("Select the client code").nullable(),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
@@ -91,11 +100,12 @@ const TransactionHistoryDoitc = () => {
     payment_mode: Yup.string().required("Required"),
   });
 
+
+  // get payment status list
   const getPaymentStatusList = async () => {
     await axiosInstance
       .get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
-
         SetPaymentStatusList(res.data);
       })
       .catch((err) => {
@@ -103,6 +113,7 @@ const TransactionHistoryDoitc = () => {
       });
   };
 
+  // get paymode status list
   const paymodeList = async () => {
     await axiosInstance
       .get(API_URL.PAY_MODE_LIST)
@@ -111,10 +122,31 @@ const TransactionHistoryDoitc = () => {
         SetPaymentModeList(res.data);
       })
       .catch((err) => {
-
       });
   };
 
+
+  // fetch child client data
+  const fetchData = () => {
+    const roleType = roles
+    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    if (type !== "default") {
+      let postObj = {
+        type: type,  // Set the type based on roleType
+        login_id: auth?.user?.loginId
+      }
+      dispatch(fetchChiledDataList(postObj));
+    }
+
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
+  // formik field opitons client code
   let isExtraDataRequired = false;
   let extraDataObj = {};
   if (user.roleId === 3 || user.roleId === 13) {
@@ -123,53 +155,67 @@ const TransactionHistoryDoitc = () => {
   }
 
   const forClientCode = true;
+  let fnKey, fnVal = ""
+  let clientCodeListArr = []
+  if (roles?.merchant === true) {
+    fnKey = "clientCode"
+    fnVal = "clientName"
+    clientCodeListArr = clientMerchantDetailsList
+  } else {
+    fnKey = "client_code"
+    fnVal = "name"
+    clientCodeListArr = clientCodeData
+  }
   const clientCodeOption = convertToFormikSelectJson(
-    "clientCode",
-    "clientName",
-    clientMerchantDetailsList,
+    fnKey,
+    fnVal,
+    clientCodeListArr,
     extraDataObj,
     isExtraDataRequired,
     forClientCode
   );
+  // console.log(clientCodeOption)
 
 
+  // formik field opitons payment status
   const tempPayStatus = [{ key: "All", value: "All" }];
-
   paymentStatusList.map((item) => {
     if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
       tempPayStatus.push({ key: item, value: item });
     }
   });
 
+  // formik field opitons payment mode
   const tempPaymode = [{ key: "All", value: "All" }];
   paymentModeList.map((item) => {
     tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
   });
 
+
+  // table pagination
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
 
+
+  // submit handler
   const submitHandler = (values) => {
-    // console.log("values",values)
-
-
     isButtonClicked(true);
 
     const { fromDate, endDate, transaction_status, payment_mode } = values;
     const dateRangeValid = checkValidation(fromDate, endDate);
 
     if (dateRangeValid) {
-
       let strClientCode,
         clientCodeArrLength = "";
-      // console.log("clientCode",clientCode);
+      // console.log("clientCode", clientCode);
       if (values.clientCode === "All") {
 
         const allClientCode = [];
-        clientMerchantDetailsList?.map((item) => {
-          allClientCode.push(item.clientCode);
+        clientCodeListArr?.map((item) => {
+          allClientCode.push(item.client_code);
         });
+        // console.log("allClientCode", allClientCode)
         clientCodeArrLength = allClientCode.length.toString();
         strClientCode = allClientCode.join().toString();
       } else {
@@ -183,12 +229,16 @@ const TransactionHistoryDoitc = () => {
         paymentMode: payment_mode,
         fromDate: fromDate,
         endDate: endDate,
+        noOfClient: clientCodeArrLength
 
       };
-      // console.log("ddfdf")
+
       dispatch(transactionHistoryDoitc(paramData));
     }
   };
+
+
+  // data validation
   const checkValidation = (fromDate = "", toDate = "") => {
     let flag = true;
     if (fromDate === 0 || toDate === "") {
@@ -446,7 +496,7 @@ const TransactionHistoryDoitc = () => {
             <h5 className="">Transactions History</h5>
           </div>
           <section className="">
-            <div className="container-fluid">
+            <div className="container-fluid mt-5">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -520,7 +570,7 @@ const TransactionHistoryDoitc = () => {
                         >
                           Search
                         </button>
-                        <p className="text-danger">{formik?.errors?.clientCode}</p>
+
                       </div>
                       {txnList?.length > 0 ? (
                         <>
@@ -738,8 +788,8 @@ const TransactionHistoryDoitc = () => {
                     </div>
                   </div>
                 ) : buttonClicked === true && txnList.length === 0 ? (
-                  <div className="showMsg">
-                    <h6 className="float-centre mr-5">Data Not Found</h6>
+                  <div className="showMsg text-center">
+                    <h5>Data Not Found</h5>
                   </div>
                 ) : (
                   <div></div>

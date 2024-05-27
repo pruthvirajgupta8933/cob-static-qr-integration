@@ -238,7 +238,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/settled-transaction-merchant`}
                             Component={SettlementReportDoitc}
-                            roleList={{ merchant: true, bank: true }}
+                            roleList={{ referral: true }}
                         >
                             <SettlementReportDoitc />
                         </AuthorizedRoute>
@@ -247,7 +247,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/transaction-history-merchant`}
                             Component={TransactionHistoryDoitc}
-                            roleList={{ merchant: true, bank: true }}
+                            roleList={{ referral: true }}
                         >
                             <TransactionHistoryDoitc />
                         </AuthorizedRoute>

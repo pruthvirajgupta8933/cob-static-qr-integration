@@ -17,12 +17,17 @@ import moment from "moment";
 import { clearSettledTransactionHistory, settledTransactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../../_components/formik/Yup";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
+import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 
 const SettlementReportDoitc = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { auth, merchantReportSlice } = useSelector((state) => state);
+  const roles = roleBasedAccess();
+  const { auth, merchantReportSlice, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const { refrerChiledList } = merchantReferralOnboardReducer
+  const clientCodeData = refrerChiledList?.resp?.results ?? []
   const { user } = auth;
 
   const [txnList, SetTxnList] = useState([]);
@@ -60,13 +65,33 @@ const SettlementReportDoitc = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
+
+  let isExtraDataRequired = false;
+  let extraDataObj = {};
+  if (user.roleId === 3 || user.roleId === 13) {
+    isExtraDataRequired = true;
+    extraDataObj = { key: "All", value: "All" };
+  }
+
+  const forClientCode = true;
+  let fnKey, fnVal = ""
+  let clientCodeListArr = []
+  if (roles?.merchant === true) {
+    fnKey = "clientCode"
+    fnVal = "clientName"
+    clientCodeListArr = clientMerchantDetailsList
+  } else {
+    fnKey = "client_code"
+    fnVal = "name"
+    clientCodeListArr = clientCodeData
+  }
   const clientCodeOption = convertToFormikSelectJson(
-    "clientCode",
-    "clientName",
-    clientMerchantDetailsList,
-    {},
-    false,
-    true
+    fnKey,
+    fnVal,
+    clientCodeListArr,
+    extraDataObj,
+    isExtraDataRequired,
+    forClientCode
   );
 
   const [todayDate, setTodayDate] = useState(splitDate);
@@ -87,8 +112,25 @@ const SettlementReportDoitc = () => {
       .required("Required"),
   });
 
-  useEffect(() => {
 
+  const fetchData = () => {
+    const roleType = roles
+    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    if (type !== "default") {
+      let postObj = {
+        type: type,  // Set the type based on roleType
+        login_id: auth?.user?.loginId
+      }
+      dispatch(fetchChiledDataList(postObj));
+    }
+
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+  useEffect(() => {
     setTimeout(() => {
       if (
         showData.length < 1 &&
@@ -106,9 +148,30 @@ const SettlementReportDoitc = () => {
   };
 
   const onSubmitHandler = (values) => {
+    let strClientCode, clientCodeArrLength = "";
+    if (values.clientCode === "All") {
+      const allClientCode = [];
+      clientCodeListArr?.map((item) => {
+        allClientCode.push(item.client_code);
+      });
+      clientCodeArrLength = allClientCode.length.toString();
+      strClientCode = allClientCode.join().toString();
+    } else {
+      strClientCode = values.clientCode;
+      clientCodeArrLength = "1";
+    }
+
+    const paramData = {
+      clientCode: strClientCode,
+      fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
+      endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
+      noOfClient: clientCodeArrLength,
+      rpttype: values.rpttype,
+    };
+
 
     setIsDisable(true)
-    dispatch(settledTransactionHistoryDoitc(values)).then((res) => {
+    dispatch(settledTransactionHistoryDoitc(paramData)).then((res) => {
 
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
@@ -319,7 +382,7 @@ const SettlementReportDoitc = () => {
             <h6 className="">Settlement Report</h6>
           </div>
           <section className="">
-            <div className="container-fluid">
+            <div className="container-fluid mt-5">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}

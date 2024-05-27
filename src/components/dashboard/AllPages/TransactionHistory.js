@@ -161,6 +161,7 @@ const TransactionHistory = () => {
             });
     };
 
+
     let isExtraDataRequired = false;
     let extraDataObj = {};
     if (user.roleId === 3 || user.roleId === 13) {
@@ -354,7 +355,7 @@ const TransactionHistory = () => {
         }
     }, [searchText]);
 
-    const pages = _.range(1, pageCount + 1);
+    // const pages = _.range(1, pageCount + 1);
 
     const getSearchTerm = (e) => {
         SetSearchText(e.target.value);
@@ -631,7 +632,7 @@ const TransactionHistory = () => {
                                         </div>
 
                                         <div className="form-row">
-                                            <div className="form-group col-lg-1 ml-4">
+                                            <div className="form-group col-lg-1">
                                                 <button
                                                     className="btn btn-sm cob-btn-primary text-white"
                                                     type="submit"
