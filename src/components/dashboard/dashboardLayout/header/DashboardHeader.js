@@ -1,20 +1,12 @@
 import React, { useEffect, useMemo } from 'react'
 import { logout } from "../../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
-// import profile from "../../../../assets/images/profile.png";
 import { Link } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import headerClasses from "./dashboard-header.module.css"
-// import themeClasses from "../../../../theme.module.scss"
 import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
 import { dashboardHeaderMenuToggle } from '../../../../slices/theme/themeSlice';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
-// import Notification from '../notification/Notification';
-
-// const Notification = React.lazy(() => import('../notification/Notification'));
-
-
-// import Connection from '../../../websocket/Connection';
 
 function DashboardHeader() {
     const dispatch = useDispatch();
@@ -46,7 +38,6 @@ function DashboardHeader() {
 
     return (
         <header className={`navbar sticky-top flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}  headerBg`}>
-            {/* <Connection /> */}
             <div className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`}>
                 <button className={`d-md-none collapsed navbar-toggler `} onClick={() => toggleHandler(headerMenuToggle)} type="button" aria-expanded="false" aria-label="Toggle navigation" >
                     <i className="fa fa-bars"></i>

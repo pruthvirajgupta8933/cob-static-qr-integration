@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
-// import * as Yup from "yup";
-
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
@@ -14,11 +12,9 @@ import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-// import NavBar from "../../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
-// import { exportTxnLoadingState } from "../../../../slices/dashboardSlice";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../../_components/formik/Yup";
 
@@ -30,10 +26,9 @@ const TransactionHistoryDoitc = () => {
 
   const { auth, merchantReportSlice } = useSelector((state) => state);
   const { user } = auth;
+  console.log(user)
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
-  // const [startDate, setStartDate] = useState("");
-  // const [toDate, setToDate] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [show, setShow] = useState("");
@@ -43,9 +38,7 @@ const TransactionHistoryDoitc = () => {
   const [showData, setShowData] = useState([]);
   const [updateTxnList, setUpdateTxnList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-
   const [buttonClicked, isButtonClicked] = useState(false);
-  // const [exportToCsv, setExportToCsv] = useState({});
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -87,6 +80,7 @@ const TransactionHistoryDoitc = () => {
     payment_mode: "All",
   };
 
+  console.log(clientMerchantDetailsList)
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
     clientCode: Yup.string().required("Client code not found").nullable(),

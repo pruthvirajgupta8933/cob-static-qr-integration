@@ -1,4 +1,4 @@
-import socketIOClient from 'socket.io-client';
+// import socketIOClient from 'socket.io-client';
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { wsConnectUrl } from '../../config';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
@@ -26,6 +26,6 @@ const ENDPOINT = wsConnectUrl.connectionURL; // Replace with your server's endpo
 // });
 
 
-export const readNotification = (obj)=>{
-    return axiosInstanceJWT.post(wsConnectUrl.readNotification,obj)
+export const readNotification = (obj) => {
+    return axiosInstanceJWT.post(wsConnectUrl.readNotification, obj)
 }

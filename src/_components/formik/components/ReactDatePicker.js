@@ -6,7 +6,7 @@ import 'react-calendar/dist/Calendar.css';
 // import "react-datepicker/dist/react-datepicker.css";
 
 function ReactDatePicker(props) {
-  const { name, label, lableClassName,errorMsg, ...rest } = props;
+  const { name, label, lableClassName, errorMsg, ...rest } = props;
   return (
     <React.Fragment>
       {(typeof label !== "undefined") && (

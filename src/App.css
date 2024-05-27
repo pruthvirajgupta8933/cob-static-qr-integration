@@ -155,7 +155,8 @@ select {
 .alertcss {
   margin-top: 75px;
 }
-.user_info{
+
+.user_info {
   cursor: pointer;
   margin-left: "8px";
 }
@@ -433,14 +434,20 @@ h1, h2, h3, h4, h5, h6{
 .font_Size input[type="radio"]+label {
   font-weight: bold;
 }
-.copy_clipboard{
+
+.copy_clipboard {
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.date_picker{
+.date_picker {
   line-height: 33px;
   padding: 0px 0px 0px 8px !important;
+}
+
+/* data calendar  */
+.react-date-picker__calendar {
+  z-index: 999 !important;
 }

@@ -212,10 +212,10 @@ const AdditionalKYC = () => {
   return (
     <section className="">
       <main className="">
-     <div className="">
-          <h5 className="ml-4">Additional KYC</h5>
+        <div className="">
+          <h5>Additional KYC</h5>
         </div>
-        <div className="container-fluid mt-5">
+        <div className="container-fluid mt-5 p-0">
           <div className="row">
             <div className="col-lg-3 col-md-4">
               <div className="form-group">
@@ -264,7 +264,7 @@ const AdditionalKYC = () => {
                         <span
                           className="spinner-border spinner-border-sm"
                           role="status"
-                         ariaHidden="true"
+                          ariaHidden="true"
                         ></span>
                       ) : (
                         "Verify"
@@ -304,7 +304,7 @@ const AdditionalKYC = () => {
                         <span
                           className="spinner-border spinner-border-sm"
                           role="status"
-                         ariaHidden="true"
+                          ariaHidden="true"
                         ></span>
                       ) : (
                         "Verify" ? "Verify" : ""
@@ -361,7 +361,7 @@ const AdditionalKYC = () => {
                           <span
                             className="spinner-border spinner-border-sm"
                             role="status"
-                           ariaHidden="true"
+                            ariaHidden="true"
                           ></span>
                         ) : (
                           "Verify" ? "Verify" : ""
@@ -405,7 +405,7 @@ const AdditionalKYC = () => {
                         <span
                           className="spinner-border spinner-border-sm"
                           role="status"
-                         ariaHidden="true"
+                          ariaHidden="true"
                         ></span>
                       ) : (
                         "Verify"

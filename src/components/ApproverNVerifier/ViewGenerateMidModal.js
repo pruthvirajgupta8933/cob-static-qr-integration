@@ -156,7 +156,7 @@ const ViewGenerateMidModal = (props) => {
                       <div className="row">
                         <div className="col-lg-6">
                           <label className="col-form-label mt-0 p-2">
-                             Name<span style={{ color: "red" }}>*</span>
+                            Name<span style={{ color: "red" }}>*</span>
                           </label>
                           <FormikController
                             control="input"
