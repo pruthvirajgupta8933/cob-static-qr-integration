@@ -18,7 +18,7 @@ function ClientList() {
     const convertDate = (yourDate) => {
         let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
         return date;
-      };
+    };
 
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -176,8 +176,6 @@ function ClientList() {
         const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
 
         clientListExportApi({ bank_login_id: user?.loginId, type }).then((res) => {
-
-            console.log(res)
             if (res.status === 200) {
                 const data = res?.data;
                 setLoading(false);
@@ -287,84 +285,87 @@ function ClientList() {
     }
 
     return (
-    <section className="">
+        <section className="">
 
-        <main className="">
-            <div className="">
+            <main className="">
                 <div className="">
-                    <h5 className="">Client List</h5>
-                </div>
-                <section className="">
-                    <div className="container">
-                        <div className="row mt-4">
-                            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
-                                <SearchFilter
-                                    kycSearch={kycSearch}
-                                    searchText={searchText}
-                                    searchByText={searchByText}
-                                    setSearchByDropDown={setSearchByDropDown}
-                                />
-                            </div>
-                            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
-                                <CountPerPageFilter
-                                    pageSize={pageSize}
-                                    dataCount={dataCount}
-                                    changePageSize={changePageSize}
-                                />
-                            </div>
-
-                            <div className="col-lg-2 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
-                                {data.length > 0 && (
-                                    <button
-                                        className="btn btn-sm cob-btn-primary"
-                                        type="button"
-                                        disabled={disable}
-                                        onClick={() => exportToExcelFn()}
-                                    >
-                                        <i className="fa fa-download" /> {loading ? "Downloading..." : "Export"}
-                                    </button>
-                                )}
-                            </div>
-
-
-                        </div>
-                        {user?.roleId === 13 && (
-                            <div className="col-lg-2 col-md-4 col-sm-4 mb-3 mb-md-0 mt-4">
+                    <div className="d-flex justify-content-between">
+                        <h5 className="">Client List</h5>
+                        {(user?.roleId === 13 && user.loginId !== 11235) && (
+                            <div className="col-lg-2 col-md-3 col-sm-4 mb-md-0">
                                 <button className="btn btn-sm cob-btn-primary w-100" onClick={() => setModalToggle(true)}>
                                     Add Child Client
                                 </button>
                             </div>
                         )}
-
-                        {!loadingState && data?.length !== 0 && (
-                            <>
-                                <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
-                                    <div><h6>Number of Record: {dataCount}</h6></div>
-                                </div>
-                                <Table
-                                    row={RefrerChiledList}
-                                    dataCount={dataCount}
-                                    pageSize={pageSize}
-                                    currentPage={currentPage}
-                                    changeCurrentPage={changeCurrentPage}
-                                    data={data}
-                                />
-                            </>
-                        )}
-
-                        <CustomLoader loadingState={loadingState} />
                     </div>
-                </section>
-            </div>
-        </main>
+                    <section className="">
+                        <div className="container">
+                            <div className="row mt-4">
+                                <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
+                                    <SearchFilter
+                                        kycSearch={kycSearch}
+                                        searchText={searchText}
+                                        searchByText={searchByText}
+                                        setSearchByDropDown={setSearchByDropDown}
+                                    />
+                                </div>
+                                <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
+                                    <CountPerPageFilter
+                                        pageSize={pageSize}
+                                        dataCount={dataCount}
+                                        changePageSize={changePageSize}
+                                    />
+                                </div>
 
-        <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle}
-            fnSetModalToggle={() => setModalToggle()} />
+                                <div className="col-lg-1 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
+                                    {data.length > 0 && (
+                                        <button
+                                            className="btn btn-sm cob-btn-primary"
+                                            type="button"
+                                            disabled={disable}
+                                            onClick={() => exportToExcelFn()}
+                                        >
+                                            <i className="fa fa-download" /> {loading ? "Downloading..." : "Export"}
+                                        </button>
+                                    )}
+                                </div>
 
 
-        <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage}
-            fnSetModalToggle={() => setModalTogalforMessage()} />
-    </section>)
+
+
+                            </div>
+
+
+                            {!loadingState && data?.length !== 0 && (
+                                <>
+                                    <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
+                                        <div><h6>Number of Record: {dataCount}</h6></div>
+                                    </div>
+                                    <Table
+                                        row={RefrerChiledList}
+                                        dataCount={dataCount}
+                                        pageSize={pageSize}
+                                        currentPage={currentPage}
+                                        changeCurrentPage={changeCurrentPage}
+                                        data={data}
+                                    />
+                                </>
+                            )}
+
+                            <CustomLoader loadingState={loadingState} />
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <CustomModal headerTitle={"Add Child Client"} modalBody={modalBody} modalToggle={modalToggle}
+                fnSetModalToggle={() => setModalToggle()} />
+
+
+            <CustomModal headerTitle={"Message"} modalBody={modalBodyForMessage} modalToggle={modalToggleFormessage}
+                fnSetModalToggle={() => setModalTogalforMessage()} />
+        </section>)
 }
 
 export default ClientList
