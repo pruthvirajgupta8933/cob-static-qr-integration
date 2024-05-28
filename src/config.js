@@ -72,6 +72,8 @@ const API_LIVE = {
   ///////////Payment mode for mid
   GET_PAYMENT_MODE_LIST:`${url}/mid/payment-mode/`,
   GET_ALL_BANK_NAME:`${url}/mid/bank/`,
+  MID_CREATE_API:`${url}/mid/create/`,
+  MID_CLIENT_CODE:`${url}/mid/mid-client-code/`,
 
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
