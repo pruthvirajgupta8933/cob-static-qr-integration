@@ -165,7 +165,7 @@ const SettlementReportDoitc = () => {
       clientCode: strClientCode,
       fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
       endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
-      noOfClient: clientCodeArrLength,
+      clientCount: clientCodeArrLength,
       rpttype: values.rpttype,
     };
 

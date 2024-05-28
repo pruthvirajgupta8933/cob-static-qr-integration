@@ -229,7 +229,7 @@ const TransactionHistoryDoitc = () => {
         paymentMode: payment_mode,
         fromDate: fromDate,
         endDate: endDate,
-        noOfClient: clientCodeArrLength
+        clientCount: clientCodeArrLength
 
       };
 
