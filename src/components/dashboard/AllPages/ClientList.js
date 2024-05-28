@@ -291,7 +291,7 @@ function ClientList() {
                 <div className="">
                     <div className="d-flex justify-content-between">
                         <h5 className="">Client List</h5>
-                        {(user?.roleId === 13 && user.loginId !== 11235) && (
+                        {(user?.roleId === 13 && user.loginId !== 27458) && (
                             <div className="col-lg-2 col-md-3 col-sm-4 mb-md-0">
                                 <button className="btn btn-sm cob-btn-primary w-100" onClick={() => setModalToggle(true)}>
                                     Add Child Client
