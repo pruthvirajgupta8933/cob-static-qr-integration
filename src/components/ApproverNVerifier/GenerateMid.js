@@ -300,7 +300,7 @@ function AssignZone() {
       <main className="">
         <div className="">
           <div className="">
-            <h5 className="ml-3">MID Generation</h5>
+            <h5>MID Generation</h5>
           </div>
           <div className="container-fluid mt-5">
             <Formik

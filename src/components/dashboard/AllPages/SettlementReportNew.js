@@ -413,20 +413,20 @@ const SettlementReportNew = () => {
 
 
     return (
-        <section className="ant-layout NunitoSans-Regular">
+        <section>
             <div>
 
             </div>
             <div className="profileBarStatus">
                 <Notification />
             </div>
-            <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-                <div className="gx-main-content-wrapper">
+            <main>
+                <div>
                     {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-                    <h5 className="mb-5 ml-2">Settlement Report</h5>
+                    <h5>Settlement Report</h5>
                     {/* </div> */}
-                    <section className="features8 cid-sg6XYTl25a flleft w-100">
-                        <div className="container-fluid">
+                    <section>
+                        <div className="container-fluid p-0">
                             <Formik
                                 initialValues={initialValues}
                                 validationSchema={validationSchema}
