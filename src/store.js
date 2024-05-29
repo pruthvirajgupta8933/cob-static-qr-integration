@@ -24,6 +24,7 @@ import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/
 import { widgetReducer } from "./slices/widgetSlice";
 import { themeReducer } from "./slices/theme/themeSlice";
 import { signupDataReducer } from "./slices/signupDataSlice";
+import { genreateMidReducer } from "./slices/generateMidSlice";
 
 
 
@@ -35,6 +36,7 @@ const reducer = {
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
   signupData: signupDataReducer,
+  mid:genreateMidReducer,
   widget: widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
