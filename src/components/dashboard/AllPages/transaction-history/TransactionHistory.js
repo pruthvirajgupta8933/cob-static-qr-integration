@@ -4,30 +4,32 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
-import Yup from "../../../_components/formik/Yup";
+import Yup from "../../../../_components/formik/Yup";
 
-import FormikController from "../../../_components/formik/FormikController";
+import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
     clearTransactionHistory,
     exportTxnLoadingState,
     fetchTransactionHistorySlice
-} from "../../../slices/dashboardSlice";
-import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
-import API_URL from "../../../config";
-import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
-import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { axiosInstance } from "../../../utilities/axiosInstance";
-import Notification from "../../../_components/reuseable_components/Notification";
+} from "../../../../slices/dashboardSlice";
+import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
+import API_URL from "../../../../config";
+import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
+import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
+import { axiosInstance } from "../../../../utilities/axiosInstance";
+import Notification from "../../../../_components/reuseable_components/Notification";
 import moment from "moment";
-import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+
 import { v4 as uuidv4 } from 'uuid';
 import ReactPaginate from 'react-paginate';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
-import classes from "./allpage.module.css"
+import classes from "../allpage.module.css"
+import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// import TransactionRefund from "./TransactionRefund";
 
 
 
@@ -40,7 +42,6 @@ const TransactionHistory = () => {
     const { refrerChiledList } = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
     const { isLoadingTxnHistory, isExportData } = dashboard;
-
     const [paymentStatusList, SetPaymentStatusList] = useState([]);
     const [paymentModeList, SetPaymentModeList] = useState([]);
     const [txnList, SetTxnList] = useState([]);
@@ -57,6 +58,8 @@ const TransactionHistory = () => {
     const [disable, setDisable] = useState(false)
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [radioInputVal, setRadioInputVal] = useState({})
+
 
 
     let now = moment().format("YYYY-M-D");
@@ -117,7 +120,6 @@ const TransactionHistory = () => {
 
     const [clientCode, SetClientCode] = useState(clientcode_rolebased);
     const [todayDate, setTodayDate] = useState(splitDate);
-
 
     const initialValues = {
         clientCode: clientCode,
@@ -208,9 +210,9 @@ const TransactionHistory = () => {
         tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
     });
 
-    const pagination = (pageNo) => {
-        setCurrentPage(pageNo);
-    };
+    // const pagination = (pageNo) => {
+    //     setCurrentPage(pageNo);
+    // };
 
 
     const submitHandler = (values) => {
@@ -232,8 +234,7 @@ const TransactionHistory = () => {
                 clientCodeArrLength = "1";
             }
 
-            // console.log("values.clientCode",values.clientCode)
-            // console.log("strClientCode",strClientCode)
+
             let paramData = {
                 clientCode: strClientCode,
                 paymentStatus: transaction_status,
@@ -312,6 +313,7 @@ const TransactionHistory = () => {
         );
     }, [pageSize, showData]);
 
+
     useEffect(() => {
 
         const startIndex = (currentPage - 1) * pageSize;
@@ -355,7 +357,6 @@ const TransactionHistory = () => {
         }
     }, [searchText]);
 
-    // const pages = _.range(1, pageCount + 1);
 
     const getSearchTerm = (e) => {
         SetSearchText(e.target.value);
@@ -515,19 +516,21 @@ const TransactionHistory = () => {
     const lastThreeMonth = new Date(today);
     lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
     lastThreeMonth.toLocaleDateString("en-ca");
-    // let month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
-    // let day = lastThreeMonth.getUTCDate();
-    // let year = lastThreeMonth.getUTCFullYear();
-    // const finalDate = year + "-" + month + "-" + day;
 
+
+
+
+    const refundModalHandler = () => {
+        console.log("radioInputVal", radioInputVal)
+
+    }
 
     return (
-
         <section className="">
             <div className="profileBarStatus">
                 <Notification />
+                {/* <TransactionRefund /> */}
             </div>
-
             <main>
                 <div>
                     <h5 className="ml-4">Transaction History</h5>
@@ -556,32 +559,6 @@ const TransactionHistory = () => {
 
                                             <div className="form-group col-lg-3">
                                                 <label htmlFor="dateRange" className="form-label">Start Date - End Date</label>
-                                                {/* <div className="input-group">
-                                                    <DatePicker
-                                                        id="dateRange"
-                                                        selectsRange={true}
-                                                        startDate={startDate}
-                                                        endDate={endDate}
-                                                        onChange={(update) => {
-                                                            const [start, end] = update;
-                                                            setStartDate(start);
-                                                            setEndDate(end);
-                                                            formik.setFieldValue('fromDate', start);
-                                                            formik.setFieldValue('endDate', end);
-                                                        }}
-                                                        dateFormat="dd-MM-yyyy"
-                                                        placeholderText="Select Date Range"
-                                                        className="form-control rounded-0 p-0 date_picker"
-                                                        showPopperArrow={false}
-                                                    />
-                                                    <div className="input-group-append">
-                                                        <div className="input-group-text bg-white border-left-0" onClick={() => {
-                                                            document.getElementById('dateRange').click();
-                                                        }}>
-                                                            <FaCalendarAlt />
-                                                        </div>
-                                                    </div>
-                                                </div> */}
                                                 <div className={`input-group mb-3 d-flex justify-content-between ${classes.calendar_border}`} >
                                                     <DatePicker
                                                         id="dateRange"
@@ -640,13 +617,12 @@ const TransactionHistory = () => {
                                                 >
                                                     {disable && (
                                                         <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                                                    )} {/* Show spinner if disabled */}
+                                                    )}
                                                     Search
                                                 </button>
-                                                {/* <p className="text-danger">{formik?.errors?.clientCode}</p> */}
                                             </div>
 
-                                            {txnList?.length > 0 ? (
+                                            {txnList?.length > 0 && (
                                                 <div className="form-group col-lg-1">
                                                     {
                                                         isExportData === true ?
@@ -661,9 +637,8 @@ const TransactionHistory = () => {
                                                     </button>
                                                 </div>
 
-                                            ) : (
-                                                <></>
                                             )}
+
                                         </div>
                                     </Form>
                                 )}
@@ -671,12 +646,13 @@ const TransactionHistory = () => {
                         </div>
                     </section>
 
+
                     <section className="">
                         <div className="container-fluid p-3 my-3 ml-3 ">
                             {txnList.length > 0 ? (
                                 <>
                                     <div className="row">
-                                        <div className="form-group col-md-3 mt-2">
+                                        <div className="form-group col-md-3 mt-2 pl-0">
                                             <label>Search Transaction ID</label>
                                             <input
                                                 className="form-control mt-0"
@@ -697,6 +673,17 @@ const TransactionHistory = () => {
                                                 <DropDownCountPerPage datalength={txnList.length} />
                                             </select>
                                         </div>
+
+                                        {/* do not remove the comment code */}
+                                        {/* <div className="form-group col-md-6  mt-2 d-flex justify-content-end">
+                                            <div>
+                                                <button
+                                                    className="btn cob-btn-primary btn-sm mt-4"
+                                                    onClick={() => refundModalHandler()}
+                                                    disabled={(radioInputVal?.status?.toLocaleLowerCase() !== "success" && radioInputVal?.status?.toLocaleLowerCase() !== "settled")}
+                                                >Refund</button>
+                                            </div>
+                                        </div> */}
                                     </div>
                                     <h6>Total Record : {txnList.length} </h6>
                                 </>
@@ -709,6 +696,7 @@ const TransactionHistory = () => {
                                     <thead>
                                         {txnList.length > 0 ? (
                                             <tr>
+                                                {/* <th></th> */}
                                                 <th> S.No</th>
                                                 <th> Trans ID</th>
                                                 <th> Client Trans ID</th>
@@ -759,6 +747,16 @@ const TransactionHistory = () => {
                                             paginatedata.map((item, i) => {
                                                 return (
                                                     <tr key={uuidv4()}>
+                                                        {/* do not remove the commentted code */}
+                                                        {/* <td>
+                                                            <input
+                                                                name="refund_request"
+                                                                value={item.txn_id}
+                                                                type="radio"
+                                                                onClick={(e) => setRadioInputVal({ txn_id: item.txn_id, status: item.status })}
+                                                                checked={item.txn_id === radioInputVal?.txn_id}
+                                                            />
+                                                        </td> */}
                                                         <td>{i + 1}</td>
                                                         <td>{item.txn_id}</td>
                                                         <td>{item.client_txn_id}</td>

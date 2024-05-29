@@ -447,6 +447,11 @@ h1, h2, h3, h4, h5, h6{
   padding: 0px 0px 0px 8px !important;
 }
 
+/* radio input  */
+.radio-input {
+  border: 1px solid black;
+}
+
 /* data calendar  */
 .react-date-picker__calendar {
   z-index: 999 !important;
