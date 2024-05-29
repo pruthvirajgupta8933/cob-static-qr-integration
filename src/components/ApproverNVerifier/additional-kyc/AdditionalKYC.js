@@ -3,15 +3,16 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
 import { v4 as uuidv4 } from 'uuid';
-import Yup from "../../_components/formik/Yup"
+import Yup from "../../../_components/formik/Yup"
 
-import FormikController from "../../_components/formik/FormikController";
+import FormikController from "../../../_components/formik/FormikController";
 import {
   authPanValidation,
   gstValidation,
   bankAccountVerification,
   udyamRegistration
-} from "../../slices/kycSlice";
+} from "../../../slices/kycSlice";
+import FrmVerification from "./FrmVerification";
 
 const AdditionalKYC = () => {
 
@@ -39,7 +40,8 @@ const AdditionalKYC = () => {
     { documentType: "PAN", value: "1" },
     { documentType: "GSTIN", value: "2" },
     { documentType: "BANK ACCOUNT", value: "3" },
-    { documentType: "UDYAM", value: "4" }
+    { documentType: "UDYAM", value: "4" },
+    { documentType: "FRM", value: "5" }
   ];
 
 
@@ -247,10 +249,8 @@ const AdditionalKYC = () => {
                         value={initialValuesForPAN.pan_card}
                         onChange={(e) => {
                           setInitialValuesForPAN({ pan_card: e.target.value });
-                          // setPanError(""); // Clear error when user starts typing again
                         }}
                       />
-                      {/* {panError && <div className="error-message text-danger mt-1">{panError}</div>} */}
                     </div>
                   </div>
                   <div className="form-group">
@@ -314,7 +314,7 @@ const AdditionalKYC = () => {
                 </div>
               )}
 
-              {selectedDocType === "3" ? (
+              {selectedDocType === "3" && (
                 <Formik
                   initialValues={initialValuesForBankAccount}
                   onSubmit={handleBankAccountSubmit}
@@ -372,8 +372,6 @@ const AdditionalKYC = () => {
 
 
                 </Formik>
-              ) : (
-                ""
               )}
 
               {selectedDocType === "4" && (
@@ -601,6 +599,10 @@ const AdditionalKYC = () => {
               </div>
             )}
 
+
+            {selectedDocType === "5" && (
+              <FrmVerification />
+            )}
           </div>
 
         </div>
