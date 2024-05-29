@@ -274,9 +274,9 @@ const ViewDocumentModal = (props) => {
                       commentsList?.length === 0) && (
                         <tr>
                           <td colSpan="3">
-                            <h3 className="font-weight-bold text-center">
+                            <h6 className="font-weight-bold text-center">
                               No Data found
-                            </h3>
+                            </h6>
                           </td>
                         </tr>
                       )}
