@@ -15,39 +15,36 @@ function MerchantReferralOnboard() {
 
         <section>
             <main >
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-6">
-                            <h5>
-                                Referral Onboarding
-                            </h5>
-                        </div>
-                    </div>
-
+                <div>
+                    <h5>
+                        Referral Onboarding
+                    </h5>
                     <section>
-                        <div className="row mt-5">
-                            <div className="col-lg-12 mb-4">
-                                <ul className="nav nav-tabs approv">
-                                    <li className="nav-item ">
-                                        <a
-                                            href={() => false}
-                                            className={`nav-link ${currentTab === 2 && 'active-tab'} ${classes.cursor_pointer}`}
-                                            onClick={() => handleTabClick(2)}
-                                        >
-                                            Add Referral
-                                        </a>
-                                    </li>
+                        <div className="container-fluid p-0">
+                            <div className="row mt-5">
+                                <div className="col-lg-12 mb-4">
+                                    <ul className="nav nav-tabs approv">
+                                        <li className="nav-item ">
+                                            <a
+                                                href={() => false}
+                                                className={`nav-link ${currentTab === 2 && 'active-tab'} ${classes.cursor_pointer}`}
+                                                onClick={() => handleTabClick(2)}
+                                            >
+                                                Add Referral
+                                            </a>
+                                        </li>
 
-                                    <li className="nav-item">
-                                        <a
-                                            href={() => false}
-                                            className={`nav-link  ${currentTab === 3 && 'active-tab'} ${classes.cursor_pointer}`}
-                                            onClick={() => handleTabClick(3)}
-                                        >
-                                            Product Subscription
-                                        </a>
-                                    </li>
-                                </ul>
+                                        <li className="nav-item">
+                                            <a
+                                                href={() => false}
+                                                className={`nav-link  ${currentTab === 3 && 'active-tab'} ${classes.cursor_pointer}`}
+                                                onClick={() => handleTabClick(3)}
+                                            >
+                                                Product Subscription
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -56,7 +53,7 @@ function MerchantReferralOnboard() {
                         <div className="row">
                             {currentTab === 2 && <ReferralOnboard />}
                             {currentTab === 3 && <BankRefMerchantList />}
-                            
+
 
                         </div>
                     </section>

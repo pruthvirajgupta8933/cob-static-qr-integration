@@ -332,13 +332,13 @@ const RefundTransactionHistory = () => {
             <div>
 
             </div>
-            <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-                <div className="gx-main-content-wrapper">
-                    {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-                    <h5 className="m-b-sm gx-float-left ml-2">Refund Transaction History</h5>
-                    {/* </div> */}
-                    <section className="features8 cid-sg6XYTl25a flleft w-100">
-                        <div className="container-fluid">
+            <main>
+                <div >
+                  
+                    <h5 >Refund Transaction History</h5>
+                    
+                    <section>
+                        <div className="container-fluid p-0">
                             <Formik
                                 initialValues={initialValues}
                                 validationSchema={validationSchema}

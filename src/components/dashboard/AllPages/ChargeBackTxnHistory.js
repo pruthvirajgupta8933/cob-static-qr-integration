@@ -277,7 +277,7 @@ const ChargeBackTxnHistory = () => {
           </h5>
           {/* </div> */}
           <section className="">
-            <div className="container-fluid">
+            <div className="container-fluid p-0">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}

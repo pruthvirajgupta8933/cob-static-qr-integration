@@ -533,9 +533,9 @@ const TransactionHistory = () => {
             </div>
             <main>
                 <div>
-                    <h5 className="ml-4">Transaction History</h5>
+                    <h5 className="">Transaction History</h5>
                     <section className="">
-                        <div className="container-fluid">
+                        <div className="container-fluid p-0">
 
                             <Formik
                                 initialValues={initialValues}

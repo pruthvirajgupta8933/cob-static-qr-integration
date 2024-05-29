@@ -146,11 +146,11 @@ function TransactionSummery() {
         <section className="">
             <main>
                 <div>
-                    {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+
                     <h5 className="mb-5">Transaction Summary</h5>
-                    {/* </div> */}
+
                     <section className="">
-                        <div className="container-fluid">
+                        <div className="container-fluid p-0">
                             <div className="row">
                                 <div className="form-group col-md-3">
                                     <select
