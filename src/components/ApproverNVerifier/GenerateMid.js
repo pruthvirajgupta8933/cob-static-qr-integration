@@ -3,21 +3,34 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
-import { Formik, Form,Field} from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { fetchPaymentMode, fetchBankName, getMidClientCode } from "../../services/generate-mid/generate-mid.service";
 import ReactSelect, { createFilter } from 'react-select';
 import CustomModal from "../../_components/custom_modal";
+import Yup from "../../_components/formik/Yup";
 import CustomSelect from "../../_components/formik/components/CustomReactSelect";
+import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
 
 import toastConfig from "../../utilities/toastTypes";
 import { createMidApi } from "../../slices/generateMidSlice";
 function AssignZone() {
-  function capitalizeFirstLetter(param) {
-    return param?.charAt(0).toUpperCase() + param?.slice(1);
-  }
+
 
   const [clientCodeList, setCliencodeList] = useState([])
+  const [disable, setDisable] = useState(false)
+
+  const validationSchema = Yup.object().shape({
+
+
+    mode_name: Yup.string()
+      .required("Required")
+      .allowOneSpace(),
+    react_select: Yup.object().required("Required").nullable(),
+    bank_name: Yup.string()
+      .required("Required")
+      .allowOneSpace(),
+  });
 
 
   useEffect(() => {
@@ -37,7 +50,10 @@ function AssignZone() {
 
 
   let initialValues = {
-    transaction_from: "",
+    react_select: "",
+    mode_name: "",
+    bank_name: "",
+
   };
 
   const dispatch = useDispatch();
@@ -45,8 +61,9 @@ function AssignZone() {
   const [merchantData, setMerchantData] = useState([]);
   const [bankName, setBankName] = useState([])
   const [selectedClientId, setSelectedClientId] = useState(null);
- console.log("selectedClientId", selectedClientId)
   const [formValues, setFormValues] = useState("")
+  const [loading, setLoading] = useState(false)
+
   const [createMidData, setCreateMidData] = useState("")
   const [show, Setshow] = useState(false)
   // console.log(selectedClientId)
@@ -92,9 +109,9 @@ function AssignZone() {
   ]
 
   const handleSelectChange = (selectedOption) => {
-    console.log(selectedOption)
     setSelectedClientId(selectedOption ? selectedOption.value : null)
   }
+
 
   const modalBody = () => {
     return (
@@ -112,16 +129,20 @@ function AssignZone() {
             <>
 
               <div className="modal-body">
+
                 {/* <p className="">
-                    Client Name: {props?.userData?.clientName}
-                  </p> */}
-                <p className="">
                   Client Code: {selectedClientId}
+                </p> */}
+                <p className="ml-3">
+                  Payment Mode: {formValues?.mode_name}
+                </p>
+                <p className="ml-3">
+                  Bank: {formValues?.bank_name}
                 </p>
                 <div className="container">
                   <Form>
                     <div className="row">
-                      <div className="col-lg-6">
+                      {/* <div className="col-lg-6">
                         <label className="col-form-label mt-0 p-2">
                           Name<span style={{ color: "red" }}>*</span>
                         </label>
@@ -132,8 +153,8 @@ function AssignZone() {
                           placeholder="Enter Name"
                           className="form-control"
                         />
-                      </div>
-                      <div className="col-lg-6">
+                      </div> */}
+                      {/* <div className="col-lg-6">
                         <label className="col-form-label mt-0 p-2">
                           Email<span style={{ color: "red" }}>*</span>
                         </label>
@@ -144,16 +165,27 @@ function AssignZone() {
                           placeholder="Enter Email"
                           className="form-control"
                         />
-                      </div>
+                      </div> */}
                     </div>
                     <div className="">
-                      <button
-                        type="subbmit"
-                        className="submit-btn cob-btn-primary text-white mt-3"
-                      >
-                        Confirm
-                      </button>
+                      {createMidData.onboardStatus !== 'SUCCESS' && (
+                        <button
+                          type="submit"
+                          className="submit-btn cob-btn-primary text-white mt-3"
+                          disabled={disable}
+                        >
+                          {disable && (
+                            <span
+                              className="spinner-border spinner-border-sm mr-1"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                          )}
+                          Confirm
+                        </button>
+                      )}
                     </div>
+
 
 
                   </Form>
@@ -162,19 +194,54 @@ function AssignZone() {
             </>
           )}
         </Formik>
-        {show &&
-
+        {loading ? (
           <div className="d-flex justify-content-center">
-            <div className="card bg-warning text-center">
-              <div className="card-body">
-                <div className="">
-                  <h6>{createMidData?.description}</h6>
-                  <h6>Status: {createMidData?.onboardStatus}</h6>
+            <div className="spinner-border spinner-border-sm" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          createMidData?.description && (
+            <div className="d-flex justify-content-center">
+              <div className="card bg-warning text-center">
+                <div className="card-body">
+                  <div>
+                    <h6>{createMidData?.description}</h6>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )
+        )}
+        {createMidData?.onboardStatus === "SUCCESS" &&
+          <table class="table mt-3">
+            <thead>
+              <tr>
+                <th scope="col">Client Code</th>
+                <th>Client Name</th>
+                <th scope="col">Bank Name</th>
+                <th>MID</th>
+                <th scope="col">Account Number</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td >{createMidData?.clientCode}</td>
+                <td>{createMidData?.clientName}</td>
+                <td>{createMidData?.bankName}</td>
+                <td>{createMidData?.subMerchantId}</td>
+                <td>{createMidData?.clientAccountNumber}</td>
+                {/* <td>{createMidData?.clientEmail}</td> */}
+                <td>{createMidData?.paymentMode}</td>
+                <td>{createMidData?.onboardStatus}</td>
+              </tr>
+
+            </tbody>
+          </table>
         }
+
 
       </div>
 
@@ -182,17 +249,21 @@ function AssignZone() {
 
 
   }
+
   const onSubmit = (values) => {
     // console.log("Values", values)
     setOpenModal(true);
     setFormValues(values)
+    setCreateMidData({})
   }
   const clientCodeOption = convertToFormikSelectJson("merchantId", "clientCode", clientCodeList, {}, false, false, true, "clientName")
   // console.log(clientCodeOption)
 
   const handleSubmit = (values) => {
     // setLoading(true);
-    // setDisable(true)
+    setDisable(true)
+    setLoading(true)
+    setCreateMidData({})
     const midData = {
       "merchant_id": selectedClientId,
       "bank_name": formValues?.bank_name,
@@ -201,22 +272,28 @@ function AssignZone() {
     };
     dispatch(createMidApi(midData))
       .then((resp) => {
-        Setshow(true)
-        setCreateMidData(resp?.payload)
-        console.log("resp", resp)
+        if (resp?.meta?.requestStatus === "fulfilled") {
+          Setshow(true)
+          setCreateMidData(resp?.payload)
+          setDisable(false)
+          setLoading(false)
+        } else {
+          toastConfig.errorToast(resp?.payload ?? "Something Went Wrong");
+          setDisable(false)
+          setLoading(false)
+        }
+
+
         // setData(resp.payload.ResponseData);
       })
       .catch((err) => {
         console.log("err", err)
         toastConfig.errorToast(err);
         Setshow(false)
+        setDisable(false)
 
       });
   };
-
-
-
-
 
   return (
     <section className="">
@@ -228,35 +305,33 @@ function AssignZone() {
           <div className="container-fluid mt-5">
             <Formik
               initialValues={initialValues}
-              // validationSchema={validationSchema}
+              validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
               {(formik) => (
                 <Form className="">
                   <div className="row">
                     <div className="col-lg-3">
-
-                      {/* <FormikController
-                        control="select"
-                        name="refer_by"
-                        options={clientCodeOption}
-                        className="form-select"
-                        label="Client Code"
-                        onChange={(e) => {
-                          formik.setFieldValue("refer_by", e.target.value)
-                          formik.setStatus(false);
-                        }}
-                      /> */}
-                      <label className="form-label">Client Code</label>
-                      <ReactSelect
+                      {/* <label className="form-label">Client Code</label> */}
+                      {/* <ReactSelect
                         className="zindexforDropdown"
                         onChange={handleSelectChange}
-                        // value={selectedClientId ? { value: selectedClientId, label: selectedClientId, merchant_id } : null}
+                        name="react_select"
+                       
                         options={options}
                         placeholder="Select Client Code"
                         filterOption={createFilter({ ignoreAccents: false })}
-                      /> 
-                     
+                      /> */}
+                      <CustomReactSelect
+                        name="react_select"
+                        options={options}
+                        placeholder="Select Client Code"
+                        filterOption={createFilter({ ignoreAccents: false })}
+                        label="Client Code"
+                        onChange={handleSelectChange}
+
+                      />
+
 
                     </div>
 

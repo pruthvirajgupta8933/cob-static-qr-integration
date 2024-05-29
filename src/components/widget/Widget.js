@@ -18,7 +18,6 @@ function MyForm() {
     const [isLoading, setIsLoading] = useState(true)
     const { user } = useSelector((state) => state.auth);
     const widgetDetail = useSelector((state) => state?.widget?.widgetDetail?.data)
-
     const activeStatus = widgetDetail?.status
 
     let clientMerchantDetailsList = [];

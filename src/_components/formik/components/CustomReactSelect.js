@@ -1,30 +1,32 @@
-import React from 'react';
-import ReactSelect from 'react-select';
-import { useField, useFormikContext } from 'formik';
+import React from "react";
+import { useField, useFormikContext } from "formik";
+import ReactSelect from "react-select";
 
-const CustomSelect = ({ name, options, ...props }) => {
-    // console.log("options",...props)
+const CustomReactSelect = ({ label, onChange, ...props }) => {
   const { setFieldValue } = useFormikContext();
-  const [field, meta] = useField(name);
+  const [field, meta] = useField(props);
 
   const handleChange = (option) => {
-    setFieldValue(name, option);
+    setFieldValue(props.name, option);
+    if (onChange) {
+      onChange(option);
+    }
   };
 
   return (
-    <div>
+    <div className="form-group">
+      <label htmlFor={props.name}>{label}</label>
       <ReactSelect
-        {...field}
         {...props}
-        options={options}
+        id={props.name}
         value={field.value}
         onChange={handleChange}
       />
       {meta.touched && meta.error ? (
-        <div style={{ color: 'red' }}>{meta.error}</div>
+        <div className="text-danger">{meta.error}</div>
       ) : null}
     </div>
   );
 };
 
-export default CustomSelect;
+export default CustomReactSelect;

@@ -10,28 +10,29 @@ const initialState = {
    
 };
 
-
 export const createMidApi = createAsyncThunk(
-    "mid/createMidApi",
-    async (dataObj, thunkAPI) => {
-      try {
-        const response = await midCreateApi(dataObj);
-        console.log("response",response)
-        thunkAPI.dispatch(setMessage(response.data.message));
-        return response.data;
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.detail) ||
-          error.detail ||
-          error.toString();
-          console.log("message",message)
-        thunkAPI.dispatch(setMessage(message));
-        return thunkAPI.rejectWithValue();
-      }
+  "mid/createMidApi",
+  async (dataObj, thunkAPI) => {
+    console.log("dataaaobj", dataObj);
+    try {
+      const response = await midCreateApi(dataObj);
+      console.log("rse", response);
+
+      // thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.detail ||
+        error.toString();
+      console.log("message", message);
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); // Return the message here
     }
-  );
+  }
+);
 
 
 
@@ -41,7 +42,7 @@ export const createMidApi = createAsyncThunk(
   
 
   export const generateMidSlice = createSlice({
-    name: "merchnatzone",
+    name: "mid",
     initialState,
     reducers: {},
      
