@@ -43,8 +43,8 @@ function BusinessDetails(props) {
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const[loadingForGst,setLoadingForGst]=useState(false)
-  const[loadingForSiganatory,setLoadingForSignatory]=useState(false)
+  const [loadingForGst, setLoadingForGst] = useState(false)
+  const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
   const [isLoader, setIsloader] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   // const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
@@ -154,7 +154,7 @@ function BusinessDetails(props) {
     udyam_number: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
       is: true,
       then: Yup.string()
-        
+
         .max(25, "Invalid Format")
         .required("Required")
         .nullable(),
@@ -177,7 +177,7 @@ function BusinessDetails(props) {
     isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
 
     signatory_pan: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
@@ -191,12 +191,12 @@ function BusinessDetails(props) {
       .nullable(),
 
     name_on_pancard: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
     city_id: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .max(50, "City name character length exceeded")
@@ -206,12 +206,12 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     pin_code: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .matches(reqexPinCode, "Pin Code is Invalid")
       .required("Required")
       .nullable(),
     operational_address: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
       .required("Required")
       .wordLength("Word character length exceeded")
@@ -290,7 +290,7 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-       
+
         const fullName = trimFullName(res?.payload?.trade_name, "")
         setFieldValue(key, fullName)
         setFieldValue("gst_number", values)
@@ -618,12 +618,12 @@ function BusinessDetails(props) {
                             }
                           >
                             {loadingForGst ? (
-                          <span className="spinner-border spinner-border-sm">
-                            <span className="sr-only">Loading...</span>
-                          </span>
-                        ) : (
-                          "Verify"
-                        )}
+                              <span className="spinner-border spinner-border-sm">
+                                <span className="sr-only">Loading...</span>
+                              </span>
+                            ) : (
+                              "Verify"
+                            )}
                           </a>
                         </div>
                       )}
