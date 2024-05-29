@@ -5,7 +5,7 @@ import classes from "./dashboard-main.module.css"
 import Home from '../AllPages/Home'
 import TransactionEnquirey from "../AllPages/TransactionEnquirey";
 import SettlementReport from "../AllPages/SettlementReport";
-import TransactionHistory from "../AllPages/TransactionHistory";
+
 import {
     useRouteMatch, Switch, Route, Redirect, useHistory, useLocation,
 } from "react-router-dom";
@@ -34,7 +34,7 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import { logout, updateClientDataInLocal } from "../../../slices/auth";
 import Sandbox from "../../SandBox/SendBox";
 import AssignZone from "../../ApproverNVerifier/AssignZone";
-import AdditionalKYC from "../../ApproverNVerifier/AdditionalKYC";
+import AdditionalKYC from "../../ApproverNVerifier/additional-kyc/AdditionalKYC";
 import RateMapping from "../../ApproverNVerifier/RateMapping";
 import SignupData from "../../ApproverNVerifier/SignupData";
 // import MerchantRoute from "../../../ProtectedRoutes/MerchantRoute";
@@ -83,6 +83,7 @@ import MerchantBalance from "../../ApproverNVerifier/MerchantBalance";
 import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
 import toastConfig from "../../../utilities/toastTypes";
 import UserInfo from "../../ApproverNVerifier/UserInfo";
+import TransactionHistory from "../AllPages/transaction-history/TransactionHistory";
 
 
 function DashboardMainContent() {

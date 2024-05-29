@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "../../components/dashboard/css/Home.css"
 
-const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle }) => {
+const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle, modalSize }) => {
 
   const handleEscapeKey = (event) => {
     if (event.key === "Escape") {
@@ -26,9 +26,9 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
       id="web"
       role="dialog"
       aria-labelledby="exampleModalLabel"
-     ariaHidden="true"
+      ariaHidden="true"
     >
-      <div className="modal-dialog modal-lg" role="document">
+      <div className={`modal-dialog ${modalSize ? modalSize : 'modal-lg'}`} role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">

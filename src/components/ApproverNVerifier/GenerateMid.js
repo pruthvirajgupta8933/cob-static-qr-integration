@@ -1,173 +1,65 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForApproved } from "../../slices/kycSlice";
-import ViewGenerateMidModal from "./ViewGenerateMidModal";
-import SearchFilter from "../../_components/table_components/filters/SearchFilter";
-import Table from "../../_components/table_components/table/Table";
-import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import FormikController from "../../_components/formik/FormikController";
-import { Formik, Form } from "formik";
+import { Formik, Form,Field} from "formik";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
-import * as XLSX from 'xlsx';
-import { fetchPaymentMode, fetchBankName } from "../../services/generate-mid/generate-mid.service";
-import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
+import { fetchPaymentMode, fetchBankName, getMidClientCode } from "../../services/generate-mid/generate-mid.service";
 import ReactSelect, { createFilter } from 'react-select';
+import CustomModal from "../../_components/custom_modal";
+import CustomSelect from "../../_components/formik/components/CustomReactSelect";
+
+import toastConfig from "../../utilities/toastTypes";
+import { createMidApi } from "../../slices/generateMidSlice";
 function AssignZone() {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [data, setData] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
+
   const [clientCodeList, setCliencodeList] = useState([])
 
-  const { approverDashboard } = useSelector(state => state)
 
   useEffect(() => {
 
-    dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setCliencodeList(resp?.payload?.result)
+    getMidClientCode().then((resp) => {
+      // console.log(resp)
+      setCliencodeList(resp?.data?.result)
     })
   }, [])
 
-
-  const AssignZoneData = [
-    {
-      id: "1",
-      name: (
-        <span>
-          <input
-            type="checkbox"
-            checked={selectedRows.length === data.length} // Checked if all rows are selected
-            onChange={(e) => handleSelectAll(e.target.checked)}
-          />{" "}
-          Select All
-        </span>
-      ),
-      selector: (row) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.some((selectedRow) => selectedRow.id === row.id)}
-          onChange={() => handleSingleSelect(row)}
-        />
-      ),
-      sortable: false,
-      width: "100px",
-    },
-    {
-      id: "1",
-      name: "S. No.",
-      selector: (row) => row.sno,
-      sortable: true,
-      width: "86px",
-    },
-    {
-      id: "2",
-      name: "Client Code",
-      selector: (row) => row.clientCode,
-      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
-      width: "130px",
-    },
-    {
-      id: "3",
-      name: "Merchant Name",
-      selector: (row) => row.name,
-      sortable: true,
-      cell: (row) => (
-        <div className="removeWhiteSpace">
-          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
-        </div>
-      ),
-      width: "200px",
-    },
-    {
-      id: "4",
-      name: "Email",
-      selector: (row) => row.emailId,
-      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width: "220px",
-    },
-    {
-      id: "5",
-      name: "Contact Number",
-      selector: (row) => row.contactNumber,
-      cell: (row) => (
-        <div className="removeWhiteSpace">{row?.contactNumber}</div>
-      ),
-      width: "150px",
-    },
-    {
-      id: "6",
-      name: "KYC Status",
-      selector: (row) => row.status,
-    },
-    {
-      id: "7",
-      name: "Registered Date",
-      selector: (row) => row.signUpDate,
-      sortable: true,
-      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
-      width: "150px",
-    },
-    {
-      id: "8",
-      name: "Onboard Type",
-      selector: (row) => row.isDirect,
-    },
-    {
-      id: "9",
-      name: "Generate MID",
-      cell: (row) => (
-        <button
-          type="submit"
-          onClick={() => {
-            setModalDisplayData(row);
-            setOpenModal(true);
-          }}
-          className="approve cob-btn-primary text-white"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
-        >
-          Action
-        </button>
-      ),
-    },
-
-  ];
-  let initialValues = {
-    transaction_from: "",
+  const initialValuess = {
+    name: "",
+    email: ""
   };
 
 
 
-  const approvedMerchantList = useSelector(
-    (state) => state.kyc.kycApprovedList
-  );
 
+  let initialValues = {
+    transaction_from: "",
+  };
 
-  const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
-
-  const [midList, setMidList] = useState([]);
-  const [dataCount, setDataCount] = useState("");
-  const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [merchantData, setMerchantData] = useState([]);
   const [bankName, setBankName] = useState([])
   const [selectedClientId, setSelectedClientId] = useState(null);
+ console.log("selectedClientId", selectedClientId)
+  const [formValues, setFormValues] = useState("")
+  const [createMidData, setCreateMidData] = useState("")
+  const [show, Setshow] = useState(false)
   // console.log(selectedClientId)
 
   useEffect(() => {
     fetchPaymentMode()
       .then(response => {
-        const data = response?.data?.result
+
+        const data = convertToFormikSelectJson(
+          "mode_name",
+          "mid_mode_name",
+          response?.data?.result
+        )
         setMerchantData(data);
       })
       .catch(error => {
@@ -178,7 +70,12 @@ function AssignZone() {
   useEffect(() => {
     fetchBankName()
       .then(response => {
-        const data = response?.data?.result
+        const data = convertToFormikSelectJson(
+          "mid_bank_name",
+          "bank_name",
+          response?.data?.result
+        )
+
         setBankName(data);
       })
       .catch(error => {
@@ -186,133 +83,137 @@ function AssignZone() {
       });
   }, []);
 
-
-
-
-  const handleSelectAll = (checked) => {
-    if (checked) {
-      setSelectedRows([...data]); // Select all rows
-      setIsChecked(true)
-    } else {
-      setSelectedRows([]); // Deselect all rows
-      setIsChecked(false)
-    }
-  };
-
-  const handleSingleSelect = (row) => {
-    const selectedIndex = selectedRows.findIndex((selectedRow) => selectedRow.id === row.id);
-    if (selectedIndex === -1) {
-      setSelectedRows([...selectedRows, row]); // Select single row
-      setIsChecked(true)
-    } else {
-      const updatedSelectedRows = [...selectedRows];
-      updatedSelectedRows.splice(selectedIndex, 1); // Deselect single row
-      setSelectedRows(updatedSelectedRows);
-      setIsChecked(false)
-    }
-  };
-
-  useEffect(() => {
-    const approvedList = approvedMerchantList?.results
-    const dataCount = approvedMerchantList?.count
-
-    if (approvedList) {
-      setData(approvedList);
-      setMidList(approvedList);
-
-      setDataCount(dataCount)
-    }
-  }, [approvedMerchantList]); //
-
-  const afterGeneratingMid = () => {
-    dispatch(
-      kycForApproved({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: "",
-        merchantStatus: "Approved",
-      })
-    )
-
-  };
-
-  useEffect(() => {
-    dispatch(
-      kycForApproved({
-        page: currentPage,
-        page_size: pageSize,
-        searchquery: "",
-        merchantStatus: "Approved",
-      })
-    )
-
-  }, [currentPage, pageSize]);
-
-  ////////////////////////////////////////////////// Search filter start here
-
-  const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
-
-  const searchByText = (text) => {
-    setData(
-      midList?.filter((item) =>
-        Object.values(item)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchText?.toLocaleLowerCase())
-      )
-    );
-  };
-
-  //function for change current page
-  const changeCurrentPage = (page) => {
-    setCurrentPage(page);
-    setSelectedRows([])
-
-  };
-
-  //function for change page size
-  const changePageSize = (pageSize) => {
-    setPageSize(pageSize);
-    setSelectedRows([])
-  };
-
-  const txnOption = [
-    { key: '', value: "Select" },
-    { key: "1", value: "Bank" },
-    { key: "2", value: "Manual" }
-  ];
-  const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", clientCodeList, {}, false, false, true, "name")
-
-
-
-
-
-
-
-
-  const handleExport = () => {
-    const worksheet = XLSX.utils.json_to_sheet(selectedRows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'selectedRows');
-    XLSX.writeFile(workbook, 'Mid Report.xlsx');
-  };
-
   const options = [
     { value: '', label: 'Select Client Code' },
     ...clientCodeList.map((data) => ({
-      value: data.clientCode,
-      label: `${data.clientCode} - ${data.name}`
+      value: data.merchantId,
+      label: `${data.clientCode} - ${data.clientName}`
     }))
   ]
 
   const handleSelectChange = (selectedOption) => {
+    console.log(selectedOption)
     setSelectedClientId(selectedOption ? selectedOption.value : null)
   }
+
+  const modalBody = () => {
+    return (
+      <div className="container-fluid">
+        <Formik
+          initialValues={initialValuess}
+          // validationSchema={validationSchema}
+
+          onSubmit={(values, { resetForm }) => {
+            handleSubmit(values);
+            resetForm();
+          }}
+        >
+          {({ resetForm }) => (
+            <>
+
+              <div className="modal-body">
+                {/* <p className="">
+                    Client Name: {props?.userData?.clientName}
+                  </p> */}
+                <p className="">
+                  Client Code: {selectedClientId}
+                </p>
+                <div className="container">
+                  <Form>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <label className="col-form-label mt-0 p-2">
+                          Name<span style={{ color: "red" }}>*</span>
+                        </label>
+                        <FormikController
+                          control="input"
+                          type="text"
+                          name="name"
+                          placeholder="Enter Name"
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="col-lg-6">
+                        <label className="col-form-label mt-0 p-2">
+                          Email<span style={{ color: "red" }}>*</span>
+                        </label>
+                        <FormikController
+                          control="input"
+                          type="text"
+                          name="email"
+                          placeholder="Enter Email"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div className="">
+                      <button
+                        type="subbmit"
+                        className="submit-btn cob-btn-primary text-white mt-3"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+
+
+                  </Form>
+                </div>
+              </div>
+            </>
+          )}
+        </Formik>
+        {show &&
+
+          <div className="d-flex justify-content-center">
+            <div className="card bg-warning text-center">
+              <div className="card-body">
+                <div className="">
+                  <h6>{createMidData?.description}</h6>
+                  <h6>Status: {createMidData?.onboardStatus}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+
+    )
+
+
+  }
+  const onSubmit = (values) => {
+    // console.log("Values", values)
+    setOpenModal(true);
+    setFormValues(values)
+  }
+  const clientCodeOption = convertToFormikSelectJson("merchantId", "clientCode", clientCodeList, {}, false, false, true, "clientName")
+  // console.log(clientCodeOption)
+
+  const handleSubmit = (values) => {
+    // setLoading(true);
+    // setDisable(true)
+    const midData = {
+      "merchant_id": selectedClientId,
+      "bank_name": formValues?.bank_name,
+      "mode_name": formValues?.mode_name
+
+    };
+    dispatch(createMidApi(midData))
+      .then((resp) => {
+        Setshow(true)
+        setCreateMidData(resp?.payload)
+        console.log("resp", resp)
+        // setData(resp.payload.ResponseData);
+      })
+      .catch((err) => {
+        console.log("err", err)
+        toastConfig.errorToast(err);
+        Setshow(false)
+
+      });
+  };
+
 
 
 
@@ -327,8 +228,8 @@ function AssignZone() {
           <div className="container-fluid mt-5">
             <Formik
               initialValues={initialValues}
-            // validationSchema={validationSchema}
-            // onSubmit={onSubmit}
+              // validationSchema={validationSchema}
+              onSubmit={onSubmit}
             >
               {(formik) => (
                 <Form className="">
@@ -350,48 +251,40 @@ function AssignZone() {
                       <ReactSelect
                         className="zindexforDropdown"
                         onChange={handleSelectChange}
-                        value={selectedClientId ? { value: selectedClientId, label: selectedClientId } : null}
+                        // value={selectedClientId ? { value: selectedClientId, label: selectedClientId, merchant_id } : null}
                         options={options}
                         placeholder="Select Client Code"
                         filterOption={createFilter({ ignoreAccents: false })}
+                      /> 
+                     
+
+                    </div>
+
+                    <div className="col-lg-3">
+
+                      <FormikController
+                        control="select"
+                        name="mode_name"
+                        options={merchantData}
+                        className="form-select"
+                        label="Payment Mode"
                       />
                     </div>
-
                     <div className="col-lg-3">
-                      <div className="form-group">
-                        <label className="form-label">Payment Mode</label>
-                        <select className="form-select">
-                          <option value="">Select</option>
-                          {merchantData?.map((data) => (
-                            <option value={data?.id} key={data?.id}>
-                              {data?.mode_name}
-                            </option>
-                          ))}
 
+                      <FormikController
+                        control="select"
+                        name="bank_name"
+                        options={bankName}
+                        className="form-select"
+                        label="Bank"
+                      />
 
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-lg-3">
-                      <div className="form-group">
-                        <label className="form-label">Select Bank</label>
-                        <select className="form-select">
-                          <option value="">Select</option>
-                          {bankName?.map((data) => (
-                            <option value={data?.id} key={data?.id}>
-                              {data?.bank_name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
                     </div>
                     <div className="col-lg-3 mt-4">
                       <button
                         type="submit"
-                        onClick={() => {
-                          setModalDisplayData();
-                          setOpenModal(true);
-                        }}
+
                         className="approve cob-btn-primary text-white"
                         data-toggle="modal"
                         data-target="#exampleModalCenter"
@@ -403,76 +296,17 @@ function AssignZone() {
                 </Form>
               )}
             </Formik>
-
-
-
-            {/* <div className="row mt-3">
-              <div className="form-group col-md-3">
-                <SearchFilter
-                  kycSearch={kycSearch}
-                  searchText={searchText}
-                  searchByText={searchByText}
-                  setSearchByDropDown={setSearchByDropDown}
-                  searchTextByApiCall={true}
-                />
-
-
-              </div>
-              <div className="form-group col-md-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={dataCount}
-                  currentPage={currentPage}
-                  changePageSize={changePageSize}
-                  changeCurrentPage={changeCurrentPage}
-                />
-
-              </div>
-              {isChecked &&
-                <div className="form-group col-lg-3">
-                  <button
-                    className="btn btn-sm text-white mt-4 cob-btn-primary "
-                    type="button"
-                    onClick={handleExport}
-                  >
-                    Export
-                  </button>
-                </div>}
-
-              <div className="">
-                <div className="scroll overflow-auto mr-3">
-                  <h6>Total Count : {dataCount}</h6>
-                  {!loadingState && data?.length !== 0 && (
-                    <Table
-                      row={AssignZoneData}
-                      data={data}
-                      dataCount={dataCount}
-                      pageSize={pageSize}
-                      currentPage={currentPage}
-                      changeCurrentPage={changeCurrentPage}
-                    />
-                  )}
-                </div>
-                <CustomLoader loadingState={loadingState} />
-                {data?.length == 0 && !loadingState && (
-                  <h2 className="text-center font-weight-bold">No Data Found</h2>
-                )}
-              </div>
-            </div> */}
           </div>
         </div>
         <div>
         </div>
       </main>
 
-      {openZoneModal === true && (
-        <ViewGenerateMidModal
-          userData={modalDisplayData}
-          setOpenModal={setOpenModal}
-          afterGeneratingMid={afterGeneratingMid}
-          selectedClientId={selectedClientId}
-        />
-      )}
+
+      <CustomModal modalBody={modalBody} headerTitle={"MID Generation"} modalToggle={openZoneModal}
+        fnSetModalToggle={setOpenModal} />
+
+
     </section>
   );
 }
