@@ -34,7 +34,7 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import { logout, updateClientDataInLocal } from "../../../slices/auth";
 import Sandbox from "../../SandBox/SendBox";
 import AssignZone from "../../ApproverNVerifier/AssignZone";
-import AdditionalKYC from "../../ApproverNVerifier/AdditionalKYC";
+import AdditionalKYC from "../../ApproverNVerifier/additional-kyc/AdditionalKYC";
 import RateMapping from "../../ApproverNVerifier/RateMapping";
 import SignupData from "../../ApproverNVerifier/SignupData";
 // import MerchantRoute from "../../../ProtectedRoutes/MerchantRoute";
