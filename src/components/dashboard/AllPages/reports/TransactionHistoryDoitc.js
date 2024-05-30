@@ -18,6 +18,8 @@ import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../../_components/formik/Yup";
 import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import ReactPaginate from "react-paginate";
+
 
 
 const TransactionHistoryDoitc = () => {
@@ -43,7 +45,7 @@ const TransactionHistoryDoitc = () => {
   const [updateTxnList, setUpdateTxnList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [buttonClicked, isButtonClicked] = useState(false);
-
+  
 
   // Date split
   let now = moment().format("YYYY-M-D");
@@ -724,56 +726,27 @@ const TransactionHistoryDoitc = () => {
               <div>
 
                 {txnList.length > 0 ? (
-                  <nav aria-label="Page navigation example">
-                    <ul className="pagination">
-                      <a
-                        className="page-link"
-                        onClick={(prev) =>
-                          setCurrentPage((prev) =>
-                            prev === 1 ? prev : prev - 1
-                          )
-                        }
-                        href={() => false}
-                      >
-                        Previous
-                      </a>
-                      {pages
-                        .slice(currentPage - 1, currentPage + 6)
-                        .map((page, i) => (
-                          <li
-                            key={uuidv4()}
-                            className={
-                              page === currentPage
-                                ? " page-item active"
-                                : "page-item"
-                            }
-                          >
+                  <div className="d-flex justify-content-center mt-2">
+                    <ReactPaginate
+                      previousLabel={'Previous'}
+                      nextLabel={'Next'}
+                      breakLabel={'...'}
+                      pageCount={pageCount}
+                      marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                      pageRangeDisplayed={5}
+                      onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                      containerClassName={'pagination justify-content-center'}
+                      activeClassName={'active'}
+                      previousLinkClassName={'page-link'}
+                      nextLinkClassName={'page-link'}
+                      disabledClassName={'disabled'}
+                      breakClassName={'page-item'}
+                      breakLinkClassName={'page-link'}
+                      pageClassName={'page-item'}
+                      pageLinkClassName={'page-link'}
+                    />
+                  </div>
 
-                            <a
-                              className={`page-link data_${i}`}
-                              href={() => false}
-                            >
-                              <p onClick={() => pagination(page)}>{page}</p>
-                            </a>
-                          </li>
-                        ))}
-                      {pages.length !== currentPage ? (
-                        <a
-                          className="page-link"
-                          onClick={(nex) => {
-                            setCurrentPage((nex) =>
-                              nex === pages.length > 9 ? nex : nex + 1
-                            );
-                          }}
-                          href={() => false}
-                        >
-                          Next
-                        </a>
-                      ) : (
-                        <></>
-                      )}
-                    </ul>
-                  </nav>
                 ) : (
                   <></>
                 )}
