@@ -75,6 +75,7 @@ function BankDetails(props) {
 
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
+      .trim()
       .allowOneSpace()
       .required("Required")
       .nullable(),
@@ -96,7 +97,7 @@ function BankDetails(props) {
       .required("Required")
       .nullable(),
     branch: Yup.string()
-       .allowOneSpace()
+      .allowOneSpace()
       .required("Required")
       .nullable(),
     bank_id: Yup.string()
@@ -172,8 +173,13 @@ function BankDetails(props) {
         setLoading(false)
         // console.log(res?.payload)
         // setFieldValue()
-        const fullName = res?.payload?.first_name + ' ' + res?.payload?.last_name;
-        setFieldValue("account_holder_name", fullName);
+        // check the space 
+        const bankFirstName = res?.payload?.first_name?.trim()
+        const bankLastName = res?.payload?.last_name?.trim()
+        let fullName = `${bankFirstName} ${bankLastName}`
+
+
+        setFieldValue("account_holder_name", fullName.trim());
 
         setFieldValue("account_number", values);
         setFieldValue("oldAccountNumber", values);
