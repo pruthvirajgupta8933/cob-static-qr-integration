@@ -7,7 +7,8 @@ let url,
   webSocketUrl,
   widget_url,
   widget_script,
-  payLinkAPIURL = "";
+  payLinkAPIURL,
+  refund_url = "";
 
 
 
@@ -21,12 +22,12 @@ if (ENV_PROD) {
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_url = "https://paywidget.sabpaisa.in"
   widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
+  refund_url = "https://gateway.sabpaisa.in/SabPaisa"
+
 
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
-  // url = "http://192.168.2.120:8000";
-  // kyc_url = "http://192.168.2.120:8001";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
@@ -34,6 +35,8 @@ if (ENV_PROD) {
   payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js"
+  refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi"
+
 
 }
 
@@ -41,7 +44,6 @@ const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
-// https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
 
 const API_LIVE = {
   BASE_URL_COB: url,
@@ -70,10 +72,10 @@ const API_LIVE = {
   Business_Category_Type: `${url}/auth-service/auth/business-category`,
 
   ///////////Payment mode for mid
-  GET_PAYMENT_MODE_LIST:`${url}/mid/payment-mode/`,
-  GET_ALL_BANK_NAME:`${url}/mid/bank/`,
-  MID_CREATE_API:`${url}/mid/create/`,
-  MID_CLIENT_CODE:`${url}/mid/mid-client-code/`,
+  GET_PAYMENT_MODE_LIST: `${url}/mid/payment-mode/`,
+  GET_ALL_BANK_NAME: `${url}/mid/bank/`,
+  MID_CREATE_API: `${url}/mid/create/`,
+  MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
 
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
@@ -269,10 +271,7 @@ const API_LIVE = {
   REJECT_KYC_TAB: `${kyc_url}/kyc/verify-kyc/tab-reject/`,
   COMPLETE_VERIFICATION: `${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC: `${kyc_url}/kyc/verify-kyc/reject/`,
-  //Reversing from pending approval to pending verification
-  Back_To_Pending_Verification: `${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
-  Back_To_Pending_Approval: `${kyc_url}/kyc/reverse-kyc/re-approval/`,
-  Back_To_Pending_KYC: `${kyc_url}/kyc/reverse-kyc/re-kyc-submit/`,
+
 
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
@@ -349,8 +348,8 @@ const API_LIVE = {
   // for chart
   GET_TRANSACTION_DATA_CHART: reportAPIURL + "/REST/getSuccessGraph",
 
-//////  client list export to xl
-exportOflineMerchant:`${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`,
+  //////  client list export to xl
+  exportOflineMerchant: `${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`,
 
 
   // bank merchant onboard API's // kyc_url 'http://192.168.34.91:8000'
@@ -361,7 +360,7 @@ exportOflineMerchant:`${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`
   // `{{url}}/kyc/bank-merchant/basic-detail/`
 
   /// userInfo api
-  userInfoLoginData:`${kyc_url}/kyc/get-merchant-data/login-data/`,
+  userInfoLoginData: `${kyc_url}/kyc/get-merchant-data/login-data/`,
 
 
   //   merchant list with the subscription data
@@ -380,6 +379,9 @@ exportOflineMerchant:`${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`
 
   // Geo location saving
   saveGeoCord: `${kyc_url}/kyc/coordinate/save/`,
+
+  // Refund transaction
+  refundTxn: `${refund_url}/refund`
 
 };
 
