@@ -92,29 +92,25 @@ function BankDetails(props) {
       .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
-
     account_type: Yup.string()
       .required("Required")
       .nullable(),
     branch: Yup.string()
+      .trim()
       .allowOneSpace()
       .required("Required")
       .nullable(),
     bank_id: Yup.string()
       .required("Required")
       .nullable(),
-    isAccountNumberVerified: Yup.string().required(
-      "You need to verify Your Account Number"
-    ),
+    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number"),
     oldIfscCode: Yup.string()
       .oneOf([Yup.ref("ifsc_code"), null], "IFSC code is not verified")
       .required("IFSC code is not verified")
       .nullable(),
     oldAccountNumber: Yup.string()
-      .oneOf(
-        [Yup.ref("account_number"), null],
-        "You need to verify Your Account Number"
-      )
+      .oneOf([Yup.ref("account_number"), null],
+        "You need to verify Your Account Number")
       .required("You need to verify Your Account Number")
       .nullable(),
   });
