@@ -54,6 +54,10 @@ function TransactionRefund(props) {
         const spTxnId = values.txn_id
         const clientTxnId = values.client_txn_id
         const message = values.refund_reason
+        // const amount = 10
+        // const spTxnId = "944012905240177946"
+        // const clientTxnId = "123456789876573"
+
 
         try {
 
@@ -69,21 +73,26 @@ function TransactionRefund(props) {
                 const str = `clientCode=${clientCode}&amount=${amount}&spTxnId=${spTxnId}&clientTxnId=${clientTxnId}&message=${message}`
                 const enc = Encrypt(str, authKey, authIV)
                 console.log("str", str)
-                // console.log("enc", enc)
 
-                const dc = Decrypt(enc, authKey, authIV)
-                // console.log("dc", dc)
 
                 const reqBody = {
                     clientCode: clientCode,
                     refundQuery: enc
                 }
 
+                console.log(reqBody)
 
-                await axiosInstance.post(API_URL.refundTxn, reqBody)
+                const refundResponse = await axiosInstance.post(API_URL.refundTxn, reqBody)
+
+                console.log(refundResponse.data.refundResponse)
+
+                const dc = Decrypt(refundResponse.data.refundResponse, authKey, authIV)
+                console.log("dc", dc)
 
                 toastConfig.successToast("Refund request has been initiated")
                 setSubmitLoader(false)
+                props.setRefundModal(false)
+
             }
 
 
@@ -98,9 +107,6 @@ function TransactionRefund(props) {
     }
 
     const headerTitle = "Refund Payment"
-
-    // const refundTypeOption
-
 
     const modalbody = () => {
 
@@ -173,10 +179,8 @@ function TransactionRefund(props) {
                                 </div>
                             </Form>
                         )}
-
                     </Formik>
                 </div>
-
             </div>)
     };
 
