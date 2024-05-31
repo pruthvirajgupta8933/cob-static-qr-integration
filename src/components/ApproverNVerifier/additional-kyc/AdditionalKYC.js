@@ -47,7 +47,7 @@ const AdditionalKYC = () => {
             </div>
             <div className="mt-4">
               {selectedDocType === "1" && (
-                <AdditionalKycForPan  selectedDocType={ selectedDocType } />
+                <AdditionalKycForPan selectedDocType={selectedDocType} />
               )}
 
               {selectedDocType === "2" && (
