@@ -29,7 +29,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
 import classes from "../allpage.module.css"
 import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-// import TransactionRefund from "./TransactionRefund";
+import TransactionRefund from "./TransactionRefund";
 
 
 
@@ -59,6 +59,8 @@ const TransactionHistory = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [radioInputVal, setRadioInputVal] = useState({})
+
+    const [refundModal, setRefundModal] = useState(false)
 
 
 
@@ -216,6 +218,10 @@ const TransactionHistory = () => {
 
 
     const submitHandler = (values) => {
+
+        setRefundModal(false)
+        setRadioInputVal({})
+
         isButtonClicked(true);
         setDisable(true)
         const { fromDate, endDate, transaction_status, payment_mode } = values;
@@ -333,7 +339,9 @@ const TransactionHistory = () => {
         getPaymentStatusList();
         paymodeList();
         SetTxnList([]);
+        setRadioInputVal({})
         return () => {
+
             dispatch(clearTransactionHistory());
         };
     }, []);
@@ -522,6 +530,7 @@ const TransactionHistory = () => {
 
     const refundModalHandler = () => {
         console.log("radioInputVal", radioInputVal)
+        setRefundModal(true)
 
     }
 
@@ -529,7 +538,9 @@ const TransactionHistory = () => {
         <section className="">
             <div className="profileBarStatus">
                 <Notification />
-                {/* <TransactionRefund /> */}
+                {/* refundModal, setRefundModal */}
+                {refundModal && <TransactionRefund refundModal={refundModal} setRefundModal={setRefundModal} radioInputVal={radioInputVal} />}
+
             </div>
             <main>
                 <div>
@@ -648,10 +659,10 @@ const TransactionHistory = () => {
 
 
                     <section className="">
-                        <div className="container-fluid p-3 my-3 ml-3 ">
+                        <div className="container-fluid p-0">
                             {txnList.length > 0 ? (
                                 <>
-                                    <div className="row">
+                                    <div className="d-flex">
                                         <div className="form-group col-md-3 mt-2 pl-0">
                                             <label>Search Transaction ID</label>
                                             <input
@@ -675,7 +686,7 @@ const TransactionHistory = () => {
                                         </div>
 
                                         {/* do not remove the comment code */}
-                                        {/* <div className="form-group col-md-6  mt-2 d-flex justify-content-end">
+                                        <div className="form-group col-md-6  mt-2 d-flex justify-content-end">
                                             <div>
                                                 <button
                                                     className="btn cob-btn-primary btn-sm mt-4"
@@ -683,7 +694,7 @@ const TransactionHistory = () => {
                                                     disabled={(radioInputVal?.status?.toLocaleLowerCase() !== "success" && radioInputVal?.status?.toLocaleLowerCase() !== "settled")}
                                                 >Refund</button>
                                             </div>
-                                        </div> */}
+                                        </div>
                                     </div>
                                     <h6>Total Record : {txnList.length} </h6>
                                 </>
@@ -696,7 +707,7 @@ const TransactionHistory = () => {
                                     <thead>
                                         {txnList.length > 0 ? (
                                             <tr>
-                                                {/* <th></th> */}
+                                                <th></th>
                                                 <th> S.No</th>
                                                 <th> Trans ID</th>
                                                 <th> Client Trans ID</th>
@@ -748,15 +759,15 @@ const TransactionHistory = () => {
                                                 return (
                                                     <tr key={uuidv4()}>
                                                         {/* do not remove the commentted code */}
-                                                        {/* <td>
+                                                        <td>
                                                             <input
                                                                 name="refund_request"
                                                                 value={item.txn_id}
                                                                 type="radio"
-                                                                onClick={(e) => setRadioInputVal({ txn_id: item.txn_id, status: item.status })}
+                                                                onClick={(e) => setRadioInputVal(item)}
                                                                 checked={item.txn_id === radioInputVal?.txn_id}
                                                             />
-                                                        </td> */}
+                                                        </td>
                                                         <td>{i + 1}</td>
                                                         <td>{item.txn_id}</td>
                                                         <td>{item.client_txn_id}</td>

@@ -75,6 +75,7 @@ function BankDetails(props) {
 
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
+      .trim()
       .allowOneSpace()
       .required("Required")
       .nullable(),
@@ -91,29 +92,25 @@ function BankDetails(props) {
       .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
-
     account_type: Yup.string()
       .required("Required")
       .nullable(),
     branch: Yup.string()
-       .allowOneSpace()
+      .trim()
+      .allowOneSpace()
       .required("Required")
       .nullable(),
     bank_id: Yup.string()
       .required("Required")
       .nullable(),
-    isAccountNumberVerified: Yup.string().required(
-      "You need to verify Your Account Number"
-    ),
+    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number"),
     oldIfscCode: Yup.string()
       .oneOf([Yup.ref("ifsc_code"), null], "IFSC code is not verified")
       .required("IFSC code is not verified")
       .nullable(),
     oldAccountNumber: Yup.string()
-      .oneOf(
-        [Yup.ref("account_number"), null],
-        "You need to verify Your Account Number"
-      )
+      .oneOf([Yup.ref("account_number"), null],
+        "You need to verify Your Account Number")
       .required("You need to verify Your Account Number")
       .nullable(),
   });
@@ -170,9 +167,13 @@ function BankDetails(props) {
         res?.payload?.valid === true
       ) {
         setLoading(false)
-        // console.log(res?.payload)
-        // setFieldValue()
-        const fullName = res?.payload?.first_name + ' ' + res?.payload?.last_name;
+
+        // check the space 
+        const bankFirstName = res?.payload?.first_name || "";
+        const bankLastName = bankFirstName === "" ? res?.payload?.last_name : ' ' + res?.payload?.last_name
+        const fullName = `${bankFirstName}${bankLastName}`
+
+
         setFieldValue("account_holder_name", fullName);
 
         setFieldValue("account_number", values);
