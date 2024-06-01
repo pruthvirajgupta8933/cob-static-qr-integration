@@ -97,7 +97,6 @@ function BankDetails(props) {
       .nullable(),
     branch: Yup.string()
       .trim()
-      .allowOneSpace()
       .required("Required")
       .nullable(),
     bank_id: Yup.string()

@@ -127,7 +127,7 @@ function BusinessDetails(props) {
 
   // console.log("initialValues-----reupdate", initialValues)
   const validationSchema = Yup.object({
-    company_name: Yup.string().allowOneSpace()
+    company_name: Yup.string()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
@@ -191,7 +191,6 @@ function BusinessDetails(props) {
       .nullable(),
 
     name_on_pancard: Yup.string()
-      .allowOneSpace()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
