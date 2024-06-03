@@ -453,7 +453,7 @@ function DashboardMainContent() {
                             <PayoutTransaction />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/payout/transactions`}
+                        <AuthorizedRoute exact path={`${path}/payout/transactions`} 
                             Component={TransactionsPayoutHistory} roleList={{ merchant: true }}>
                             <PayoutTransaction />
                         </AuthorizedRoute>

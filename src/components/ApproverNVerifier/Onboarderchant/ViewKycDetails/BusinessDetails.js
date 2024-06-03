@@ -91,7 +91,7 @@ const { user } = auth;
         "signatory_pan": selectedUserData?.signatoryPAN
       };
 
-      const resp = await dispatch(getMerchantpanData(panDetails));
+      await dispatch(getMerchantpanData(panDetails));
 
     } catch (error) {
       
