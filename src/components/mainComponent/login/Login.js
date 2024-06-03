@@ -157,7 +157,7 @@ function Login() {
                                             placeholder="Type your username"
                                             type="text"
                                             name="clientUserId"
-                                        // onClick={() => setNamee("clientUserId")}
+                                            autocomplete="off"
                                         />
                                         <ErrorMessage name="clientUserId">
                                             {(msg) => (<div className="text-danger">{msg}</div>
@@ -179,18 +179,18 @@ function Login() {
                                             }
                                             size={50}
                                             name="userPassword"
-                                        // onClick={() => setNamee("userPassword")}
+                                            autocomplete="new-password"
                                         />
                                         <div className="input-group-append">
                                             <span className="input-group-text" onClick={handleClickShowPassword}>  {values.showPassword ? (
                                                 <i
                                                     className="fa fa-eye"
-                                                   ariaHidden="true"
+                                                    ariaHidden="true"
                                                 ></i>
                                             ) : (
                                                 <i
                                                     className="fa fa-eye-slash"
-                                                   ariaHidden="true"
+                                                    ariaHidden="true"
                                                 ></i>
                                             )}</span>
                                         </div>
@@ -211,7 +211,7 @@ function Login() {
                                         >
                                             {loading && (
                                                 <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
-                                            )}Login <i className="fa fa-sign-in"ariaHidden="true"></i></button>
+                                            )}Login <i className="fa fa-sign-in" ariaHidden="true"></i></button>
                                     </div>
 
                                 </Form>
