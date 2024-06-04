@@ -1,4 +1,4 @@
-const ENV_PROD = false; // For proudction make it true, don't change in the local environment
+const ENV_PROD = true; // For proudction make it true, don't change in the local environment
 let url,
   kyc_url,
   b2b_url,
@@ -273,8 +273,8 @@ const API_LIVE = {
   COMPLETE_VERIFICATION_REJECT_KYC: `${kyc_url}/kyc/verify-kyc/reject/`,
 
   /////frm(push-merchant-data)
-  PUSH_MERCHANT_DATA:`${kyc_url}/kyc/frm/push-merchant-data/`,
-  MERCHANT_FRM_LIST:`${kyc_url}/kyc/frm/merchant-frm-list/`,
+  PUSH_MERCHANT_DATA: `${kyc_url}/kyc/frm/push-merchant-data/`,
+  MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
 
 
   // Client Detail SandBox //
