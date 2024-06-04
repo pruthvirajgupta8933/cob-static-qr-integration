@@ -140,8 +140,8 @@ function Login() {
                     <div className="col-lg-7 col-lg-7 d-flex justify-content-center">
                         <div className={`${classes.left_screen_}`}>
                             <div className={`${classes.form_container}`}>
-                                <h4 className="text-center">Welcome to your Dashboard</h4>
-                                <p className="text-center">You can login to track and record every transaction in real time.</p>
+                                <h4 className="text-center">Login</h4>
+                                <p className="text-center">Login to your merchant account</p>
                                 <Formik
                                     initialValues={{
                                         ...INITIAL_FORM_STATE,
@@ -151,12 +151,12 @@ function Login() {
                                 >
                                     {(formik) => (<Form>
                                         <div className="mb-3">
-                                            <label htmlFor="userName" className="form-label">Username</label>
+                                            <label htmlFor="userName" className="form-label">Email ID</label>
                                             <Field
                                                 className="form-control"
                                                 maxLength={255}
                                                 id="user-email"
-                                                placeholder="Type your username"
+                                                placeholder="Enter your username"
                                                 type="text"
                                                 name="clientUserId"
                                                 autoComplete="off"
@@ -173,7 +173,7 @@ function Login() {
                                                 className="form-control"
                                                 maxLength={255}
                                                 id="user-pw"
-                                                placeholder="Type your password"
+                                                placeholder="Enter your password"
                                                 type={
                                                     values.showPassword
                                                         ? "text"
