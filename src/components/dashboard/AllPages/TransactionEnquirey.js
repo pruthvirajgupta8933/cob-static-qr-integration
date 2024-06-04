@@ -21,7 +21,7 @@ function TransactionEnquirey() {
   const roles = roleBasedAccess();
   const { user } = auth;
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
 
     transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required").allowOneSpace(),
     transaction_from: Yup.string().nullable().required("Required").allowOneSpace(),

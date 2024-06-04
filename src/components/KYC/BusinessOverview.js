@@ -96,7 +96,7 @@ function BusinessOverview(props) {
     acceptAlphabet: 'Please enter valid characters.',
   };
 
-  const validationSchema = Yup.object(
+  const validationSchema = Yup.object().shape(
     {
       business_type: Yup.string().required("Select Business Type").nullable(),
       business_category: Yup.string()

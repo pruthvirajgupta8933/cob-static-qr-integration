@@ -73,7 +73,7 @@ function BankDetails(props) {
   };
 
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     account_holder_name: Yup.string()
       .trim()
       .allowOneSpace()
