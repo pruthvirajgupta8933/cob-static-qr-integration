@@ -118,7 +118,6 @@ function Login() {
             }).catch(err => console.log("err", err))
         }
     }
-    // const queryStringUrl = window.location.search;
 
 
     return (
