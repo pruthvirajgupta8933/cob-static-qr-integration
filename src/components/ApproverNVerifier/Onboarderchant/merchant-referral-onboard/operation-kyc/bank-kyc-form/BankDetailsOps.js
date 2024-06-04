@@ -48,7 +48,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
     const validationSchema = Yup.object().shape({
         account_holder_name: Yup.string().allowOneSpace().required("Required").nullable(),
         ifsc_code: Yup.string()
-            .allowOneSpace()
             .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
             .matches(Regex.ifscRegex, RegexMsg.ifscRegex)
             .min(6, "Username must be at least 6 characters")

@@ -327,6 +327,7 @@ function Signup() {
                                                     placeholder="Enter your email"
                                                     name="emaill"
                                                     size={50}
+                                                    autocomplete="off"
                                                 />
                                                 <ErrorMessage name="emaill">
                                                     {(msg) => (<p className="text-danger">{msg}</p>)}
@@ -383,7 +384,7 @@ function Signup() {
                                                                 : "password"
                                                         }
                                                         name="passwordd"
-                                                        autoComplete="off"
+                                                        autocomplete="new-password"
                                                     />
                                                     <div className="input-group-append">
                                                         <span className="input-group-text" onClick={handleClickShowPassword} id="basic-addon2">

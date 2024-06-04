@@ -13,6 +13,7 @@ import CountPerPageFilter from "../../../_components/table_components/filters/Co
 import SkeletonTable from "../../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../../utilities/DateConvert";
 import FrmStatusModal from "./FrmStatusModal";
+import { frmMerchantList } from "../../../services/approver-dashboard/frm/frm.service";
 
 function FrmMerchantList() {
   const roles = roleBasedAccess();
@@ -26,7 +27,7 @@ function FrmMerchantList() {
       name: "S.No",
       selector: (row) => row.sno,
       sortable: true,
-      width: "40px",
+      width: "90px",
     },
     {
       id: "2",
@@ -37,13 +38,6 @@ function FrmMerchantList() {
     },
     {
       id: "3",
-      name: "Company Name",
-      selector: (row) => row.companyName,
-      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-      width: "150px",
-    },
-    {
-      id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
@@ -55,14 +49,14 @@ function FrmMerchantList() {
       width: "180px",
     },
     {
-      id: "5",
+      id: "4",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
       width: "220px",
     },
     {
-      id: "6",
+      id: "5",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
       cell: (row) => (
@@ -71,34 +65,34 @@ function FrmMerchantList() {
       width: "150px",
     },
     {
-      id: "7",
-      name: "KYC Status",
-      selector: (row) => row.status,
+      id: "6",
+      name: "Factum Range",
+      selector: (row) => row.factum_range,
     },
     {
-      id: "8",
-      name: "Registered Date",
-      selector: (row) => row.signUpDate,
+      id: "7",
+      name: "FRM Message",
+      selector: (row) => row. frm_message,
       sortable: true,
-      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
+      cell: (row) => <div>{row.frm_message}</div>,
       width: "150px",
     },
 
     {
-      id: "9",
-      name: "Submitted Date",
-      selector: (row) => row.updated_on,
+      id: "8",
+      name: "FRM Status",
+      selector: (row) => row.frm_status,
       sortable: true,
-      cell: (row) => <div>{DateFormatter(row.updated_on)}</div>,
+      cell: (row) => <div>{row.frm_status}</div>,
       width: "150px",
     },
     {
-      id: "10",
-      name: "Onboard Type",
-      selector: (row) => row.isDirect,
+      id: "9",
+      name: "FRM Valid",
+      selector: (row) => row.is_frm_valid===true ? "Yes" : "NO",
     },
     {
-      id: "14",
+      id: "10",
       name: "Action",
 
       cell: (row) => (
@@ -124,9 +118,6 @@ function FrmMerchantList() {
     },
   ];
 
-
-  //  const { user } = useSelector((state) => state.auth);
-  // const roleBasePermissions = roleBasedAccess();
   const loadingState = useSelector(
     (state) => state.kyc.isLoadingForPendingVerification
   );
@@ -135,18 +126,13 @@ function FrmMerchantList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(100);
-  const [isOpenModal, setIsModalOpen] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  // const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-  // const currenTab = parseInt(verifierApproverTab?.currenTab);
 
 
   const pendindVerificationList = useSelector(
     (state) => state.kyc.pendingVerificationKycList
   );
-
-
 
   const [data, setData] = useState([]);
   const [newRegistrationData, setNewRegistrationData] = useState([]);
@@ -155,17 +141,17 @@ function FrmMerchantList() {
 
 
 
-  useEffect(() => {
-    const pendingVerificationDataList = pendindVerificationList?.results;
-    const dataCount = pendindVerificationList?.count;
+  // useEffect(() => {
+  //   const pendingVerificationDataList = pendindVerificationList?.results;
+  //   const dataCount = pendindVerificationList?.count;
 
-    if (pendingVerificationDataList) {
-      setData(pendingVerificationDataList);
-      setNewRegistrationData(pendingVerificationDataList);
-      setKycIdClick(pendingVerificationDataList);
-      setDataCount(dataCount)
-    }
-  }, [pendindVerificationList]); //
+  //   if (pendingVerificationDataList) {
+  //     setData(pendingVerificationDataList);
+  //     setNewRegistrationData(pendingVerificationDataList);
+  //     setKycIdClick(pendingVerificationDataList);
+  //     setDataCount(dataCount)
+  //   }
+  // }, [pendindVerificationList]); //
 
 
 
@@ -183,22 +169,23 @@ function FrmMerchantList() {
     }
   };
 
-  // const pendingVerify = () => {
-  //   fetchData();
+  
 
-  // };
-
-  const fetchData = useCallback((startingSerialNumber) => {
-    dispatch(
-      kycForPending({
+  const fetchData = useCallback(() => {
+    frmMerchantList(
+     {
         page: currentPage,
         page_size: pageSize,
-        searchquery: searchText,
-        merchantStatus: "Processing",
-        isDirect: onboardType,
+      }).then((res)=>{
+        const data=res?.data?.results
+        const count=res?.data?.count
+        setData(data)
+        setDataCount(count)
+        console.log("res",res)
       })
-    );
-  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+    
+    
+  }, [currentPage, pageSize, dispatch, ]);
 
   useEffect(() => {
     fetchData();
@@ -215,44 +202,10 @@ function FrmMerchantList() {
   };
 
 
-  const filteredData = useMemo(() => {
-    return newRegistrationData?.filter((item) =>
-      Object.values(item)
-        .join(' ')
-        .toLowerCase()
-        .includes(searchText?.toLocaleLowerCase())
-    );
-  }, [newRegistrationData, searchText]);
-
-
-
-  const searchByText = () => {
-    setData(filteredData);
-  };
-
-  const optionSearchData = [
-    {
-      name: "Select Onboard Type",
-      value: "",
-    },
-    {
-      name: "All",
-      value: "",
-    },
-    {
-      name: "Online",
-      value: "online",
-    },
-    {
-      name: "Offline",
-      value: "offline",
-    },
-  ];
-
-  return (
+   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-        <div className="form-group col-lg-3 col-md-12 mt-2">
+        {/* <div className="form-group col-lg-3 col-md-12 mt-2">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -260,7 +213,7 @@ function FrmMerchantList() {
             setSearchByDropDown={setSearchByDropDown}
             searchTextByApiCall={true}
           />
-        </div>
+        </div> */}
         <div>
 
           {openCommentModal && <FrmStatusModal
@@ -282,7 +235,7 @@ function FrmMerchantList() {
             changePageSize={changePageSize}
           />
         </div>
-        <div className="form-group col-lg-3 col-md-12 mt-2">
+        {/* <div className="form-group col-lg-3 col-md-12 mt-2">
           <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
@@ -292,14 +245,6 @@ function FrmMerchantList() {
             setSearchByDropDown={setSearchByDropDown}
             optionSearchData={optionSearchData}
           />
-        </div>
-        {/* <div className="">
-          {!loadingState &&
-            <MerchnatListExportToxl
-              URL={`export-excel/?search=processing&isDirect=${onboardType}`}
-              filename={"Pending-Verification"}
-            />
-          }
         </div> */}
       </div>
 

@@ -1,153 +1,43 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form } from "formik";
-import { toast } from "react-toastify";
-// import * as Yup from "yup";
-import FormikController from "../../../_components/formik/FormikController";
-import {
-  forSavingComments,
-  forGettingCommentList,
-} from "../../../slices/merchantZoneMappingSlice";
+import React, { useState } from "react";
 import toastConfig from "../../../utilities/toastTypes";
-import moment from "moment";
-// import "./comment.css";
-import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
-import { v4 as uuidv4 } from 'uuid';
-import Yup from "../../../_components/formik/Yup";
+import { frmPushMerchantData } from "../../../services/approver-dashboard/frm/frm.service";
+import { useDispatch } from "react-redux";
+import { checkFrmPushData } from "../../../slices/approver-dashboard/frmSlice";
 
 
 const FrmStatusModal = (props) => {
-  // console.log(props)
-
-  const [commentsList, setCommentsList] = useState([]);
-  const [attachCommentFile, setattachCommentFile] = useState([]);
-  const [uploadStatus, setUploadStatus] = useState(false);
-
-  const initialValues = {
-    comments: "",
-  };
-
-  const { user } = useSelector((state) => state?.auth);
-  const { loginId } = user;
-
+  const { commentData } = props
+  const login_id = commentData?.merchantId
+  const [frmCheckData, setFrmCheckData] = useState({})
+  const [disable, setDisable] = useState(false)
+  const [show, setShow] = useState(false)
   const dispatch = useDispatch();
-  const commentUpdate = () => {
-    dispatch(
-      forGettingCommentList({
-        client_code: props?.commentData?.clientCode,
-      })
-    )
-      .then((resp) => {
-        setCommentsList(resp?.payload?.Data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
 
-  useEffect(() => {
-    commentUpdate();
-  }, [props]);
-
-  const aRef = useRef(null);
-
-  //function for resetupload file
-  const resetUploadFile = () => {
-    aRef.current.value = null;
-    setUploadStatus(false);
-  };
-
-  const validationSchema = Yup.object({
-    comments: Yup.string()
-      .min(1, "Please enter , more than 1 character")
-      .max(500, "Please do not  enter more than 500 characters")
-      .required("Required")
-      .nullable(),
-  });
-
-  const handleSubmit = async (values) => {
-    let formData = new FormData();
-    formData.append("files", attachCommentFile);
-    formData.append("login_id", loginId);
-    formData.append("client_code", props?.commentData?.clientCode);
-    formData.append("comments", values.comments);
-    formData.append("merchant_tab", props?.tabName);
-    dispatch(forSavingComments(formData))
-      .then((resp) => {
-        if (resp?.payload?.message?.status && resp?.payload?.status) {
-          toast.success(resp?.payload?.message.message);
-          commentUpdate();
-          resetUploadFile();
-          setattachCommentFile([]);
-        } else {
-          toast.error(resp?.payload?.message.message);
-          resetUploadFile();
-          commentUpdate();
-          setattachCommentFile([]);
-        }
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
-  };
-  const dateManipulate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
-    return date;
-  };
-
-  // function for handle upload files
-  const handleUploadAttachments = (e) => {
-    if (e.target.files) {
-      setattachCommentFile(e.target.files[0]);
-      setUploadStatus(true);
+  const handleClick = () => {
+    setDisable(true)
+    const postData = {
+      login_id: login_id
     }
-  };
-  const isUrlValid = (userInput) => {
-    let res = userInput.match(
-      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
-    );
-    if (res == null) return false;
-    else return true;
-  };
-  const fileTypeCheck = (file) => {
-    let ext = file.split(".").pop();
-    const formats = ["pdf", "jpg", "jpeg", "png"];
-    let htmlType = _.includes(formats, `${ext}`);
-    if (!htmlType) {
-      return false;
-    } else {
-      return true;
-    }
-  };
+    dispatch(checkFrmPushData(postData)).then((res) => {
+      if ( res.meta.requestStatus === 'fulfilled') {
+        const data = res?.payload?.result
+        setFrmCheckData(data)
+        toastConfig.successToast(res?.payload?.message)
+        setDisable(false)
+        setShow(true)
+      } else {
+        toastConfig.errorToast(res?.payload)
+        setDisable(false)
+      }
+    }).catch(() => {
+      setDisable(false)
+      setShow(false)
+    })
+  }
 
-  const headerTitle = () => {
-    return (
-      <>
 
-        <h5
-          className="modal-title bolding text-black"
-          id="exampleModalLongTitle"
-        >
-          Add your comments
-        </h5>
-
-        <button
-          type="button"
-          className="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          onClick={() => {
-            setCommentsList([]);
-            props?.setModalState(false);
-          }}
-        >
-          <span ariaHidden="true">&times;</span>
-        </button>
-      </>
-    );
-  };
 
   const modalbody = () => {
     return (
@@ -162,121 +52,53 @@ const FrmStatusModal = (props) => {
 
         </div>
 
-        {/* <div className="row">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-              resetForm();
-            }}
-            enableReinitialize={true}
-          >
-            <Form>
-              <div className="form-row">
-                <div className="col">
-                  <FormikController
-                    control="textArea"
-                    name="comments"
-                    className="form-control"
-                  />
-                </div>
-
-                <div className="col">
-                  <label for="file-upload" className="custom-file-upload">
-                    <i className="fa fa-cloud-upload"></i> Upload File
-                  </label>
-                  <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
-                  <div className="mt-2 ml-3">
-                    <button
-                      type="submit"
-                      className="submit-btn approve text-white btn-sm cob-btn-primary"
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-              </div>
+        <div className="mt-3">
+          <button disabled={disable} type="button"
+            onClick={handleClick}
+            className="btn cob-btn-primary approve text-white">
+            {disable && (
+              <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+            )}
+            Check FRM</button>
+        </div>
 
 
-              <div className="row g-3">
+        {disable ? (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border spinner-border-sm" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          show &&
+          <table class="table mt-3">
+            <thead>
+              <tr>
+                <th scope="col">Account Holder Name</th>
+                <th>Client Name</th>
+                <th>Account Number</th>
+                <th scope="col">Bank Name</th>
+                <th>FRM Message</th>
+                <th>Factum range</th>
+                <th>FRM Valid</th>
+                <th>FRM Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td >{frmCheckData?.accountHolderName}</td>
+                <td>{frmCheckData?.clientName}</td>
+                <td>{frmCheckData?.accountNumber}</td>
+                <td>{frmCheckData?.bankName}</td>
+                <td>{frmCheckData?.frm_message}</td>
+                <td>{frmCheckData?.factum_range}</td>
+                <td>{frmCheckData?.is_frm_valid === true ? "Yes" : "NO"}</td>
+                <td>{frmCheckData?.frm_status}</td>
+              </tr>
 
-                <div className="col hoz-scroll-">
-                  <h6 className="">
-                    Previous Comments
-                  </h6>
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Commented By</th>
-                        <th>Comments</th>
-                        <th>Date of Comments</th>
-                        <th>Comments from tab</th>
-                        <th>Download Attachments</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(commentsList?.length === undefined ||
-                        commentsList?.length === 0) && (
-                          <tr>
-                            <td colSpan="3">
-                              <h6 className="text-center">
-                                No Data found
-                              </h6>
-                            </td>
-                          </tr>
-                        )}
-
-                      {(commentsList?.length !== undefined ||
-                        commentsList?.length > 0) &&
-                        Array.isArray(commentsList)
-                        ? commentsList?.map((commentData, i) => (
-                          <tr key={uuidv4()}>
-                            <td>
-                              {commentData?.comment_by_user_name.toUpperCase()}
-                            </td>
-                            <td
-                              style={{ overflowWrap: "anywhere" }}
-                            >
-                              {commentData?.comments}
-                            </td>
-                            <td>
-                              {dateManipulate(commentData?.comment_on)}
-                            </td>
-                            <td>{commentData?.merchant_tab ?? commentData?.comment_type}</td>
-                            <td>
-                              {commentData?.file_path !== null &&
-                                isUrlValid(commentData?.file_path) &&
-                                fileTypeCheck(commentData?.file_path) && (
-                                  <a
-                                    href={commentData?.file_path}
-                                    target={"_blank"}
-                                    download
-                                    rel="noreferrer"
-                                  >
-                                    <img
-                                      src={downloadIcon}
-                                      style={{
-                                        height: "20px",
-                                        width: "20px",
-                                        margin: "auto",
-                                      }}
-                                      alt=""
-                                    />
-                                  </a>
-                                )}
-                            </td>
-                          </tr>
-                        ))
-                        : []}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </Form>
-          </Formik>
-        </div> */}
-
+            </tbody>
+          </table>
+        )}
       </div>)
   };
 
@@ -284,10 +106,10 @@ const FrmStatusModal = (props) => {
     return (
       <button
         type="button"
-        className="btn btn-secondary text-white"
+        className="btn btn-secondary text-white btn-sm"
         data-dismiss="modal"
         onClick={() => {
-          setCommentsList([]);
+
           props?.setModalState(false);
         }}
       >
@@ -296,10 +118,6 @@ const FrmStatusModal = (props) => {
 
     );
   };
-
-
-
-
 
   return (
     <>
