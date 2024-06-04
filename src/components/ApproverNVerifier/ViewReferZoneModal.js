@@ -22,7 +22,7 @@ const ViewReferZoneModal = (props) => {
     sourcing_code: ""
   };
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     sourcing_point: Yup.string().allowOneSpace().required("Required").nullable(),
     sourcing_code: Yup.string().allowOneSpace().required("Required").nullable()
   });
