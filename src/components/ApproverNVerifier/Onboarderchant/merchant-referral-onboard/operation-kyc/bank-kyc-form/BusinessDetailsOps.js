@@ -43,7 +43,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string()
-            .allowOneSpace()
             .max(10, "PAN should be exactly 10 characters long")
             .nullable().required("Required"),
         website: Yup.string()

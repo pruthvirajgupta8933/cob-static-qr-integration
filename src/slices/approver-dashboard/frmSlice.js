@@ -1,23 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { midCreateApi } from "../services/generate-mid/generate-mid.service";
-import { setMessage } from "./message";
-
-
-
+import { frmPushMerchantData } from "../../services/approver-dashboard/frm/frm.service";
+import { setMessage } from "../message";
 
 const initialState = { 
     postdata:{},
    
 };
 
-export const createMidApi = createAsyncThunk(
-  "mid/createMidApi",
+export const checkFrmPushData = createAsyncThunk(
+  "frm/checkFrmPushData",
   async (dataObj, thunkAPI) => {
     try {
-      const response = await midCreateApi(dataObj);
-      console.log("rse", response);
-
-      // thunkAPI.dispatch(setMessage(response.data.message));
+      const response = await frmPushMerchantData(dataObj);
       return response.data;
     } catch (error) {
       const message =
@@ -26,35 +20,27 @@ export const createMidApi = createAsyncThunk(
           error.response.data.detail) ||
         error.detail ||
         error.toString();
-      console.log("message", message);
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message); // Return the message here
     }
   }
 );
 
-
-
-
-
-
-  
-
-  export const generateMidSlice = createSlice({
-    name: "mid",
+export const frmSlice = createSlice({
+    name: "frm",
     initialState,
     reducers: {},
      
     extraReducers: {
-      [createMidApi.pending]: (state, action) => {
+      [checkFrmPushData.pending]: (state, action) => {
         state.status = "pending";
         
       },
-      [createMidApi.fulfilled]: (state, action) => {
+      [checkFrmPushData.fulfilled]: (state, action) => {
        
 
       },
-      [createMidApi.rejected]: (state, action) => {
+      [checkFrmPushData.rejected]: (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       },
@@ -67,6 +53,6 @@ export const createMidApi = createAsyncThunk(
   });
   export const {
    
-  } = generateMidSlice .actions;
-  export const genreateMidReducer = generateMidSlice.reducer;
+  } = frmSlice.actions;
+  export const frmReducer = frmSlice.reducer;
   
