@@ -56,7 +56,7 @@ function DocumentsUpload(props) {
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
-  const documentListData = savedData?.filter((data) => ((data?.status).toLowerCase()) !== "rejected")?.map((data) => data?.type);
+  const documentListData = savedData?.filter((data) => (String((data?.status)).toLowerCase()) !== "rejected")?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
 
