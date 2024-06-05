@@ -9,7 +9,8 @@ import { checkFrmPushData } from "../../../slices/approver-dashboard/frmSlice";
 
 const FrmStatusModal = (props) => {
   const { commentData } = props
-  const login_id = commentData?.merchantId
+  const login_id = commentData?.loginMasterId
+  
   const [frmCheckData, setFrmCheckData] = useState({})
   const [disable, setDisable] = useState(false)
   const [show, setShow] = useState(false)
@@ -18,7 +19,7 @@ const FrmStatusModal = (props) => {
   const handleClick = () => {
     setDisable(true)
     const postData = {
-      login_id: login_id
+      login_id: parseInt(login_id)
     }
     dispatch(checkFrmPushData(postData)).then((res) => {
       if ( res.meta.requestStatus === 'fulfilled') {
