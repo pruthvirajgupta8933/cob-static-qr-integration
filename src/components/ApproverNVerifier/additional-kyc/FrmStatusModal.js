@@ -45,7 +45,7 @@ const FrmStatusModal = (props) => {
       <div className="container-fluid">
         <div>
           <h6>
-            Merchant Name: {props?.commentData?.clientName}
+            Merchant Name: {props?.commentData?.name}
           </h6>
           <h6>
             Client Code: {props?.commentData?.clientCode}
