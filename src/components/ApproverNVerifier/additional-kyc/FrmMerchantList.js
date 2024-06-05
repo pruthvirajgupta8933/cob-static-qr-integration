@@ -181,7 +181,6 @@ function FrmMerchantList() {
         const count=res?.data?.count
         setData(data)
         setDataCount(count)
-        console.log("res",res)
       })
     
     

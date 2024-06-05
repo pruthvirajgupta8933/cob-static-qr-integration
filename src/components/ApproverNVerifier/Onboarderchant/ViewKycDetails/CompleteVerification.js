@@ -83,7 +83,9 @@ const CompleteVerification = (props) => {
     const bafData = {
       merchant_business_name: data?.companyName ?? "NA",
       merchant_legal_name: data?.companyName ?? "NA",
-      merchant_address: `${data?.merchant_address_details?.address}, ${data?.merchant_address_details?.city}, ${data?.merchant_address_details?.state_name}, , ${data?.merchant_address_details?.pin_code}`,
+      merchant_address: data?.merchant_address_details
+      ? `${data?.merchant_address_details.address || "NA"}, ${data?.merchant_address_details.city || "NA"}, ${data?.merchant_address_details.state_name || "NA"}, ${data?.merchant_address_details.pin_code || "NA"}`
+      : "NA",
       product_name: "NA",
       types_of_entity: data?.business_type_name ?? "NA",
       year_of_establishment: 1,
