@@ -124,9 +124,52 @@ function Login() {
     return (
         <div className={`container-fluid p-0`}>
             <div className={`d-flex flex-row ${classes.flex_column_reverse} ${classes.container_custom}`}>
-                <div className={`${classes.background_image_left} col-lg-5`}>
-                    <Header />
-                    <div className={`${classes.right_screen_} text-white`}>
+                <div className={`${classes.background_image_left} col-lg-5 text-white`}>
+                    <div>
+
+                        <div class="d-flex align-items-start" style={{ height: 100 }}>
+                            <Header />
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div className="p-4 text-center">
+                                <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
+                                <div className="my-5" style={{ fontSize: '24px' }}>
+                                    <p >Login to Your Dashboard</p>
+                                    <p className="m-0" style={{ fontSize: '17px' }}>One Payment Gateway for</p>
+                                    <p className="m-0" style={{ fontSize: '17px' }}>all your needs</p>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-center" style={{ height: 100 }}>
+                            <div className="p-2 " style={{ fontSize: '20px' }}>
+                                <hr style={{ position: 'relative', width: '50%', top: 25, right: 74 }} />
+                                Need help? Contact us
+                                <hr style={{ position: 'relative', width: '50%', top: -25, left: 140 }} />
+
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <p>Support@sabpaisa.in</p>
+                                <p>011-41733223</p>
+                            </div>
+
+                        </div>
+                        {/* <div className="d-flex align-items-center flex-column mb-3" style={{ height: 200 }}>
+                            <div className="p-2">Need help? Contact us</div>
+                            <div className="d-flex-inline">
+                                <p>Support@sabpaisa.in</p>
+                                <p>011-41733223</p>
+                            </div>
+                        </div> */}
+                    </div>
+
+                    {/* <div className="d-flex align-items-start">
+                        <Header />
+                    </div>
+
+                    <div className={`${classes.right_screen_} text-white "d-flex align-items-center"`}>
                         <div className="p-4 text-center">
                             <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
                             <h1>An all-in-one</h1>
@@ -134,14 +177,17 @@ function Login() {
                             <h4>Trusted by over 3000+ Mega Clients</h4>
 
                         </div>
-
+                    </div>
+                    <div className="d-flex align-items-end">
                         <p>Need help? Contact us</p>
                         <div className="d-flex-inline">
                             <p>Support@sabpaisa.in</p>
                             <p>011-41733223</p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
+
+
                 <div className="col-lg-7 col-lg-7 d-flex justify-content-center">
                     <div className={`${classes.left_screen_}`}>
                         <div className={`${classes.form_container}`}>
@@ -243,7 +289,7 @@ function Login() {
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

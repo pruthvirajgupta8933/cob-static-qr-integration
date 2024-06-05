@@ -3,9 +3,9 @@
 } */
 
 .background_image_left {
-    background-image: url("../../../assets/images/login-left-bg.svg");
+    background-image: url("../../../assets/images/login-left-bg.png");
     background-repeat: no-repeat;
-    background-size: auto;
+    background-size: cover;
 }
 
 .navbar-bg-color {
