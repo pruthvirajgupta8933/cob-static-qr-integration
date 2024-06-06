@@ -246,7 +246,7 @@ function Signup() {
 
     return (
         <React.Fragment>
-            <Header />
+            <Header display_bg_color={false} />
             <CustomModal
                 modalBody={modalBody}
                 headerTitle={"Registration"}

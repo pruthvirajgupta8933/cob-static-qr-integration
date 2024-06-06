@@ -456,3 +456,11 @@ h1, h2, h3, h4, h5, h6{
 .react-date-picker__calendar {
   z-index: 999 !important;
 }
+
+
+/* icon eye */
+
+.fa-eye,
+.fa-eye-slash {
+  color: #377CCF;
+}

@@ -9,14 +9,14 @@ import CreatePassword from "./CreatePassword";
 const ForgetPassword = () => {
   const [showCard, setShowCard] = useState("a1");
 
-  const handleFormSubmit = (currentCard,data={}) => {
+  const handleFormSubmit = (currentCard, data = {}) => {
     setShowCard(currentCard);
     // console.log("currentCard", currentCard);
   };
 
   return (
     <React.Fragment>
-      <Header />
+      <Header display_bg_color={true} />
 
       {/* enter user id  */}
       {showCard === "a1" ? <EnterUserID props={handleFormSubmit} /> : <></>}

@@ -6,7 +6,7 @@ import Header from '../mainComponent/header/Header'
 function ViewTransactionDetails() {
   return (
     <div >
-      <Header />
+      <Header display_bg_color={true} />
       <TransactionEnqMultiParam />
     </div>
   )

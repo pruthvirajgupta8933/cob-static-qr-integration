@@ -2,11 +2,10 @@
     width: 100%;
     max-width: 190px;
     height: 35px;
-    margin-top: 20px;
 }
 
 .navbar_bg_color {
-    background: linear-gradient(90deg, rgba(14, 4, 43, 1) 0%, rgba(44, 35, 98, 1) 31%, rgba(25, 7, 76, 0.9632586310891544) 100%);
+    background: #133e7c;
 }
 
 .position_sticky {

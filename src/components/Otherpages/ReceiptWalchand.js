@@ -77,7 +77,7 @@ const ReceiptWalchand = () => {
 
   return (
     <React.Fragment>
-      <Header />
+      <Header display_bg_color={true} />
 
       <div className="container-fluid">
         <div className="row justify-content-center">

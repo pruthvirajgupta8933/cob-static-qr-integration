@@ -6,10 +6,15 @@ import Yup from "../../../_components/formik/Yup";
 import { login, logout } from "../../../slices/auth";
 import { clearMessage } from "../../../slices/message";
 import sbbnner from "../../../assets/images/login-banner.png"
+import arrow_one from "../../../assets/images/arrow_one.png"
+import arrow_two from "../../../assets/images/arrow_two.png"
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from '../header/Header'
 import classes from "./login.module.css"
 import toastConfig from "../../../utilities/toastTypes";
+import useMediaQuery from "../../../hooks/useMediaQuery";
+
+
 
 const INITIAL_FORM_STATE = {
     clientUserId: "",
@@ -37,6 +42,13 @@ function Login() {
 
     const dispatch = useDispatch();
     const { user, userAlreadyLoggedIn } = authentication;
+
+
+    const isDesktop = useMediaQuery('(min-width: 993px)');
+    const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
+    const isMobile = useMediaQuery('(max-width: 767px)');
+
+    console.log({ isDesktop, isTablet, isMobile })
 
     useEffect(() => {
         const userLocalData = JSON.parse(localStorage.getItem("user"));
@@ -123,74 +135,177 @@ function Login() {
 
     return (
         <div className={`container-fluid p-0`}>
+
             <div className={`d-flex flex-row ${classes.flex_column_reverse} ${classes.container_custom}`}>
                 <div className={`${classes.background_image_left} col-lg-5 text-white`}>
-                    <div>
-
-                        <div class="d-flex align-items-start" style={{ height: 100 }}>
-                            <Header />
+                    <div className="container-fluid text-center d-flex flex-column h-100">
+                        <div className="row align-items-start flex-grow-1">
+                            <div className="col">
+                                {isDesktop && <Header display_bg_color={false} />}
+                            </div>
                         </div>
-
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div className="p-4 text-center">
-                                <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
-                                <div className="my-5" style={{ fontSize: '24px' }}>
-                                    <p >Login to Your Dashboard</p>
-                                    <p className="m-0" style={{ fontSize: '17px' }}>One Payment Gateway for</p>
-                                    <p className="m-0" style={{ fontSize: '17px' }}>all your needs</p>
+                        <div className="row align-items-center flex-grow-1">
+                            <div className="col">
+                                <div className="p-4 text-center">
+                                    <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
+                                    <div className="my-5" style={{ fontSize: '24px' }}>
+                                        <p >Login to Your Dashboard</p>
+                                        <p className="m-0" style={{ fontSize: '17px' }}>One Payment Gateway for</p>
+                                        <p className="m-0" style={{ fontSize: '17px' }}>all your needs</p>
+                                    </div>
                                 </div>
-
-
                             </div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center" style={{ height: 100 }}>
-                            <div className="p-2 " style={{ fontSize: '20px' }}>
-                                <hr style={{ position: 'relative', width: '50%', top: 25, right: 74 }} />
-                                Need help? Contact us
-                                <hr style={{ position: 'relative', width: '50%', top: -25, left: 140 }} />
 
+                        <div className="row align-items-start flex-grow-1" >
+                            <div className={`col-2 `}>
+                                <img src={arrow_two} alt="arrow" style={{ position: 'absolute', right: 0 }} />
                             </div>
-                            <div className="d-flex justify-content-between">
-                                <p>Support@sabpaisa.in</p>
-                                <p>011-41733223</p>
+                            <div className="col-8">
+                                <div className="text-center">
+                                    <div className="p-2-" style={{ fontSize: '20px' }}>
+                                        <hr style={{ position: 'relative', width: '24%', top: 14, right: 11, margin: 0 }} />
+                                        Need help? Contact us
+                                        <hr style={{ position: 'relative', width: '24%', top: -13, left: 297, margin: 0 }} />
+                                    </div>
+                                    <div className="d-flex justify-content-around my-1">
+                                        <p className="mx-2"><i class="mx-2 fa fa-light fa-envelope"></i> Support@sabpaisa.in</p>
+                                        <p className="mx-2"><i class="mx-2 fa fa-light fa-phone"></i> 011-41733223</p>
+                                    </div>
+
+                                </div>
                             </div>
-
-                        </div>
-                        {/* <div className="d-flex align-items-center flex-column mb-3" style={{ height: 200 }}>
-                            <div className="p-2">Need help? Contact us</div>
-                            <div className="d-flex-inline">
-                                <p>Support@sabpaisa.in</p>
-                                <p>011-41733223</p>
-                            </div>
-                        </div> */}
-                    </div>
-
-                    {/* <div className="d-flex align-items-start">
-                        <Header />
-                    </div>
-
-                    <div className={`${classes.right_screen_} text-white "d-flex align-items-center"`}>
-                        <div className="p-4 text-center">
-                            <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
-                            <h1>An all-in-one</h1>
-                            <h2>Dashboard</h2>
-                            <h4>Trusted by over 3000+ Mega Clients</h4>
-
+                            <div className="col-2"></div>
                         </div>
                     </div>
-                    <div className="d-flex align-items-end">
-                        <p>Need help? Contact us</p>
-                        <div className="d-flex-inline">
-                            <p>Support@sabpaisa.in</p>
-                            <p>011-41733223</p>
-                        </div>
-                    </div> */}
+                    <div>
+                    </div>
                 </div>
 
 
-                <div className="col-lg-7 col-lg-7 d-flex justify-content-center">
-                    <div className={`${classes.left_screen_}`}>
+                <div className="col-lg-7 d-flex justify-content-center  p-0">
+                    <div className="container-fluid d-flex flex-column h-100 p-0">
+                        <div className="row align-items-start flex-grow-1" >
+                            <div className="col">
+                                {(isTablet || isMobile) &&
+                                    <Header display_bg_color={true} />}
+                                <img src={arrow_one} alt="arrow" style={{ position: 'absolute', right: -115, top: -55, maxWidth: '25%' }} />
+                            </div>
+                        </div>
+
+                        <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
+                            <div className="col-2"></div>
+                            <div className={`col ${classes.form_container}`}>
+
+                                <h5 className="text-center font-weight-bold" style={{ color: "#023677" }}>Login</h5>
+                                <h6 className="text-center mb-4 font-weight-bold" style={{ color: "#000000" }}>Login to your merchant account</h6>
+                                <Formik
+                                    initialValues={{
+                                        ...INITIAL_FORM_STATE,
+                                    }}
+                                    validationSchema={validationSchema}
+                                    onSubmit={handleLogin}
+                                >
+                                    {(formik) => (<Form>
+                                        <div className="mb-3">
+                                            <label htmlFor="userName" className="form-label font-weight-bold">Email ID <span className="text-danger">*</span></label>
+                                            <Field
+                                                className="form-control"
+                                                maxLength={255}
+                                                id="user-email"
+                                                placeholder="Enter your username"
+                                                type="text"
+                                                name="clientUserId"
+                                                autoComplete="off"
+                                            />
+                                            <ErrorMessage name="clientUserId">
+                                                {(msg) => (<div className="text-danger">{msg}</div>
+                                                )}
+                                            </ErrorMessage>
+                                        </div>
+                                        <label htmlFor="userPassword" className="form-label font-weight-bold">Password <span className="text-danger">*</span></label>
+
+                                        <div className="m-0 input-group">
+                                            <Field
+                                                className={`form-control border-right-0`}
+                                                maxLength={255}
+                                                id="user-pw"
+                                                placeholder="Enter your password"
+                                                type={
+                                                    values.showPassword
+                                                        ? "text"
+                                                        : "password"
+                                                }
+                                                size={50}
+                                                name="userPassword"
+                                                autoComplete="new-password"
+                                            />
+                                            <div className={`input-group-append `}>
+                                                <span className={`input-group-text border-left-0 bg-transparent`} onClick={handleClickShowPassword} >  {values.showPassword ? (
+                                                    <i
+                                                        className="fa fa-eye"
+                                                        ariaHidden="true"
+                                                    ></i>
+                                                ) : (
+                                                    <i
+                                                        className="fa fa-eye-slash"
+                                                        ariaHidden="true"
+                                                    ></i>
+                                                )}</span>
+                                            </div>
+                                        </div>
+                                        <ErrorMessage name="userPassword">
+                                            {(msg) => (<div className="text-danger" >{msg}</div>)}
+                                        </ErrorMessage>
+
+
+                                        <div className="form-text p-2 my-3 text-right">
+                                            <Link to={`/forget/${queryString}`} className="text-decoration-underline">
+                                                Forgot Password ?
+                                            </Link>
+                                        </div>
+                                        <div className="d-flex">
+                                            <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 "
+                                                disabled={loading}
+                                            >
+                                                {loading && (
+                                                    <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
+                                                )}Login <i className="fa fa-sign-in" ariaHidden="true"></i></button>
+                                        </div>
+
+                                    </Form>
+                                    )}
+                                </Formik>
+                                <h6 className={`text-center my-2 ${classes.text_line}`} >or</h6>
+                                <div className="d-flex justify-content-center">
+                                    <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
+                                </div>
+
+                                <div className="text-center my-5">
+                                    <p className={`${classes.sp_font_20}`}>Don’t have an account with SabPaisa?
+                                        <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a></p>
+                                </div>
+                            </div>
+                            <div className="col-2"></div>
+
+                        </div>
+
+                        <div className="row align-items-end flex-grow-1">
+                            <div className="col">
+                                <div className="p-2 bd-highlight sp-font-12 text-center">
+                                    <p className="bd-highlight text-center sp-font-12">
+                                        Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0 | &nbsp;
+                                        <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a>&nbsp;and &nbsp;
+                                        <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* <div className={`${classes.left_screen_}`}>
                         <div className={`${classes.form_container}`}>
+
                             <h4 className="text-center">Login</h4>
                             <p className="text-center">Login to your merchant account</p>
                             <Formik
@@ -280,16 +395,14 @@ function Login() {
                                     <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a></p>
                             </div>
                         </div>
-
-
                         <div className="">
                             <div className="p-2 bd-highlight sp-font-12 text-center">Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0 |   <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a></p></div></div>
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
