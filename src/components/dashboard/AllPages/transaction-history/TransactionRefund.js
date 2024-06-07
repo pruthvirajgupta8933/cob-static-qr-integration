@@ -54,9 +54,9 @@ function TransactionRefund(props) {
         const spTxnId = values.txn_id
         const clientTxnId = values.client_txn_id
         const message = values.refund_reason
-        // const amount = 10
-        // const spTxnId = "944012905240177946"
-        // const clientTxnId = "123456789876573"
+        // const amount = 35
+        // const spTxnId = "307262905241094658"
+        // const clientTxnId = "TESTING290524104847134"
 
 
         try {
@@ -72,7 +72,7 @@ function TransactionRefund(props) {
 
                 const str = `clientCode=${clientCode}&amount=${amount}&spTxnId=${spTxnId}&clientTxnId=${clientTxnId}&message=${message}`
                 const enc = Encrypt(str, authKey, authIV)
-                console.log("str", str)
+                // console.log("str", str)
 
 
                 const reqBody = {
@@ -80,16 +80,18 @@ function TransactionRefund(props) {
                     refundQuery: enc
                 }
 
-                console.log(reqBody)
+                // console.log(reqBody)
 
                 const refundResponse = await axiosInstance.post(API_URL.refundTxn, reqBody)
 
-                console.log(refundResponse.data.refundResponse)
+                // console.log(refundResponse)
 
                 const dc = Decrypt(refundResponse.data.refundResponse, authKey, authIV)
-                console.log("dc", dc)
+                const jsonRsp = JSON.parse(dc)
 
-                toastConfig.successToast("Refund request has been initiated")
+                // console.log("dc", JSON.parse(dc))
+
+                toastConfig.successToast(jsonRsp.message || "Refund Request Initiated")
                 setSubmitLoader(false)
                 props.setRefundModal(false)
 
@@ -97,7 +99,7 @@ function TransactionRefund(props) {
 
 
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             toastConfig.errorToast(error.message)
             setSubmitLoader(false)
         }

@@ -20,13 +20,6 @@ const initialState = {
     isLoadingForApproved: false,
     isLoadingForRejected: false,
 
-    // documentByloginId: {},
-    // kycApproved: {
-    //     count: null,
-    //     next: null,
-    //     previous: null,
-    //     results: null,
-    // },
     kycUserList: {},
     notFilledUserList: {},
     pendingVerificationKycList: {
@@ -61,11 +54,6 @@ const initialState = {
         results: [],
         count: 0
     },
-    // rateMappingData: {},
-    // configurationData: {
-    //     results: [],
-    //     count: 0
-    // },
     KycDocUpload: [],
     compareDocListArray: {
         finalArray: [],
@@ -86,7 +74,6 @@ const initialState = {
     busiCategory: [],
     platformType: [],
     collectionFrequency: [],
-    collectionType: [],
     saveBusinessInfo: [],
     businessOverviewState: [],
     saveMerchantInfo: [],
@@ -99,9 +86,6 @@ const initialState = {
     kycForRejectedMerchants: [],
     kycForVerified: [],
     kycForApproved: [],
-    // kycForCompleted: [],
-    // UploadLoginId: [],
-    // enableKycTab: false,
     kycModalClose: true,
 
     allTabsValidate: {
@@ -132,10 +116,6 @@ const initialState = {
                 valid: false,
                 status: false,
             },
-            GSTINValidation: {
-                status: false,
-                valid: false,
-            },
             submitStatus: {
                 status: false,
                 message: "",
@@ -153,10 +133,7 @@ const initialState = {
                 status: false,
             },
 
-            submitStatus: {
-                status: false,
-                message: "",
-            },
+
         },
         UploadDoc: {
             submitStatus: {
@@ -166,28 +143,13 @@ const initialState = {
         },
     },
 
-    // GetBankid: [],
-
-    // consentKyc: {
-    //     message: "",
-    //     status: false,
-    // },
-
     OtpResponse: {
         status: "",
         verification_token: "",
         tempEmail: "",
         tempPhone: "",
     },
-    OtpVerificationResponseForPhone: {
-        status: false,
-        message: "",
-    },
-
-    OtpVerificationResponseForEmail: {
-        status: false,
-        message: "",
-    },
+   
     OpenModalForKycSubmit: {
         isOpen: false
     },
@@ -716,8 +678,6 @@ export const onboardedReport = createAsyncThunk(
     async (data) => {
         const requestParam = data.page;
         const requestParam1 = data.page_size;
-        // const from_date = data.from_date;
-        // const to_date = data?.to_date
         const kyc_status = data?.kyc_status;
 
         let order_by = kyc_status.toLowerCase() + "_date"
@@ -759,35 +719,6 @@ export const kycForApproved = createAsyncThunk(
         return response.data;
     }
 );
-///////////////////////////////////////////
-
-// export const kycForCompleted = createAsyncThunk(
-//     "kyc/kycForCompleted",
-//     async (requestParam) => {
-//         const response = await axiosInstanceJWT
-//             .get(`${API_URL.KYC_FOR_COMPLETED}`, {
-//                 headers: {},
-//             })
-//             .catch((error) => {
-//                 return error.response;
-//             });
-
-//         return response.data;
-//     }
-// );
-
-/////////////////////////////////////////
-// export const UploadLoginId = createAsyncThunk(
-//   "kyc/UploadLoginId",
-//   async (requestParam) => {
-//     const response = await axiosInstanceJWT
-//       .post(`${API_URL.DOCUMENT_BY_LOGINID}`, requestParam)
-//       .catch((error) => {
-//         return error.response;
-//       });
-//     return response.data;
-//   }
-// );
 
 // ================== veify kyc
 
@@ -1061,14 +992,6 @@ export const approvekyc = createAsyncThunk(
             // thunkAPI.dispatch(setMessage(message));
             return thunkAPI.rejectWithValue();
         }
-
-        // const response = await axiosInstanceJWT
-        //   .post(`${API_URL.APPROVE_KYC}`, requestParam)
-        //   .catch((error) => {
-        //     return error.response;
-        //   });
-
-        // return response.data;
     }
 );
 
@@ -1362,21 +1285,7 @@ export const kycSlice = createSlice({
             state.error = action.error.message;
             state.isLoadingForApproved = false;
         },
-        ////////////////////////////////////////
-        // [UploadLoginId.pending]: (state, action) => {
-        //   state.status = "pending";
-        // },
-        // [UploadLoginId.fulfilled]: (state, action) => {
-        //   // console.log("action-11 ====>",action.payload)
-        //   state.documentByloginId = action.payload;
-        // },
-        // [UploadLoginId.rejected]: (state, action) => {
-        //   state.status = "failed";
-        //   state.error = action.error.message;
-        // },
 
-        //All Kyc Tabs status stored in redux as false
-        //Contact Info Post Request
 
         [updateContactInfo.pending]: (state, action) => {
             state.status = "pending";
@@ -1493,7 +1402,6 @@ export const kycSlice = createSlice({
 
         [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
             if (action.payload?.status === true) {
-                // state.OtpVerificationResponseForPhone = action.payload;
                 state.kycUserList.isContactNumberVerified = 1;
                 state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
                 state.OtpResponse.tempPhone = "";
@@ -1504,7 +1412,6 @@ export const kycSlice = createSlice({
 
         [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
             if (action.payload?.status === true) {
-                // state.OtpVerificationResponseForEmail = action.payload;
                 state.kycUserList.isEmailVerified = 1;
                 state.kycUserList.emailId = state.OtpResponse.tempEmail;
                 state.OtpResponse.tempEmail = "";

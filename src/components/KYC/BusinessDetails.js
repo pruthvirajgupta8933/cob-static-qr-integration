@@ -126,7 +126,7 @@ function BusinessDetails(props) {
   // console.log("isPanVerified", isPanVerified)
 
   // console.log("initialValues-----reupdate", initialValues)
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     company_name: Yup.string()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
@@ -374,7 +374,6 @@ function BusinessDetails(props) {
       })
     ).then((res) => {
       if (
-        setLoadingForSignatory(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
