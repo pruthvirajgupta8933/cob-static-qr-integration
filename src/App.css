@@ -261,6 +261,16 @@ select {
 }
 
 
+/* grid */
+@media (max-width: 576px) {
+  .col-xs-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+}
+
+
+/* end  grid */
 
 /* Tooltip container */
 .tooltip-custom {

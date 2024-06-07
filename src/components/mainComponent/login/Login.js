@@ -193,7 +193,7 @@ function Login() {
                         </div>
 
                         <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
-                            <div className="col-3"></div>
+                            <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
                             <div className={`col ${classes.form_container}`}>
 
                                 <h5 className="text-center font-weight-bold text_primary_color">Login</h5>
@@ -269,7 +269,7 @@ function Login() {
                                             >
                                                 {loading && (
                                                     <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
-                                                )}Login <i className="fa fa-sign-in" ariaHidden="true"></i></button>
+                                                )}Login</button>
                                         </div>
 
                                     </Form>
@@ -285,7 +285,7 @@ function Login() {
                                         <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a></p>
                                 </div>
                             </div>
-                            <div className="col-3"></div>
+                            <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
 
                         </div>
 

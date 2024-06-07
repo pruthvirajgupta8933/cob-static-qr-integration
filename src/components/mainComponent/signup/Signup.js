@@ -185,8 +185,10 @@ function Signup() {
         if (isUserRegistered === true) {
             toastConfig.successToast(message.message);
             setTimeout(() => {
-                history.push("/login-page");
+                history.push("/login");
+                dispatch(udpateRegistrationStatus());
             }, 2000);
+
         }
 
         if (isUserRegistered === false) {
@@ -311,7 +313,7 @@ function Signup() {
                             </div>
 
                             <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
-                                <div className="col-3"></div>
+                                <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
                                 <div className={`col ${classes.form_container}`}>
 
                                     <h5 className="text-center font-weight-bold text_primary_color">Welcome to SabPaisa</h5>
@@ -467,7 +469,7 @@ function Signup() {
 
 
                                 </div>
-                                <div className="col-3"></div>
+                                <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
 
                             </div>
 
