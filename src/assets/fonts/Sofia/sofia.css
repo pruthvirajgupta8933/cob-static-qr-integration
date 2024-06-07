@@ -19,3 +19,8 @@
     font-family: "Sofia-Pro-Light";
     src: url("../Sofia/Fonts/SofiaProLight.ttf") format("truetype");
 }
+
+@font-face {
+    font-family: "Sofia-Pro-Medium";
+    src: url("../Sofia/Fonts/SofiaProMedium.ttf") format("truetype");
+}

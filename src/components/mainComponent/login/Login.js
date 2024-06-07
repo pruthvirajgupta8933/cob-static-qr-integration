@@ -34,13 +34,14 @@ const validationSchema = Yup.object().shape({
 function Login() {
     const authentication = useSelector((state) => state.auth);
     const history = useHistory();
+    const dispatch = useDispatch();
+
     const [loading, setLoading] = useState(false);
     const [values, setValues] = useState({
         password: "",
         showPassword: false,
     });
 
-    const dispatch = useDispatch();
     const { user, userAlreadyLoggedIn } = authentication;
 
 
@@ -48,7 +49,6 @@ function Login() {
     const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
     const isMobile = useMediaQuery('(max-width: 767px)');
 
-    console.log({ isDesktop, isTablet, isMobile })
 
     useEffect(() => {
         const userLocalData = JSON.parse(localStorage.getItem("user"));
@@ -56,7 +56,7 @@ function Login() {
             userLocalData && userLocalData.loginId !== null ? true : false;
         if (isLoggedInLc) {
             if (userAlreadyLoggedIn && user?.loginStatus === "Activate") {
-                // console.log("push to dashboard")
+
                 history.push("/dashboard");
             }
         } else {
@@ -64,9 +64,7 @@ function Login() {
         }
     }, [userAlreadyLoggedIn, user, dispatch, history]);
 
-    // useEffect(() => {
-    //     setAuthData(authentication);
-    // }, [authentication]);
+
 
     useEffect(() => {
         dispatch(clearMessage());
@@ -124,14 +122,10 @@ function Login() {
 
                     setLoading(false);
                     toastConfig.errorToast(res?.payload?.detail ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
-                    // window.location.href = `https://sabpaisa.in/pricing/`;
-
                 }
             }).catch(err => console.log("err", err))
         }
     }
-    // const queryStringUrl = window.location.search;
-
 
     return (
         <div className={`container-fluid p-0`}>
@@ -182,7 +176,7 @@ function Login() {
                 </div>
 
 
-                <div className="col-lg-7 d-flex justify-content-center  p-0">
+                <div className="col-lg-7 d-flex justify-content-center p-0 scroll-bar-hide">
                     <div className="container-fluid d-flex flex-column h-100 p-0">
                         <div className="row align-items-start flex-grow-1" >
                             <div className="col">
@@ -196,8 +190,8 @@ function Login() {
                             <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
                             <div className={`col ${classes.form_container}`}>
 
-                                <h5 className="text-center font-weight-bold text_primary_color">Login</h5>
-                                <h6 className="text-center mb-4 font-weight-bold">Login to your merchant account</h6>
+                                <h5 className={`text-center  text_primary_color heading ${classes.heading}`}>Login</h5>
+                                <h6 className={`text-center mb-4  sub_heading ${classes.sub_heading}`}>Login to your merchant account</h6>
                                 <Formik
                                     initialValues={{
                                         ...INITIAL_FORM_STATE,
@@ -294,8 +288,8 @@ function Login() {
                                 <div className="p-2 bd-highlight sp-font-12 text-center">
                                     <p className="bd-highlight text-center sp-font-12">
                                         Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0 | &nbsp;
-                                        <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a>&nbsp;and &nbsp;
-                                        <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a>
+                                        <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank" className="text-primary">Terms &amp; Conditions </a>&nbsp;and &nbsp;
+                                        <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank" className="text-primary">Privacy Policy</a>
                                     </p>
                                 </div>
                             </div>
