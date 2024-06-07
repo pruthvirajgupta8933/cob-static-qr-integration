@@ -379,6 +379,10 @@ select {
 }
 
 
+.text_primary_color {
+  color: #023677
+}
+
 /* gloablly apply css */
 /* 
 p{

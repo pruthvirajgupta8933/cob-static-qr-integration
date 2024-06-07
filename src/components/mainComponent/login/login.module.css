@@ -57,15 +57,23 @@
     font-size: 12px;
 }
 
+
 .sp_font_14 {
     font-size: 14px;
 }
+
+.sp_font_17 {
+    font-size: 17px;
+}
+
 
 .sp_font_20 {
     font-size: 20px;
 }
 
-
+.sp_font_24 {
+    font-size: 24px;
+}
 
 .left_screen {
     width: 75%;
@@ -82,6 +90,33 @@
     width: 65%;
 }
 
+.left_side_arrow {
+    position: absolute;
+    right: 0
+}
+
+.right_side_arrow {
+    position: absolute;
+    right: -115px;
+    top: -55px;
+    max-width: 25%;
+}
+
+.hr_class_one {
+    position: relative;
+    width: 24%;
+    top: 14px;
+    right: 11px;
+    margin: 0
+}
+
+.hr_class_two {
+    position: relative;
+    width: 24%;
+    top: -13px;
+    right: -297px;
+    margin: 0
+}
 
 /* start text decorate */
 

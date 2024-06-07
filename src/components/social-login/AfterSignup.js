@@ -1,9 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-// import * as Yup from "yup";
-
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../config";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
@@ -24,8 +21,7 @@ const FORM_VALIDATION = Yup.object().shape({
     .required("Required")
     .matches(phoneRegExp, "Phone number is not valid")
     .min(10, "Phone number in not valid")
-    .max(10, "too long"),
-  business_cat_code: Yup.string().required("Required"),
+    .max(10, "too long")
 });
 
 function Registration({ hideDetails, getPendingDetails, fullName, email }) {
@@ -36,12 +32,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [businessCategoryCode, setBussinessCategoryCode] = useState("");
 
-  // const [valuesIn, setValuesIn] = useState({
-  //   password: "",
-  //   showPassword: false,
-  // });
 
-  const dispatch = useDispatch();
   useEffect(() => {
     axiosInstanceJWT
       .get(API_URL.Business_Category_CODE)
@@ -84,7 +75,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
       fullname: fullName,
       mobileNumber: formData?.mobilenumber,
       email: email,
-      business_cat_code: formData?.business_cat_code,
+      business_cat_code: "38",
       businessType,
       isDirect: true,
       created_by: null,
@@ -116,8 +107,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
             mobilenumber: "",
             emaill: "",
             passwordd: "",
-            business_cat_code: "",
-            confirmpasswordd: "",
+            business_cat_code: "38",
             terms_and_condition: false,
           }}
           validationSchema={FORM_VALIDATION}
@@ -128,7 +118,8 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
           {(formik, resetForm) => (
             <Form acceptCharset="utf-8" action="#" className="simform">
               <div className="row m-5">
-                <div className="col-lg-6">
+                <div className="col-lg-2"></div>
+                <div className="col-lg-8">
                   <label className="form-label" htmlFor="mobile">
                     Mobile Number
                   </label>
@@ -152,31 +143,9 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
                     </ErrorMessage>
                   }
                 </div>
+                <div className="col-lg-2"></div>
 
-                <div className="col-lg-6">
-                  <label className="form-label" htmlFor="business_category">
-                    Business Category
-                  </label>
-                  <Field
-                    name="business_cat_code"
-                    className="form-select"
-                    component="select"
-                  >
-                    <option type="text" id="businesscode" value={""}>
-                      Select Business
-                    </option>
-                    {businessCode?.map((business, i) => (
-                      <option value={business.category_id} key={business.category_id}>
-                        {business.category_name}
-                      </option>
-                    ))}
-                  </Field>
-                  {
-                    <ErrorMessage name="business_cat_code">
-                      {(msg) => <p className="text-danger">{msg}</p>}
-                    </ErrorMessage>
-                  }
-                </div>
+
               </div>
               <div className="d-flex justify-content-center">
                 <button
