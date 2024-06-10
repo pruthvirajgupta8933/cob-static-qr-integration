@@ -2,18 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
-import API_URL from '../../../../config';
-// import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
-import { axiosInstance } from '../../../../utilities/axiosInstance';
 import CustomLoader from '../../../../_components/loader';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import ReactPaginate from 'react-paginate';
 import FormikController from '../../../../_components/formik/FormikController';
 import createPaymentLinkService from '../../../../services/create-payment-link/payment-link.service';
-// import * as Yup from "yup";
-
 import { Formik, Form } from "formik";
 import toastConfig from '../../../../utilities/toastTypes';
 import Yup from '../../../../_components/formik/Yup';

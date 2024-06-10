@@ -26,7 +26,6 @@ const NotFilledKYC = () => {
   const [notFilledData, setNotFilledData] = useState(notFilledKycData);
   const [data, setData] = useState(notFilledKycData);
 
-  // console.log(loadingState,"my loading")
 
   const kycSearch = (e, fieldType) => {
     if (fieldType === "text") {

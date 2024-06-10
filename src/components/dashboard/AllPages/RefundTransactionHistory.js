@@ -24,11 +24,9 @@ import Yup from "../../../_components/formik/Yup";
 const RefundTransactionHistory = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-
     const [txnList, SetTxnList] = useState([]);
     const [searchText, SetSearchText] = useState("");
     const [loading, setLoading] = useState(false);
-
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +36,6 @@ const RefundTransactionHistory = () => {
     const [dataFound, setDataFound] = useState(false);
     const [buttonClicked, isButtonClicked] = useState(false);
     const [disable, setIsDisable] = useState(false);
-
     const roles = roleBasedAccess();
     const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
     const { user } = auth;
@@ -243,7 +240,7 @@ const RefundTransactionHistory = () => {
             setShowData(
                 updateTxnList.filter((txnItme) =>
                     Object.values(txnItme)
-                        .join(" ")
+                        .join(" ") 
                         .toLowerCase()
                         .includes(searchText.toLocaleLowerCase())
                 )

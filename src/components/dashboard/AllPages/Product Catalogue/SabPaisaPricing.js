@@ -16,21 +16,20 @@ import { v4 as uuidv4 } from 'uuid';
 const SabPaisaPricing = () => {
   const history = useHistory();
   let roles = roleBasedAccess();
-
-  const [productDetails, setProductDetails] = useState([]);
+  const dispatch = useDispatch();
+ const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({});
   const [modalToggle, setModalToggle] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
 
-
-  // console.log("selectedPlan", selectedPlan)
-  const dispatch = useDispatch();
+  
   const clickHandler = (value) => {
     history.push("/dashboard");
     dispatch(productSubscribeState(value));
   };
-  const { user } = useSelector((state) => state.auth);
-  const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
+  
 
   useEffect(() => {
     if (roles?.merchant !== true) {
@@ -45,7 +44,6 @@ const SabPaisaPricing = () => {
     axiosInstanceJWT
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
       .then((resp) => {
-        // console.log(resp?.data?.data[0]?.planId)
         setSelectedPlan(resp?.data?.data[0])
       })
   }
