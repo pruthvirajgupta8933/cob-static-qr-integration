@@ -59,8 +59,7 @@ const TransactionHistory = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [radioInputVal, setRadioInputVal] = useState({})
-
-    const [refundModal, setRefundModal] = useState(false)
+   const [refundModal, setRefundModal] = useState(false)
 
 
 

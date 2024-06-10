@@ -124,7 +124,7 @@ const ReceiptByEmail = () => {
 
   return (
     <React.Fragment>
-      <Header />
+      <Header display_bg_color={true} />
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-6">
@@ -188,7 +188,7 @@ const ReceiptByEmail = () => {
               data.map((user) => (
                 <div className="card" key={user.Id}>
                   <div className="card-body table-responsive">
-                  <div className="d-flex justify-content-end">
+                    <div className="d-flex justify-content-end">
                       <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
                     </div>
                     <table className="table table-striped" id="data-table">

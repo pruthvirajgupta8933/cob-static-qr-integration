@@ -24,8 +24,6 @@ import Yup from "../../../_components/formik/Yup";
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
-  const roleType = roles
-
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;

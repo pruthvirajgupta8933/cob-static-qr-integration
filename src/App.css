@@ -261,6 +261,16 @@ select {
 }
 
 
+/* grid */
+@media (max-width: 576px) {
+  .col-xs-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+}
+
+
+/* end  grid */
 
 /* Tooltip container */
 .tooltip-custom {
@@ -379,6 +389,10 @@ select {
 }
 
 
+.text_primary_color {
+  color: #023677
+}
+
 /* gloablly apply css */
 /* 
 p{
@@ -456,3 +470,27 @@ h1, h2, h3, h4, h5, h6{
 .react-date-picker__calendar {
   z-index: 999 !important;
 }
+
+
+/* icon eye */
+
+.fa-eye,
+.fa-eye-slash {
+  color: #377CCF;
+}
+
+
+/* start Hide Scroll Bar */
+.scroll-bar-hide {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scroll-bar-hide::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+/* end Hide Scroll Bar */

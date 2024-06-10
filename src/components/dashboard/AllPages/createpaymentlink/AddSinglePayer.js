@@ -13,9 +13,7 @@ const AddSinglePayer = ({ loadUser, customerType }) => {
     
     const { user } = useSelector((state) => state.auth);
     const [disable, setDisable] = useState(false)
-
     let history = useHistory();
-
     let clientMerchantDetailsList = [];
     let clientCode = "";
     if (user && user.clientMerchantDetailsList === null) {

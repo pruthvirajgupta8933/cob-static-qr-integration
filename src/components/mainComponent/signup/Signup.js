@@ -7,14 +7,17 @@ import { useHistory, Link } from "react-router-dom";
 import API_URL from "../../../config";
 import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import AfterSignUp from "../../../components/social-login/AfterSignup";
-import classes from "./signup.module.css"
+// import classes from "./signup.module.css"
+import classes from "../login/login.module.css"
 import Header from '../header/Header'
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
-import signupBnr from "../../../assets/images/sb-front-bnrr.png"
+import signupBnr from "../../../assets/images/signup-banner.png"
 import { v4 as uuidv4 } from 'uuid';
 import toastConfig from "../../../utilities/toastTypes";
-
+import useMediaQuery from "../../../hooks/useMediaQuery";
+import arrow_one from "../../../assets/images/arrow_one.png"
+import arrow_two from "../../../assets/images/arrow_two.png"
 
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -24,8 +27,7 @@ const initialValues = {
     mobilenumber: "",
     emaill: "",
     passwordd: "",
-    business_cat_code: "",
-    confirmpasswordd: "",
+    business_cat_code: "38",
     terms_and_condition: false,
 }
 
@@ -53,11 +55,6 @@ const FORM_VALIDATION = Yup.object().shape({
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
         ),
-    confirmpasswordd: Yup.string()
-        .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
-        .required("Confirm Password")
-        .allowOneSpace(),
-    business_cat_code: Yup.string().required("Required"),
     terms_and_condition: Yup.boolean().oneOf([true], 'Please accept the terms & conditions and privacy policy to proceed further')
 });
 
@@ -89,6 +86,10 @@ function Signup() {
     const [email, setEmail] = useState("");
 
     const dispatch = useDispatch();
+
+    const isDesktop = useMediaQuery('(min-width: 993px)');
+    const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
+    const isMobile = useMediaQuery('(max-width: 767px)');
 
     const togglePassword = () => {
         setPasswordType({
@@ -184,8 +185,10 @@ function Signup() {
         if (isUserRegistered === true) {
             toastConfig.successToast(message.message);
             setTimeout(() => {
-                history.push("/login-page");
+                history.push("/login");
+                dispatch(udpateRegistrationStatus());
             }, 2000);
+
         }
 
         if (isUserRegistered === false) {
@@ -238,22 +241,256 @@ function Signup() {
 
     const modalBody = () => {
         return (
-            <>
-                <AfterSignUp hideDetails={true} fullName={fullName} email={email} getPendingDetails={getPendingDetails} />
-            </>
+            <AfterSignUp hideDetails={true} fullName={fullName} email={email} getPendingDetails={getPendingDetails} />
         );
     };
 
     return (
         <React.Fragment>
-            <Header />
             <CustomModal
                 modalBody={modalBody}
                 headerTitle={"Registration"}
                 modalToggle={isModalOpen}
                 fnSetModalToggle={setIsModalOpen}
             />
-            <main className="container-fluid">
+
+            <div className={`container-fluid p-0`}>
+                <div className={`d-flex flex-row ${classes.flex_column_reverse} ${classes.container_custom}`}>
+                    <div className={`col-lg-5 text-white ${classes.background_image_left}`}>
+                        <div className="container-fluid text-center d-flex flex-column h-100">
+                            <div className="row align-items-start flex-grow-1">
+                                <div className="col">
+                                    {isDesktop && <Header display_bg_color={false} />}
+                                </div>
+                            </div>
+                            <div className="row align-items-center flex-grow-1">
+                                <div className="col">
+                                    <div className="p-4 text-center">
+                                        <img src={signupBnr} alt="banner" className={`${classes.login_banner}`} />
+                                        <div className={`my-5  ${classes.sp_font_24}`} >
+                                            <p className="text-white">Welcome to Your Dashboard</p>
+                                            <p className={`m-0 text-white ${classes.sp_font_17}`} >Quick onboarding | Easy Integration |</p>
+                                            <p className={`m-0 text-white ${classes.sp_font_17}`}>Feature filled Checkout</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="row align-items-start flex-grow-1" >
+                                <div className={`col-2 `}>
+                                    <img src={arrow_two} alt="arrow" className={`${classes.left_side_arrow}`} />
+                                </div>
+                                <div className="col-8">
+                                    <div className="text-center">
+                                        <div className={`${classes.sp_font_20}`} >
+                                            <hr className={`${classes.hr_class_one} `} />
+                                            Need help? Contact us
+                                            <hr className={`${classes.hr_class_two}`} />
+                                        </div>
+                                        <div className="d-flex justify-content-around my-1 ">
+                                            <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-envelope"></i> Support@sabpaisa.in</p>
+                                            <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-phone"></i> 011-41733223</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className="col-2"></div>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+
+
+                    <div className="col-lg-7 d-flex justify-content-center p-0 scroll-bar-hide">
+                        <div className="container-fluid d-flex flex-column h-100 p-0">
+                            <div className="row align-items-start flex-grow-1" >
+                                <div className="col">
+                                    {(isTablet || isMobile) &&
+                                        <Header display_bg_color={true} />}
+                                    <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} />
+                                </div>
+                            </div>
+
+                            <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
+                                <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
+                                <div className={`col ${classes.form_container}`}>
+
+                                    <h5 className={`text-center  text_primary_color heading ${classes.heading}`}>Welcome to SabPaisa</h5>
+                                    <h6 className={`text-center mb-4  sub_heading ${classes.sub_heading}`}>Create New Account</h6>
+                                    <Formik
+                                        initialValues={initialValues}
+                                        validationSchema={FORM_VALIDATION}
+                                        onSubmit={(values, { resetForm }) => {
+                                            handleRegistration(values, { resetForm });
+                                        }}
+                                    >
+                                        {(formik, resetForm) => (
+                                            <Form>
+                                                <div className="mb-3">
+                                                    <label className="form-label font-weight-bold font-size-16">Full Name <span className="text-danger">*</span></label>
+                                                    <Field
+                                                        className="form-control"
+                                                        maxLength={255}
+                                                        id="fullname"
+                                                        placeholder="Enter your full name"
+                                                        type="text"
+                                                        name="fullname"
+                                                        size={50}
+                                                    />
+                                                    <ErrorMessage name="fullname">
+                                                        {(msg) => (<p className="text-danger">{msg}</p>
+                                                        )}
+                                                    </ErrorMessage>
+                                                </div>
+
+                                                <div className="mb-3">
+                                                    <label className="form-label font-weight-bold font-size-16">Mobile Number <span className="text-danger">*</span></label>
+                                                    <Field
+                                                        className="form-control"
+                                                        maxLength={10}
+                                                        id="mobilenumber"
+                                                        placeholder="Enter your mobile number"
+                                                        name="mobilenumber"
+                                                        type="text"
+                                                        pattern="\d{10}"
+                                                        size={10}
+                                                        onKeyDown={(e) =>
+                                                            ["e", "E", "+", "-", "."].includes(
+                                                                e.key
+                                                            ) && e.preventDefault()
+                                                        }
+                                                    />
+                                                    <ErrorMessage name="mobilenumber">
+                                                        {(msg) => (<p className="text-danger">{msg}</p>)}
+                                                    </ErrorMessage>
+                                                </div>
+
+                                                <div className="mb-3">
+                                                    <label className="form-label font-weight-bold font-size-16">Email ID <span className="text-danger">*</span></label>
+                                                    <Field
+                                                        className="form-control"
+                                                        maxLength={255}
+                                                        id="email"
+                                                        placeholder="Enter your email ID"
+                                                        name="emaill"
+                                                        size={50}
+                                                        autocomplete="off"
+                                                    />
+                                                    <ErrorMessage name="emaill">
+                                                        {(msg) => (<p className="text-danger">{msg}</p>)}
+                                                    </ErrorMessage>
+                                                </div>
+
+                                                <div className="mb-3 ">
+                                                    <label className="label font-weight-bold font-size-16" htmlFor="user-pw" >Password <span className="text-danger">*</span></label>
+                                                    <div className="input-group">
+                                                        <Field
+                                                            className="form-control border-right-0"
+                                                            maxLength={255}
+                                                            id="user-pws"
+                                                            placeholder="Password"
+                                                            type={
+                                                                valuesIn.showPassword
+                                                                    ? "text"
+                                                                    : "password"
+                                                            }
+                                                            name="passwordd"
+                                                            autocomplete="new-password"
+                                                        />
+                                                        <div className="input-group-append">
+                                                            <span className="input-group-text border-left-0 bg-transparent" onClick={handleClickShowPassword} id="basic-addon2">
+                                                                {valuesIn.showPassword ? (<i className="fa fa-eye" ariaHidden="true" ></i>) : (<i className="fa fa-eye-slash" ariaHidden="true"></i>
+                                                                )}</span>
+                                                        </div>
+                                                    </div>
+                                                    <ErrorMessage name="passwordd">
+                                                        {(msg) => (<p className="text-danger">{msg}</p>)}
+                                                    </ErrorMessage>
+
+                                                </div>
+
+
+                                                <div className="bd-highlight text-center sp-font-12">
+                                                    <div className="form-check">
+                                                        <Field
+                                                            className="form-check-input border border-primary"
+                                                            name="terms_and_condition"
+                                                            type="checkbox"
+                                                            id="flexCheckDefault"
+                                                        />
+
+                                                        <lable>
+                                                            I have read the <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank" className="text-primary">Terms &amp; Conditions </a> and <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank" className="text-primary">Privacy Policy</a> and hereby grant my consent for utilization and processing of data accordingly
+                                                        </lable>
+                                                        <p className="text-danger">{formik?.errors?.terms_and_condition}</p>
+                                                    </div>
+
+                                                </div>
+                                                <div className={`form-row ${classes.form_row_cob}`}>
+                                                    <div className="form-group col-lg-12 p-2 m-2 justify-content-center d-flex">
+
+                                                        <button
+                                                            className="cob-btn-primary btn text-white disabled1 w-100"
+                                                            name="commit"
+                                                            type="submit"
+                                                            defaultValue="Create Account"
+                                                            disabled={
+                                                                btnDisable ||
+                                                                    !(formik.isValid && formik.dirty)
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                            data-rel={btnDisable}
+                                                        >
+                                                            Create Account
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </Form>
+                                        )}
+                                    </Formik>
+
+
+
+                                    <h6 className={`text-center my-2 ${classes.text_line}`} >or</h6>
+                                    <div className="d-flex justify-content-center">
+                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
+                                    </div>
+
+                                    <div className="text-center my-5">
+                                        <p className={`${classes.sp_font_20} `}>Already have an account with SabPaisa?  <Link
+                                            to={`/login/${queryStringUrl}`}
+                                            className="text-primary text-decoration-underline pb-2"
+                                        >
+                                            Login
+                                        </Link></p>
+                                    </div>
+
+
+                                </div>
+                                <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
+
+                            </div>
+
+                            <div className="row align-items-end flex-grow-1">
+                                <div className="col">
+                                    <div className="p-2 bd-highlight sp-font-12 text-center">
+                                        <p className="bd-highlight text-center sp-font-12">
+                                            Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0 | &nbsp;
+                                            <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank" className="text-primary">Terms &amp; Conditions </a>&nbsp;and &nbsp;
+                                            <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank" className="text-primary">Privacy Policy</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* <Header display_bg_color={false} /> */}
+            {/* <main className="container-fluid">
                 <div className={`d-flex flex-row flex-xs-column-reverse mt-3 ${classes.flex_xs_column_reverse_cob}  ${classes.container_custom} `}>
                     <div className={`${classes.right_screen}`}>
                         <div className="p-4 text-center ">
@@ -463,10 +700,6 @@ function Signup() {
                                                     Create Account
                                                 </button>
                                             </div>
-
-                                            {/* <div className="d-flex justify-content-center mt-2"> */}
-                                            {/* <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} /> */}
-                                            {/* </div> */}
                                         </div>
                                         <p className="text-center">OR</p>
                                         <div className="d-flex justify-content-center m-2">
@@ -493,7 +726,7 @@ function Signup() {
                 <div className="d-flex justify-content-center bd-highlight mt-4">
                     <div className="p-1 bd-highlight sp-font-12 text-center"><p className="m-0">Copyright @ 2023 SabPaisa All Rights Reserved version 1.0</p></div>
                 </div>
-            </main>
+            </main> */}
         </React.Fragment>
 
     )

@@ -4,7 +4,7 @@ import Header from '../components/mainComponent/header/Header'
 const PrivacyPolicy = () => {
   return (
     <>
-      <Header />
+      <Header display_bg_color={true} />
       <div className='p-5 m-5 bg-light'>
         <h2>Privacy Policy</h2>
 

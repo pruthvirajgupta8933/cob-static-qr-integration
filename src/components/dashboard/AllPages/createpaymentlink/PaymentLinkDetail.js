@@ -20,11 +20,8 @@ import Yup from "../../../../_components/formik/Yup";
 
 const PaymentLinkDetail = () => {
 
-
-
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
-
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
@@ -199,11 +196,6 @@ const PaymentLinkDetail = () => {
 
   }, [currentPage])
 
-
-
-  // if ( pageCount === 1) return null;
-
-  const pages = _.range(1, pageCount + 1)
   return (
 
     <React.Fragment>

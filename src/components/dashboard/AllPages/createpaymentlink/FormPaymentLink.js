@@ -1,35 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
-// import * as Yup from 'yup'
 import axios from "axios";
-import { toast, Zoom } from 'react-toastify';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
 import { v4 as uuidv4 } from 'uuid';
-import FormikController from "../../../../_components/formik/FormikController";
 import moment from "moment";
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
-import { axiosInstance } from "../../../../utilities/axiosInstance";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 
 function FormPaymentLink(props) {
   const { loaduser } = props;
-
+  let history = useHistory();
   const [drop, setDrop] = useState([]);
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
-
   const [passwordcheck, setPasswordCheck] = useState(false);
   const [disable, setDisable] = useState(false)
-
-  let history = useHistory();
-
   const { user } = useSelector((state) => state.auth);
-
-
-
   let clientMerchantDetailsList = [];
   let clientCode = '';
   if (user && user.clientMerchantDetailsList === null) {
@@ -77,24 +66,17 @@ function FormPaymentLink(props) {
 
   const submitHandler = async (e) => {
     setDisable(true)
-    // toast.info("In process", {
-    //   position: "top-right",
-    //   autoClose: 2000,
-    //   transition: Zoom,
-    //   limit: 2,
-    // })
-
-    const postData={
-      Customer_id:e.Customer_id,
-      Remarks:e.Remarks,
-      Amount:e.Amount,
+     const postData = {
+      Customer_id: e.Customer_id,
+      Remarks: e.Remarks,
+      Amount: e.Amount,
       clientCode,
-      valid_to:dateFormat(e.Date),
-      isPasswordProtected:passwordcheck
+      valid_to: dateFormat(e.Date),
+      isPasswordProtected: passwordcheck
 
     }
     createPaymentLinkService.createPaymentLink(postData)
-    .then(resp => {
+      .then(resp => {
         if (resp.data?.response_code === '1') {
           toastConfig.successToast(resp.data?.message?.toUpperCase());
           loaduser();

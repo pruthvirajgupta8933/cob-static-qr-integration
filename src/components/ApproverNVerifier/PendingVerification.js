@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState,useMemo,useCallback} from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -13,10 +13,24 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
 
-function PendingVerification() { 
+function PendingVerification() {
   const roles = roleBasedAccess();
+  const dispatch = useDispatch();
   const [onboardType, setOnboardType] = useState("");
- function capitalizeFirstLetter(param) {
+  const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [commentId, setCommentId] = useState({});
+  const [pageSize, setPageSize] = useState(100);
+  const [isOpenModal, setIsModalOpen] = useState(false);
+  const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [data, setData] = useState([]);
+  const [newRegistrationData, setNewRegistrationData] = useState([]);
+  const [kycIdClick, setKycIdClick] = useState([]);
+  const [dataCount, setDataCount] = useState("")
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  const currenTab = parseInt(verifierApproverTab?.currenTab);
+  function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   const PendingVerificationData = [
@@ -39,7 +53,7 @@ function PendingVerification() {
       name: "Company Name",
       selector: (row) => row.companyName,
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-       width: "150px",
+      width: "150px",
     },
     {
       id: "4",
@@ -160,8 +174,6 @@ function PendingVerification() {
     },
   ];
 
-
-  //  const { user } = useSelector((state) => state.auth);
   const roleBasePermissions = roleBasedAccess();
   const loadingState = useSelector(
     (state) => state.kyc.isLoadingForPendingVerification
@@ -169,31 +181,11 @@ function PendingVerification() {
   const Allow_To_Do_Verify_Kyc_details =
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
 
-  const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [commentId, setCommentId] = useState({});
-  const [pageSize, setPageSize] = useState(100);
-  const [isOpenModal, setIsModalOpen] = useState(false);
-  const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-  const currenTab = parseInt(verifierApproverTab?.currenTab);
-
-
   const pendindVerificationList = useSelector(
     (state) => state.kyc.pendingVerificationKycList
   );
 
-
-
-  const [data, setData] = useState([]);
-  const [newRegistrationData, setNewRegistrationData] = useState([]);
-  const [kycIdClick, setKycIdClick] = useState([]);
-  const [dataCount, setDataCount] = useState("")
-
-
-
-  useEffect(() => {
+useEffect(() => {
     const pendingVerificationDataList = pendindVerificationList?.results;
     const dataCount = pendindVerificationList?.count;
 
@@ -208,7 +200,7 @@ function PendingVerification() {
 
 
 
-  const dispatch = useDispatch();
+  
 
   const kycSearch = (e, fieldType) => {
     if (fieldType === "text") {
@@ -228,13 +220,13 @@ function PendingVerification() {
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
-          kycForPending({
-            page: currentPage,
-            page_size: pageSize,
-            searchquery: searchText,
-            merchantStatus: "Processing",
-            isDirect: onboardType,
-          })
+      kycForPending({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Processing",
+        isDirect: onboardType,
+      })
     );
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
@@ -252,8 +244,8 @@ function PendingVerification() {
     setPageSize(pageSize);
   };
 
-  
-const filteredData = useMemo(() => {
+
+  const filteredData = useMemo(() => {
     return newRegistrationData?.filter((item) =>
       Object.values(item)
         .join(' ')
@@ -262,7 +254,7 @@ const filteredData = useMemo(() => {
     );
   }, [newRegistrationData, searchText]);
 
-  
+
 
   const searchByText = () => {
     // Set data with the memoized filteredData

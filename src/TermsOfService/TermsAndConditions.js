@@ -6,7 +6,7 @@ import Header from '../components/mainComponent/header/Header'
 const TermsAndConditions = () => {
   return (
     <>
-      <Header />
+      <Header display_bg_color={true} />
       <div className="tcContainer" data-bs-spy="scroll" data-bs-offset="50">
         <div className="tcheading">Terms and Conditions</div>
         <div className="container">

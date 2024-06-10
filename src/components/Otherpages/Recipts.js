@@ -86,7 +86,7 @@ const Recipts = () => {
 
     <div>
       {/* ============================== */}
-      <Header />
+      <Header display_bg_color={true} />
       <div className="container-fluid toppad">
         <div className="row justify-content-center">
           <div className="col-lg-6">

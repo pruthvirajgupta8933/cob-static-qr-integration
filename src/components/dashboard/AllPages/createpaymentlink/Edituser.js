@@ -17,13 +17,12 @@ import createPaymentLinkService from "../../../../services/create-payment-link/p
 import toastConfig from "../../../../utilities/toastTypes";
 
 export const Edituser = (props) => {
-  
-let history = useHistory();
-  
-
+  let history = useHistory();
   const { myname, email, phone, editCustomerTypeId, id } = props.items;
   const callBackFn = props.callBackFn;
   const [disable, setDisable] = useState(false)
+  const { user } = useSelector((state) => state.auth);
+  const [data, setData] = useState([]);
 
   const initialValues = {
     name: myname,
@@ -45,9 +44,7 @@ let history = useHistory();
     customer_type_id: Yup.string().required("Required"),
   });
 
-  const { user } = useSelector((state) => state.auth);
-
-  const [data, setData] = useState([]);
+ 
   let clientMerchantDetailsList = [];
   let clientCode = "";
   if (user && user.clientMerchantDetailsList === null) {
@@ -60,35 +57,27 @@ let history = useHistory();
 
   const editHandler = (values) => {
     setDisable(true)
-    const postData={
+    const postData = {
       name: values.name,
-        email: values.email,
-        phone_number: values.phone_number,
-        client_code: clientCode,
-        customer_type_id: values.customer_type_id,
-        id: id,
+      email: values.email,
+      phone_number: values.phone_number,
+      client_code: clientCode,
+      customer_type_id: values.customer_type_id,
+      id: id,
 
     }
     createPaymentLinkService.editCustomer(postData)
       .then((res) => {
-        
+
         if (res.data?.response_code === '1') {
           toastConfig.successToast(res.data?.message?.toUpperCase());
           callBackFn()
-      } else {
+        } else {
           toastConfig.errorToast(res.data?.message?.toUpperCase());
-      }
-      
-       
-        // toast.success("User Updated Successfully", {
-        //   position: "top-right",
-        //   autoClose: 2000,
-        //   transition: Zoom,
-        // });
+        }
         setDisable(false)
       })
       .catch((e) => {
-        // console.log(e);
         toast.error("Data not Updated", {
           position: "top-right",
           autoClose: 2000,
@@ -108,7 +97,6 @@ let history = useHistory();
         setData(data_arr);
       })
       .catch((err) => {
-        // console.log(err)
       });
   };
   useEffect(() => {

@@ -92,7 +92,7 @@ const StudentRecipets = () => {
 
   return (
     <>
-      <Header />
+      <Header display_bg_color={true} />
       <div className="container">
         {/* ============================== */}
         <div className="container-fluid">
