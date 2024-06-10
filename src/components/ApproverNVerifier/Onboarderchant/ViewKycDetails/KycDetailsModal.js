@@ -24,6 +24,7 @@ import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
 import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMappingSlice";
 import { APP_ENV } from "../../../../config";
 import SaveLocation from "./SaveLocation";
+import ViewZoneModal from "../../ViewZoneModal";
 
 
 
@@ -43,6 +44,8 @@ const KycDetailsModal = (props) => {
 
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
+  const [openZoneModal, setOpenModal] = useState(false);
+  const [modalDisplayData, setModalDisplayData] = useState({});
   // const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
   // const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
   // const [platform, setPlatform] = useState("");
@@ -50,12 +53,11 @@ const KycDetailsModal = (props) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
-  const { kyc, rateMappingSlice, approverDashboard } = state;
+  const { kyc, rateMappingSlice, approverDashboard, verifierApproverTab } = state;
   const { KycTabStatusStore, KycDocUpload } = kyc;
   const { generalFormData } = approverDashboard
 
-  // const selectedUserData = kyc.kycUserList
-
+  const currenTab = parseInt(verifierApproverTab?.currenTab)
 
   const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId])
   const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList])
@@ -126,12 +128,9 @@ const KycDetailsModal = (props) => {
 
           {/* business overview */}
           <BusinessOverview
-
             selectedUserData={selectedUserData}
-
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
-
           />
 
           {/* business details */}
@@ -147,6 +146,7 @@ const KycDetailsModal = (props) => {
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
+
           {/* Merchant Documents */}
           <MerchantDocument
             docList={KycDocUpload}
@@ -158,19 +158,43 @@ const KycDetailsModal = (props) => {
             KycTabStatus={KycTabStatusStore}
           />
 
-
           <SaveLocation
             role={roles}
           />
 
+          <div className="row mb-4 border p-1">
+            <h5>Set Risk Category</h5>
+            <div className="form-row g-3">
+              <button
+                type="button"
+                className="approve text-white cob-btn-primary btn-sm "
+                onClick={() => {
+                  setModalDisplayData(selectedUserData);
+                  setOpenModal(true);
+                }}
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+              >
+                Set Risk
+              </button>
+            </div>
+
+
+            {openZoneModal === true && (
+              <ViewZoneModal userData={modalDisplayData} />
+            )}
+
+          </div>
+
           {/* Extra field required when merhcant goes to approved */}
+
+
           {selectedUserData?.roleId !== 13 &&
             <GeneralForm
               selectedUserData={selectedUserData}
               merchantKycId={merchantKycId}
               role={roles}
             />}
-
 
           <CompleteVerification
             merchantKycId={merchantKycId}

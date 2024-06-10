@@ -20,7 +20,6 @@ const validationSchema = Yup.object({
 
 
 const ViewZoneModal = (props) => {
-
   const [riskCategoryCode, setRiskCategoryCode] = useState([])
   const [employeeName, setEmployeeName] = useState([])
   const [mccCode, setMccCode] = useState([])
