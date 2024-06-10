@@ -26,6 +26,7 @@ import { themeReducer } from "./slices/theme/themeSlice";
 import { signupDataReducer } from "./slices/signupDataSlice";
 import { genreateMidReducer } from "./slices/generateMidSlice";
 import { frmReducer } from "./slices/approver-dashboard/frmSlice";
+import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
 
 
 
@@ -38,6 +39,7 @@ const reducer = {
   zone: merchantZoneMappingReducer,
   signupData: signupDataReducer,
   mid:genreateMidReducer,
+  forgotPassword:forgotPassworReducer,
   frm:frmReducer,
   widget: widgetReducer,
   verifierApproverTab: merchantListReducer,

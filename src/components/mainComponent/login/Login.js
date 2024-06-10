@@ -48,7 +48,7 @@ function Login() {
     const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
     const isMobile = useMediaQuery('(max-width: 767px)');
 
-    console.log({ isDesktop, isTablet, isMobile })
+    
 
     useEffect(() => {
         const userLocalData = JSON.parse(localStorage.getItem("user"));

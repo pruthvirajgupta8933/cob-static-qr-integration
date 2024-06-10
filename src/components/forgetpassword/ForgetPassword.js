@@ -16,14 +16,14 @@ const ForgetPassword = () => {
 
   return (
     <React.Fragment>
-      <Header display_bg_color={true} />
+      {/* <Header display_bg_color={true} /> */}
 
       {/* enter user id  */}
       {showCard === "a1" ? <EnterUserID props={handleFormSubmit} /> : <></>}
 
       {/* enter received otp code */}
       {showCard === "a2" ? (
-        <VerifyEmailPhone props={handleFormSubmit} />
+        <VerifyEmailPhone props={handleFormSubmit} showTitle={true}/>
       ) : (
         <></>
       )}
