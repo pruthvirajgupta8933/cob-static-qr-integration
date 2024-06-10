@@ -47,9 +47,6 @@ const PayerDetails = () => {
   const [editModalToggle, setEditModalToggle] = useState(false);
   const [disable, setDisable] = useState(false)
   const [submitted, setSubmitted] = useState(false);
-
-
-
   const [pageCount, setPageCount] = useState(
     data ? Math.ceil(data.length / pageSize) : 0
   );
@@ -231,20 +228,14 @@ const PayerDetails = () => {
   };
 
   const deleteUser = async (id) => {
-    // confirm("do you confirm to delete it");
     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
     if (iscConfirm) {
-      // await axiosInstance.delete(
-      //   `${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`
-      // );
       await createPaymentLinkService.deleteCustomer(clientCode,id)
       loadUser();
     }
   };
 
-  // const pagination = (pageNo) => {
-  //   setCurrentPage(pageNo);
-  // };
+
 
   const edit = () => {
     loadUser();

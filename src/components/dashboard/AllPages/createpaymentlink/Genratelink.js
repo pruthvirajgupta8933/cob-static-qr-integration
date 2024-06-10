@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios'
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
-// import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
-import API_URL from '../../../../config';
 import Yup from '../../../../_components/formik/Yup';
 import createPaymentLinkService from '../../../../services/create-payment-link/payment-link.service';
-
-// import FormikController from "../../_components/formik/FormikController";
-
 
 
 const validationSchema = Yup.object().shape({
@@ -45,20 +39,15 @@ const Genratelink = (props) => {
 
   const generateHandler = async (e) => {
     setDisable(true)
-    const postData={
-      Customer_id:customer_id,
-      Remarks:e.Remarks,
-      Amount:e.Amount,
+    const postData = {
+      Customer_id: customer_id,
+      Remarks: e.Remarks,
+      Amount: e.Amount,
       clientCode,
-      valid_to:dateFormat(e.Date),
-      isPasswordProtected:passwordcheck
+      valid_to: dateFormat(e.Date),
+      isPasswordProtected: passwordcheck
     }
-   
-    // await axios
-    //   .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
-       
 
-    //   })
     createPaymentLinkService.createPaymentLink(postData)
 
 
@@ -71,8 +60,6 @@ const Genratelink = (props) => {
         toast.error("Payment Link Creation Failed ")
         setDisable(false)
       });
-
-
 
     document.getElementById("checkbox_pass").checked = false;
 

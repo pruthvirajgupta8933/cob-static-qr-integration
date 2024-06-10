@@ -302,7 +302,7 @@ function Signup() {
                     </div>
 
 
-                    <div className="col-lg-7 d-flex justify-content-center  p-0">
+                    <div className="col-lg-7 d-flex justify-content-center p-0 scroll-bar-hide">
                         <div className="container-fluid d-flex flex-column h-100 p-0">
                             <div className="row align-items-start flex-grow-1" >
                                 <div className="col">
@@ -316,8 +316,8 @@ function Signup() {
                                 <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
                                 <div className={`col ${classes.form_container}`}>
 
-                                    <h5 className="text-center font-weight-bold text_primary_color">Welcome to SabPaisa</h5>
-                                    <h6 className="text-center mb-4 font-weight-bold">Create New Account</h6>
+                                    <h5 className={`text-center  text_primary_color heading ${classes.heading}`}>Welcome to SabPaisa</h5>
+                                    <h6 className={`text-center mb-4  sub_heading ${classes.sub_heading}`}>Create New Account</h6>
                                     <Formik
                                         initialValues={initialValues}
                                         validationSchema={FORM_VALIDATION}
@@ -478,8 +478,8 @@ function Signup() {
                                     <div className="p-2 bd-highlight sp-font-12 text-center">
                                         <p className="bd-highlight text-center sp-font-12">
                                             Copyright @ {new Date().getFullYear()} SabPaisa All Rights Reserved version 1.0 | &nbsp;
-                                            <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank">Terms &amp; Conditions </a>&nbsp;and &nbsp;
-                                            <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank">Privacy Policy</a>
+                                            <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target="_blank" className="text-primary">Terms &amp; Conditions </a>&nbsp;and &nbsp;
+                                            <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target="_blank" className="text-primary">Privacy Policy</a>
                                         </p>
                                     </div>
                                 </div>

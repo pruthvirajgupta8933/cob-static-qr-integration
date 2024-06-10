@@ -15,7 +15,12 @@ import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchant
 
 function TransactionEnquirey() {
   const dispatch = useDispatch();
-  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const [show, setIsShow] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+  const [data, setData] = useState({});
+  const [printData, setPrintData] = useState([]);
+  const [disable, setIsDisable] = useState(false)
+  const { auth, merchantReferralOnboardReducer } = useSelector((state) => state);
   const { refrerChiledList } = merchantReferralOnboardReducer
   const clientCodeData = refrerChiledList?.resp?.results ?? []
   const roles = roleBasedAccess();
@@ -91,11 +96,7 @@ function TransactionEnquirey() {
   }
 
 
-  const [show, setIsShow] = useState(false);
-  const [errMessage, setErrMessage] = useState("");
-  const [data, setData] = useState({});
-  const [printData, setPrintData] = useState([]);
-  const [disable, setIsDisable] = useState(false)
+  
   const [loadingState, setLoadingState] = useState(false)
 
 

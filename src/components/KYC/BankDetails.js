@@ -492,7 +492,7 @@ function BankDetails(props) {
                 {VerifyKycStatus === "Verified" ? <></> : (
                   <button
                     disabled={disable}
-                    className="save-next-btn float-lg-right cob-btn-primary text-white btn-sm"
+                    className="float-lg-right cob-btn-primary text-white btn-sm border-0"
                     type="submit"
                   >
                     {disable && <>

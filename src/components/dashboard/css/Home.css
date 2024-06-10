@@ -285,12 +285,12 @@ table.tables tr:nth-child(odd) {
 }
 
 .homeModalHeading {
-  color: #000000;
+  /* color: #000000; */
   /* font-family: 'Satoshi'; */
-  font-style: normal;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 156.5%;
+  /* font-style: normal; */
+  /* font-weight: 700; */
+  /* font-size: 32px;
+  line-height: 156.5%; */
 }
 
 .modalscolrsfortext {

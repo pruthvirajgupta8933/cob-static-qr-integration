@@ -52,6 +52,17 @@
     margin: 1em 1em 0 1em; */
 }
 
+.heading {
+    color: #023677;
+    font-family: 'Sofia-Pro-Medium';
+    font-size: 30px;
+}
+
+.sub_heading {
+    font-family: 'Sofia-Pro-Regular';
+    font-size: 25px;
+
+}
 
 .sp_font_12 {
     font-size: 12px;

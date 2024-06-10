@@ -14,6 +14,7 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 
 const PendindKyc = () => {
+  const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
   function capitalizeFirstLetter(param) {
@@ -169,7 +170,7 @@ const PendindKyc = () => {
     },
   ];
 
-  const dispatch = useDispatch();
+ 
 
 
   const kycSearch = (e, fieldType) => {

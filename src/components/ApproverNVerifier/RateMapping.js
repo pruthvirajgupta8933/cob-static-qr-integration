@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect,useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
@@ -30,19 +30,19 @@ function RateMapping() {
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
   useEffect(() => {
-    const approvedList=approvedMerchantList?.results
-    const dataCount=approvedMerchantList?.count
+    const approvedList = approvedMerchantList?.results
+    const dataCount = approvedMerchantList?.count
 
     if (approvedList) {
       setData(approvedList);
       setRateMappingList(approvedList);
-    
+
       setDataCount(dataCount)
     }
   }, [approvedMerchantList]); //
 
 
- useEffect(() => {
+  useEffect(() => {
     dispatch(
       kycForApproved({
         page: currentPage,
@@ -51,7 +51,7 @@ function RateMapping() {
         merchantStatus: "Approved",
       })
     )
-     
+
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function RateMapping() {
   }, [searchText]);
 
 
-const filteredData = useMemo(() => {
+  const filteredData = useMemo(() => {
     return rateMappingList?.filter((item) =>
       Object.values(item)
         .join(' ')
@@ -79,7 +79,7 @@ const filteredData = useMemo(() => {
     );
   }, [rateMappingList, searchText]);
 
-  
+
 
   const searchByText = () => {
     // Set data with the memoized filteredData
@@ -191,7 +191,7 @@ const filteredData = useMemo(() => {
               setModalDisplayData(row);
               setOpenModal(true);
             }}
-            className="save-next-btn approve text-white"
+            className="cob-btn-primary approve text-white"
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
@@ -245,7 +245,7 @@ const filteredData = useMemo(() => {
 
           <div className="">
             <div className="scroll overflow-auto">
-            <h6>Total Count : {dataCount}</h6>
+              <h6>Total Count : {dataCount}</h6>
 
               {!loadingState && data?.length !== 0 && (
                 <Table
