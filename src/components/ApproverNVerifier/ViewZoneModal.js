@@ -12,7 +12,7 @@ import CustomModal from "../../_components/custom_modal";
 
 
 const validationSchema = Yup.object({
-  emp_name: Yup.string().required("Required"),
+  // emp_name: Yup.string().required("Required"),
   riskCategoryCode: Yup.string().required("Required").nullable(),
   mccCode: Yup.string().required("Required").nullable()
 })

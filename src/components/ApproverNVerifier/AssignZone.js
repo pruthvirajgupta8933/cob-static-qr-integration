@@ -246,7 +246,8 @@ function AssignZone() {
         </div>
         <div>
           {openZoneModal === true && (
-            <ViewZoneModal userData={modalDisplayData} />
+            <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
+            setOpenZoneModal={setOpenModal}  />
           )}
         </div>
       </main>
