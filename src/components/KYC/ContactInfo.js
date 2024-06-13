@@ -358,7 +358,7 @@ function ContactInfo(props) {
                   <button
                     disabled={disable}
                     type="submit"
-                    className="btn btn-sm float-lg-right cob-btn-primary text-white mr-4"
+                    className="btn btn-sm float-lg-right cob-btn-primary text-white mr-4 mt-4"
                   >
                     {disable &&
                       <span className="mr-2">

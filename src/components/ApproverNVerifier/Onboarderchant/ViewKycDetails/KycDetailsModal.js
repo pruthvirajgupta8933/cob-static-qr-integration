@@ -167,13 +167,11 @@ const KycDetailsModal = (props) => {
             <div className="form-row g-3">
               <button
                 type="button"
-                className="approve text-white cob-btn-primary btn-sm "
+                className="approve text-white cob-btn-primary btn-sm"
                 onClick={() => {
                   setModalDisplayData(selectedUserData);
                   setOpenModal(true);
                 }}
-                data-toggle="modal"
-                data-target="#exampleModalCenter"
               >
                 Set Risk
               </button>
@@ -181,7 +179,8 @@ const KycDetailsModal = (props) => {
 
 
             {openZoneModal === true && (
-              <ViewZoneModal userData={modalDisplayData} />
+              <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
+                setOpenZoneModal={setOpenModal} />
             )}
 
           </div>

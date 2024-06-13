@@ -46,6 +46,12 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         email_id: "",
         username: "",
         referrer_login_id: "",
+        pan_card: "",
+        signatory_pan: "",
+        address: "",
+        city: "",
+        state: "",
+        pin_code: "",
         password: generateRandomPassword(),
         isPasswordReq: referralChild
     };
@@ -74,10 +80,35 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .required("Required")
             .nullable(),
         email_id: Yup.string()
-        .allowOneSpace()
+            .allowOneSpace()
             .email("Invalid email")
             .required("Required")
             .nullable(),
+        pan_card: Yup.string()
+            .allowOneSpace()
+            .required("Required")
+            .nullable(),
+        // signatory_pan: Yup.string()
+        //     .allowOneSpace()
+        //     .required("Required")
+        //     .nullable(),
+        city: Yup.string()
+            .allowOneSpace()
+            .required("Required")
+            .nullable(),
+        state: Yup.string()
+            .allowOneSpace()
+            .required("Required")
+            .nullable(),
+        address: Yup.string()
+            .allowOneSpace()
+            .required("Required")
+            .nullable(),
+        pin_code: Yup.string()
+            .allowOneSpace()
+            .required("Required")
+            .nullable(),
+
         password: Yup.string(),
     });
 
@@ -85,7 +116,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const handleSubmitContact = async (value, { resetForm }) => {
 
         setDisable(true)
-        const { fullName, mobileNumber, email_id, password, username } = value;
+        const { fullName, mobileNumber, email_id, password, username,pan_card,city,state,address,signatory_pan,pin_code} = value;
         // alert(3)
         setSubmitLoader(true)
         try {
@@ -117,6 +148,14 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     referrer_phone: mobileNumber,
                     created_by: auth?.user?.loginId,
                     zone_code: zoneCode,
+                    pan_card:pan_card,
+                    signatory_pan:signatory_pan,
+                    merchant_address:{
+                        address:address,
+                        city:city,
+                        state:state,
+                        pin_code:pin_code
+                    }
                 };
             } const resp1 = await addReferralService(postData, referralChild);
 
@@ -225,20 +264,80 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                 label="Email ID *"
                             />
                         </div>
-                        {referralChild === true &&
-                            <div className={`col-lg-${referralChild ? "6" : "4"}`}>
+
+                        {referralChild && (
+                            <div className={`col-lg-6`}>
                                 <FormikController
                                     control="input"
                                     type="text"
                                     name="username"
                                     placeholder="Create User Name"
-
                                     className="form-control"
                                     label="Username *"
                                 />
                             </div>
-                        }
+                        )}
+
+                        {!referralChild && (
+                            <>
+                                <div className="col-lg-4">
+                                    <FormikController
+                                        control="input"
+                                        name="pan_card"
+                                        placeholder="Enter Business PAN"
+                                        className="form-control"
+                                        label="Business PAN *"
+                                    />
+                                </div>
+                                <div className="col-lg-4">
+                                    <FormikController
+                                        control="input"
+                                        name="signatory_pan"
+                                        placeholder="Enter Business PAN"
+                                        className="form-control"
+                                        label="Authorized Signatory PAN *"
+                                    />
+                                </div>
+                                <div className="col-lg-4">
+                                    <FormikController
+                                        control="input"
+                                        name="address"
+                                        placeholder="Enter Address"
+                                        className="form-control"
+                                        label="Address *"
+                                    />
+                                </div>
+                                <div className="col-lg-4">
+                                    <FormikController
+                                        control="input"
+                                        name="city"
+                                        placeholder="Enter City"
+                                        className="form-control"
+                                        label="City *"
+                                    />
+                                </div>
+                                <div className="col-lg-4">
+                                    <FormikController
+                                        control="input"
+                                        name="state"
+                                        placeholder="Enter State"
+                                        className="form-control"
+                                        label="State *"
+                                    />
+                                </div>
+                                <div className="col-lg-4">
+                                    <FormikController
+                                        control="input"
+                                        name="pin_code"
+                                        placeholder="Enter Pin Code"
+                                        className="form-control"
+                                        label="Pin Code *"
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
+
                     <div className="row g-3">
                         <div className="col-6">
                             {merchantBasicDetails?.resp?.status !== "Activate" &&

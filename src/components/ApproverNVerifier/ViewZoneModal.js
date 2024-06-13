@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-// import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch } from "react-redux";
 import { updateZoneData, getZoneInfo, getZoneEmployeName, getMccCodeMaster } from '../../slices/merchantZoneMappingSlice';
 import { riskCategory } from '../../slices/rateMappingSlice';
 import Yup from "../../_components/formik/Yup";
+import CustomModal from "../../_components/custom_modal";
 
 
 
@@ -19,7 +19,8 @@ const validationSchema = Yup.object({
 
 
 
-const ViewZoneModal = (props) => {
+const ViewZoneModal = ({ openZoneModal, setOpenZoneModal, userData }) => {
+
   const [riskCategoryCode, setRiskCategoryCode] = useState([])
   const [employeeName, setEmployeeName] = useState([])
   const [mccCode, setMccCode] = useState([])
@@ -90,23 +91,19 @@ const ViewZoneModal = (props) => {
 
   const handleSubmit = (values, { resetForm }) => {
     setButtonDisable(true)
-
-    const postData = {
-      "client_code": props?.userData?.clientCode,
+const postData = {
+      "client_code": userData?.clientCode,
       "emp_code": values?.emp_name,
       "risk_category_code": values?.riskCategoryCode,
       "mcc_code": values?.mccCode
 
     };
-
-    dispatch(updateZoneData(postData)).then((resp) => {
-
-
-      if (resp.meta.requestStatus === "fulfilled") {
+ dispatch(updateZoneData(postData)).then((resp) => {
+if (resp.meta.requestStatus === "fulfilled") {
         toast.success(resp?.payload?.message)
         resetForm();
         setButtonDisable(false)
-        getZoneInfobyClientCode(props?.userData?.clientCode)
+        getZoneInfobyClientCode(userData?.clientCode)
         // setShow(true)
 
       } else {
@@ -122,13 +119,13 @@ const ViewZoneModal = (props) => {
 
 
   useEffect(() => {
-    if (props?.userData?.clientCode) {
-      getZoneInfobyClientCode(props?.userData?.clientCode);
+    if (userData?.clientCode) {
+      getZoneInfobyClientCode(userData?.clientCode);
     }
 
 
 
-  }, [props])
+  }, [userData])
 
 
   const getZoneInfobyClientCode = (clientCode) => {
@@ -144,160 +141,123 @@ const ViewZoneModal = (props) => {
 
   }
 
-
-  return (
-    <div>
-      <div
-        className="modal fade mymodals"
-        id="exampleModalCenter"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        ariaHidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              // onSubmit={(values)=>handleSubmit(values)}
-              onSubmit={(values, { resetForm }) => {
-                handleSubmit(values, { resetForm })
-              }}
-              enableReinitialize={true}
-            >
-              {(formik, resetForm) => (
-                <>
-                  <div className="modal-header">
-                    <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Merchant Configuration</h5>
-
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span ariaHidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <div className="mb-3">
-                      <p className="m-0">
-                        Client Name: {props?.userData?.clientName}
-                      </p>
-                      <p className="m-0">
-                        Client Code: {props?.userData?.clientCode}
-                      </p>
-                    </div>
-
-                    <div className="container">
-                      <Form>
-                        <div className="row">
-
-                          <div className="col-lg-4 ">
-                            <div className="input full- optional">
-                              <label
-                                className="string optional"
-                                htmlFor="emp_name"
-                              >
-                                Employee Name
-                              </label>
-                              <FormikController
-                                control="select"
-                                name="emp_name"
-                                options={employeeName}
-                                className="form-select"
-                              // readOnly={true}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-lg-4">
-                            <div className="input full- optional">
-                              <label
-                                className="string optional"
-                                htmlFor="riskCategoryCode"
-                              >
-                                Risk Category
-                              </label>
-                              <FormikController
-                                control="select"
-                                name="riskCategoryCode"
-                                options={riskCategoryCode}
-
-                                className="form-select"
-                              />
-
-                            </div>
-
-                          </div>
-
-                          <div className="col-lg-4">
-                            <div className="input full- optional">
-                              <label
-                                className="string optional"
-                                htmlFor="mccCode"
-                              >
-                                MCC Code
-                              </label>
-                              <FormikController
-                                control="select"
-                                name="mccCode"
-                                options={mccCode}
-                                className="form-select"
-                              />
-
-                            </div>
-                          </div>
-
-                        </div>
-                        <div className="modal-footer">
-
-                          <button
-                            type="submit"
-                            onClick={resetForm}
-                            className="btn cob-btn-primary  text-white" disabled={buttonDisable}>
-
-                            {buttonDisable && (
-                              <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                            )} {/* Show spinner if disabled */}
-                            Submit</button>
-                        </div>
-                      </Form>
-                    </div>
-                  </div>
-                </>
-              )}
-            </Formik>
-            <div className="container mr-2">
-              <table className="table mr-2">
-
-                <thead>
-                  <tr>
-
-                    <th scope="col">Employee Name</th>
-                    <th scope="col">Risk Category</th>
-                    <th scope="col">MCC Code</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{zoneInfo?.employee_name}</td>
-                    <td>{zoneInfo?.risk_name}</td>
-                    <td>{zoneInfo?.mcc_elaboration}</td>
-                  </tr>
-                </tbody>
-              </table>
+  const renderModalBody = () => (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm })}
+      enableReinitialize={true}
+    >
+      {({ resetForm }) => (
+        <Form>
+          <div className="mb-3">
+            <p className="m-0">
+              Client Name: {userData?.clientName}
+            </p>
+            <p className="m-0">
+              Client Code: {userData?.clientCode}
+            </p>
+          </div>
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-4">
+                <div className="input full- optional">
+                  <label className="string optional" htmlFor="emp_name">
+                    Employee Name
+                  </label>
+                  <FormikController
+                    control="select"
+                    name="emp_name"
+                    options={employeeName}
+                    className="form-select"
+                  />
+                </div>
+              </div>
+              <div className="col-lg-4">
+                <div className="input full- optional">
+                  <label className="string optional" htmlFor="riskCategoryCode">
+                    Risk Category
+                  </label>
+                  <FormikController
+                    control="select"
+                    name="riskCategoryCode"
+                    options={riskCategoryCode}
+                    className="form-select"
+                  />
+                </div>
+              </div>
+              <div className="col-lg-4">
+                <div className="input full- optional">
+                  <label className="string optional" htmlFor="mccCode">
+                    MCC Code
+                  </label>
+                  <FormikController
+                    control="select"
+                    name="mccCode"
+                    options={mccCode}
+                    className="form-select"
+                  />
+                </div>
+              </div>
             </div>
           </div>
+          <div className="modal-footer">
+            <button
+              type="submit"
+              className="btn cob-btn-primary text-white"
+              disabled={buttonDisable}
+            >
+              {buttonDisable && (
+                <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+              )}
+              Submit
+            </button>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
 
-
-
-        </div>
-      </div>
+  const renderTable = () => (
+    <div className="container mr-2">
+      <table className="table mr-2">
+        <thead>
+          <tr>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Risk Category</th>
+            <th scope="col">MCC Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{zoneInfo?.employee_name}</td>
+            <td>{zoneInfo?.risk_name}</td>
+            <td>{zoneInfo?.mcc_elaboration}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
+
+
+
+  return (
+    <>
+      <CustomModal
+        headerTitle="Merchant Configuration"
+        modalBody={() => (
+          <>
+            {renderModalBody()}
+            {renderTable()}
+          </>
+        )}
+        modalToggle={openZoneModal}
+        fnSetModalToggle={setOpenZoneModal}
+        modalSize="modal-md"
+      />
+
+    </>
+);
 };
 
 export default ViewZoneModal;

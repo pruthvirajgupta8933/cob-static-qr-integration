@@ -23,6 +23,13 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
+    const Regexx = {
+        acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
+    };
+
+    const RegexMssg = {
+        acceptAlphabet: 'Please enter valid characters.',
+    };
 
     const initialValues = {
         pan_card: merchantKycData?.signatoryPAN ?? "",
@@ -32,6 +39,12 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         platform_id: merchantKycData?.platformId ?? "",
         avg_ticket_size: merchantKycData?.avg_ticket_size ?? "",
         expected_transactions: merchantKycData?.expectedTransactions ?? "",
+        signatory_pan: "",
+        address: "",
+        city: "",
+        state: "",
+        pin_code: "",
+        billing_label: merchantKycData?.billing_label ?? "",
     }
 
 
@@ -60,6 +73,24 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         avg_ticket_size: Yup.string()
             .trim()
             .required("Required").nullable(),
+        signatory_pan: Yup.string()
+            .required("Required").nullable(),
+        address: Yup.string()
+            .required("Required").nullable(),
+        city: Yup.string()
+            .required("Required").nullable(),
+        pin_code: Yup.string()
+            .required("Required").nullable(),
+        state: Yup.string()
+            .required("Required").nullable(),
+        billing_label: Yup.string()
+            .allowOneSpace()
+            .min(1, 'Please enter more than 1 character')
+            .max(250, 'Please do not enter more than 250 characters')
+            .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
+            .required('Required')
+            .nullable(),
+
     })
     //////////////////APi for Platform
     useEffect(() => {
@@ -117,17 +148,27 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             return; // Exit the function, do not proceed with submission
         }
 
+        const merchantAddressDetails = {
+            address: value.address,
+            city: value.city,
+            state: value.state,
+            pin_code: value.pin_code
 
+        }
         const postData = {
             website_app_url: value.website,
             is_website_url: "True",
             pan_card: value.pan_card,
+            signatory_pan: value.signatory_pan,
+            billing_label: value.billing_label,
+            merchant_address: merchantAddressDetails,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId,
             platform_id: value.platform_id,
             avg_ticket_size: value.avg_ticket_size,
             expected_transactions: value.expected_transactions,
-            name_on_pancard: value.name_on_pancard
+            name_on_pancard: value.name_on_pancard,
+
         }
 
 
@@ -218,7 +259,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label mt-0 py-1">
-                                    Authorized Signatory PAN <span className="text-danger"></span>
+                                    Business PAN  <span className="text-danger">*</span>
                                 </label>
                                 <div className="input-group">
                                     <Field
@@ -281,20 +322,116 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 )}
                             </div>
                             <div className="col-md-6">
+                            <label className="col-form-label p-2 mt-0">
+                                    Website<span className="text-danger">*</span>
+                                </label>
                                 <FormikController
                                     control="input"
                                     disabled={isEditableInput}
                                     type="text"
                                     name="website"
                                     className="form-control"
-                                    label="Website"
                                     placeholder="Enter Website URL"
                                 />
                             </div>
                             <div></div>
 
                         </div>
-                        <div className="row">
+
+                        <div className="row g-3">
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    Authorized Signatory PAN <span className="text-danger"></span>
+                                </label>
+
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="signatory_pan"
+                                    className="form-control fs-12"
+                                    placeholder="Enter PAN"
+
+                                />
+                            </div>
+
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    Address<span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="address"
+                                    className="form-control fs-12"
+                                    placeholder="Enter Address"
+
+                                />
+                            </div>
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    City<span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="city"
+                                    className="form-control fs-12"
+                                    placeholder="Enter City"
+
+                                />
+                            </div>
+
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    State<span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="state"
+                                    className="form-control fs-12"
+                                    placeholder="Enter State"
+
+                                />
+                            </div>
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    Pin Code<span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="input"
+                                    type="text"
+                                    name="pin_code"
+                                    className="form-control fs-12"
+                                    placeholder="Enter State"
+
+                                />
+                            </div>
+
+
+                            <div className="col-sm-12 col-md-12 col-lg-4">
+                                <label className="col-form-label p-2 mt-0">
+                                    Business Description <span className="text-danger">*</span>
+                                </label>
+
+                                <FormikController
+                                    control="textArea"
+                                    type="text"
+                                    name="billing_label"
+                                    className="form-control fs-12"
+
+                                />
+                                {/* <p className="fs-10">
+                                    Please give a brief description of the nature of your
+                                    business. Please give examples of products you sell, business
+                                    category you operate in, your customers and channels through
+                                    which you operate (website, offline-retail).
+                                </p> */}
+                            </div>
                             <div className="col-sm-12 col-md-12 col-lg-4">
                                 <label className="col-form-label p-2 mt-0">
                                     Platform Type<span className="text-danger">*</span>
@@ -342,6 +479,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     options={ticketOptions}
                                 />
                             </div>
+
+
+
                         </div>
                         {/* <div className="col-12 mt-4 ">
                             {!isEditableInput &&
