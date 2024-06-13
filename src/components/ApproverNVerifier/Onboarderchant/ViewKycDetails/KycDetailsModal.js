@@ -162,28 +162,28 @@ const KycDetailsModal = (props) => {
             role={roles}
           />
 
-          <div className="row mb-4 border p-1">
-            <h5>Set Risk Category</h5>
-            <div className="form-row g-3">
-              <button
-                type="button"
-                className="approve text-white cob-btn-primary btn-sm"
-                onClick={() => {
-                  setModalDisplayData(selectedUserData);
-                  setOpenModal(true);
-                }}
-              >
-                Set Risk
-              </button>
+          {(currenTab === 3 || currenTab === 4) && (roles.approver === true || roles.verifier === true) && (
+            <div className="row mb-4 border p-1">
+              <h5>Set Risk Category</h5>
+              <div className="form-row g-3 m-1">
+                <button
+                  type="button"
+                  className="approve text-white cob-btn-primary btn-sm "
+                  onClick={() => {
+                    setModalDisplayData(selectedUserData);
+                    setOpenModal(true);
+                  }}
+                >
+                  Set Risk
+                </button>
+              </div>
+              {openZoneModal === true && (
+                <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
+                  setOpenZoneModal={setOpenModal} />
+              )}
             </div>
+          )}
 
-
-            {openZoneModal === true && (
-              <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
-                setOpenZoneModal={setOpenModal} />
-            )}
-
-          </div>
 
           {/* Extra field required when merhcant goes to approved */}
 
