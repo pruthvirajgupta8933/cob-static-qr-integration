@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import bro from "../../../assets/images/bro.png";
+import home_screen_img from "../../../assets/images/welcome-screen-img.png";
 import congratsImg from "../../../assets/images/congImg.png";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { Link } from "react-router-dom";
@@ -30,76 +30,70 @@ const HomeOpenModal = () => {
             {roles?.merchant === true && (
                 <div
                     className={
-                        "modal fade mymodals " +
-                        (modalState === "Not-Filled" ? " show d-block" : " d-none")
+                        "modal fade mymodals"
+                        + (modalState === "Not-Filled" ? " show d-block" : " d-none")
                     }
                 // role="dialog"
                 >
                     <div className="modal-dialog modal-dialog-centered " role="document">
                         <div className="modal-content">
-                            <div className="modal-body ">
+                            <div className="modal-header border-0 py-0">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setModalState(!modalState);
+                                    }}
+                                    className="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                >
+                                    <span ariaHidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
                                 {!isRateMappingInProcess && (
-                                    <div className="">
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setModalState(!modalState);
-                                            }}
-                                            className="close"
-                                            data-dismiss="modal"
-                                            aria-label="Close"
-                                        >
-                                            <span ariaHidden="true">&times;</span>
-                                        </button>
-
-                                        <div className="row text-center">
+                                    <div className="text-center">
+                                        <div className="row">
                                             <div className="col-lg-12">
-                                                <h1 className="homeModalHeading">
+                                                <h4 className="text-dark mb-3">
                                                     Welcome to SabPaisa!
-                                                </h1>
-                                                <h6 className="">
-                                                    Complete the KYC to activate your account and start
-                                                    accepting payments. Fill in all the information to
-                                                    start your SabPaisa Payment services.
+                                                </h4>
+                                                <h6 className="text-dark mb-3">
+                                                    Complete the KYC to activate your account and start accepting payments. Fill in all the information to start your SabPaisa Payment services.
                                                 </h6>
                                             </div>
 
                                             <div className="col-lg-12">
                                                 <img
-                                                    src={bro}
-                                                    className="w-75"
+                                                    src={home_screen_img}
+                                                    style={{ width: '60%' }}
                                                     alt="SabPaisa"
                                                     title="SabPaisa"
                                                 />
                                             </div>
                                         </div>
 
-                                        <div className="row mt-3 ">
+                                        <div className="row mt-4">
                                             <div className="col-lg-6 text-align-end">
                                                 <Link
                                                     to={`/dashboard/kyc`}
-                                                    data-toggle="modal"
-                                                    data-target="#exampleModalCenter"
                                                 >
-                                                    <button className="ModalButtbtn btn-sm cob-btn-primary">
-
+                                                    <button className="ModalButtbtn btn-sm cob-btn-primary w-100 border-0 p-2">
                                                         Complete the KYC
-
                                                     </button>
                                                 </Link>
                                             </div>
                                             <div className="col-lg-6">
-                                                <Link to={`/dashboard`} >
-                                                    <button
-                                                        className="btn btn-sm cob-btn-secondary"
-                                                        onClick={() => {
-                                                            setModalState(!modalState);
-                                                        }}
-                                                        aria-label="Close"
-                                                    >
-                                                        Try out our dashboard
-                                                    </button>
-                                                </Link>
+
+                                                <button
+                                                    className="btn btn-sm cob-btn-secondary text-white w-100 border-0 p-2"
+                                                    onClick={() => {
+                                                        setModalState(!modalState);
+                                                    }}
+                                                >
+                                                    Try out our dashboard
+                                                </button>
+
                                             </div>
                                         </div>
                                     </div>

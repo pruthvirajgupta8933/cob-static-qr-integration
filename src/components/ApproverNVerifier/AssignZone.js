@@ -168,7 +168,7 @@ function AssignZone() {
         <div >
           <button
             type="button"
-            className="save-next-btn approve text-white   cob-btn-primary btn-sm "
+            className="approve text-white cob-btn-primary btn-sm "
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);
@@ -246,7 +246,8 @@ function AssignZone() {
         </div>
         <div>
           {openZoneModal === true && (
-            <ViewZoneModal userData={modalDisplayData} />
+            <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
+            setOpenZoneModal={setOpenModal}  />
           )}
         </div>
       </main>

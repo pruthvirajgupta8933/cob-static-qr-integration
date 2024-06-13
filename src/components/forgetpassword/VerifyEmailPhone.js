@@ -1,203 +1,119 @@
 import React, { useState } from "react";
-
-import API_URL from "../../config";
-
-import validation from "../validation";
-
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
-import {axiosInstanceAuth } from "../../utilities/axiosInstance";
+import classes from "./forgotPassword.module.css"
+import Yup from "../../_components/formik/Yup";
+import { emailVerify } from "../../services/forgotPassword-service/forgotPassword.service";
+import CreatePassword from "./CreatePassword";
 
 const VerifyEmailPhone = (props) => {
-  // const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
-  // console.log(auth.forgotPassword.sendUserName);
- 
-
-  const [emailotp, setEmailotp] = useState("");
-  const [smsotp, setSmsotp] = useState("");
-  const [errors, setErrors] = useState({});
-  const [verify, setverify] = useState(null);
-  //const [username, setUserName] = useState(auth.forgotPassword.sendUserName.username)
-  const username = auth.forgotPassword.sendUserName.username;
-  const verification_token = auth.forgotPassword.otpResponse.verification_token;
-  // console.log(verification_token,"here is my verification token")
-
-  // const {handleFormSubmit} = props;
-  const Email = (e) => {
-    setEmailotp(e.target.value);
+ const { auth } = useSelector((state) => state);
+  const [show, setShow] = useState(false)
+  const [loading, setLoading] = useState(false)
+   const verification_token = auth.forgotPassword.otpResponse.verification_token;
+  const INITIAL_FORM_STATE = {
+    otp: ""
   };
 
-  const Sms = (e) => {
-    setSmsotp(e.target.value);
-  };
+  const validationSchema = Yup.object().shape({
+    otp: Yup.string()
+      .required("OTP Required")
+      .allowOneSpace(),
 
-  //Email OTP
+  });
 
-  const emailverify = async (e) => {
-    if (emailotp.length > 6) {
-      setErrors(validation({ emailotp }));
-      errors?.emailotp === false ? setverify(true) : setverify(false);
-    } else {
-      setErrors(validation({ emailotp }));
-      // e.preventDefault();
+  
+const emailverify = async (e) => {
 
-      errors?.emailotp === false ? setverify(true) : setverify(false);
-     
-      const sendOtp = JSON.stringify({
-        verification_token: verification_token,
-        otp: emailotp,
+  setLoading(true)
+    const sendOtp = {
+      verification_token: verification_token,
+      otp: e.otp,
+    };
+
+ emailVerify(sendOtp)
+      .then((response) => {
+         if (response.status === 200) {
+          toast.success(response.data.message);
+          setShow(true)
+          setLoading(false)
+          
+        } else {
+          toast.error(response.data.message);
+          setShow(false)
+          setLoading(false)
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data["message"]);
+        setShow(false)
+        setLoading(false)
       });
+  
 
-      await axiosInstanceAuth
-        .post(API_URL.AUTH_VERIFY_OTP_ON_FWD, sendOtp, {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then((response) => {
-          // console.log(response);
-          if (response.status === 200) {
-            toast.success(response.data.message);
-            props.props("a3");
-          } else {
-            toast.error(response.data.message);
-          }
-        })
-        .catch((error) => {
-          toast.error(error?.response?.data["message"]);
-        });
-    }
+  
+};
 
-    // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
-    // }
-  };
-
-  //SMS OTP
-  const smsverify = (e) => {
-    // setErrors(validation({ smsotp}))
-    setErrors(false);
-    e.preventDefault();
-    // props.props('a3')
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  return (
+ return (
     <React.Fragment>
       <div className="container-fluid toppad ">
         <div className="row">
-          <div className="col-sm-6 mx-auto">
-            <div className="card mt-4 ">
-              <div className="card-header text-center ">
-                Forgot Password
-              </div>
-              <div className="card-body NunitoSans-Regular">
-                <h6 className="card-title">
-                  We have sent the OTP on your registered Email Address and on
-                  Phone Number.{" "}
-                </h6>
-                <form className="form-inline" onSubmit={handleSubmit}>
-                  <div className="form-inline">
-                    <div className="mb-2 float-center">
-                      <label htmlFor="inputEmailOTP" className="sr-only">
-                        emailOTP
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="inputEmailOTP"
-                        value={emailotp}
-                        onChange={Email}
-                        placeholder="Email OTP"
-                      />
-                       <button
-                      type="button"
-                      name="emailverify"
-                      className="btn cob-btn-primary btn-sm text-white text-white mb-2 ml-4"
-                      value="firstone"
-                      onClick={() => emailverify()}
-                    >
-                      Verify
-                    </button>
-                    <div>
-                      {errors.emailotp && (
-                        <p
-                          className="text-danger"
-                          >
-                          {errors.emailotp}
-                        </p>
+          <div className={`col ${classes.form_container}`}>
+            {!show && (
+              <h6 className="text-center mb-4 font-weight-bold">We have sent the OTP on your registered Email Address and on
+                Phone Number.{" "}</h6>)}
+            {!show ? (
+              <Formik
+                initialValues={{
+                  ...INITIAL_FORM_STATE,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={emailverify}
+              >
+                {(formik) =>
+                (<Form>
+                  <div className="mb-3">
+                    <label htmlFor="userName" className="form-label font-weight-bold font-size-16">Email OTP <span className="text-danger">*</span></label>
+                    <Field
+                      className="form-control"
+                      maxLength={6}
+                      id="otp"
+                      placeholder="Enter OTP"
+
+                      type="text"
+                      name="otp"
+
+                    />
+                    <ErrorMessage name="otp">
+                      {(msg) => (<div className="text-danger">{msg}</div>
                       )}
-                      </div>
-                    </div>
-                   
-                    {/* onClick={()=>props.props('a3')} */}
+                    </ErrorMessage>
                   </div>
-                    <div className="form-inline" style={{ display: "none" }}>
-                    <div className="form-group mb-2">
-                      <label htmlFor="staticPhone2" className="sr-only">
-                        SMS OTP
-                      </label>
-                      <input
-                        type="text"
-                        readOnly
-                        className="form-control-plaintext"
-                        id="staticPhone2"
-                      />
-                    </div>
-                    <div className="form-group mx-sm-3 mb-2">
-                      <label htmlFor="inputSmsOtp2" className="sr-only">
-                        SMS OTP
-                      </label>
-                      <input
-                        type="text"
-                        pattern="\d{6}"
-                        className="form-control"
-                        value={smsotp}
-                        onChange={Sms}
-                        id="inputSmsOtp2"
-                        placeholder="SMS OTP"
-                      />
-                      <br />
-                      {errors.smsotp && (
-                        <p
-                          className="abhitest"
-                          style={{
-                            color: "red",
-                            position: "absolute",
-                            zIndex: " 999",
-                            top: "214px",
-                          }}
-                        >
-                          {errors.smsotp}
-                        </p>
-                      )}
-                    </div>
-                    <button
-                      type="submit"
-                      name="otpverify"
-                      value="secondone"
-                      className="btn cob-btn-primary btn-sm text-white mb-2"
-                      onClick={() => smsverify()}
+                  <div className="d-flex">
+                    <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 "
+                      disabled={loading}
                     >
-                      Verify
-                    </button>
-                    {/* onClick={()=>props.props('a3')}  */}
+
+                      {loading && (
+                        <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
+                      )}Verify</button>
                   </div>
-                </form>
-                <p className="card-text" style={{ display: "none" }}>
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </p>
-              </div>
-              <div className="card-footer text-muted text-center">
-                Sabpaisa.in
-              </div>
-            </div>
+
+                </Form>
+                )}
+              </Formik>
+            ) : (
+              <CreatePassword />
+
+            )}
+
           </div>
+
         </div>
       </div>
+
+
     </React.Fragment>
   );
 };

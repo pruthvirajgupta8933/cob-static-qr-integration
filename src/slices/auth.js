@@ -285,7 +285,7 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
         error.message ||
         error.toString();
       thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 

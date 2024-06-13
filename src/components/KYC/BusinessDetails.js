@@ -964,7 +964,7 @@ function BusinessDetails(props) {
                   <button
                     type="submit"
                     disabled={disable}
-                    className="float-lg-right cob-btn-primary text-white btn-sm btn"
+                    className="float-lg-right cob-btn-primary text-white btn-sm btn border-0"
                   >
                     {disable && <>
                       <span className="mr-2">

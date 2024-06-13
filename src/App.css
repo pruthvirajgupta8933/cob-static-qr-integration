@@ -29,7 +29,7 @@ body {
 
 /* Apply primary button styles */
 .btn-sm.cob-btn-primary:not(.client_code_not_available) {
-  background-color: #0156b3 !important;
+  background-color: #286ECD !important;
   color: whitesmoke !important;
 }
 
@@ -360,7 +360,7 @@ select {
 
 /* Primary */
 .cob-btn-primary {
-  background-color: #0156b3 !important;
+  background-color: #286ECD !important;
   color: whitesmoke !important;
 }
 
@@ -376,7 +376,7 @@ select {
 /* secondary */
 
 .cob-btn-secondary {
-  background-color: #ff3e06 !important;
+  background-color: #FF8800 !important;
 }
 
 .cob-btn-secondary :hover {
