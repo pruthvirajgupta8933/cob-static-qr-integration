@@ -26,6 +26,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
+
     const Regexx = {
         acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
     };
@@ -43,13 +44,16 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         platform_id: merchantKycData?.platformId ?? "",
         avg_ticket_size: merchantKycData?.avg_ticket_size ?? "",
         expected_transactions: merchantKycData?.expectedTransactions ?? "",
-        signatory_pan: "",
+        signatory_pan: merchantKycData?.signatoryPAN,
+        prevSignatoryPan: merchantKycData?.signatoryPAN,
+        isSignatoryPanVerified: merchantKycData?.signatoryPAN?.length > 9 && 1,
         address: merchantKycData?.merchant_address_details?.address,
         city: merchantKycData?.merchant_address_details?.city,
         state: merchantKycData?.merchant_address_details?.state,
         pin_code: merchantKycData?.merchant_address_details?.pin_code,
-        billing_label: merchantKycData?.billing_label ?? "",
+        billing_label: merchantKycData?.billingLabel ?? "",
     }
+    
 
 
     const tooltipData = {
@@ -77,16 +81,16 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         avg_ticket_size: Yup.string()
             .trim()
             .required("Required").nullable(),
-            signatory_pan: Yup.string()
+        signatory_pan: Yup.string()
             .allowOneSpace()
             .matches(reqexPAN, "Authorized PAN number is Invalid")
             // .required("Required")
             .nullable(),
-          isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
-          prevSignatoryPan: Yup.string().allowOneSpace()
+        isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
+        prevSignatoryPan: Yup.string().allowOneSpace()
             .oneOf(
-              [Yup.ref("signatory_pan"), null],
-              "You need to verify Your Authorized Signatory PAN Number"
+                [Yup.ref("signatory_pan"), null],
+                "You need to verify Your Authorized Signatory PAN Number"
             )
             .required("Authorized Signatory PAN Number Required")
             .nullable(),
@@ -209,35 +213,36 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         return fullStr
     }
     const authValidation = (values, key, setFieldValue) => {
+        console.log("setFieldValue",setFieldValue)
         setLoadingForSignatory(true)
         // console.log("auth", "auth pan")
         dispatch(
-          authPanValidation({
-            pan_number: values,
-          })
+            authPanValidation({
+                pan_number: values,
+            })
         ).then((res) => {
-          if (
-            res.meta.requestStatus === "fulfilled" &&
-            res.payload.status === true &&
-            res.payload.valid === true
-          ) {
-            const authName = res.payload.first_name + ' ' + res.payload?.last_name
-    
-            setFieldValue(key, values)
-            setLoadingForSignatory(false)
-            setFieldValue("prevSignatoryPan", values)
-            setFieldValue("name_on_pancard", authName)
-            setFieldValue("isSignatoryPanVerified", 1)
-    
-            toast.success(res.payload.message);
-          } else {
-    
-            toast.error(res?.payload?.message);
-            setLoadingForSignatory(false)
-            // setIsLoading(false)
-          }
+            if (
+                res.meta.requestStatus === "fulfilled" &&
+                res.payload.status === true &&
+                res.payload.valid === true
+            ) {
+                const authName = res.payload.first_name + ' ' + res.payload?.last_name
+
+                setFieldValue(key, values)
+                setLoadingForSignatory(false)
+                setFieldValue("prevSignatoryPan", values)
+                setFieldValue("name_on_pancard", authName)
+                setFieldValue("isSignatoryPanVerified", 1)
+
+                toast.success(res.payload.message);
+            } else {
+
+                toast.error(res?.payload?.message);
+                setLoadingForSignatory(false)
+                // setIsLoading(false)
+            }
         });
-      };
+    };
 
     const panValidate = (values, key, setFieldValue) => {
         dispatch(
@@ -286,10 +291,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             // auth signatory pan
             // console.log("dfdfdf")
             authValidation(val[key], "signatory_pan", setFieldValue, setLoadingForSignatory);
-          }
+        }
     };
 
-    
+
 
 
     return (
@@ -334,6 +339,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
                                         (values?.is_pan_verified !== "")) ?
                                         <span className="success input-group-append">
+
                                             <img src={verifiedIcon} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                                         </span>
                                         : <div className="input-group-append">
@@ -391,20 +397,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                         </div>
 
                         <div className="row g-3">
-                            {/* <div className="col-sm-12 col-md-12 col-lg-4">
-                                <label className="col-form-label p-2 mt-0">
-                                    Authorized Signatory PAN <span className="text-danger"></span>
-                                </label>
 
-                                <FormikController
-                                    control="input"
-                                    type="text"
-                                    name="signatory_pan"
-                                    className="form-control fs-12"
-                                    placeholder="Enter PAN"
-
-                                />
-                            </div> */}
                             <div className="col-sm-12 col-md-12 col-lg-4">
                                 <label className="col-form-label mt-0 p-2">
                                     Authorized Signatory PAN
@@ -416,8 +409,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         name="signatory_pan"
                                         className="form-control"
                                         placeholder="Enter Signatory PAN "
-                                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                                        // readOnly={readOnly}
                                         onChange={(e) => {
                                             const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                                             setFieldValue("signatory_pan", uppercaseValue); // Set the uppercase value to form state

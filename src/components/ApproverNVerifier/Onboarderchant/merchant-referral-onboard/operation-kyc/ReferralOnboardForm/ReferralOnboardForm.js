@@ -419,7 +419,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                   Business PAN <span className="text-danger">*</span>
                 </label> */}
                                         <label className="col-form-label mt-0">
-                                            Business PAN<span className="text-danger">*</span>
+                                            Business PAN<span > *</span>
                                         </label>
                                         <div className="input-group">
                                             <Field
@@ -499,7 +499,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                     <div className="col-md-4">
                                         <label className="col-form-label mt-0 p-2">
                                             Authorized Signatory PAN
-                                            <span className="text-danger">*</span>
+                                            <span className="text-danger"></span>
                                         </label>
                                         <div className="input-group">
                                             <Field
