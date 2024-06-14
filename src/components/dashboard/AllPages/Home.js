@@ -211,7 +211,7 @@ function Home() {
       {/* Dashboard Update  */}
       {roles?.merchant &&
         <div className="row mt-3">
-          <div className="col-lg-7 col-sm-12 col-md-12">
+          <div className="col-lg-7 col-sm-12 col-md-12 bg-white">
             {/* chart */}
             <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />
           </div>
@@ -230,7 +230,7 @@ function Home() {
                 heading={`Payment Alert`}
                 text1={`Kindly pay the amount of the subscribed product`}
                 linkName={"Make Payment"}
-                bgColor={"alert-danger"}
+                bgColor={"bg-white"}
               />
             )}
 

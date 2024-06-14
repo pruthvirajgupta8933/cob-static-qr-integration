@@ -1,91 +1,91 @@
 .Placeholder {
-    width: 100%;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 28px;
-    line-height: 33px;
-    /* identical to box height */
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  
-    color: #191919;
-  
-    mix-blend-mode: normal;
-    opacity: 0.7;
-  }
-  
-  .Placeholder2 {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 27px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    color: #191919;
-  
-    mix-blend-mode: normal;
-    opacity: 0.6;
-  }
-  
-  .PlaceholderRemember {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 148.69%;
-    /* identical to box height, or 24px */
-    display: flex;
-    align-items: center;
-  
-    color: #2694e3;
-    text-align: center;
-    justify-content: center;
-    mix-blend-mode: normal;
-  }
-  
-  .button {
-    background: #ed7d31;
-    box-shadow: 0px 0px 8px rgba(255, 109, 0, 0.253633);
-    border-radius: 8px;
-    padding: 10px;
-    color: white;
-    margin: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .steps-text {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 10px;
-    line-height: 12px;
-    text-align: center;
-    letter-spacing: 0.125443px;
-  
-    color: #676767;
-  }
-  
+  width: 100%;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 33px;
+  /* identical to box height */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 
-  .indexedStep {
-    color: white;
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    background-color: rgba(211, 211, 211, 0.8);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .indexedStep.accomplished {
-    background-color: rgba(0, 116, 217, 1);
-  }
+  color: #191919;
+
+  mix-blend-mode: normal;
+  opacity: 0.7;
+}
+
+.Placeholder2 {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #191919;
+
+  mix-blend-mode: normal;
+  opacity: 0.6;
+}
+
+.PlaceholderRemember {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 148.69%;
+  /* identical to box height, or 24px */
+  display: flex;
+  align-items: center;
+
+  color: #2694e3;
+  text-align: center;
+  justify-content: center;
+  mix-blend-mode: normal;
+}
+
+.button {
+  background: #ed7d31;
+  box-shadow: 0px 0px 8px rgba(255, 109, 0, 0.253633);
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+  margin: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.steps-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: center;
+  letter-spacing: 0.125443px;
+
+  color: #676767;
+}
+
+
+.indexedStep {
+  color: white;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  background-color: rgba(211, 211, 211, 0.8);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.indexedStep.accomplished {
+  background-color: rgba(0, 116, 217, 1);
+}

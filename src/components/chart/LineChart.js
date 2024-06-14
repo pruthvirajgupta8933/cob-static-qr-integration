@@ -42,7 +42,7 @@ const LineChart = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle })
                 label: (context) => {
                   const dataset = context.dataset;
                   const value = dataset.data[context.dataIndex];
-                  const extraValue = extraParamName+' : ' + data.extraValues[context.dataIndex];
+                  const extraValue = extraParamName + ' : ' + data.extraValues[context.dataIndex];
                   return `${dataset.label}: ${value} | ${extraValue}`;
                 },
               },

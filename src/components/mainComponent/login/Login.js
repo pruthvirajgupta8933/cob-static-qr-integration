@@ -176,7 +176,7 @@ function Login() {
                 </div>
 
 
-                <div className="col-lg-7 d-flex justify-content-center p-0 scroll-bar-hide">
+                <div className="col-lg-7 d-flex justify-content-center p-0 scroll-bar-hide bg-auth">
                     <div className="container-fluid d-flex flex-column h-100 p-0">
                         <div className="row align-items-start flex-grow-1" >
                             <div className="col">

@@ -19,6 +19,7 @@ function SideNavbar() {
     const selectedMenu = location.pathname.split("/").pop();
 
 
+
     const toggleMenu = (e) => {
         const menuElement = e.currentTarget.nextSibling;
         menuElement.classList.toggle("hide-menu-nav");
@@ -31,18 +32,18 @@ function SideNavbar() {
     }
 
     return (
-        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob} ${headerMenuToggle ? 'show' : ''}`}>
+        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse bg-white text-black font-size-14 ${sideNavClasses.sidebar_cob} ${headerMenuToggle ? 'show' : ''}`}>
 
-            {menuListReducer?.isLoading ? <div className="position-sticky pt-3">
+            {menuListReducer?.isLoading ? <div className="position-sticky pt-3 pl-3">
                 {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) && (
                     <ul className="nav flex-column">
                         <li className="nav-item">
                             <Link
                                 to={url}
-                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "dashboard" ? sideNavClasses.selected_memu : ""}`}
+                                className={`nav-link ${sideNavClasses.sidebar_menu}  ${selectedMenu === "dashboard" ? sideNavClasses.selected_memu : ""}`}
                             >
-                                <i className="fa fa-home"></i>&nbsp;
-                                Dashboard
+                                <i className="fa fa-home"></i>&nbsp;Dashboard
+                                {/* <i className="fa fa-angle-right" ariaHidden="true"></i> */}
                             </Link>
                         </li>
                     </ul>
@@ -52,9 +53,9 @@ function SideNavbar() {
                 {menuListReducer?.enableMenu?.map((menu) => (
                     menu?.is_active &&
                     <React.Fragment key={menu.app_name}>
-                        <div onClick={(e) => toggleMenu(e)} className={`your-custom-class ${isMenuOpen ? 'open-menu' : 'closed-menu'}`}>
-                            <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted ${sideNavClasses.sidebar_heading}`}>
-                                <span>{menu.app_name}</span>
+                        <div onClick={(e) => toggleMenu(e)} >
+                            <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
+                                <span className="font-size-14">{menu.app_name}</span>
                                 <div className="link-secondary">
                                     <i className={`fa ${isMenuOpen ? 'fa-plus' : 'fa-minus'}`} id={`icon_${menu?.app_code}`}></i>
                                 </div>
@@ -66,7 +67,7 @@ function SideNavbar() {
                                 submenu?.is_active && <li className="nav-item" role="menuitem" key={submenu.id}>
                                     <Link
                                         to={`${url}/${submenu.url}`}
-                                        className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
+                                        className={`nav-link ${sideNavClasses.sidebar_menu}  ${selectedMenu === submenu.url.split("/").pop() ? sideNavClasses.selected_memu : ""}`}
                                     >
                                         <i className={submenu.sub_menu_icon}></i>&nbsp;{submenu.submenu_name}
                                     </Link>
@@ -77,30 +78,6 @@ function SideNavbar() {
                         </ul>
                     </React.Fragment>
                 ))}
-
-                {/* display menu for selected merchant */}
-                {/* {auth?.user?.loginId.toString() === "11235" && (
-                    <ul className="nav flex-column" role="menu">
-                        <li className="nav-item" role="menuitem">
-                            <Link
-                                to={`${url}/transaction-history-merchant`}
-                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "transaction-history-merchant" ? sideNavClasses.selected_memu : ""}`}
-                            >
-                                <i className="fa fa-bank"></i>
-                                Transactions History
-                            </Link>
-                        </li>
-                        <li className="nav-item" role="menuitem">
-                            <Link
-                                to={`${url}/settled-transaction-merchant`}
-                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settled-transaction-merchant" ? sideNavClasses.selected_memu : ""}`}
-                            >
-                                <i className="fa fa-bank"></i>
-                                Settlement Report
-                            </Link>
-                        </li>
-                    </ul>
-                )} */}
 
                 {/* display menu for selected merchant */}
                 {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
@@ -129,7 +106,7 @@ function SideNavbar() {
                     </li>
                 </ul>
             </div> :
-                <div className="text-white">
+                <div className="text-dark">
                     <ProgressBar />
                 </div>
 

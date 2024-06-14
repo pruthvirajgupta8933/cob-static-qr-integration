@@ -146,34 +146,23 @@ const EnterUserID = (props) => {
                               placeholder="Enter email address"
                             />
                             {
-                              <ErrorMessage name="email">
-                                {(msg) => (
-                                  <div
-                                    className="abhitest "
-                                    style={{
-                                      color: "red",
-                                      position: "absolute",
-                                      zIndex: " 999",
-                                      marginTop: "15px",
-                                    }}
-                                  >
-                                    {msg}
-                                  </div>
-                                )}
-                              </ErrorMessage>
+                              <p className="text-danger">
+                                <ErrorMessage name="email">
+                                  {(msg) => msg}
+                                </ErrorMessage>
+                              </p>
+
                             }
-                            <small id="emailHelp" className="form-text text-muted">
-                              We'll never share your email with anyone else.
-                            </small>
+                            <div className="d-flex">
+                              <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 "
+                                disabled={loading}
+                              >
+                                {loading && (
+                                  <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
+                                )}Submit</button>
+                            </div>
                           </div>
-                          <div className="d-flex">
-                            <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 "
-                              disabled={loading}
-                            >
-                              {loading && (
-                                <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>
-                              )}Submit</button>
-                          </div>
+
                         </Form>
                       </>
                     )}

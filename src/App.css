@@ -50,11 +50,18 @@ body {
 }
 
 
+.bg-auth {
+  background-color: #FAFDFF;
 
+}
+
+.bg-screen-color {
+  background-color: #EFF2FF;
+}
 
 .bg-body-sp {
 
-
+  background-color: #EFF2FF;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -254,6 +261,18 @@ select {
 
 .font-size-16 {
   font-size: 16px !important;
+}
+
+.font-size-18 {
+  font-size: 18px !important;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.font-sofia-medium {
+  font-family: 'Sofia-Pro-Medium';
 }
 
 .maskedInput {
