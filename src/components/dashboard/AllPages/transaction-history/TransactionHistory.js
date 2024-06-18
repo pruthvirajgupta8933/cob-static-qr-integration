@@ -59,7 +59,7 @@ const TransactionHistory = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [radioInputVal, setRadioInputVal] = useState({})
-   const [refundModal, setRefundModal] = useState(false)
+    const [refundModal, setRefundModal] = useState(false)
 
 
 
@@ -567,9 +567,9 @@ const TransactionHistory = () => {
                                                 </div>
                                             )}
 
-                                            <div className="form-group col-lg-3">
+                                            <div className="form-group col-lg-3 ">
                                                 <label htmlFor="dateRange" className="form-label">Start Date - End Date</label>
-                                                <div className={`input-group mb-3 d-flex justify-content-between ${classes.calendar_border}`} >
+                                                <div className={`input-group mb-3 d-flex justify-content-between  bg-white ${classes.calendar_border}`} >
                                                     <DatePicker
                                                         id="dateRange"
                                                         selectsRange={true}
@@ -686,13 +686,13 @@ const TransactionHistory = () => {
 
                                         {/* do not remove the comment code */}
                                         <div className="form-group col-md-6  mt-2 d-flex justify-content-end">
-                                            <div>
+                                            {/* <div>
                                                 <button
                                                     className="btn cob-btn-primary btn-sm mt-4"
                                                     onClick={() => refundModalHandler()}
                                                     disabled={(radioInputVal?.status?.toLocaleLowerCase() !== "success" && radioInputVal?.status?.toLocaleLowerCase() !== "settled")}
                                                 >Refund</button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <h6>Total Record : {txnList.length} </h6>
@@ -706,7 +706,7 @@ const TransactionHistory = () => {
                                     <thead>
                                         {txnList.length > 0 ? (
                                             <tr>
-                                                <th></th>
+                                                {/* <th></th> */}
                                                 <th> S.No</th>
                                                 <th> Trans ID</th>
                                                 <th> Client Trans ID</th>
@@ -758,7 +758,7 @@ const TransactionHistory = () => {
                                                 return (
                                                     <tr key={uuidv4()}>
                                                         {/* do not remove the commentted code */}
-                                                        <td>
+                                                        {/* <td>
                                                             <input
                                                                 name="refund_request"
                                                                 value={item.txn_id}
@@ -766,7 +766,7 @@ const TransactionHistory = () => {
                                                                 onClick={(e) => setRadioInputVal(item)}
                                                                 checked={item.txn_id === radioInputVal?.txn_id}
                                                             />
-                                                        </td>
+                                                        </td> */}
                                                         <td>{i + 1}</td>
                                                         <td>{item.txn_id}</td>
                                                         <td>{item.client_txn_id}</td>

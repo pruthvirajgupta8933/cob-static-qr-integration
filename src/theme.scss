@@ -2,11 +2,12 @@
 
 // $primaryColor: #29205d;
 $primaryColor: #154280;
+$primaryColorSecond: #286ECD;
 $secondaryColor: #FF8F00;
 $lightGrayColor: #D2D2D2;
 
 .webColorBg1 {
-    background-color: #EFF5FC;
+    background-color: #ffffff;
 }
 
 // $buttonPrimary:
@@ -25,8 +26,13 @@ $lightGrayColor: #D2D2D2;
 .headerBg {
     background-color: $primaryColor;
 }
+.primaryColorSecond {
+    background-color: $primaryColorSecond;
+}
 
-
+.dashboard_bg{
+    // background-color: #EFF2FF;
+}
 
 
 // --------------------------------------------------------------------------------- 

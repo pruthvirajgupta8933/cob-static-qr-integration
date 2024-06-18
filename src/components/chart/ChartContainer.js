@@ -1,5 +1,6 @@
 import React from 'react';
 import LineChart from './LineChart';
+import BarChart from './BarChart';
 
 const ChartContainer = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle }) => {
   // const chartData = {
@@ -11,7 +12,7 @@ const ChartContainer = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTit
 
   return (
     <div className="chart-container" >
-      <LineChart data={data} chartTitle={chartTitle} extraParamName={extraParamName} xAxisTitle={xAxisTitle} yAxisTitle={yAxisTitle} />
+      <BarChart data={data} chartTitle={chartTitle} extraParamName={extraParamName} xAxisTitle={xAxisTitle} yAxisTitle={yAxisTitle} />
     </div>
   );
 };

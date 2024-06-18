@@ -26,6 +26,7 @@ import HomeOpenModal from "./HomeOpenModal";
 import KycStatusUpdateMessage from "./KycStatusUpdateMesssage";
 import menulistService from "../../../services/cob-dashboard/menulist.service";
 import toastConfig from "../../../utilities/toastTypes";
+import { graphDate } from "../../../utilities/graphDate";
 
 
 function Home() {
@@ -97,7 +98,10 @@ function Home() {
   let extraValues = []
 
   if (roles.merchant) {
-    txnChartData?.map((item) => {
+
+    const updatedDate = graphDate(txnChartData || [])
+
+    updatedDate?.map((item) => {
       labels.push(moment(item?.txnDate).format('MMMM Do'))
       values.push(parseInt(item?.txnNo))
       extraValues.push(parseInt(item?.tsr))
@@ -211,13 +215,13 @@ function Home() {
       {/* Dashboard Update  */}
       {roles?.merchant &&
         <div className="row mt-3">
-          <div className="col-lg-7 col-sm-12 col-md-12">
+          <div className="col-lg-7 col-sm-12 col-md-12 bg-white">
             {/* chart */}
             <ChartContainer chartTitle="Transaction" data={chartDataArr} extraParamName={"TSR (%)"} xAxisTitle="Transaction Date" yAxisTitle="No. Of Transaction" />
           </div>
 
           <div className="col-lg-5 col-sm-12 col-md-12">
-            <h6 className="bg-secondary p-2 text-white">Dashboard Update</h6>
+            <h6 className="primaryColorSecond p-2 text-white">Dashboard Update</h6>
 
             {/* KYC alert */}
             <KycAlert />
@@ -230,7 +234,7 @@ function Home() {
                 heading={`Payment Alert`}
                 text1={`Kindly pay the amount of the subscribed product`}
                 linkName={"Make Payment"}
-                bgColor={"alert-danger"}
+                bgColor={"bg-white"}
               />
             )}
 
@@ -246,7 +250,7 @@ function Home() {
       <br />
       {/* static content displaying */}
 
-      <HomeContent />
+      {/* <HomeContent /> */}
       {/* Display the products  */}
       <HomeProduct />
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}

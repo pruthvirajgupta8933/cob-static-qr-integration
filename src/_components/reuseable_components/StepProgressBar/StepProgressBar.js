@@ -11,18 +11,18 @@ import { v4 as uuidv4 } from 'uuid';
 function StepComplete(props) {
 
   const { data, progressPercentage } = props
-  let colorValue = "#e4e4e4";
+  let colorValue = "#ffffff";
 
   if (data.id === 1 && (progressPercentage >= 1 && progressPercentage <= 100)) {
-    colorValue = "#ed7d31"
+    colorValue = "#286ECD"
   } else if (data.id === 2 && (progressPercentage > 33)) {
-    colorValue = "#ed7d31"
+    colorValue = "#286ECD"
   } else if (data.id === 3 && (progressPercentage > 33.4 && progressPercentage <= 100)) {
-    colorValue = "#ed7d31"
+    colorValue = "#286ECD"
   } else if (data.id === 4 && (progressPercentage > 67 && progressPercentage <= 100)) {
-    colorValue = "#ed7d31"
+    colorValue = "#286ECD"
   } else {
-    colorValue = "#e4e4e4";
+    colorValue = "#ffffff";
   }
 
   return (
@@ -31,6 +31,9 @@ function StepComplete(props) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
+      stroke="#286ECD"
+      strokeWidth="4px"
+      style={{ borderRadius: 12 }}
       xmlns="http://www.w3.org/2000/svg"
     >
       <circle cx="12" cy="12" r="12" fill={colorValue} />
@@ -109,7 +112,7 @@ function StepProgressBar(props) {
               <StepComplete data={s} progressPercentage={percentage} />
             </div>
 
-            <div className="steps-text" style={{ width: 60, marginTop: 60, marginLeft: 0, fontSize: "14px" }} >
+            <div className="steps-text" style={{ width: 70, marginBottom: 60, marginLeft: 0, fontSize: "14px" }} >
               {s.title}
             </div>
           </div>
@@ -121,11 +124,11 @@ function StepProgressBar(props) {
   //   console.log(steps)
 
   return (
-    <div className="App">
+    <div className="mb-5">
       <div>
         <div className="text-center">
           <div>
-            <h3 className="Satoshi-Bold">KYC Status</h3>
+            <h3 className="mb-4">KYC Status</h3>
           </div>
         </div>
         <br />
@@ -133,14 +136,15 @@ function StepProgressBar(props) {
         <div style={{ width: "80%", margin: "0 auto" }}>
           <ProgressBar
             percent={percentage}
-            filledBackground="linear-gradient(to right, #ED7D31, #ED7D00)"
+            height={4}
+            filledBackground="#286ECD"
+            unfilledBackground="#286ECD"
           >
             {steps}
 
           </ProgressBar>
         </div>
-        <br />
-        <br />
+
       </div>
     </div>
   );

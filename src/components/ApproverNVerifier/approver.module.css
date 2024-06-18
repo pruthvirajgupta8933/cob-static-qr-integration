@@ -1,9 +1,9 @@
-.cursor_pointer{
+.cursor_pointer {
     cursor: pointer;
 }
 
 
 
 .active_tab {
-    background-color: rgb(219, 215, 210) !important;
+    background-color: rgb(255, 255, 255) !important;
 }

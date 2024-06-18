@@ -202,10 +202,10 @@ function DashboardMainContent() {
     return (<React.Fragment>
         <DashboardHeader />
         <div className="container-fluid">
-            <div className="row">
+            <div className="row dashboard_bg">
                 <SideNavbar />
 
-                <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob}`}>
+                <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}>
                     <Switch>
                         <Route exact path={path}>
                             <Home />
@@ -452,7 +452,7 @@ function DashboardMainContent() {
                             <PayoutTransaction />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/payout/transactions`} 
+                        <AuthorizedRoute exact path={`${path}/payout/transactions`}
                             Component={TransactionsPayoutHistory} roleList={{ merchant: true }}>
                             <PayoutTransaction />
                         </AuthorizedRoute>
