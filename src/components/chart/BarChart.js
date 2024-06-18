@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
 const BarChart = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle }) => {
+
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
 
@@ -54,7 +55,11 @@ const BarChart = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle }) 
                         x: {
                             title: {
                                 display: true,
-                                text: xAxisTitle
+                                text: xAxisTitle,
+                                padding: 10,
+                                font: {
+                                    size: 15,
+                                }
                             },
                             grid: {
                                 display: false, // hide the x-axis grid lines
@@ -63,7 +68,12 @@ const BarChart = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle }) 
                         y: {
                             title: {
                                 display: true,
-                                text: yAxisTitle
+                                text: yAxisTitle,
+                                padding: 10,
+                                align: 'center',
+                                font: {
+                                    size: 15,
+                                }
                             },
                             grid: {
                                 display: false, // hide the x-axis grid lines
@@ -73,6 +83,20 @@ const BarChart = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle }) 
                 },
             });
         }
+
+
+        //     align: 'center',
+        //     color: '#000000',
+        //     font: {
+        //         size: 15,
+        //         weight: 'bold',
+        //         lineHeight: 1.2,
+        //     },
+        // },
+        // beginAtZero: true, // start the y-axis from 0
+        // ticks: {
+        //     stepSize: 1, // set the y-axis step size to 1
+        // },
 
         // Cleanup: Destroy the chart instance when the component is unmounted
         return () => {

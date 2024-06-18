@@ -2,6 +2,7 @@
 
 // $primaryColor: #29205d;
 $primaryColor: #154280;
+$primaryColorSecond: #286ECD;
 $secondaryColor: #FF8F00;
 $lightGrayColor: #D2D2D2;
 
@@ -24,6 +25,9 @@ $lightGrayColor: #D2D2D2;
 // outer dashboard
 .headerBg {
     background-color: $primaryColor;
+}
+.primaryColorSecond {
+    background-color: $primaryColorSecond;
 }
 
 .dashboard_bg{
