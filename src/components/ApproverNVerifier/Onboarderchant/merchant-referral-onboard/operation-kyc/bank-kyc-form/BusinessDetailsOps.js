@@ -14,9 +14,11 @@ import kycOperationService from '../../../../../../services/kycOperation.service
 import { Regex, RegexMsg } from '../../../../../../_components/formik/ValidationRegex'
 import { authPanValidation } from '../../../../../../slices/kycSlice';
 import gotVerified from "../../../../../../assets/images/verified.png"
+import { businessOverviewState } from '../../../../../../slices/kycSlice';
 function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const dispatch = useDispatch()
     const [submitLoader, setSubmitLoader] = useState(false);
+    const [BusinessOverview, setBusinessOverview] = useState([]);
     const [avgTicketAmount, setAvgTicketAmount] = useState([]);
     const [transactionRangeOption, setTransactionRangeOption] = useState([]);
     const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
@@ -49,11 +51,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         isSignatoryPanVerified: merchantKycData?.signatoryPAN?.length > 9 && 1,
         address: merchantKycData?.merchant_address_details?.address,
         city: merchantKycData?.merchant_address_details?.city,
-        state: merchantKycData?.merchant_address_details?.state,
+        state_id: merchantKycData?.merchant_address_details?.state,
         pin_code: merchantKycData?.merchant_address_details?.pin_code,
         billing_label: merchantKycData?.billingLabel ?? "",
     }
-    
+
 
 
     const tooltipData = {
@@ -100,7 +102,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             .required("Required").nullable(),
         pin_code: Yup.string()
             .required("Required").nullable(),
-        state: Yup.string()
+        state_id: Yup.string()
             .required("Required").nullable(),
         billing_label: Yup.string()
             .allowOneSpace()
@@ -155,6 +157,19 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         "slab_range",
         avgTicketAmount
     );
+    useEffect(() => {
+        dispatch(businessOverviewState())
+          .then((resp) => {
+            const data = convertToFormikSelectJson(
+              "stateId",
+              "stateName",
+              resp.payload
+            );
+            setBusinessOverview(data);
+          })
+          .catch((err) => console.log(err));
+        // console.log("useEffect call")
+      }, []);
 
     const handleSubmit = (value) => {
         setSubmitLoader(true)
@@ -170,7 +185,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         const merchantAddressDetails = {
             address: value.address,
             city: value.city,
-            state: value.state,
+            state: value.state_id,
             pin_code: value.pin_code
 
         }
@@ -189,6 +204,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             name_on_pancard: value.name_on_pancard,
 
         }
+       
+    
 
 
         dispatch(businessDetailsSlice(postData)).then((resp) => {
@@ -213,7 +230,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         return fullStr
     }
     const authValidation = (values, key, setFieldValue) => {
-        console.log("setFieldValue",setFieldValue)
+        console.log("setFieldValue", setFieldValue)
         setLoadingForSignatory(true)
         // console.log("auth", "auth pan")
         dispatch(
@@ -315,7 +332,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     <Form>
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
-                                <label className="col-form-label mt-0 py-1">
+                                <label className="col-form-label">
                                     Business PAN  <span className="text-danger">*</span>
                                 </label>
                                 <div className="input-group">
@@ -380,7 +397,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 )}
                             </div>
                             <div className="col-md-6">
-                                <label className="col-form-label p-2 mt-0">
+                                <label className="col-form-label">
                                     Website<span className="text-danger">*</span>
                                 </label>
                                 <FormikController
@@ -425,9 +442,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         </span>
                                     ) : (
                                         <div className="input-group-append">
-                                            <a
+                                            <button
                                                 href={() => false}
                                                 className="btn cob-btn-primary text-white btn-sm"
+                                                disabled={loadingForSiganatory}
                                                 onClick={() => {
                                                     checkInputIsValid(
                                                         errors,
@@ -446,7 +464,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                                     :
                                                     "Verify"
                                                 }
-                                            </a>
+                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -503,11 +521,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 </label>
 
                                 <FormikController
-                                    control="input"
-                                    type="text"
-                                    name="state"
-                                    className="form-control fs-12"
-                                    placeholder="Enter State"
+                                    control="select"
+                                    name="state_id"
+                                    options={BusinessOverview}
+                                    className="form-select"
 
                                 />
                             </div>
