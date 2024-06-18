@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Form, Formik, Field } from "formik";
 import { panValidation } from '../../../../../../slices/kycSlice';
 import FormikController from "../../../../../../_components/formik/FormikController";
@@ -15,6 +15,8 @@ import { toast } from 'react-toastify';
 import { values } from 'lodash';
 import gotVerified from "../../../../../../assets/images/verified.png"
 import { authPanValidation } from '../../../../../../slices/kycSlice';
+import { businessOverviewState } from '../../../../../../slices/kycSlice';
+import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 
 function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCode, marginTopCss }) {
 
@@ -22,6 +24,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const [submitLoader, setSubmitLoader] = useState(false);
     const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
+    const [BusinessOverview, setBusinessOverview] = useState([]);
     const [disable, setDisable] = useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
@@ -68,7 +71,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         signatory_pan: "",
         address: "",
         city: "",
-        state: "",
+        state_id: "",
         pin_code: "",
         password: generateRandomPassword(),
         isPasswordReq: referralChild
@@ -108,22 +111,23 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .required("Required")
             .nullable(),
 
-            // isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
-            // prevSignatoryPan: Yup.string().allowOneSpace()
-            //   .oneOf(
-            //     [Yup.ref("signatory_pan"), null],
-            //     "You need to verify Your Authorized Signatory PAN Number"
-            //   )
-            //   .nullable(),
-        // signatory_pan: Yup.string()
-        //     .allowOneSpace()
-        //     .required("Required")
-        //     .nullable(),
+        isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
+        prevSignatoryPan: Yup.string().allowOneSpace()
+            .oneOf(
+                [Yup.ref("signatory_pan"), null],
+                "You need to verify Your Authorized Signatory PAN Number"
+            )
+            .nullable(),
+        signatory_pan: Yup.string()
+            .allowOneSpace()
+            .matches(reqexPAN, "Authorized PAN number is Invalid")
+            .required("Required")
+            .nullable(),
         city: Yup.string()
             .allowOneSpace()
             .required("Required")
             .nullable(),
-        state: Yup.string()
+        state_id: Yup.string()
             .allowOneSpace()
             .required("Required")
             .nullable(),
@@ -143,7 +147,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const handleSubmitContact = async (value, { resetForm }) => {
 
         setDisable(true)
-        const { fullName, mobileNumber, email_id, password, username, pan_card, city, state, address, signatory_pan, pin_code } = value;
+        const { fullName, mobileNumber, email_id, password, username, pan_card, city, state_id, address, signatory_pan, pin_code } = value;
         // alert(3)
         setSubmitLoader(true)
         try {
@@ -180,7 +184,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     merchant_address: {
                         address: address,
                         city: city,
-                        state: state,
+                        state: state_id,
                         pin_code: pin_code
                     }
                 };
@@ -276,6 +280,20 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         setIsLoading(false)
         // setRegisterWithGstState(false)
     };
+
+    useEffect(() => {
+        dispatch(businessOverviewState())
+          .then((resp) => {
+            const data = convertToFormikSelectJson(
+              "stateId",
+              "stateName",
+              resp.payload
+            );
+            setBusinessOverview(data);
+          })
+          .catch((err) => console.log(err));
+        // console.log("useEffect call")
+      }, []);
 
     const authValidation = (values, key, setFieldValue) => {
         setLoadingForSignatory(true)
@@ -413,7 +431,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
                             {!referralChild && (
                                 <>
-                                   
+
                                     <div className="col-lg-4">
                                         {/* <label className="col-form-label mt-0 p-2">
                   Business PAN <span className="text-danger">*</span>
@@ -494,8 +512,9 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                         )}
 
 
+
                                     </div>
-                                   
+
                                     <div className="col-md-4">
                                         <label className="col-form-label mt-0 p-2">
                                             Authorized Signatory PAN
@@ -508,8 +527,8 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                                 className="form-control"
                                                 placeholder="Enter Signatory PAN"
                                                 onChange={(e) => {
-                                                    const uppercaseValue = e.target.value.toUpperCase(); 
-                                                    setFieldValue("signatory_pan", uppercaseValue); 
+                                                    const uppercaseValue = e.target.value.toUpperCase();
+                                                    setFieldValue("signatory_pan", uppercaseValue);
                                                     setFieldValue("isSignatoryPanVerified", "")
                                                 }}
 
@@ -584,12 +603,20 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                         />
                                     </div>
                                     <div className="col-lg-4">
-                                        <FormikController
+                                        {/* <FormikController
                                             control="input"
                                             name="state"
                                             placeholder="Enter State"
                                             className="form-control"
                                             label="State *"
+                                        /> */}
+                                        <FormikController
+                                            control="select"
+                                            name="state_id"
+                                            label="State *"
+                                            options={BusinessOverview}
+                                            className="form-select"
+                                           
                                         />
                                     </div>
                                     <div className="col-lg-4">
