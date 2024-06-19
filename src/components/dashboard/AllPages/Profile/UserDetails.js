@@ -19,7 +19,7 @@ function UserDetails() {
 
     return (
         <div className="row">
-            <div className="col-lg-12 ">
+            <div className="col-lg-12 p-0">
                 <div className="card">
                     <div className="card-body">
                         <form>
