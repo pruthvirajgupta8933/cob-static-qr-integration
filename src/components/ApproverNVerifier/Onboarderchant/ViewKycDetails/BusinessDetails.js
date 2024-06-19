@@ -403,7 +403,7 @@ const BusinessDetails = (props) => {
           title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
           formContent={
             <>
-              <div className="table-responsive table_maxheight">
+              <div className="table-responsive table_maxheight m-3">
                 <table className="table table-striped">
                   <tbody>
                     {factumData?.map((data, index) => (
@@ -438,7 +438,7 @@ const BusinessDetails = (props) => {
           isOpen={isCollapseOpen === 3}
           onToggle={() => {
             toggleCollapse(3);
-           
+
           }}
         />
 
