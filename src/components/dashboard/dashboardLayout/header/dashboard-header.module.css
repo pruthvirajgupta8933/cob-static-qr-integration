@@ -55,6 +55,10 @@
     flex: 1;
 }
 
+.col3 {
+    font-family: "Sofia-Pro-Regular";
+}
+
 
 
 @media only screen and (max-width: 768px) {
