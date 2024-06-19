@@ -159,17 +159,17 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     );
     useEffect(() => {
         dispatch(businessOverviewState())
-          .then((resp) => {
-            const data = convertToFormikSelectJson(
-              "stateId",
-              "stateName",
-              resp.payload
-            );
-            setBusinessOverview(data);
-          })
-          .catch((err) => console.log(err));
+            .then((resp) => {
+                const data = convertToFormikSelectJson(
+                    "stateId",
+                    "stateName",
+                    resp.payload
+                );
+                setBusinessOverview(data);
+            })
+            .catch((err) => console.log(err));
         // console.log("useEffect call")
-      }, []);
+    }, []);
 
     const handleSubmit = (value) => {
         setSubmitLoader(true)
@@ -204,8 +204,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             name_on_pancard: value.name_on_pancard,
 
         }
-       
-    
+
+
 
 
         dispatch(businessDetailsSlice(postData)).then((resp) => {
@@ -232,7 +232,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const authValidation = (values, key, setFieldValue) => {
         console.log("setFieldValue", setFieldValue)
         setLoadingForSignatory(true)
-        // console.log("auth", "auth pan")
         dispatch(
             authPanValidation({
                 pan_number: values,
@@ -556,12 +555,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     className="form-control fs-12"
 
                                 />
-                                {/* <p className="fs-10">
-                                    Please give a brief description of the nature of your
-                                    business. Please give examples of products you sell, business
-                                    category you operate in, your customers and channels through
-                                    which you operate (website, offline-retail).
-                                </p> */}
+
                             </div>
                             <div className="col-sm-12 col-md-12 col-lg-4">
                                 <label className="col-form-label p-2 mt-0">
@@ -614,20 +608,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
 
                         </div>
-                        {/* <div className="col-12 mt-4 ">
-                            {!isEditableInput &&
-                                <button type="submit" className="btn cob-btn-primary btn-sm" disabled={disable}>Save
-                                    {submitLoader && <>
-                                            <span className="spinner-border spinner-border-sm" role="status"
-                                               ariaHidden="true" />
-                                            <span className="sr-only">Loading...</span>
-                                        </>}
-                                </button>
-                            }
-                            {businessDetails?.resp?.status === true &&
-                                <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(4)}>Next</a>
-                            }
-                        </div> */}
                         <div className="row">
                             <div className="col-lg-6 mt-2">
 
