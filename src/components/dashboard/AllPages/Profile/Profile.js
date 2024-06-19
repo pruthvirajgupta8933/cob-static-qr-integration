@@ -20,7 +20,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const clientId = user.clientMerchantDetailsList[0]?.clientId
 
-const handleTabClick = (currenTabVal) => {
+  const handleTabClick = (currenTabVal) => {
     setCurrentTab(currenTabVal)
   };
 
@@ -81,7 +81,7 @@ const handleTabClick = (currenTabVal) => {
         <h5 className>My Profile</h5>
       </div>
       <div className="row">
-        <div className="col-2 bg-light p-1">
+        <div className="col-lg-2 bg-light p-1">
           {/* Tab navs */}
           <div className="nav flex-column nav-pills text-start " id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 1 && 'active-secondary'}`} onClick={() => handleTabClick(1)} id="v-pills-link1-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link1" aria-selected="true">
@@ -107,7 +107,7 @@ const handleTabClick = (currenTabVal) => {
 
           {/* Tab navs */}
         </div>
-        <div className="col-lg-8 col-md-10 col-sm-10">
+        <div className="col-lg-8">
           {/* Tab content */}
           <div className="tab-content" id="v-pills-tabContent">
             {currentTab === 1 && <UserDetails />}
