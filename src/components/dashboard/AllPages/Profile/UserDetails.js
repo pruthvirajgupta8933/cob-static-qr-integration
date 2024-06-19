@@ -8,6 +8,7 @@ function UserDetails() {
     const roleBasedShowTab = roleBasedAccess()
 
     const { user } = useSelector((state) => state.auth);
+    const loginId = user?.loginId;
 
     const {
         clientContactPersonName,
@@ -23,6 +24,12 @@ function UserDetails() {
                 <div className="card">
                     <div className="card-body">
                         <form>
+                        <div className="row mb-3">
+                                <label className="col-sm-2 col-form-label">Login Id</label>
+                                <div className="col-sm-10">
+                                    <input type="text" className="form-control" value={loginId} disabled={true} />
+                                </div>
+                            </div>
                             <div className="row mb-3">
                                 <label className="col-sm-2 col-form-label">Name</label>
                                 <div className="col-sm-10">

@@ -407,7 +407,7 @@ const CompleteVerification = (props) => {
         <div className="col-lg-3">
           <button type="button" disabled={disable} onClick={() => {
             submitHandler()
-          }} className="btn  cob-btn-primary  btn-sm text-white m-2">
+          }} className="btn  cob-btn-primary  btn-sm text-white">
             {buttonLoader && <>
               <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
               <span className="sr-only">Loading...</span>
@@ -422,7 +422,7 @@ const CompleteVerification = (props) => {
 
       {(enableBtnApprover) && (KycTabStatus.status === KYC_STATUS_PENDING || KycTabStatus.status === KYC_STATUS_PROCESSING || KycTabStatus.status === KYC_STATUS_VERIFIED) &&
         <div className="col-lg-3">
-          <button type="button" disabled={disable} onClick={() => { submitHandler() }} className="btn  cob-btn-primary  btn-sm text-white m-2">
+          <button type="button" disabled={disable} onClick={() => { submitHandler() }} className="btn  cob-btn-primary  btn-sm text-white">
             {buttonLoader && <>
               <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
               <span className="sr-only">Loading...</span>
@@ -437,7 +437,7 @@ const CompleteVerification = (props) => {
       <div className="col-lg-3">
         {(roles.approver || roles.verifier) && (currenTab === 3 || currenTab === 4 || currenTab === 5) &&
           <button type="button"
-            onClick={() => setButtonClick(true)} disabled={disable} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button>}</div>
+            onClick={() => setButtonClick(true)} disabled={disable} className="btn btn-danger btn-sm text-white">Reject KYC</button>}</div>
 
 
       <div className="col-lg-12">
