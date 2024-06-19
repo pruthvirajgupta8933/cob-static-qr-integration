@@ -162,7 +162,7 @@ function Login() {
                                         <hr className={`${classes.hr_class_two}`} />
                                     </div>
                                     <div className="d-flex justify-content-around my-1">
-                                        <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-envelope"></i> Support@sabpaisa.in</p>
+                                        <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-envelope"></i> support@sabpaisa.in</p>
                                         <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-phone"></i> 011-41733223</p>
                                     </div>
 
@@ -254,7 +254,7 @@ function Login() {
 
                                         <div className="form-text p-2 my-3 text-right font-size-14">
                                             <Link to={`/forget/${queryString}`} className="text-decoration-underline">
-                                                Forgot Password ?
+                                                Forgot Password <span className="ml-1">?</span>
                                             </Link>
                                         </div>
                                         <div className="d-flex">

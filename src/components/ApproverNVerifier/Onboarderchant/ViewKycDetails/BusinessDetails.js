@@ -10,11 +10,15 @@ import ViewKycCollapse from './ViewKycCollapse';
 import CustomLoader from '../../../../_components/loader';
 
 const BusinessDetails = (props) => {
-  const {  KycTabStatus, selectedUserData } = props;
+  const { KycTabStatus, selectedUserData } = props;
   const { classifications, nic_codes: nicCodes } = selectedUserData?.udyam_data || {};
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
+  const { kycUserList } = useSelector(state => state?.kyc || {});
+  const factumData = kycUserList?.factum_data
+  console.log("factumData", factumData)
+
 
 
   const panListData = useSelector(
@@ -29,7 +33,7 @@ const BusinessDetails = (props) => {
   );
 
 
-const { user } = auth;
+  const { user } = auth;
   const { loginId } = user;
 
   const handleVerifyClick = async () => {
@@ -73,7 +77,7 @@ const { user } = auth;
       }
     }
   };
-  
+
 
   // useEffect(()=>{
   //   // console.log(selectedUserData?.panCard)
@@ -84,7 +88,7 @@ const { user } = auth;
   // },[selectedUserData])
 
   const displayPanData = async (data) => {
-    
+
     try {
       const panDetails = {
         "pan": selectedUserData?.panCard,
@@ -94,8 +98,8 @@ const { user } = auth;
       await dispatch(getMerchantpanData(panDetails));
 
     } catch (error) {
-      
-     
+
+
     }
   };
 
@@ -106,71 +110,71 @@ const { user } = auth;
     // Check if the collapse is being opened or closed
     const isOpening = isCollapseOpen !== index;
     setIsCollapseOpen(isOpening ? index : null);
-// Check if the collapse with the specified index is open
+    // Check if the collapse with the specified index is open
     // if (isOpening && index === 2) {
-        
-    // }
-};
 
-const formFields = [
-  {
-    label: "GSTIN",
-    value: selectedUserData?.gstNumber ? selectedUserData.gstNumber : "Merchant does not have GSTIN",
-    verificationMessage: selectedUserData?.gstNumber ? "Verified" : "Not Verified",
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: `form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"}`,
-  },
-  {
-    label: "Business PAN",
-    value: selectedUserData?.panCard,
-    verificationMessage: selectedUserData?.panCard ? "Verified" : "Not Verified",
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: "form-control",
-  },
-  {
-    label: "Authorized Signatory PAN",
-    value: selectedUserData?.signatoryPAN,
-    verificationMessage: selectedUserData?.signatoryPAN ? "Verified" : "Not Verified",
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: "form-control",
-  },
-  {
-    label: "Business Name",
-    value: selectedUserData?.companyName ? selectedUserData.companyName : "",
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: "form-control",
-  },
-  {
-    label: "PAN Owner's Name",
-    value: selectedUserData?.nameOnPanCard,
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: "form-control",
-  },
-  {
-    label: "Address",
-    value: selectedUserData?.operationalAddress,
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: "form-control",
-  },
-  {
-    label: "City",
-    value: selectedUserData?.merchant_address_details?.city,
-    gridClasses: "col-sm-3 col-md-3 col-lg-3",
-    inputClasses: "form-control",
-  },
-  {
-    label: "State",
-    value: selectedUserData?.merchant_address_details?.state_name,
-    gridClasses: "col-sm-3 col-md-3 col-lg-3",
-    inputClasses: "form-control",
-  },
-  {
-    label: "Pin Code",
-    value: selectedUserData?.pinCode,
-    gridClasses: "col-sm-12 col-md-6 col-lg-6",
-    inputClasses: "form-control",
-  },
-];
+    // }
+  };
+
+  const formFields = [
+    {
+      label: "GSTIN",
+      value: selectedUserData?.gstNumber ? selectedUserData.gstNumber : "Merchant does not have GSTIN",
+      verificationMessage: selectedUserData?.gstNumber ? "Verified" : "Not Verified",
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: `form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"}`,
+    },
+    {
+      label: "Business PAN",
+      value: selectedUserData?.panCard,
+      verificationMessage: selectedUserData?.panCard ? "Verified" : "Not Verified",
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+    },
+    {
+      label: "Authorized Signatory PAN",
+      value: selectedUserData?.signatoryPAN,
+      verificationMessage: selectedUserData?.signatoryPAN ? "Verified" : "Not Verified",
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+    },
+    {
+      label: "Business Name",
+      value: selectedUserData?.companyName ? selectedUserData.companyName : "",
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+    },
+    {
+      label: "PAN Owner's Name",
+      value: selectedUserData?.nameOnPanCard,
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+    },
+    {
+      label: "Address",
+      value: selectedUserData?.operationalAddress,
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+    },
+    {
+      label: "City",
+      value: selectedUserData?.merchant_address_details?.city,
+      gridClasses: "col-sm-3 col-md-3 col-lg-3",
+      inputClasses: "form-control",
+    },
+    {
+      label: "State",
+      value: selectedUserData?.merchant_address_details?.state_name,
+      gridClasses: "col-sm-3 col-md-3 col-lg-3",
+      inputClasses: "form-control",
+    },
+    {
+      label: "Pin Code",
+      value: selectedUserData?.pinCode,
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+    },
+  ];
 
 
 
@@ -180,189 +184,34 @@ const formFields = [
     <div className="row mb-4 border p-1">
       <h5 className="">Business Details</h5>
       {formFields.map((field, index) => (
-    <div key={uuidv4()} className={`${field.gridClasses}`}>
-      <div className="form-group">
-        <label>{field.label}</label>
-        {field.value !== undefined ? (
-          <>
-        <input
-          type="text"
-          className={field.inputClasses}
-          id="inputPassword3"
-          disabled="true"
-          value={field.value}
-        />
-        {field.verificationMessage && (
-          <span>
-            <p className={field.verificationMessage === "Not Verified" ? "text-danger" : "text-success"}>
-              {field.verificationMessage}
-            </p>
-          </span>
-        )}
-        </>
-        ) : (
-          <p className='font-weight-bold'>Loading...</p>
-        )}
-      </div>
-    </div>
-  ))}
-
-      {/* <div className="form-row g-3">
-        <div className="col-sm-12 col-md-6 col-lg-6">
-
-          <label className="">
-            GSTIN
-          </label>
-          <input
-            type="text"
-            className={`form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"}`}
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.registerdWithGST ? selectedUserData?.gstNumber : "Merchant does not have GSTIN"
-            }
-          />
-          <span>
-            {selectedUserData?.gstNumber === null || selectedUserData?.gstNumber === "" ? (
-              <p className="text-danger"> Not Verified</p>
+        <div key={uuidv4()} className={`${field.gridClasses}`}>
+          <div className="form-group">
+            <label>{field.label}</label>
+            {field.value !== undefined ? (
+              <>
+                <input
+                  type="text"
+                  className={field.inputClasses}
+                  id="inputPassword3"
+                  disabled="true"
+                  value={field.value}
+                />
+                {field.verificationMessage && (
+                  <span>
+                    <p className={field.verificationMessage === "Not Verified" ? "text-danger" : "text-success"}>
+                      {field.verificationMessage}
+                    </p>
+                  </span>
+                )}
+              </>
             ) : (
-              <p className="text-success">Verified</p>
+              <p className='font-weight-bold'>Loading...</p>
             )}
-          </span>
+          </div>
         </div>
-        <div className="col-sm-12 col-md-6 col-lg-6">
-          <label className="">
-            Business PAN
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={selectedUserData?.panCard}
-          />
-          {selectedUserData?.panCard === null || selectedUserData?.panCard === "" ? (
-            <p className="text-danger"> Not Verified</p>
-          ) : (
-            <p className="text-success">Verified</p>
-          )}
-        </div>
-
-      </div>
-
-      <div className="form-row g-3">
-        <div className="col-sm-12 col-md-6 col-lg-6">
-          <label className="">
-            Authorized Signatory PAN
-
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={selectedUserData?.signatoryPAN}
-          />
-          <span>
-            {selectedUserData?.signatoryPAN === null || selectedUserData?.signatoryPAN === "" ? (
-              <p className="text-danger"> Not Verified</p>
-            ) : (
-              <p className="text-success">Verified</p>
-            )}
-          </span>
-        </div>
-        <div className="col-sm-12 col-md-6 col-lg-6">
-          <label className="">
-            Business Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.companyName ? selectedUserData?.companyName : ""
-            }
-          />
-        </div>
-      </div>
-
-      <div className="form-row g-3">
-
-        <div className="col-sm-12 col-md-6 col-lg-6">
-          <label className="">
-            PAN Owner's Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.nameOnPanCard
-            }
-          />
-        </div>
-
-        <div className="col-sm-12 col-md-6 col-lg-6">
-          <label className="">
-            Address
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={selectedUserData?.operationalAddress}
-          />
-        </div>
-      </div>
-
-      <div className="form-row g-3">
-
-        <div className="col-sm-3 col-md-3 col-lg-3">
-          <label className="">
-            City
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={selectedUserData?.merchant_address_details?.city}
-          />
-        </div>
-
-        <div className="col-sm-3 col-md-3 col-lg-3">
-          <label className="">
-            State
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.merchant_address_details?.state_name
-            }
-          />
-        </div>
-
-        <div className="col-sm-12 col-md-6 col-lg-6">
-          <label className="">
-            Pin Code
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={selectedUserData?.pinCode}
-          />
-        </div>
+      ))}
 
 
-      </div> */}
 
 
 
@@ -499,7 +348,7 @@ const formFields = [
 
       <>
         <ViewKycCollapse
-          title={isCollapseOpen===2 ? `Total account linked with Business PAN / Authorized Signatory PAN : ${count}` : "Total account linked with Business PAN / Authorized Signatory PAN"}
+          title={isCollapseOpen === 2 ? `Total account linked with Business PAN / Authorized Signatory PAN : ${count}` : "Total account linked with Business PAN / Authorized Signatory PAN"}
           formContent={
             <>
               <div className="table-responsive table_maxheight">
@@ -542,14 +391,65 @@ const formFields = [
           onToggle={() => {
             toggleCollapse(2);
             if (!isCollapseOpen) {
-                displayPanData(); // Call displayPanData() only when the toggle is being opened
+              displayPanData(); // Call displayPanData() only when the toggle is being opened
             }
-        }}
+          }}
         />
 
       </>
 
-<div className="form-row g-3">
+      <>
+        <ViewKycCollapse
+          title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
+          formContent={
+            <>
+              <div className="table-responsive table_maxheight m-3">
+                <table className="table table-striped">
+                  <tbody>
+                    {factumData?.map((data, index) => (
+                      <React.Fragment key={index}>
+                        {Object.keys(data).map((key, idx) => (
+                          <tr key={idx}>
+                            <th>{key}</th>
+                            <td>
+                              {typeof data[key] === 'object' ? (
+                                <div>
+                                  {Object.entries(data[key]).map(([objKey, objValue], objIdx) => (
+                                    <div key={objIdx} className="mb-1">
+                                      <span className="fw-bold">{objKey}: </span>
+                                      <span>{objValue}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+
+                                <div>{data[key]}</div>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </React.Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          }
+          isOpen={isCollapseOpen === 3}
+          onToggle={() => {
+            toggleCollapse(3);
+
+          }}
+        />
+
+
+
+
+
+
+      </>
+
+      <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
           <p className='m-0'>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
           <p className='m-0'>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>

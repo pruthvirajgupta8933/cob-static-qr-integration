@@ -22,12 +22,6 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails, merchantOnboardingProcess } = merchantReferralOnboardReducer
-
-    // const searchParams = new URLSearchParams(document.location.search)
-    // const edit = searchParams.get('edit')
-
-
-    // console.log("merchantKycData", merchantKycData)
     const loginIdFromState = merchantOnboardingProcess?.merchantLoginId !== "" ? true : false
 
     const initialValues = {
@@ -93,9 +87,6 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
         const {
             fullName, mobileNumber, email_id, business_category, password, business_type, username,
         } = value
-        // console.log("merchantOnboardingProcess", merchantOnboardingProcess)
-
-        // return false
         const updateReqBody = {
             "login_id": merchantOnboardingProcess?.merchantLoginId,
             "name": fullName,
@@ -118,10 +109,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
             password: password,
             username: username,
             bank_login_id: auth?.user?.loginId,
-            // isDirect: false,
             created_by: auth?.user?.loginId,
-            // updated_by: auth?.user?.loginId,
-
         }
         if (bankLoginId) {
             saveDetailsReqBody.bank_login_id = bankLoginId;
@@ -202,12 +190,7 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
     }, []);
 
-    // useEffect(() => {
-    //     if (merchantOnboardingProcess.merchantLoginId !== "") {
-    //         dispatch(kycDetailsByMerchantLoginId({ login_id: merchantOnboardingProcess.merchantLoginId }))
-    //     }
-
-    // }, [merchantOnboardingProcess]);
+   
 
     const togglePassword = () => {
         setPasswordType({

@@ -115,6 +115,7 @@
 
 .hr_class_one {
     position: relative;
+    border-top: 2px solid #FFFFFF;
     width: 24%;
     top: 14px;
     right: 11px;
@@ -126,7 +127,8 @@
     width: 24%;
     top: -13px;
     right: -297px;
-    margin: 0
+    margin: 0;
+    border-top: 2px solid #FFFFFF;
 }
 
 /* start text decorate */

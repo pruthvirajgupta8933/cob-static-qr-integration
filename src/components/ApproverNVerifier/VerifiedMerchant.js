@@ -275,7 +275,9 @@ const dispatch = useDispatch();
   ];
 
   return (
+    
     <div className="container-fluid">
+      
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <SearchFilter
