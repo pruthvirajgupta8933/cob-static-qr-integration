@@ -12,7 +12,6 @@ import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
 import { isNull } from 'lodash';
 import { toast } from 'react-toastify';
-import { values } from 'lodash';
 import gotVerified from "../../../../../../assets/images/verified.png"
 import { authPanValidation } from '../../../../../../slices/kycSlice';
 import { businessOverviewState } from '../../../../../../slices/kycSlice';
@@ -28,11 +27,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const [disable, setDisable] = useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
-
-
-
-    //   const VerifyKycStatus = KycTabStatusStore?.merchant_info_status;
-    //   console.log("VerifyKycStatus",VerifyKycStatus)
     const { merchantBasicDetails } = merchantReferralOnboardReducer
     const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
