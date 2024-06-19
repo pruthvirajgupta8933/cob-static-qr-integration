@@ -11,7 +11,6 @@ function Header({ display_bg_color }) {
         <div className={`navbar-brand ${classes.logo_container}`} >
           <Link to={'/'}>
             <img src={sabpaisalogo} className={`my-2 ${classes.cob_logo}`} alt="Sabpaisa" />
-
           </Link>
         </div>
 
