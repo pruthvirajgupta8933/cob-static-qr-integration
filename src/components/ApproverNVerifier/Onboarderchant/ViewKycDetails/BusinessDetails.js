@@ -17,10 +17,6 @@ const BusinessDetails = (props) => {
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const { kycUserList } = useSelector(state => state?.kyc || {});
   const factumData = kycUserList?.factum_data
-  console.log("factumData", factumData)
-
-
-
   const panListData = useSelector(
     (state) => state.kyc.panDetailsData.result
   );
