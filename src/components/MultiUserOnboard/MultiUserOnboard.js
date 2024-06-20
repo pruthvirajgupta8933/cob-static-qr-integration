@@ -205,7 +205,7 @@ const MultiUserOnboard = () => {
             <OnboardMerchant zoneCode={selectedValue} heading={false} />
           </div>}
           {isEnable("normal_referral") && <div className="card py-2 px-2 mt-5">
-            <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={false} />
+            <ReferralOnboardForm zoneCode={selectedValue} marginTopCss={false} referralChild={false} />
           </div>}
           {isEnable("referrer") && showForm && <div className="card py-2 px-2 mt-5">
             <ReferralOnboardForm zoneCode={selectedValue} referralChild={true} fetchData={() => { }} referrerLoginId={selectedUserType} marginTopCss={false} />
