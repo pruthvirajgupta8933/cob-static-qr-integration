@@ -250,7 +250,7 @@ function Login() {
 
                                         <div className="form-text p-2 my-3 text-right font-size-14">
                                             <Link to={`/forget/${queryString}`} className="text-decoration-underline">
-                                                Forgot Password ?
+                                                Forgot Password?
                                             </Link>
                                         </div>
                                         <div className="d-flex">

@@ -19,6 +19,8 @@ const Profile = () => {
   const [walletDisplayData, setWalletDisplayData] = useState([])
   const [loading, setLoading] = useState(false);
   const clientId = user.clientMerchantDetailsList[0]?.clientId
+ 
+
 
   const handleTabClick = (currenTabVal) => {
     setCurrentTab(currenTabVal)
