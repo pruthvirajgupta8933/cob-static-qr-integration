@@ -277,15 +277,14 @@ function Signup() {
                             </div>
 
                             <div className="row align-items-start flex-grow-1" >
-                                <div className={`col-2 `}>
+                                <div className={`col-lg-2 col-md-1 col-sm-1`}>
                                     <img src={arrow_two} alt="arrow" className={`${classes.left_side_arrow}`} />
                                 </div>
-                                <div className="col-8">
+                                <div className="col-lg-8 col-md-10 col-sm-10">
                                     <div className="text-center">
                                         <div className={`${classes.sp_font_20}`} >
-                                            <hr className={`${classes.hr_class_one} `} />
-                                            Need help? Contact us
-                                            <hr className={`${classes.hr_class_two}`} />
+                                            <h4 className={`hr_line text-white`}>Need help? Contact us</h4>
+
                                         </div>
                                         <div className="d-flex justify-content-around my-1 ">
                                             <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-envelope"></i> support@sabpaisa.in</p>
@@ -294,7 +293,7 @@ function Signup() {
 
                                     </div>
                                 </div>
-                                <div className="col-2"></div>
+                                <div className="col-lg-2 col-md-1 col-sm-1"></div>
                             </div>
                         </div>
                         <div>
@@ -453,7 +452,7 @@ function Signup() {
 
 
 
-                                    <h6 className={`text-center my-2 ${classes.text_line}`} >or</h6>
+                                    <h6 className={`hr_line_or my-2 `} >or</h6>
                                     <div className="d-flex justify-content-center">
                                         <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                                     </div>

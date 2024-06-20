@@ -112,7 +112,7 @@ function ChangePassword() {
           <div className="right_layout my_account_wrapper">
             <h5 className="right_side_heading">Change Password</h5>
             <div className="row mt-3">
-            <div className="col-lg-12">
+              <div className="col-lg-12">
 
                 <Formik
                   enableReintialize="true"
@@ -169,9 +169,9 @@ function ChangePassword() {
                         <div className="input-group-append">
                           <span className="input-group-text" id="basic-addon2" onClick={togglePassword}>
                             {passwordType.showPasswords ? (
-                              <i className="fa fa-eye"ariaHidden="true"></i>
+                              <i className="fa fa-eye" ariaHidden="true"></i>
                             ) : (
-                              <i className="fa fa-eye-slash"ariaHidden="true"></i>
+                              <i className="fa fa-eye-slash" ariaHidden="true"></i>
                             )}
                           </span>
                         </div>
@@ -197,9 +197,9 @@ function ChangePassword() {
                         <div className="input-group-append">
                           <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
                             {values.showPassword ? (
-                              <i className="fa fa-eye"ariaHidden="true"></i>
+                              <i className="fa fa-eye" ariaHidden="true"></i>
                             ) : (
-                              <i className="fa fa-eye-slash"ariaHidden="true"></i>
+                              <i className="fa fa-eye-slash" ariaHidden="true"></i>
                             )}
                           </span>
                         </div>
@@ -211,17 +211,17 @@ function ChangePassword() {
                       </ErrorMessage>
 
                     </div>
-                      <div className="row">
+                    <div className="row">
                       <div className="col-lg-2 mb-3 ">
                         <button
                           type="submit"
-                          className="btn bttn font-weight-bold cob-btn-primary ml-3"
+                          className="btn btn-sm cob-btn-primary ml-3"
                         >
                           Update Password
                         </button>
                       </div>
                       <div className="col-lg-4 mb-3">
-                        <Link to={`${path}/profile`} className="btn btn-light ml-3">
+                        <Link to={`${path}/profile`} className="btn btn-light ml-3 btn-sm border-1">
                           Cancel
                         </Link>
                       </div>
