@@ -103,7 +103,8 @@
 
 .left_side_arrow {
     position: absolute;
-    right: 0
+    right: 0;
+    background-image: url(../../../assets/images/arrow_two.png);
 }
 
 .right_side_arrow {
@@ -171,6 +172,36 @@
 }
 
 
+/* horizontal line */
+.hr_line {
+    display: flex;
+    flex-direction: row;
+}
+
+.hr_line:before,
+.hr_line:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 2px solid #fff;
+    margin: 0px 4px 10px 4px;
+}
+
+
+.hr_line_or {
+    display: flex;
+    flex-direction: row;
+}
+
+.hr_line_or:before,
+.hr_line_or:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 2px solid #000;
+    margin: 0px 4px 10px 4px;
+}
+
+
+/* horizontal line */
 
 
 @media (min-width: 768px) {
