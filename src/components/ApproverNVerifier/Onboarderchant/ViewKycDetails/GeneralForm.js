@@ -119,7 +119,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                         type="number"
                                         name="rr_amount"
                                         className="form-control"
-                                        label="Rolling Reserve (%)"
+                                        label="Rolling Reserve"
                                         disabled={!role?.approver}
                                         onChange={(e) => {
                                             formik.setFieldValue("rr_amount", e.target.value)
