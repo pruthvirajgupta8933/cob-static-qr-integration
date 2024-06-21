@@ -24,8 +24,9 @@ function UserDetails() {
                 <div className="card">
                     <div className="card-body">
                         <form>
-                        <div className="row mb-3">
-                                <label className="col-sm-2 col-form-label">Login Id</label>
+                            <div className="row mb-3">
+                                <label className="col-sm-2 col-form-label">
+                                    Merchant Id</label>
                                 <div className="col-sm-10">
                                     <input type="text" className="form-control" value={loginId} disabled={true} />
                                 </div>

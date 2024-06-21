@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Formik, Field } from "formik";
 import { panValidation } from '../../../../../../slices/kycSlice';
 import FormikController from "../../../../../../_components/formik/FormikController";
@@ -86,9 +86,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 then: Yup.string().matches(Regex.userNameRegex, RegexMsg.userNameRegex).required('Required'),
                 otherwise: Yup.string(),
             }),
-        isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
         mobileNumber: Yup.string()
-
             .allowOneSpace()
             .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
             .min(10, "Phone number is not valid")
@@ -100,39 +98,86 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .email("Invalid email")
             .required("Required")
             .nullable(),
-        pan_card: Yup.string().allowOneSpace()
-            .matches(reqexPAN, "PAN number is invalid")
-            .required("Required")
-            .nullable(),
 
-        isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
-        prevSignatoryPan: Yup.string().allowOneSpace()
-            .oneOf(
-                [Yup.ref("signatory_pan"), null],
-                "You need to verify Your Authorized Signatory PAN Number"
-            )
-            .nullable(),
+        isPanVerified: Yup.string()
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().required('Please Verify the PAN'),
+                otherwise: Yup.string(),
+            }),
+        pan_card: Yup.string()
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .matches(reqexPAN, "PAN number is invalid")
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
+
+
+        isSignatoryPanVerified: Yup.string()
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .allowOneSpace().required("Please verify the signatory pan number").nullable(),
+                otherwise: Yup.string(),
+            }),
+
+        prevSignatoryPan: Yup.string()
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .oneOf(
+                        [Yup.ref("signatory_pan"), null],
+                        "You need to verify Your Authorized Signatory PAN Number"
+                    ).nullable(),
+                otherwise: Yup.string(),
+            }),
+
         signatory_pan: Yup.string()
-            .allowOneSpace()
-            .matches(reqexPAN, "Authorized PAN number is Invalid")
-            .required("Required")
-            .nullable(),
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .matches(reqexPAN, "Authorized PAN number is Invalid")
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
+
         city: Yup.string()
-            .allowOneSpace()
-            .required("Required")
-            .nullable(),
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
+
         state_id: Yup.string()
-            .allowOneSpace()
-            .required("Required")
-            .nullable(),
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
         address: Yup.string()
-            .allowOneSpace()
-            .required("Required")
-            .nullable(),
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
         pin_code: Yup.string()
-            .allowOneSpace()
-            .required("Required")
-            .nullable(),
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
 
         password: Yup.string(),
     });
@@ -185,6 +230,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             } const resp1 = await addReferralService(postData, referralChild);
 
             resp1?.data?.status && toastConfig.successToast("Data Saved")
+
             // resetForm()
             // create user
             const refLoginId = resp1?.data?.data?.loginMasterId
@@ -193,6 +239,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             // const resp
             resp2?.data && toastConfig.successToast("Account Activate")
             resetForm()
+
             if (merchantKycData?.clientCode === null || merchantKycData?.clientCode === undefined) {
                 // console.log("1.4")
                 const clientFullName = fullName
@@ -277,17 +324,17 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
     useEffect(() => {
         dispatch(businessOverviewState())
-          .then((resp) => {
-            const data = convertToFormikSelectJson(
-              "stateId",
-              "stateName",
-              resp.payload
-            );
-            setBusinessOverview(data);
-          })
-          .catch((err) => console.log(err));
+            .then((resp) => {
+                const data = convertToFormikSelectJson(
+                    "stateId",
+                    "stateName",
+                    resp.payload
+                );
+                setBusinessOverview(data);
+            })
+            .catch((err) => console.log(err));
         // console.log("useEffect call")
-      }, []);
+    }, []);
 
     const authValidation = (values, key, setFieldValue) => {
         setLoadingForSignatory(true)
@@ -366,7 +413,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 }
             >
                 {({
-                    initialValues,
                     values,
                     setFieldValue,
                     errors,
@@ -608,7 +654,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                             label="State *"
                                             options={BusinessOverview}
                                             className="form-select"
-                                           
+
                                         />
                                     </div>
                                     <div className="col-lg-4">

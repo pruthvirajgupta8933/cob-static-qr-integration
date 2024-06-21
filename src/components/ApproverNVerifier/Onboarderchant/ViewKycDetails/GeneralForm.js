@@ -5,20 +5,20 @@ import { convertToFormikSelectJson } from '../../../../_components/reuseable_com
 import { Form, Formik } from 'formik'
 import FormikController from '../../../../_components/formik/FormikController'
 import Yup from '../../../../_components/formik/Yup'
-import { kycUserList } from '../../../../slices/kycSlice'
+// import { kycUserList } from '../../../../slices/kycSlice'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+// import axios from 'axios'
 import { axiosInstance } from '../../../../utilities/axiosInstance'
 import API_URL from '../../../../config'
 import toastConfig from '../../../../utilities/toastTypes'
-import ReactSelect from 'react-select';
+// import ReactSelect from 'react-select';
 
 const GeneralForm = ({ selectedUserData, role }) => {
 
 
     const dispatch = useDispatch()
     const [parentClientCode, setParentClientCode] = useState([])
-    const [referByValue, setReferByValue] = useState(null);
+    // const [referByValue, setReferByValue] = useState(null);
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
     // console.log("kyc.kycUserList",kyc.kycUserList);
@@ -34,11 +34,17 @@ const GeneralForm = ({ selectedUserData, role }) => {
 
 
 
+    const amtTypeOptions = [
+        { key: "", value: "Select" },
+        { key: "Percentage", value: "Percentage" },
+        { key: "Fixed", value: "Fixed" }
+    ]
+
     const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
         refer_by: kyc.kycUserList?.refer_by,
-        rolling_reserve_type: "Percentage",
+        rolling_reserve_type: "",
         parent_client_code: ""
 
     }
@@ -50,6 +56,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         rr_amount: Yup.string().nullable(),
         business_cat_type: Yup.string().nullable(),
         parent_client_code: Yup.string().required("Required").nullable(),
+        rolling_reserve_type: Yup.string().required("Required").nullable(),
         refer_by: Yup.string().nullable()
     })
 
@@ -61,7 +68,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
             business_cat_type: val.business_cat_type,
             parent_client_code: val?.parent_client_code ?? 'COBED', // if not selected
             refer_by: val.refer_by,
-            rolling_reserve_type: "Percentage",
+            rolling_reserve_type: val?.rolling_reserve_type,
             isFinalSubmit: true
         }
         // console.log("saveGenData", saveGenData)
@@ -76,9 +83,9 @@ const GeneralForm = ({ selectedUserData, role }) => {
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
     const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
     const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
-    const options = clientCodeOption.map(option => ({ value: option.key, label: option.value }));
+    // const options = clientCodeOption.map(option => ({ value: option.key, label: option.value }));
 
-
+    // console.log(businessCategoryOption)
 
     return (
         <div className="row mb-4 border p-1">
@@ -95,13 +102,24 @@ const GeneralForm = ({ selectedUserData, role }) => {
                     <div className="">
                         <Form className="">
                             <div className='row'>
-                                <div className="col-md-4">
+                                <div className="col-md-4 g-3">
+                                    <FormikController
+                                        control="select"
+                                        name="rolling_reserve_type"
+                                        options={amtTypeOptions}
+                                        className="form-select"
+                                        label="RR Amount Type"
+                                        disabled={!role?.approver}
+                                    />
+                                </div>
+
+                                <div className="col-md-4 g-3">
                                     <FormikController
                                         control="input"
                                         type="number"
                                         name="rr_amount"
                                         className="form-control"
-                                        label="Rolling Reserve (%)"
+                                        label="Rolling Reserve"
                                         disabled={!role?.approver}
                                         onChange={(e) => {
                                             formik.setFieldValue("rr_amount", e.target.value)
@@ -110,7 +128,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
-                                <div className="col-md-4">
+                                <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
                                         name="business_cat_type"
@@ -125,7 +143,8 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
-                                <div className="col-md-4">
+
+                                <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
                                         name="refer_by"
@@ -140,7 +159,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
                                     />
                                 </div>
 
-                                <div className="col-md-4">
+                                <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
                                         name="parent_client_code"
