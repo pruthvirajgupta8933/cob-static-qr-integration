@@ -376,8 +376,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
 
                     <Form>
-                        {console.log("errors", errors)}
-
                         <div className={`row g-3 ${marginTopCss ? "mt-5" : ""}`}>
                             <div className={`col-lg-${referralChild ? "6" : "4"}`}>
                                 <FormikController
