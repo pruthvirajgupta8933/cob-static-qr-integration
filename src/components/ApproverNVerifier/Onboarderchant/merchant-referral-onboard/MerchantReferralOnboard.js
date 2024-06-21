@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import classes from "../../approver.module.css"
 import BankRefMerchantList from './merchant-product-subscription/BankRefMerchantList';
-import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard";
-
+// import ReferralOnboard from "./operation-kyc/ReferralOnboardForm/ReferralOnboard";
+import { Link } from 'react-router-dom';
 
 function MerchantReferralOnboard() {
     const [currentTab, setCurrentTab] = useState(2)
@@ -51,7 +51,8 @@ function MerchantReferralOnboard() {
 
                     <section>
                         <div className="row">
-                            {currentTab === 2 && <ReferralOnboard />}
+                            {/* {currentTab === 2 && <ReferralOnboard />} */}
+                            {currentTab === 2 && <h5><Link to={"/dashboard/multi-user-onboard"}>Referral Onboard Form</Link></h5>}
                             {currentTab === 3 && <BankRefMerchantList />}
 
 

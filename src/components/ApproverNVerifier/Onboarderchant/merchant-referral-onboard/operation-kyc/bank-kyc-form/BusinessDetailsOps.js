@@ -28,7 +28,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
-    
+
 
     const Regexx = {
         acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
@@ -55,6 +55,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         state_id: merchantKycData?.merchant_address_details?.state,
         pin_code: merchantKycData?.merchant_address_details?.pin_code,
         billing_label: merchantKycData?.billingLabel ?? "",
+        company_name:""
     }
 
 
@@ -102,6 +103,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         city: Yup.string()
             .required("Required").nullable(),
         pin_code: Yup.string()
+            .required("Required").nullable(),
+            company_name:Yup.string()
             .required("Required").nullable(),
         state_id: Yup.string()
             .required("Required").nullable(),
@@ -196,6 +199,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             pan_card: value.pan_card,
             signatory_pan: value.signatory_pan,
             billing_label: value.billing_label,
+            company_name:value.company_name,
             merchant_address: merchantAddressDetails,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId,
@@ -244,7 +248,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 res.payload.valid === true
             ) {
                 const authName = res.payload.first_name + ' ' + res.payload?.last_name
-               
+
 
                 setFieldValue(key, values)
                 setLoadingForSignatory(false)
@@ -331,7 +335,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     setFieldTouched
                 }) => (
                     <Form>
-                        {console.log("values",values)}
+                        {console.log("values", values)}
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label">
@@ -560,7 +564,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 />
 
                             </div>
-                            <div className="col-sm-12 col-md-12 col-lg-4">
+                            <div className="col-sm-12 col-md-12 col-lg-3">
                                 <label className="col-form-label p-2 mt-0">
                                     Platform Type<span className="text-danger">*</span>
                                 </label>
@@ -576,7 +580,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 />
                             </div>
 
-                            <div className="col-sm-12 col-md-12 col-lg-4">
+                            <div className="col-sm-12 col-md-12 col-lg-3">
                                 <label className="col-form-label p-2 mt-0" data-tip={tooltipData.expected_transaction_yr}>
                                     Expected Trans./Year
                                     <span className="text-danger">*</span>
@@ -592,7 +596,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                 />
                             </div>
 
-                            <div className="col-sm-12 col-md-12 col-lg-4">
+                            <div className="col-sm-12 col-md-12 col-lg-3">
                                 <label className="col-form-label p-2 mt-0" data-tip={tooltipData.avg_ticket_amount}>
                                     Avg Ticket Amount<span className="text-danger">*</span>
                                 </label>
@@ -605,6 +609,18 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     valueFlag={true}
                                     disabled={isEditableInput}
                                     options={ticketOptions}
+                                />
+                            </div>
+                            <div className="col-sm-12 col-md-12 col-lg-3"> 
+                            <label className="col-form-label p-2 mt-0" >
+                                    Company Name<span className="text-danger">*</span>
+                                </label>
+                                <FormikController
+                                    control="input"
+                                    name="company_name"
+                                    placeholder="Company Name"
+                                    className="form-control"
+                                    
                                 />
                             </div>
 
