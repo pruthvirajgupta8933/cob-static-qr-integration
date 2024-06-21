@@ -67,6 +67,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         city: "",
         state_id: "",
         pin_code: "",
+        company_name: "",
         password: generateRandomPassword(),
         isPasswordReq: referralChild
     };
@@ -178,6 +179,14 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     .nullable(),
                 otherwise: Yup.string(),
             }),
+        company_name: Yup.string()
+            .when('isPasswordReq', {
+                is: false,
+                then: Yup.string().allowOneSpace()
+                    .required("Required")
+                    .nullable(),
+                otherwise: Yup.string(),
+            }),
 
         password: Yup.string(),
     });
@@ -186,7 +195,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const handleSubmitContact = async (value, { resetForm }) => {
 
         setDisable(true)
-        const { fullName, mobileNumber, email_id, password, username, pan_card, city, state_id, address, signatory_pan, pin_code } = value;
+        const { fullName, mobileNumber, email_id, password, username, pan_card, city, state_id, address, signatory_pan, pin_code, company_name } = value;
         // alert(3)
         setSubmitLoader(true)
         try {
@@ -220,6 +229,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     zone_code: zoneCode,
                     pan_card: pan_card,
                     signatory_pan: signatory_pan,
+                    company_name,
                     merchant_address: {
                         address: address,
                         city: city,
@@ -281,10 +291,11 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                 }
             }
         } catch (error) {
-            // console.log("catch-error", error.response)
-            toastConfig.errorToast(error.response.data.detail)
+            // console.log("catch-error", error?.response)
             setSubmitLoader(false)
             setDisable(false)
+            toastConfig.errorToast(error?.response?.data?.detail)
+
         }
 
 
@@ -471,9 +482,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                 <>
 
                                     <div className="col-lg-4">
-                                        {/* <label className="col-form-label mt-0 p-2">
-                  Business PAN <span className="text-danger">*</span>
-                </label> */}
                                         <label className="col-form-label mt-0">
                                             Business PAN<span > *</span>
                                         </label>
@@ -488,9 +496,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                                     const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                                                     setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
                                                 }}
-                                            // disabled={VerifyKycStatus === "Verified"}
-                                            // readOnly={JSON.parse(values?.registerd_with_gst)}
-
                                             />
 
 
@@ -548,9 +553,6 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                                 {errors?.isPanVerified}
                                             </p>
                                         )}
-
-
-
                                     </div>
 
                                     <div className="col-md-4">
@@ -625,6 +627,15 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                     <div className="col-lg-4 mt-4">
                                         <FormikController
                                             control="input"
+                                            name="company_name"
+                                            placeholder="Company Name"
+                                            className="form-control"
+                                            label="Comany Name"
+                                        />
+                                    </div>
+                                    <div className="col-lg-4 mt-4">
+                                        <FormikController
+                                            control="input"
                                             name="address"
                                             placeholder="Enter Address"
                                             className="form-control"
@@ -640,14 +651,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                             label="City *"
                                         />
                                     </div>
-                                    <div className="col-lg-4">
-                                        {/* <FormikController
-                                            control="input"
-                                            name="state"
-                                            placeholder="Enter State"
-                                            className="form-control"
-                                            label="State *"
-                                        /> */}
+                                    <div className="col-lg-2">
                                         <FormikController
                                             control="select"
                                             name="state_id"
@@ -657,7 +661,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
 
                                         />
                                     </div>
-                                    <div className="col-lg-4">
+                                    <div className="col-lg-2">
                                         <FormikController
                                             control="input"
                                             name="pin_code"
@@ -676,7 +680,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                     <button type="submit" className="btn cob-btn-primary btn-sm m-2" disabled={disable}>
                                         {submitLoader && <>
                                             <span className="spinner-border spinner-border-sm" ariaHidden="true" />
-                                            <span className="sr-only">Loading...</span>
+                                            <span className="sr-only">Loading...</span> &nbsp;
                                         </>}
                                         Save
                                     </button>}
