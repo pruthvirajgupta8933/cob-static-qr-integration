@@ -10,7 +10,7 @@ import {
     fetchMerchantProductSubscribeList
 } from "../../../../../slices/approver-dashboard/productSubscriptionServiceAdminSlice";
 import { axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
-import API_URL from "../../../../../config";
+import API_URL, { Qwick_Form } from "../../../../../config";
 import toastConfig from "../../../../../utilities/toastTypes";
 // import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import SkeletonTable from "../../../../../_components/table_components/table/skeleton-table";
@@ -114,7 +114,7 @@ function BankRefMerchantList() {
                             className={`btn-sm mx-1 btn-outline-secondary`}
                             target="_blank"
                             disabled={row.client_code === null}
-                            href={`https://qwikforms.in/QwikForms/saLogin?clientId=${row?.client_id}&&cobUserName=opsuser2@sp&&password=wkVc1iUwAn5tn1V1K&&requestType=COB`}
+                            href={`${Qwick_Form}/QwikForms/saLogin?clientId=${row?.client_id}&&cobUserName=opsuser2@sp&&password=wkVc1iUwAn5tn1V1K&&requestType=COB`}
                         >
                             Config
                         </a>

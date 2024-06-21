@@ -8,6 +8,7 @@ let url,
   widget_url,
   widget_script,
   payLinkAPIURL,
+  qwick_form_refund_url,
   refund_url = "";
 
 
@@ -23,6 +24,7 @@ if (ENV_PROD) {
   widget_url = "https://paywidget.sabpaisa.in"
   widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
   refund_url = "https://gateway.sabpaisa.in/SabPaisa"
+  qwick_form_refund_url = "https://qwikforms.in"
 
 
 } else {
@@ -36,6 +38,7 @@ if (ENV_PROD) {
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js"
   refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi"
+  qwick_form_refund_url = "https://stage-qwikform.sabpaisa.in"
 
 
 }
@@ -415,6 +418,7 @@ export const wsConnectUrl = {
 const API_URL = API_LIVE;
 
 export const WIDGET_URL = WIDGET_LIVE;
+export const Qwick_Form = qwick_form_refund_url;
 
 export const WIDGET_SCRIPT_URL = WIDGET_SCRIPT_LIVE
 

@@ -28,6 +28,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
+    
 
     const Regexx = {
         acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
@@ -39,7 +40,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
     const initialValues = {
-        pan_card: merchantKycData?.signatoryPAN ?? "",
+        pan_card: merchantKycData?.panCard ?? "",
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
         website: merchantKycData?.website_app_url ?? "",
         name_on_pancard: merchantKycData?.nameOnPanCard ?? "",
@@ -243,11 +244,12 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 res.payload.valid === true
             ) {
                 const authName = res.payload.first_name + ' ' + res.payload?.last_name
+               
 
                 setFieldValue(key, values)
                 setLoadingForSignatory(false)
                 setFieldValue("prevSignatoryPan", values)
-                setFieldValue("name_on_pancard", authName)
+                // setFieldValue("name_on_pancard", authName)
                 setFieldValue("isSignatoryPanVerified", 1)
 
                 toast.success(res.payload.message);
@@ -329,6 +331,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     setFieldTouched
                 }) => (
                     <Form>
+                        {console.log("values",values)}
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label">
