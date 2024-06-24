@@ -876,7 +876,7 @@ export const DebitReportData = [
 // subscript wallet row column
 
 export const subscriptionWalletTableCol = [
-  { id: "1", name: "S. no.", width:"80px", cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div> },
+  { id: "1", name: "S. no.", width:"80px", cell: (row) => <div className="removeWhiteSpace">{row+1}</div> },
   { id: "1", name: "Subscription Id" , width:"140px", cell: (row) => <div className="removeWhiteSpace">{row?.clientSubscribedPlanDetailsId}</div> },
   { id: "2", name: "Application name" , width:"160px", cell: (row) => <div className="removeWhiteSpace">{row?.applicationName}</div> },
   { id: "3", name: "Plan name" , width:"140px", cell: (row) => <div className="removeWhiteSpace">{row?.planName}</div> },

@@ -229,6 +229,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                     zone_code: zoneCode,
                     pan_card: pan_card,
                     signatory_pan: signatory_pan,
+                    name_on_pancard: value.name_on_pancard,
                     company_name,
                     merchant_address: {
                         address: address,
@@ -404,7 +405,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
         if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
             // auth signatory pan
             // console.log("dfdfdf")
-            authValidation(val[key], "signatory_pan", setFieldValue, setLoadingForSignatory);
+            authValidation(val[key], "name_on_pancard", setFieldValue, setLoadingForSignatory);
         }
 
     };
@@ -623,51 +624,75 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                                 {errors?.isSignatoryPanVerified}
                                             </span>
                                         )}
+                                        {values?.name_on_pancard && (
+                                            <p className="text-success mb-0">
+                                                {values?.name_on_pancard}
+                                            </p>
+                                        )}
                                     </div>
-                                    <div className="col-lg-4 mt-4">
+                                    <div className="col-lg-4">
+                                        <label className="col-form-label mt-0 p-2">
+                                            Company Name
+                                            <span className="text-danger"></span>
+                                        </label>
                                         <FormikController
                                             control="input"
                                             name="company_name"
                                             placeholder="Company Name"
                                             className="form-control"
-                                            label="Comany Name"
+                                        // label="Comany Name"
                                         />
                                     </div>
-                                    <div className="col-lg-4 mt-4">
+                                    <div className="col-lg-4">
+                                        <label className="col-form-label mt-0 p-2">
+                                            Address*
+                                            <span className="text-danger"></span>
+                                        </label>
                                         <FormikController
                                             control="input"
                                             name="address"
                                             placeholder="Enter Address"
                                             className="form-control"
-                                            label="Address *"
+
                                         />
                                     </div>
                                     <div className="col-lg-4">
+                                        <label className="col-form-label mt-0 p-2">
+                                            City*
+                                            <span className="text-danger"></span>
+                                        </label>
                                         <FormikController
                                             control="input"
                                             name="city"
                                             placeholder="Enter City"
                                             className="form-control"
-                                            label="City *"
+
                                         />
                                     </div>
                                     <div className="col-lg-2">
+                                        <label className="col-form-label mt-0 p-2">
+                                            State*
+                                            <span className="text-danger"></span>
+                                        </label>
                                         <FormikController
                                             control="select"
                                             name="state_id"
-                                            label="State *"
                                             options={BusinessOverview}
                                             className="form-select"
 
                                         />
                                     </div>
                                     <div className="col-lg-2">
+                                        <label className="col-form-label mt-0 p-2">
+                                            Pin Code*
+                                            <span className="text-danger"></span>
+                                        </label>
                                         <FormikController
                                             control="input"
                                             name="pin_code"
                                             placeholder="Enter Pin Code"
                                             className="form-control"
-                                            label="Pin Code *"
+                                           
                                         />
                                     </div>
                                 </>

@@ -22,6 +22,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const [avgTicketAmount, setAvgTicketAmount] = useState([]);
     const [transactionRangeOption, setTransactionRangeOption] = useState([]);
     const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
+    const [signatoryPanName, setSignatoryPanName] = useState("")
     const [platform, setPlatform] = useState([]);
     const [disable, setDisable] = useState(false)
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
@@ -55,7 +56,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         state_id: merchantKycData?.merchant_address_details?.state,
         pin_code: merchantKycData?.merchant_address_details?.pin_code,
         billing_label: merchantKycData?.billingLabel ?? "",
-        company_name:""
+        company_name: merchantKycData?.companyName ?? ""
     }
 
 
@@ -104,7 +105,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             .required("Required").nullable(),
         pin_code: Yup.string()
             .required("Required").nullable(),
-            company_name:Yup.string()
+        company_name: Yup.string()
             .required("Required").nullable(),
         state_id: Yup.string()
             .required("Required").nullable(),
@@ -199,7 +200,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             pan_card: value.pan_card,
             signatory_pan: value.signatory_pan,
             billing_label: value.billing_label,
-            company_name:value.company_name,
+            company_name: value.company_name,
             merchant_address: merchantAddressDetails,
             login_id: merchantLoginId,
             updated_by: auth?.user?.loginId,
@@ -235,25 +236,27 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         return fullStr
     }
     const authValidation = (values, key, setFieldValue) => {
-        console.log("setFieldValue", setFieldValue)
+
         setLoadingForSignatory(true)
         dispatch(
             authPanValidation({
                 pan_number: values,
             })
         ).then((res) => {
+
             if (
                 res.meta.requestStatus === "fulfilled" &&
                 res.payload.status === true &&
                 res.payload.valid === true
             ) {
                 const authName = res.payload.first_name + ' ' + res.payload?.last_name
+                // setSignatoryPanName(authName)
 
 
                 setFieldValue(key, values)
                 setLoadingForSignatory(false)
                 setFieldValue("prevSignatoryPan", values)
-                // setFieldValue("name_on_pancard", authName)
+                setFieldValue("name_on_pancard", authName)
                 setFieldValue("isSignatoryPanVerified", 1)
 
                 toast.success(res.payload.message);
@@ -307,12 +310,12 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         }
         if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
             // for  -Business PAN 
-            panValidate(val[key], "name_on_pancard", setFieldValue);
+            panValidate(val[key], "company_name", setFieldValue);
         }
         if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
             // auth signatory pan
             // console.log("dfdfdf")
-            authValidation(val[key], "signatory_pan", setFieldValue, setLoadingForSignatory);
+            authValidation(val[key], "name_on_pancard", setFieldValue, setLoadingForSignatory);
         }
     };
 
@@ -335,7 +338,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     setFieldTouched
                 }) => (
                     <Form>
-                        {console.log("values", values)}
+
                         <div className="row g-3">
                             <div className="col-sm-12 col-md-6 col-lg-6">
                                 <label className="col-form-label">
@@ -350,7 +353,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         onChange={(e) => {
                                             setFieldValue("pan_card", e.target.value?.toString().toUpperCase())
                                             setFieldValue("is_pan_verified", "")
-                                            setFieldValue("name_on_pancard", "")
+                                            setFieldValue("company_name", "")
                                         }}
                                     />
 
@@ -396,12 +399,15 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                         {errors?.is_pan_verified}
                                     </p>
                                 )}
-                                {values?.name_on_pancard && (
-                                    <p className="text-success mb-0">
-                                        {values?.name_on_pancard}
-                                    </p>
-                                )}
+                                {/* {values?.company_name
+                                    && (
+                                        <p className="text-success mb-0">
+                                            {values?.company_name}
+                                        </p>
+                                    )} */}
                             </div>
+
+
                             <div className="col-md-6">
                                 <label className="col-form-label">
                                     Website<span className="text-danger">*</span>
@@ -415,7 +421,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     placeholder="Enter Website URL"
                                 />
                             </div>
-                            <div></div>
+                            <div>
+
+                            </div>
 
                         </div>
 
@@ -489,6 +497,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     <span className="text-danger mb-0 d-flex">
                                         {errors?.isSignatoryPanVerified}
                                     </span>
+                                )}
+                                {values?.name_on_pancard && (
+                                    <p className="text-success mb-0">
+                                        {values?.name_on_pancard}
+                                    </p>
                                 )}
                             </div>
 
@@ -611,8 +624,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     options={ticketOptions}
                                 />
                             </div>
-                            <div className="col-sm-12 col-md-12 col-lg-3"> 
-                            <label className="col-form-label p-2 mt-0" >
+                            <div className="col-sm-12 col-md-12 col-lg-3">
+                                <label className="col-form-label p-2 mt-0" >
                                     Company Name<span className="text-danger">*</span>
                                 </label>
                                 <FormikController
@@ -620,7 +633,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                                     name="company_name"
                                     placeholder="Company Name"
                                     className="form-control"
-                                    
+
                                 />
                             </div>
 

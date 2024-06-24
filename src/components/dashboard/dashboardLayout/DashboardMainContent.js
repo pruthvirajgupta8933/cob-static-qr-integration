@@ -584,7 +584,7 @@ function DashboardMainContent() {
                             exact
                             path={`${path}/multi-user-onboard`}
                             Component={MultiUserOnboard}
-                            roleList={{ accountManager: true }}
+                            roleList={{ accountManager: true, viewer: true }}
                         >
                             <MultiUserOnboard />
                         </AuthorizedRoute>
