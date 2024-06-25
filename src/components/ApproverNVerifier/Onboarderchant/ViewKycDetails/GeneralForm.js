@@ -13,7 +13,7 @@ import API_URL from '../../../../config'
 import toastConfig from '../../../../utilities/toastTypes'
 // import ReactSelect from 'react-select';
 
-const GeneralForm = ({ selectedUserData, role }) => {
+const GeneralForm = ({ role }) => {
 
 
     const dispatch = useDispatch()
@@ -44,7 +44,7 @@ const GeneralForm = ({ selectedUserData, role }) => {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
         refer_by: kyc.kycUserList?.refer_by,
-        rolling_reserve_type: "",
+        rolling_reserve_type: kyc.kycUserList?.rolling_reserve_type,
         parent_client_code: ""
 
     }

@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { kycUserList, verifyKycEachTab } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
-import moment from 'moment';
-// import { uniqueId } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import { maskedString } from '../../../../utilities/maskedString';
 
 function MerchantContactInfo(props) {
 
-  const { merchantKycId, KycTabStatus, selectedUserData } = props
-  const [buttonText, setButtonText] = useState("Save and Next");
+  const { KycTabStatus, selectedUserData } = props
+  // const [buttonText, setButtonText] = useState("Save and Next");
 
   const [isVerified, setIsVerified] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
   const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
@@ -20,23 +19,12 @@ function MerchantContactInfo(props) {
   let commentsStatus = KycTabStatus.general_info_reject_comments;
 
   const dispatch = useDispatch();
-  const { role, kycid } = props;
-
   const { auth } = useSelector((state) => state);
 
 
   const { user } = auth;
   const { loginId } = user;
 
-  useEffect(() => {
-    if (role.approver) {
-      // setReadOnly(true);
-      setButtonText("Approve");
-    } else if (role.verifier) {
-      // setReadOnly(true);
-      setButtonText("Verify");
-    }
-  }, [role]);
 
   const handleVerifyClick = async () => {
     try {
@@ -85,7 +73,7 @@ function MerchantContactInfo(props) {
   };
   const inputFields = [
     { label: 'Contact Person Name', value: selectedUserData?.name },
-    { label: 'Aadhaar Number', value: selectedUserData?.aadharNumber },
+    { label: 'Aadhaar Number', value: maskedString(selectedUserData?.aadharNumber, 7) },
     { label: 'Contact Number', value: selectedUserData?.contactNumber, verified: selectedUserData?.isContactNumberVerified },
     { label: 'Email Id', value: selectedUserData?.emailId, verified: selectedUserData?.isEmailVerified }
   ];
@@ -114,7 +102,7 @@ function MerchantContactInfo(props) {
                     </p>
                   )}
                 </span>
-                
+
               </>
             ) : (
               <p className='font-weight-bold'>Loading...</p>
