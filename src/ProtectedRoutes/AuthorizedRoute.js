@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { roleBasedAccess } from "../_components/reuseable_components/roleBasedAccess";
 import { Route, useHistory } from "react-router-dom";
+import { clearLocalStore } from "../utilities/clearLocalStorage";
 // import CustomModal from "../_components/custom_modal";
 // import { useHistory } from "react-router-dom";
 
@@ -35,7 +36,7 @@ const AuthorizedRoute = (props) => {
     useEffect(() => {
         if (isValid === false) {
             setTimeout(() => {
-                localStorage.clear()
+                clearLocalStore()
                 history.push("/login");
             }, 2000);
         }
