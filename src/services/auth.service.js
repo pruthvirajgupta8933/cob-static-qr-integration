@@ -1,6 +1,7 @@
 
 import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
+import { clearLocalStore } from "../utilities/clearLocalStorage";
 
 
 const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social, zone_code }) => {
@@ -35,9 +36,7 @@ const login = async (username, password, is_social) => {
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.clear();
-  localStorage.clear();
+  clearLocalStore()
 
 };
 
