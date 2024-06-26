@@ -84,8 +84,8 @@ const CompleteVerification = (props) => {
       merchant_business_name: data?.companyName ?? "NA",
       merchant_legal_name: data?.companyName ?? "NA",
       merchant_address: data?.merchant_address_details
-      ? `${data?.merchant_address_details.address || "NA"}, ${data?.merchant_address_details.city || "NA"}, ${data?.merchant_address_details.state_name || "NA"}, ${data?.merchant_address_details.pin_code || "NA"}`
-      : "NA",
+        ? `${data?.merchant_address_details.address || "NA"}, ${data?.merchant_address_details.city || "NA"}, ${data?.merchant_address_details.state_name || "NA"}, ${data?.merchant_address_details.pin_code || "NA"}`
+        : "NA",
       product_name: "NA",
       types_of_entity: data?.business_type_name ?? "NA",
       year_of_establishment: 1,
@@ -188,11 +188,11 @@ const CompleteVerification = (props) => {
           } catch (error) {
             setDisable(false);
             setButtonLoader(false)
-
             toast.error("Something went wrong, Please Try Again later");
           }
         } else {
           setDisable(false);
+          setButtonLoader(false)
         }
       }
     }
@@ -424,7 +424,7 @@ const CompleteVerification = (props) => {
         <div className="col-lg-3">
           <button type="button" disabled={disable} onClick={() => { submitHandler() }} className="btn  cob-btn-primary  btn-sm text-white">
             {buttonLoader && <>
-              <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
+              <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
               <span className="sr-only">Loading...</span>
             </>} {buttonText}</button>
 
@@ -450,7 +450,7 @@ const CompleteVerification = (props) => {
               disabled={disable}
               onClick={() => handleRejectClick(commetText)}
               className="btn btn-danger btn-sm text-white pull-left m-2"> {buttonLoader && <>
-                <span className="spinner-border spinner-border-sm" role="status"ariaHidden="true" />
+                <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
                 <span className="sr-only">Loading...</span>
               </>} Submit</button></> : <></>}
       </div>

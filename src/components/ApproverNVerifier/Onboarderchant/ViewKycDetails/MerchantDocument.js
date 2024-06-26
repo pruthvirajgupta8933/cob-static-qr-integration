@@ -72,7 +72,7 @@ const MerchantDocument = (props) => {
   const [documentsIdList, setdocumentsIdList] = useState([])
   const [checkedClicked, setCheckedClicked] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
-  
+
 
 
   const getDocTypeName = (id) => {
@@ -88,16 +88,16 @@ const MerchantDocument = (props) => {
   };
 
   const getKycDocList = () => {
-    const loginId=selectedUserData?.loginMasterId 
-    if(loginId !=undefined && loginId!=""){
-    const postData={
-      login_id:loginId
-    }
-    
-    dispatch(
-      kycDocumentUploadList(postData)
+    const loginId = selectedUserData?.loginMasterId
+    if (loginId != undefined && loginId != "") {
+      const postData = {
+        login_id: loginId
+      }
 
-    );
+      dispatch(
+        kycDocumentUploadList(postData)
+
+      );
     }
   };
 
@@ -197,30 +197,32 @@ const MerchantDocument = (props) => {
 
   useEffect(() => {
     /////////////////////////////////////////////// button enable condition for verifier
-    const verifier = () => {
-      let enableBtn = false;
-      if (currenTab === 3) {
-        if (roles.verifier === true || Allow_To_Do_Verify_Kyc_details === true)
-          enableBtn = true;
-      }
-      setEnableBtnVerifier(enableBtn);
-    };
-    verifier()
+    // const verifier = () => {
+    // let enableBtn = false;
+    if (currenTab === 3) {
+      if (roles.verifier === true || Allow_To_Do_Verify_Kyc_details === true)
+        // enableBtn = true;
+        setEnableBtnVerifier(true);
+    }
+
+    // };
+    // verifier()
 
 
 
 
     /////////////////////////////////////////////// button enable condition  for approver
-    const approver = () => {
-      let enableBtn = false;
-      if (currenTab === 4) {
-        if (roles.approver === true)
-          enableBtn = true;
-      }
-      setEnableBtnApprover(enableBtn);
+    // const approver = () => {
+    // let enableBtn = false;
+    if (currenTab === 4) {
+      if (roles.approver === true)
+        // enableBtn = true;
+        setEnableBtnApprover(true);
     }
-    approver()
-  }, [currenTab, roles])
+
+    // }
+    // approver()
+  }, [currenTab, roles, Allow_To_Do_Verify_Kyc_details])
 
 
 

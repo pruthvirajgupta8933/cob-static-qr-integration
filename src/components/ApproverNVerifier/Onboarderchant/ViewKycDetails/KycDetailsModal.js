@@ -25,12 +25,13 @@ import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMapp
 import { APP_ENV } from "../../../../config";
 import SaveLocation from "./SaveLocation";
 import ViewZoneModal from "../../ViewZoneModal";
+// import { SearchService } from "../../../../services/search.service/search.service";
 
 
 
 const KycDetailsModal = (props) => {
 
-  console.log("render", props)
+  // console.log("render", props)
 
   let closeVerification = props?.handleModal;
   let renderPendingApprovel = props.renderPendingApproval;
@@ -96,6 +97,8 @@ const KycDetailsModal = (props) => {
 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // SearchService.searchFilterService()
   }, [dispatch, selectedUserData]);
 
 
@@ -113,7 +116,7 @@ const KycDetailsModal = (props) => {
     }
   }, [])
 
-  const modalBody = useMemo(() => {
+  const modalBody = useCallback(() => {
     return (
       <>
         {/* if rate mapping trigger , hide the all coloum */}
@@ -222,7 +225,7 @@ const KycDetailsModal = (props) => {
     return (
       <div className="modal-footer">
         <button
-          type="button" className="btn btn-secondary text-white" data-dismiss="modal"
+          type="button" className="btn btn-secondary text-white btn-sm" data-dismiss="modal"
           onClick={() => {
             props?.handleModal(false);
           }}>
@@ -238,7 +241,7 @@ const KycDetailsModal = (props) => {
 
   return (
     <div>
-      {/* <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} /> */}
+      <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
     </div>
 
   );

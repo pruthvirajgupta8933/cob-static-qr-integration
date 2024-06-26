@@ -11,6 +11,8 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '../../../../utilities/axiosInstance'
 import API_URL from '../../../../config'
 import toastConfig from '../../../../utilities/toastTypes'
+import CustomReactSelect from '../../../../_components/formik/components/CustomReactSelect'
+import { createFilter } from 'react-select'
 // import ReactSelect from 'react-select';
 
 const GeneralForm = ({ role }) => {
@@ -18,6 +20,7 @@ const GeneralForm = ({ role }) => {
 
     const dispatch = useDispatch()
     const [parentClientCode, setParentClientCode] = useState([])
+    const [selectedRefBy, setSelectedRefBy] = useState(null);
     // const [referByValue, setReferByValue] = useState(null);
     const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
@@ -26,7 +29,7 @@ const GeneralForm = ({ role }) => {
 
     useEffect(() => {
         dispatch(businessCategoryType())
-        dispatch(getAllCLientCodeSlice())
+        // dispatch(getAllCLientCodeSlice())
         axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
             setParentClientCode(resp.data)
         }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
@@ -43,7 +46,7 @@ const GeneralForm = ({ role }) => {
     const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
-        refer_by: kyc.kycUserList?.refer_by,
+        // refer_by: kyc.kycUserList?.refer_by,
         rolling_reserve_type: kyc.kycUserList?.rolling_reserve_type,
         parent_client_code: ""
 
@@ -67,7 +70,7 @@ const GeneralForm = ({ role }) => {
             rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
             business_cat_type: val.business_cat_type,
             parent_client_code: val?.parent_client_code ?? 'COBED', // if not selected
-            refer_by: val.refer_by,
+            refer_by: selectedRefBy,
             rolling_reserve_type: val?.rolling_reserve_type,
             isFinalSubmit: true
         }
@@ -82,10 +85,22 @@ const GeneralForm = ({ role }) => {
 
     const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
     const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
-    const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
-    // const options = clientCodeOption.map(option => ({ value: option.key, label: option.value }));
+    // const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
 
-    // console.log(businessCategoryOption)
+    const handleSelectChange = (selectedOption) => {
+        setSelectedRefBy(selectedOption ? selectedOption.value : null)
+    }
+
+
+    const clientCodeOption = [
+        { value: '', label: 'Select Client Code' },
+        ...approverDashboard?.clientCodeList.map((data) => ({
+            value: data.loginMasterId,
+            label: `${data.clientCode} - ${data.name}`
+        }))
+    ]
+
+
 
     return (
         <div className="row mb-4 border p-1">
@@ -145,7 +160,7 @@ const GeneralForm = ({ role }) => {
 
 
                                 <div className="col-md-4 g-3">
-                                    <FormikController
+                                    {/* <FormikController
                                         control="select"
                                         name="refer_by"
                                         options={clientCodeOption}
@@ -156,7 +171,17 @@ const GeneralForm = ({ role }) => {
                                             formik.setFieldValue("refer_by", e.target.value)
                                             formik.setStatus(false);
                                         }}
+                                    /> */}
+                                    <CustomReactSelect
+                                        name="react_select"
+                                        options={clientCodeOption}
+                                        placeholder="Select Client Code"
+                                        filterOption={createFilter({ ignoreAccents: false })}
+                                        label="Refer by (if any)"
+                                        onChange={handleSelectChange}
+
                                     />
+
                                 </div>
 
                                 <div className="col-md-4 g-3">

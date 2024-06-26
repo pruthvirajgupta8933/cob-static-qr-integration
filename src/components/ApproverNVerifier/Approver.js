@@ -12,6 +12,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import { logout } from "../../slices/auth";
 import { merchantTab } from "../../slices/approverVerifierTabSlice";
 import classes from "./approver.module.css"
+import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
 
 const Approver = () => {
 
@@ -22,9 +23,9 @@ const Approver = () => {
   // console.log("currenTab",currenTab)
   const dispatch = useDispatch();
 
-  let history = useHistory();
+  // let history = useHistory();
 
-  let roles = roleBasedAccess();
+  // let roles = roleBasedAccess();
 
   const loggedUser = roleBasedAccess();
 
@@ -37,13 +38,19 @@ const Approver = () => {
     }
   }, [loggedUser]);
 
-  const redirect = () => {
-    history.push("/dashboard/onboard-merchant");
-  };
+  useEffect(() => {
+    dispatch(getAllCLientCodeSlice())
+  }, [])
+
+
+  // const redirect = () => {
+  //   history.push("/dashboard/onboard-merchant");
+  // };
 
   const handleTabClick = (currenTab) => {
     dispatch(merchantTab(currenTab));
   };
+
 
 
   return (
