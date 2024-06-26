@@ -29,7 +29,8 @@ import ViewZoneModal from "../../ViewZoneModal";
 
 
 const KycDetailsModal = (props) => {
-  // console.log("render")
+
+  console.log("render", props)
 
   let closeVerification = props?.handleModal;
   let renderPendingApprovel = props.renderPendingApproval;
@@ -42,7 +43,7 @@ const KycDetailsModal = (props) => {
 
 
 
-  const [docList, setDocList] = useState([]);
+  // const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
@@ -99,9 +100,9 @@ const KycDetailsModal = (props) => {
 
 
 
-  useEffect(() => {
-    setDocList(KycDocUpload)
-  }, [KycDocUpload])
+  // useEffect(() => {
+  //   setDocList(KycDocUpload)
+  // }, [KycDocUpload])
 
 
   useEffect(() => {
@@ -112,7 +113,7 @@ const KycDetailsModal = (props) => {
     }
   }, [])
 
-  const modalBody = useCallback(() => {
+  const modalBody = useMemo(() => {
     return (
       <>
         {/* if rate mapping trigger , hide the all coloum */}
@@ -120,16 +121,16 @@ const KycDetailsModal = (props) => {
 
           {/* contact info section */}
           <MerchantContactInfo
-            merchantKycId={merchantKycId}
+            // merchantKycId={merchantKycId}
             selectedUserData={selectedUserData}
-            role={roles}
+            // role={roles}
             KycTabStatus={KycTabStatusStore}
           />
 
           {/* business overview */}
           <BusinessOverview
             selectedUserData={selectedUserData}
-            merchantKycId={merchantKycId}
+            // merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
 
@@ -150,7 +151,7 @@ const KycDetailsModal = (props) => {
           {/* Merchant Documents */}
           <MerchantDocument
             docList={KycDocUpload}
-            setDocList={setDocList}
+            // setDocList={setDocList}
             docTypeList={docTypeList}
             role={roles}
             selectedUserData={selectedUserData}
@@ -215,7 +216,7 @@ const KycDetailsModal = (props) => {
           </div>}
       </>
     )
-  }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, KycDocUpload, setDocList, docTypeList])
+  }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, KycDocUpload, docTypeList])
 
   const modalFooter = useCallback(() => {
     return (
@@ -236,7 +237,10 @@ const KycDetailsModal = (props) => {
 
 
   return (
-    <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
+    <div>
+      {/* <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} /> */}
+    </div>
+
   );
 };
 

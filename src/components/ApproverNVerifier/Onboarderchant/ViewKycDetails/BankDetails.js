@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import { verifyKycEachTab, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import VerifyRejectBtn from './VerifyRejectBtn';
-import { fetchBankList } from '../../../../services/approver-dashboard/merchantReferralOnboard.service';
+// import { fetchBankList } from '../../../../services/approver-dashboard/merchantReferralOnboard.service';
 
 const BankDetails = (props) => {
   const dispatch = useDispatch();
-  const [bankName, setBankName] = useState("")
+  // const [bankName, setBankName] = useState("")
   const { KycTabStatus, selectedUserData } = props;
-  
+
   const { auth } = useSelector((state) => state);
 
   const { user } = auth;
@@ -57,21 +57,6 @@ const BankDetails = (props) => {
     }
   };
 
-
-  const bankid = useMemo(() => {
-    return selectedUserData?.merchant_account_details?.bankId
-  }, [selectedUserData])
-
-
-  useEffect(() => {
-    // console.log("usef Caallll")
-    // fetchBankList().then(resp => {
-    //   const bankData = resp.data?.filter((item) => item.bankId === bankid)
-    //   setBankName(bankData[0].bankName)
-    // }).catch(err => console.log("err", err))
-
-
-  }, [bankid])
 
 
   const inputFields = [
