@@ -91,15 +91,15 @@ const ViewZoneModal = ({ openZoneModal, setOpenZoneModal, userData }) => {
 
   const handleSubmit = (values, { resetForm }) => {
     setButtonDisable(true)
-const postData = {
+    const postData = {
       "client_code": userData?.clientCode,
       "emp_code": values?.emp_name,
       "risk_category_code": values?.riskCategoryCode,
       "mcc_code": values?.mccCode
 
     };
- dispatch(updateZoneData(postData)).then((resp) => {
-if (resp.meta.requestStatus === "fulfilled") {
+    dispatch(updateZoneData(postData)).then((resp) => {
+      if (resp.meta.requestStatus === "fulfilled") {
         toast.success(resp?.payload?.message)
         resetForm();
         setButtonDisable(false)
@@ -204,11 +204,11 @@ if (resp.meta.requestStatus === "fulfilled") {
           <div className="modal-footer">
             <button
               type="submit"
-              className="btn cob-btn-primary text-white"
+              className="btn cob-btn-primary text-white btn-sm"
               disabled={buttonDisable}
             >
               {buttonDisable && (
-                <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                <span className="spinner-border spinner-border-sm mr-1 btn-sm" role="status" ariaHidden="true"></span>
               )}
               Submit
             </button>
@@ -257,7 +257,7 @@ if (resp.meta.requestStatus === "fulfilled") {
       />
 
     </>
-);
+  );
 };
 
 export default ViewZoneModal;

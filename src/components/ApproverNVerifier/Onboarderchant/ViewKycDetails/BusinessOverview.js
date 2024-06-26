@@ -4,19 +4,20 @@ import { verifyKycEachTab, GetKycTabsStatus } from '../../../../slices/kycSlice'
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
 
 
 const BusinessOverview = (props) => {
-  const { businessTypeResponse, businessCategoryResponse, KycTabStatus, platform, selectedUserData } = props;
- 
+  const { KycTabStatus, selectedUserData } = props;
+
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
   const { kycUserList } = useSelector(state => state?.kyc || {});
- let isVerified = KycTabStatus?.business_info_status === "Verified" ? true : false;
-  let isRejected = KycTabStatus?.business_info_status === "Verified" ? true : false;
+  let isVerified = KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() === KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase() ? true : false;
+  let isRejected = KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() === KYC_STATUS_REJECTED?.toString()?.toLocaleLowerCase() ? true : false;
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
 
@@ -78,7 +79,7 @@ const BusinessOverview = (props) => {
       label: "Business Type",
       required: true,
       color: "red",
-      value:kycUserList?.business_type_name,
+      value: kycUserList?.business_type_name,
       inputType: "text"
     },
     {
@@ -154,7 +155,6 @@ const BusinessOverview = (props) => {
                 <textarea
                   type="text"
                   className="form-control"
-                  id="inputPassword3"
                   disabled="true"
                   cols={4}
                   rows={3}
@@ -177,142 +177,18 @@ const BusinessOverview = (props) => {
               <input
                 type={element.inputType}
                 className="form-control "
-                id="inputPassword3"
                 disabled="true"
                 value={element.value}
               />
-              
+
             </>
-            
+
 
 
           )}
         </div>
       ))}
 
-
-      {/* <div className="form-row g-3">
-        <div className="col-sm-6 col-md-6 col-lg-6">
-          <label className="">
-            Business Type<span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            disabled="true"
-            value={businessTypeResponse}
-          />
-        </div>
-
-
-        <div className="col-sm-6 col-md-6 col-lg-6">
-          <label className="">
-            Business Category<span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            disabled="true"
-            value={businessCategoryResponse}
-          />
-        </div>
-      </div>
-
-      <div className="form-row g-3">
-        <div className="col-sm-6 col-md-6 col-lg-6">
-          <label className="">
-            Business Description <span style={{ color: "red" }}>*</span>
-          </label>
-
-          <textarea
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.billingLabel
-            }
-          >
-          </textarea>
-        </div>
-
-
-        <div className="col-sm-6 col-md-6 col-lg-6">
-          <label
-            className="col-form-label p-0"
-            style={{ marginTop: "15px" }}
-          >
-            Expected Transactions/Year{" "}
-            <span style={{ color: "red" }}>*</span>
-          </label>
-
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.expectedTransactions
-            }
-          />
-        </div>
-      </div>
-
-      <div className="form-row g-3">
-        <div className="col-sm-3 col-md-3 col-lg-3">
-          <label className="">
-            Avg Ticket Amount<span style={{ color: "red" }}>*</span>
-          </label>
-
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={
-              selectedUserData?.avg_ticket_size
-            }
-          />
-        </div>
-
-        <div className="col-sm-3 col-md-3 col-lg-3">
-          <label className="">
-            Platform Type
-          </label>
-
-          <input
-            type="text"
-            className="form-control"
-            id="inputPassword3"
-            disabled="true"
-            value={platform}
-          />
-        </div>
-
-        <div className="col-sm-6 col-md-6 col-lg-6">
-          <label className="">
-            {selectedUserData?.is_website_url === true ?
-              <>
-                Merchant wish to accept payments on :
-                <textarea
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  cols={4}
-                  rows={3}
-                  value={
-                    selectedUserData?.website_app_url
-                  }
-                ></textarea>
-              </>
-              :
-              <p className="font-weight-bold text-danger">Merchant has accepted payments without any web/app</p>
-            }
-          </label>
-
-        </div>
-      </div> */}
 
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold ">

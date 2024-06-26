@@ -12,6 +12,7 @@ import CustomLoader from '../../../../_components/loader';
 const BusinessDetails = (props) => {
   const { KycTabStatus, selectedUserData } = props;
   const { classifications, nic_codes: nicCodes } = selectedUserData?.udyam_data || {};
+
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
@@ -75,13 +76,6 @@ const BusinessDetails = (props) => {
   };
 
 
-  // useEffect(()=>{
-  //   // console.log(selectedUserData?.panCard)
-  //   if(selectedUserData?.panCard || selectedUserData?.signatoryPAN){
-  //     displayPanData(selectedUserData);
-  //   }
-
-  // },[selectedUserData])
 
   const displayPanData = async (data) => {
 
@@ -100,8 +94,6 @@ const BusinessDetails = (props) => {
   };
 
 
-
-
   const toggleCollapse = (index) => {
     // Check if the collapse is being opened or closed
     const isOpening = isCollapseOpen !== index;
@@ -111,6 +103,8 @@ const BusinessDetails = (props) => {
 
     // }
   };
+
+
 
   const formFields = [
     {
@@ -437,12 +431,6 @@ const BusinessDetails = (props) => {
 
           }}
         />
-
-
-
-
-
-
       </>
 
       <div className="form-row g-3">

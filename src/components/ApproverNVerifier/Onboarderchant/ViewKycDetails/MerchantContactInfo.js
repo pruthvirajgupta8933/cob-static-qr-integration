@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { kycUserList, verifyKycEachTab } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -7,14 +7,15 @@ import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { maskedString } from '../../../../utilities/maskedString';
+import { KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
 
 function MerchantContactInfo(props) {
 
   const { KycTabStatus, selectedUserData } = props
   // const [buttonText, setButtonText] = useState("Save and Next");
 
-  const [isVerified, setIsVerified] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
-  const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
+  let isVerified = KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() === KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase() ? true : false;
+  let isRejected = KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() === KYC_STATUS_REJECTED?.toString()?.toLocaleLowerCase() ? true : false;
 
   let commentsStatus = KycTabStatus.general_info_reject_comments;
 
