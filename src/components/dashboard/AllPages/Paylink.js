@@ -17,7 +17,6 @@ function Paylink() {
 
   if (user.roleId !== 3 && user.roleId !== 13) {
     if (user.clientMerchantDetailsList === null) {
-      // console.log("paylink");
       history.push('/dashboard/profile');
 
     }
@@ -34,8 +33,8 @@ function Paylink() {
           <section className="">
             <div className="container-fluid">
               <div className="row">
-                <div className="col-lg-12 my-4 pl-0">
-                  <ul className="nav nav-tabs pl-3 pt-1">
+                <div className="col-lg-12 my-4 pl-3">
+                  <ul className="nav nav-tabs">
                     <li className="nav-item" onClick={() => SetTab(1)}>
                       <a href={() => false} id="navpad" className={"nav-link btn rounded-0 " + (tab === 1 ? "active" : "inactive")}  >Payment Detail</a>
                     </li>
