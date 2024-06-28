@@ -20,8 +20,8 @@ const MerchnatListExportToxl = (props) => {
         if (data.status) {
           window.open(
             data?.download_url,
-            '_top'
-            // '_blank' // <- This is what makes it open in a new window.
+            // '_top'
+            '_blank' // <- This is what makes it open in a new window.
           );
         } else {
           toastConfig.warningToast("Server Error, File not found")
