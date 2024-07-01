@@ -149,7 +149,7 @@ const initialState = {
         tempEmail: "",
         tempPhone: "",
     },
-   
+
     OpenModalForKycSubmit: {
         isOpen: false
     },
@@ -241,8 +241,10 @@ export const businessType = createAsyncThunk(
             .catch((error) => {
                 return error.response;
             });
-        // console.log(response)
-        return response.data;
+
+        // hide other type
+        return response.data?.filter(item => item.businessTypeId !== 11)
+        // return response.data;
     }
 );
 ///////////////////////// For business category api
@@ -256,8 +258,10 @@ export const busiCategory = createAsyncThunk(
             .catch((error) => {
                 return error.response;
             });
-        // console.log(response)
-        return response.data;
+        // console.log(response.data)
+        // hide orther category
+        // category_id
+        return response.data?.filter(item => item.category_id !== 38)
     }
 );
 
