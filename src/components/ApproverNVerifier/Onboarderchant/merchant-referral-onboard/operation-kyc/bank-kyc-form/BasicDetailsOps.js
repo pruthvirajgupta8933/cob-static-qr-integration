@@ -8,7 +8,7 @@ import API_URL from '../../../../../../config';
 import { axiosInstanceJWT } from '../../../../../../utilities/axiosInstance';
 import { convertToFormikSelectJson } from '../../../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { saveMerchantBasicDetails, updateBasicDetailsSlice } from '../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice';
-import { kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
+import { busiCategory, businessType, kycDetailsByMerchantLoginId } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
 
@@ -166,31 +166,34 @@ function BasicDetailsOps({ setCurrentTab, isEditableInput, zoneCode, bankLoginId
 
 
     useEffect(() => {
-        axiosInstanceJWT
-            .get(API_URL.Business_Category_CODE)
+        // business type
+        dispatch(businessType())
             .then((resp) => {
-                const data = resp.data;
-                const dataOpt = convertToFormikSelectJson("category_id", "category_name", data);
-                setBusinessCode(dataOpt);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-
-        axiosInstanceJWT
-            .get(API_URL.Business_type)
-            .then((resp) => {
-                const data = convertToFormikSelectJson("businessTypeId", "businessTypeText", resp.data);
+                const data = convertToFormikSelectJson(
+                    "businessTypeId",
+                    "businessTypeText",
+                    resp.payload
+                );
                 setBusinessTypeData(data);
+            }).catch((err) => console.log(err));
+
+        // busniessCategory
+        dispatch(busiCategory())
+            .then((resp) => {
+                const data = convertToFormikSelectJson(
+                    "category_id",
+                    "category_name",
+                    resp.payload
+                );
+
+                setBusinessCode(data);
             })
-            .catch((err) => {
-                console.error(err);
-            });
+            .catch((err) => console.log(err));
 
 
     }, []);
 
-   
+
 
     const togglePassword = () => {
         setPasswordType({
