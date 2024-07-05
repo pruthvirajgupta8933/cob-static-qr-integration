@@ -110,7 +110,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .when('isPasswordReq', {
                 is: false,
                 then: Yup.string().allowOneSpace()
-                    .matches(reqexPAN, "PAN number is invalid")
+                .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
                     .required("Required")
                     .nullable(),
                 otherwise: Yup.string(),
@@ -140,7 +140,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .when('isPasswordReq', {
                 is: false,
                 then: Yup.string().allowOneSpace()
-                    .matches(reqexPAN, "Authorized PAN number is Invalid")
+                .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
                     .required("Required")
                     .nullable(),
                 otherwise: Yup.string(),

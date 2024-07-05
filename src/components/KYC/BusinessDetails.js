@@ -25,7 +25,7 @@ function BusinessDetails(props) {
   const setTitle = props.title;
 
   const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{1}[0-9A-Z]{1}$/;
-  const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+  
   const reqexPinCode = /^[1-9][0-9]{5}$/;
 
   const { auth, kyc } = useSelector((state) => state);
@@ -136,7 +136,7 @@ function BusinessDetails(props) {
       then: Yup.string()
         .trim()
         .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-        .matches(regexGSTN, "GSTIN Number is Invalid")
+        // .matches(regexGSTN, "GSTIN Number is Invalid")
         .required("Required")
         .nullable(),
       otherwise: Yup.string()
@@ -171,14 +171,14 @@ function BusinessDetails(props) {
       otherwise: Yup.string().notRequired().nullable()
     }),
     pan_card: Yup.string().allowOneSpace()
-      .matches(reqexPAN, "PAN number is invalid")
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .required("Required")
       .nullable(),
     isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
 
     signatory_pan: Yup.string()
       .allowOneSpace()
-      .matches(reqexPAN, "Authorized PAN number is Invalid")
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .required("Required")
       .nullable(),
     isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
