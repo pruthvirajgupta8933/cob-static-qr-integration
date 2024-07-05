@@ -29,21 +29,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
-    console.log("merchantKycData",merchantKycData)
+   
 
 
-    const Regexx = {
-        acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
-    };
-
-    const RegexMssg = {
-        acceptAlphabet: 'Please enter valid characters.',
-    };
-    const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-
-    
-
-    const initialValues = {
+ const initialValues = {
         pan_card: merchantKycData?.panCard ?? "",
         is_pan_verified: merchantKycData?.signatoryPAN ?? "",
         website: merchantKycData?.website_app_url ?? "",
@@ -116,7 +105,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             .allowOneSpace()
             .min(1, 'Please enter more than 1 character')
             .max(250, 'Please do not enter more than 250 characters')
-            .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
+            .matches(Regex.acceptAlphaWithComma, RegexMsg.acceptAlphaWithComma)
             .required('Required')
             .nullable(),
 

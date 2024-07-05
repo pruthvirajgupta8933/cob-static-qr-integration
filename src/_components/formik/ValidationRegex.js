@@ -2,6 +2,7 @@
 export const Regex = {
   acceptAlphabet: /^[aA-zZ\s]+$/,
   acceptAlphaNumericDot: /^[a-zA-Z0-9. ]+$/,
+  acceptAlphaWithComma:/^[a-zA-Z,.\s]+$/,
   acceptNumber: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
   acceptAlphaNumeric: /^[a-zA-Z0-9\s]+$/,
   alphaBetwithhyphon: /[a-zA-Z._^%$#!~@,-]+/,
@@ -44,7 +45,8 @@ export const RegexMsg = {
   aadhaarRegex: "Aadhaar Number is Invalid",
   phoneRegExp: "Phone number is not valid",
   latitudeRegex: "Invalid Latitude",
-  longitudeRegex: "Invalid Longitude"
+  longitudeRegex: "Invalid Longitude",
+  acceptAlphaWithComma:"Please enter valid characters"
 }
 
 

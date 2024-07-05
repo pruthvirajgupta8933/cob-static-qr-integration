@@ -28,7 +28,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails } = merchantReferralOnboardReducer
-    const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+   
 
     const generateRandomPassword = () => {
         const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

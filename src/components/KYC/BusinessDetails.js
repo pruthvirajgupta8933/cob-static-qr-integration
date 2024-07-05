@@ -24,7 +24,7 @@ function BusinessDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[0-9A-Z]{1}[0-9A-Z]{1}$/;
+  
   
   const reqexPinCode = /^[1-9][0-9]{5}$/;
 
