@@ -29,6 +29,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     const { businessDetails } = merchantReferralOnboardReducer
     const merchantLoginId = merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId
     const { merchantKycData } = kyc
+    console.log("merchantKycData",merchantKycData)
 
 
     const Regexx = {
@@ -39,6 +40,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         acceptAlphabet: 'Please enter valid characters.',
     };
     const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+
+    
 
     const initialValues = {
         pan_card: merchantKycData?.panCard ?? "",
@@ -69,7 +72,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
     const validationSchema = Yup.object({
         pan_card: Yup.string()
-            .max(10, "PAN should be exactly 10 characters long")
+            .max(10, "PAN should be exactly 10 characters long").matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
             .nullable().required("Required"),
         website: Yup.string()
             .allowOneSpace()
@@ -88,7 +91,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             .required("Required").nullable(),
         signatory_pan: Yup.string()
             .allowOneSpace()
-            .matches(reqexPAN, "Authorized PAN number is Invalid")
+            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
             // .required("Required")
             .nullable(),
         isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),

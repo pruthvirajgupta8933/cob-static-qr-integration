@@ -360,7 +360,7 @@ function AssignZone() {
                       <button
                         type="submit"
 
-                        className="approve cob-btn-primary text-white"
+                        className="approve cob-btn-primary "
                         data-toggle="modal"
                         data-target="#exampleModalCenter"
                       >
@@ -378,7 +378,7 @@ function AssignZone() {
       </main>
 
 
-      <CustomModal modalBody={modalBody} headerTitle={"MID Generation"} modalToggle={openZoneModal}
+      <CustomModal modalBody={modalBody} headerTitle={""} modalToggle={openZoneModal}
         fnSetModalToggle={setOpenModal} />
 
 

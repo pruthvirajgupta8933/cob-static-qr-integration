@@ -41,11 +41,7 @@
     background-color: #ccd7e9
 }
 
-.left_arrow {
-    background-image: url("../../../assets/images/arrow.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+
 
 .form_container {
     /* padding: 1em 4em 0 4em;
@@ -101,11 +97,7 @@
     width: 65%;
 }
 
-.left_side_arrow {
-    position: absolute;
-    right: 0;
-    background-image: url(../../../assets/images/arrow_two.png);
-}
+
 
 .right_side_arrow {
     position: absolute;
