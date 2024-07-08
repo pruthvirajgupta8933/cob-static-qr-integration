@@ -90,7 +90,7 @@ const CreatePassword = (props) => {
               {({ formik }) => (
                 <>
                   <Form>
-                    <div className="form-group m-3">
+                    <div className="form-group">
                       <label htmlFor="exampleInputPassword1">
                         New Password
                       </label>
@@ -139,7 +139,7 @@ const CreatePassword = (props) => {
                       </ErrorMessage>
                     </div>
 
-                    <div className="form-group m-3">
+                    <div className="form-group">
                       <label htmlFor="exampleInputPassword2">
                         Confirm Password
                       </label>
@@ -195,7 +195,7 @@ const CreatePassword = (props) => {
                       </button> */}
                     <div className="d-flex">
                       <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 "
-                      disabled={loading}
+                        disabled={loading}
                       >
                         {loading && (
                           <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>

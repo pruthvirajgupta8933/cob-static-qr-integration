@@ -97,7 +97,11 @@
     width: 65%;
 }
 
-
+.left_side_arrow {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+}
 
 .right_side_arrow {
     position: absolute;

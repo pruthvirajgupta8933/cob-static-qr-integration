@@ -11,6 +11,8 @@ import sbbnner from "../../assets/images/login-banner.png"
 import arrow_one from "../../../src/assets/images/arrow_one.png"
 import arrow_two from "../../assets/images/arrow_two.png"
 import VerifyEmailPhone from "./VerifyEmailPhone";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import toastConfig from "../../utilities/toastTypes";
 
 const EnterUserID = (props) => {
   const [loading, setLoading] = useState(false)
@@ -42,12 +44,14 @@ const EnterUserID = (props) => {
 
         if (res.payload.status === true) {
           // props.props("a2", data);
-          toast.success("OTP Sent Successfully");
+          // toast.success("OTP Sent Successfully");
+          toastConfig.successToast("OTP Sent Successfully")
           setLoading(false)
           setShow(true)
         }
       } else {
-        toast.errorToast(res?.payload ?? "Rejected")
+        toastConfig.errorToast(res?.payload ?? "Rejected")
+        // toast.error(res?.payload ?? "Rejected")
         setLoading(false)
         setShow(false)
       }
@@ -72,9 +76,8 @@ const EnterUserID = (props) => {
               <div className="col">
                 <div className="p-4 text-center">
                   <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
-                  <div className={`my-5  ${classes.sp_font_24}`} >
+                  <div className={`my-5  py-5 ${classes.sp_font_24}`} >
                     <p className="text-white">Forgot Password</p>
-
                   </div>
                 </div>
               </div>
@@ -108,17 +111,20 @@ const EnterUserID = (props) => {
           <div className="container-fluid d-flex flex-column h-100 p-0">
             <div className="row align-items-start flex-grow-1" >
               <div className="col">
-                {(isTablet || isMobile) &&
+
+                <div>  {(isTablet || isMobile) &&
                   <Header display_bg_color={true} />}
-                <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} />
+                  <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} /></div>
+                <div className="p-5"><Link to="/"><p className="font-size-18"><i className="fa fa-arrow-left mr-2" />Back to login</p></Link></div>
+
               </div>
             </div>
 
-            <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
+            <div className="row align-items-start flex-grow-1 ">
               <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
-              <div className={`col ${classes.form_container}`}>
+              <div className={`col `}>
                 {!show && (
-                  <h5 className="text-center font-weight-bold text_primary_color">Forgot Password</h5>)}
+                  <h4 className="text-center font-weight-bold text_primary_color  m-5">Forgot Password</h4>)}
                 {!show ? (
                   <Formik
                     initialValues={initialValues}
@@ -174,7 +180,6 @@ const EnterUserID = (props) => {
 
               </div>
               <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
-
             </div>
 
             <div className="row align-items-end flex-grow-1">

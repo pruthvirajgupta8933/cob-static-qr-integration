@@ -13,7 +13,7 @@ import Header from '../header/Header'
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
 import signupBnr from "../../../assets/images/signup-banner.png"
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import toastConfig from "../../../utilities/toastTypes";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import arrow_one from "../../../assets/images/arrow_one.png"
@@ -277,7 +277,7 @@ function Signup() {
                             </div>
 
                             <div className="row align-items-start flex-grow-1" >
-                                <div className={`col-lg-2 col-md-1 col-sm-1`}>
+                                <div className={`col-lg-2 col-md-1 col-sm-1 d-flex justify-content-end`}>
                                     <img src={arrow_two} alt="arrow" className={`${classes.left_side_arrow}`} />
                                 </div>
                                 <div className="col-lg-8 col-md-10 col-sm-10">
