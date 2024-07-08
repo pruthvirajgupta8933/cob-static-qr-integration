@@ -49,11 +49,11 @@ function DashboardHeader() {
             <div className={`${headerClasses.navbar_mobile}`}>
                 <div className={`navbar-nav ${headerClasses.navbar_nav_cob}`}>
                     <div className="d-flex justify-content-between">
-                        <p className={`m-0 font-size-18 text-capitalize ${headerClasses.col1} ${headerClasses.cob_d_none_mobile}`}>Welcome back</p>
-                        <p className={`m-0 text-capitalize px-3 font-size-18 ${headerClasses.col2} ${headerClasses.cob_d_none_mobile}`}>{loggedUser} Id &nbsp;: {loginId}</p>
+                        <p className={`m-0 font-size-16 text-capitalize ${headerClasses.col1} ${headerClasses.cob_d_none_mobile}`}>Welcome back</p>
+                        <p className={`m-0 text-capitalize px-3 font-size-16 ${headerClasses.col2} ${headerClasses.cob_d_none_mobile}`}>{loggedUser} Id &nbsp;: {loginId}</p>
                         <div className={`dropdown ${headerClasses.col3}`}>
-                            <button className="btn btn-sm dropdown-toggle mr-2 border-1 font-size-18 text-capitalize p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i className="fa fa-user-circle font-size-18 " style={{ color: '#286ECD' }} /> {username}
+                            <button className="btn btn-sm dropdown-toggle mr-2 border-1 font-size-16 text-capitalize p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i className="fa fa-user-circle font-size-16 " style={{ color: '#286ECD' }} /> {username}
                             </button>
                             <ul className="dropdown-menu position-absolute">
                                 <li><Link to="/dashboard/profile" className="dropdown-item">Profile</Link></li>

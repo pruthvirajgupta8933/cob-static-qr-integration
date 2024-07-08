@@ -150,13 +150,13 @@ function Login() {
                             </div>
                         </div>
                         <div className="row align-items-start flex-grow-1" >
-                            <div className={`col-lg-2 col-md-1 col-sm-1`}>
+                            <div className={`col-lg-2 col-md-1 col-sm-1 d-flex justify-content-end`}>
                                 <img src={arrow_two} alt="arrow" className={`${classes.left_side_arrow}`} />
                             </div>
                             <div className="col-lg-8 col-md-10 col-sm-10">
                                 <div className="text-center">
                                     <div className={`${classes.sp_font_20}`} >
-                                        <h4 className={`hr_line`}>Need help? Contact us</h4>
+                                        <h4 className={`hr_line text-white`}>Need help? Contact us</h4>
                                     </div>
                                     <div className="d-flex justify-content-around my-1">
                                         <p className="mx-2 text-white"><i class="mx-2 fa fa-light fa-envelope"></i> support@sabpaisa.in</p>

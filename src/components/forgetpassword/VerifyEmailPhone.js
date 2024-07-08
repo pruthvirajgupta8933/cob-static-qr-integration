@@ -8,10 +8,10 @@ import { emailVerify } from "../../services/forgotPassword-service/forgotPasswor
 import CreatePassword from "./CreatePassword";
 
 const VerifyEmailPhone = (props) => {
- const { auth } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
-   const verification_token = auth.forgotPassword.otpResponse.verification_token;
+  const verification_token = auth.forgotPassword.otpResponse.verification_token;
   const INITIAL_FORM_STATE = {
     otp: ""
   };
@@ -23,22 +23,22 @@ const VerifyEmailPhone = (props) => {
 
   });
 
-  
-const emailverify = async (e) => {
 
-  setLoading(true)
+  const emailverify = async (e) => {
+
+    setLoading(true)
     const sendOtp = {
       verification_token: verification_token,
       otp: e.otp,
     };
 
- emailVerify(sendOtp)
+    emailVerify(sendOtp)
       .then((response) => {
-         if (response.status === 200) {
+        if (response.status === 200) {
           toast.success(response.data.message);
           setShow(true)
           setLoading(false)
-          
+
         } else {
           toast.error(response.data.message);
           setShow(false)
@@ -50,12 +50,12 @@ const emailverify = async (e) => {
         setShow(false)
         setLoading(false)
       });
-  
 
-  
-};
 
- return (
+
+  };
+
+  return (
     <React.Fragment>
       <div className="container-fluid toppad ">
         <div className="row">
@@ -80,13 +80,12 @@ const emailverify = async (e) => {
                       maxLength={6}
                       id="otp"
                       placeholder="Enter OTP"
-
                       type="text"
                       name="otp"
 
                     />
                     <ErrorMessage name="otp">
-                      {(msg) => (<div className="text-danger">{msg}</div>
+                      {(msg) => (<div className="text-danger mt-1">{msg}</div>
                       )}
                     </ErrorMessage>
                   </div>
