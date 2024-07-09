@@ -487,7 +487,7 @@ h1, h2, h3, h4, h5, h6{
 
 /* data calendar  */
 .react-date-picker__calendar {
-  z-index: 999 !important;
+  z-index: 9999 !important;
 }
 
 
@@ -550,3 +550,12 @@ h1, h2, h3, h4, h5, h6{
 
 
 /* horizontal line */
+
+
+/* mansha */
+#sp_manshaChabot {
+  position: absolute;
+  z-index: 9999 !important;
+}
+
+/* end mansha */
