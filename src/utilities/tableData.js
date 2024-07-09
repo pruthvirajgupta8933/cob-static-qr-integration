@@ -74,6 +74,12 @@ export const NotFilledKYCData = [
     name: "Onboard Type",
     selector: (row) => row.isDirect,
   },
+
+  {
+    id: "10",
+    name: "Zone Name",
+    selector: (row) => row.zoneName,
+  },
 ];
 
 
