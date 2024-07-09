@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Formik, Form,  } from "formik";
+import { Formik, Form, } from "formik";
 import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
 import Yup from "../../../../_components/formik/Yup";
@@ -110,12 +110,12 @@ const PayerDetails = () => {
     setDisable(true);
     setSubmitted(true);
     setLoadingState(true);
-    
+
     // Clear setData state
     setData([]);
     setDisplayList([]);
     setPaginatedData([]);
-    
+
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
 
@@ -137,7 +137,7 @@ const PayerDetails = () => {
         setDisable(false);
         setSubmitted(false);
       });
-};
+  };
 
 
   // SEARCH FILTER
@@ -161,7 +161,7 @@ const PayerDetails = () => {
     setSearchText(e.target.value);
   };
 
- 
+
 
   useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value());
@@ -181,7 +181,7 @@ const PayerDetails = () => {
   const getDrop = async (e) => {
     await createPaymentLinkService.getCustomerType()
       .then((res) => {
-       
+
         setCustomerType(res.data);
       })
       .catch((err) => {
@@ -197,7 +197,7 @@ const PayerDetails = () => {
 
   //ADD user API Integration
 
-  
+
 
   // USE FOR EDIT FORM
   const handleClick = (id) => {
@@ -230,7 +230,7 @@ const PayerDetails = () => {
   const deleteUser = async (id) => {
     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
     if (iscConfirm) {
-      await createPaymentLinkService.deleteCustomer(clientCode,id)
+      await createPaymentLinkService.deleteCustomer(clientCode, id)
       loadUser();
     }
   };
@@ -248,11 +248,11 @@ const PayerDetails = () => {
         callBackFn={edit}
         modalToggle={editModalToggle}
         fnSetModalToggle={setEditModalToggle}
-        
+
       />
       <Genratelink generatedata={genrateform} />
-      <AddSinglePayer loadUser={loadUser} customerType={customerType}/>
-      
+      <AddSinglePayer loadUser={loadUser} customerType={customerType} />
+
       <section >
         <div className="container-fluid">
           <div className="row">
@@ -280,7 +280,7 @@ const PayerDetails = () => {
             {(formik) => (
               <Form>
                 <div className="row mt-4">
-                  <div className="form-group  col-md-3 ">
+                  <div className="form-group  col-md-3">
                     <FormikController
                       control="date"
                       label="From Date"
@@ -295,7 +295,7 @@ const PayerDetails = () => {
                       errorMsg={formik.errors["fromDate"]}
                     />
                   </div>
-                  <div className="form-group col-md-3 ml-3">
+                  <div className="form-group col-md-3">
                     <FormikController
                       control="date"
                       label="End Date"
@@ -311,7 +311,7 @@ const PayerDetails = () => {
                     />
                   </div>
 
-                  <div className="col-md-3 mt-4">
+                  <div className="col-md-3 mt-lg-4">
                     <button
                       type="submit"
                       className="btn cob-btn-primary approve text-white"
@@ -359,96 +359,96 @@ const PayerDetails = () => {
 
 
       <section className="">
-      <div className="container-fluid p-3 my-3">
-  {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
+        <div className="container-fluid p-3 my-3">
+          {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
 
-  {loadingState ? (
-    <div className="d-flex justify-content-center align-items-center loader-container">
-      <CustomLoader loadingState={loadingState} />
-    </div>
-  ) : data?.length === 0 ? (
-    <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
-  ) : (
-    <>
-      <div className="scroll overflow-auto">
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">S.No</th>
-              <th scope="col">Name of Payer</th>
-              <th scope="col">Mobile No.</th>
-              <th scope="col">Email ID</th>
-              <th scope="col">Payer Category</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Action</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedata.map((user, i) => (
-              <tr key={uuidv4()}>
-                <td>{i + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.phone_number}</td>
-                <td>{user.email}</td>
-                <td>{user.customer_type}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn cob-btn-primary btn-primary text-white btn-sm"
-                    onClick={(e) => handleClick(user.id)}
-                  >
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={(e) => generateli(user.id)}
-                    type="button"
-                    className="btn cob-btn-primary text-white btn-sm"
-                    data-toggle="modal"
-                    data-target="#bhuvi"
-                    data-whatever="@getbootstrap"
-                  >
-                    Generate Link
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn cob-btn-secondary btn-danger text-white btn-sm"
-                    onClick={() => deleteUser(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="d-flex justify-content-center">
-        <ReactPaginate
-          previousLabel={'Previous'}
-          nextLabel={'Next'}
-          breakLabel={'...'}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-          containerClassName={'pagination justify-content-center'}
-          activeClassName={'active'}
-          previousLinkClassName={'page-link'}
-          nextLinkClassName={'page-link'}
-          disabledClassName={'disabled'}
-          breakClassName={'page-item'}
-          breakLinkClassName={'page-link'}
-          pageClassName={'page-item'}
-          pageLinkClassName={'page-link'}
-        />
-      </div>
-    </>
-  )}
-</div>
+          {loadingState ? (
+            <div className="d-flex justify-content-center align-items-center loader-container">
+              <CustomLoader loadingState={loadingState} />
+            </div>
+          ) : data?.length === 0 ? (
+            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
+          ) : (
+            <>
+              <div className="scroll overflow-auto">
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Name of Payer</th>
+                      <th scope="col">Mobile No.</th>
+                      <th scope="col">Email ID</th>
+                      <th scope="col">Payer Category</th>
+                      <th scope="col">Edit</th>
+                      <th scope="col">Action</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedata.map((user, i) => (
+                      <tr key={uuidv4()}>
+                        <td>{i + 1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.phone_number}</td>
+                        <td>{user.email}</td>
+                        <td>{user.customer_type}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn cob-btn-primary btn-primary text-white btn-sm"
+                            onClick={(e) => handleClick(user.id)}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            onClick={(e) => generateli(user.id)}
+                            type="button"
+                            className="btn cob-btn-primary text-white btn-sm"
+                            data-toggle="modal"
+                            data-target="#bhuvi"
+                            data-whatever="@getbootstrap"
+                          >
+                            Generate Link
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className="btn cob-btn-secondary btn-danger text-white btn-sm"
+                            onClick={() => deleteUser(user.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="d-flex justify-content-center">
+                <ReactPaginate
+                  previousLabel={'Previous'}
+                  nextLabel={'Next'}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                  containerClassName={'pagination justify-content-center'}
+                  activeClassName={'active'}
+                  previousLinkClassName={'page-link'}
+                  nextLinkClassName={'page-link'}
+                  disabledClassName={'disabled'}
+                  breakClassName={'page-item'}
+                  breakLinkClassName={'page-link'}
+                  pageClassName={'page-item'}
+                  pageLinkClassName={'page-link'}
+                />
+              </div>
+            </>
+          )}
+        </div>
 
 
       </section>
