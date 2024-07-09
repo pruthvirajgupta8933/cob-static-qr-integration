@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
 import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
-import Paylink from "../AllPages/Paylink";
+import Paylink from "../AllPages/createpaymentlink/Paylink";
 // improt Profile
 // import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
