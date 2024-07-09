@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState,useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
@@ -30,17 +30,17 @@ const PendindKyc = () => {
   const [onboardType, setOnboardType] = useState("");
 
   const pendindKycList = useSelector(
-    (state) => state.kyc.pendingKycuserList 
+    (state) => state.kyc.pendingKycuserList
   );
 
   const [data, setData] = useState([]);
   const [pendingKycData, setPendingKycData] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
-  const [dataCount,setDataCount]=useState("")
+  const [dataCount, setDataCount] = useState("")
 
   useEffect(() => {
-    const pendingKycDataList=pendindKycList?.results
-  const dataCount=pendindKycList?.count
+    const pendingKycDataList = pendindKycList?.results
+    const dataCount = pendindKycList?.count
 
     if (pendingKycDataList) {
       setData(pendingKycDataList);
@@ -51,7 +51,7 @@ const PendindKyc = () => {
   }, [pendindKycList]); //
 
 
- const PendindKycRowData = [
+  const PendindKycRowData = [
     {
       id: "1",
       name: "S.No",
@@ -116,6 +116,11 @@ const PendindKyc = () => {
       width: "150px",
     },
     {
+      id: "14",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
+    {
       id: "9",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
@@ -148,8 +153,8 @@ const PendindKyc = () => {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -170,7 +175,7 @@ const PendindKyc = () => {
     },
   ];
 
- 
+
 
 
   const kycSearch = (e, fieldType) => {
@@ -194,16 +199,16 @@ const PendindKyc = () => {
     setPageSize(pageSize);
   };
 
- 
+
 
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForPendingMerchants({
-             page: currentPage,
-              page_size: pageSize,
-              searchquery: searchText,
-              merchantStatus: "Pending",
-              isDirect: onboardType,
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Pending",
+        isDirect: onboardType,
       })
     );
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
@@ -255,22 +260,22 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-            {openCommentModal && <CommentModal
-              commentData={commentId}
-              isModalOpen={openCommentModal}
-              setModalState={setOpenCommentModal}
-              tabName={"Pending KYC"}
-            /> } 
-            {isOpenModal && <KycDetailsModal
+          {openCommentModal && <CommentModal
+            commentData={commentId}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Pending KYC"}
+          />}
+          {isOpenModal && <KycDetailsModal
             handleModal={setIsModalOpen}
             kycId={kycIdClick}
             isOpenModal={isOpenModal}
           />}
-          
+
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             currentPage={currentPage}
@@ -290,18 +295,18 @@ const PendindKyc = () => {
           />
         </div>
         <div className="">
-        {!loadingState &&
-          <MerchnatListExportToxl
-            URL={`export-excel/?search=Pending&isDirect=${onboardType}`}
-            filename={"Pending-KYC"}
-          />
-        }
+          {!loadingState &&
+            <MerchnatListExportToxl
+              URL={`export-excel/?search=Pending&isDirect=${onboardType}`}
+              filename={"Pending-KYC"}
+            />
+          }
         </div>
       </div>
 
       <div>
         <div className="scroll overflow-auto">
-        <h6>Total Count : {dataCount}</h6>
+          <h6>Total Count : {dataCount}</h6>
           {!loadingState && data?.length !== 0 && (
             <Table
               row={PendindKycRowData}

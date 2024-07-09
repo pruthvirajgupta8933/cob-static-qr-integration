@@ -51,6 +51,7 @@ const NotFilledKYC = () => {
         status: item.status,
         signUpDate: item.signUpDate,
         isDirect: item.isDirect,
+        zoneName: item.zoneName
       };
     });
   }, [notFilledKycData]);
@@ -180,7 +181,7 @@ const NotFilledKYC = () => {
             />
           )}
         </div>
-       
+
         {loadingState &&
           <SkeletonTable />
         }
