@@ -60,7 +60,7 @@ const Reports = () => {
 
   useEffect(() => {
     // toastConfig.infoToast("Report Loading")
-   createPaymentLinkService.getReports(clientCode,splitDate,splitDate)
+    createPaymentLinkService.getReports(clientCode, splitDate, splitDate)
       .then(res => {
         // toastConfig.successToast("Report Data loaded")
         setData(res.data);
@@ -119,7 +119,7 @@ const Reports = () => {
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
     const dateRangeValid = checkValidation(fromDate, toDate);
     if (dateRangeValid) {
-      createPaymentLinkService.getReports(clientCode,fromDate,toDate)
+      createPaymentLinkService.getReports(clientCode, fromDate, toDate)
         .then((res) => {
           if (res?.data?.length === 0) {
             toastConfig.errorToast("No Data Found")
@@ -129,7 +129,7 @@ const Reports = () => {
             setLoadingState(false);
             setDisplayList(res.data);
             setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-            
+
           }
           setDisable(false)
           setLoadingState(false)
@@ -190,7 +190,7 @@ const Reports = () => {
             {(formik) => (
               <Form>
                 <div className="row mt-4">
-                  <div className="form-group  col-md-3 ">
+                  <div className="form-group col-md-3">
                     <FormikController
                       control="date"
                       label="From Date"
@@ -205,7 +205,7 @@ const Reports = () => {
                       errorMsg={formik.errors["fromDate"]}
                     />
                   </div>
-                  <div className="form-group col-md-3 ml-3">
+                  <div className="form-group col-md-3">
                     <FormikController
                       control="date"
                       label="End Date"
@@ -221,7 +221,7 @@ const Reports = () => {
                     />
                   </div>
 
-                  <div className="col-md-3 mt-4">
+                  <div className="col-md-3 mt-lg-4">
                     <button
                       type="submit"
                       className="btn cob-btn-primary approve text-white"
@@ -259,79 +259,79 @@ const Reports = () => {
       </section>
 
       <section className="">
-      <div className="container-fluid p-3 my-3">
-  {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
+        <div className="container-fluid p-3 my-3">
+          {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
 
-  {loadingState ? (
-    <div className="d-flex justify-content-center align-items-center loader-container">
-      <CustomLoader loadingState={loadingState} />
-    </div>
-  ) : data?.length === 0 ? (
-    <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
-  ) : (
-    <>
-      <div className="scroll" style={{ overflow: "auto" }}>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>S. No.</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Mobile No.</th>
-              <th>Action</th>
-              <th>Status</th>
-              <th>Client Txn Id</th>
-              <th>Link Id</th>
-              <th colSpan={1}>Link Valid Date</th>
-              <th>Created At</th>
-              <th>Payment Collected</th>
-              <th>Numeric Link Id</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedata.map((report, i) => (
-              <tr key={uuidv4()}>
-                <td>{i + 1}</td>
-                <td>{report.customer_name}</td>
-                <td>{report.customer_email}</td>
-                <td>{report.customer_phone_number}</td>
-                <td>{report.type}</td>
-                <td>{report.transaction_status}</td>
-                <td>{report.client_transaction_id}</td>
-                <td>{report.link_id}</td>
-                <td>{convertDate(report?.link_valid_date?.replace("T", " "))}</td>
-                <td>{report.created_at}</td>
-                <td>{report.payment_collected}</td>
-                <td>{report.numeric_link_id}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          {loadingState ? (
+            <div className="d-flex justify-content-center align-items-center loader-container">
+              <CustomLoader loadingState={loadingState} />
+            </div>
+          ) : data?.length === 0 ? (
+            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
+          ) : (
+            <>
+              <div className="scroll" style={{ overflow: "auto" }}>
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>S. No.</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Mobile No.</th>
+                      <th>Action</th>
+                      <th>Status</th>
+                      <th>Client Txn Id</th>
+                      <th>Link Id</th>
+                      <th colSpan={1}>Link Valid Date</th>
+                      <th>Created At</th>
+                      <th>Payment Collected</th>
+                      <th>Numeric Link Id</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedata.map((report, i) => (
+                      <tr key={uuidv4()}>
+                        <td>{i + 1}</td>
+                        <td>{report.customer_name}</td>
+                        <td>{report.customer_email}</td>
+                        <td>{report.customer_phone_number}</td>
+                        <td>{report.type}</td>
+                        <td>{report.transaction_status}</td>
+                        <td>{report.client_transaction_id}</td>
+                        <td>{report.link_id}</td>
+                        <td>{convertDate(report?.link_valid_date?.replace("T", " "))}</td>
+                        <td>{report.created_at}</td>
+                        <td>{report.payment_collected}</td>
+                        <td>{report.numeric_link_id}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-      <div className="d-flex justify-content-center mt-2">
-        <ReactPaginate
-          previousLabel={'Previous'}
-          nextLabel={'Next'}
-          breakLabel={'...'}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-          containerClassName={'pagination justify-content-center'}
-          activeClassName={'active'}
-          previousLinkClassName={'page-link'}
-          nextLinkClassName={'page-link'}
-          disabledClassName={'disabled'}
-          breakClassName={'page-item'}
-          breakLinkClassName={'page-link'}
-          pageClassName={'page-item'}
-          pageLinkClassName={'page-link'}
-        />
-      </div>
-    </>
-  )}
-</div>
+              <div className="d-flex justify-content-center mt-2">
+                <ReactPaginate
+                  previousLabel={'Previous'}
+                  nextLabel={'Next'}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={5}
+                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                  containerClassName={'pagination justify-content-center'}
+                  activeClassName={'active'}
+                  previousLinkClassName={'page-link'}
+                  nextLinkClassName={'page-link'}
+                  disabledClassName={'disabled'}
+                  breakClassName={'page-item'}
+                  breakLinkClassName={'page-link'}
+                  pageClassName={'page-item'}
+                  pageLinkClassName={'page-link'}
+                />
+              </div>
+            </>
+          )}
+        </div>
 
       </section>
     </React.Fragment>

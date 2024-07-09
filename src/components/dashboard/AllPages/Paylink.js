@@ -34,15 +34,15 @@ function Paylink() {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-lg-12 my-4 pl-3">
-                  <ul className="nav nav-tabs">
+                  <ul className="nav nav-tabs flex-nowrap">
                     <li className="nav-item" onClick={() => SetTab(1)}>
-                      <a href={() => false} id="navpad" className={"nav-link btn rounded-0 " + (tab === 1 ? "active" : "inactive")}  >Payment Detail</a>
+                      <a href={() => false} id="navpad" className={"nav-link btn rounded-0 border border-secondary m-1 " + (tab === 1 ? "active" : "inactive")}  >Payment Detail</a>
                     </li>
                     <li className="nav-item" onClick={() => SetTab(2)} >
-                      <a href={() => false} id="navpad" className={"nav-link btn rounded-0 " + (tab === 2 ? "active" : "inactive")} >Payment Link Detail</a>
+                      <a href={() => false} id="navpad" className={"nav-link btn rounded-0 border border-secondary m-1 " + (tab === 2 ? "active" : "inactive")} >Payment Link Detail</a>
                     </li>
                     <li className="nav-item" onClick={() => SetTab(4)}>
-                      <a href={() => false} id="navpad" className={"nav-link btn rounded-0 " + (tab === 4 ? "active" : "inactive")} >Reports</a>
+                      <a href={() => false} id="navpad" className={"nav-link btn rounded-0 border border-secondary m-1 " + (tab === 4 ? "active" : "inactive")} >Reports</a>
                     </li>
                   </ul>
                 </div>
