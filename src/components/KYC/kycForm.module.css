@@ -1,0 +1,32 @@
+/* .kyc_tab_nav {
+    display: inline-flex;
+    overflow-x: scroll;
+    scrollbar-width: thin;
+    width: -webkit-fill-available;
+}
+
+.kyc_tab_link {
+    border: 1px solid black;
+    padding: 6px;
+    border-radius: 16px !important;
+    margin: 5px;
+} */
+
+
+@media (max-width: 991px) {
+    .kyc_tab_nav {
+        display: inline-flex;
+        overflow-x: scroll;
+        scrollbar-width: thin;
+        width: -webkit-fill-available;
+        flex-direction: unset !important;
+        flex-wrap: nowrap;
+    }
+
+    .kyc_tab_link {
+        border: 1px solid black;
+        padding: 6px;
+        border-radius: 16px !important;
+        margin: 5px;
+    }
+}
