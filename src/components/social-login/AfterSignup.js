@@ -87,7 +87,7 @@ function Registration({ hideDetails, getPendingDetails, fullName, email }) {
       if (response.status === 200) {
         toast.success(response.data.message);
         setBtnDisable(false);
-        history.push("/login");
+        history.replace("/login");
       }
     } catch (err) {
       setBtnDisable(false);

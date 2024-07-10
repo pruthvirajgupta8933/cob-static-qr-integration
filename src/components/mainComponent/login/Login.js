@@ -57,7 +57,7 @@ function Login() {
         if (isLoggedInLc) {
             if (userAlreadyLoggedIn && user?.loginStatus === "Activate") {
 
-                history.push("/dashboard");
+                history.replace("/dashboard");
             }
         } else {
             dispatch(logout());
@@ -81,7 +81,7 @@ function Login() {
                 const activeStatus = res?.payload?.user?.loginStatus;
                 const loginMessage = res?.payload?.user?.loginMessage;
                 if (activeStatus === "Activate" && loginMessage === "success") {
-                    history.push("/dashboard");
+                    history.replace("/dashboard");
                     setLoading(false);
                 } else {
                     if (loginMessage === "Pending") {
@@ -110,7 +110,7 @@ function Login() {
                     const activeStatus = res?.payload?.user?.loginStatus;
                     const loginMessage = res?.payload?.user?.loginMessage;
                     if (activeStatus === "Activate" && loginMessage === "success") {
-                        history.push("/dashboard");
+                        history.replace("/dashboard");
                         setLoading(false);
                     } else {
                         if (loginMessage === "Pending") {
