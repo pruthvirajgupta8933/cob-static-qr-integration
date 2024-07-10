@@ -76,14 +76,14 @@ function AllRoutes() {
         <Suspense fallback={fallbackMsg} > <ViewTransactionDetails /> </Suspense>
 
       </Route>
-      <Route exact path="/TermsAndCondtions">
+      {/* <Route exact path="/TermsAndCondtions">
         <Suspense fallback={fallbackMsg} > <TermsAndConditions /> </Suspense>
 
       </Route>
       <Route exact path="/PrivacyPolicy">
         <Suspense fallback={fallbackMsg} > <PrivacyPolicy /> </Suspense>
 
-      </Route>
+      </Route> */}
       <Route path="*" component={UrlNotFound} />
     </Switch>
 

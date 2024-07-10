@@ -188,8 +188,8 @@ function Home() {
       {/* {console.log("kyc.kycUserList?.latitude", kyc?.kycUserList?.latitude)} */}
       {(kyc?.kycUserList?.latitude === null && kyc?.kycUserList?.longitude === null) &&
         <div className="row">
-          <div className="alert important-notification d-flex justify-content-between " role="alert">
-            <h6 className="fw-bold"><i className="fa fa-warning" /> Please allow location access for the KYC process. This permission is essential for completing your KYC verification.</h6>
+          <div className="alert important-notification d-flex justify-content-between p-2" role="alert">
+            <h6 className=""><i className="fa fa-warning" /> Please allow location access for the KYC process. This permission is essential for completing your KYC verification.</h6>
             <button className="btn btn-sm cob-btn-primary" disabled={locationLoader} onClick={getLocation}>
               Grant Access
               {locationLoader && <div className="spinner-border spinner-border-sm text-primary me-2" role="status">

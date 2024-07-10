@@ -349,7 +349,7 @@ function TransactionEnqMultiParam() {
       <main className="" >
         <div className="">
           <div className="">
-            <h5 className="">View Transactions Enquiry</h5>
+            <h5 className="ml-3">View Transactions Enquiry</h5>
           </div>
 
           <section className="" id="features08-3-">
@@ -412,7 +412,7 @@ function TransactionEnqMultiParam() {
                     <div className="row w-100"></div>
 
                     <div className="row">
-                      <div className="col-lg-12 mrg-btm- bgcolor">
+                      <div className="col-lg-12 mrg-btm- bgcolor mt-4">
                         <button
                           type="submit"
                           className="btn cob-btn-primary btn-sm"

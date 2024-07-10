@@ -20,33 +20,9 @@ const ReceiptByEmail = () => {
   const [studentEmailId, setStudentEmailId] = useState(0);
   const [show, setIsShow] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
-
-  // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState([initialState]);
 
-  // const onSubmit = async (transactionId, studentEmailId) => {
-  //   if (transactionId === null) {
-  //     setTransactionId(0);
-  //   } else {
-  //     setStudentEmailId(0);
-  //   }
-
-  //   await axios
-  //     .get(`${API_URL.RECEIPT_MB}${transactionId}/${studentEmailId}`)
-  //     .then((response) => {
-  //       console.warn(response);
-  //       setData(response.data);
-  //       setIsShow(true);
-  //       // setErrMessage('');
-  //     })
-
-  //     .catch((e) => {
-  //       console.log(e);
-  //       setIsShow(false);
-  //       // setErrMessage('No Data Found');
-  //     });
-  // };
-
+  
   const onSubmit = async (e, transactionId, studentId) => {
     e.preventDefault();
     if (transactionId === null) {
@@ -100,16 +76,7 @@ const ReceiptByEmail = () => {
       });
   };
 
-  // const dateFormat = (timestamp) => {
-  //   var date = new Date(timestamp);
-  //   return (date.getDate() +
-  //     "/" + (date.getMonth() + 1) +
-  //     "/" + date.getFullYear() +
-  //     " " + date.getHours() +
-  //     ":" + date.getMinutes() +
-  //     ":" + date.getSeconds());
-
-  // }
+  
   const onClick = () => {
     let tableContents = document.getElementById("data-table").innerHTML;
     let a = window.open("", "", "height=900, width=900");
@@ -131,10 +98,8 @@ const ReceiptByEmail = () => {
             <div className="card">
               <div className="card-header text-center">
                 <p>
-                  Dear payer, in case money is debited by a Bank and not confirmed
-                  to us in Real time Your Bank would probably Refund your money as
-                  per your policy.For any payment issues please mail us at
-                  support@sabpaisa.in{" "}
+                Dear payer, If money is debited by your bank but not confirmed to us in real-time, your bank will likely refund the amount as per their policy.
+                For any payment issues, please contact us at support@sabpaisa.in.{" "}
                 </p>
                 <p>
                   <strong>SABPAISA TRANSACTION RECEIPT</strong>

@@ -85,10 +85,8 @@ const ReceiptWalchand = () => {
             <div className="card">
               <div className="card-header text-center">
                 <p>
-                  Dear payer, in case money is debited by a Bank and not confirmed
-                  to us in Real time Your Bank would probably Refund your money as
-                  per your policy.For any payment issues please mail us at
-                  support@sabpaisa.in
+                Dear payer, If money is debited by your bank but not confirmed to us in real-time, your bank will likely refund the amount as per their policy.
+                For any payment issues, please contact us at support@sabpaisa.in.
                 </p>
                 <p>
                   <strong>SABPAISA TRANSACTION RECEIPT</strong>

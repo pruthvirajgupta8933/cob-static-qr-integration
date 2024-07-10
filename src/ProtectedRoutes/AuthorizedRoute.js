@@ -37,7 +37,7 @@ const AuthorizedRoute = (props) => {
         if (isValid === false) {
             setTimeout(() => {
                 clearLocalStore()
-                history.push("/login");
+                history.replace("/login");
             }, 2000);
         }
     })
