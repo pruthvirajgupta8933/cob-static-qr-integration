@@ -92,7 +92,7 @@ function SpPg() {
                         // console.log("postBody", postBody)
                         // dispatch(productPlanData(postBody))
                     } else {
-                        history.push("/dashboard")
+                        history.replace("/dashboard")
                         // console.log("redirect to dashboard")
                     }
                     // console.log(resp?.data?.data[0])
@@ -123,7 +123,7 @@ function SpPg() {
     const getClientTxnId = async (planFilterData, userData) => {
 
         if (planFilterData?.length <= 0 && planFilterData?.[0]?.actual_price === "") {
-            history.push("/dashboard")
+            history.replace("/dashboard")
         }
 
         const postBody = {

@@ -174,7 +174,7 @@ function Signup() {
         const isLoggedInLc =
             userLocalData && userLocalData.loginId !== null ? true : false;
         if (isLoggedInLc) {
-            history.push("/dashboard");
+            history.replace("/dashboard");
         } else {
             dispatch(logout());
 
@@ -185,7 +185,7 @@ function Signup() {
         if (isUserRegistered === true) {
             toastConfig.successToast(message.message);
             setTimeout(() => {
-                history.push("/login");
+                history.replace("/login");
                 dispatch(udpateRegistrationStatus());
             }, 2000);
 

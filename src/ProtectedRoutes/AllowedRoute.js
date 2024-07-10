@@ -1,24 +1,24 @@
-import React , { useEffect }from 'react'
-import { roleBasedAccess } from '../_components/reuseable_components/roleBasedAccess'
+import React, { useEffect } from 'react'
+// import { roleBasedAccess } from '../_components/reuseable_components/roleBasedAccess'
 import { useHistory } from 'react-router-dom'
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const AllowedRoute = (props) => {
-const authLogin = useSelector((state) => state.auth);
-const { userAlreadyLoggedIn } = authLogin ;
-  
+  const authLogin = useSelector((state) => state.auth);
+  const { userAlreadyLoggedIn } = authLogin;
 
 
 
-    const {Component} = props;
 
-    let history = useHistory();
+  // const {Component} = props;
 
-  const roleBasedShowTab = roleBasedAccess();
+  let history = useHistory();
+
+  // const roleBasedShowTab = roleBasedAccess();
 
   useEffect(() => {
-    if(userAlreadyLoggedIn) {
-        history.push('/login-page')
+    if (userAlreadyLoggedIn) {
+      history.replace('/login-page')
     }
   })
 
