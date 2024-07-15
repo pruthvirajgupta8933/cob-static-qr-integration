@@ -142,7 +142,7 @@ const BusinessDetails = (props) => {
     },
     {
       label: "Address",
-      value: selectedUserData?.operationalAddress,
+      value: selectedUserData?.merchant_address_details?.address,
       gridClasses: "col-sm-12 col-md-6 col-lg-6",
       inputClasses: "form-control",
     },
@@ -160,7 +160,7 @@ const BusinessDetails = (props) => {
     },
     {
       label: "Pin Code",
-      value: selectedUserData?.pinCode,
+      value: selectedUserData?.merchant_address_details?.pin_code,
       gridClasses: "col-sm-12 col-md-6 col-lg-6",
       inputClasses: "form-control",
     },
