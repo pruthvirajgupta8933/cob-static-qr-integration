@@ -265,43 +265,43 @@ export const txnChartDataSlice = createAsyncThunk(
       },
 
       [fetchSettlementReportSlice.fulfilled]: (state, action) => {
-        // state.isLoadingTxnHistory = false;
+         state.isLoadingTxnHistory = false;
         state.settlementReport = action.payload;
       },
       [fetchSettlementReportSlice.pending]: (state) => {
-        // state.isLoadingTxnHistory = true;
+      state.isLoadingTxnHistory = true;
         state.settlementReport=[];
       },
       [fetchSettlementReportSlice.rejected]: (state) => {
-        // state.isLoadingTxnHistory = false;
+         state.isLoadingTxnHistory = false;
         state.settlementReport=[];
       },
 
       [fetchRefundTransactionHistory.fulfilled]: (state, action) => {
-        // state.isLoadingTxnHistory = false;
+        state.isLoadingTxnHistory = false;
         state.settlementReport = action.payload;
 
         // console.log(state.refundTransactionHistory = action.payload,"my payload")
       },
       [fetchRefundTransactionHistory.pending]: (state) => {
-        // state.isLoadingTxnHistory = true;
+         state.isLoadingTxnHistory = true;
         state.settlementReport=[];
       },
       [fetchRefundTransactionHistory.rejected]: (state) => {
-        // state.isLoadingTxnHistory = false;
+        state.isLoadingTxnHistory = false;
         state.settlementReport=[];
       },
 
       [fetchChargebackTxnHistory.fulfilled]: (state, action) => {
-        // state.isLoadingTxnHistory = false;
+        state.isLoadingTxnHistory = false;
         state.settlementReport = action.payload;
       },
       [fetchChargebackTxnHistory.pending]: (state) => {
-        // state.isLoadingTxnHistory = true;
+         state.isLoadingTxnHistory = true;
         state.settlementReport=[];
       },
       [fetchChargebackTxnHistory.rejected]: (state) => {
-        // state.isLoadingTxnHistory = false;
+         state.isLoadingTxnHistory = false;
         state.settlementReport=[];
       },
 

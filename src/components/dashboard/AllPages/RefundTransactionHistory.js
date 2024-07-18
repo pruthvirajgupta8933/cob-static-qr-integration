@@ -41,11 +41,8 @@ const RefundTransactionHistory = () => {
     const { user } = auth;
     const { refrerChiledList } = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    const { isLoadingTxnHistory } = dashboard;
-
-
-
-    var clientMerchantDetailsList = [];
+     const { isLoadingTxnHistory } = dashboard;
+   var clientMerchantDetailsList = [];
     if (
         user &&
         user?.clientMerchantDetailsList === null &&
@@ -56,8 +53,6 @@ const RefundTransactionHistory = () => {
     } else {
         clientMerchantDetailsList = user?.clientMerchantDetailsList;
     }
-
-    // const tempClientList = convertToFormikSelectJson("clientCode", "clientName", clientMerchantDetailsList);
 
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
@@ -192,7 +187,7 @@ const RefundTransactionHistory = () => {
             }
 
             if (ApiStatus === "fulfilled" && ApiPayload?.length < 1) {
-                toast.info("No Data Found");
+               
             }
         } catch (error) {
 

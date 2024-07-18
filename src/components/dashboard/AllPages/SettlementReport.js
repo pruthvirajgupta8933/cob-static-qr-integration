@@ -17,6 +17,7 @@ const SettlementReport = () => {
   const [selectedFolder, SetSelectedFolder] = React.useState("");
   const [selectedSubFolder, SetSelectedSubFolder] = React.useState("");
   const [searchFilterData, setSearchFilterData] = React.useState([]);
+  console.log("searchFilterData",searchFilterData.length)
 
 
   const { user } = useSelector((state) => state.auth);
@@ -147,7 +148,7 @@ const SettlementReport = () => {
                         type="text"
                         value={searchArea}
                         placeholder="Search Here"
-                        className="form-select"
+                        className="form-control"
                         onChange={getSearchTerm}
                       />
                       {showFilterData.filter}
@@ -177,6 +178,7 @@ const SettlementReport = () => {
               {searchFilterData.length > 0 && (
                 <h6>Total Record : {searchFilterData.length} </h6>
               )}
+              {searchFilterData?.length ===0 ? "" : (
               <div className="scroll" style={{ overflow: "auto" }}>
                 <table className="table table-bordered">
                   <thead>
@@ -207,6 +209,7 @@ const SettlementReport = () => {
                   </tbody>
                 </table>
               </div>
+              )}
             </div>
           </section>
         </div>

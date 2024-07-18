@@ -31,11 +31,13 @@ function TransactionRefund(props) {
             if (parseInt(val) === 2) {
                 return Yup.number().min(1, "Enter the minimun amount").max(parseFloat(radioInputVal?.payee_amount), "Amount should be equal to and less the the payee amount").required("Required")
             } else {
-                return Yup.number().required("Required")
+                return Yup.number()
+                    .min(parseFloat(radioInputVal?.payee_amount), "Amount should be same as full requesting amount")
+                    .max(parseFloat(radioInputVal?.payee_amount), "Amount should be equal to and less the the payee amount").required("Required")
             }
         }),
         refund_reason: Yup.string()
-            .min(10, "Please enter , minimun 10 character")
+            .min(10, "Minimun 10 character")
             .max(500, "Please do not  enter more than 500 characters")
             .allowOneSpace()
             .required("Required")
@@ -137,7 +139,7 @@ function TransactionRefund(props) {
                         }}
                         enableReinitialize={true}
                     >
-                        {({ values }) => (
+                        {({ values, setFieldValue }) => (
                             <Form>
                                 <div className="col-lg-12 d-flex justify-content-between my-2">
                                     <FormikController
@@ -145,6 +147,12 @@ function TransactionRefund(props) {
                                         name="refund_type"
                                         className="form-check-input radio-input"
                                         options={refundTypeOption}
+                                        value={values.refund_type}
+                                        onChange={(e) => {
+                                            setFieldValue("refund_type", e.target.value)
+                                            setFieldValue("refund_amt", radioInputVal?.payee_amount)
+
+                                        }}
                                     />
                                 </div>
                                 <div className="col-lg-12 my-2">
