@@ -249,8 +249,8 @@ export const businessType = createAsyncThunk(
 export const busiCategory = createAsyncThunk(
     "kyc/busiCategory",
     async (requestParam) => {
-        const response = await merchantKycService.busiCategory(requestParam)   
-        .catch((error) => {
+        const response = await merchantKycService.busiCategory(requestParam)
+            .catch((error) => {
                 return error.response;
             });
         // console.log(response.data)
@@ -331,7 +331,7 @@ export const businessOverviewState = createAsyncThunk(
                     return error.response;
                 });
         } else {
-       response = await merchantKycService.businessOverviewStatePostApi()
+            response = await merchantKycService.businessOverviewStatePostApi()
                 .catch((error) => {
                     return error.response;
                 });
@@ -346,7 +346,7 @@ export const saveMerchantInfo = createAsyncThunk(
     "kyc/saveMerchantInfo",
     async (requestParam) => {
         const response = await merchantKycService.saveMerchantInfo(requestParam)
-            
+
             .catch((error) => {
                 return error.response;
             });
@@ -359,9 +359,9 @@ export const saveMerchantInfo = createAsyncThunk(
 export const documentsUpload = createAsyncThunk(
     "kyc/documentsUpload",
     async (data) => {
-        
+
         const response = await merchantKycService.documentsUpload(data)
-               .catch((error) => {
+            .catch((error) => {
                 return error.response;
             });
 
@@ -374,11 +374,11 @@ export const documentsUpload = createAsyncThunk(
 export const merchantInfo = createAsyncThunk(
     "kyc/merchantInfo",
     async (requestParam) => {
-        
-        const response =await merchantKycService.merchantInfo(requestParam)
-        .catch((error) => {
-            return error.response;
-        });
+
+        const response = await merchantKycService.merchantInfo(requestParam)
+            .catch((error) => {
+                return error.response;
+            });
 
         return response.data;
     }
@@ -451,7 +451,7 @@ export const kycBankNames = createAsyncThunk(
     "kyc/kycBankNames",
     async (requestParam) => {
         const response = await merchantKycService.kycBankNames()
-           .catch((error) => {
+            .catch((error) => {
                 return error.response;
             });
         // console.log(response)
@@ -1349,11 +1349,11 @@ export const kycSlice = createSlice({
             if (action?.payload?.status) {
                 state.OtpResponse = action.payload;
                 if (action?.meta?.arg?.email) {
-                    state.OtpResponse.tempEmail = action?.meta?.arg?.email;
+                    // state.OtpResponse.tempEmail = action?.meta?.arg?.email;
                 }
 
                 if (action?.meta?.arg?.mobile_number) {
-                    state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number;
+                    // state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number;
                 }
             }
         },
@@ -1363,9 +1363,10 @@ export const kycSlice = createSlice({
 
         [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
             if (action.payload?.status === true) {
-                state.kycUserList.isContactNumberVerified = 1;
-                state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
-                state.OtpResponse.tempPhone = "";
+                // state.kycUserList.isContactNumberVerified = 1;
+                // state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
+
+                // state.OtpResponse.tempPhone = "";
             }
         },
 

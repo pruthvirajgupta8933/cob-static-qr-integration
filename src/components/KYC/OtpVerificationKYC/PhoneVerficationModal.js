@@ -77,10 +77,7 @@ const PhoneVerficationModal = ({ show, setShow, setFieldValue }) => {
 
   return (
     <div className="modal fade show mt-5"
-      // id="forPhone"
-      // role="dialog"
-      aria-labelledby="phoneModal"
-     ariaHidden="true"
+      ariaHidden="true"
       style={{ display: show ? "block" : "none", backgroundColor: "#000000a8" }}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -143,9 +140,7 @@ const PhoneVerficationModal = ({ show, setShow, setFieldValue }) => {
                 }
               </button>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>

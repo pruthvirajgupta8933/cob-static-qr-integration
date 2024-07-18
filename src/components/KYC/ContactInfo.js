@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../_components/formik/Yup"
@@ -9,8 +9,9 @@ import {
   updateContactInfo,
   kycUserList,
   GetKycTabsStatus,
+  otpVerificationForContactForPhone,
 } from "../../slices/kycSlice";
-import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
+// import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import {
   Regex,
   RegexMsg,
@@ -18,23 +19,30 @@ import {
 import gotVerified from "../../assets/images/verified.png";
 import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import "./kyc-style.css";
+import OtpInput from "react-otp-input";
 
 
 function ContactInfo(props) {
+
   const setTab = props.tab;
   const setTitle = props.title;
 
   const dispatch = useDispatch();
-
   const { auth, kyc } = useSelector((state) => state);
+  const KycVerificationToken = useSelector((state) => state.kyc.OtpResponse.verification_token);
+
+
   const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
+
   const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+  const [otpBtnDisable, setOtpBtnDisable] = useState(false);
 
 
 
@@ -60,7 +68,7 @@ function ContactInfo(props) {
       .nullable()
       .allowOneSpace(),
     contact_number: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .required("Required")
       .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
@@ -76,7 +84,7 @@ function ContactInfo(props) {
       .required("You need to verify Your Contact Number")
       .nullable(),
     email_id: Yup.string()
-    .allowOneSpace()
+      .allowOneSpace()
       .email("Invalid email")
       .required("Required")
       .nullable(),
@@ -95,6 +103,11 @@ function ContactInfo(props) {
     isContactNumberVerified: Yup.string().required("Please verify the contact number").nullable()
   });
 
+
+
+  useEffect(() => {
+    setOtpForPhone({ otp: "" })
+  }, [showOtpVerifyModalPhone])
 
   const handleSubmitContact = (values) => {
     setIsDisable(true);
@@ -181,11 +194,66 @@ function ContactInfo(props) {
   };
 
 
-  const handlerModal = (val, key) => {
-    if (key === "phone") {
-      setShowOtpVerifyModalPhone(val);
+  // const handlerModal = (val, key) => {
+  //   if (key === "phone") {
+  //     setShowOtpVerifyModalPhone(val);
+  //   }
+  // };
+
+
+  // Phone number verfication
+
+  // const dispatch = useDispatch();
+
+
+  // const [otpLoading, setOtpLoading] = useState(false);
+
+
+
+  const handleChangeForOtpPhone = (otp) => {
+    const regex = /^[0-9]*$/;
+    if (!otp || regex.test(otp.toString())) {
+      setOtpForPhone({ otp });
     }
   };
+
+
+  //-----------------Functionality To Verify The OTP ----------------------
+  const handleVerificationOfPhone = (setFieldValue, values) => {
+    setOtpBtnDisable(true)
+    // setOtpLoading(true)
+
+    dispatch(
+      otpVerificationForContactForPhone({
+        verification_token: KycVerificationToken,
+        otp: otpForPhone.otp
+      })
+    ).then((res) => {
+      setOtpBtnDisable(false)
+      if (res.meta.requestStatus === "fulfilled") {
+        if (res.payload.status === true) {
+          toast.success(res.payload.message)
+          setFieldValue("isContactNumberVerified", 1)
+          setFieldValue("oldContactNumber", values.contact_number)
+          setShowOtpVerifyModalPhone(false)
+        } else if (res?.payload?.status === false) {
+          toast.error(res.payload.message)
+          setFieldValue("isContactNumberVerified", null)
+        } else if (res?.payload?.status_code === 500) {
+          toast.error(res.payload.message)
+          setFieldValue("isContactNumberVerified", null)
+        }
+
+      }
+    }).catch(err => {
+      setOtpBtnDisable(false)
+      toast.error(err)
+    })
+
+  }
+
+
+
 
 
 
@@ -253,8 +321,8 @@ function ContactInfo(props) {
                     }}
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
+
                   {KycList?.contactNumber !== null &&
-                    KycList?.isContactNumberVerified === 1 &&
                     values?.isContactNumberVerified === 1 &&
                     !errors.hasOwnProperty("contact_number") &&
                     !errors.hasOwnProperty("oldContactNumber") ? (
@@ -373,13 +441,82 @@ function ContactInfo(props) {
             </div>
 
 
+            {/* Phone Number Verification modal */}
+            <div className="modal fade show mt-5" ariaHidden="true"
+              style={{ display: showOtpVerifyModalPhone ? "block" : "none", backgroundColor: "#000000a8" }}>
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h4 className="modal-title paymentHeader" id="phoneModal">
+                      OTP Verification
+                    </h4>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal1"
+                      aria-label="Close"
+                      onClick={() => { setShowOtpVerifyModalPhone(false) }}
+                    >
+                      <span ariaHidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="mx-auto p-3">
+                    <h5 className="">
+                      Please enter the verification code sent to your phone number !
+                    </h5>
+                  </div>
+                  <div className="modal-body justify-content-center d-flex-inline">
+
+                    <div className=" justify-content-center d-flex-inline" >
+                      <OtpInput
+                        separator={
+                          <span>
+                            <strong>-</strong>
+                          </span>
+                        }
+                        containerStyle="d-flex justify-content-center"
+                        isInputNum={true}
+                        value={otpForPhone.otp}
+                        onChange={handleChangeForOtpPhone}
+                        inputStyle={{
+                          align: "centre",
+                          width: "3rem",
+                          height: "3rem",
+                          fontSize: "2rem",
+                          borderRadius: 4,
+                          border: "1px solid rgba(0,0,0,0.3)",
+                        }}
+                        numInputs={6}
+
+                      />
+                    </div>
+                    <div className="m-4 text-center">
+                      <button className="btn btn cob-btn-primary" type="button"
+                        onClick={() => handleVerificationOfPhone(setFieldValue, values)}
+                        disabled={otpBtnDisable}
+
+                      >
+                        {otpBtnDisable ?
+                          <span className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                          :
+                          "Verify"
+                        }
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             {/*  Modal Popup for Otp Verification */}
-            <PhoneVerficationModal
+            {/* <PhoneVerficationModal
               show={showOtpVerifyModalPhone}
               setShow={handlerModal}
               setFieldValue={setFieldValue}
-            />
+            /> */}
             {/*  Modal Popup for Otp Verification Mobile */}
           </Form>
         )}
