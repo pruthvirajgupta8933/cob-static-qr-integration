@@ -193,8 +193,7 @@ export const updateContactInfo = createAsyncThunk(
 export const otpForContactInfo = createAsyncThunk(
     "OtpForContact/otpContactInfo",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .post(`${API_URL.Send_OTP}`, requestParam)
+        const response = await merchantKycService.otpForContactInfo(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -236,8 +235,7 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
 export const businessType = createAsyncThunk(
     "kyc/businessType",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .get(`${API_URL.Business_type}`)
+        const response = await merchantKycService.businessType(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -251,11 +249,8 @@ export const businessType = createAsyncThunk(
 export const busiCategory = createAsyncThunk(
     "kyc/busiCategory",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .get(`${API_URL.Business_Category_CODE}`, {
-                headers: {},
-            })
-            .catch((error) => {
+        const response = await merchantKycService.busiCategory(requestParam)   
+        .catch((error) => {
                 return error.response;
             });
         // console.log(response.data)
@@ -270,10 +265,7 @@ export const busiCategory = createAsyncThunk(
 export const platformType = createAsyncThunk(
     "kyc/platformType",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .get(`${API_URL.Platform_type}`, {
-                headers: {},
-            })
+        const response = await merchantKycService.platformType(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -319,8 +311,7 @@ export const collectionType = createAsyncThunk(
 export const saveBusinessInfo = createAsyncThunk(
     "kyc/saveBusinessInfo",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .put(`${API_URL.save_Business_Info}`, requestParam)
+        const response = await merchantKycService.saveBusinessInfo(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -335,19 +326,12 @@ export const businessOverviewState = createAsyncThunk(
     async (requestParam) => {
         let response = {}
         if (APP_ENV) {
-            response = await axiosInstanceJWT
-                .get(`${API_URL.Business_overview_state_}`, {
-                    headers: {},
-                })
+            response = await merchantKycService.businessOverviewState()
                 .catch((error) => {
                     return error.response;
                 });
         } else {
-
-            response = await axiosInstanceJWT
-                .post(`${API_URL.Business_overview_state_}`, {
-                    headers: {},
-                })
+       response = await merchantKycService.businessOverviewStatePostApi()
                 .catch((error) => {
                     return error.response;
                 });
@@ -361,12 +345,8 @@ export const businessOverviewState = createAsyncThunk(
 export const saveMerchantInfo = createAsyncThunk(
     "kyc/saveMerchantInfo",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam, {
-                headers: {
-                    // Authorization: ""
-                },
-            })
+        const response = await merchantKycService.saveMerchantInfo(requestParam)
+            
             .catch((error) => {
                 return error.response;
             });
@@ -379,13 +359,9 @@ export const saveMerchantInfo = createAsyncThunk(
 export const documentsUpload = createAsyncThunk(
     "kyc/documentsUpload",
     async (data) => {
-        const businessType = data?.businessType;
-        const is_udyam = data?.is_udyam;
-        const response = await axiosInstanceJWT
-            .get(`${API_URL?.DocumentsUpload}/?business_type_id=${businessType}&is_udyam=${is_udyam}`, {
-                headers: {},
-            })
-            .catch((error) => {
+        
+        const response = await merchantKycService.documentsUpload(data)
+               .catch((error) => {
                 return error.response;
             });
 
@@ -398,15 +374,9 @@ export const documentsUpload = createAsyncThunk(
 export const merchantInfo = createAsyncThunk(
     "kyc/merchantInfo",
     async (requestParam) => {
-        const response = await axiosInstanceJWT({
-            method: "post",
-            url:
-                requestParam.docType === "1"
-                    ? API_URL.UPLOAD_MERCHANT_AADHAAR
-                    : API_URL.upload_Single_Doc,
-            data: requestParam.bodyFormData,
-            headers: { "Content-Type": "multipart/form-data" },
-        }).catch((error) => {
+        
+        const response =await merchantKycService.merchantInfo(requestParam)
+        .catch((error) => {
             return error.response;
         });
 
@@ -450,8 +420,7 @@ export const kycDetailsByMerchantLoginId = createAsyncThunk(
 export const kycDocumentUploadList = createAsyncThunk(
     "kyc/kycDocumentUploadList",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .post(`${API_URL?.DOCUMENT_BY_LOGINID}`, requestParam)
+        const response = await merchantKycService.kycDocumentUploadList(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -467,8 +436,7 @@ export const GetKycTabsStatus = createAsyncThunk(
     "kyc/GetKycTabsStatus",
     async (requestParam) => {
         // console.log("alert", "check 1")
-        const response = await axiosInstanceJWT
-            .get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
+        const response = await merchantKycService.GetKycTabsStatus(requestParam)
             .catch((error) => {
                 return error.response;
             });
@@ -482,11 +450,8 @@ export const GetKycTabsStatus = createAsyncThunk(
 export const kycBankNames = createAsyncThunk(
     "kyc/kycBankNames",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .get(`${API_URL.GET_ALL_BANK_NAMES}`, {
-                headers: {},
-            })
-            .catch((error) => {
+        const response = await merchantKycService.kycBankNames()
+           .catch((error) => {
                 return error.response;
             });
         // console.log(response)
@@ -516,15 +481,7 @@ export const kycpaymentModeType = createAsyncThunk(
 export const saveMerchantBankDetais = createAsyncThunk(
     "kyc/saveMerchantBankDetais",
     async (requestParam) => {
-        const response = await axiosInstanceJWT
-            .put(
-                `${API_URL.Save_Settlement_Info}`,
-                requestParam,
-
-                {
-                    headers: {},
-                }
-            )
+        const response = await merchantKycService.saveMerchantBankDetais(requestParam)
             .catch((error) => {
                 return error.response;
             });

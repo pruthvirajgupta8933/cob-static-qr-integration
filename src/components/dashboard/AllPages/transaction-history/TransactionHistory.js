@@ -255,7 +255,6 @@ const TransactionHistory = () => {
 
             dispatch(fetchTransactionHistorySlice(paramData)).then((res) => {
                 setDisable(false)
-
             });
         }
     };
@@ -527,11 +526,11 @@ const TransactionHistory = () => {
 
 
 
-    const refundModalHandler = () => {
-        console.log("radioInputVal", radioInputVal)
-        setRefundModal(true)
+    // const refundModalHandler = () => {
+    //     console.log("radioInputVal", radioInputVal)
+    //     setRefundModal(true)
 
-    }
+    // }
 
     return (
         <section className="">
@@ -617,13 +616,12 @@ const TransactionHistory = () => {
                                                 />
                                             </div>
                                         </div>
-
                                         <div className="form-row">
                                             <div className="form-group col-lg-1">
                                                 <button
                                                     className="btn btn-sm cob-btn-primary text-white"
                                                     type="submit"
-                                                    disable={disable}
+                                                    disabled={disable}
                                                 >
                                                     {disable && (
                                                         <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
