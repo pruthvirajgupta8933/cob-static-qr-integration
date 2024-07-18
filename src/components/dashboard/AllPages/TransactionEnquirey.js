@@ -291,8 +291,8 @@ function TransactionEnquirey() {
 
                 {errMessage && (
                   <div className="col">
-                    <h5 className="text-danger text-center">
-                      Record Not Found!
+                    <h5 className=" text-center">
+                    Data Not Found
                     </h5>
                   </div>
 
