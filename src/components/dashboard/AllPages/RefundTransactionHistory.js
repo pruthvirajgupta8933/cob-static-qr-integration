@@ -41,8 +41,8 @@ const RefundTransactionHistory = () => {
     const { user } = auth;
     const { refrerChiledList } = merchantReferralOnboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-     const { isLoadingTxnHistory } = dashboard;
-   var clientMerchantDetailsList = [];
+    const { isLoadingTxnHistory } = dashboard;
+    var clientMerchantDetailsList = [];
     if (
         user &&
         user?.clientMerchantDetailsList === null &&
@@ -187,7 +187,7 @@ const RefundTransactionHistory = () => {
             }
 
             if (ApiStatus === "fulfilled" && ApiPayload?.length < 1) {
-               
+
             }
         } catch (error) {
 
@@ -235,7 +235,7 @@ const RefundTransactionHistory = () => {
             setShowData(
                 updateTxnList.filter((txnItme) =>
                     Object.values(txnItme)
-                        .join(" ") 
+                        .join(" ")
                         .toLowerCase()
                         .includes(searchText.toLocaleLowerCase())
                 )
@@ -381,8 +381,9 @@ const RefundTransactionHistory = () => {
                                                 />
                                             </div>
                                         </div>
+                                      
                                         <div className="form-row">
-                                            <div className="form-group col-md-1">
+                                            <div className="form-group col-lg-1">
                                                 <button
                                                     disabled={disable}
                                                     className="btn cob-btn-primary text-white btn-sm"
@@ -392,21 +393,24 @@ const RefundTransactionHistory = () => {
                                                     {loading ? "Loading..." : "Search"}{" "}
                                                 </button>
                                             </div>
-                                            {txnList?.length > 0 ? (
-                                                <div className="form-group col-md-1">
-                                                    <button
-                                                        className="btn cob-btn-primary btn-sm text-white ml-5"
+
+                                            {txnList?.length > 0 && (
+                                                <div className="form-group col-lg-1">
+                                                   
+                                                   
+                                                     <button
+                                                        className="btn btn-sm text-white cob-btn-primary"
                                                         type=""
                                                         onClick={() => {
                                                             exportToExcelFn();
                                                         }}
                                                     >
-                                                        Export{" "}
+                                                        <i className="fa fa-download"></i> Export
                                                     </button>
                                                 </div>
-                                            ) : (
-                                                <></>
-                                            )}
+
+                                         )} 
+
                                         </div>
                                     </Form>
                                 )}

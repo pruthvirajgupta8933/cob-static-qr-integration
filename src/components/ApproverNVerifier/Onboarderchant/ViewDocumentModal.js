@@ -138,7 +138,7 @@ const ViewDocumentModal = (props) => {
   // 3)REMOVE API
   // a)
   const removeDocument = (id) => {
-    // console.log("this is id ::",id)
+   
 
     const rejectDetails = {
       document_id: id,
@@ -314,8 +314,10 @@ const ViewDocumentModal = (props) => {
                             <button
                               aria-label="button"
                               type="button"
-                              onClick={() => {
-                                removeDocument(remark?.document_id);
+                             onClick={() => {
+                                if (window.confirm("Are you sure you want to delete it?")) {
+                                  removeDocument(remark?.document_id);
+                                }
                               }}
                             >
                               <i className="fa fa-trash-o" ariaHidden="true"></i>
