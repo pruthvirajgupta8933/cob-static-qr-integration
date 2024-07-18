@@ -526,11 +526,11 @@ const TransactionHistory = () => {
 
 
 
-    // const refundModalHandler = () => {
-    //     console.log("radioInputVal", radioInputVal)
-    //     setRefundModal(true)
+    const refundModalHandler = () => {
+        // console.log("radioInputVal", radioInputVal)
+        setRefundModal(true)
 
-    // }
+    }
 
     return (
         <section className="">
@@ -684,13 +684,13 @@ const TransactionHistory = () => {
 
                                         {/* do not remove the comment code */}
                                         <div className="form-group col-md-6  mt-2 d-flex justify-content-end">
-                                            {/* <div>
+                                            <div>
                                                 <button
                                                     className="btn cob-btn-primary btn-sm mt-4"
                                                     onClick={() => refundModalHandler()}
                                                     disabled={(radioInputVal?.status?.toLocaleLowerCase() !== "success" && radioInputVal?.status?.toLocaleLowerCase() !== "settled")}
                                                 >Refund</button>
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </div>
                                     <h6>Total Record : {txnList.length} </h6>
@@ -704,7 +704,7 @@ const TransactionHistory = () => {
                                     <thead>
                                         {txnList.length > 0 ? (
                                             <tr>
-                                                {/* <th></th> */}
+                                                <th> {radioInputVal?.status ? <p className="text-primary m-0 user_info" onClick={() => setRadioInputVal({})}> Unselect </p> : "Select"}</th>
                                                 <th> S.No</th>
                                                 <th> Trans ID</th>
                                                 <th> Client Trans ID</th>
@@ -755,16 +755,16 @@ const TransactionHistory = () => {
                                             paginatedata.map((item, i) => {
                                                 return (
                                                     <tr key={uuidv4()}>
-                                                        {/* do not remove the commentted code */}
-                                                        {/* <td>
-                                                            <input
+                                                        <td>
+                                                            {(item?.status?.toLocaleLowerCase() === "success" || item?.status?.toLocaleLowerCase() === "settled") && <input
                                                                 name="refund_request"
                                                                 value={item.txn_id}
                                                                 type="radio"
                                                                 onClick={(e) => setRadioInputVal(item)}
                                                                 checked={item.txn_id === radioInputVal?.txn_id}
-                                                            />
-                                                        </td> */}
+                                                            />}
+
+                                                        </td>
                                                         <td>{i + 1}</td>
                                                         <td>{item.txn_id}</td>
                                                         <td>{item.client_txn_id}</td>
@@ -825,7 +825,11 @@ const TransactionHistory = () => {
                                             pageCount={pageCount}
                                             marginPagesDisplayed={2} // using this we can set how many number we can show after ...
                                             pageRangeDisplayed={5}
-                                            onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
+                                            onPageChange={(selectedItem) => {
+                                                setCurrentPage(selectedItem.selected + 1)
+                                                setRadioInputVal({})
+
+                                            }}
                                             containerClassName={'pagination justify-content-center'}
                                             activeClassName={'active'}
                                             previousLinkClassName={'page-link'}
