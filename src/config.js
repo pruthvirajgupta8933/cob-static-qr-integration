@@ -1,4 +1,4 @@
-const ENV_PROD = false; // For proudction make it true, don't change in the local environment
+const ENV_PROD = true; // For proudction make it true, don't change in the local environment
 let url,
   kyc_url,
   b2b_url,
@@ -23,8 +23,8 @@ if (ENV_PROD) {
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_url = "https://paywidget.sabpaisa.in"
   widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
-  // refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi"
-  refund_url = "https://gateway.sabpaisa.in/sabpaisa"
+  refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi"
+  // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
   qwick_form_refund_url = "https://qwikforms.in"
 
 
