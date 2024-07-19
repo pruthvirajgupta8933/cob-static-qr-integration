@@ -91,9 +91,9 @@ function TransactionRefund(props) {
                 const dc = Decrypt(refundResponse.data.refundResponse, authKey, authIV)
                 const jsonRsp = JSON.parse(dc)
 
-                // console.log("dc", JSON.parse(dc))
+                // console.log("dc", jsonRsp)
+                refundResponse?.data?.apiStatusCode === '00' ? toastConfig.successToast(jsonRsp.message || "Refund Request Initiated") : toastConfig.warningToast(jsonRsp.message)
 
-                toastConfig.successToast(jsonRsp.message || "Refund Request Initiated")
                 setSubmitLoader(false)
                 props.setRefundModal(false)
 
