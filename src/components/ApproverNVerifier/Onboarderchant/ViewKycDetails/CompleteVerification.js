@@ -188,7 +188,7 @@ const CompleteVerification = (props) => {
           } catch (error) {
             setDisable(false);
             setButtonLoader(false)
-            toast.error("Something went wrong, Please Try Again later");
+            // toast.error("Something went wrong, Please Try Again later");
           }
         } else {
           setDisable(false);
@@ -220,32 +220,31 @@ const CompleteVerification = (props) => {
                 login_id: selectedUserData.loginMasterId,
                 approved_by: loginId,
               }
-            }
-
-
-
-            // update the redux state - for the ratemapping
+            }// update the redux state - for the ratemapping
 
             GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
             dispatch(approvekyc(dataAppr)).then((resp) => {
+              if (resp?.meta?.requestStatus === 'fulfilled') {
+                saveBafData(kyc.kycUserList)
+                setButtonLoader(false)
+                setDisable(false);
 
-              setDisable(false);
+              } else {
+                toastConfig.errorToast(resp?.payload)
+                setButtonLoader(false)
+                setDisable(false);
+              }
 
-              // save baf data
-              saveBafData(kyc.kycUserList)
-              setButtonLoader(false)
+
               if (selectedUserData?.roleId === 13) {
                 pendingApporvalTable()
                 closeVerificationModal(false)
               }
             })
               .catch((e) => {
-                console.log(e)
-                setDisable(false);
+                 setDisable(false);
                 setButtonLoader(false)
-                toast.error("Something went wrong, Please Try Again later")
-
-              });
+               });
           } else {
             setButtonLoader(false)
             setDisable(false);
