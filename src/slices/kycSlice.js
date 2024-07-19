@@ -937,24 +937,30 @@ export const businessCategoryById = createAsyncThunk(
 );
 //---- get-business-category-by-id ------------//
 
+
+
 export const approvekyc = createAsyncThunk(
     "kyc/approvekyc",
     async (requestParam, thunkAPI) => {
-        try {
-            const response = await approverDashboardService.approveKyc(requestParam);
-            return response;
-        } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
-            // thunkAPI.dispatch(setMessage(message));
-            return thunkAPI.rejectWithValue();
-        }
+  
+      try {
+        const response = await await approverDashboardService.approveKyc(requestParam);
+      
+        return response.data;
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString() || error.request.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue(message);
+  
+  
+      }
     }
-);
+  );
 
 //---------------- Registered Address TAP INTEGRATION --------------//
 
