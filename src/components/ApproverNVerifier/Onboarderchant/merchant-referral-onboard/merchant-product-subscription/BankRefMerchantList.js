@@ -182,7 +182,7 @@ function BankRefMerchantList() {
     const [data, setData] = useState([]);
     const [newRegistrationData, setNewRegistrationData] = useState([]);
     const [kycIdClick, setKycIdClick] = useState([]);
-    const [dataCount, setDataCount] = useState("")
+    const [dataCount, setDataCount] = useState(0)
 
 
     useEffect(() => {

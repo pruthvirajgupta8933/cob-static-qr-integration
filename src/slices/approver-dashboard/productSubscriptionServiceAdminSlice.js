@@ -22,7 +22,9 @@ export const fetchMerchantProductSubscribeList = createAsyncThunk(
 );
 
 const initialState = {
-    merchantProductSubscribeList: [],
+    merchantProductSubscribeList: {
+        count:0
+    },
     isLoading: false
 }
 
@@ -35,6 +37,7 @@ export const productSubscriptionServiceAdminSlice = createSlice({
         builder
         .addCase(fetchMerchantProductSubscribeList.pending, (state) => {
             state. isLoading=true
+            state.merchantProductSubscribeList.count=0;
 
            
         })

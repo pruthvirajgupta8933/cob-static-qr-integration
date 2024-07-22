@@ -306,7 +306,7 @@ const PendindKyc = () => {
 
       <div>
         <div className="scroll overflow-auto">
-          <h6>Total Count : {dataCount}</h6>
+          {dataCount===undefined ?"" :<h6>Total Count : {dataCount}</h6>}
           {!loadingState && data?.length !== 0 && (
             <Table
               row={PendindKycRowData}
