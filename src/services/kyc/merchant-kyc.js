@@ -1,4 +1,4 @@
-import API_URL from "../../config"
+import API_URL, { APP_ENV } from "../../config"
 import { axiosInstanceJWT } from "../../utilities/axiosInstance"
 
 
@@ -31,14 +31,16 @@ const saveBusinessInfo = (requestParam) => {
     return axiosInstanceJWT.put(`${API_URL.save_Business_Info}`, requestParam)
 }
 
-const businessOverviewState = (requestParam) => {
-    return axiosInstanceJWT.get(`${API_URL.Business_overview_state_}`)
+const fetchBusinessOverviewState = () => {
+    if (APP_ENV) {
+        return axiosInstanceJWT.get(`${API_URL.Business_overview_state}`);
+    } else {
+        return axiosInstanceJWT.post(`${API_URL.Business_overview_state}`);
 
-}
-const businessOverviewStatePostApi = () => {
-    return axiosInstanceJWT.post(`${API_URL.Business_overview_state_}`)
 
-}
+    }
+};
+
 const saveMerchantInfo = (requestParam) => {
     return axiosInstanceJWT.post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam)
 }
@@ -47,26 +49,26 @@ const saveMerchantBankDetais = (requestParam) => {
         `${API_URL.Save_Settlement_Info}`,
         requestParam)
 }
-const kycBankNames=()=>{
+const kycBankNames = () => {
     return axiosInstanceJWT.get(`${API_URL.GET_ALL_BANK_NAMES}`)
 
 }
-const documentsUpload=(data)=>{
+const documentsUpload = (data) => {
     const businessType = data?.businessType;
-        const is_udyam = data?.is_udyam;
+    const is_udyam = data?.is_udyam;
     return axiosInstanceJWT.get(`${API_URL?.DocumentsUpload}/?business_type_id=${businessType}&is_udyam=${is_udyam}`)
 
 
 }
-const GetKycTabsStatus=(requestParam)=>{
+const GetKycTabsStatus = (requestParam) => {
     return axiosInstanceJWT.get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
 }
-const kycDocumentUploadList=(requestParam)=>{
+const kycDocumentUploadList = (requestParam) => {
     return axiosInstanceJWT.post(`${API_URL?.DOCUMENT_BY_LOGINID}`, requestParam)
 }
 
 const merchantInfo = (requestParam) => {
-    console.log("requestParam",requestParam)
+    console.log("requestParam", requestParam)
     const url = requestParam.docType === "1"
         ? API_URL.UPLOAD_MERCHANT_AADHAAR
         : API_URL.upload_Single_Doc;
@@ -85,8 +87,7 @@ export const merchantKycService = {
     busiCategory,
     platformType,
     saveBusinessInfo,
-    businessOverviewState,
-    businessOverviewStatePostApi,
+    fetchBusinessOverviewState,
     saveMerchantInfo,
     saveMerchantBankDetais,
     kycBankNames,
