@@ -329,25 +329,20 @@ export const saveBusinessInfo = createAsyncThunk(
     }
 );
 
-/////////////////////////////// Get APi for BusinessDetails Tab(For state)
+
 export const businessOverviewState = createAsyncThunk(
     "kyc/businessOverviewState",
-    async (requestParam) => {
-        let response = {}
-        if (APP_ENV) {
-            response = await merchantKycService.businessOverviewState()
-                .catch((error) => {
-                    return error.response;
-                });
-        } else {
-            response = await merchantKycService.businessOverviewStatePostApi()
-                .catch((error) => {
-                    return error.response;
-                });
+    async () => {
+        let response = {};
+        try {
+            response = await merchantKycService?.fetchBusinessOverviewState();
+        } catch (error) {
+            response = error.response;
         }
         return response?.data;
     }
 );
+
 
 ///////////////////////////////////// Put APi for SAVE_MERCHANT_INFO (BusinessDetails Tab)
 
