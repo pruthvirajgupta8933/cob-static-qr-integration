@@ -16,7 +16,6 @@ function AadharVerify() {
         }
         try {
             const signature = await axiosInstance.post("https://api.attestr.com/api/v1/public/checkx/digilocker/auth", {}, header)
-            // console.log("signature", signature)
             const clientKey = '500d40153a00259c55c5be1ac4b8056d'
             const signatureKey = signature.data.signature
             const callBackUrl = `${window.location.origin}/dashboard/aadhar-response`
@@ -27,7 +26,6 @@ function AadharVerify() {
         } catch (error) {
             setIsLoading(false)
             toastConfig.errorToast("Something went wrong, Please try again")
-
         }
     }
 
