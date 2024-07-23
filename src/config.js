@@ -181,7 +181,7 @@ const API_LIVE = {
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
-  Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
+  Business_overview_state: `${kyc_url}/kyc/get-all-state-details/`,
   /////////////////////////////////////////////  AssignZone APi
   ZONE_DETAILS: `${url}/zone/zones`,
   ZONE_MASTER: `${url}/zone/zones-master`,
@@ -231,7 +231,7 @@ const API_LIVE = {
   GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
   GET_PLATFORM_BY_ID: `${kyc_url}/kyc/get-platform-by-id/`,
   GET_PAYMENT_MODE: `${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
-  Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
+  // Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
   /*KYC USER LIST */
