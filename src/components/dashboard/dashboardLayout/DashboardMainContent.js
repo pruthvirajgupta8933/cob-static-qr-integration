@@ -84,6 +84,7 @@ import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
 import toastConfig from "../../../utilities/toastTypes";
 import UserInfo from "../../ApproverNVerifier/UserInfo";
 import TransactionHistory from "../AllPages/transaction-history/TransactionHistory";
+import AadharResponse from "../../ApproverNVerifier/additional-kyc/AadharResponse";
 
 
 function DashboardMainContent() {
@@ -425,6 +426,13 @@ function DashboardMainContent() {
                             roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}
                         >
                             <AdditionalKYC />
+                        </AuthorizedRoute>
+                        <AuthorizedRoute
+                            exact
+                            path={`${path}/aadhar-response`}
+                            Component={AadharResponse}
+                            roleList={{ approver: true, verifier: true, viewer: true, accountManager: true }}
+                        >
                         </AuthorizedRoute>
 
                         <AuthorizedRoute

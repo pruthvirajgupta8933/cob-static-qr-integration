@@ -68,9 +68,6 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
 
                         }}
                     />
-
-
-
                 </div>
                 <div className="form-group">
                     <button
