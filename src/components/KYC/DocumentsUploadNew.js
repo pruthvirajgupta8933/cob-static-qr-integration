@@ -55,7 +55,6 @@ function DocumentsUpload(props) {
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
-
   const documentListData = savedData?.filter((data) => (String((data?.status)).toLowerCase()) !== "rejected")?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
@@ -468,7 +467,7 @@ function DocumentsUpload(props) {
                                   >
                                     {stringManulate(doc?.name)}
                                   </a>
-                                  <p className="text-danger"> {doc?.comment}</p>
+                                  { doc?.status === "Rejected" ? <p className="text-danger"> {doc?.comment}</p> :null}
                                 </td>
                                 <td>{doc?.status}</td>
                                 {role?.merchant &&

@@ -9,25 +9,24 @@ const MerchantBalance = () => {
   const dispatch = useDispatch()
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [clientCodeListt, setClientCodeListt] = useState([]);
-   const {  productCatalogueSlice } = useSelector((state) => state);
+  const { productCatalogueSlice } = useSelector((state) => state);
   const { SubscribedPlanData, isLoading, walletCommission } = productCatalogueSlice
 
- 
+
   // Handle change in the select dropdown
   const handleSelectChange = (selectedOption) => {
     setSelectedClientId(selectedOption ? selectedOption.value : null); // Update selected client ID
 
-if (selectedOption && selectedOption.value !== null && selectedOption.value !== "") {
-         const postData = {
-            clientCode: selectedOption.value
-        };
-        
-    dispatch(merchantSubscribedPlanData(postData));
+    if (selectedOption && selectedOption.value !== null && selectedOption.value !== "") {
+      const postData = {
+        clientCode: selectedOption.value
+      };
+     dispatch(merchantSubscribedPlanData(postData));
     }
-};
+  };
 
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(getSubscribedDetails()).then((res) => {
       const detail = res?.payload?.data
       setClientCodeListt(detail)
@@ -35,7 +34,7 @@ useEffect(() => {
 
 
   }, [dispatch])
-  
+
   const options = [
     { value: '', label: 'Select Client Code' },
     ...clientCodeListt.map((data) => ({
@@ -44,12 +43,12 @@ useEffect(() => {
     }))
   ]
 
- return (
+  return (
 
     <section className="">
       <main className="">
         <div className="">
-          <h5 className="ml-4">Subscription Wallet</h5>
+          <h5 className="ml-3">Subscription Wallet</h5>
         </div>
         <div className="container-fluid mt-5">
           <div className="row">
