@@ -19,7 +19,7 @@ export const kycValidatorAuth = axios.create({
 export const axiosInstanceJWT = axios.create({
   headers: {
     "Content-Type": "application/json",
-    "Authorization": "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69"
+    // "Authorization": "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69"
   },
 });
 
