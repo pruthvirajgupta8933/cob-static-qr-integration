@@ -348,7 +348,7 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
                         <AuthorizedRoute exact path={`${path}/Sandbox`} Component={Sandbox}
-                            roleList={{ merchant: true }}>
+                            roleList={{ merchant: true, referral: true }}>
                             <Sandbox />
                         </AuthorizedRoute>
 
