@@ -133,12 +133,12 @@ function AssignZone() {
                 {/* <p className="">
                   Client Code: {selectedClientId}
                 </p> */}
-                <p className="ml-3">
+                <h6 className="ml-3">
                   Payment Mode: {formValues?.mode_name}
-                </p>
-                <p className="ml-3">
+                </h6>
+                <h6 className="ml-3">
                   Bank: {formValues?.bank_name}
-                </p>
+                </h6>
                 <div className="container">
                   <Form>
                     <div className="row">
@@ -378,7 +378,7 @@ function AssignZone() {
       </main>
 
 
-      <CustomModal modalBody={modalBody} headerTitle={""} modalToggle={openZoneModal}
+      <CustomModal modalBody={modalBody} headerTitle={"MID Generation Request"} modalToggle={openZoneModal}
         fnSetModalToggle={setOpenModal} />
 
 

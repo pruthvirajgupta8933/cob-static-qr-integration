@@ -5,13 +5,17 @@ import { kycUserList } from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import SandboxCollapse from "./SandboxCollapse"
+import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 
 
 function Sandbox() {
-  const { auth} = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
   const { user } = auth;
   const [openCollapse, setOpenCollapse] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
+  const roles = roleBasedAccess();
+  console.log(roles)
+
 
   // Function to toggle the visibility of the password field
   const togglePasswordVisibility = () => {
@@ -28,6 +32,7 @@ function Sandbox() {
   const [isCopied, setIsCopied] = useState(false);
   const formDetails = [
     {
+      id: 1,
       title: "Test Credentials ( PHP )",
       initialValues: [
         { label: "Client Code", value: "DCRBP" },
@@ -36,10 +41,11 @@ function Sandbox() {
         { label: "Authentication Key", value: "0jeOYcu3UnfmWyLC" },
         { label: "Authentication IV", value: "C28LAmGxXTqmK0QJ" },
         { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" }
-        
+
       ]
     },
     {
+      id: 2,
       title: "Test Credentials (JAVA | .NET | Android | React JS | React Native | NodeJS | Flutter | Python | IOS | Angular | Vue)",
       initialValues: [
         { label: "Client Code", value: "TM001" },
@@ -51,6 +57,7 @@ function Sandbox() {
       ]
     },
     {
+      id: 3,
       title: "Test Credentials ( OpenCart | WooCommerce)",
       initialValues: [
         { label: "Client Code", value: "NITE5" },
@@ -61,7 +68,9 @@ function Sandbox() {
         { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit" }
       ]
     },
+
     {
+      id: 4,
       title: "Live Credentials",
       initialValues: [
         {
@@ -148,25 +157,11 @@ function Sandbox() {
 
 
 
-  // const getSubscribedPlan = (clientId, id) => {
-  //   axiosInstanceJWT
-  //     .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
-  //     .then((resp) => {
-
-  //       // setSelectedPlan({ planId: resp?.data?.data?.planId === null ? "" : resp?.data?.data?.planId })
-  //     })
-  // }
-
-
-
   useEffect(() => {
-    clientDetailRequest()
-    // getSubscribedPlan(clientId, 10)
-
+    roles.merchant && clientDetailRequest()
   }, [clientId, user])
 
 
-  // console.log("selected plan",selectedPlan)
   return (
     <section >
       <main >
@@ -181,40 +176,55 @@ function Sandbox() {
             <div className="container-fluid">
               <div className="row">
                 {formDetails.map((form, index) => (
-                  <SandboxCollapse
-                    key={index}
-                    isOpen={openCollapse === index + 1}
-                    onToggle={() => handleToggle(index + 1)}
-                    title={form.title}
-                    formContent={(
-
-                      <form>
-                        <div className="form-group row">
-                          {form.initialValues.map((item, i) => (
-                            <div className="col-lg-4" key={i}>
-                              <label className="col-form-label">{item.label}</label>
-                              <div className="input-group">
-                                <input
-                                  type={item.label === 'Password' && !showPassword ? "password" : "text"}
-                                  className="form-control"
-                                  disabled={true}
-                                  value={item.value}
-                                />
-                                {item.label === 'Password' && (
-                                  <>
-                                    <div className="input-group-append">
-                                      <span
-                                        className="input-group-text"
-                                        style={{ cursor: 'pointer' }}
-                                        onClick={togglePasswordVisibility}
-                                      >
-                                        {showPassword ? (
-                                          <i className="fa fa-eye" style={{ fontSize: '12px' }}></i>
-                                        ) : (
-                                          <i className="fa fa-eye-slash" style={{ fontSize: '12px' }}></i>
-                                        )}
-                                      </span>
-                                    </div>
+                  <>
+                    {console.log(form.id)}
+                    {console.log(roles.referral)}
+                    {(form.id === 4 && roles.referral) ? <></> : <SandboxCollapse
+                      key={index}
+                      isOpen={openCollapse === index + 1}
+                      onToggle={() => handleToggle(index + 1)}
+                      title={form.title}
+                      formContent={(
+                        <form>
+                          <div className="form-group row">
+                            {form.initialValues.map((item, i) => (
+                              <div className="col-lg-4" key={i}>
+                                <label className="col-form-label">{item.label}</label>
+                                <div className="input-group">
+                                  <input
+                                    type={item.label === 'Password' && !showPassword ? "password" : "text"}
+                                    className="form-control"
+                                    disabled={true}
+                                    value={item.value}
+                                  />
+                                  {item.label === 'Password' && (
+                                    <>
+                                      <div className="input-group-append">
+                                        <span
+                                          className="input-group-text"
+                                          style={{ cursor: 'pointer' }}
+                                          onClick={togglePasswordVisibility}
+                                        >
+                                          {showPassword ? (
+                                            <i className="fa fa-eye" style={{ fontSize: '12px' }}></i>
+                                          ) : (
+                                            <i className="fa fa-eye-slash" style={{ fontSize: '12px' }}></i>
+                                          )}
+                                        </span>
+                                      </div>
+                                      <div className="input-group-append">
+                                        <span
+                                          className="input-group-text"
+                                          style={{ cursor: 'pointer' }}
+                                          onClick={() => copyToClipboard(item.value)}
+                                          data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
+                                        >
+                                          <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                  {item.label !== 'Password' && (
                                     <div className="input-group-append">
                                       <span
                                         className="input-group-text"
@@ -225,29 +235,20 @@ function Sandbox() {
                                         <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
                                       </span>
                                     </div>
-                                  </>
-                                )}
-                                {item.label !== 'Password' && (
-                                  <div className="input-group-append">
-                                    <span
-                                      className="input-group-text"
-                                      style={{ cursor: 'pointer' }}
-                                      onClick={() => copyToClipboard(item.value)}
-                                      data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                    >
-                                      <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                    </span>
-                                  </div>
-                                )}
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                      </form>
+                            ))}
+                          </div>
+                        </form>
 
-                    )}
-                  />
+                      )}
+                    />}
+
+                  </>
                 ))}
+
+
               </div>
             </div>
           </section>
