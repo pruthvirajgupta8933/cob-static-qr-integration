@@ -121,7 +121,7 @@ function BankDetails(props) {
         ) {
           // console.log(res?.payload?.bank_name)
           setLoading(false)
-          const postData = { bank_name: res?.payload?.bank_name };
+          const postData = { bank_name: res?.payload?.bank };
           // console.log(postData)
           dispatch(getBankId(postData)).then(resp => {
             if (resp?.payload?.length > 0) {
