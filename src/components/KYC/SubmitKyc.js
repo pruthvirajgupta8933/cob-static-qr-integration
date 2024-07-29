@@ -14,7 +14,8 @@ import toastConfig from "../../utilities/toastTypes";
 import Yup from "../../_components/formik/Yup";
 
 function SubmitKyc(props) {
-  const { role } = props;
+  // const { role } = props;
+  const merchantloginMasterId = props.merchantloginMasterId;
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ function SubmitKyc(props) {
   const { loginId } = user;
 
   const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
-  const { dropDownDocList, finalArray, isRequireDataUploaded } = compareDocListArray
+  const { isRequireDataUploaded } = compareDocListArray
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
   const kyc_status = kycUserList?.status;
   const [disable, setIsDisable] = useState(false);
@@ -57,7 +58,7 @@ function SubmitKyc(props) {
         dispatch(
           saveKycConsent({
             term_condition: value.term_condition,
-            login_id: loginId,
+            login_id: merchantloginMasterId,
             submitted_by: loginId,
           })
         ).then((res) => {
@@ -87,7 +88,7 @@ function SubmitKyc(props) {
 
   return (
     <div className="col-md-12 p-3 NunitoSans-Regular">
-      {role.merchant && (
+      {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -186,7 +187,7 @@ function SubmitKyc(props) {
             </Form>
           )}
         </Formik>
-      )}
+      }
     </div>
   );
 }

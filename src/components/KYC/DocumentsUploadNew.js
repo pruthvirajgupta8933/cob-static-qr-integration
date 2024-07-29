@@ -27,7 +27,9 @@ import { KYC_STATUS_REJECTED } from "../../utilities/enums";
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  const { role } = props;
+  const merchantloginMasterId = props.merchantloginMasterId;
+
+  // const { role } = props;
 
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
@@ -132,15 +134,12 @@ function DocumentsUpload(props) {
 
 
   const onSubmit = (values, action) => {
-
     setDisable(true);
-    console.log("selectedFile", selectedFile)
-
     if (!isNull(selectedFile) && !isUndefined(selectedFile) && selectedFile !== null) {
       const bodyFormData = new FormData();
       let docType = values?.docType;
       bodyFormData.append("files", selectedFile);
-      bodyFormData.append("login_id", loginId);
+      bodyFormData.append("login_id", merchantloginMasterId);
       bodyFormData.append("modified_by", loginId);
       bodyFormData.append("type", values?.docType);
 
@@ -152,7 +151,7 @@ function DocumentsUpload(props) {
 
           if (response?.payload?.status) {
             setTitle("SUBMIT KYC");
-            dispatch(GetKycTabsStatus({ login_id: loginId }));
+            dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
             toast.success(response?.payload?.message);
             setImgAttr("#");
             setSelectedFile(null);
@@ -209,9 +208,9 @@ function DocumentsUpload(props) {
   };
 
   const getKycDocList = () => {
-    if (loginId != undefined && loginId !== "") {
+    if (merchantloginMasterId != undefined && merchantloginMasterId !== "") {
       const postData = {
-        login_id: loginId,
+        login_id: merchantloginMasterId,
       }
 
       dispatch(
@@ -393,7 +392,6 @@ function DocumentsUpload(props) {
                 <div className="row">
                   {documentStatus !== "Approved" &&
                     documentStatus !== "Verified" &&
-                    role?.merchant ? (
                     <div className="col-lg-6  mt-4">
                       <button
                         className="btn btn-sm cob-btn-primary  text-white m-1"
@@ -429,9 +427,7 @@ function DocumentsUpload(props) {
                           </button>
                         )}
                     </div>
-                  ) : (
-                    <></>
-                  )}
+                  }
                 </div>
 
                 <div className="form-row  overflow-auto">
@@ -447,7 +443,7 @@ function DocumentsUpload(props) {
                               <th>Document Type</th>
                               <th>Document Name</th>
                               <th>Document Status</th>
-                              {role?.merchant &&
+                              {
                                 documentStatus !== "Approved" &&
                                 documentStatus !== "Verified" && (
                                   <th>Remove Item</th>
@@ -468,10 +464,10 @@ function DocumentsUpload(props) {
                                   >
                                     {stringManulate(doc?.name)}
                                   </a>
-                                  { doc?.status?.toLowerCase() === KYC_STATUS_REJECTED.toLowerCase() ? <p className="text-danger">{doc?.comment}</p> : null }
-                                  </td>
+                                  {doc?.status?.toLowerCase() === KYC_STATUS_REJECTED.toLowerCase() ? <p className="text-danger">{doc?.comment}</p> : null}
+                                </td>
                                 <td>{doc?.status}</td>
-                                {role?.merchant &&
+                                {
                                   documentStatus !== "Approved" &&
                                   documentStatus !== "Verified" && (
                                     <td>
