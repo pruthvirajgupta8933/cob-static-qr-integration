@@ -102,29 +102,38 @@ useEffect(() => {
 
   const onSubmit = (values) => {
     setDisable(true);
+  
     const postData = {
       "client_code": values?.react_select?.value,
       "login_master_id": values.login_master
     };
   
-    assignAccountMangerService.assignClient(postData).then((res) => {
-      if (res?.data?.status === true) {
-        toastConfig.successToast(res?.data?.message);
-        dispatch(assignAccountMangerApi({ "client_code": selectedClientId }))
-          .then((res) => {
-            setAssignedAccountManger(res?.payload?.result);
-            setDisable(false);
-          })
-         
-      } else {
-        toastConfig.errorToast(res?.data?.message);
-        setDisable(false);
+    if (postData) {
+      if (!window.confirm("Are you sure to assign a new role?")) {
+        setDisable(false); 
+        return; 
       }
-    }).catch((err)=>{
-      setDisable(false)
-    })
+  
+      assignAccountMangerService.assignClient(postData)
+        .then((res) => {
+          if (res?.data?.status === true) {
+            toastConfig.successToast(res?.data?.message);
+            dispatch(assignAccountMangerApi({ "client_code": selectedClientId }))
+              .then((res) => {
+                setAssignedAccountManger(res?.payload?.result);
+                setDisable(false);
+              });
+          } else {
+            toastConfig.errorToast(res?.data?.message);
+            setDisable(false);
+          }
+        })
+        .catch((err) => {
+          setDisable(false);
+        });
+    }
   };
-
+  
   const options = [
     { value: '', label: 'Select Client Code' },
     ...clientCodeList.map((data) => ({
@@ -158,8 +167,8 @@ useEffect(() => {
                         onChange={handleChange}
 
                       />
-                      {selectedClientId &&<h6  className={` ${classes.background_box} `}>Current Assigned Account Manager</h6>}
-                      {selectedClientId && <p className="mt-2">Name: {assignedAccountManger?.name || "NA"}</p>}
+                      <div className="text-primary mb-3 d-flex">{selectedClientId &&<h6  className={` ${classes.background_box} `}>Current Role</h6>}</div>
+                      {selectedClientId && <p className="mt-3">Name: {assignedAccountManger?.name || "NA"}</p>}
                       {selectedClientId && <p className=""> Email: {assignedAccountManger?.email || "NA"}</p>}
                     </div>
                     <div className="col-lg-3">
@@ -180,7 +189,7 @@ useEffect(() => {
                         {disable && (
                           <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
                         )}
-                        Submit
+                        Assign
                       </button>
                     </div>
                   </div>
