@@ -23,11 +23,10 @@ import toastConfig from "../../utilities/toastTypes";
 function BusinessDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
+  const merchantloginMasterId = props.merchantloginMasterId;
 
-  
-  
   const reqexPinCode = /^[1-9][0-9]{5}$/;
-
+  const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const { allTabsValidate, KycTabStatusStore } = kyc;
@@ -38,32 +37,20 @@ function BusinessDetails(props) {
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
 
-  const [readOnly, setReadOnly] = useState(false);
-  const [buttonText, setButtonText] = useState("Save and Next");
+  const readOnly = false;
+  const buttonText = "Save and Next";
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingForGst, setLoadingForGst] = useState(false)
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
   const [isLoader, setIsloader] = useState(false)
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  // const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
-  // const [bussinessPanFromGST, setBussinessPanFromGST] = useState("")
-
-  // const [gstNumberByState, setGstNumberByState] = useState("")
-  // const [udyamAadharByState, setudyamAadharByState] = useState("")
-  // const [registerWithGstState, setRegisterWithGstState] = useState(true)
-  // const [registerWithUdyam, setRegisterWithUdyam] = useState(true)
   const [udyamResponseData, setUdyamResponseData] = useState({})
 
 
-
-  const dispatch = useDispatch();
   const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation?.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
   const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  // let businessName = `${busiFirstName} ${busiLastName}`;
-  // let businessAuthName = ``;
   let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
     } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
@@ -74,13 +61,8 @@ function BusinessDetails(props) {
   }
 
 
-  const radioBtnOptions = [
-    { "value": true, "key": "Yes" },
-    { "value": false, "key": "No" },
-
-
-
-  ]
+  const radioBtnOptions = [{ "value": true, "key": "Yes" },
+  { "value": false, "key": "No" }]
 
   let registerd_with_udyam;
 
@@ -88,7 +70,6 @@ function BusinessDetails(props) {
     try {
       registerd_with_udyam = JSON.parse(KycList.is_udyam);
     } catch (error) {
-      // console.error('Error parsing JSON:', error);
       registerd_with_udyam = {};
     }
   } else {
@@ -452,7 +433,7 @@ function BusinessDetails(props) {
       "registered_business_address": values.registered_business_address,
       "files": null,
       "modified_by": loginId,
-      "login_id": loginId,
+      "login_id": merchantloginMasterId,
       "is_udyam": JSON.parse(values.registerd_with_udyam),
       "udyam_data": udyamResponseData
     }
@@ -467,8 +448,8 @@ function BusinessDetails(props) {
         toast.success(res?.payload?.message);
         setTab(4);
         setTitle("BANK DETAILS");
-        dispatch(kycUserList({ login_id: loginId }));
-        dispatch(GetKycTabsStatus({ login_id: loginId }));
+        dispatch(kycUserList({ login_id: merchantloginMasterId }));
+        dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
 
         setIsDisable(false);
       } else {

@@ -23,6 +23,8 @@ import kycOperationService from "../../services/kycOperation.service";
 function BusinessOverview(props) {
   const setTab = props.tab;
   const setTitle = props.title;
+  const merchantloginMasterId = props.merchantloginMasterId;
+
 
   const dispatch = useDispatch();
 
@@ -231,7 +233,7 @@ function BusinessOverview(props) {
           avg_ticket_size: values.avg_ticket_size,
           ticket_size: values.ticket_size,
           modified_by: loginId,
-          login_id: loginId,
+          login_id: merchantloginMasterId,
           is_website_url: values.seletcted_website_app_url === "Yes" ? "True" : "False",
           website_app_url: values.website_app_url,
         })
@@ -240,8 +242,8 @@ function BusinessOverview(props) {
           toast.success(res.payload.message);
           setTab(3);
           setTitle("BUSINESS DETAILS");
-          dispatch(kycUserList({ login_id: loginId }));
-          dispatch(GetKycTabsStatus({ login_id: loginId }));
+          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+          dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
           setIsDisabled(false);
         } else {
           toast.error(res?.payload?.detail);

@@ -136,7 +136,8 @@ function ClientList() {
         {
             id: "9", name: "Action",
             cell: (row) => (<div>
-                <button
+                <Link
+                    to={`kyc?kycid=${row?.loginMasterId}`}
                     type="button"
                     className="approve text-white  cob-btn-primary   btn-sm"
                     data-toggle="modal"
@@ -146,7 +147,7 @@ function ClientList() {
                     data-target="#exampleModal"
                 >
                     Kyc Complete
-                </button>
+                </Link>
             </div>),
             omit: user?.roleId === 3
         },
@@ -156,7 +157,7 @@ function ClientList() {
             cell: (row) => (<div>
                 <Link
                     className="approve text-white cob-btn-primary btn-sm"
-                    to={`/dashboard/bank-onboarding/?cmid=${row?.loginMasterId}&edit=true`}
+                    to={`sbank-onboarding/?cmid=${row?.loginMasterId}&edit=true`}
                 >
                     Edit Details
                 </Link>
