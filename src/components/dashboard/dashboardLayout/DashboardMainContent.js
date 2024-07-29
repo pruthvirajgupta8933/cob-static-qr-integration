@@ -386,7 +386,7 @@ function DashboardMainContent() {
                             <SabPaisaPricing />
                         </Route>
 
-                        <AuthorizedRoute exact path={`${path}/kyc`} Component={KycForm} roleList={{ merchant: true }}>
+                        <AuthorizedRoute exact path={`${path}/kyc`} Component={KycForm} roleList={{ merchant: true, referral: true }}>
                             <KycForm />
                         </AuthorizedRoute>
 
@@ -604,7 +604,7 @@ function DashboardMainContent() {
                             Component={AssigneAccountManger}
                             roleList={{ approver: true }}
                         >
-                            <AssigneAccountManger/>
+                            <AssigneAccountManger />
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
