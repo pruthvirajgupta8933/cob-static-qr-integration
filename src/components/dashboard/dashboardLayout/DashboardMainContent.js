@@ -85,6 +85,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import UserInfo from "../../ApproverNVerifier/UserInfo";
 import TransactionHistory from "../AllPages/transaction-history/TransactionHistory";
 import AadharResponse from "../../ApproverNVerifier/additional-kyc/AadharResponse";
+import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/AssigneAccountManger";
 
 
 function DashboardMainContent() {
@@ -594,6 +595,15 @@ function DashboardMainContent() {
                             roleList={{ accountManager: true, viewer: true }}
                         >
                             <MultiUserOnboard />
+                        </AuthorizedRoute>
+
+                        <AuthorizedRoute
+                            exact
+                            path={`${path}/assign-account-manager`}
+                            Component={AssigneAccountManger}
+                            roleList={{ approver: true }}
+                        >
+                            <AssigneAccountManger/>
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>

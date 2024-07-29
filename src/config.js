@@ -218,6 +218,9 @@ const API_LIVE = {
   KYC_FOR_SAVING_REFER_MERCHANT: `${kyc_url}/kyc/refer-zone/save-refer-zone/`,
   FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
   GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
+  ASSIGN_ACCOUNT_MANAGER:`${url}/assigned-account-manager`,
+  ACCOUNT_MANAGER_DETAILS:`${url}/account-manager-details`,
+  ASSIGN_CLIENT:`${url}/assign-client`,
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,

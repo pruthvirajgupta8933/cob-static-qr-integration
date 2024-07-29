@@ -27,6 +27,7 @@ import { signupDataReducer } from "./slices/signupDataSlice";
 import { genreateMidReducer } from "./slices/generateMidSlice";
 import { frmReducer } from "./slices/approver-dashboard/frmSlice";
 import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
+import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slice/assignAccountMangerSlice";
 
 
 
@@ -70,7 +71,9 @@ const reducer = {
   productSubscriptionServiceAdminReducer: productSubscriptionServiceAdminReducer,
 
   // theme
-  themeReducer: themeReducer
+  themeReducer: themeReducer,
+  //Assign-Account-Manager
+  assignAccountManagerReducer:assignAccountManagerReducer
 };
 
 const store = configureStore({
