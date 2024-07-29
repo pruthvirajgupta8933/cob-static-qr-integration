@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import API_URL from "../../config";
 import moment from "moment";
-// import * as Yup from "yup";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
@@ -370,9 +368,9 @@ const SignupData = () => {
           </Formik>
 
           {/* {!loadingState && signupData?.length !== 0 && ( */}
-
+          {filterSignupData?.length !== 0 &&
           <div className="row mt-4">
-            {signupData.length === 0 ? "" :
+            {/* {signupData.length === 0 ? "" : */}
               <div className="form-group col-lg-3 ml-2">
                 <SearchFilter
                   kycSearch={kycSearch}
@@ -381,16 +379,18 @@ const SignupData = () => {
                   setSearchByDropDown={setSearchByDropDown}
                 />
 
-              </div>}
-            {signupData.length === 0 ? "" :
+              </div>
+              {/* } */}
+            {/* {signupData.length === 0 ? "" : */}
               <div className="form-group col-lg-3">
                 <CountPerPageFilter
                   pageSize={pageSize}
                   dataCount={dataCount}
                   changePageSize={changePageSize}
                 />
-              </div>}
-          </div>
+              </div>
+              {/* } */}
+          </div>}
           <div className="container-fluid ">
             <div className="scroll overflow-auto">
               {signupData.length === 0 ? "" : <h6>Total Count : {dataCount}</h6>}

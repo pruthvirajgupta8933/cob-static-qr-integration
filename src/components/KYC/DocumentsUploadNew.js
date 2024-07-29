@@ -22,6 +22,7 @@ import { isNull, isUndefined } from "lodash";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED, } from "../../utilities/enums";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../_components/formik/Yup";
+import { KYC_STATUS_REJECTED } from "../../utilities/enums";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
@@ -467,8 +468,8 @@ function DocumentsUpload(props) {
                                   >
                                     {stringManulate(doc?.name)}
                                   </a>
-                                  { doc?.status === "Rejected" ? <p className="text-danger"> {doc?.comment}</p> :null}
-                                </td>
+                                  { doc?.status?.toLowerCase() === KYC_STATUS_REJECTED.toLowerCase() ? <p className="text-danger">{doc?.comment}</p> : null }
+                                  </td>
                                 <td>{doc?.status}</td>
                                 {role?.merchant &&
                                   documentStatus !== "Approved" &&
