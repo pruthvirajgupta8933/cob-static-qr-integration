@@ -599,7 +599,7 @@ function DashboardMainContent() {
 
                         <AuthorizedRoute
                             exact
-                            path={`${path}/assign-account-manager`}
+                            path={`${path}/merchant-assignment`}
                             Component={AssigneAccountManger}
                             roleList={{ approver: true }}
                         >
