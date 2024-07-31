@@ -25,11 +25,15 @@
   color: white !important;
 }
 
+
+
 .kyc_active_tab_error{
   background-color: #ff0000 !important;
   color: white !important;
 
 }
+
+
 
 .kyc_active_tab_warning{
   background-color: #ffab07 !important;
@@ -98,10 +102,10 @@
 }
 
 .paymentHeader {
-  font-family: "Satoshi-Regular";
+  font-family: "Sofia-Pro-Regular";
   font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
+  /* font-weight: 700;
+  font-size: 24px; */
   color: black;
 }
 

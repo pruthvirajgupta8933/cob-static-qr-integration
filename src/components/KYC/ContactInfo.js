@@ -20,10 +20,10 @@ import gotVerified from "../../assets/images/verified.png";
 import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import "./kyc-style.css";
 import OtpInput from "react-otp-input";
+import classes from "./kycForm.module.css"
 
 
 function ContactInfo(props) {
-
   const setTab = props.tab;
   const setTitle = props.title;
 
@@ -40,9 +40,24 @@ function ContactInfo(props) {
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
   const [otpBtnDisable, setOtpBtnDisable] = useState(false);
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [timer, setTimer] = useState(60);
+   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer(prevTimer => prevTimer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setResendDisabled(false);
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
 
 
 
@@ -252,11 +267,6 @@ function ContactInfo(props) {
 
   }
 
-
-
-
-
-
   const tooltipData = {
     "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
     "contact_phone": "We will reach out to this phone for any account related issues."
@@ -350,7 +360,9 @@ function ContactInfo(props) {
                               setFieldError,
                               "contact_number"
                             );
+
                           }
+                          setTimer(60)
                         }}
                       >
                         {isLoading ? (
@@ -446,10 +458,11 @@ function ContactInfo(props) {
               style={{ display: showOtpVerifyModalPhone ? "block" : "none", backgroundColor: "#000000a8" }}>
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
+
                   <div className="modal-header">
-                    <h4 className="modal-title paymentHeader" id="phoneModal">
+                    <h6 className="modal-title paymentHeader" id="phoneModal">
                       OTP Verification
-                    </h4>
+                    </h6>
                     <button
                       type="button"
                       className="close"
@@ -490,34 +503,54 @@ function ContactInfo(props) {
 
                       />
                     </div>
-                    <div className="m-4 text-center">
-                      <button className="btn btn cob-btn-primary" type="button"
-                        onClick={() => handleVerificationOfPhone(setFieldValue, values)}
-                        disabled={otpBtnDisable}
-
-                      >
-                        {otpBtnDisable ?
-                          <span className="spinner-border spinner-border-sm" role="status">
-                            <span className="sr-only">Loading...</span>
-                          </span>
-                          :
-                          "Verify"
-                        }
-                      </button>
+                    <div className="row m-4 text-center">
+                     
+                      <div className="col-lg-6">
+                        {timer > 0 ? (
+                          <button className={`${classes.resendOtp_border} btn btn-light btn-sm`} disabled>
+                           {timer}s
+                          </button>
+                        ) : (
+                          <button className={`${classes.resendOtp_border} btn btn-light btn-sm`}
+                          onClick={() => {
+                            if (!errors.contact_number) {
+                              checkInputIsValid(
+                                errors,
+                                values,
+                                setFieldError,
+                                "contact_number"
+                              )
+                              setResendDisabled(true);
+                              setTimer(40);
+                            }
+                          }}
+                          >
+                            Resend OTP
+                          </button>
+                        )}
+                      </div>
+                      <div className="col-lg-6">
+                        <button className="btn btn cob-btn-primary btn-sm" type="button"
+                          onClick={() => handleVerificationOfPhone(setFieldValue, values)}
+                          disabled={otpBtnDisable}
+                        >
+                          {otpBtnDisable ?
+                            <span className="spinner-border spinner-border-sm" role="status">
+                              <span className="sr-only">Loading...</span>
+                            </span>
+                            :
+                            "Verify OTP"
+                          }
+                        </button>
+                      </div>
                     </div>
+
                   </div>
+
+
                 </div>
               </div>
             </div>
-
-
-            {/*  Modal Popup for Otp Verification */}
-            {/* <PhoneVerficationModal
-              show={showOtpVerifyModalPhone}
-              setShow={handlerModal}
-              setFieldValue={setFieldValue}
-            /> */}
-            {/*  Modal Popup for Otp Verification Mobile */}
           </Form>
         )}
       </Formik>

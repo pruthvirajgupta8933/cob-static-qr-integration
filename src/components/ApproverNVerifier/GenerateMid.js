@@ -1,15 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import DateFormatter from "../../utilities/DateConvert";
+import { useDispatch} from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form} from "formik";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { fetchPaymentMode, fetchBankName, getMidClientCode } from "../../services/generate-mid/generate-mid.service";
-import ReactSelect, { createFilter } from 'react-select';
+import  { createFilter } from 'react-select';
 import CustomModal from "../../_components/custom_modal";
 import Yup from "../../_components/formik/Yup";
-import CustomSelect from "../../_components/formik/components/CustomReactSelect";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
 
 import toastConfig from "../../utilities/toastTypes";
@@ -66,7 +64,7 @@ function AssignZone() {
 
   const [createMidData, setCreateMidData] = useState("")
   const [show, Setshow] = useState(false)
-  // console.log(selectedClientId)
+  
 
   useEffect(() => {
     fetchPaymentMode()
@@ -256,12 +254,10 @@ function AssignZone() {
     setFormValues(values)
     setCreateMidData({})
   }
-  const clientCodeOption = convertToFormikSelectJson("merchantId", "clientCode", clientCodeList, {}, false, false, true, "clientName")
-  // console.log(clientCodeOption)
+  
 
   const handleSubmit = (values) => {
-    // setLoading(true);
-    setDisable(true)
+   setDisable(true)
     setLoading(true)
     setCreateMidData({})
     const midData = {
