@@ -14,7 +14,7 @@ function Sandbox() {
   const [openCollapse, setOpenCollapse] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const roles = roleBasedAccess();
-  console.log(roles)
+  // console.log(roles)
 
 
   // Function to toggle the visibility of the password field
@@ -177,8 +177,8 @@ function Sandbox() {
               <div className="row">
                 {formDetails.map((form, index) => (
                   <>
-                    {console.log(form.id)}
-                    {console.log(roles.referral)}
+                    {/* {console.log(form.id)}
+                    {console.log(roles.referral)} */}
                     {(form.id === 4 && roles.referral) ? <></> : <SandboxCollapse
                       key={index}
                       isOpen={openCollapse === index + 1}

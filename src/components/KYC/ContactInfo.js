@@ -26,6 +26,7 @@ import classes from "./kycForm.module.css"
 function ContactInfo(props) {
   const setTab = props.tab;
   const setTitle = props.title;
+  const merchantloginMasterId = props.merchantloginMasterId;
 
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
@@ -128,7 +129,7 @@ function ContactInfo(props) {
     setIsDisable(true);
     dispatch(
       updateContactInfo({
-        login_id: loginId,
+        login_id: merchantloginMasterId,
         name: values.name,
         contact_number: values.contact_number,
         email_id: values.email_id,
@@ -207,21 +208,6 @@ function ContactInfo(props) {
       handleToSendOTPForVerificationPhone(val[key]);
     }
   };
-
-
-  // const handlerModal = (val, key) => {
-  //   if (key === "phone") {
-  //     setShowOtpVerifyModalPhone(val);
-  //   }
-  // };
-
-
-  // Phone number verfication
-
-  // const dispatch = useDispatch();
-
-
-  // const [otpLoading, setOtpLoading] = useState(false);
 
 
 

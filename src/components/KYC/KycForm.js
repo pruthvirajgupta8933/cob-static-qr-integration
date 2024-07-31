@@ -22,8 +22,6 @@ function KycForm() {
   const dispatch = useDispatch();
 
   const search = useLocation().search;
-
-  // kycid as login id
   const kycid = new URLSearchParams(search).get("kycid");
   const [tab, SetTab] = useState(1);
   const [title, setTitle] = useState("CONTACT INFO");
@@ -34,11 +32,12 @@ function KycForm() {
   const roles = roleBasedAccess();
 
   let merchantloginMasterId = loginId;
-  if (roles.approver || roles.verifier || roles.bank) {
+  if (roles.referral) {
     merchantloginMasterId = kycid;
   } else if (roles.merchant) {
     merchantloginMasterId = loginId;
   }
+  merchantloginMasterId = parseInt(merchantloginMasterId)
 
   const { KycTabStatusStore } = kyc;
 
@@ -51,16 +50,12 @@ function KycForm() {
   useEffect(() => {
     dispatch(kycUserList({ login_id: merchantloginMasterId }));
   }, [merchantloginMasterId]);
-
   //-----------Kyc Document Upload List ------//
   useEffect(() => {
     dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }));
   }, [merchantloginMasterId]);
-
   //--------------------------------------//
-
   //API Integrated For Verification Of All Tabs ------------//
-
   useEffect(() => {
     dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
   }, [merchantloginMasterId]);
@@ -176,6 +171,7 @@ function KycForm() {
                         <ContactInfo
                           role={roles}
                           kycid={kycid}
+                          merchantloginMasterId={merchantloginMasterId}
                           tab={SetTab}
                           title={setTitle}
                         />
@@ -184,6 +180,7 @@ function KycForm() {
                           <BusinessOverview
                             role={roles}
                             kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
                             tab={SetTab}
                             title={setTitle}
                           />
@@ -192,6 +189,7 @@ function KycForm() {
                           <BusinessDetails
                             role={roles}
                             kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
                             tab={SetTab}
                             title={setTitle}
                           />
@@ -200,6 +198,7 @@ function KycForm() {
                           <BankDetails
                             role={roles}
                             kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
                             tab={SetTab}
                             title={setTitle}
                           />
@@ -208,14 +207,19 @@ function KycForm() {
                           <DocumentsUploadNew
                             role={roles}
                             kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
                             tab={SetTab}
                             tabValue={tab}
                             title={setTitle}
                           />
                         )) ||
                         (tab === 6 && (
-                          <SubmitKyc role={roles} kycid={kycid} />
-                        )) || <ContactInfo role={roles} kycid={kycid} />}
+                          <SubmitKyc role={roles} kycid={kycid} merchantloginMasterId={merchantloginMasterId} />
+                        )) || <ContactInfo role={roles}
+                          kycid={kycid}
+                          merchantloginMasterId={merchantloginMasterId}
+                          tab={SetTab}
+                          title={setTitle} />}
                     </div>
                   </div>
                 </div>

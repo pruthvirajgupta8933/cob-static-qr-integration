@@ -382,7 +382,7 @@ const TransactionHistory = () => {
 
     const exportToExcelFn = () => {
         const excelHeaderRow = [
-            "S.No",
+            // "S.No",
             "Trans ID",
             "Client Trans ID",
             "Challan Number / VAN",
@@ -427,12 +427,12 @@ const TransactionHistory = () => {
         const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
         txnList.forEach((item, index) => {
             const {
-                srNo = index + 1,
+                // srNo = index,
                 txn_id = "",
                 client_txn_id = "",
                 challan_no = "",
                 payee_amount = "",
-                trans_complete_date = "",
+                trans_date = "",
                 status = "",
                 payee_first_name = "",
                 payee_lst_name = "",
@@ -470,12 +470,12 @@ const TransactionHistory = () => {
             } = item;
 
             excelArr.push([
-                srNo,
+                // srNo,
                 txn_id,
                 client_txn_id,
                 challan_no,
                 payee_amount ? Number.parseFloat(payee_amount) : "",
-                trans_complete_date,
+                convertDate(trans_date),
                 status,
                 payee_first_name,
                 payee_lst_name,
