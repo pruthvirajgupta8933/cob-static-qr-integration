@@ -21,8 +21,9 @@ import gotVerified from "../../assets/images/verified.png";
 function BankDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
+  const merchantloginMasterId = props.merchantloginMasterId;
 
-  const { role } = props;
+  // const { role } = props;
   const dispatch = useDispatch();
 
   const { kyc, auth } = useSelector((state) => state);
@@ -30,21 +31,12 @@ function BankDetails(props) {
   const { KycTabStatusStore } = kyc;
   const KycList = kyc?.kycUserList;
   const VerifyKycStatus = KycTabStatusStore?.settlement_info_status;
-
-
   const { user } = auth;
 
-
-  const [readOnly, setReadOnly] = useState(false);
-
-  const [ifscVerifed, isIfscVerifed] = useState("");
-  const [selectedvalue, setSelectedvalue] = useState("");
   const [disable, setIsDisable] = useState(false);
-
-  const [buttonText, setButtonText] = useState("Save and Next");
   const [loading, setLoading] = useState(false);
 
-
+  const buttonText = "Save and Next";
   const [data, setData] = useState([]);
   const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
@@ -127,11 +119,11 @@ function BankDetails(props) {
           res.payload.status === true &&
           res.payload.valid === true
         ) {
-          // console.log(res?.payload)
+          // console.log(res?.payload?.bank_name)
           setLoading(false)
           const postData = { bank_name: res?.payload?.bank };
+          // console.log(postData)
           dispatch(getBankId(postData)).then(resp => {
-
             if (resp?.payload?.length > 0) {
               setFieldValue("bank_id", resp?.payload[0]?.bankId)
             }
@@ -205,44 +197,44 @@ function BankDetails(props) {
 
       .catch((err) => console.log(err));
 
-    KycList?.ifscCode ? isIfscVerifed("1") : isIfscVerifed("");
+    // KycList?.ifscCode ? isIfscVerifed("1") : isIfscVerifed("");
   }, []);
 
 
   // TODO: remove the bank list api and update with the response from the bank name api
   const onSubmit = (values) => {
     let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
-    if (role.merchant) {
-      setIsDisable(true);
-      dispatch(
-        saveMerchantBankDetais({
-          account_holder_name: values.account_holder_name,
-          account_number: values.account_number,
-          ifsc_code: values.ifsc_code,
-          bank_id: values.bank_id,
-          account_type: selectedChoice,
-          branch: values.branch,
-          login_id: loginId,
-          modified_by: loginId,
-        })
-      ).then((res) => {
-        if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.status === true
-        ) {
-          toast.success(res?.payload?.message);
-          setTab(5);
-          setIsDisable(false);
-          setTitle("DOCUMENTS UPLOAD");
-          dispatch(kycUserList({ login_id: loginId }));
-          dispatch(GetKycTabsStatus({ login_id: loginId }));
 
-        } else {
-          toast.error(res?.payload?.detail);
-          setIsDisable(false);
-        }
-      });
-    }
+    setIsDisable(true);
+    dispatch(
+      saveMerchantBankDetais({
+        account_holder_name: values.account_holder_name,
+        account_number: values.account_number,
+        ifsc_code: values.ifsc_code,
+        bank_id: values.bank_id,
+        account_type: selectedChoice,
+        branch: values.branch,
+        login_id: merchantloginMasterId,
+        modified_by: loginId,
+      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        toast.success(res?.payload?.message);
+        setTab(5);
+        setIsDisable(false);
+        setTitle("DOCUMENTS UPLOAD");
+        dispatch(kycUserList({ login_id: merchantloginMasterId }));
+        dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
+
+      } else {
+        toast.error(res?.payload?.detail);
+        setIsDisable(false);
+      }
+    });
+
   };
 
 
@@ -291,6 +283,7 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
+            {console.log(errors)}
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
@@ -302,7 +295,7 @@ function BankDetails(props) {
                     name="ifsc_code"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified"}
-                    readOnly={readOnly}
+                    readOnly={false}
                   />
 
                   {(values?.ifsc_code !== null && loading) &&
@@ -361,7 +354,7 @@ function BankDetails(props) {
                     type="text"
                     name="account_number"
                     className="form-control"
-                    readOnly={readOnly}
+                    readOnly={false}
                     disabled={VerifyKycStatus === "Verified"}
                   />
 
@@ -449,13 +442,10 @@ function BankDetails(props) {
                   name="account_type"
                   options={selectedType}
                   className="form-select"
-                  readOnly={readOnly}
+                  readOnly={false}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
-                {handleChange(
-                  "account_type",
-                  setSelectedvalue(values?.account_type)
-                )}
+
               </div>
             </div>
             <div className="row">
