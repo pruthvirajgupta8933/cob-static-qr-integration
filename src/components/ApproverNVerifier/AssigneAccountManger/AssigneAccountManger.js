@@ -18,7 +18,6 @@ const AssigneAccountManger = () => {
   const [assignDetails, setAssignDetails] = useState([]);
   const [disable, setDisable] = useState(false)
   const dispatch = useDispatch()
-
   let initialValues = {
     react_select: "",
     login_master: ""
@@ -81,24 +80,7 @@ useEffect(() => {
     })
   }, [])
 
-  // const onSubmit = (values) => {
-  //   setDisable(true)
-  //   const postData = {
-  //     "client_code": values?.react_select?.value,
-  //     "login_master_id": values.login_master
-  //   }
-  //   assignAccountMangerService.assignClient(postData).then((res) => {
-  //     if (res?.data?.status === true) {
-  //       toastConfig.successToast(res?.data?.message)
-  //       dispatch(assignAccountMangerApi({ "client_code": selectedClientId }))
-  //       setDisable(false)
-  //     } else {
-  //       toastConfig.errorToast(res?.data?.message)
-  //       setDisable(false)
-  //     }
-
-  //   })
-  // }
+  
 
   const onSubmit = (values) => {
     setDisable(true);

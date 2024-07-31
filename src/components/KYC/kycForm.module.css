@@ -30,3 +30,8 @@
         margin: 5px;
     }
 }
+.resendOtp_border {
+    box-shadow: none !important;
+    border: 1px solid #377CCF !important; 
+    /* border-radius: 8px !important; */
+  }

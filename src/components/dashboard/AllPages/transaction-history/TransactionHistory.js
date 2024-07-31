@@ -521,7 +521,7 @@ const TransactionHistory = () => {
     const today = new Date();
     const lastThreeMonth = new Date(today);
     lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
-    lastThreeMonth.toLocaleDateString("en-ca");
+    lastThreeMonth.toLocaleDateString("en-IN");
 
 
 

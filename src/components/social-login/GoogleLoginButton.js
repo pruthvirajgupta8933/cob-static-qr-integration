@@ -3,6 +3,7 @@ import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
 // import UseGoogleLogout from "./GoogleLogout";
 import { useGoogleLogout } from "react-google-login";
+import classes from "./google-llogin.module.css"
 
 const GoogleLoginButton = (props) => {
   const { enableSocialLogin, btnText, fnCls } = props;
@@ -31,13 +32,18 @@ const GoogleLoginButton = (props) => {
   const LoginFailure = (response) => { };
 
   return (
-    <GoogleLogin
-      clientId={clientId}
-      onSuccess={responseGoogle}
-      onFailure={LoginFailure}
-      buttonText={btnText}
-      cookiePolicy={"single_host_origin"}
-    />
+  
+  <GoogleLogin
+    clientId={clientId}
+    onSuccess={responseGoogle}
+    onFailure={LoginFailure}
+    buttonText={btnText}
+    cookiePolicy={"single_host_origin"}
+    className={`${classes.box_shadow} d-flex justify-content-center w-100`}
+   
+  />
+
+
   );
 };
 
