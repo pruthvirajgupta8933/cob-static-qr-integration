@@ -124,11 +124,6 @@ function BankDetails(props) {
           const postData = { bank_name: res?.payload?.bank };
           // console.log(postData)
           dispatch(getBankId(postData)).then(resp => {
-<<<<<<< HEAD
-            
-
-=======
->>>>>>> 4c605eb423244521845d2367f5cb8f9f7c61d8df
             if (resp?.payload?.length > 0) {
               setFieldValue("bank_id", resp?.payload[0]?.bankId)
             }
