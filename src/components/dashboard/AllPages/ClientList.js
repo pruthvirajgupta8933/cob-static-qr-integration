@@ -157,7 +157,7 @@ function ClientList() {
             cell: (row) => (<div>
                 <Link
                     className="approve text-white cob-btn-primary btn-sm"
-                    to={`sbank-onboarding/?cmid=${row?.loginMasterId}&edit=true`}
+                    to={`bank-onboarding/?cmid=${row?.loginMasterId}&edit=true`}
                 >
                     Edit Details
                 </Link>
