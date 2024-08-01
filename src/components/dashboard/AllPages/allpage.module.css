@@ -12,6 +12,10 @@
 }
 .custom_datepicker_popper {
     transform: translate(-50%, 0) !important;
-    left: 50% !important;
-    top: 50% !important;
+    left: 60% !important;
+    top: 100% !important;
 }
+
+/* .react-datepicker-wrapper{
+   
+} */
