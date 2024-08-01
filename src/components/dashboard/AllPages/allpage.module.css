@@ -10,3 +10,8 @@
 .calendar_border {
     border: 1px solid #dee2e6;
 }
+.custom_datepicker_popper {
+    transform: translate(-50%, 0) !important;
+    left: 50% !important;
+    top: 50% !important;
+}

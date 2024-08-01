@@ -69,6 +69,7 @@ const Reports = () => {
         setPaginatedData(_(res.data).slice(0).take(pageSize).value())
       })
       .catch((err) => {
+        setLoadingState(false)
         // toastConfig.errorToast("Report Data not loaded !")  
       });
 
@@ -138,6 +139,7 @@ const Reports = () => {
         .catch((err) => {
           console.error("Error loading data:", err);
           setDisable(false)
+          setLoadingState(false)
           // toastConfig.errorToast("Data not loaded");
         });
     }
@@ -163,6 +165,7 @@ const Reports = () => {
         flag = false;
         alert(`Please choose a ${monthAllowed}-month date range.`);
         setDisable(false);
+        setLoadingState(false)
       }
     }
 

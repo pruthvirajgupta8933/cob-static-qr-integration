@@ -61,6 +61,7 @@ const SignupData = () => {
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
     setSearchText(e);
+    
   };
 
   const searchByText = (text) => {
