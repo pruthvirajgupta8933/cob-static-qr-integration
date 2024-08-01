@@ -427,7 +427,7 @@ function Signup() {
 
                                                 </div>
                                                 <div className={`form-row ${classes.form_row_cob}`}>
-                                                    <div className="form-group col-lg-12 p-2 m-2 justify-content-center d-flex">
+                                                    <div className="form-group col-lg-12">
 
                                                         <button
                                                             className="cob-btn-primary btn text-white disabled1 w-100"

@@ -38,19 +38,11 @@ const KycDetailsModal = (props) => {
   let renderPendingVerificationTable = props?.renderPendingVerification;
   let renderApprovedTable = props?.renderApprovedTable;
   let renderToPendingKyc = props?.renderToPendingKyc;
-
-  // console.log(props?.kycId)
-  let merchantKycId = props?.kycId;
-
-
-
-  // const [docList, setDocList] = useState([]);
-  const [docTypeList, setDocTypeList] = useState([]);
+let merchantKycId = props?.kycId;
+const [docTypeList, setDocTypeList] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
-  // const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
-  // const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
-  // const [platform, setPlatform] = useState("");
+  
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
 

@@ -91,7 +91,7 @@ useEffect(() => {
     };
   
     if (postData) {
-      if (!window.confirm("Are you sure to assign a new role?")) {
+      if (!window.confirm("Are you sure to assign a new account manager?")) {
         setDisable(false); 
         return; 
       }
@@ -149,9 +149,9 @@ useEffect(() => {
                         onChange={handleChange}
 
                       />
-                      <div className="text-primary mb-3 d-flex">{selectedClientId &&<h6  className={` ${classes.background_box} `}>Current Role</h6>}</div>
-                      {selectedClientId && <p className="mt-3">Name: {assignedAccountManger?.name || "NA"}</p>}
-                      {selectedClientId && <p className=""> Email: {assignedAccountManger?.email || "NA"}</p>}
+                      <div className="text-primary mb-3 mt-5 d-flex">{selectedClientId &&<h6  className={``}>Current Account Manager</h6>}</div>
+                      {selectedClientId && <h6 className="mt-3">Name: {assignedAccountManger?.name || "NA"}</h6>}
+                      {selectedClientId && <h6 className=""> Email: {assignedAccountManger?.email || "NA"}</h6>}
                     </div>
                     <div className="col-lg-3">
                       <FormikController
