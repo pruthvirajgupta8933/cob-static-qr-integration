@@ -31,6 +31,7 @@ const NotFilledKYC = () => {
     if (fieldType === "text") {
       setSearchByDropDown(false)
       setSearchText(e);
+      
     }
     if (fieldType === "dropdown") {
       setSearchByDropDown(true)

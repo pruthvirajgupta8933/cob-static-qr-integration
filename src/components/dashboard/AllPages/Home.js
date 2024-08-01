@@ -10,9 +10,6 @@ import {
   kycUserList,
 
 } from "../../../slices/kycSlice";
-
-
-
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { isNull } from "lodash";

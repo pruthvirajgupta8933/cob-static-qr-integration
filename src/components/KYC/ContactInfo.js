@@ -494,7 +494,7 @@ function ContactInfo(props) {
                       <div className="col-lg-6">
                         {timer > 0 ? (
                           <button className={`${classes.resendOtp_border} btn btn-light btn-sm`} disabled>
-                           {timer}s
+                           Resend OTP {timer}s
                           </button>
                         ) : (
                           <button className={`${classes.resendOtp_border} btn btn-light btn-sm`}
