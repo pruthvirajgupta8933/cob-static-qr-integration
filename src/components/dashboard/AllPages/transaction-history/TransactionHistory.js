@@ -568,7 +568,7 @@ const TransactionHistory = () => {
 
                                             <div className="form-group col-lg-3 ">
                                                 <label htmlFor="dateRange" className="form-label">Start Date - End Date</label>
-                                                <div className={`input-group mb-3 d-flex justify-content-between  bg-white ${classes.calendar_border}`} >
+                                                <div className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}>
                                                     <DatePicker
                                                         id="dateRange"
                                                         selectsRange={true}
@@ -585,14 +585,15 @@ const TransactionHistory = () => {
                                                         placeholderText="Select Date Range"
                                                         className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
                                                         showPopperArrow={false}
+                                                        popperClassName={classes.custom_datepicker_popper }
                                                     />
                                                     <div className="input-group-append" onClick={() => {
                                                         document.getElementById('dateRange').click();
                                                     }}>
                                                         <span className={`input-group-text ${classes.calendar_input_border}`}>  <FaCalendarAlt /></span>
                                                     </div>
-
                                                 </div>
+
 
                                             </div>
 
