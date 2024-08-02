@@ -413,18 +413,20 @@ const SettlementReportNew = () => {
 
 
     return (
-        <section className="ant-layout">
+        <section>
+            <div>
+
+            </div>
             <div className="profileBarStatus">
                 <Notification />
             </div>
-
             <main>
-                <div >
-
-                    <h5 >Settlement Report</h5>
-
+                <div>
+                    {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+                    <h5>Settlement Report</h5>
+                    {/* </div> */}
                     <section>
-                        <div className="container-fluid p-0 mt-4">
+                        <div className="container-fluid p-0">
                             <Formik
                                 initialValues={initialValues}
                                 validationSchema={validationSchema}
@@ -536,7 +538,6 @@ const SettlementReportNew = () => {
                             ) : (
                                 <> </>
                             )}
-
                         </div>
                     </section>
 

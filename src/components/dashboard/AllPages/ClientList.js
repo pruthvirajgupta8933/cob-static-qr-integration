@@ -301,7 +301,7 @@ function ClientList() {
                         )}
                     </div>
                     <section className="">
-                        <div className="container">
+                        <div className="container-fluid p-0">
                             <div className="row mt-4">
                                 <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
                                     <SearchFilter

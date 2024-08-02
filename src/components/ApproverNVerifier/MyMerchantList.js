@@ -237,7 +237,7 @@ const MyMerchantList = () => {
 
 
     return (
-        <div className="container-fluid flleft">
+        <div className="container-fluid p-0">
             <div className="mb-5">
                 <h5 className="">My Merchant List</h5>
             </div>

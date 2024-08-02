@@ -193,9 +193,7 @@ function TransactionEnquirey() {
     <section className="">
 
       <main className="">
-        <div className="">
-
-          <h5 className="">Transaction Enquiry</h5>
+       <h5 className="">Transaction Enquiry</h5>
           {/* </div> */}
           <section className="">
             <div className="container-fluid p-0">
@@ -208,8 +206,8 @@ function TransactionEnquirey() {
                   onSubmit={onSubmit}
                 >
                   {(formik) => (
-                    <Form className="col-lg-12">
-                      <div className="form-row mt-4 ml-1">
+                    <Form>
+                      <div className="form-row mt-4">
 
                         <div className="form-group col-lg-2">
                           <FormikController
@@ -236,7 +234,7 @@ function TransactionEnquirey() {
                         </div>
 
                       </div>
-                      <div className="form-row mt-4 ml-1">
+                      <div className="form-row mt-3 ">
                         <div className="form-group col-md-12 col-sm-12 col-lg-5">
                           <FormikController
                             control="input"
@@ -300,7 +298,7 @@ function TransactionEnquirey() {
               </div>
             </div>
           </section>
-        </div>
+        
       </main>
     </section>
   );

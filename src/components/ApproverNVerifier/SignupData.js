@@ -73,6 +73,11 @@ const SignupData = () => {
           .includes(searchText?.toLocaleLowerCase())
       )
     );
+    if (filterSignupData.length === 0) {
+      setPageSize(0);
+    }
+
+  
   };
 
   useEffect(() => {
@@ -292,7 +297,7 @@ const SignupData = () => {
     <section className="">
       <main className="">
         <div className="">
-          <div className="mb-5">
+          <div >
             <h5 className="">Signup Data</h5>
           </div>
 
@@ -305,7 +310,7 @@ const SignupData = () => {
             enableReinitialize={true}
           >
             {(formik) => (
-              <Form>
+              <Form className="row mt-5">
                 <div className="row">
                   <div className="form-group  col-md-3 ">
                     <FormikController

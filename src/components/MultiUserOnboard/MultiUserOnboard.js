@@ -120,9 +120,9 @@ const MultiUserOnboard = () => {
     <section>
       <main className="">
         <div className="">
-          <h5 className="ml-4">Clientegration</h5>
+          <h5 className="">Clientegration</h5>
         </div>
-        <div className="container-fluid mt-5">
+        <div className="container-fluid p-0">
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}

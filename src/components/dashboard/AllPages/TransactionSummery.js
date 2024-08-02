@@ -145,13 +145,11 @@ function TransactionSummery() {
     return (
         <section className="">
             <main>
-                <div>
-
-                    <h5 className="mb-5">Transaction Summary</h5>
-
+               
+                    <h5 className="">Transaction Summary</h5>
                     <section className="">
                         <div className="container-fluid p-0">
-                            <div className="row">
+                            <div className="row mt-4">
                                 <div className="form-group col-md-3">
                                     <select
                                         className="form-select"
@@ -191,6 +189,7 @@ function TransactionSummery() {
                                         </p>
                                     }
                                 </div>
+                                <div>
                                 <table
                                     cellPadding={10}
                                     border={0}
@@ -220,6 +219,8 @@ function TransactionSummery() {
                                             })}
                                     </tbody>
                                 </table>
+                                </div>
+                               
 
                                 {(showData.length <= 0 && isLoading === false) && (
                                     <div className="text-center p-4 m-4">
@@ -232,7 +233,7 @@ function TransactionSummery() {
                             </div>
                         </div>
                     </section>
-                </div>
+                
             </main>
         </section>
     );

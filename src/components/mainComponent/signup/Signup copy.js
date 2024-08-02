@@ -487,8 +487,6 @@ function Signup() {
                     </div>
                 </div>
             </div>
-
-        
         </React.Fragment>
 
     )
