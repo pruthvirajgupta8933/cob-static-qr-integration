@@ -1,102 +1,106 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    businessCategoryType,
-    generalFormData,
-    // getAllCLientCodeSlice
-} from '../../../../slices/approver-dashboard/approverDashboardSlice';
-import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson';
-import { Form, Formik } from 'formik';
-import FormikController from '../../../../_components/formik/FormikController';
-import Yup from '../../../../_components/formik/Yup';
-import { toast } from 'react-toastify';
-import { axiosInstance, axiosInstanceJWT } from '../../../../utilities/axiosInstance';
-import API_URL from '../../../../config';
-import toastConfig from '../../../../utilities/toastTypes';
-import CustomReactSelect from '../../../../_components/formik/components/CustomReactSelect';
-import { createFilter } from 'react-select';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { businessCategoryType, generalFormData, getAllCLientCodeSlice } from '../../../../slices/approver-dashboard/approverDashboardSlice'
+import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson'
+import { Form, Formik } from 'formik'
+import FormikController from '../../../../_components/formik/FormikController'
+import Yup from '../../../../_components/formik/Yup'
+// import { kycUserList } from '../../../../slices/kycSlice'
+import { toast } from 'react-toastify'
+// import axios from 'axios'
+import { axiosInstance } from '../../../../utilities/axiosInstance'
+import API_URL from '../../../../config'
+import toastConfig from '../../../../utilities/toastTypes'
+import CustomReactSelect from '../../../../_components/formik/components/CustomReactSelect'
+import { createFilter } from 'react-select'
+// import ReactSelect from 'react-select';
 
 const GeneralForm = ({ role }) => {
-    const dispatch = useDispatch();
-    const [parentClientCode, setParentClientCode] = useState([]);
+
+
+    const dispatch = useDispatch()
+    const [parentClientCode, setParentClientCode] = useState([])
     const [selectedRefBy, setSelectedRefBy] = useState(null);
-    const [rollingResPeriod, setRollingResPeriod] = useState([]);
-    const { approverDashboard, kyc, verifierApproverTab } = useSelector((state) => state);
-    const currenTab = parseInt(verifierApproverTab?.currenTab);
+    // const [referByValue, setReferByValue] = useState(null);
+    const { approverDashboard, kyc, verifierApproverTab } = useSelector(state => state)
+    const currenTab = parseInt(verifierApproverTab?.currenTab)
+    // console.log("kyc.kycUserList",kyc.kycUserList);
+
 
     useEffect(() => {
-        dispatch(businessCategoryType());
-        // set parent client code
-        axiosInstance.get(API_URL.fetchParentClientCodes)
-            .then((resp) => {
-                setParentClientCode(resp.data);
-            })
-            .catch((err) => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"));
+        dispatch(businessCategoryType())
+        // dispatch(getAllCLientCodeSlice())
+        axiosInstance.get(API_URL.fetchParentClientCodes).then((resp) => {
+            setParentClientCode(resp.data)
+        }).catch(err => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"))
+    }, [])
 
 
-        // set rolling reserve period
-        axiosInstanceJWT.get(API_URL.rollingReservePeriod).then((resp) => {
-            setRollingResPeriod(resp.data)
-        }).catch(err => toastConfig.errorToast("Rolling reserve period not found. Please try again after some time"))
-    }, [dispatch]);
 
-    const amtTypeOptions = useMemo(() => [
+    const amtTypeOptions = [
         { key: "", value: "Select" },
         { key: "Percentage", value: "Percentage" },
         { key: "Fixed", value: "Fixed" }
-    ], []);
+    ]
 
-    const initialValues = useMemo(() => ({
+    const initialValues = {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
+        // refer_by: kyc.kycUserList?.refer_by,
         rolling_reserve_type: kyc.kycUserList?.rolling_reserve_type,
-        parent_client_code: "",
-        rolling_reserve_period: ""
-    }), [kyc.kycUserList]);
+        parent_client_code: ""
 
-    const validationSchema = useMemo(() => Yup.object({
+    }
+
+
+
+
+    const validationSchema = Yup.object({
         rr_amount: Yup.string().nullable(),
         business_cat_type: Yup.string().nullable(),
         parent_client_code: Yup.string().required("Required").nullable(),
-        rolling_reserve_period: Yup.string().required("Required").nullable(),
         rolling_reserve_type: Yup.string().required("Required").nullable(),
         refer_by: Yup.string().nullable()
-    }), []);
+    })
 
-    const handleSubmit = useCallback((val) => {
+
+    const handleSubmit = (val) => {
+        // console.log("val", val)
         const saveGenData = {
             rr_amount: val.rr_amount === '' ? 0 : val.rr_amount,
             business_cat_type: val.business_cat_type,
             parent_client_code: val?.parent_client_code ?? 'COBED', // if not selected
             refer_by: selectedRefBy,
             rolling_reserve_type: val?.rolling_reserve_type,
-            rolling_reserve_period: val?.rolling_reserve_period,
             isFinalSubmit: true
-        };
-        dispatch(generalFormData(saveGenData));
-        toast.success("Successfully updated");
-    }, [dispatch, selectedRefBy]);
+        }
+        // console.log("saveGenData", saveGenData)
+        dispatch(generalFormData(saveGenData))
+        toast.success("Successfully updated")
+    }
 
-    const businessCategoryOption = useMemo(() =>
-        convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType), [approverDashboard?.businessCategoryType]);
 
-    const parentClientCodeOption = useMemo(() =>
-        convertToFormikSelectJson("clientCode", "clientName", parentClientCode), [parentClientCode]);
 
-    const rollingReservePeriodOption = useMemo(() =>
-        convertToFormikSelectJson("period_code", "period_name", rollingResPeriod), [rollingResPeriod]);
 
-    const clientCodeOption = useMemo(() => [
+
+    const businessCategoryOption = convertToFormikSelectJson("id", "category_name", approverDashboard?.businessCategoryType)
+    const parentClientCodeOption = convertToFormikSelectJson("clientCode", "clientName", parentClientCode)
+    // const clientCodeOption = convertToFormikSelectJson("loginMasterId", "clientCode", approverDashboard?.clientCodeList, {}, false, false, true, "name")
+
+    const handleSelectChange = (selectedOption) => {
+        setSelectedRefBy(selectedOption ? selectedOption.value : null)
+    }
+
+
+    const clientCodeOption = [
         { value: '', label: 'Select Client Code' },
         ...approverDashboard?.clientCodeList.map((data) => ({
             value: data.loginMasterId,
             label: `${data.clientCode} - ${data.name}`
         }))
-    ], [approverDashboard?.clientCodeList]);
+    ]
 
-    const handleSelectChange = useCallback((selectedOption) => {
-        setSelectedRefBy(selectedOption ? selectedOption.value : null);
-    }, []);
+
 
     return (
         <div className="row mb-4 border p-1">
@@ -104,25 +108,15 @@ const GeneralForm = ({ role }) => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setStatus }) => {
-                    setStatus(true);
-                    handleSubmit(values);
+                    setStatus(true)
+                    handleSubmit(values)
                 }}
-                enableReinitialize
-            >
+                enableReinitialize={true} >
                 {(formik) => (
-                    <div>
-                        <Form>
+
+                    <div className="">
+                        <Form className="">
                             <div className='row'>
-                                <div className="col-md-4 g-3">
-                                    <FormikController
-                                        control="select"
-                                        name="rolling_reserve_period"
-                                        options={rollingReservePeriodOption}
-                                        className="form-select"
-                                        label="RR Period"
-                                        disabled={!role?.approver}
-                                    />
-                                </div>
                                 <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
@@ -133,6 +127,7 @@ const GeneralForm = ({ role }) => {
                                         disabled={!role?.approver}
                                     />
                                 </div>
+
                                 <div className="col-md-4 g-3">
                                     <FormikController
                                         control="input"
@@ -142,11 +137,12 @@ const GeneralForm = ({ role }) => {
                                         label="Rolling Reserve"
                                         disabled={!role?.approver}
                                         onChange={(e) => {
-                                            formik.setFieldValue("rr_amount", e.target.value);
+                                            formik.setFieldValue("rr_amount", e.target.value)
                                             formik.setStatus(false);
                                         }}
                                     />
                                 </div>
+
                                 <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
@@ -156,12 +152,26 @@ const GeneralForm = ({ role }) => {
                                         label="Business Category"
                                         disabled={!role?.approver}
                                         onChange={(e) => {
-                                            formik.setFieldValue("business_cat_type", e.target.value);
+                                            formik.setFieldValue("business_cat_type", e.target.value)
                                             formik.setStatus(false);
                                         }}
                                     />
                                 </div>
+
+
                                 <div className="col-md-4 g-3">
+                                    {/* <FormikController
+                                        control="select"
+                                        name="refer_by"
+                                        options={clientCodeOption}
+                                        className="form-select"
+                                        label="Referred By (if any)"
+                                        disabled={!role?.approver}
+                                        onChange={(e) => {
+                                            formik.setFieldValue("refer_by", e.target.value)
+                                            formik.setStatus(false);
+                                        }}
+                                    /> */}
                                     <CustomReactSelect
                                         name="react_select"
                                         options={clientCodeOption}
@@ -169,8 +179,11 @@ const GeneralForm = ({ role }) => {
                                         filterOption={createFilter({ ignoreAccents: false })}
                                         label="Refer by (if any)"
                                         onChange={handleSelectChange}
+
                                     />
+
                                 </div>
+
                                 <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
@@ -180,7 +193,7 @@ const GeneralForm = ({ role }) => {
                                         label="Rate Mapping Client Code"
                                         disabled={!role?.approver}
                                         onChange={(e) => {
-                                            formik.setFieldValue("parent_client_code", e.target.value);
+                                            formik.setFieldValue("parent_client_code", e.target.value)
                                             formik.setStatus(false);
                                         }}
                                     />
@@ -188,9 +201,7 @@ const GeneralForm = ({ role }) => {
                             </div>
                             <div className='row mt-2'>
                                 <div className="col-md-4">
-                                    {role?.approver && currenTab === 4 && !formik.status && (
-                                        <button type="submit" className="btn cob-btn-primary btn-sm">Save</button>
-                                    )}
+                                    {role?.approver && currenTab === 4 && (!formik.status && <button type="submit" className="btn cob-btn-primary btn-sm" >Save</button>)}
                                 </div>
                             </div>
                         </Form>
@@ -198,7 +209,7 @@ const GeneralForm = ({ role }) => {
                 )}
             </Formik>
         </div>
-    );
-};
+    )
+}
 
-export default GeneralForm;
+export default GeneralForm

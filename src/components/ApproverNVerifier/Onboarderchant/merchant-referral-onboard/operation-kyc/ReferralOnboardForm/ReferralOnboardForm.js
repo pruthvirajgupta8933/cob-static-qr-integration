@@ -28,7 +28,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
     const { auth, merchantReferralOnboardReducer, kyc } = useSelector(state => state)
     const { merchantKycData } = kyc
     const { merchantBasicDetails } = merchantReferralOnboardReducer
-   
+
 
     const generateRandomPassword = () => {
         const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -110,7 +110,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .when('isPasswordReq', {
                 is: false,
                 then: Yup.string().allowOneSpace()
-                .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+                    .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
                     .required("Required")
                     .nullable(),
                 otherwise: Yup.string(),
@@ -140,7 +140,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
             .when('isPasswordReq', {
                 is: false,
                 then: Yup.string().allowOneSpace()
-                .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+                    .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
                     .required("Required")
                     .nullable(),
                 otherwise: Yup.string(),
@@ -512,9 +512,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                                 </span>
                                                 : <div className="input-group-append">
                                                     <button
-                                                        href={() => false}
                                                         className="btn cob-btn-primary text-white btn btn-sm"
-
                                                         onClick={() => {
 
                                                             checkInputIsValid(
@@ -692,7 +690,7 @@ function ReferralOnboardForm({ referralChild, fetchData, referrerLoginId, zoneCo
                                             name="pin_code"
                                             placeholder="Enter Pin Code"
                                             className="form-control"
-                                           
+
                                         />
                                     </div>
                                 </>
