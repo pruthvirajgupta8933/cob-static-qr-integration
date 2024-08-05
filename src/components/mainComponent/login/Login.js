@@ -113,7 +113,7 @@ const Login = () => {
             <div className="row align-items-center flex-grow-1">
               <div className="col">
                 <div className="p-4 text-center">
-                  <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} />
+                  <img src={sbbnner} alt="banner" className={`${classes.login_banner}`} loading="lazy" />
                   <div className={`my-5 ${classes.sp_font_24}`}>
                     <p className="text-white">Login to Your Dashboard</p>
                     <p className={`m-0 text-white ${classes.sp_font_17}`}>One Payment Gateway for all your needs</p>
@@ -123,7 +123,7 @@ const Login = () => {
             </div>
             <div className="row align-items-start flex-grow-1">
               <div className={`col-lg-2 col-md-1 col-sm-1 d-flex justify-content-end`}>
-                <img src={arrow_two} alt="arrow" className={`${classes.left_side_arrow}`} />
+                <img src={arrow_two} alt="arrow" className={`${classes.left_side_arrow}`} loading="lazy" />
               </div>
               <div className="col-lg-8 col-md-10 col-sm-10">
                 <div className="text-center">
@@ -145,7 +145,7 @@ const Login = () => {
             <div className="row align-items-start flex-grow-1">
               <div className="col">
                 {(isTablet || isMobile) && <Header display_bg_color={true} />}
-                <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} />
+                <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} loading="lazy" />
               </div>
             </div>
             <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">

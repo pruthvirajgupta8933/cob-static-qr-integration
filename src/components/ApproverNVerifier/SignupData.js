@@ -22,8 +22,7 @@ const validationSchema = Yup.object({
 });
 
 const SignupData = () => {
-
-  const [signupData, setSignupData] = useState([]);
+ const [signupData, setSignupData] = useState([]);
   const [filterSignupData, setFilterSignupData] = useState([]);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
