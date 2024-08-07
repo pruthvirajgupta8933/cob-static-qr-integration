@@ -111,7 +111,7 @@ const KycDetailsModal = (props) => {
 
   const memoRestrictRateMapProduct = useMemo(() => {
     return productData?.reduce((prevVal, current, i) => {
-      if (current.is_ratemap === true && current.active === true) {
+      if (current.is_ratemap === false && current.active === true) {
         prevVal.push(current.application_id);
       }
       return prevVal
@@ -123,6 +123,7 @@ const KycDetailsModal = (props) => {
   const isProductRateMapRestrict = useMemo(() => memoSelectedProduct.some(product => memoRestrictRateMapProduct.includes(product)), [memoSelectedProduct, memoRestrictRateMapProduct])
   const restrictUsers = [13, 3]
   const isUserRateMapRestrict = restrictUsers.includes(selectedUserData.roleId)
+  console.log("memoRestrictRateMapProduct", memoRestrictRateMapProduct)
   console.log("isProductRateMapRestrict", isProductRateMapRestrict)
   console.log("isUserRateMapRestrict", isUserRateMapRestrict)
 
