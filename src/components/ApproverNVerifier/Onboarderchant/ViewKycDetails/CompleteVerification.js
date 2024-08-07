@@ -5,6 +5,11 @@ import {
   completeVerification,
   completeVerificationRejectKyc
 } from "../../../../slices/kycOperationSlice"
+
+import {
+  generalFormData,
+  // getAllCLientCodeSlice
+} from '../../../../slices/approver-dashboard/approverDashboardSlice';
 import { approvekyc, clearApproveKyc, GetKycTabsStatus, kycUserList } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
 import { ratemapping } from '../../../../slices/approver-dashboard/rateMappingSlice';
@@ -16,11 +21,12 @@ import { isEmpty } from 'lodash';
 
 
 const CompleteVerification = (props) => {
+  // console.log({ ...props })
   let closeVerificationModal = props?.closeVerification;
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
-  let isRateMappingRestrticted = props?.isRateMappingRestrtictede
+  let isRateMappingRestrticted = props?.isRateMappingRestrticted
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
@@ -42,8 +48,8 @@ const CompleteVerification = (props) => {
   const { user } = auth;
   const { loginId } = user;
   const { approveKyc } = kyc
-  const { generalFormData } = approverDashboard
-
+  const generalFormVal = approverDashboard?.generalFormData
+  // console.log("generalFormVal", generalFormVal)
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
   const currenTab = parseInt(verifierApproverTab?.currenTab)
@@ -129,6 +135,7 @@ const CompleteVerification = (props) => {
     return () => {
       // console.log("clear state approver")
       dispatch(clearApproveKyc())
+      dispatch(generalFormData({ isFinalSubmit: false }))
     }
   }, [])
 
@@ -150,10 +157,11 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
-
-    if (!isRateMappingRestrticted?.isUserRateMapRestrict && !isRateMappingRestrticted?.isProductRateMapRestrict) {
-
-      if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
+    console.log(isRateMappingRestrticted?.isProductRateMapRestrict)
+    console.log(isRateMappingRestrticted?.isUserRateMapRestrict)
+    if (!isRateMappingRestrticted?.isProductRateMapRestrict && !isRateMappingRestrticted?.isUserRateMapRestrict) {
+      console.log(generalFormVal)
+      if (!generalFormVal?.isFinalSubmit && (generalFormVal?.parent_client_code === '' || generalFormVal?.parent_client_code === null || generalFormVal?.parent_client_code === undefined) && roles?.approver && currenTab === 4) {
         alert("Please Select the parent client code for the rate mapping");
         return false
       }
@@ -209,17 +217,9 @@ const CompleteVerification = (props) => {
       if (isverified === true && isapproved === false) {
         if (roles?.approver === true) {
           if (window.confirm("Approve kyc")) {
-            let dataAppr = {
-              login_id: selectedUserData.loginMasterId,
-              approved_by: loginId,
-              rolling_reserve: parseFloat(approverDashboard?.generalFormData?.rr_amount),
-              refer_by: approverDashboard?.generalFormData?.refer_by,
-              business_category_type: approverDashboard?.generalFormData?.business_cat_type,
-              rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type,
-              period_code: approverDashboard?.generalFormData?.period_code
-            };
-
-            if (!isRateMappingRestrticted.isProductRateMapRestrict && !isRateMappingRestrticted.isUserRateMapRestrict) {
+            let dataAppr = {}
+            // console.log((isRateMappingRestrticted?.isProductRateMapRestrict || isRateMappingRestrticted?.isUserRateMapRestrict))
+            if (isRateMappingRestrticted?.isProductRateMapRestrict || isRateMappingRestrticted?.isUserRateMapRestrict) {
               dataAppr = {
                 login_id: selectedUserData.loginMasterId,
                 approved_by: loginId,
@@ -229,13 +229,25 @@ const CompleteVerification = (props) => {
                 refer_by: null,
                 business_category_type: null
               }
+            } else {
+              dataAppr = {
+                login_id: selectedUserData.loginMasterId,
+                approved_by: loginId,
+                rolling_reserve: parseFloat(approverDashboard?.generalFormData?.rr_amount),
+                refer_by: approverDashboard?.generalFormData?.refer_by,
+                business_category_type: approverDashboard?.generalFormData?.business_cat_type,
+                rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type,
+                period_code: approverDashboard?.generalFormData?.period_code
+              };
             }
+
             // update the redux state - for the ratemapping
 
             GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
             dispatch(approvekyc(dataAppr)).then((resp) => {
               if (resp?.meta?.requestStatus === 'fulfilled') {
                 saveBafData(kyc.kycUserList)
+                dispatch(generalFormData({ isFinalSubmit: false }))
                 setButtonLoader(false)
                 setDisable(false);
 
@@ -246,10 +258,10 @@ const CompleteVerification = (props) => {
               }
 
 
-              if (selectedUserData?.roleId === 13) {
-                pendingApporvalTable()
-                closeVerificationModal(false)
-              }
+              // if (selectedUserData?.roleId === 13) {
+              pendingApporvalTable()
+              closeVerificationModal(false)
+              // }
             })
               .catch((e) => {
                 setDisable(false);
