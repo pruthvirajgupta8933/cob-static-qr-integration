@@ -17,10 +17,12 @@ import toastConfig from "../../utilities/toastTypes";
 const EnterUserID = (props) => {
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState(false)
+  const[inputValue,setInputValue]=useState({})
   const dispatch = useDispatch();
   const isDesktop = useMediaQuery('(min-width: 993px)');
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
   const isMobile = useMediaQuery('(max-width: 767px)');
+  
 
 
   const validationSchema = Yup.object().shape({
@@ -32,6 +34,7 @@ const EnterUserID = (props) => {
 
   const handleSubmit = (data) => {
     setLoading(true)
+    setInputValue(data)
 
     dispatch(
       getEmailToSendOtpSlice({
@@ -112,7 +115,8 @@ const EnterUserID = (props) => {
             <div className="row align-items-start flex-grow-1" >
               <div className="col">
 
-                <div>  {(isTablet || isMobile) &&
+                <div>
+                    {(isTablet || isMobile) &&
                   <Header display_bg_color={true} />}
                   <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} /></div>
                 <div className="p-5"><Link to="/"><p className="font-size-18"><i className="fa fa-arrow-left mr-2" />Back to login</p></Link></div>
@@ -173,7 +177,7 @@ const EnterUserID = (props) => {
                   </Formik>
 
                 ) : (
-                  <VerifyEmailPhone />
+                  <VerifyEmailPhone inputValue={inputValue}  />
                 )}
 
 

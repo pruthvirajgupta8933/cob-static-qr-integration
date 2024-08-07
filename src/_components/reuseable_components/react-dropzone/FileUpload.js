@@ -78,7 +78,7 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
         onDrop,
     });
 
-    
+
     return (
         <div>
             {!isEditableInput &&
@@ -96,11 +96,11 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
                         <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
                             {submitLoader && <>
                                 <span className="spinner-border spinner-border-sm" role="status"
-                                   ariaHidden="true" />
+                                    ariaHidden="true" />
                                 <span className="sr-only">Loading...</span>
                             </>} Upload Files
                         </button>} {documentUploadResponse === true &&
-                            <a className="btn active-secondary btn-sm m-2" onClick={() => setCurrentTab(5)}>Next</a>
+                            <a className="btn active-secondary btn-sm m-2" href={() => false} onClick={() => setCurrentTab(5)}>Next</a>
                     }
                 </div>
             }
@@ -108,7 +108,7 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
                 <h6>Uploaded Document</h6>
                 <ul>
                     {KycDocUpload?.map((d, i) => (
-                        <li key={uuidv4()}><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
+                        <li key={uuidv4()}><a href={d.filePath} target="_blank" rel="noreferrer">View Document - {d.name}</a></li>
                     ))}
                 </ul>
             </div>}

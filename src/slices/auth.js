@@ -453,9 +453,12 @@ const authSlice = createSlice({
       })
       .addCase(getEmailToSendOtpSlice.fulfilled, (state, action) => {
         state.forgotPassword.otpResponse = action.payload;
-        const username = action.payload.username;
+        console.log("action.payload",action.payload)
+         const username = action.payload.username;
+        
         const status = action.payload.status;
         state.forgotPassword.sendUserName.username = username;
+        console.log("username",  state.forgotPassword.sendUserName.username)
         state.forgotPassword.sendUserName.isValid = status ? true : false;
       })
       .addCase(getEmailToSendOtpSlice.rejected, (state, action) => {

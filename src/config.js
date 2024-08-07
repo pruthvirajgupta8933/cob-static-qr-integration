@@ -59,6 +59,8 @@ const API_LIVE = {
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
   getExpectedTransaction: `${kyc_url}/kyc/get-range/transaction-range`,
 
+  
+
 
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
@@ -218,9 +220,9 @@ const API_LIVE = {
   KYC_FOR_SAVING_REFER_MERCHANT: `${kyc_url}/kyc/refer-zone/save-refer-zone/`,
   FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
   GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
-  ASSIGN_ACCOUNT_MANAGER:`${url}/assigned-account-manager`,
-  ACCOUNT_MANAGER_DETAILS:`${url}/account-manager-details`,
-  ASSIGN_CLIENT:`${url}/assign-client`,
+  ASSIGN_ACCOUNT_MANAGER: `${url}/assigned-account-manager`,
+  ACCOUNT_MANAGER_DETAILS: `${url}/account-manager-details`,
+  ASSIGN_CLIENT: `${url}/assign-client`,
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
@@ -386,14 +388,13 @@ const API_LIVE = {
   fetchParentClientCodes: `${adminAPIURL}/getDataByCommonProc/getCommonData/35/0`,
   perentTypeMerchantData: `${kyc_url}/kyc/get-merchant-data/parent-type/`,
   getAllzone: `${kyc_url}/kyc/refer-zone/get-all-zone/`,
-
-
   // Geo location saving
   saveGeoCord: `${kyc_url}/kyc/coordinate/save/`,
-
   // Refund transaction
-  refundTxn: `${refund_url}/refund`
+  refundTxn: `${refund_url}/refund`,
 
+  // rolling reserve
+  rollingReservePeriod: `${url}/get-rolling-reserve-period`
 };
 
 

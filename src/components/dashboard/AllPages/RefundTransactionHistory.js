@@ -321,13 +321,10 @@ const RefundTransactionHistory = () => {
 
     return (
         <section className="ant-layout">
-            <div>
-
-            </div>
+           
             <main>
-                <div >
-
-                    <h5 >Refund Transaction History</h5>
+               
+             <h5>Refund Transaction History</h5>
 
                     <section>
                         <div className="container-fluid p-0">
@@ -590,7 +587,7 @@ const RefundTransactionHistory = () => {
                             </div>
                         </div>
                     </section>
-                </div>
+              
             </main>
         </section>
     );
