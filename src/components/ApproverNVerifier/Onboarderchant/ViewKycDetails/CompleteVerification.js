@@ -222,6 +222,11 @@ const CompleteVerification = (props) => {
               dataAppr = {
                 login_id: selectedUserData.loginMasterId,
                 approved_by: loginId,
+                rolling_reserve: 0.00,
+                rolling_reserve_type: "NA",
+                period_code: "NA",
+                refer_by: null,
+                business_category_type: null
               }
             }
             // update the redux state - for the ratemapping
