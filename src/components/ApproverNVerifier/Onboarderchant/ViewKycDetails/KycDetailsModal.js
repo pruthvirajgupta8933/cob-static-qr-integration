@@ -118,14 +118,37 @@ const KycDetailsModal = (props) => {
     }, [])
   }, [productData])
 
+  const memoAllowedRateMapProduct = useMemo(() => {
+    return productData?.reduce((prevVal, current, i) => {
+      if (current.is_ratemap === true && current.active === true) {
+        prevVal.push(current.application_id);
+      }
+      return prevVal
+    }, [])
+  }, [productData])
+
+
+
 
   // restrict rate mapping for the product and user
-  const isProductRateMapRestrict = useMemo(() => memoSelectedProduct.some(product => memoRestrictRateMapProduct.includes(product)), [memoSelectedProduct, memoRestrictRateMapProduct])
+  let isProductRateMapRestrict = useMemo(() => memoSelectedProduct.some(product => memoRestrictRateMapProduct.includes(product)), [memoSelectedProduct, memoRestrictRateMapProduct])
+
+  let rateMappingAllowedProduct = useMemo(() => memoSelectedProduct.some(product => memoAllowedRateMapProduct.includes(product)), [memoSelectedProduct, memoAllowedRateMapProduct])
   const restrictUsers = [13, 3]
   const isUserRateMapRestrict = restrictUsers.includes(selectedUserData.roleId)
-  console.log("memoRestrictRateMapProduct", memoRestrictRateMapProduct)
-  console.log("isProductRateMapRestrict", isProductRateMapRestrict)
-  console.log("isUserRateMapRestrict", isUserRateMapRestrict)
+
+  if (isProductRateMapRestrict) {
+    // if product has ratemapping allowed, then update the isProductRateMapRestrict = false / else true
+    isProductRateMapRestrict = rateMappingAllowedProduct ? false : true
+  }
+
+  // console.log("----------------------------------------------")
+  // console.log("memoSelectedProduct", memoSelectedProduct)
+  // console.log("rateMappingAllowedProduct", rateMappingAllowedProduct)
+  // console.log("memoAllowedRateMapProduct", memoAllowedRateMapProduct)
+  // console.log("memoRestrictRateMapProduct", memoRestrictRateMapProduct)
+  // console.log("isProductRateMapRestrict", isProductRateMapRestrict)
+  // console.log("isUserRateMapRestrict", isUserRateMapRestrict)
 
 
 
