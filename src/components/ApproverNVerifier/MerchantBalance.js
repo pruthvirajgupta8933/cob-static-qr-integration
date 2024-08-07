@@ -48,10 +48,10 @@ const MerchantBalance = () => {
     <section className="">
       <main className="">
         <div className="">
-          <h5 className="ml-3">Subscription Wallet</h5>
+          <h5 className="">Subscription Wallet</h5>
         </div>
-        <div className="container-fluid mt-5">
-          <div className="row">
+        <div className="container-fluid p-0">
+          <div className="row mt-5">
             <div className="col-lg-3 col-md-4">
               <div className="form-group">
                 <label className="form-label">Client Code</label>

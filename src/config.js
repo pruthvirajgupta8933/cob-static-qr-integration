@@ -59,6 +59,8 @@ const API_LIVE = {
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
   getExpectedTransaction: `${kyc_url}/kyc/get-range/transaction-range`,
 
+  
+
 
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",

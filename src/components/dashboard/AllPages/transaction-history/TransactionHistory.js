@@ -546,9 +546,9 @@ const TransactionHistory = () => {
 
             </div>
             <main>
-                <div>
+               
                     <h5 className="">Transaction History</h5>
-                    <section className="">
+                    <section>
                         <div className="container-fluid p-0">
 
                             <Formik
@@ -558,7 +558,7 @@ const TransactionHistory = () => {
                             >
                                 {(formik) => (
                                     <Form>
-                                        <div className="form-row mt-5">
+                                        <div className="form-row mt-4">
                                             {(roles?.bank || roles?.referral) && (
                                                 <div className="form-group col-lg-2">
                                                     <FormikController
@@ -875,7 +875,7 @@ const TransactionHistory = () => {
                             </div>
                         </div>
                     </section>
-                </div>
+                
             </main>
         </section>
     );

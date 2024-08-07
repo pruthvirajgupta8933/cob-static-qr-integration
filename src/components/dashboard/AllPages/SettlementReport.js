@@ -17,7 +17,7 @@ const SettlementReport = () => {
   const [selectedFolder, SetSelectedFolder] = React.useState("");
   const [selectedSubFolder, SetSelectedSubFolder] = React.useState("");
   const [searchFilterData, setSearchFilterData] = React.useState([]);
-  console.log("searchFilterData",searchFilterData.length)
+  
 
 
   const { user } = useSelector((state) => state.auth);

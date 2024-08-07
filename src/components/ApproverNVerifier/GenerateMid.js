@@ -298,27 +298,17 @@ function AssignZone() {
           <div className="">
             <h5>MID Generation</h5>
           </div>
-          <div className="container-fluid mt-5">
+          <div className="container-fluid p-0">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
               {(formik) => (
-                <Form className="">
+                <Form className="mt-5">
                   <div className="row">
                     <div className="col-lg-3">
-                      {/* <label className="form-label">Client Code</label> */}
-                      {/* <ReactSelect
-                        className="zindexforDropdown"
-                        onChange={handleSelectChange}
-                        name="react_select"
-                       
-                        options={options}
-                        placeholder="Select Client Code"
-                        filterOption={createFilter({ ignoreAccents: false })}
-                      /> */}
-                      <CustomReactSelect
+                     <CustomReactSelect
                         name="react_select"
                         options={options}
                         placeholder="Select Client Code"
@@ -327,8 +317,6 @@ function AssignZone() {
                         onChange={handleSelectChange}
 
                       />
-
-
                     </div>
 
                     <div className="col-lg-3">

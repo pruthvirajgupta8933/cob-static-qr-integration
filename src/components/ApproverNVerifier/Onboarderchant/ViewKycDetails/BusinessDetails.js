@@ -17,7 +17,9 @@ const BusinessDetails = (props) => {
   const { auth } = useSelector((state) => state);
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const { kycUserList } = useSelector(state => state?.kyc || {});
-  const factumData = kycUserList?.factum_data
+  const factumData = kycUserList?.factum_data 
+  
+
   const panListData = useSelector(
     (state) => state.kyc.panDetailsData.result
   );
@@ -166,11 +168,7 @@ const BusinessDetails = (props) => {
     },
   ];
 
-
-
-
-
-  return (
+ return (
     <div className="row mb-4 border p-1">
       <h5 className="">Business Details</h5>
       {formFields.map((field, index) => (
@@ -389,7 +387,7 @@ const BusinessDetails = (props) => {
       </>
 
       <>
-        <ViewKycCollapse
+      {Array.isArray(factumData) && <ViewKycCollapse
           title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
           formContent={
             <>
@@ -398,13 +396,13 @@ const BusinessDetails = (props) => {
                   <tbody>
                     {factumData?.map((data, index) => (
                       <React.Fragment key={index}>
-                        {Object.keys(data).map((key, idx) => (
+                        {Object.keys(data)?.map((key, idx) => (
                           <tr key={idx}>
                             <th>{key}</th>
                             <td>
                               {typeof data[key] === 'object' ? (
                                 <div>
-                                  {Object.entries(data[key]).map(([objKey, objValue], objIdx) => (
+                                  {Object.entries(data[key])?.map(([objKey, objValue], objIdx) => (
                                     <div key={objIdx} className="mb-1">
                                       <span className="fw-bold">{objKey}: </span>
                                       <span>{objValue}</span>
@@ -430,7 +428,8 @@ const BusinessDetails = (props) => {
             toggleCollapse(3);
 
           }}
-        />
+        />}
+        
       </>
 
       <div className="form-row g-3">

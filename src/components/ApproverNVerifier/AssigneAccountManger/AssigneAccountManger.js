@@ -128,16 +128,16 @@ useEffect(() => {
       <main className="">
         <div className="">
           <div className="">
-            <h5 className="ml-3">Merchant Assignment</h5>
+            <h5 className="">Merchant Assignment</h5>
           </div>
-          <div className="container-fluid mt-5">
+          <div className="container-fluid p-0">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
               {(formik) => (
-                <Form className="">
+                <Form className="row mt-5">
                   <div className="row">
                     <div className="col-lg-3">
                        <CustomReactSelect
