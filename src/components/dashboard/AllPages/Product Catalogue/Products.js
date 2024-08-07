@@ -34,7 +34,6 @@ const Products = () => {
       .then((resp) => {
         const data = resp.data.ProductDetail;
         setSpinner(false);
-
         setProduct(data);
       })
       .catch((err) => console.log(err));

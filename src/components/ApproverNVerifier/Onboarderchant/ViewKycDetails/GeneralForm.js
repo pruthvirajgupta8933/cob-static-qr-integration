@@ -51,14 +51,14 @@ const GeneralForm = ({ role }) => {
         business_cat_type: kyc.kycUserList?.business_category_type,
         rolling_reserve_type: kyc.kycUserList?.rolling_reserve_type,
         parent_client_code: "",
-        rolling_reserve_period: ""
+        period_code: kyc.kycUserList?.period_code
     }), [kyc.kycUserList]);
 
     const validationSchema = useMemo(() => Yup.object({
         rr_amount: Yup.string().nullable(),
         business_cat_type: Yup.string().nullable(),
         parent_client_code: Yup.string().required("Required").nullable(),
-        rolling_reserve_period: Yup.string().required("Required").nullable(),
+        period_code: Yup.string().required("Required").nullable(),
         rolling_reserve_type: Yup.string().required("Required").nullable(),
         refer_by: Yup.string().nullable()
     }), []);
@@ -70,7 +70,7 @@ const GeneralForm = ({ role }) => {
             parent_client_code: val?.parent_client_code ?? 'COBED', // if not selected
             refer_by: selectedRefBy,
             rolling_reserve_type: val?.rolling_reserve_type,
-            rolling_reserve_period: val?.rolling_reserve_period,
+            period_code: parseInt(val?.period_code),
             isFinalSubmit: true
         };
         dispatch(generalFormData(saveGenData));
@@ -116,10 +116,10 @@ const GeneralForm = ({ role }) => {
                                 <div className="col-md-4 g-3">
                                     <FormikController
                                         control="select"
-                                        name="rolling_reserve_period"
+                                        name="period_code"
                                         options={rollingReservePeriodOption}
                                         className="form-select"
-                                        label="RR Period"
+                                        label="Rolling Reserve Period"
                                         disabled={!role?.approver}
                                     />
                                 </div>

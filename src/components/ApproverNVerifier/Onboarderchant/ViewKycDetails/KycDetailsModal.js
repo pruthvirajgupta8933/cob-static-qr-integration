@@ -28,7 +28,9 @@ import GeneralForm from "./GeneralForm";
 import SaveLocation from "./SaveLocation";
 import ViewZoneModal from "../../ViewZoneModal";
 import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
-import { APP_ENV } from "../../../../config";
+import API_URL, { APP_ENV } from "../../../../config";
+import { merchantSubscribedPlanData } from "../../../../slices/merchant-slice/productCatalogueSlice";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 
 const KycDetailsModal = (props) => {
   const {
@@ -48,13 +50,15 @@ const KycDetailsModal = (props) => {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const { kyc, rateMappingSlice, approverDashboard, verifierApproverTab } = state;
+  const { kyc, rateMappingSlice, approverDashboard, verifierApproverTab, productCatalogueSlice } = state;
   const { KycTabStatusStore, KycDocUpload } = kyc;
+  const { SubscribedPlanData } = productCatalogueSlice
   const { generalFormData } = approverDashboard;
 
   const currenTab = parseInt(verifierApproverTab?.currenTab);
   const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId]);
   const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList]);
+  const [productData, setProductData] = useState([])
 
   useEffect(() => {
     if (merchantLoginLogin) {
@@ -62,7 +66,25 @@ const KycDetailsModal = (props) => {
     }
   }, [merchantLoginLogin, dispatch]);
 
-  useEffect(() => {
+  useEffect(async () => {
+
+    // fetch subscribe product by merchant
+    if (selectedUserData?.clientCode) {
+      const postData = {
+        clientCode: selectedUserData?.clientCode
+      };
+      dispatch(merchantSubscribedPlanData(postData));
+
+
+      axiosInstanceJWT.get(API_URL.PRODUCT_DETAILS).then(resp => {
+        setProductData(resp.data?.ProductDetail)
+      })
+
+
+    }
+
+
+
     if (selectedUserData?.loginMasterId) {
       dispatch(kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId }));
       dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
@@ -83,6 +105,28 @@ const KycDetailsModal = (props) => {
       dispatch(clearKycState());
     };
   }, [dispatch]);
+
+
+  const memoSelectedProduct = useMemo(() => SubscribedPlanData?.map(data => data.applicationId), [SubscribedPlanData])
+
+  const memoRestrictRateMapProduct = useMemo(() => {
+    return productData?.reduce((prevVal, current, i) => {
+      if (current.is_ratemap === true && current.active === true) {
+        prevVal.push(current.application_id);
+      }
+      return prevVal
+    }, [])
+  }, [productData])
+
+
+  // restrict rate mapping for the product and user
+  const isProductRateMapRestrict = useMemo(() => memoSelectedProduct.some(product => memoRestrictRateMapProduct.includes(product)), [memoSelectedProduct, memoRestrictRateMapProduct])
+  const restrictUsers = [13, 3]
+  const isUserRateMapRestrict = restrictUsers.includes(selectedUserData.roleId)
+  console.log("isProductRateMapRestrict", isProductRateMapRestrict)
+  console.log("isUserRateMapRestrict", isUserRateMapRestrict)
+
+
 
   const modalBody = useCallback(() => (
     <>
@@ -139,14 +183,17 @@ const KycDetailsModal = (props) => {
               )}
             </div>
           )}
-          {selectedUserData?.roleId !== 13 && (
+
+          {/* allow this component for types of user role */}
+          {!isProductRateMapRestrict && !isUserRateMapRestrict &&
             <GeneralForm
               selectedUserData={selectedUserData}
               merchantKycId={merchantKycId}
               role={roles}
-            />
-          )}
+            />}
+
           <CompleteVerification
+            isRateMappingRestrticted={{ isProductRateMapRestrict, isUserRateMapRestrict }}
             merchantKycId={merchantKycId}
             selectedUserData={selectedUserData}
             KycTabStatus={KycTabStatusStore}
@@ -158,7 +205,7 @@ const KycDetailsModal = (props) => {
           />
         </div>
       )}
-      {rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId && selectedUserData?.roleId !== 13 && selectedUserData?.roleId !== 3 && APP_ENV && (
+      {rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
         <div className="container">
           <DefaultRateMapping
             merchantLoginId={rateMappingSlice?.merhcantLoginId}
@@ -183,7 +230,7 @@ const KycDetailsModal = (props) => {
   ]);
 
   const modalFooter = useCallback(() => (
-    <div className="modal-footer">
+    <div>
       <button
         type="button"
         className="btn btn-secondary text-white btn-sm"
@@ -196,6 +243,7 @@ const KycDetailsModal = (props) => {
       </button>
     </div>
   ), [props]);
+
 
   return (
     <div>

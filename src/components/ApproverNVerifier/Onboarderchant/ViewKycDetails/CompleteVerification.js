@@ -20,6 +20,7 @@ const CompleteVerification = (props) => {
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
+  let isRateMappingRestrticted = props?.isRateMappingRestrtictede
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
@@ -149,7 +150,8 @@ const CompleteVerification = (props) => {
 
 
   const submitHandler = async () => {
-    if (selectedUserData?.roleId !== 13) {
+
+    if (!isRateMappingRestrticted.isUserRateMapRestrict && !isRateMappingRestrticted.isProductRateMapRestrict) {
       if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
         alert("Please Select the parent client code for the rate mapping");
         return false
@@ -212,15 +214,17 @@ const CompleteVerification = (props) => {
               rolling_reserve: parseFloat(approverDashboard?.generalFormData?.rr_amount),
               refer_by: approverDashboard?.generalFormData?.refer_by,
               business_category_type: approverDashboard?.generalFormData?.business_cat_type,
-              rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type
+              rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type,
+              period_code: approverDashboard?.generalFormData?.period_code
             };
 
-            if (selectedUserData?.roleId === 13) {
+            if (!isRateMappingRestrticted.isProductRateMapRestrict && !isRateMappingRestrticted.isUserRateMapRestrict) {
               dataAppr = {
                 login_id: selectedUserData.loginMasterId,
                 approved_by: loginId,
               }
-            }// update the redux state - for the ratemapping
+            }
+            // update the redux state - for the ratemapping
 
             GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
             dispatch(approvekyc(dataAppr)).then((resp) => {
@@ -242,9 +246,9 @@ const CompleteVerification = (props) => {
               }
             })
               .catch((e) => {
-                 setDisable(false);
+                setDisable(false);
                 setButtonLoader(false)
-               });
+              });
           } else {
             setButtonLoader(false)
             setDisable(false);
