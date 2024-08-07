@@ -225,8 +225,8 @@ const CompleteVerification = (props) => {
                 rolling_reserve: 0.00,
                 rolling_reserve_type: "NA",
                 period_code: "NA",
-                refer_by: "",
-                business_category_type: ""
+                refer_by: null,
+                business_category_type: null
               }
             }
             // update the redux state - for the ratemapping
