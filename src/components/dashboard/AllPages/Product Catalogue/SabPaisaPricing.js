@@ -17,19 +17,19 @@ const SabPaisaPricing = () => {
   const history = useHistory();
   let roles = roleBasedAccess();
   const dispatch = useDispatch();
- const [productDetails, setProductDetails] = useState([]);
+  const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({});
   const [modalToggle, setModalToggle] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
 
-  
+
   const clickHandler = (value) => {
     history.push("/dashboard");
     dispatch(productSubscribeState(value));
   };
-  
+
 
   useEffect(() => {
     if (roles?.merchant !== true) {
@@ -45,7 +45,7 @@ const SabPaisaPricing = () => {
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
       .then((resp) => {
         setSelectedPlan(resp?.data?.data[0])
-      })
+      }).catch(err => console.log(err))
   }
 
 
