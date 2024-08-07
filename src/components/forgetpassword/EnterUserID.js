@@ -115,7 +115,8 @@ const EnterUserID = (props) => {
             <div className="row align-items-start flex-grow-1" >
               <div className="col">
 
-                <div>  {(isTablet || isMobile) &&
+                <div>
+                    {(isTablet || isMobile) &&
                   <Header display_bg_color={true} />}
                   <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} /></div>
                 <div className="p-5"><Link to="/"><p className="font-size-18"><i className="fa fa-arrow-left mr-2" />Back to login</p></Link></div>

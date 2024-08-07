@@ -65,16 +65,18 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
 
             // update new client code in db
             const data = { loginId: merchantKycData?.loginMasterId, clientName: merchantKycData?.name, clientCode: newClientCode };
-            await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
-
-
-
-
-            setIsDisable(false);
-
-
-
-        }
+            // await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
+            try {
+                await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data)
+            } catch (error) {
+                // console.log("console is here")
+                // console.error('Error creating client:', error);
+                setIsDisable(false);
+                // toast.error('An error occurred while creating the Client Code. Please try again.');
+                return;
+            }
+ 
+ }
 
         dispatch(saveKycConsent({
             term_condition: value.term_condition, login_id: merchantLoginId, submitted_by: loginId,
@@ -87,7 +89,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
                 toast.error(res?.payload?.detail);
                 setIsDisable(false);
             }
-        });
+        })
 
     };
     const backToFirstScreen = () => {
