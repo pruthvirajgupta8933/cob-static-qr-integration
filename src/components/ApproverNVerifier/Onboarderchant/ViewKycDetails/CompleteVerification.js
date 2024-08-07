@@ -151,7 +151,7 @@ const CompleteVerification = (props) => {
 
   const submitHandler = async () => {
 
-    if (!isRateMappingRestrticted.isUserRateMapRestrict && !isRateMappingRestrticted.isProductRateMapRestrict) {
+    if (!isRateMappingRestrticted?.isUserRateMapRestrict && !isRateMappingRestrticted?.isProductRateMapRestrict) {
       if (!generalFormData.isFinalSubmit && (generalFormData.parent_client_code === '' || generalFormData.parent_client_code === null || generalFormData.parent_client_code === undefined) && roles.approver && currenTab === 4) {
         alert("Please Select the parent client code for the rate mapping");
         return false
