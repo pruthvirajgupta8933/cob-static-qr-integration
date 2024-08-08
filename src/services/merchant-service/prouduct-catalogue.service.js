@@ -31,3 +31,23 @@ export const subscribedDetails =(dataObj)=>{
 
   return axiosInstanceJWT.get(url)
 }
+
+
+export const productDetailsUrl=()=>{
+  const url =`${API_URL.PRODUCT_DETAILS}`
+  return axiosInstanceJWT.get(url)
+}
+
+export const subscribedPlanDetailsUrl=(postData)=>{
+  const url=`${API_URL.Get_Subscribed_Plan_Detail_By_ClientId}`
+  return axiosInstanceJWT.post(url,postData)
+}
+export const productSubDetailsUrl=(id)=>{
+  const url=`${API_URL.PRODUCT_SUB_DETAILS}`
+  return axiosInstanceJWT.get(url + "/" + id)
+}
+
+export const subscribeFetchAppAndPlanUrl=(postData)=>{
+  const url =`${API_URL.SUBSCRIBE_FETCHAPPAND_PLAN}`
+  return axiosInstanceJWT.post(url,postData)
+}

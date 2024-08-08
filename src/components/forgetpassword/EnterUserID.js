@@ -7,7 +7,7 @@ import Yup from "../../_components/formik/Yup";
 import classes from "./forgotPassword.module.css"
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Header from "../mainComponent/header/Header";
-import sbbnner from "../../assets/images/login-banner.png"
+import sbbnner from "../../assets/images/login-banner.svg"
 import arrow_one from "../../../src/assets/images/arrow_one.png"
 import arrow_two from "../../assets/images/arrow_two.png"
 import VerifyEmailPhone from "./VerifyEmailPhone";

@@ -21,6 +21,8 @@ const BusinessOverview = (props) => {
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
 
+ 
+
 
   const { user } = auth;
   const { loginId } = user;

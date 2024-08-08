@@ -30,7 +30,6 @@ import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
 import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slice/assignAccountMangerSlice";
 
 
-
 const reducer = {
   auth: authReducer,
   message: messageReducer,
@@ -73,7 +72,9 @@ const reducer = {
   // theme
   themeReducer: themeReducer,
   //Assign-Account-Manager
-  assignAccountManagerReducer:assignAccountManagerReducer
+  assignAccountManagerReducer:assignAccountManagerReducer,
+  //Product-Catalogue
+  
 };
 
 const store = configureStore({

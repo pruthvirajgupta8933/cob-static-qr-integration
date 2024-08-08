@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 
 
 function VerifyRejectBtn(props) {
-  // console.log("here pass props",props)
-  const [buttonClick, setButtonClick] = useState(false)
+   const [buttonClick, setButtonClick] = useState(false)
   const [commetText, setCommetText] = useState()
+  const {isLoading}=useSelector((state)=>state.kyc)
   const status = props.KycTabStatus;
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -52,9 +52,27 @@ function VerifyRejectBtn(props) {
   return (
     <React.Fragment>
       {enableDisable && enableBtnStatus &&
-        <div><button type="button"
-          onClick={() => props?.KycVerifyStatus?.handleVerifyClick()}
-          className="btn  cob-btn-primary  btn-sm text-white m-2">{props?.btnText?.verify}</button>
+        <div>
+
+          {/* <button type="button"
+            onClick={() => props?.KycVerifyStatus?.handleVerifyClick()}
+            className="btn  cob-btn-primary  btn-sm text-white m-2" disabled={props?.disable}>
+
+               {props?.disable && (
+            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>)}
+              {props?.btnText?.verify} 
+              </button> */}
+
+          <button
+           type="button"
+           onClick={() => props?.KycVerifyStatus?.handleVerifyClick()}
+           className="btn  cob-btn-primary  btn-sm text-white m-2" disabled={isLoading}
+          >
+            {isLoading && (
+              <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+            )}
+           {props?.btnText?.verify}
+          </button>
 
           <button type="button"
             onClick={() => setButtonClick(true)}
@@ -68,7 +86,7 @@ function VerifyRejectBtn(props) {
           </textarea>
           <button type="button"
             onClick={() => handleForReject()}
-            className="btn btn-danger btn-sm text-white mt-3">Submit</button></div> }
+            className="btn btn-danger btn-sm text-white mt-3">Submit</button></div>}
     </React.Fragment>
   )
 }

@@ -12,7 +12,7 @@ import classes from "../login/login.module.css"
 import Header from '../header/Header'
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import CustomModal from "../../../_components/custom_modal";
-import signupBnr from "../../../assets/images/signup-banner.png"
+import signupBnr from "../../../assets/images/signup-banner.svg"
 // import { v4 as uuidv4 } from 'uuid';
 import toastConfig from "../../../utilities/toastTypes";
 import useMediaQuery from "../../../hooks/useMediaQuery";
