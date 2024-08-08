@@ -7,7 +7,7 @@ import Yup from "../../_components/formik/Yup";
 import classes from "./forgotPassword.module.css"
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Header from "../mainComponent/header/Header";
-import sbbnner from "../../assets/images/login-banner.png"
+import sbbnner from "../../assets/images/login-banner.svg"
 import arrow_one from "../../../src/assets/images/arrow_one.png"
 import arrow_two from "../../assets/images/arrow_two.png"
 import VerifyEmailPhone from "./VerifyEmailPhone";
@@ -17,10 +17,12 @@ import toastConfig from "../../utilities/toastTypes";
 const EnterUserID = (props) => {
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState(false)
+  const[inputValue,setInputValue]=useState({})
   const dispatch = useDispatch();
   const isDesktop = useMediaQuery('(min-width: 993px)');
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
   const isMobile = useMediaQuery('(max-width: 767px)');
+  
 
 
   const validationSchema = Yup.object().shape({
@@ -32,6 +34,7 @@ const EnterUserID = (props) => {
 
   const handleSubmit = (data) => {
     setLoading(true)
+    setInputValue(data)
 
     dispatch(
       getEmailToSendOtpSlice({
@@ -112,7 +115,8 @@ const EnterUserID = (props) => {
             <div className="row align-items-start flex-grow-1" >
               <div className="col">
 
-                <div>  {(isTablet || isMobile) &&
+                <div>
+                    {(isTablet || isMobile) &&
                   <Header display_bg_color={true} />}
                   <img src={arrow_one} alt="arrow" className={`${classes.right_side_arrow}`} /></div>
                 <div className="p-5"><Link to="/"><p className="font-size-18"><i className="fa fa-arrow-left mr-2" />Back to login</p></Link></div>
@@ -173,7 +177,7 @@ const EnterUserID = (props) => {
                   </Formik>
 
                 ) : (
-                  <VerifyEmailPhone />
+                  <VerifyEmailPhone inputValue={inputValue}  />
                 )}
 
 

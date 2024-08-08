@@ -41,18 +41,18 @@ function SideNavbarNav() {
           </li>
           <li className="timeline">
             <Link to={`${url}`} className="txt-white">
-              <i className="fa fa-home"ariaHidden="true" /> Home
+              <i className="fa fa-home" ariaHidden="true" /> Home
             </Link>
           </li>
           <li className="events">
             <Link to={`${url}/transaction-history`} className="txt-white">
-              <i className="fa fa-calendar"ariaHidden="true" /> Transaction
+              <i className="fa fa-calendar" ariaHidden="true" /> Transaction
               History{" "}
             </Link>
           </li>
           <li className="calendar">
             <Link to={`${url}/transaction-enquiry`} className="txt-white">
-              <i className="fa fa-university"ariaHidden="true" /> Transaction
+              <i className="fa fa-university" ariaHidden="true" /> Transaction
               Enquiry{" "}
             </Link>
           </li>
@@ -60,14 +60,14 @@ function SideNavbarNav() {
           {roleId === 3 || roleId === 13 ? (
             <li className="calendar" role="menuitem">
               <Link to={`${url}/client-list`} className="txt-white">
-                <i className="fa fa-university"ariaHidden="true" /> Client
+                <i className="fa fa-university" ariaHidden="true" /> Client
                 List{" "}
               </Link>
             </li>
           ) : (
             <li className="ant-menu-item" role="menuitem">
               <Link to={`${url}/settlement-report`} className="txt-white">
-                <i className="fa fa-bars"ariaHidden="true" />
+                <i className="fa fa-bars" ariaHidden="true" />
                 &nbsp; Settlement Report
               </Link>
             </li>
@@ -79,7 +79,7 @@ function SideNavbarNav() {
               style={{ paddingLeft: "48px" }}
             >
               <Link to={`${url}/client-list`} className="txt-white">
-                <i className="fa fa-university"ariaHidden="true" /> Client
+                <i className="fa fa-university" ariaHidden="true" /> Client
                 List{" "}
               </Link>
             </li>
@@ -115,9 +115,9 @@ function SideNavbarNav() {
             role="menuitem"
             onClick={() => handle()}
           >
-            <a href="">
+            <a href={() => false}>
               <i className="fa fa-log-out"></i>
-              &nbsp; Logout   
+              &nbsp; Logout
             </a>
           </li>
         </ul>

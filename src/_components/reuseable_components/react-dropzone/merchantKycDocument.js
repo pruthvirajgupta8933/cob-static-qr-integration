@@ -84,7 +84,7 @@ const MerchantKycDocument = () => {
                     <button onClick={uploadFiles} className="upload-button btn cob-btn-primary btn-sm mt-2">
                         {submitLoader && <>
                             <span className="spinner-border spinner-border-sm" role="status"
-                               ariaHidden="true" />
+                                ariaHidden="true" />
                             <span className="sr-only">Loading...</span>
                         </>} Upload Files
                     </button>} {documentUploadResponse === true &&
@@ -96,7 +96,7 @@ const MerchantKycDocument = () => {
                 <h6>Uploaded Document</h6>
                 <ul>
                     {KycDocUpload?.map((d, i) => (
-                        <li key={uuidv4()}><a href={d.filePath} target="_blank">View Document - {d.name}</a></li>
+                        <li key={uuidv4()}><a href={d.filePath} target="_blank" rel="noreferrer">View Document - {d.name}</a></li>
                     ))}
                 </ul>
             </div>}

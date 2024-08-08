@@ -10,7 +10,6 @@ const UrlNotFound = React.lazy(() => import('./components/dashboard/UrlNotFound'
 const BizzForm = React.lazy(() => import('./components/BizzAppForm/BizzForm'))
 const PrivacyPolicy = React.lazy(() => import('./TermsOfService/PrivacyPolicy'));
 const TermsAndConditions = React.lazy(() => import('./TermsOfService/TermsAndConditions'));
-
 const Login = React.lazy(() => import('./components/mainComponent/login/Login'));
 const DashboardMainContent = React.lazy(() => import('./components/dashboard/dashboardLayout/DashboardMainContent'));
 const Signup = React.lazy(() => import('./components/mainComponent/signup/Signup'));

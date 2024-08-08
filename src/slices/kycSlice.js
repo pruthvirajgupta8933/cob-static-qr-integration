@@ -1382,9 +1382,19 @@ export const kycSlice = createSlice({
                 state.OtpResponse.tempEmail = "";
             }
         },
+        [verifyKycEachTab.pending]: (state, action) => {
+            state.isLoading=true
+
+            
+        },
 
         [verifyKycEachTab.fulfilled]: (state, action) => {
             state.KycTabStatusStore = action.payload;
+            state.isLoading=false
+        },
+        [verifyKycEachTab.rejected]: (state, action) => {
+            state.isLoading=false
+            
         },
 
         // when kyc approve
