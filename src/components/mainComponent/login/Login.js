@@ -5,7 +5,7 @@ import { useHistory, Link } from "react-router-dom";
 import Yup from "../../../_components/formik/Yup";
 import { login, logout } from "../../../slices/auth";
 import { clearMessage } from "../../../slices/message";
-import sbbnner from "../../../assets/images/login-banner.png";
+import sbbnner from "../../../assets/images/login-banner.svg";
 import arrow_one from "../../../assets/images/arrow_one.png";
 import arrow_two from "../../../assets/images/arrow_two.png";
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";

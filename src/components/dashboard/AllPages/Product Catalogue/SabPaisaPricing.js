@@ -12,17 +12,20 @@ import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import CustomModal from "../../../../_components/custom_modal";
 import { v4 as uuidv4 } from 'uuid';
+import { subscribedPlanDetails,productSubDetails,subscribeFetchAppAndPlan } from "../../../../slices/merchant-slice/productCatalogueSlice";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
   let roles = roleBasedAccess();
   const dispatch = useDispatch();
- const [productDetails, setProductDetails] = useState([]);
-  const [spinner, setSpinner] = useState(true);
+//  const [productDetails, setProductDetails] = useState([]);
+  // const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({});
   const [modalToggle, setModalToggle] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
+  const {productSubDetails: productDetails} = useSelector(state => state.productCatalogueSlice);
+  const {isLoading}=useSelector((state)=>state.productCatalogueSlice)
 
   
   const clickHandler = (value) => {
@@ -41,31 +44,34 @@ const SabPaisaPricing = () => {
   const param = useParams();
 
   const getSubscribedPlan = (id) => {
-    axiosInstanceJWT
-      .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
+    
+    
+    const postData = {
+      "clientId": clientId,
+      "applicationId": id
+    }
+    dispatch(subscribedPlanDetails(postData))
       .then((resp) => {
-        setSelectedPlan(resp?.data?.data[0])
+       
+        setSelectedPlan(resp?.payload?.data[0])
+      }).catch(()=>{
+        console.log("in error")
       })
   }
 
 
   useEffect(() => {
     const id = param?.id;
-    let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
-    axiosInstanceJWT
-      .get(url)
-      .then((resp) => {
-        const data = resp.data.ProductDetail;
-        setSpinner(false);
-        setProductDetails(data);
-      })
+   dispatch(productSubDetails(id))
+      
     getSubscribedPlan(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [param]);
+  }, []);
 
 
 
   const handleClick = async (plan_id, plan_name, plan_code) => {
+   
     const postData = {
       clientId: clientId,
       applicationName: param?.name,
@@ -74,11 +80,10 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
-    axiosInstanceJWT.post(
-      API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-      postData
-    ).then(res => {
-      if (res?.status === 200) {
+   
+    dispatch(subscribeFetchAppAndPlan(postData))
+    .then(res => {
+      if (res?.meta.requestStatus === "fulfilled") {
         getSubscribedPlan(param?.id);
         setModalToggle(true)
       }
@@ -86,6 +91,7 @@ const SabPaisaPricing = () => {
     }).catch(error => toastConfig.errorToast(error.response?.data?.detail))
 
   };
+
 
 
   const modalBody = () => {
@@ -150,8 +156,10 @@ const SabPaisaPricing = () => {
           </h5>
         </div>
         <div className="container">
+          
           <div className="d-flex justify-content-center flex-wrap">
-            {spinner && <span className="spinner-border" role="status"></span>}
+          {isLoading && <span className="spinner-border" role="status"></span>}
+          
             {productDetails.map((Products) => (
               // If the user selects the business category gaming, hide the subscription plan
               (business_cat_code === "37" && Products.plan_code === "005") ? (
@@ -215,6 +223,7 @@ const SabPaisaPricing = () => {
                 </div>
               )
             ))}
+              
           </div>
         </div>
       </main>

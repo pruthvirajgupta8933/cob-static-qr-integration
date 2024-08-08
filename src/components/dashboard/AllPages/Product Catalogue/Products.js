@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch,useSelector} from "react-redux";
 import "./product.css";
 import onlinePayment from "../../../../assets/images/onlinePayment.png";
 import paymentLink from "../../../../assets/images/paymentLink.png";
@@ -8,15 +9,16 @@ import qwikform from "../../../../assets/images/qwikform.png";
 import echallan from "../../../../assets/images/echallan.png";
 import epos from "../../../../assets/images/epos.png";
 import linkPaisa from "../../../../assets/images/linkPaisa.png";
+import { productDetails } from "../../../../slices/merchant-slice/productCatalogueSlice";
 
-import API_URL from "../../../../config";
-import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import { uniqueId } from "lodash";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
+
+
 const Products = () => {
-  const [product, setProduct] = useState([]);
-  const [spinner, setSpinner] = useState(true);
+  
+  const dispatch=useDispatch()
   const iconImg = [
     onlinePayment,
     paymentLink,
@@ -27,27 +29,19 @@ const Products = () => {
     epos,
     linkPaisa,
   ];
+    const { productDetailsData: products } = useSelector(state => state.productCatalogueSlice);
+    const {isLoading}=useSelector((state)=>state.productCatalogueSlice)
+    
 
   useEffect(() => {
-    axiosInstanceJWT
-      .get(API_URL.PRODUCT_DETAILS)
-      .then((resp) => {
-        const data = resp.data.ProductDetail;
-        setSpinner(false);
-
-        setProduct(data);
-      })
+    dispatch(productDetails())
       .catch((err) => console.log(err));
   }, []);
 
 
   return (
     <section className="ant-layout">
-      <div>
-
-
-      </div>
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="container">
           <div className="row justify-content-md-center">
             <div className="col-md-auto">
@@ -65,9 +59,9 @@ const Products = () => {
           </div>
         </div>
         <div className="container-fluid row justify-content-md-center">
-          {spinner && <div className="row justify-content-md-center"><span className="spinner-border" role="status"></span></div>}
+          {isLoading && <div className="row justify-content-md-center"><span className="spinner-border" role="status"></span></div>}
 
-          {product?.map((Products, i) => (
+          {products?.map((Products, i) => (
             <div className="col-sm-12 col-md-12 col-lg-6" key={uniqueId()}>
               <div className="card p-3 mt-2">
                 <div className="card-body">

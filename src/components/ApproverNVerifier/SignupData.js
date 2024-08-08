@@ -350,7 +350,7 @@ const SignupData = () => {
                       >
                         {disable && (
                           <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                        )} {/* Show spinner if disabled */}
+                        )} 
                         Submit
                       </button>
                       {signupData?.length > 0 ? (
