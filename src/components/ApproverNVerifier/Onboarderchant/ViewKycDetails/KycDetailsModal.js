@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   kycDocumentUploadList,
   documentsUpload,
@@ -7,164 +8,188 @@ import {
   kycUserList,
   clearKycState,
 } from "../../../../slices/kycSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
+import {
+  clearRatemapping,
+} from "../../../../slices/approver-dashboard/rateMappingSlice";
+import {
+  convertToFormikSelectJson
+} from "../../../../_components/reuseable_components/convertToFormikSelectJson";
+import {
+  roleBasedAccess
+} from "../../../../_components/reuseable_components/roleBasedAccess";
 import MerchantContactInfo from "./MerchantContactInfo";
 import BusinessOverview from "./BusinessOverview";
 import BusinessDetails from "./BusinessDetails";
 import BankDetails from "./BankDetails";
 import MerchantDocument from "./MerchantDocument";
-import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import CompleteVerification from "./CompleteVerification";
-// import { isNumber } from "lodash";
 import CustomModal from "../../../../_components/custom_modal";
 import GeneralForm from "./GeneralForm";
-// import approverDashboardService from "../../../../services/approver-dashboard/approverDashboard.service";
-import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
-import { clearRatemapping } from "../../../../slices/approver-dashboard/rateMappingSlice";
-import { APP_ENV } from "../../../../config";
 import SaveLocation from "./SaveLocation";
 import ViewZoneModal from "../../ViewZoneModal";
-// import { SearchService } from "../../../../services/search.service/search.service";
-
-
+import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
+import API_URL, { APP_ENV } from "../../../../config";
+import { merchantSubscribedPlanData } from "../../../../slices/merchant-slice/productCatalogueSlice";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 
 const KycDetailsModal = (props) => {
+  const {
+    handleModal: closeVerification,
+    renderPendingApproval,
+    renderPendingVerification,
+    renderApprovedTable,
+    renderToPendingKyc,
+    kycId: merchantKycId,
+    isOpenModal,
+  } = props;
 
-  // console.log("render", props)
-
-  let closeVerification = props?.handleModal;
-  let renderPendingApprovel = props.renderPendingApproval;
-  let renderPendingVerificationTable = props?.renderPendingVerification;
-  let renderApprovedTable = props?.renderApprovedTable;
-  let renderToPendingKyc = props?.renderToPendingKyc;
-let merchantKycId = props?.kycId;
-const [docTypeList, setDocTypeList] = useState([]);
+  const [docTypeList, setDocTypeList] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
-  
+
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
-
   const state = useSelector((state) => state);
-  const { kyc, rateMappingSlice, approverDashboard, verifierApproverTab } = state;
+  const { kyc, rateMappingSlice, approverDashboard, verifierApproverTab, productCatalogueSlice } = state;
   const { KycTabStatusStore, KycDocUpload } = kyc;
-  const { generalFormData } = approverDashboard
+  const { SubscribedPlanData } = productCatalogueSlice
+  const { generalFormData } = approverDashboard;
 
-  const currenTab = parseInt(verifierApproverTab?.currenTab)
+  const currenTab = parseInt(verifierApproverTab?.currenTab);
+  const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId]);
+  const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList]);
+  const [productData, setProductData] = useState([])
 
-  const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId])
-  const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList])
-  // console.log("selectedUserData", selectedUserData)
-  // 10974
   useEffect(() => {
-    if (merchantLoginLogin !== null && merchantLoginLogin !== undefined && merchantLoginLogin !== "") {
-      dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }))
+    if (merchantLoginLogin) {
+      dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }));
     }
-  }, [merchantLoginLogin])
+  }, [merchantLoginLogin, dispatch]);
+
+  useEffect(async () => {
+
+    // fetch subscribe product by merchant
+    if (selectedUserData?.clientCode) {
+      const postData = {
+        clientCode: selectedUserData?.clientCode
+      };
+      dispatch(merchantSubscribedPlanData(postData));
 
 
-  useEffect(() => {
-    if (selectedUserData?.loginMasterId !== undefined && selectedUserData?.loginMasterId !== "") {
-      dispatch(
-        kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId })
-      )
-      dispatch(
-        GetKycTabsStatus({
-          login_id: selectedUserData?.loginMasterId,
-        })
-      );
+      axiosInstanceJWT.get(API_URL.PRODUCT_DETAILS).then(resp => {
+        setProductData(resp.data?.ProductDetail)
+      })
+
+
+    }
+
+
+
+    if (selectedUserData?.loginMasterId) {
+      dispatch(kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId }));
+      dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
 
       const businessType = selectedUserData?.businessType;
-      if (businessType !== "" && businessType !== null && businessType !== undefined) {
-        // console.log(busiType,"Business TYPE==========>")
+      if (businessType) {
         dispatch(documentsUpload({ businessType, is_udyam: selectedUserData?.is_udyam })).then((resp) => {
           const data = convertToFormikSelectJson("id", "name", resp?.payload);
           setDocTypeList(data);
         });
-
       }
-
-
-
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    // SearchService.searchFilterService()
-  }, [dispatch, selectedUserData]);
-
-
-
-  // useEffect(() => {
-  //   setDocList(KycDocUpload)
-  // }, [KycDocUpload])
-
+  }, [selectedUserData, dispatch]);
 
   useEffect(() => {
-
     return () => {
-      dispatch(clearRatemapping())
-      dispatch(clearKycState())
-    }
-  }, [])
+      dispatch(clearRatemapping());
+      dispatch(clearKycState());
+    };
+  }, [dispatch]);
 
-  const modalBody = useCallback(() => {
-    return (
-      <>
-        {/* if rate mapping trigger , hide the all coloum */}
-        {!rateMappingSlice?.flag && <div className="container">
 
-          {/* contact info section */}
+  const memoSelectedProduct = useMemo(() => SubscribedPlanData?.map(data => data.applicationId), [SubscribedPlanData])
+
+  const memoRestrictRateMapProduct = useMemo(() => {
+    return productData?.reduce((prevVal, current, i) => {
+      if (current.is_ratemap === false && current.active === true) {
+        prevVal.push(current.application_id);
+      }
+      return prevVal
+    }, [])
+  }, [productData])
+
+  const memoAllowedRateMapProduct = useMemo(() => {
+    return productData?.reduce((prevVal, current, i) => {
+      if (current.is_ratemap === true && current.active === true) {
+        prevVal.push(current.application_id);
+      }
+      return prevVal
+    }, [])
+  }, [productData])
+
+
+
+
+  // restrict rate mapping for the product and user
+  let isProductRateMapRestrict = useMemo(() => memoSelectedProduct.some(product => memoRestrictRateMapProduct.includes(product)), [memoSelectedProduct, memoRestrictRateMapProduct])
+
+  let rateMappingAllowedProduct = useMemo(() => memoSelectedProduct.some(product => memoAllowedRateMapProduct.includes(product)), [memoSelectedProduct, memoAllowedRateMapProduct])
+  const restrictUsers = [13, 3]
+  const isUserRateMapRestrict = restrictUsers.includes(selectedUserData.roleId)
+
+  if (isProductRateMapRestrict) {
+    // if product has ratemapping allowed, then update the isProductRateMapRestrict = false / else true
+    isProductRateMapRestrict = rateMappingAllowedProduct ? false : true
+  }
+
+  // console.log("----------------------------------------------")
+  // console.log("memoSelectedProduct", memoSelectedProduct)
+  // console.log("rateMappingAllowedProduct", rateMappingAllowedProduct)
+  // console.log("memoAllowedRateMapProduct", memoAllowedRateMapProduct)
+  // console.log("memoRestrictRateMapProduct", memoRestrictRateMapProduct)
+  // console.log("isProductRateMapRestrict", isProductRateMapRestrict)
+  // console.log("isUserRateMapRestrict", isUserRateMapRestrict)
+
+
+
+  const modalBody = useCallback(() => (
+    <>
+      {!rateMappingSlice?.flag && (
+        <div className="container">
           <MerchantContactInfo
-            // merchantKycId={merchantKycId}
             selectedUserData={selectedUserData}
-            // role={roles}
             KycTabStatus={KycTabStatusStore}
           />
-
-          {/* business overview */}
           <BusinessOverview
             selectedUserData={selectedUserData}
-            // merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
-
-          {/* business details */}
           <BusinessDetails
             selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
-
-          {/* Bank details */}
           <BankDetails
             selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
-
-          {/* Merchant Documents */}
           <MerchantDocument
             docList={KycDocUpload}
-            // setDocList={setDocList}
             docTypeList={docTypeList}
             role={roles}
             selectedUserData={selectedUserData}
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
-
-          <SaveLocation
-            role={roles}
-          />
-
-          {(currenTab === 3 || currenTab === 4) && (roles.approver === true || roles.verifier === true) && (
+          <SaveLocation role={roles} />
+          {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) && (
             <div className="row mb-4 border p-1">
               <h5>Set Risk Category</h5>
               <div className="form-row g-3 m-1">
                 <button
                   type="button"
-                  className="approve text-white cob-btn-primary btn-sm "
+                  className="approve text-white cob-btn-primary btn-sm"
                   onClick={() => {
                     setModalDisplayData(selectedUserData);
                     setOpenModal(true);
@@ -173,18 +198,18 @@ const [docTypeList, setDocTypeList] = useState([]);
                   Set Risk
                 </button>
               </div>
-              {openZoneModal === true && (
-                <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
-                  setOpenZoneModal={setOpenModal} />
+              {openZoneModal && (
+                <ViewZoneModal
+                  userData={modalDisplayData}
+                  openZoneModal={openZoneModal}
+                  setOpenZoneModal={setOpenModal}
+                />
               )}
             </div>
           )}
 
-
-          {/* Extra field required when merhcant goes to approved */}
-
-
-          {selectedUserData?.roleId !== 13 &&
+          {/* allow this component for types of user role */}
+          {!isProductRateMapRestrict && !isUserRateMapRestrict &&
             <GeneralForm
               selectedUserData={selectedUserData}
               merchantKycId={merchantKycId}
@@ -192,50 +217,68 @@ const [docTypeList, setDocTypeList] = useState([]);
             />}
 
           <CompleteVerification
+            isRateMappingRestrticted={{ isProductRateMapRestrict, isUserRateMapRestrict }}
             merchantKycId={merchantKycId}
             selectedUserData={selectedUserData}
             KycTabStatus={KycTabStatusStore}
-            renderApprovalTable={renderPendingApprovel}
-            renderPendingVerificationData={renderPendingVerificationTable}
+            renderApprovalTable={renderPendingApproval}
+            renderPendingVerificationData={renderPendingVerification}
             renderApprovedTable={renderApprovedTable}
             closeVerification={closeVerification}
             renderToPendingKyc={renderToPendingKyc}
           />
-        </div>}
+        </div>
+      )}
+      {rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
+        <div className="container">
+          <DefaultRateMapping
+            merchantLoginId={rateMappingSlice?.merhcantLoginId}
+            generalFormData={generalFormData?.parent_client_code}
+          />
+        </div>
+      )}
+    </>
+  ), [
+    rateMappingSlice,
+    merchantKycId,
+    selectedUserData,
+    roles,
+    KycTabStatusStore,
+    KycDocUpload,
+    docTypeList,
+    closeVerification,
+    renderPendingApproval,
+    renderPendingVerification,
+    renderApprovedTable,
+    renderToPendingKyc,
+  ]);
 
-        {/* if ratemapping all parameters full-fill , then call the function of the ratemapping */}
-        {/* {console.log(APP_ENV)} */}
-        {(rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId !== null && selectedUserData?.roleId !== 13 && APP_ENV === true) &&
-          <div className="container">
-            <DefaultRateMapping merchantLoginId={rateMappingSlice?.merhcantLoginId} generalFormData={generalFormData?.parent_client_code} />
-          </div>}
-      </>
-    )
-  }, [rateMappingSlice, merchantKycId, selectedUserData, roles, KycTabStatusStore, KycDocUpload, docTypeList])
-
-  const modalFooter = useCallback(() => {
-    return (
-      <div className="modal-footer">
-        <button
-          type="button" className="btn btn-secondary text-white btn-sm" data-dismiss="modal"
-          onClick={() => {
-            props?.handleModal(false);
-          }}>
-          Close
-        </button>
-      </div>
-    )
-  },
-    [props]
-  )
-
+  const modalFooter = useCallback(() => (
+    <div>
+      <button
+        type="button"
+        className="btn btn-secondary text-white btn-sm"
+        data-dismiss="modal"
+        onClick={() => {
+          props?.handleModal(false);
+        }}
+      >
+        Close
+      </button>
+    </div>
+  ), [props]);
 
 
   return (
     <div>
-      <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
+      <CustomModal
+        modalBody={modalBody}
+        headerTitle={"Merchant KYC Details"}
+        modalFooter={modalFooter}
+        modalToggle={isOpenModal}
+        fnSetModalToggle={closeVerification}
+      />
     </div>
-
   );
 };
 

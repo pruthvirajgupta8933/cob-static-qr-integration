@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
@@ -119,8 +119,12 @@ const TransactionHistory = () => {
             ? clientMerchantDetailsList[0]?.clientCode
             : "";
 
-    const [clientCode, SetClientCode] = useState(clientcode_rolebased);
-    const [todayDate, setTodayDate] = useState(splitDate);
+    const clientCode = clientcode_rolebased;
+    const todayDate = splitDate;
+
+
+    const indexMemo = useMemo(() => (currentPage - 1) * pageSize, [pageSize, currentPage])
+
 
     const initialValues = {
         clientCode: clientCode,
@@ -427,7 +431,7 @@ const TransactionHistory = () => {
         const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
         txnList.forEach((item, index) => {
             const {
-                // srNo = index,
+                // srNo,
                 txn_id = "",
                 client_txn_id = "",
                 challan_no = "",
@@ -532,6 +536,7 @@ const TransactionHistory = () => {
 
     }
 
+
     return (
         <section className="">
             <div className="profileBarStatus">
@@ -585,7 +590,7 @@ const TransactionHistory = () => {
                                                         placeholderText="Select Date Range"
                                                         className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
                                                         showPopperArrow={false}
-                                                        popperClassName={classes.custom_datepicker_popper }
+                                                        popperClassName={classes.custom_datepicker_popper}
                                                     />
                                                     <div className="input-group-append" onClick={() => {
                                                         document.getElementById('dateRange').click();
@@ -677,7 +682,10 @@ const TransactionHistory = () => {
                                                 value={pageSize}
                                                 rel={pageSize}
                                                 className="form-select"
-                                                onChange={(e) => setPageSize(parseInt(e.target.value))}
+                                                onChange={(e) => {
+                                                    setPageSize(parseInt(e.target.value))
+                                                    setCurrentPage(1)
+                                                }}
                                             >
                                                 <DropDownCountPerPage datalength={txnList.length} />
                                             </select>
@@ -756,7 +764,7 @@ const TransactionHistory = () => {
                                             paginatedata.map((item, i) => {
                                                 return (
                                                     <tr key={uuidv4()}>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {(item?.status?.toLocaleLowerCase() === "success" || item?.status?.toLocaleLowerCase() === "settled") && <input
                                                                 name="refund_request"
                                                                 value={item.txn_id}
@@ -766,7 +774,7 @@ const TransactionHistory = () => {
                                                             />}
 
                                                         </td>
-                                                        <td>{i + 1}</td>
+                                                        <td>{indexMemo + (i + 1)}</td>
                                                         <td>{item.txn_id}</td>
                                                         <td>{item.client_txn_id}</td>
                                                         <td>{item.challan_no}</td>

@@ -27,12 +27,12 @@ const SabPaisaPricing = () => {
   const {productSubDetails: productDetails} = useSelector(state => state.productCatalogueSlice);
   const {isLoading}=useSelector((state)=>state.productCatalogueSlice)
 
-  
+
   const clickHandler = (value) => {
     history.push("/dashboard");
     dispatch(productSubscribeState(value));
   };
-  
+
 
   useEffect(() => {
     if (roles?.merchant !== true) {
