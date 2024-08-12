@@ -243,7 +243,7 @@ function ClientList() {
 
     useEffect(() => {
         fetchData();
-    }, [currentPage, pageSize]);
+    }, []);
 
 
     const fetchData = () => {

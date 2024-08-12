@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import  Yup from "../../../_components/formik/Yup";
+import Yup from "../../../_components/formik/Yup";
 import { Formik, Form } from "formik";
 import API_URL from "../../../config";
 import FormikController from "../../../_components/formik/FormikController";
@@ -13,7 +13,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 const TransactionEnquirey = React.memo(() => {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     show: false,
     errMessage: "",
@@ -47,15 +47,23 @@ const dispatch = useDispatch();
   }, [roles, auth, dispatch]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    const roleType = roles;
+    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    if (type !== "default") {
+      const postObj = {
+        type: type,
+        login_id: auth?.user?.loginId
+      };
+      dispatch(fetchChiledDataList(postObj));
+    }
+  }, []);
 
   const clientMerchantDetailsList = user?.clientMerchantDetailsList ?? [];
   const fnKey = roles?.merchant ? "clientCode" : "client_code";
   const fnVal = roles?.merchant ? "clientName" : "name";
   const clientCodeListArr = roles?.merchant ? clientMerchantDetailsList : clientCodeData;
 
-  const clientCodeOption = useMemo(() => 
+  const clientCodeOption = useMemo(() =>
     convertToFormikSelectJson(fnKey, fnVal, clientCodeListArr, {}, false, true),
     [fnKey, fnVal, clientCodeListArr]
   );
@@ -78,27 +86,27 @@ const dispatch = useDispatch();
     try {
       const response = await axios.get(API_URL.VIEW_TXN + endPoint);
       if (response?.data?.length > 0) {
-        setState(prev => ({ 
-          ...prev, 
-          loadingState: false, 
-          show: true, 
-          data: response.data[0], 
-          errMessage: "" 
+        setState(prev => ({
+          ...prev,
+          loadingState: false,
+          show: true,
+          data: response.data[0],
+          errMessage: ""
         }));
       } else {
-        setState(prev => ({ 
-          ...prev, 
-          loadingState: false, 
-          show: false, 
-          errMessage: "Data Not Found" 
+        setState(prev => ({
+          ...prev,
+          loadingState: false,
+          show: false,
+          errMessage: "Data Not Found"
         }));
       }
     } catch (e) {
-      setState(prev => ({ 
-        ...prev, 
-        loadingState: false, 
-        show: false, 
-        errMessage: "Data Not Found" 
+      setState(prev => ({
+        ...prev,
+        loadingState: false,
+        show: false,
+        errMessage: "Data Not Found"
       }));
     } finally {
       setState(prev => ({ ...prev, disable: false }));

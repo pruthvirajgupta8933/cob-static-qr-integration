@@ -22,7 +22,7 @@ const initialState = {
 
     kycUserList: {},
     notFilledUserList: {
-        count:0
+        count: 0
     },
     pendingVerificationKycList: {
         results: [],
@@ -86,15 +86,15 @@ const initialState = {
     kycForPendingMerchants: [],
     kycForPending: [],
     kycForRejectedMerchants: {
-        count:0
+        count: 0
     },
     kycForVerified: {
         count: 0
     },
     kycForApproved: {
-        count:0
+        count: 0
     },
-    
+
     kycModalClose: true,
 
     allTabsValidate: {
@@ -425,10 +425,6 @@ export const kycDocumentUploadList = createAsyncThunk(
     "kyc/kycDocumentUploadList",
     async (requestParam) => {
         const response = await merchantKycService.kycDocumentUploadList(requestParam)
-            .catch((error) => {
-                return error.response;
-            });
-
         return response.data;
     }
 );
@@ -946,25 +942,25 @@ export const businessCategoryById = createAsyncThunk(
 export const approvekyc = createAsyncThunk(
     "kyc/approvekyc",
     async (requestParam, thunkAPI) => {
-  
-      try {
-        const response = await await approverDashboardService.approveKyc(requestParam);
-      
-        return response.data;
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString() || error.request.toString();
-        thunkAPI.dispatch(setMessage(message));
-        return thunkAPI.rejectWithValue(message);
-  
-  
-      }
+
+        try {
+            const response = await await approverDashboardService.approveKyc(requestParam);
+
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString() || error.request.toString();
+            thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue(message);
+
+
+        }
     }
-  );
+);
 
 //---------------- Registered Address TAP INTEGRATION --------------//
 
@@ -1063,7 +1059,8 @@ export const kycSlice = createSlice({
         [kycForNotFilled.pending]: (state, action) => {
             state.status = "pending";
             state.isLoading = true;
-            state.notFilledUserList.count=0;       },
+            state.notFilledUserList.count = 0;
+        },
         [kycForNotFilled.fulfilled]: (state, action) => {
             state.notFilledUserList = action.payload
             state.isLoading = false;
@@ -1109,9 +1106,9 @@ export const kycSlice = createSlice({
 
         /////////////////////////////////////////////////
         [kycForPendingMerchants.pending]: (state, action) => {
-            state.pendingKycuserList.count=0;
+            state.pendingKycuserList.count = 0;
             state.status = "pending";
-            
+
             state.isLoadingForPending = true;
             // state.pendingKycuserList={}
         },
@@ -1124,14 +1121,14 @@ export const kycSlice = createSlice({
             state.status = "failed";
             state.error = action.error.message;
             state.isLoadingForPending = false;
-            state.pendingKycuserList=0;
+            state.pendingKycuserList = 0;
             // state.pendingKycuserList={}
         },
         //------------------------------------------------
         [kycForPending.pending]: (state, action) => {
             state.status = "pending";
             state.isLoadingForPendingVerification = true;
-            state.pendingVerificationKycList.count=0;
+            state.pendingVerificationKycList.count = 0;
         },
         [kycForPending.fulfilled]: (state, action) => {
             state.pendingVerificationKycList = action.payload
@@ -1142,18 +1139,18 @@ export const kycSlice = createSlice({
             state.status = "failed";
             state.error = action.error.message;
             state.isLoadingForPendingVerification = false;
-            state.pendingVerificationKycList.count=0;
+            state.pendingVerificationKycList.count = 0;
         },
         //-------------------------------------------
         [kycForVerified.pending]: (state, action) => {
             state.status = "pending";
             state.isLoadingForPendingApproval = true;
-            state.kycVerifiedList.count=0;
+            state.kycVerifiedList.count = 0;
 
         },
         [kycForVerified.fulfilled]: (state, action) => {
             state.kycVerifiedList = action.payload
-            
+
             // state.kycUserList = action.payload;
             state.isLoadingForPendingApproval = false;
         },
@@ -1201,13 +1198,13 @@ export const kycSlice = createSlice({
             state.allKycData.result = [];
             state.allKycData.message = action.error.message;
         },
-       
+
         //-------------------------------------------------
         [kycForRejectedMerchants.pending]: (state, action) => {
 
             state.status = "pending";
             state.isLoadingForRejected = true;
-            state.rejectedKycList.count=0;
+            state.rejectedKycList.count = 0;
         },
         [kycForRejectedMerchants.fulfilled]: (state, action) => {
             state.rejectedKycList = action.payload
@@ -1238,7 +1235,7 @@ export const kycSlice = createSlice({
         [kycForApproved.pending]: (state, action) => {
             state.status = "pending";
             state.isLoadingForApproved = true;
-            state.kycApprovedList.count=0;
+            state.kycApprovedList.count = 0;
         },
         [kycForApproved.fulfilled]: (state, action) => {
             state.kycApprovedList = action.payload;
@@ -1383,18 +1380,18 @@ export const kycSlice = createSlice({
             }
         },
         [verifyKycEachTab.pending]: (state, action) => {
-            state.isLoading=true
+            state.isLoading = true
 
-            
+
         },
 
         [verifyKycEachTab.fulfilled]: (state, action) => {
             state.KycTabStatusStore = action.payload;
-            state.isLoading=false
+            state.isLoading = false
         },
         [verifyKycEachTab.rejected]: (state, action) => {
-            state.isLoading=false
-            
+            state.isLoading = false
+
         },
 
         // when kyc approve
