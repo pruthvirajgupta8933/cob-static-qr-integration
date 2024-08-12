@@ -46,7 +46,7 @@ function DocumentsUpload(props) {
 
 
   const filteredRequirList = isRequiredData?.filter((r) => r?.is_required === true); // required list
-  const filteredRequirListId = filteredRequirList.map((r) => r?.id?.toString());  /// dropdown array
+  const filteredRequirListId = filteredRequirList?.map((r) => r?.id?.toString());  /// dropdown array
   const uploadedReqDocList = Object.values(savedData)?.map((r) => r?.type)
 
 
@@ -66,7 +66,7 @@ function DocumentsUpload(props) {
 
   // formik 
   const initialValues = {
-    docType: savedData[0]?.type ? savedData[0]?.type : "",
+    docType: savedData?.[0]?.type ? savedData?.[0]?.type : "",
     document_img: "",
   };
 
@@ -96,6 +96,7 @@ function DocumentsUpload(props) {
   }
 
   useEffect(() => {
+    // console.log('KycDocUpload', KycDocUpload)
     setSavedData(KycDocUpload);
   }, [KycDocUpload]);
 
@@ -229,7 +230,7 @@ function DocumentsUpload(props) {
 
 
   const getDocTypeName = (id) => {
-    let data = docTypeList.filter((obj) => {
+    let data = docTypeList?.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
         return obj;
       }
@@ -253,7 +254,7 @@ function DocumentsUpload(props) {
 
 
   useEffect(() => {
-    filteredRequirListId.forEach((v, i) => {
+    filteredRequirListId?.forEach((v, i) => {
       if (!uploadedReqDocList.includes(v)) {
         setIsRequiredDocUpload(false)
       }
@@ -431,7 +432,7 @@ function DocumentsUpload(props) {
                 </div>
 
                 <div className="form-row  overflow-auto">
-                  {savedData?.length ? (
+                  {savedData && savedData?.length ? (
                     <>
                       <hr />
                       <div className="col-lg-12 mt-4">

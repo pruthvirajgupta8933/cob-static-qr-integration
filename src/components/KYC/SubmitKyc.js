@@ -44,7 +44,7 @@ function SubmitKyc(props) {
 
 
 
-  const rejectedDocList = KycDocUpload?.filter(item => toLower(item.status) === toLower(KYC_STATUS_REJECTED))
+  const rejectedDocList = KycDocUpload && KycDocUpload?.filter(item => toLower(item.status) === toLower(KYC_STATUS_REJECTED))
 
 
   const onSubmit = (value) => {
