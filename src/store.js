@@ -28,6 +28,7 @@ import { genreateMidReducer } from "./slices/generateMidSlice";
 import { frmReducer } from "./slices/approver-dashboard/frmSlice";
 import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
 import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import { editKycDetailReducer } from "./slices/editKycSlice";
 
 
 const reducer = {
@@ -69,6 +70,8 @@ const reducer = {
   //   product subscription
   productSubscriptionServiceAdminReducer: productSubscriptionServiceAdminReducer,
 
+///Edit Kyc Detail
+  editKycDetailReducer:editKycDetailReducer,
   // theme
   themeReducer: themeReducer,
   //Assign-Account-Manager

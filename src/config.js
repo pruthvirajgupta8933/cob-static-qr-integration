@@ -285,6 +285,13 @@ const API_LIVE = {
   PUSH_MERCHANT_DATA: `${kyc_url}/kyc/frm/push-merchant-data/`,
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
 
+  ///EDIT KYC FORM
+  UPDATE_CONATCT_INFO:`${kyc_url}/kyc/update-kyc/general-info/`,
+  UPDATE_BUSINESS_INFO:`${kyc_url}/kyc/update-kyc/business-info/`,
+  UPDATE_MERCHANT_INFO:`${kyc_url}/kyc/update-kyc/merchant-info/`,
+  UPDATE_SETTLEMENT_INFO:`${kyc_url}/kyc/update-kyc/settlement-info/`,
+  UPLOAD_DOCUMENT:`${kyc_url}/kyc/update-kyc/additional-doc/`,
+
 
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
