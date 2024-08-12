@@ -31,6 +31,7 @@ import { DefaultRateMapping } from "../../../../utilities/DefaultRateMapping";
 import API_URL, { APP_ENV } from "../../../../config";
 import { merchantSubscribedPlanData } from "../../../../slices/merchant-slice/productCatalogueSlice";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import SubscribeProductList from "./SubscribeProductList";
 
 const KycDetailsModal = (props) => {
   const {
@@ -107,6 +108,7 @@ const KycDetailsModal = (props) => {
   }, [dispatch]);
 
 
+  // console.log("SubscribedPlanData", SubscribedPlanData)
   const memoSelectedProduct = useMemo(() => SubscribedPlanData?.map(data => data.applicationId), [SubscribedPlanData])
 
   const memoRestrictRateMapProduct = useMemo(() => {
@@ -182,7 +184,9 @@ const KycDetailsModal = (props) => {
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
+
           <SaveLocation role={roles} />
+
           {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) && (
             <div className="row mb-4 border p-1">
               <h5>Set Risk Category</h5>
@@ -208,6 +212,8 @@ const KycDetailsModal = (props) => {
             </div>
           )}
 
+
+          <SubscribeProductList SubscribedPlanData={SubscribedPlanData} />
           {/* allow this component for types of user role */}
           {!isProductRateMapRestrict && !isUserRateMapRestrict &&
             <GeneralForm
