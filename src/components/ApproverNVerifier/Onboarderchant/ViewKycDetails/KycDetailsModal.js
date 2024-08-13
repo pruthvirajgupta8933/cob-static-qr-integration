@@ -47,6 +47,7 @@ const KycDetailsModal = (props) => {
   const [docTypeList, setDocTypeList] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
+  const [triggerRateMapping, setTriggerRateMapping] = useState(false);
 
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
@@ -153,10 +154,15 @@ const KycDetailsModal = (props) => {
   // console.log("isUserRateMapRestrict", isUserRateMapRestrict)
 
 
+  const startRateMappingHandler = (isAllowed) => {
+    setTriggerRateMapping(isAllowed)
+  }
+
+
 
   const modalBody = useCallback(() => (
     <>
-      {!rateMappingSlice?.flag && (
+      {!triggerRateMapping && (
         <div className="container">
           <MerchantContactInfo
             selectedUserData={selectedUserData}
@@ -176,6 +182,7 @@ const KycDetailsModal = (props) => {
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
+
           <MerchantDocument
             docList={KycDocUpload}
             docTypeList={docTypeList}
@@ -186,6 +193,7 @@ const KycDetailsModal = (props) => {
           />
 
           <SaveLocation role={roles} />
+
 
           {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) && (
             <div className="row mb-4 border p-1">
@@ -215,7 +223,7 @@ const KycDetailsModal = (props) => {
 
           <SubscribeProductList SubscribedPlanData={SubscribedPlanData} />
           {/* allow this component for types of user role */}
-          {!isProductRateMapRestrict && !isUserRateMapRestrict &&
+          {!isProductRateMapRestrict && !isUserRateMapRestrict && currenTab === 4 &&
             <GeneralForm
               selectedUserData={selectedUserData}
               merchantKycId={merchantKycId}
@@ -224,7 +232,7 @@ const KycDetailsModal = (props) => {
 
           <CompleteVerification
             isRateMappingRestrticted={{ isProductRateMapRestrict, isUserRateMapRestrict }}
-            merchantKycId={merchantKycId}
+            // merchantKycId={merchantKycId}
             selectedUserData={selectedUserData}
             KycTabStatus={KycTabStatusStore}
             renderApprovalTable={renderPendingApproval}
@@ -232,14 +240,18 @@ const KycDetailsModal = (props) => {
             renderApprovedTable={renderApprovedTable}
             closeVerification={closeVerification}
             renderToPendingKyc={renderToPendingKyc}
+            startRateMappingHandler={startRateMappingHandler}
           />
         </div>
       )}
-      {rateMappingSlice?.flag && rateMappingSlice?.merhcantLoginId && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
+
+      {/* {console.log(triggerRateMapping, selectedUserData?.loginMasterId, generalFormData?.parent_client_code, !isProductRateMapRestrict, !isUserRateMapRestrict, APP_ENV)} */}
+      {/* {console.log(generalFormData)} */}
+      {triggerRateMapping && selectedUserData?.loginMasterId && generalFormData?.parent_client_code && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
         <div className="container">
           <DefaultRateMapping
-            merchantLoginId={rateMappingSlice?.merhcantLoginId}
-            generalFormData={generalFormData?.parent_client_code}
+            merchantLoginId={selectedUserData?.loginMasterId}
+            parent_client_code={generalFormData?.parent_client_code}
           />
         </div>
       )}

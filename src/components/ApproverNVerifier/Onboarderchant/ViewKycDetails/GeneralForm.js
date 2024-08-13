@@ -83,6 +83,7 @@ const GeneralForm = ({ role }) => {
     const parentClientCodeOption = useMemo(() =>
         convertToFormikSelectJson("clientCode", "clientName", parentClientCode), [parentClientCode]);
 
+    // console.log("parentClientCodeOption", parentClientCodeOption)
     const rollingReservePeriodOption = useMemo(() =>
         convertToFormikSelectJson("period_code", "period_name", rollingResPeriod), [rollingResPeriod]);
 
