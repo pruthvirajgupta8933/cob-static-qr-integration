@@ -21,12 +21,13 @@ import { isEmpty } from 'lodash';
 
 
 const CompleteVerification = (props) => {
-  // console.log({ ...props })
+
   let closeVerificationModal = props?.closeVerification;
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
   let isRateMappingRestrticted = props?.isRateMappingRestrticted
+  let startRateMappingHandler = props?.startRateMappingHandler
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
@@ -130,10 +131,10 @@ const CompleteVerification = (props) => {
 
 
 
-
   useEffect(() => {
     return () => {
-      // console.log("clear state approver")
+      // reset the state
+      startRateMappingHandler(false)
       dispatch(clearApproveKyc())
       dispatch(generalFormData({ isFinalSubmit: false }))
     }
@@ -156,11 +157,84 @@ const CompleteVerification = (props) => {
 
 
 
+  useEffect(() => {
+    //  Button enable for approver
+    const approver = () => {
+      let enableBtn = false;
+      if (currenTab === 4) {
+        if (roles.approver === true)
+          if (isverified === true && isapproved === false) {
+            enableBtn = true;
+          }
+      }
+
+      setEnableBtnApprover(enableBtn);
+    };
+
+    // For current tab 5
+    const approvedtab = () => {
+      let enableBtn = false;
+      if (currenTab === 5) {
+        if (roles.approver === true)
+          if (Allow_To_Do_Verify_Kyc_details === true) {
+            enableBtn = true;
+
+          }
+      }
+      setEnableBtnApprovedTab(enableBtn);
+    };
+
+
+    //////////////////////////////////////////////////// for verifier
+
+    const verifier = () => {
+      let enableBtn = false;
+      if (currenTab === 3) {
+        if (isverified === false) {
+          if (Allow_To_Do_Verify_Kyc_details === true || roles.verifier) {
+            enableBtn = true;
+          }
+        }
+      }
+
+      setEnableBtnVerifier(enableBtn);
+    };
+    approver();
+    verifier();
+    approvedtab();
+
+
+
+
+    if (currenTab === 3) {
+      setButtonText("Verify KYC")
+      // console.log("The Button Name is verify kyc",buttonText)
+    }
+
+    // console.log("currenTab", currenTab)
+    if (currenTab === 4) {
+      setButtonText("Approve KYC")
+      // console.log("The Button Name is Approve kyc",buttonText)
+
+    }
+
+
+
+    //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
+    //  console.log("isverified",isverified)
+    // return () => {
+    //   setTriggerRateMapping(false)
+    // }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
+
+
+
   const submitHandler = async () => {
-    console.log(isRateMappingRestrticted?.isProductRateMapRestrict)
-    console.log(isRateMappingRestrticted?.isUserRateMapRestrict)
+
     if (!isRateMappingRestrticted?.isProductRateMapRestrict && !isRateMappingRestrticted?.isUserRateMapRestrict) {
-      console.log(generalFormVal)
+      // console.log(generalFormVal)
       if (!generalFormVal?.isFinalSubmit && (generalFormVal?.parent_client_code === '' || generalFormVal?.parent_client_code === null || generalFormVal?.parent_client_code === undefined) && roles?.approver && currenTab === 4) {
         alert("Please Select the parent client code for the rate mapping");
         return false
@@ -247,7 +321,8 @@ const CompleteVerification = (props) => {
             dispatch(approvekyc(dataAppr)).then((resp) => {
               if (resp?.meta?.requestStatus === 'fulfilled') {
                 saveBafData(kyc.kycUserList)
-                dispatch(generalFormData({ isFinalSubmit: false }))
+
+                startRateMappingHandler(true)
                 setButtonLoader(false)
                 setDisable(false);
 
@@ -327,78 +402,6 @@ const CompleteVerification = (props) => {
     }
   };
 
-
-  useEffect(() => {
-    //  Button enable for approver
-    const approver = () => {
-      let enableBtn = false;
-      if (currenTab === 4) {
-        if (roles.approver === true)
-          if (isverified === true && isapproved === false) {
-            enableBtn = true;
-          }
-      }
-
-      setEnableBtnApprover(enableBtn);
-    };
-
-    // For current tab 5
-    const approvedtab = () => {
-      let enableBtn = false;
-      if (currenTab === 5) {
-        if (roles.approver === true)
-          if (Allow_To_Do_Verify_Kyc_details === true) {
-            enableBtn = true;
-
-          }
-      }
-      setEnableBtnApprovedTab(enableBtn);
-    };
-
-
-    //////////////////////////////////////////////////// for verifier
-
-    const verifier = () => {
-      let enableBtn = false;
-      if (currenTab === 3) {
-        if (isverified === false) {
-          if (Allow_To_Do_Verify_Kyc_details === true || roles.verifier) {
-            enableBtn = true;
-          }
-        }
-      }
-
-      setEnableBtnVerifier(enableBtn);
-    };
-    approver();
-    verifier();
-    approvedtab();
-
-
-
-
-    if (currenTab === 3) {
-      setButtonText("Verify KYC")
-      // console.log("The Button Name is verify kyc",buttonText)
-    }
-
-    // console.log("currenTab", currenTab)
-    if (currenTab === 4) {
-      setButtonText("Approve KYC")
-      // console.log("The Button Name is Approve kyc",buttonText)
-
-    }
-
-
-
-    //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
-    //  console.log("isverified",isverified)
-    // return () => {
-    //   setTriggerRateMapping(false)
-    // }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
 
 
 
