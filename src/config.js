@@ -59,7 +59,7 @@ const API_LIVE = {
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
   getExpectedTransaction: `${kyc_url}/kyc/get-range/transaction-range`,
 
-  
+
 
 
 
@@ -293,6 +293,8 @@ const API_LIVE = {
 
   UDYAM_REGISTRATION: `${kyc_validate}/validator`,
 
+  Aadhar_number: `${kyc_validate}/validator/validate-aadhar/send-otp/`,
+  Aadhar_otp_verify: `${kyc_validate}/validator/validate-aadhar/verify-otp/`,
 
 
   // For comments in approver and merchant (Pending Verification and Pending Approval)

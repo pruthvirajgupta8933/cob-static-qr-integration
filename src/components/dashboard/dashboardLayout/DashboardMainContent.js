@@ -84,8 +84,8 @@ import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
 import toastConfig from "../../../utilities/toastTypes";
 import UserInfo from "../../ApproverNVerifier/UserInfo";
 import TransactionHistory from "../AllPages/transaction-history/TransactionHistory";
-import AadharResponse from "../../ApproverNVerifier/additional-kyc/AadharResponse";
 import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/AssigneAccountManger";
+import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attestr/AadharResponse";
 
 
 function DashboardMainContent() {
