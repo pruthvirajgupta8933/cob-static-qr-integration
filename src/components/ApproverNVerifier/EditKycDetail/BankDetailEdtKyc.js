@@ -82,7 +82,7 @@ function BankDetailEdtKyc(props) {
     account_holder_name: Yup.string()
       .trim()
       .allowOneSpace()
-      .required("Required")
+      // .required("Required")
       .nullable(),
     ifsc_code: Yup.string()
       .allowOneSpace()
@@ -90,22 +90,22 @@ function BankDetailEdtKyc(props) {
       .matches(IFSCRegex, "Your IFSC code is Invalid and must be in capital letters")
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
-      .required("Required")
+      // .required("Required")
       .nullable(),
     account_number: Yup.string()
       .allowOneSpace()
       .matches(AccountNoRgex, "Your Account Number is Invalid")
-      .required("Required")
+      // .required("Required")
       .nullable(),
     account_type: Yup.string()
-      .required("Required")
+      // .required("Required")
       .nullable(),
     branch: Yup.string()
       .trim()
-      .required("Required")
+      // .required("Required")
       .nullable(),
     bank_id: Yup.string()
-      .required("Required")
+      // .required("Required")
       .nullable(),
     isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number"),
     oldIfscCode: Yup.string()
@@ -115,7 +115,7 @@ function BankDetailEdtKyc(props) {
     oldAccountNumber: Yup.string()
       .oneOf([Yup.ref("account_number"), null],
         "You need to verify Your Account Number")
-      .required("You need to verify Your Account Number")
+      // .required("You need to verify Your Account Number")
       .nullable(),
   });
 
@@ -216,8 +216,27 @@ function BankDetailEdtKyc(props) {
 
   // TODO: remove the bank list api and update with the response from the bank name api
   const onSubmit = (values) => {
+    // Check if any required fields are empty
+    const emptyFields = [
+      'account_holder_name',
+      'account_number',
+      'ifsc_code',
+      'bank_id',
+      'branch',
+    ].some((field) => !values[field]);
+  
+    if (emptyFields) {
+      const confirmSubmit = window.confirm(
+        "Some fields are empty. Are you sure you want to proceed?"
+      );
+  
+      if (!confirmSubmit) {
+        return; // Exit the function if the user cancels
+      }
+    }
+  
     let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
-
+  
     setIsDisable(true);
     dispatch(
       updateSettlementInfo({
@@ -240,15 +259,14 @@ function BankDetailEdtKyc(props) {
         setIsDisable(false);
         setTitle("DOCUMENTS UPLOAD");
         dispatch(kycUserList({ login_id: selectedId }));
-        dispatch(GetKycTabsStatus({ login_id:selectedId }));
-
+        dispatch(GetKycTabsStatus({ login_id: selectedId }));
       } else {
         toast.error(res?.payload?.detail);
         setIsDisable(false);
       }
     });
-
   };
+  
 
 
 

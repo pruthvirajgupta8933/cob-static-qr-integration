@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import React, {  useState } from "react";
+import { Formik, Field, Form} from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../../_components/formik/FormikController";
 import "./kyc-style.css";
@@ -7,6 +7,8 @@ import OtpInput from "react-otp-input";
 import { updateContactInfoEditDetails } from "../../../slices/editKycSlice";
 import { kycUserList } from "../../../slices/kycSlice";
 import { toast } from "react-toastify";
+import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+import Yup from "../../../_components/formik/Yup";
 
 
 
@@ -20,8 +22,10 @@ function ContactInfoEdtkyc(props) {
  const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
-  const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
-  const dispatch=useDispatch()
+  const isContactNumberVerified=KycList?.isContactNumberVerified
+    const isEmailVerified=KycList?.isEmailVerified
+     const dispatch=useDispatch()
+     const [disable,setIsDisable]=useState(false)
 
   const initialValues = {
     name: KycList?.name,
@@ -31,13 +35,60 @@ function ContactInfoEdtkyc(props) {
     
     
   };
-
-
-
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+      // .wordLength("Word character length exceeded")
+      // .max(100, "Maximum 100 characters are allowed")
+      .nullable()
+      .allowOneSpace(),
+    contact_number: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .min(10, "Phone number is not valid")
+      .max(10, "Only 10 digits are allowed ")
+      .nullable(),
+    // oldContactNumber: Yup.string()
+    //   .trim()
+    //   .oneOf(
+    //     [Yup.ref("contact_number"), null],
+    //     "You need to verify Your Contact Number"
+    //   )
+    //   .required("You need to verify Your Contact Number")
+    //   .nullable(),
+    email_id: Yup.string()
+      .allowOneSpace()
+      .email("Invalid email")
+      .nullable(),
+   
+    aadhar_number: Yup.string()
+      .allowOneSpace()
+      .max(18, "Exceeds the limit")
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+      .nullable(),
+   
+  });
 
   const handleSubmitContact = (values) => {
-    console.log("values",values)
-    // setIsDisable(true);
+    // Check if any required fields are empty
+    const emptyFields = ['name', 'contact_number', 'email_id', 'aadhar_number'].some(
+      (field) => !values[field]
+    );
+  
+    if (emptyFields) {
+      const confirmSubmit = window.confirm(
+        "Some fields are empty. Are you sure you want to proceed?"
+      );
+  
+      if (!confirmSubmit) {
+        return; // Exit the function if the user cancels
+      }
+    }
+  
+    setIsDisable(true);
     dispatch(
       updateContactInfoEditDetails({
         login_id: selectedId,
@@ -46,38 +97,27 @@ function ContactInfoEdtkyc(props) {
         email_id: values.email_id,
         modified_by: loginId,
         aadhar_number: values.aadhar_number,
-        is_email_verified: false,
-        is_contact_number_verified: false
+        is_email_verified: isEmailVerified === 1,
+        is_contact_number_verified: isContactNumberVerified === 1,
       })
     ).then((res) => {
-      console.log("res",res?.meta?.requestStatus)
-      console.log("status",res?.payload?.status)
-      
-
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res.payload?.status === true
       ) {
         setTab(2);
         setTitle("BUSINESS OVERVIEW");
-        // setIsDisable(false);
+        setIsDisable(false);
         toast.success(res.payload?.message);
         dispatch(kycUserList({ login_id: selectedId }));
-        // dispatch(GetKycTabsStatus({ login_id: loginId }));
       } else {
-        toast.error(res.payload);
-        toast.error(res.payload?.message);
+        toast.error(res.payload?.message || "Something went wrong");
         toast.error(res.payload?.detail);
-        // setIsDisable(false);
+        setIsDisable(false);
       }
-    })
-    // .catch((error) => {
-
-    //   toast.error("Something went wrong");
-    // })
-
-
+    });
   };
+  
 
 
  const tooltipData = {
@@ -89,7 +129,7 @@ function ContactInfoEdtkyc(props) {
     <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
-        // validationSchema={validationSchema}
+         validationSchema={validationSchema}
         onSubmit={handleSubmitContact}
         enableReinitialize={true}
       >
@@ -143,8 +183,16 @@ function ContactInfoEdtkyc(props) {
                     }}
                     
                   />
+                  
 
                 </div>
+                <span className="mb-1">
+                 
+                 <p className={isContactNumberVerified === 1 ? "text-success" : "text-danger"}>
+                   {isContactNumberVerified === 1 ? "Verified" : "Not Verified"}
+                 </p>
+               
+             </span>
 
 
                
@@ -164,6 +212,13 @@ function ContactInfoEdtkyc(props) {
                      />
                  
                 </div>
+                <span className="mb-1">
+                 
+                 <p className={isEmailVerified === 1 ? "text-success" : "text-danger"}>
+                   {isEmailVerified === 1 ? "Verified" : "Not Verified"}
+                 </p>
+               
+             </span>
 
                
               </div>
@@ -175,16 +230,16 @@ function ContactInfoEdtkyc(props) {
                   <></>
                 ) : ( */}
                   <button
-                    // disabled={disable}
+                     disabled={disable}
                     type="submit"
                     className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
                   >
-                    {/* {disable &&
+                    {disable &&
                       <span className="mr-2">
                         <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
                         <span className="sr-only">Loading...</span>
                       </span>
-                    } */}
+                    }
                     {"Save and Next"}
                   </button>
                 {/* )} */}

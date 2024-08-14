@@ -115,34 +115,35 @@ function BusinessDetailEdtKyc(props) {
   const validationSchema = Yup.object().shape({
     company_name: Yup.string()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
-      .required("Required")
+     
       .nullable(),
-    gst_number: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
-      is: true,
-      then: Yup.string()
-        .trim()
-        .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-        // .matches(regexGSTN, "GSTIN Number is Invalid")
-        .required("Required")
-        .nullable(),
-      otherwise: Yup.string()
-        .notRequired()
-        .nullable(),
-    }),
-    prevGstNumber: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
-      is: true,
-      then: Yup.string().oneOf(
-        [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
-        .required("You need to verify Your GSTIN Number")
-        .nullable(),
-      otherwise: Yup.string().notRequired().nullable()
-    }),
+      gst_number: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
+        is: true,
+        then: Yup.string()
+          .trim()
+          .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+          // .matches(regexGSTN, "GSTIN Number is Invalid")
+          .required("Required")
+          .nullable(),
+        otherwise: Yup.string()
+          .notRequired()
+          .nullable(),
+      }),
+      prevGstNumber: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
+        is: true,
+        then: Yup.string().oneOf(
+          [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
+          .required("You need to verify Your GSTIN Number")
+          .nullable(),
+        otherwise: Yup.string().notRequired().nullable()
+      }),
+   
     udyam_number: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
       is: true,
       then: Yup.string()
 
         .max(25, "Invalid Format")
-        .required("Required")
+        
         .nullable(),
       otherwise: Yup.string()
         .notRequired()
@@ -153,32 +154,33 @@ function BusinessDetailEdtKyc(props) {
       then: Yup.string().oneOf(
         [Yup.ref("udyam_number"), null], "You need to verify Your Udyam Reg. Number")
         .required("Udyam Reg. Number Required")
+        
         .nullable(),
       otherwise: Yup.string().notRequired().nullable()
     }),
     pan_card: Yup.string().allowOneSpace()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .required("Required")
+      
       .nullable(),
-    isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
+    isPanVerified: Yup.string().nullable(),
 
     signatory_pan: Yup.string()
       .allowOneSpace()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .required("Required")
+      
       .nullable(),
-    isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
+    isSignatoryPanVerified: Yup.string().allowOneSpace().nullable(),
     prevSignatoryPan: Yup.string().allowOneSpace()
       .oneOf(
         [Yup.ref("signatory_pan"), null],
         "You need to verify Your Authorized Signatory PAN Number"
       )
-      .required("Authorized Signatory PAN Number Required")
+      
       .nullable(),
 
     name_on_pancard: Yup.string()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
-      .required("Required")
+      
       .nullable(),
     city_id: Yup.string()
       .allowOneSpace()
@@ -422,51 +424,76 @@ function BusinessDetailEdtKyc(props) {
   };
 
   const onSubmit = (values) => {
+    
+    // Check if any required fields are empty
+    const emptyFields = [
+      'company_name', 
+      'gst_number', 
+      'registerd_with_gst', 
+      'gst_number',
+      'pan_card',
+      'signatory_pan',
+      'name_on_pancard',
+      'pin_code',
+      'city_id',
+      'state_id',
+      'operational_address',
+      'is_udyam',
+      'udyam_data'
+    ].some((field) => !values[field]);
+  
+    // If any required fields are empty, confirm with the user
+    if (emptyFields) {
+      const confirmSubmit = window.confirm(
+        "Some fields are empty. Are you sure you want to proceed?"
+      );
+  
+      if (!confirmSubmit) {
+        return; // Exit the function if the user cancels
+      }
+    }
+  
+    // Disable the form and prepare data for submission
     setIsDisable(true);
     const postData = {
-
       "login_id": selectedId,
-        "company_name": values.company_name,
-        "registerd_with_gst": JSON.parse(values.registerd_with_gst),
-        "gst_number": values.gst_number,
-        "pan_card": values.pan_card,
-        "signatory_pan": values.signatory_pan,
-        "name_on_pancard": values.name_on_pancard,
-        "pin_code": values.pin_code,
-        "city_id": values.city_id,
-        "state_id":values.state_id,
-        "operational_address": values.operational_address,
-        "modified_by": loginId,
-        "is_udyam":JSON.parse(values.registerd_with_udyam),
-        "udyam_data": udyamResponseData
-       
-    }
-    
-
-    // console.log("postData", postData)
-
+      "company_name": values.company_name,
+      "registerd_with_gst": JSON.parse(values.registerd_with_gst),
+      "gst_number": values.gst_number,
+      "pan_card": values.pan_card,
+      "signatory_pan": values.signatory_pan,
+      "name_on_pancard": values.name_on_pancard,
+      "pin_code": values.pin_code,
+      "city_id": values.city_id,
+      "state_id": values.state_id,
+      "operational_address": values.operational_address,
+      "modified_by": loginId,
+      "is_udyam": JSON.parse(values.registerd_with_udyam),
+      "udyam_data": udyamResponseData
+    };
+  
+    // Dispatch the action to update the merchant information
     dispatch(updateMerchantInfo(postData)).then((res) => {
-      console.log("res",res)
+      console.log("res", res);
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true
       ) {
-        console.log("in if")
+        console.log("in if");
         toast.success(res?.payload?.message);
         setTab(4);
         setTitle("BANK DETAILS");
         dispatch(kycUserList({ login_id: selectedId }));
         dispatch(GetKycTabsStatus({ login_id: selectedId }));
-
         setIsDisable(false);
       } else {
-        console.log("in else")
+        console.log("in else");
         toast.error(res?.payload);
         setIsDisable(false);
       }
     });
-
   };
+  
 
 
   const registeredWithGstHandler = (value, setFieldValue) => {

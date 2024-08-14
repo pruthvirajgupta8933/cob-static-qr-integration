@@ -608,7 +608,7 @@ function DashboardMainContent() {
                             <AssigneAccountManger />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/editkyc-detail`} Component={EditKycDetail} roleList={{ approver: true}}>
+                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true}}>
                             <EditKycDetail />
                         </AuthorizedRoute>
 

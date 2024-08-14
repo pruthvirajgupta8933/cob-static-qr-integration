@@ -5,17 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { updateBusinessOverViewEditDetails } from "../../../slices/editKycSlice";
 import FormikController from "../../../_components/formik/FormikController";
+import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+import Yup from "../../../_components/formik/Yup";
 
-// import {
-//   businessType,
-//   busiCategory,
-//   platformType,
-//   // collectionFrequency,
-//   // collectionType,
-//   saveBusinessInfo,
-//   kycUserList,
-//   GetKycTabsStatus,
-// } from "../../slices/kycSlice";
+
 
 import { businessType,
     busiCategory,
@@ -33,8 +26,7 @@ function BusinessOverviewEditKyc(props) {
   const selectedId=props.selectedId
   const setTab = props.tab;
   const setTitle = props.title;
-  const merchantloginMasterId = props.merchantloginMasterId;
-
+  
 
   const dispatch = useDispatch();
 
@@ -83,23 +75,7 @@ function BusinessOverviewEditKyc(props) {
   // console.log("KycList", KycList)
   // *static data added after internal discussion
   const initialValues = {
-    // business_type: KycList.businessType,
-    // business_category: business_category_code,
-    // business_model: "Working",
-    // billing_label: KycList.billingLabel,
-    // erp_check: KycList.erpCheck === true ? "True" : "False",
-    // platform_id: KycList.platformId,
-    // // company_website: KycList.companyWebsite,
-    // seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
-    // website_app_url: KycList?.website_app_url,
-    // avg_ticket_size: KycList?.avg_ticket_size,
-    // collection_type_id: "6752767",
-    // collection_frequency_id: "3787910",
-    // ticket_size: "10",
-    // expected_transactions: KycList?.expectedTransactions,
-    // form_build: "Yes",
-
-    business_type: KycList.businessType,
+   business_type: KycList.businessType,
     business_category: business_category_code,
     business_model: "Working",
     billing_label: KycList.billingLabel,
@@ -124,6 +100,53 @@ function BusinessOverviewEditKyc(props) {
   const RegexMssg = {
     acceptAlphabet: 'Please enter valid characters.',
   };
+
+
+  const validationSchema = Yup.object().shape(
+    {
+      business_type: Yup.string().nullable(),
+      business_category: Yup.string()
+        .required("Select Business Category")
+        .nullable(),
+      platform_id: Yup.string()
+        
+        .nullable(),
+      billing_label: Yup.string()
+        .allowOneSpace()
+        .min(1, 'Please enter more than 1 character')
+        .max(250, 'Please do not enter more than 250 characters')
+        .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
+       
+        .nullable(),
+
+      website_app_url: Yup.string().allowOneSpace().when(["seletcted_website_app_url"], {
+        is: "Yes",
+        then: Yup.string()
+          .matches(
+            Regex.urlFormate, RegexMsg.urlFormate
+          )
+          .test('is-url', 'Please enter a valid website URL', (value) => {
+            if (!value) return true; // Allow empty values
+            try {
+              new URL(value);
+              return true;
+            } catch (error) {
+              return false;
+            }
+          })
+         
+          .nullable(),
+        otherwise: Yup.string().notRequired().nullable(),
+      }),
+      expected_transactions: Yup.string().trim().nullable(),
+      avg_ticket_size: Yup.string()
+        .trim()
+
+       .nullable(),
+      // .nullable(),
+    },
+    [["seletcted_website_app_url"]]
+  );
 
  
 
@@ -316,7 +339,7 @@ function BusinessOverviewEditKyc(props) {
     <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
-        // validationSchema={validationSchema}
+         validationSchema={validationSchema}
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
