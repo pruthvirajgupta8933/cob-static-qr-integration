@@ -23,7 +23,7 @@ export const fetchMerchantProductSubscribeList = createAsyncThunk(
 
 const initialState = {
     merchantProductSubscribeList: {
-        count:0
+        count: 0
     },
     isLoading: false
 }
@@ -35,21 +35,18 @@ export const productSubscriptionServiceAdminSlice = createSlice({
     extraReducers: (builder) => {
 
         builder
-        .addCase(fetchMerchantProductSubscribeList.pending, (state) => {
-            state. isLoading=true
-            state.merchantProductSubscribeList.count=0;
-
-           
-        })
+            .addCase(fetchMerchantProductSubscribeList.pending, (state) => {
+                state.isLoading = true
+                state.merchantProductSubscribeList.count = 0;
+            })
             .addCase(fetchMerchantProductSubscribeList.fulfilled, (state, action) => {
                 // state.loading = 'loading';
                 state.merchantProductSubscribeList = action.payload;
-                state. isLoading=false
+                state.isLoading = false
             })
+            .addCase(fetchMerchantProductSubscribeList.rejected, (state) => {
+                state.isLoading = false
 
-           .addCase(fetchMerchantProductSubscribeList.rejected, (state) => {
-                state. isLoading=false
-    
             })
 
     }
