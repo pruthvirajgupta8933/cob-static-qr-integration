@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import Yup from "../../_components/formik/Yup";
-import FormikController from "../../_components/formik/FormikController";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
+// import Yup from "../../_components/formik/Yup";
+// import FormikController from "../../_components/formik/FormikController";
+import FormikController from "../../../_components/formik/FormikController";
+import Yup from "../../../_components/formik/Yup";
+import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  kycBankNames,
-  saveMerchantBankDetais,
-  ifscValidation,
-  bankAccountVerification,
-  getBankId,
-  kycUserList,
-  GetKycTabsStatus,
-} from "../../slices/kycSlice";
-import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-import gotVerified from "../../assets/images/verified.png";
+// import {
+//   kycBankNames,
+//   saveMerchantBankDetais,
+//   ifscValidation,
+//   bankAccountVerification,
+//   getBankId,
+//   kycUserList,
+//   GetKycTabsStatus,
+// } from "../../slices/kycSlice";
+
+import { kycBankNames,saveMerchantBankDetais,
+    ifscValidation,
+    bankAccountVerification,
+    getBankId,
+    kycUserList,
+    GetKycTabsStatus,} from "../../../slices/kycSlice";
+
+import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+// import gotVerified from "../../assets/images/verified.png";
+import gotVerified from "../../../assets/images/verified.png"
+import { updateSettlementInfo } from "../../../slices/editKycSlice";
 
 
-function BankDetails(props) {
+function BankDetailEdtKyc(props) {
   const setTab = props.tab;
   const setTitle = props.title;
+  const selectedId=props. selectedId
   const merchantloginMasterId = props.merchantloginMasterId;
 
   // const { role } = props;
@@ -69,7 +82,7 @@ function BankDetails(props) {
     account_holder_name: Yup.string()
       .trim()
       .allowOneSpace()
-      
+      // .required("Required")
       .nullable(),
     ifsc_code: Yup.string()
       .allowOneSpace()
@@ -77,32 +90,32 @@ function BankDetails(props) {
       .matches(IFSCRegex, "Your IFSC code is Invalid and must be in capital letters")
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
-      
+      // .required("Required")
       .nullable(),
     account_number: Yup.string()
       .allowOneSpace()
       .matches(AccountNoRgex, "Your Account Number is Invalid")
-    
+      // .required("Required")
       .nullable(),
     account_type: Yup.string()
-      
+      // .required("Required")
       .nullable(),
     branch: Yup.string()
       .trim()
-      
+      // .required("Required")
       .nullable(),
     bank_id: Yup.string()
-      
+      // .required("Required")
       .nullable(),
-    isAccountNumberVerified: Yup.string(),
+    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number"),
     oldIfscCode: Yup.string()
       .oneOf([Yup.ref("ifsc_code"), null], "IFSC code is not verified")
-     
+      .required("IFSC code is not verified")
       .nullable(),
     oldAccountNumber: Yup.string()
       .oneOf([Yup.ref("account_number"), null],
         "You need to verify Your Account Number")
-      
+      // .required("You need to verify Your Account Number")
       .nullable(),
   });
 
@@ -203,18 +216,37 @@ function BankDetails(props) {
 
   // TODO: remove the bank list api and update with the response from the bank name api
   const onSubmit = (values) => {
+    // Check if any required fields are empty
+    const emptyFields = [
+      'account_holder_name',
+      'account_number',
+      'ifsc_code',
+      'bank_id',
+      'branch',
+    ].some((field) => !values[field]);
+  
+    if (emptyFields) {
+      const confirmSubmit = window.confirm(
+        "Some fields are empty. Are you sure you want to proceed?"
+      );
+  
+      if (!confirmSubmit) {
+        return; // Exit the function if the user cancels
+      }
+    }
+  
     let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
-
+  
     setIsDisable(true);
     dispatch(
-      saveMerchantBankDetais({
+      updateSettlementInfo({
         account_holder_name: values.account_holder_name,
         account_number: values.account_number,
         ifsc_code: values.ifsc_code,
         bank_id: values.bank_id,
         account_type: selectedChoice,
         branch: values.branch,
-        login_id: merchantloginMasterId,
+        login_id: selectedId,
         modified_by: loginId,
       })
     ).then((res) => {
@@ -226,16 +258,15 @@ function BankDetails(props) {
         setTab(5);
         setIsDisable(false);
         setTitle("DOCUMENTS UPLOAD");
-        dispatch(kycUserList({ login_id: merchantloginMasterId }));
-        dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
-
+        dispatch(kycUserList({ login_id: selectedId }));
+        dispatch(GetKycTabsStatus({ login_id: selectedId }));
       } else {
         toast.error(res?.payload?.detail);
         setIsDisable(false);
       }
     });
-
   };
+  
 
 
 
@@ -283,7 +314,7 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-            {console.log(errors)}
+            
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
@@ -294,8 +325,8 @@ function BankDetails(props) {
                     text="text"
                     name="ifsc_code"
                     className="form-control"
-                    disabled={VerifyKycStatus === "Verified"}
-                    readOnly={false}
+                    // disabled={VerifyKycStatus === "Verified"}
+                    // readOnly={false}
                   />
 
                   {(values?.ifsc_code !== null && loading) &&
@@ -354,8 +385,8 @@ function BankDetails(props) {
                     type="text"
                     name="account_number"
                     className="form-control"
-                    readOnly={false}
-                    disabled={VerifyKycStatus === "Verified"}
+                    // readOnly={false}
+                    // disabled={VerifyKycStatus === "Verified"}
                   />
 
                   {/* if both values are same then display verified icon */}
@@ -426,8 +457,8 @@ function BankDetails(props) {
                   type="text"
                   name="account_holder_name"
                   className="form-control"
-                  readOnly={true}
-                  disabled={true}
+                  // readOnly={true}
+                  // disabled={true}
                 />
               </div>
 
@@ -442,8 +473,8 @@ function BankDetails(props) {
                   name="account_type"
                   options={selectedType}
                   className="form-select"
-                  readOnly={false}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  // readOnly={false}
+                  // disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
 
               </div>
@@ -458,8 +489,8 @@ function BankDetails(props) {
                   name="bank_id"
                   className="form-control"
                   options={data}
-                  readOnly={true}
-                  disabled={true}
+                  // readOnly={true}
+                  // disabled={true}
                 />
               </div>
 
@@ -472,14 +503,14 @@ function BankDetails(props) {
                   type="text"
                   name="branch"
                   className="form-control"
-                  readOnly={true}
-                  disabled={true}
+                  // readOnly={true}
+                  // disabled={true}
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                {VerifyKycStatus === "Verified" ? <></> : (
+                {/* {VerifyKycStatus === "Verified" ? <></> : ( */}
                   <button
                     disabled={disable}
                     className="float-lg-right cob-btn-primary text-white btn-sm border-0 mt-4"
@@ -493,7 +524,7 @@ function BankDetails(props) {
                     </>}
                     {buttonText}
                   </button>
-                )}
+                {/* )} */}
               </div>
             </div>
           </Form>
@@ -502,4 +533,4 @@ function BankDetails(props) {
     </div>
   );
 }
-export default BankDetails;
+export default BankDetailEdtKyc;
