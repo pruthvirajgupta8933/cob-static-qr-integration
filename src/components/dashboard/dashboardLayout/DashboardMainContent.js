@@ -86,6 +86,7 @@ import UserInfo from "../../ApproverNVerifier/UserInfo";
 import TransactionHistory from "../AllPages/transaction-history/TransactionHistory";
 import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/AssigneAccountManger";
 import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attestr/AadharResponse";
+import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
 
 
 function DashboardMainContent() {
@@ -604,6 +605,10 @@ function DashboardMainContent() {
                             roleList={{ approver: true }}
                         >
                             <AssigneAccountManger />
+                        </AuthorizedRoute>
+
+                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true}}>
+                            <EditKycDetail />
                         </AuthorizedRoute>
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
