@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
-import toastConfig from '../../../utilities/toastTypes';
-import { axiosInstance } from '../../../utilities/axiosInstance';
+import toastConfig from '../../../../utilities/toastTypes';
+import { axiosInstance } from '../../../../utilities/axiosInstance';
+// import toastConfig from '../../../../utilities/toastTypes';
+// import { axiosInstance } from '../../../../utilities/axiosInstance';
 
 
 function AadharResponse() {
