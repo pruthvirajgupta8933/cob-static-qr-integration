@@ -223,7 +223,7 @@ const KycDetailsModal = (props) => {
 
           <SubscribeProductList SubscribedPlanData={SubscribedPlanData} />
           {/* allow this component for types of user role */}
-          {!isProductRateMapRestrict && !isUserRateMapRestrict && currenTab === 4 &&
+          {!isProductRateMapRestrict && !isUserRateMapRestrict &&
             <GeneralForm
               selectedUserData={selectedUserData}
               merchantKycId={merchantKycId}
