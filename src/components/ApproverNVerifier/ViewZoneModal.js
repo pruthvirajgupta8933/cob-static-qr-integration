@@ -208,7 +208,7 @@ const ViewZoneModal = ({ openZoneModal, setOpenZoneModal, userData }) => {
               disabled={buttonDisable}
             >
               {buttonDisable && (
-                <span className="spinner-border spinner-border-sm mr-1 btn-sm" role="status" ariaHidden="true"></span>
+                 <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
               )}
               Submit
             </button>

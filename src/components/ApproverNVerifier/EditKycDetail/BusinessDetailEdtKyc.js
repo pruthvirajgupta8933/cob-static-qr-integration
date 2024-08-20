@@ -555,8 +555,8 @@ function BusinessDetailEdtKyc(props) {
             {console.log("values",values)}
             {console.log("errors",errors)} */}
               <div className="col-sm-12 col-md-6 col-lg-6">
-                <div className="input-group">
-                  <lable>Do you have a GST number?</lable>
+                <div className="">
+                  <lable>Do you have a GST number? </lable>
                   <div className="d-flex d-flex justify-content-between w-50">
 
                     <FormikController
@@ -572,7 +572,7 @@ function BusinessDetailEdtKyc(props) {
                 </div>
 
                 {JSON.parse(values.registerd_with_gst) === false &&
-                  <div className="input-group mt-2">
+                  <div className="mt-2">
                     <lable>Do you have a Udyam Number?</lable>
                     <div className="d-flex d-flex justify-content-between w-50">
                       <FormikController

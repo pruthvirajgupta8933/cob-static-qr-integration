@@ -4,7 +4,7 @@ import GstinAdditionalKyc from "./GstinAdditionalKyc";
 import BankAccountList from "./BankAccountList";
 import AdditionalKycForPan from "./AdditionalKycForPan";
 import UdyamRegistrationList from "./UdyamRegistrationList";
-import AadharVerify from "./AadharVerify";
+import AadharVerify from "./aadhar-attestr/AadharVerify";
 
 const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
@@ -14,7 +14,7 @@ const AdditionalKYC = () => {
     { documentType: "BANK ACCOUNT", value: "3" },
     { documentType: "UDYAM", value: "4" },
     { documentType: "FRM", value: "5" },
-    { documentType: "AADHAR VERIFICATION (Attestr)", value: "6" }
+    { documentType: "AADHAR VERIFICATION", value: "6" }
   ];
 
   // Helper functions

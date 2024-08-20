@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch} from "react-redux";
 import classes from "./editkycDetails.module.css"
 import ContactInfoEdtkyc from "./ContactInfoEdtkyc";
 import BusinessOverviewEditKyc from "./BusinessOverviewEditKyc";
 import BusinessDetailEdtKyc from "./BusinessDetailEdtKyc";
 import BankDetailEdtKyc from "./BankDetailEdtKyc";
 import DocumentUploadNewEdtKyc from "./DocumentUploadNewEdtKyc";
-import SubmitKycEdt from "./SubmitKycEdt";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from 'react-select';
@@ -161,11 +160,10 @@ function EditKycDetail() {
                   (tab === 6 && (
                     <ViewDocument  selectedId={selectedId} />
                   )) || <ContactInfoEdtkyc
-                    // role={roles}
-                    //   kycid={kycid}
-                    //   merchantloginMasterId={merchantloginMasterId}
-                    // tab={SetTab}
-                    title={setTitle} />}
+                    
+                  tab={SetTab}
+                  title={setTitle}
+                  selectedId={selectedId}/>}
               </div>
             </div>
           </div>

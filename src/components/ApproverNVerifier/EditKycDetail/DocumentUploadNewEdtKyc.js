@@ -247,7 +247,7 @@ const DocumentUploadNewEdtKyc = (props) => {
                  <button
                    type="submit"
                    // onClick={() => handleUpload(index, values)}
-                   className="btn btn-sm cob-btn-primary text-white ml-3"
+                   className="btn btn-sm cob-btn-primary text-white"
                  >
                    Upload
                  </button>
