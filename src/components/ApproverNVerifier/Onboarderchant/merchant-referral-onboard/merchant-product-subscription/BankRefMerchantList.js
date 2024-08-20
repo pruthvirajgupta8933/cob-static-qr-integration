@@ -9,23 +9,31 @@ import CustomLoader from "../../../../../_components/loader"
 import {
     fetchMerchantProductSubscribeList
 } from "../../../../../slices/approver-dashboard/productSubscriptionServiceAdminSlice";
-import { axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
-import API_URL, { Qwick_Form } from "../../../../../config";
+import { axiosInstance, axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
 import toastConfig from "../../../../../utilities/toastTypes";
-// import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import SkeletonTable from "../../../../../_components/table_components/table/skeleton-table";
+import API_URL from "../../../../../config";
+import { kycUserList } from "../../../../../slices/kycSlice";
 
 function BankRefMerchantList() {
     const roles = roleBasedAccess();
+    const dispatch = useDispatch();
+
     const [onboardType, setOnboardType] = useState("");
+    const [onboardLoding, setOnboardLoading] = useState(false)
     const { user } = useSelector((state) => state.auth);
+
+
+    const { productSubscriptionServiceAdminReducer } = useSelector((state) => state);
+    const { merchantProductSubscribeList, isLoading } = productSubscriptionServiceAdminReducer
+
     const loginId = user?.loginId;
 
     function capitalizeFirstLetter(param) {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
     }
 
-    const PendingVerificationData = [
+    const clientProductList = [
         {
             id: "1",
             name: "S.No",
@@ -61,18 +69,17 @@ function BankRefMerchantList() {
         },
         {
             id: "6",
-            name: "Payment Gateway",
+            name: "Payment Gateway (Enterprise)",
             width: "220px",
             cell: (row) => (
                 <div>
                     <button
                         type="button"
                         onClick={() => productSubscriptionHandler(row, "pg")}
-                        className={`btn-sm ${
-                            row?.payment_gateway?.subscription_status === "Subscribed" 
-                                ? "btn-outline-secondary" 
-                                : "cob-btn-primary text-white"
-                        } ${row.client_code === null ? "client_code_not_available" : ""}`}
+                        className={`btn-sm ${row?.payment_gateway?.subscription_status === "Subscribed"
+                            ? "btn-outline-secondary"
+                            : "cob-btn-primary text-white"
+                            } ${row.client_code === null ? "client_code_not_available" : ""}`}
                         disabled={row.client_code === null || row?.payment_gateway?.subscription_status === "Subscribed"}
                     >
                         {row.client_code === null ? 'Client code not available' : row?.payment_gateway?.subscription_status === "Subscribed" ? "Subscribed" : "Subscribe"}
@@ -82,7 +89,7 @@ function BankRefMerchantList() {
         },
         {
             id: "7",
-            name: "QwikForm",
+            name: "QwikForm (Enterprise)",
             cell: (row) => (
                 <div className="d-flex justify-content-between w-100">
                     <button
@@ -97,11 +104,10 @@ function BankRefMerchantList() {
                         }}
                         disabled={row.client_code === null || row?.qwik_form?.subscription_status === "Subscribed"}
                         // className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed" ? "btn-outline-secondary" : "cob-btn-primary text-white"}`}
-                        className={`btn-sm mx-1 ${
-                            row?.qwik_form?.subscription_status === "Subscribed" 
-                                ? "btn-outline-secondary" 
-                                : "cob-btn-primary text-white"
-                        } ${row.client_code === null ? "client_code_not_available" : ""}`}
+                        className={`btn-sm mx-1 ${row?.qwik_form?.subscription_status === "Subscribed"
+                            ? "btn-outline-secondary"
+                            : "cob-btn-primary text-white"
+                            } ${row.client_code === null ? "client_code_not_available" : ""}`}
 
                     >
                         {/* {(row?.qwik_form?.subscription_status === "Subscribed") ? "Subscribed" : "Subscribe"} */}
@@ -109,15 +115,17 @@ function BankRefMerchantList() {
 
                     </button>
                     {(row?.qwik_form?.subscription_status === "Subscribed") &&
-                        <a
-                            rel="noreferrer"
-                            className={`btn-sm mx-1 btn-outline-secondary`}
-                            target="_blank"
-                            disabled={row.client_code === null}
-                            href={`${Qwick_Form}/QwikForms/saLogin?clientId=${row?.client_id}&&cobUserName=opsuser2@sp&&password=wkVc1iUwAn5tn1V1K&&requestType=COB`}
+                        <button
+                            type="button"
+                            className="btn-sm mx-1 btn-secondary"
+                            disabled={onboardLoding}
+                            onClick={() => {
+
+                                qwikFormOnboardHandler(row)
+                            }}
                         >
                             Config
-                        </a>
+                        </button>
                     }
                 </div>
             )
@@ -130,7 +138,6 @@ function BankRefMerchantList() {
         let subscribeReqData = {
             clientId: data.client_id
         }
-
 
         if (appBtn === "pg") {
             subscribeReqData.applicationId = 10
@@ -157,31 +164,42 @@ function BankRefMerchantList() {
     };
 
 
+    const qwikFormOnboardHandler = async (data) => {
+        try {
+            setOnboardLoading(true)
+            // fetch data of client
+            const respData = await axiosInstanceJWT.get(`${API_URL.clientDataById}?clientId=${data?.client_id}`)
+            const postData = respData?.data
 
-    const dispatch = useDispatch();
-    const loadingState = useSelector(
-        (state) => state.productSubscriptionServiceAdminReducer.isLoading
-    );
-  
+            // post data for onboarding in qwik form
+            const qwikFormResp = await axiosInstance.post(API_URL.qwickFormOnboard, postData)
+            toastConfig.successToast(qwikFormResp?.data?.message)
+            setOnboardLoading(false)
 
-    
+        } catch (error) {
+            setOnboardLoading(false)
+            toastConfig.errorToast(error?.response?.data?.message)
+        }
+    }
+
+
+
+
+
 
 
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(100);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-    const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+    // const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
     // const currenTab = parseInt(verifierApproverTab?.currenTab);
 
 
-    const { productSubscriptionServiceAdminReducer } = useSelector((state) => state);
-    const { merchantProductSubscribeList } = productSubscriptionServiceAdminReducer
-
 
     const [data, setData] = useState([]);
-    const [newRegistrationData, setNewRegistrationData] = useState([]);
-    const [kycIdClick, setKycIdClick] = useState([]);
+    // const [newRegistrationData, setNewRegistrationData] = useState([]);
+    // const [kycIdClick, setKycIdClick] = useState([]);
     const [dataCount, setDataCount] = useState(0)
 
 
@@ -191,8 +209,8 @@ function BankRefMerchantList() {
 
         if (merchantProductSubscribeDataList) {
             setData(merchantProductSubscribeDataList);
-            setNewRegistrationData(merchantProductSubscribeDataList);
-            setKycIdClick(merchantProductSubscribeDataList);
+            // setNewRegistrationData(merchantProductSubscribeDataList);
+            // setKycIdClick(merchantProductSubscribeDataList);
             setDataCount(dataCount)
         }
     }, [merchantProductSubscribeList]); //
@@ -214,7 +232,6 @@ function BankRefMerchantList() {
     }, [currentPage, pageSize, onboardType, searchText]);
 
     const fetchData = () => {
-        // console.log("searchText", searchText)
         dispatch(
             fetchMerchantProductSubscribeList({
                 page: currentPage,
@@ -222,11 +239,10 @@ function BankRefMerchantList() {
                 created_by: loginId,
                 roleBased: roles?.accountManager,
                 search: searchText
-
             })
         )
-
     };
+
 
     //function for change current page
     const changeCurrentPage = (page) => {
@@ -271,10 +287,10 @@ function BankRefMerchantList() {
             <div>
                 <div className="scroll overflow-auto">
                     <h6>Total Count : {dataCount}</h6>
-                    
-                    {!loadingState && data?.length !== 0 && (
+
+                    {!isLoading && data?.length !== 0 && (
                         <Table
-                            row={PendingVerificationData}
+                            row={clientProductList}
                             data={data}
                             dataCount={dataCount}
                             pageSize={pageSize}
@@ -283,18 +299,16 @@ function BankRefMerchantList() {
                         />
                     )}
                 </div>
-                
-                {/* {loadingState && <SkeletonTable />} */}
-                <CustomLoader loadingState={loadingState} />
-                {data?.length == 0 && !loadingState && (
+
+                {isLoading && <SkeletonTable />}
+                <CustomLoader loadingState={isLoading} />
+                {data?.length === 0 && !isLoading && (
                     <h6 className="text-center font-weight-bold">No Data Found</h6>
                 )}
-               
+
             </div>
         </div>
     );
 }
 
 export default BankRefMerchantList;
-
-// export default BankRefMerchantList

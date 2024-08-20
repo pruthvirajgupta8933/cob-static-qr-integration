@@ -13,12 +13,12 @@ import {
 function ChangePassword() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { loginId, userName } = user;
+  const { loginId, clientEmail } = user;
   let { path } = useRouteMatch();
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,
-    email: userName,
+    email: clientEmail,
     new_password: "",
     old_password: "",
     confirm_password: "",
@@ -35,15 +35,13 @@ function ChangePassword() {
     showPasswords: false,
   });
 
-  // console.log("passwordType", passwordType)
-
 
 
   const [oldPasswordType, setOldPasswordType] = useState({
     old_password: "",
     showPasswordss: false,
   })
-  // console.log("oldPasswordType", oldPasswordType)
+
 
 
   const oldTogglePassword = () => {
@@ -86,7 +84,6 @@ function ChangePassword() {
   };
 
   const updataPassword = (data) => {
-
     dispatch(
       changePasswordSlice({
         email: data.email,
@@ -122,116 +119,114 @@ function ChangePassword() {
                   validationSchema={FORM_VALIDATION}
                   onSubmit={updataPassword}
                 >
-                  <Form className="form-horizontal">
+                  {({ handleSubmit, isSubmitting, errors, touched, }) => (
+                    <Form className="form-horizontal">
+                      <Field type="hidden" name="loginId" disabled />
+                      <Field type="hidden" name="email" disabled />
 
-                    <Field type="hidden" name="loginId" disabled />
-                    <Field type="hidden" name="email" disabled />
-
-                    <div className="col-lg-4 mb-3">
-                      <label className="form-label">
-                        Old Password
-                      </label>
-                      <div className="input-group">
-                        <Field
-                          type={oldPasswordType.showPasswordss ? "text" : "password"}
-                          name="old_password"
-                          placeholder="Enter Old Password"
-                          className="form-control"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="basic-addon2" onClick={oldTogglePassword}>
-                            {oldPasswordType.showPasswordss ? (
-                              <i className="fa fa-eye" ariaHidden="true"></i>
-                            ) : (
-                              <i className="fa fa-eye-slash" ariaHidden="true"></i>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <ErrorMessage name="old_password">
-                        {(msg) => (
-                          <div className="text-danger m-0">{msg}</div>
-                        )}
-                      </ErrorMessage>
-                    </div>
-
-                    <div className="col-lg-4 mb-3">
-                      <label className="form-label">
-                        New Password
-                      </label>
-                      <div className="input-group">
-                        <Field
-                          type={passwordType.showPasswords ? "text" : "password"}
-                          name="new_password"
-                          placeholder="Enter New Password"
-                          className="form-control"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="basic-addon2" onClick={togglePassword}>
-                            {passwordType.showPasswords ? (
-                              <i className="fa fa-eye" ariaHidden="true"></i>
-                            ) : (
-                              <i className="fa fa-eye-slash" ariaHidden="true"></i>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <ErrorMessage name="new_password">
-                        {(msg) => (
-                          <div className="text-danger m-0">{msg}</div>
-                        )}
-                      </ErrorMessage>
-                    </div>
-
-                    <div className="col-lg-4 mb-3">
-                      <label className="form-label" htmlFor="changepassword">
-                        Confirm New Password:
-                      </label>
-                      <div className="input-group">
-                        <Field
-                          type={values.showPassword ? "text" : "password"}
-                          name="confirm_password"
-                          placeholder="Re-type New Password"
-                          className="form-control"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
-                            {values.showPassword ? (
-                              <i className="fa fa-eye" ariaHidden="true"></i>
-                            ) : (
-                              <i className="fa fa-eye-slash" ariaHidden="true"></i>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <ErrorMessage name="confirm_password">
-                        {(msg) => (
-                          <div className="text-danger m-0">{msg}</div>
-                        )}
-                      </ErrorMessage>
-
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-2 mb-3 ">
-                        <button
-                          type="submit"
-                          className="btn btn-sm cob-btn-primary ml-3"
-                        >
-                          Update Password
-                        </button>
-                      </div>
                       <div className="col-lg-4 mb-3">
-                        <Link to={`${path}/profile`} className="btn btn-light ml-3 btn-sm border-1">
-                          Cancel
-                        </Link>
+                        <label className="form-label">
+                          Old Password
+                        </label>
+                        <div className="input-group">
+                          <Field
+                            type={oldPasswordType.showPasswordss ? "text" : "password"}
+                            name="old_password"
+                            placeholder="Enter Old Password"
+                            className="form-control"
+                          />
+                          <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2" onClick={oldTogglePassword}>
+                              {oldPasswordType.showPasswordss ? (
+                                <i className="fa fa-eye" ariaHidden="true"></i>
+                              ) : (
+                                <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                        <ErrorMessage name="old_password">
+                          {(msg) => (
+                            <div className="text-danger m-0">{msg}</div>
+                          )}
+                        </ErrorMessage>
                       </div>
-                    </div>
 
+                      <div className="col-lg-4 mb-3">
+                        <label className="form-label">
+                          New Password
+                        </label>
+                        <div className="input-group">
+                          <Field
+                            type={passwordType.showPasswords ? "text" : "password"}
+                            name="new_password"
+                            placeholder="Enter New Password"
+                            className="form-control"
+                          />
+                          <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2" onClick={togglePassword}>
+                              {passwordType.showPasswords ? (
+                                <i className="fa fa-eye" ariaHidden="true"></i>
+                              ) : (
+                                <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                        <ErrorMessage name="new_password">
+                          {(msg) => (
+                            <div className="text-danger m-0">{msg}</div>
+                          )}
+                        </ErrorMessage>
+                      </div>
 
+                      <div className="col-lg-4 mb-3">
+                        <label className="form-label" htmlFor="changepassword">
+                          Confirm New Password:
+                        </label>
+                        <div className="input-group">
+                          <Field
+                            type={values.showPassword ? "text" : "password"}
+                            name="confirm_password"
+                            placeholder="Re-type New Password"
+                            className="form-control"
+                          />
+                          <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
+                              {values.showPassword ? (
+                                <i className="fa fa-eye" ariaHidden="true"></i>
+                              ) : (
+                                <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                        <ErrorMessage name="confirm_password">
+                          {(msg) => (
+                            <div className="text-danger m-0">{msg}</div>
+                          )}
+                        </ErrorMessage>
 
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-2 mb-3 ">
+                          <button
+                            type="submit"
+                            className="btn btn-sm cob-btn-primary ml-3"
+                          >
+                            Update Password
+                          </button>
+                        </div>
+                        <div className="col-lg-4 mb-3">
+                          <Link to={`${path}/profile`} className="btn btn-light ml-3 btn-sm border-1">
+                            Cancel
+                          </Link>
+                        </div>
+                      </div>
+                      <br />
+                    </Form>
+                  )}
 
-                    <br />
-                  </Form>
                 </Formik>
               </div>
             </div>
