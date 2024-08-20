@@ -8,7 +8,7 @@ let url,
   widget_url,
   widget_script,
   payLinkAPIURL,
-  qwick_form_refund_url,
+  qwick_form_url,
   refund_url = "";
 
 
@@ -25,7 +25,7 @@ if (ENV_PROD) {
   widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi"
   // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
-  qwick_form_refund_url = "https://qwikforms.in"
+  qwick_form_url = "https://qwikforms.in"
 
 
 } else {
@@ -39,7 +39,7 @@ if (ENV_PROD) {
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js"
   refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi"
-  qwick_form_refund_url = "https://stage-qwikform.sabpaisa.in"
+  qwick_form_url = "https://stage-qwikform.sabpaisa.in"
 
 
 }
@@ -396,7 +396,17 @@ const API_LIVE = {
   refundTxn: `${refund_url}/refund`,
 
   // rolling reserve
-  rollingReservePeriod: `${url}/get-rolling-reserve-period`
+  rollingReservePeriod: `${url}/get-rolling-reserve-period`,
+
+  // merchant onboarding in qwick form
+  qwickFormOnboard: `${qwick_form_url}/QwikForms/cobMerchant/saveClientCredentials`,
+
+
+  // get merchant data by client id
+  clientDataById: `${url}/GetClientByID`
+
+
+
 };
 
 
@@ -425,7 +435,7 @@ export const wsConnectUrl = {
 const API_URL = API_LIVE;
 
 export const WIDGET_URL = WIDGET_LIVE;
-export const Qwick_Form = qwick_form_refund_url;
+// export const Qwick_Form = qwick_form_url;
 
 export const WIDGET_SCRIPT_URL = WIDGET_SCRIPT_LIVE
 
