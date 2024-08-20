@@ -90,6 +90,7 @@ function BusinessOverviewEditKyc(props) {
     avg_ticket_size: KycList?.avg_ticket_size,
     
     "is_website_url": true,
+    seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
     website_app_url: KycList?.website_app_url,
   };
 

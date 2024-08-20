@@ -156,7 +156,7 @@ const DocumentUploadNewEdtKyc = (props) => {
       {({ values, setFieldValue, errors, touched }) => (
         <Form>
           <div>
-            {/* <label>Choose</label> */}
+
             <div className="d-flex justify-content-between w-50 mt-3">
               {radioBtnOptions?.map((option) => (
                 <label key={option.value}>
@@ -175,101 +175,103 @@ const DocumentUploadNewEdtKyc = (props) => {
           </div>
           {values.option === 'A' && (
             <div className="mt-4">
-              <div className="overflow-auto" style={{ maxHeight: '300px' }}>
-
+              <div className="overflow-auto" style={{ maxHeight: '250px' }}>
                 {docTypeList?.map((doc, index) => (
-
-
-                  doc?.name?.toLowerCase().split(" ").includes("others") ?
-                    <div className="row mb-3 align-items-center font-weight-bold" key={index}>
-                      <div onClick={() => {
-                        setFieldValue('option', "B")
-                        setOtherDocTypeId(doc.id)
-                      }}> <label className='text-primary btn cob-btn-primary'>Click here to upload other documents</label> </div>
-                    </div> :
-
-
-
-                    <div className="row mb-3 align-items-center font-weight-bold" key={index}>
-                      <div className="col-4">
-                        <label>{doc?.name}</label>
-                      </div>
-                      <div className="col-3">
-                        <Field
-                          name={`files[${index}]`}
-                          render={({ field }) => (
-                            <input
-                              type="file"
-                              className={`form-control ${errors.files?.[index] && touched.files?.[index] ? 'is-invalid' : ''}`}
-                              id="3"
-                              onChange={(e) => handleChange(e, 3)}
-                            />
-                          )}
-                        />
-                      </div>
-                      <div className="col-3">
-                        <button
-                          type="submit"
-                          className="btn btn-sm cob-btn-primary text-white ml-5"
-                          onClick={() => setTypeId(doc?.id)}
-                        >
-                          Upload
-                        </button>
-                      </div>
+                  <div className="row mb-3 align-items-center font-weight-bold" key={index}>
+                    <div className="col-4">
+                      <label>{doc?.name}</label>
                     </div>
+                    <div className="col-3">
+                      <Field
+                        name={`files[${index}]`}
+                        render={({ field }) => (
+                          <input
+                            type="file"
+                            className={`form-control ${errors.files?.[index] && touched.files?.[index] ? 'is-invalid' : ''}`}
+                            id="3"
+                            onChange={(e) => handleChange(e, 3)}
+                          />
+                        )}
+                      />
+                    </div>
+                    <div className="col-3">
+                      <button
+                        type="submit"
+                        className="btn btn-sm cob-btn-primary text-white ml-5"
+                        onClick={() => setTypeId(doc?.id)}
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
+
+              {docTypeList?.some(doc => doc?.name?.toLowerCase().split(" ").includes("others")) && (
+                <div className="row mb-3 align-items-center font-weight-bold mt-3">
+                  <div onClick={() => {
+                    setFieldValue('option', "B")
+                    const otherDoc = docTypeList.find(doc => doc?.name?.toLowerCase().split(" ").includes("others"));
+                    setOtherDocTypeId(otherDoc?.id);
+                  }}>
+                    <label className='text-primary btn cob-btn-primary'>
+                      Click here to upload other documents
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
 
+
           {values.option === 'B' && (
-           <div className="mt-4">
-           {values?.inputs?.map((inputField, index) => (
-             <div key={index} className="row mt-3 mb-3 align-items-center">
-               <div className="col-md-3">
-                 <Field
-                   type="text"
-                   name={`inputs[${index}].description`}
-                   placeholder="Description"
-                   className="form-control"
-                 />
-               </div>
-               <div className="col-md-3">
-                 <input
-                   type="file"
-                   name={`inputs[${index}].files`}
-                   onChange={(e) => handleChange(e, 3)}
-                   className="form-control"
-                 />
-               </div>
-               <div className="col-md-2">
-                 <button
-                   type="submit"
-                   // onClick={() => handleUpload(index, values)}
-                   className="btn btn-sm cob-btn-primary text-white"
-                 >
-                   Upload
-                 </button>
-               </div>
-               <div className="col-md-2">
-                 <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer">
-                   <i className={`${classes.icon_large} fa fa-trash`}></i>
-                 </span>
-               </div>
-             </div>
-           ))}
-         
-           <button
-             type="button"
-             onClick={() => handleAddField(values, setFieldValue)}
-             className="btn btn-sm cob-btn-primary text-white d-flex align-items-center mt-3"
-           >
-             <i className="fa fa-plus text-white me-2"></i> 
-             Add More File
-           </button>
-         </div>
-         
+            <div className="mt-4">
+              {values?.inputs?.map((inputField, index) => (
+                <div key={index} className="row mt-3 mb-3 align-items-center">
+                  <div className="col-md-3">
+                    <Field
+                      type="text"
+                      name={`inputs[${index}].description`}
+                      placeholder="Description"
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <input
+                      type="file"
+                      name={`inputs[${index}].files`}
+                      onChange={(e) => handleChange(e, 3)}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <button
+                      type="submit"
+                      // onClick={() => handleUpload(index, values)}
+                      className="btn btn-sm cob-btn-primary text-white"
+                    >
+                      Upload
+                    </button>
+                  </div>
+                  <div className="col-md-2">
+                    <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer">
+                      <i className={`${classes.icon_large} fa fa-trash`}></i>
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => handleAddField(values, setFieldValue)}
+                className="btn btn-sm cob-btn-primary text-white d-flex align-items-center mt-3"
+              >
+                <i className="fa fa-plus text-white me-2"></i>
+                Add More File
+              </button>
+            </div>
+
 
           )}
 

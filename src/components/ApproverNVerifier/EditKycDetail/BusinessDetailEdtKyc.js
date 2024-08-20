@@ -657,7 +657,7 @@ function BusinessDetailEdtKyc(props) {
                     )}
                   </React.Fragment>}
 
-                {(JSON.parse(values?.registerd_with_udyam) === false && JSON.parse(values?.registerd_with_gst) === false) &&
+                {/* {(JSON.parse(values?.registerd_with_udyam) === false && JSON.parse(values?.registerd_with_gst) === false) &&
                   <div className="input-group">
                     <label>
                       Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
@@ -665,7 +665,7 @@ function BusinessDetailEdtKyc(props) {
                     <a className="btn cob-btn-primary text-white btn-sm mb-1" href="https://firebasestorage.googleapis.com/v0/b/cob-staging.appspot.com/o/SRS-GST-Declaration.pdf?alt=media&token=9eaae583-b357-4146-b7d9-96b58073d075" target="_blank" rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
                   </div>
 
-                }
+                } */}
 
 
                 {(JSON.parse(values?.registerd_with_udyam) === true && JSON.parse(values?.registerd_with_gst) === false) &&

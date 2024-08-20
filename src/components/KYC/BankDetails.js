@@ -69,7 +69,7 @@ function BankDetails(props) {
     account_holder_name: Yup.string()
       .trim()
       .allowOneSpace()
-      
+      .required("Required")
       .nullable(),
     ifsc_code: Yup.string()
       .allowOneSpace()
@@ -77,32 +77,32 @@ function BankDetails(props) {
       .matches(IFSCRegex, "Your IFSC code is Invalid and must be in capital letters")
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
-      
+      .required("Required")
       .nullable(),
     account_number: Yup.string()
       .allowOneSpace()
       .matches(AccountNoRgex, "Your Account Number is Invalid")
-    
+      .required("Required")
       .nullable(),
     account_type: Yup.string()
-      
+      .required("Required")
       .nullable(),
     branch: Yup.string()
       .trim()
-      
+      .required("Required")
       .nullable(),
     bank_id: Yup.string()
-      
+      .required("Required")
       .nullable(),
-    isAccountNumberVerified: Yup.string(),
+    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number"),
     oldIfscCode: Yup.string()
       .oneOf([Yup.ref("ifsc_code"), null], "IFSC code is not verified")
-     
+      .required("IFSC code is not verified")
       .nullable(),
     oldAccountNumber: Yup.string()
       .oneOf([Yup.ref("account_number"), null],
         "You need to verify Your Account Number")
-      
+      .required("You need to verify Your Account Number")
       .nullable(),
   });
 
