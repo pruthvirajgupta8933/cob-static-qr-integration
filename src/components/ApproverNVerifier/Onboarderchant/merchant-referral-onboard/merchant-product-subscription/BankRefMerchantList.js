@@ -173,7 +173,9 @@ function BankRefMerchantList() {
 
             // post data for onboarding in qwik form
             const qwikFormResp = await axiosInstance.post(API_URL.qwickFormOnboard, postData)
-            toastConfig.successToast(qwikFormResp?.data?.message)
+            toastConfig.successToast(qwikFormResp?.data?.message,{ duration: 3000 })
+
+            
             setOnboardLoading(false)
 
         } catch (error) {

@@ -52,7 +52,9 @@ const Genratelink = (props) => {
 
 
       .then((response) => {
-        toast.success(response.data.message)
+        const message = response.data.message;
+        const capitalizedMessage = message.charAt(0).toUpperCase() + message.slice(1);  //for first letter is capital
+        toast.success(capitalizedMessage);
         setDisable(false)
 
       })

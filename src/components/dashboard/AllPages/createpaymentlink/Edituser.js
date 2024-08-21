@@ -68,12 +68,15 @@ export const Edituser = (props) => {
     }
     createPaymentLinkService.editCustomer(postData)
       .then((res) => {
+        const message=res?.data?.message
+        const capitalizedMessage = message.charAt(0).toUpperCase() + message.slice(1); 
 
         if (res.data?.response_code === '1') {
-          toastConfig.successToast(res.data?.message?.toUpperCase());
+         
+          toastConfig.successToast(capitalizedMessage);
           callBackFn()
         } else {
-          toastConfig.errorToast(res.data?.message?.toUpperCase());
+          toastConfig.errorToast(capitalizedMessage );
         }
         setDisable(false)
       })

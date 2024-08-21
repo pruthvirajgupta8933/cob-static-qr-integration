@@ -77,11 +77,13 @@ function FormPaymentLink(props) {
     }
     createPaymentLinkService.createPaymentLink(postData)
       .then(resp => {
+        const message=resp.data?.message
+        const capitalizedMessage = message.charAt(0).toUpperCase() + message.slice(1); 
         if (resp.data?.response_code === '1') {
-          toastConfig.successToast(resp.data?.message?.toUpperCase());
+          toastConfig.successToast(capitalizedMessage);
           loaduser();
         } else {
-          toastConfig.errorToast(resp.data?.message?.toUpperCase());
+          toastConfig.errorToast(capitalizedMessage);
         }
         setDisable(false)
       }).catch(err => {

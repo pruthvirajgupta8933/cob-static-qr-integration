@@ -54,10 +54,12 @@ const AddSinglePayer = ({ loadUser, customerType }) => {
         await createPaymentLinkService.addCustomer(postData)
             .then(resp => {
                 if (resp.data?.response_code === '1') {
-                    toastConfig.successToast(resp.data?.message?.toUpperCase());
+                    const message=resp.data?.message
+                    const capitalizedMessage = message.charAt(0).toUpperCase() + message.slice(1); 
+                    toastConfig.successToast(capitalizedMessage);
                     loadUser();
                 } else {
-                    toastConfig.errorToast(resp.data?.message?.toUpperCase());
+                    toastConfig.errorToast(resp.data?.message);
                 }
                 setDisable(false)
             }).catch(err => {
