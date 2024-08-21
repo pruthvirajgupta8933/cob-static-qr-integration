@@ -18,6 +18,7 @@ import Table from "../_components/table_components/table/Table";
 import CountPerPageFilter from "../../src/_components/table_components/filters/CountPerPage";
 import SearchFilter from "../_components/table_components/filters/SearchFilter";
 import CustomLoader from "../_components/loader";
+import { saveAs } from 'file-saver';
 
 
 const ChallanTransactReport = () => {
@@ -194,7 +195,6 @@ const ChallanTransactReport = () => {
   };
 
   const exportToExcelFn = () => {
-
     dispatch(
       exportTransactions({
         page: currentPage,
@@ -209,12 +209,8 @@ const ChallanTransactReport = () => {
         type:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `MIS_REPORT_${saveData?.clientCode}_${splitDate}.xlsx`;
-      a.click();
-      window.URL.revokeObjectURL(url);
+      saveAs(blob, `MIS_REPORT_${saveData?.clientCode}_${splitDate}.xlsx`)
+
     });
   };
 

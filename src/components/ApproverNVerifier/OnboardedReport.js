@@ -37,7 +37,12 @@ const OnboardedReport = () => {
   }, [result])
 
   const rowSignUpData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    {
+      id: "1", name: "S. No.",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "80px",
+    },
     {
       id: "2",
       name: "Client Code",
@@ -201,37 +206,6 @@ const OnboardedReport = () => {
         >
           {(formik) => (
             <Form className="row mt-5">
-              {/* <div className="form-group col-md-3">
-                <FormikController
-                  control="date"
-                  label="From Date"
-                  id="from_date"
-                  name="from_date"
-                  value={formik.values.from_date ? new Date(formik.values.from_date) : null}
-                  onChange={date => formik.setFieldValue('from_date', date)}
-                  format="dd-MM-y"
-                  clearIcon={null}
-                  className="form-control rounded-0 p-0"
-                  required={true}
-                  errorMsg={formik.errors["from_date"]}
-                />
-              </div>
-
-              <div className="form-group col-md-3 ">
-                <FormikController
-                  control="date"
-                  label="End Date"
-                  id="to_date"
-                  name="to_date"
-                  value={formik.values.to_date ? new Date(formik.values.to_date) : null}
-                  onChange={date => formik.setFieldValue('to_date', date)}
-                  format="dd-MM-y"
-                  clearIcon={null}
-                  className="form-control rounded-0 p-0"
-                  required={true}
-                  errorMsg={formik.errors["to_date"]}
-                />
-              </div> */}
               <div className="form-group col-md-3">
                 <FormikController
                   control="select"

@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import API_URL from '../../config';
-// import Blob from "blob";
 import toastConfig from '../../utilities/toastTypes';
 
 const MerchnatListExportToxl = (props) => {
