@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { useHistory } from 'react-router-dom';
 import Yup from '../../../../_components/formik/Yup';
 import createPaymentLinkService from '../../../../services/create-payment-link/payment-link.service';
+import { capitalizeFirstLetter } from '../../../../utilities/capitlizedFirstLetter';
 
 
 const validationSchema = Yup.object().shape({
@@ -53,7 +54,7 @@ const Genratelink = (props) => {
 
       .then((response) => {
         const message = response.data.message;
-        const capitalizedMessage = message.charAt(0).toUpperCase() + message.slice(1);  //for first letter is capital
+        const capitalizedMessage = capitalizeFirstLetter(message)  //for first letter is capital
         toast.success(capitalizedMessage);
         setDisable(false)
 

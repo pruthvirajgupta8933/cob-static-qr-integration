@@ -84,7 +84,7 @@ function AadharVerify() {
                                 <span
                                     className="spinner-border spinner-border-sm"
                                     role="status"
-                                    aria-hidden="true"
+                                    ariaHidden="true"
                                 ></span>
                             ) : "Send OTP"}
                         </button>
@@ -127,7 +127,7 @@ function AadharVerify() {
                                     <span
                                         className="spinner-border spinner-border-sm"
                                         role="status"
-                                        aria-hidden="true"
+                                        ariaHidden="true"
                                     ></span>
                                 ) : "Verify OTP"}
                             </button>

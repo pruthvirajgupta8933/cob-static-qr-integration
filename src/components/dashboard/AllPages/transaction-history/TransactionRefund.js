@@ -181,7 +181,7 @@ function TransactionRefund(props) {
                                                 <span
                                                     className="spinner-border spinner-border-sm mr-1"
                                                     role="status"
-                                                    aria-hidden="true"
+                                                    ariaHidden="true"
                                                 ></span>
                                             )}
                                             Submit</button>
