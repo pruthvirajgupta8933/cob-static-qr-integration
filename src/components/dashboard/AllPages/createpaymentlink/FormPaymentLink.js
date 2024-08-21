@@ -9,6 +9,7 @@ import moment from "moment";
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
+import { capitalizeFirstLetter } from "../../../../utilities/capitlizedFirstLetter";
 
 function FormPaymentLink(props) {
   const { loaduser } = props;
@@ -77,11 +78,13 @@ function FormPaymentLink(props) {
     }
     createPaymentLinkService.createPaymentLink(postData)
       .then(resp => {
+        const message=resp.data?.message
+        const capitalizedMessage = capitalizeFirstLetter(message)
         if (resp.data?.response_code === '1') {
-          toastConfig.successToast(resp.data?.message?.toUpperCase());
+          toastConfig.successToast(capitalizedMessage);
           loaduser();
         } else {
-          toastConfig.errorToast(resp.data?.message?.toUpperCase());
+          toastConfig.errorToast(capitalizedMessage);
         }
         setDisable(false)
       }).catch(err => {

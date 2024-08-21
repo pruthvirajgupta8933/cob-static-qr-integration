@@ -21,11 +21,12 @@ let toastConfig = {
       autoClose: 2400,
       position: toast.POSITION.TOP_RIGHT,
     }),
-  successToast: (message) =>
-    toast.success(message, {
-      autoClose: 2400,
-      position: toast.POSITION.TOP_RIGHT,
-    }),
+    successToast: (message, options = {}) =>
+    
+      toast.success(message, {
+        autoClose: options.duration || 2400,
+        position: toast.POSITION.TOP_RIGHT,
+      }),
   warningToast: (message) =>
     toast.warn(message, {
       autoClose: 2400,

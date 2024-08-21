@@ -8,7 +8,7 @@ import toastConfig from "../../../../utilities/toastTypes";
 import { v4 as uuidv4 } from 'uuid';
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import { Regex, RegexMsg } from '../../../../_components/formik/ValidationRegex';
-
+import { capitalizeFirstLetter } from '../../../../utilities/capitlizedFirstLetter';
 const AddSinglePayer = ({ loadUser, customerType }) => {
     
     const { user } = useSelector((state) => state.auth);
@@ -53,11 +53,15 @@ const AddSinglePayer = ({ loadUser, customerType }) => {
         }
         await createPaymentLinkService.addCustomer(postData)
             .then(resp => {
+                const message=resp.data?.message
+                const capitalizedMessage = capitalizeFirstLetter(message) 
                 if (resp.data?.response_code === '1') {
-                    toastConfig.successToast(resp.data?.message?.toUpperCase());
+                    
+                  
+                    toastConfig.successToast(capitalizedMessage);
                     loadUser();
                 } else {
-                    toastConfig.errorToast(resp.data?.message?.toUpperCase());
+                    toastConfig.errorToast(capitalizedMessage );
                 }
                 setDisable(false)
             }).catch(err => {

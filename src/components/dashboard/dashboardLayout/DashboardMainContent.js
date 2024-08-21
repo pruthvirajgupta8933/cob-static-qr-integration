@@ -87,7 +87,7 @@ import TransactionHistory from "../AllPages/transaction-history/TransactionHisto
 import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/AssigneAccountManger";
 import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attestr/AadharResponse";
 import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
-
+import IpwhiteList from "../../ApproverNVerifier/IpwhiteList";
 
 function DashboardMainContent() {
     let history = useHistory();
@@ -610,6 +610,16 @@ function DashboardMainContent() {
                         <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true}}>
                             <EditKycDetail />
                         </AuthorizedRoute>
+
+                        <AuthorizedRoute exact path={`${path}/ip-whiteList`} Component={IpwhiteList} roleList={{ verifier: true}}>
+                            <IpwhiteList />
+                        </AuthorizedRoute>
+                        
+
+                        
+
+
+                        
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
                             <UrlNotFound />

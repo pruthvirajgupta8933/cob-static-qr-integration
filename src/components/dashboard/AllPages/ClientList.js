@@ -12,7 +12,7 @@ import CustomLoader from '../../../_components/loader';
 import { clientListExportApi } from '../../../services/approver-dashboard/merchantReferralOnboard.service';
 import toastConfig from '../../../utilities/toastTypes';
 import moment from "moment";
-
+import { saveAs } from 'file-saver';
 
 function ClientList() {
     const convertDate = (yourDate) => {
@@ -184,12 +184,7 @@ function ClientList() {
                 const blob = new Blob([data], {
                     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `Client-List-Report.xlsx`;
-                a.click();
-                window.URL.revokeObjectURL(url);
+                saveAs(blob, `Client-List-Report.xlsx`)
             }
         }).catch((err) => {
             if (err.response?.status === 500) {

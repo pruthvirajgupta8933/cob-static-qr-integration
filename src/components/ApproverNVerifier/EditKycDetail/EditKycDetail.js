@@ -54,7 +54,7 @@ function EditKycDetail() {
   return (
     <section className="ant-layout NunitoSans-Regular">
       <div className="ml-3">
-        <h5 className="font-weight-bold ">Edit Kyc Form</h5>
+        <h5 className="font-weight-bold ">Edit KYC</h5>
       </div>
       <Formik initialValues={initialValues}>
         <Form className="mt-4">
@@ -117,7 +117,7 @@ function EditKycDetail() {
           </div>
 
           <div className="tab-content w-100 overflow-auto" id="v-pills-tabContent">
-            <div className="card m-0 p-0">
+            <div className="card m-0 p-0 rounded-0">
               <div className="card-body">
                 <h6 className="mb-3 font-weight-bold">{title}</h6>
                 {(tab === 1 && (

@@ -3,7 +3,7 @@ import React from 'react'
 function SubscribeProductList({ SubscribedPlanData }) {
     return (
         <div className="row mb-4 border p-1">
-            <h5>Subscribe Product List</h5>
+            <h5>Subscribed Product List</h5>
             <div>
                 <table class="table mt-3">
                     <thead>

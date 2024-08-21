@@ -15,6 +15,7 @@ import CustomModal from "../../../../_components/custom_modal";
 import Yup from "../../../../_components/formik/Yup";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import toastConfig from "../../../../utilities/toastTypes";
+import { capitalizeFirstLetter } from "../../../../utilities/capitlizedFirstLetter";
 
 export const Edituser = (props) => {
   let history = useHistory();
@@ -68,12 +69,15 @@ export const Edituser = (props) => {
     }
     createPaymentLinkService.editCustomer(postData)
       .then((res) => {
+        const message=res?.data?.message
+        const capitalizedMessage = capitalizeFirstLetter(message) 
 
         if (res.data?.response_code === '1') {
-          toastConfig.successToast(res.data?.message?.toUpperCase());
+         
+          toastConfig.successToast(capitalizedMessage);
           callBackFn()
         } else {
-          toastConfig.errorToast(res.data?.message?.toUpperCase());
+          toastConfig.errorToast(capitalizedMessage );
         }
         setDisable(false)
       })
