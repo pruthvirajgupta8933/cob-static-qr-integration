@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
-// import * as Yup from "yup";
-
+import { saveAs } from 'file-saver';
 import FormikController from "../../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
@@ -341,14 +340,7 @@ const SettlementReportDoitc = () => {
       const blob = new Blob([csv], {
         type: "text/plain;charset=utf-8;"
       });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      saveAs(blob, filename)
     }
 
     const fileName = "Settlement-Report";

@@ -19,8 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../../_components/formik/Yup";
 import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReactPaginate from "react-paginate";
-
-
+import { saveAs } from 'file-saver';
 
 const TransactionHistoryDoitc = () => {
   const dispatch = useDispatch();
@@ -37,7 +36,7 @@ const TransactionHistoryDoitc = () => {
   const [paymentModeList, SetPaymentModeList] = useState([]);
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
-  const [show, setShow] = useState("");
+  // const [show, setShow] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,7 +44,7 @@ const TransactionHistoryDoitc = () => {
   const [updateTxnList, setUpdateTxnList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [buttonClicked, isButtonClicked] = useState(false);
-  
+
 
   // Date split
   let now = moment().format("YYYY-M-D");
@@ -312,9 +311,9 @@ const TransactionHistoryDoitc = () => {
     };
   }, []);
 
-  useEffect(() => {
-    txnList.length > 0 ? setShow(true) : setShow(false);
-  }, [txnList]);
+  // useEffect(() => {
+  //   txnList.length > 0 ? setShow(true) : setShow(false);
+  // }, [txnList]);
 
   useEffect(() => {
     if (searchText !== "") {
@@ -331,7 +330,7 @@ const TransactionHistoryDoitc = () => {
     }
   }, [searchText]);
 
-  const pages = _.range(1, pageCount + 1);
+  // const pages = _.range(1, pageCount + 1);
 
   const getSearchTerm = (e) => {
     SetSearchText(e.target.value);
@@ -444,14 +443,9 @@ const TransactionHistoryDoitc = () => {
       const blob = new Blob([csv], {
         type: "text/plain;charset=utf-8;"
       });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+
+      saveAs(blob, filename)
+
     }
 
     let handleExportLoading = (state) => {
