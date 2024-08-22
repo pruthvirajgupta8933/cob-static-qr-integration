@@ -5,8 +5,6 @@ import congratsImg from "../../../assets/images/congImg.png";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { Link } from "react-router-dom";
 import {
-    GetKycTabsStatus,
-    // kycUserList,
     UpdateModalStatus,
 } from "../../../slices/kycSlice";
 
@@ -16,7 +14,7 @@ const HomeOpenModal = () => {
     const { kyc } = useSelector((state) => state);
     const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
     const [modalState, setModalState] = useState("Not-Filled");
-    const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
+    const [isRateMappingInProcess] = useState(false);
 
     const handleClose = () => {
         dispatch(UpdateModalStatus(false));
@@ -47,7 +45,7 @@ const HomeOpenModal = () => {
                                     data-dismiss="modal"
                                     aria-label="Close"
                                 >
-                                    <span ariaHidden="true">&times;</span>
+                                    <span>&times;</span>
                                 </button>
                             </div>
                             <div className="modal-body">
