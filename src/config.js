@@ -410,7 +410,12 @@ const API_LIVE = {
 
 
   // get merchant data by client id
-  clientDataById: `${url}/GetClientByID`
+  clientDataById: `${url}/GetClientByID`,
+
+  //ipWhiteList
+
+  IP_WHITElIST:`${adminAPIURL}/REST/SaveURLWhitlisting`
+
 
 
 
