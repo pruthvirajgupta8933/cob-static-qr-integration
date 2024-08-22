@@ -109,8 +109,8 @@ function BusinessOverview(props) {
         .nullable(),
       billing_label: Yup.string()
         .allowOneSpace()
-        .min(1, 'Please enter more than 1 character')
-        .max(250, 'Please do not enter more than 250 characters')
+        .min(60, 'Please enter more than 60 character')
+        .max(400, 'Please do not enter more than 250 characters')
         .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
         .required('Required')
         .nullable(),
