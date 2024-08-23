@@ -612,7 +612,7 @@ function DashboardMainContent() {
                             <EditKycDetail />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/ip-whiteList`} Component={IpwhiteList} roleList={{ verifier: true}}>
+                        <AuthorizedRoute exact path={`${path}/ip-whitelist`} Component={IpwhiteList} roleList={{ verifier: true}}>
                             <IpwhiteList />
                         </AuthorizedRoute>
                         

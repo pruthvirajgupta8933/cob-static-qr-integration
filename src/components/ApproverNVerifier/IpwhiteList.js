@@ -78,7 +78,7 @@ const IpWhiteList = () => {
                 "pdoneby": loginId
             };
             const response = await ipWhiteListApi(postData)
-            toastConfig.successToast("IP whitelist successfully")
+            toastConfig.successToast("Website whitelisted successfully")
             setDisable(false)
             
         } catch (error) {
@@ -90,7 +90,7 @@ const IpWhiteList = () => {
     return (
         <section className="">
             <main className="">
-                <h5 className="">IP WhiteList</h5>
+                <h5 className="">Website whitelist</h5>
                 <section className="">
                     <div className="container-fluid p-0">
                         <div className="row">
