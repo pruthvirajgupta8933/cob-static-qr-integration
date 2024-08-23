@@ -40,25 +40,28 @@ export const fetchSignupData = createAsyncThunk(
     initialState,
     reducers: {},
      
-    extraReducers: {
-      [fetchSignupData.pending]: (state, action) => {
-        state.status = "pending";
-        state.isLoading = true;
-     
-        
-      },
-      [fetchSignupData.fulfilled]: (state, action) => {
-         state.isLoading = false;
-        state.signupDataDetails=action.payload
-        },
-      [fetchSignupData.rejected]: (state, action) => {
-        state.status = "failed";
+    
+
+    extraReducers: (builder) => {
+      builder
+        .addCase(fetchSignupData.pending, (state, action) => {
+          state.status = "pending";
+         state.isLoading = true;
+        })
+        .addCase(fetchSignupData.fulfilled, (state, action) => {
+          state.isLoading = false;
+         state.signupDataDetails=action.payload
+        })
+        .addCase(fetchSignupData.rejected, (state, action) => {
+          state.status = "failed";
         state.error = action.error.message;
         state.isLoading = false;
-      },
-      // ------------------------------------ For Comments ---------------------
-    
-    }
+        })
+       
+  
+  
+     
+    },
   });
   export const {
    
