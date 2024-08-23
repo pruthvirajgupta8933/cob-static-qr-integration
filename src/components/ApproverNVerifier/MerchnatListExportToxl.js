@@ -27,18 +27,6 @@ const MerchnatListExportToxl = (props) => {
         }
         setLoading(false)
         setDisable(false)
-
-        // window.location.href = ""
-
-        // const a = document.createElement("a");
-        // a.href = data?.download_url;
-        // a._target = "_blank"
-        // // a.download = `${props?.filename}.xlsx`;
-        // a.click();
-        // window.URL.revokeObjectURL(data?.download_url);
-
-
-
       }
     }).catch((err) => {
       toastConfig.errorToast("Something went wrong.")
