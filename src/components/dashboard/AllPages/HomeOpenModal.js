@@ -14,7 +14,8 @@ const HomeOpenModal = () => {
     const { kyc } = useSelector((state) => state);
     const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
     const [modalState, setModalState] = useState("Not-Filled");
-    const [isRateMappingInProcess] = useState(false);
+    const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
+
 
     const handleClose = () => {
         dispatch(UpdateModalStatus(false));
