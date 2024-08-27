@@ -11,7 +11,7 @@ import { Regex, RegexMsg } from '../../_components/formik/ValidationRegex';
 import Yup from '../../_components/formik/Yup';
 import toastConfig from '../../utilities/toastTypes';
 
-const IpWhiteList = () => {
+const WebWhiteList = () => {
     const [clientCodeList, setCliencodeList] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
     const [showInput, setShowInput] = useState(false);
@@ -151,4 +151,4 @@ const IpWhiteList = () => {
     );
 }
 
-export default IpWhiteList;
+export default WebWhiteList;
