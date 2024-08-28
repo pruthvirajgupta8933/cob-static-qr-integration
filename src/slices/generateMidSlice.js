@@ -45,21 +45,21 @@ export const createMidApi = createAsyncThunk(
     initialState,
     reducers: {},
      
-    extraReducers: {
-      [createMidApi.pending]: (state, action) => {
+    extraReducers: (builder)=>{
+      builder
+      .addCase(createMidApi.pending,(state)=>{
         state.status = "pending";
-        
-      },
-      [createMidApi.fulfilled]: (state, action) => {
-       
+      })
+      .addCase(createMidApi.fulfilled,(state)=>{
 
-      },
-      [createMidApi.rejected]: (state, action) => {
+      })
+      .addCase(createMidApi.rejected,(state,action)=>{
         state.status = "failed";
         state.error = action.error.message;
-      },
-      // ------------------------------------ For Comments ---------------------
 
+      })
+     
+      
 
        
     

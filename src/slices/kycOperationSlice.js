@@ -143,36 +143,22 @@ export const kycOperationSlice = createSlice({
   initialState,
   reducers: {},
 
-  extraReducers: {
-    [rejectKycOperation.pending]: (state, action) => {
+  extraReducers: (builder)=>{
+    builder
+    .addCase(rejectKycOperation.pending,(state)=>{
       state.status = "pending";
+    })
 
-    },
-    [rejectKycOperation.fulfilled]: (state, action) => {
+    .addCase(rejectKycOperation.fulfilled,(state)=>{
 
-
-    },
-    [rejectKycOperation.rejected]: (state, action) => {
+    })
+    .addCase(rejectKycOperation.rejected,(state,action)=>{
       state.status = "failed";
       state.error = action.error.message;
-    },
-    // ------------------------------------ For Comments ---------------------
 
-
-    //   [forSavingComments.pending]: (state, action) => {
-    //     state.status = "pending";
-
-    //   },
-    //   [forSavingComments.fulfilled]: (state, action) => {
-    //     // state.comments = action.payload
-
-
-
-    //   },
-    //   [riskCategory.rejected]: (state, action) => {
-    //     forSavingComments = "failed";
-    //     state.error = action.error.message;
-    //   }, 
+    })
+    
+    
 
 
   }

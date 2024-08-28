@@ -32,19 +32,21 @@ export const verifyKyc = createAsyncThunk(
   const veriferApproverSlice = createSlice({
     name: "veriferApprover",
     initialState,
-    extraReducers: {
-      [verifyKyc.pending]: (state, action) => {
-          state.isLoading = true;
-        },
-      [verifyKyc.fulfilled]: (state, action) => {
+    extraReducers:(builder)=> {
+      builder
+
+      .addCase(verifyKyc.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(verifyKyc.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.successTxnsumry = action.payload
+      })
+      .addCase(verifyKyc.rejected, (state, action) => {
         state.isLoading = false;
-        state.createClientProfile = action.payload.data;
-      },
-      [verifyKyc.rejected]: (state, action) => {
-        state.isLoading = false;
-      },
-     
-    },
+      })
+
+     },
   });
 
 

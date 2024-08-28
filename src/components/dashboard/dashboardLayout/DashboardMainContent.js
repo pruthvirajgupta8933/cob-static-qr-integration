@@ -33,7 +33,8 @@ import ChargeBackTxnHistory from "../AllPages/ChargeBackTxnHistory";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { logout, updateClientDataInLocal } from "../../../slices/auth";
 import Sandbox from "../../SandBox/SendBox";
-import AssignZone from "../../ApproverNVerifier/AssignZone";
+// import AssignZone from "../../ApproverNVerifier/Configuration";
+import Configuration from "../../ApproverNVerifier/Configuration"
 import AdditionalKYC from "../../ApproverNVerifier/additional-kyc/AdditionalKYC";
 import RateMapping from "../../ApproverNVerifier/RateMapping";
 import SignupData from "../../ApproverNVerifier/SignupData";
@@ -399,8 +400,8 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
 
-                        <AuthorizedRoute exact path={`${path}/configuration`} Component={AssignZone} roleList={{ approver: true, verifier: true }}>
-                            <AssignZone />
+                        <AuthorizedRoute exact path={`${path}/configuration`} Component={Configuration} roleList={{ approver: true, verifier: true }}>
+                            <Configuration/>
                         </AuthorizedRoute>
 
                         <AuthorizedRoute

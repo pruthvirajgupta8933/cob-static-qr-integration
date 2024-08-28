@@ -3,8 +3,7 @@ import API_URL from "../config";
 
 import {
   axiosInstanceJWT,
- 
-} from "../utilities/axiosInstance";
+ } from "../utilities/axiosInstance";
 
 
 const initialState = { 
@@ -58,10 +57,7 @@ export const fetchSignupData = createAsyncThunk(
         state.isLoading = false;
         })
        
-  
-  
-     
-    },
+},
   });
   export const {
    

@@ -219,202 +219,97 @@ export const txnChartDataSlice = createAsyncThunk(
 
       
     },
-    // extraReducers: {
-    //   [successTxnSummary.pending]: (state) => {
-    //     state.isLoading = true
-    //   },
-    //   [successTxnSummary.fulfilled]: (state, action) => {
-    //     //console.log('action-payload',action)
-    //     state.isLoading = false
-    //     state.successTxnsumry = action.payload
-    //   },
-    //   [successTxnSummary.rejected]: (state) => {
-    //     state.isLoading = false
-    //   },
-    //   [subscriptionplan.pending]: (state) => {
-    //     state.isLoading = true;
-    //   },
-    //   [subscriptionplan.fulfilled]: (state, action) => {
-    //     state.isLoading = false;
-    //     state.subscribedService = action.payload.data;
-    //   },
-    //   [subscriptionplan.rejected]: (state) => {
-    //     state.isLoading = false;
-    //   },
-    //   [fetchTransactionHistorySlice.fulfilled]: (state, action) => {
-    //     state.isLoadingTxnHistory = false;
-    //     state.transactionHistory = action.payload;
-    //   },
-    //   [fetchTransactionHistorySlice.pending]: (state) => {
-    //     state.isLoadingTxnHistory = true;
-    //     state.transactionHistory=[];
-    //   },
-    //   [fetchTransactionHistorySlice.rejected]: (state) => {
-    //     state.isLoadingTxnHistory = false;
-    //     state.transactionHistory=[];
-    //   },
+    extraReducers: {
+      [successTxnSummary.pending]: (state) => {
+        state.isLoading = true
+      },
+      [successTxnSummary.fulfilled]: (state, action) => {
+        //console.log('action-payload',action)
+        state.isLoading = false
+        state.successTxnsumry = action.payload
+      },
+      [successTxnSummary.rejected]: (state) => {
+        state.isLoading = false
+      },
+      [subscriptionplan.pending]: (state) => {
+        state.isLoading = true;
+      },
+      [subscriptionplan.fulfilled]: (state, action) => {
+        state.isLoading = false;
+        state.subscribedService = action.payload.data;
+      },
+      [subscriptionplan.rejected]: (state) => {
+        state.isLoading = false;
+      },
+      [fetchTransactionHistorySlice.fulfilled]: (state, action) => {
+        state.isLoadingTxnHistory = false;
+        state.transactionHistory = action.payload;
+      },
+      [fetchTransactionHistorySlice.pending]: (state) => {
+        state.isLoadingTxnHistory = true;
+        state.transactionHistory=[];
+      },
+      [fetchTransactionHistorySlice.rejected]: (state) => {
+        state.isLoadingTxnHistory = false;
+        state.transactionHistory=[];
+      },
 
-    //   [txnChartDataSlice.fulfilled]: (state, action) => {
-    //     state.txnChartData = action.payload;
-    //   },
-    //   [txnChartDataSlice.pending]: (state) => {
-    //     state.txnChartData=[];
-    //   },
-    //   [txnChartDataSlice.rejected]: (state) => {
-    //     state.txnChartData=[];
-    //   },
+      [txnChartDataSlice.fulfilled]: (state, action) => {
+        state.txnChartData = action.payload;
+      },
+      [txnChartDataSlice.pending]: (state) => {
+        state.txnChartData=[];
+      },
+      [txnChartDataSlice.rejected]: (state) => {
+        state.txnChartData=[];
+      },
 
-    //   [fetchSettlementReportSlice.fulfilled]: (state, action) => {
-    //      state.isLoadingTxnHistory = false;
-    //     state.settlementReport = action.payload;
-    //   },
-    //   [fetchSettlementReportSlice.pending]: (state) => {
-    //   state.isLoadingTxnHistory = true;
-    //     state.settlementReport=[];
-    //   },
-    //   [fetchSettlementReportSlice.rejected]: (state) => {
-    //      state.isLoadingTxnHistory = false;
-    //     state.settlementReport=[];
-    //   },
+      [fetchSettlementReportSlice.fulfilled]: (state, action) => {
+         state.isLoadingTxnHistory = false;
+        state.settlementReport = action.payload;
+      },
+      [fetchSettlementReportSlice.pending]: (state) => {
+      state.isLoadingTxnHistory = true;
+        state.settlementReport=[];
+      },
+      [fetchSettlementReportSlice.rejected]: (state) => {
+         state.isLoadingTxnHistory = false;
+        state.settlementReport=[];
+      },
 
-    //   [fetchRefundTransactionHistory.fulfilled]: (state, action) => {
-    //     state.isLoadingTxnHistory = false;
-    //     state.settlementReport = action.payload;
+      [fetchRefundTransactionHistory.fulfilled]: (state, action) => {
+        state.isLoadingTxnHistory = false;
+        state.settlementReport = action.payload;
 
-    //     // console.log(state.refundTransactionHistory = action.payload,"my payload")
-    //   },
-    //   [fetchRefundTransactionHistory.pending]: (state) => {
-    //      state.isLoadingTxnHistory = true;
-    //     state.settlementReport=[];
-    //   },
-    //   [fetchRefundTransactionHistory.rejected]: (state) => {
-    //     state.isLoadingTxnHistory = false;
-    //     state.settlementReport=[];
-    //   },
+        // console.log(state.refundTransactionHistory = action.payload,"my payload")
+      },
+      [fetchRefundTransactionHistory.pending]: (state) => {
+         state.isLoadingTxnHistory = true;
+        state.settlementReport=[];
+      },
+      [fetchRefundTransactionHistory.rejected]: (state) => {
+        state.isLoadingTxnHistory = false;
+        state.settlementReport=[];
+      },
 
-    //   [fetchChargebackTxnHistory.fulfilled]: (state, action) => {
-    //     state.isLoadingTxnHistory = false;
-    //     state.settlementReport = action.payload;
-    //   },
-    //   [fetchChargebackTxnHistory.pending]: (state) => {
-    //      state.isLoadingTxnHistory = true;
-    //     state.settlementReport=[];
-    //   },
-    //   [fetchChargebackTxnHistory.rejected]: (state) => {
-    //      state.isLoadingTxnHistory = false;
-    //     state.settlementReport=[];
-    //   },
+      [fetchChargebackTxnHistory.fulfilled]: (state, action) => {
+        state.isLoadingTxnHistory = false;
+        state.settlementReport = action.payload;
+      },
+      [fetchChargebackTxnHistory.pending]: (state) => {
+         state.isLoadingTxnHistory = true;
+        state.settlementReport=[];
+      },
+      [fetchChargebackTxnHistory.rejected]: (state) => {
+         state.isLoadingTxnHistory = false;
+        state.settlementReport=[];
+      },
 
 
 
 
       
-    //   },
-
-    extraReducers: (builder) => {
-      builder
-         
-
-
-          .addCase(successTxnSummary.pending, (state) => {
-            state.isLoading = true
-          })
-          .addCase(successTxnSummary.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.successTxnsumry = action.payload
-          })
-          .addCase(successTxnSummary.rejected, (state, action) => {
-            state.isLoading = false
-          })
-
-          .addCase(subscriptionplan.pending, (state) => {
-            state.isLoading = true;
-          })
-          .addCase(subscriptionplan.fulfilled, (state, action) => {
-            state.isLoading = false;
-        state.subscribedService = action.payload.data;
-          })
-          .addCase(subscriptionplan.rejected, (state, action) => {
-            state.isLoading = false;
-          })
-
-          .addCase(fetchTransactionHistorySlice.pending, (state) => {
-            state.isLoadingTxnHistory = true;
-            state.transactionHistory=[];
-          })
-          .addCase(fetchTransactionHistorySlice.fulfilled, (state, action) => {
-            state.isLoadingTxnHistory = false;
-            state.transactionHistory = action.payload;
-          })
-          .addCase(fetchTransactionHistorySlice.rejected, (state, action) => {
-            state.isLoadingTxnHistory = false;
-            state.transactionHistory=[];
-          })
-          ///
-
-          .addCase(txnChartDataSlice.pending, (state) => {
-            state.txnChartData=[];
-          })
-          .addCase(txnChartDataSlice.fulfilled, (state, action) => {
-            state.txnChartData = action.payload;
-          })
-          .addCase(txnChartDataSlice.rejected, (state, action) => {
-            state.txnChartData=[];
-          })
-          //////
-          .addCase(fetchSettlementReportSlice.pending, (state) => {
-            state.isLoadingTxnHistory = true;
-        state.settlementReport=[];
-          })
-          .addCase(fetchSettlementReportSlice.fulfilled, (state, action) => {
-            state.isLoadingTxnHistory = false;
-            state.settlementReport = action.payload;
-          })
-          .addCase(fetchSettlementReportSlice.rejected, (state, action) => {
-            state.isLoadingTxnHistory = false;
-        state.settlementReport=[];
-          })
-
-          ////////////
-          .addCase(fetchRefundTransactionHistory.pending, (state) => {
-            state.isLoadingTxnHistory = true;
-            state.settlementReport=[];
-          })
-          .addCase(fetchRefundTransactionHistory.fulfilled, (state, action) => {
-            state.isLoadingTxnHistory = false;
-        state.settlementReport = action.payload;
-          })
-          .addCase(fetchRefundTransactionHistory.rejected, (state, action) => {
-            state.isLoadingTxnHistory = false;
-            state.settlementReport=[];
-          })
-
-          ///////////////
-
-
-          .addCase(fetchChargebackTxnHistory.pending, (state) => {
-            state.isLoadingTxnHistory = true;
-            state.settlementReport=[];
-          })
-          .addCase(fetchChargebackTxnHistory.fulfilled, (state, action) => {
-            state.isLoadingTxnHistory = false;
-            state.settlementReport = action.payload;
-          })
-          .addCase(fetchChargebackTxnHistory.rejected, (state, action) => {
-            state.isLoadingTxnHistory = false;
-        state.settlementReport=[];
-          })
-
-          
-
-          
-
-          
-
-
-  }
-
-    
+      },
   })
 
 // Action creators are generated for each case reducer function
