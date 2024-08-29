@@ -5,6 +5,7 @@ import BankAccountList from "./BankAccountList";
 import AdditionalKycForPan from "./AdditionalKycForPan";
 import UdyamRegistrationList from "./UdyamRegistrationList";
 import AadharVerify from "./aadhar-attestr/AadharVerify";
+import KycCin from "./KycCin";
 
 const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
@@ -14,7 +15,8 @@ const AdditionalKYC = () => {
     { documentType: "BANK ACCOUNT", value: "3" },
     { documentType: "UDYAM", value: "4" },
     { documentType: "FRM", value: "5" },
-    { documentType: "AADHAR VERIFICATION", value: "6" }
+    { documentType: "AADHAR VERIFICATION", value: "6" },
+    { documentType: "CIN", value: "7" }
   ];
 
   // Helper functions
@@ -69,6 +71,10 @@ const AdditionalKYC = () => {
             )}
             {selectedDocType === "6" && (
               <AadharVerify />
+            )}
+
+            {selectedDocType === "7" && (
+              <KycCin />
             )}
           </div>
 

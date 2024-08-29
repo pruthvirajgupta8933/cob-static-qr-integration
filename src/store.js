@@ -29,6 +29,7 @@ import { frmReducer } from "./slices/approver-dashboard/frmSlice";
 import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
 import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { editKycDetailReducer } from "./slices/editKycSlice";
+import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 
 
 const reducer = {
@@ -76,7 +77,7 @@ const reducer = {
   themeReducer: themeReducer,
   //Assign-Account-Manager
   assignAccountManagerReducer:assignAccountManagerReducer,
-  //Product-Catalogue
+  kycValidatorReducer :kycValidatorReducer 
   
 };
 
