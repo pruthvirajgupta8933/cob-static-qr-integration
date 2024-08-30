@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { kycUserList } from '../../slices/kycSlice';
 import { createFilter } from 'react-select';
 import FormikController from '../../_components/formik/FormikController';
-import { ipWhiteListApi } from '../../services/ipWhiteList/ipWhiteList.service';
+import { webWhiteListApi } from '../../services/webWhiteList/webWhiteList.service';
 import { Regex, RegexMsg } from '../../_components/formik/ValidationRegex';
 import Yup from '../../_components/formik/Yup';
 import toastConfig from '../../utilities/toastTypes';
@@ -76,7 +76,7 @@ const WebWhiteList = () => {
                 "client_code": selectedId,
                 "website_url": values.website_app_url
             };
-            const response = await ipWhiteListApi(postData)
+            const response = await webWhiteListApi(postData)
             toastConfig.successToast(response?.data?.message)
             setDisable(false)
 
