@@ -16,9 +16,9 @@ const WebWhiteList = () => {
     const [selectedId, setSelectedId] = useState(null);
     const [showInput, setShowInput] = useState(false);
     const [disable, setDisable] = useState(false)
-    const { auth, kyc } = useSelector((state) => state);
-    const { user } = auth;
-    const { loginId } = user;
+    const { kyc } = useSelector((state) => state);
+    // const { user } = auth;
+    // const { loginId } = user;
     const KycList = kyc?.kycUserList;
 
     const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const WebWhiteList = () => {
     }, [selectedId, dispatch]);
 
     const handleSelectChange = (selectedOption, formik) => {
-        setSelectedId(selectedOption ? selectedOption.value : null);
+        setSelectedId(selectedOption.value);
         setShowInput(true);
         // Update the website_app_url field when client code changes
         formik.setFieldValue('website_app_url', KycList?.website_app_url || '');
@@ -64,7 +64,7 @@ const WebWhiteList = () => {
     const clientCodeOption = [
         { value: '', label: 'Select Client Code' },
         ...clientCodeList?.map((data) => ({
-            value: data?.loginMasterId,
+            value: data?.clientCode,
             label: `${data?.clientCode} - ${data?.name}`
         }))
     ];
@@ -73,14 +73,13 @@ const WebWhiteList = () => {
         setDisable(true)
         try {
             const postData = {
-                "pclientid": KycList?.clientId,
-                "purl": values.website_app_url,
-                "pdoneby": loginId
+                "client_code": selectedId,
+                "website_url": values.website_app_url
             };
             const response = await ipWhiteListApi(postData)
-            toastConfig.successToast("Website whitelisted successfully")
+            toastConfig.successToast(response?.data?.message)
             setDisable(false)
-            
+
         } catch (error) {
             setDisable(false)
             toastConfig.errorToast("Something went wrong")

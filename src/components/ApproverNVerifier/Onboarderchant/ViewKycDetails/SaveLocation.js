@@ -70,8 +70,8 @@ function SaveLocation({ role }) {
 
     return (
         <div className="row mb-4 border p-1">
-            <h5>Merchant Location</h5>
-            <div className="form-row g-3">
+            <h6>Merchant Location</h6>
+            <div className="form-row p-3">
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}

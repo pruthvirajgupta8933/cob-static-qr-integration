@@ -21,7 +21,7 @@ const BusinessOverview = (props) => {
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
 
- 
+
 
 
   const { user } = auth;
@@ -144,7 +144,7 @@ const BusinessOverview = (props) => {
   return (
     <div className="row p-1 mb-4 border">
 
-      <h5 className="">Business Overview</h5>
+      <h6>Business Overview</h6>
       {formElements.map((element, index) => (
         <div className={`${element.className} mb-3`} key={uuidv4()}>
           {element.inputType === "textarea" && element.isConditional ? (

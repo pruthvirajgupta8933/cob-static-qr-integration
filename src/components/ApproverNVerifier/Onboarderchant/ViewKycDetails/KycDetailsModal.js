@@ -182,7 +182,6 @@ const KycDetailsModal = (props) => {
             merchantKycId={merchantKycId}
             KycTabStatus={KycTabStatusStore}
           />
-
           <MerchantDocument
             docList={KycDocUpload}
             docTypeList={docTypeList}
@@ -192,16 +191,31 @@ const KycDetailsModal = (props) => {
             KycTabStatus={KycTabStatusStore}
           />
 
-          <SaveLocation role={roles} />
+          {(roles.approver || roles.verifier) &&
+            <SaveLocation role={roles} />
+          }
 
-
-          {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) && (
+          {(roles.approver || roles.verifier) && (
             <div className="row mb-4 border p-1">
-              <h5>Set Risk Category</h5>
+              <h6>Set Risk Category</h6>
+              <div className="container mr-2">
+                <table className="table mr-2">
+                  <thead>
+                    <tr>
+                      <th scope="col">Risk Category</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{selectedUserData.risk_category_name}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <div className="form-row g-3 m-1">
                 <button
                   type="button"
-                  className="approve text-white cob-btn-primary btn-sm"
+                  className="cob-btn-primary btn-sm btn"
                   onClick={() => {
                     setModalDisplayData(selectedUserData);
                     setOpenModal(true);
@@ -210,6 +224,7 @@ const KycDetailsModal = (props) => {
                   Set Risk
                 </button>
               </div>
+
               {openZoneModal && (
                 <ViewZoneModal
                   userData={modalDisplayData}

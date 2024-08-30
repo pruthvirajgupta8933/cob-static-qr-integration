@@ -158,6 +158,12 @@ function ApprovedMerchant() {
       selector: (row) => row.zoneName,
     },
     {
+      id: "13r",
+      name: "Risk Category",
+      selector: (row) => row.risk_category_name,
+      width: "150px",
+    },
+    {
       id: "15",
       name: "View Status",
       width: "110px",
@@ -251,7 +257,7 @@ function ApprovedMerchant() {
   }
 
 
- const fetchData = useCallback((startingSerialNumber) => {
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForApproved({
         page: currentPage,
@@ -274,7 +280,7 @@ function ApprovedMerchant() {
     fetchData();
   };
 
-   const filteredData = useMemo(() => {
+  const filteredData = useMemo(() => {
     return approvedMerchantData?.filter((item) =>
       Object.values(item)
         .join(' ')
@@ -358,7 +364,7 @@ function ApprovedMerchant() {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-             URL={`export-excel/?search=Approved&isDirect=${onboardType}`}
+              URL={`export-excel/?search=Approved&isDirect=${onboardType}`}
               filename={"Approved"}
             />
           }

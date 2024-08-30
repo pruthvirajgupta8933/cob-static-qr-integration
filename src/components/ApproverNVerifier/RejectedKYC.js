@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useMemo,useCallback} from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -141,6 +141,12 @@ const RejectedKYC = () => {
       selector: (row) => row.zoneName,
     },
     {
+      id: "13r",
+      name: "Risk Category",
+      selector: (row) => row.risk_category_name,
+      width: "150px",
+    },
+    {
       id: "13",
       name: "View Status",
       selector: (row) => row.viewStatus,
@@ -207,12 +213,12 @@ const RejectedKYC = () => {
   const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForRejectedMerchants({
-              page: currentPage,
-              page_size: pageSize,
-              searchquery: searchText,
-              merchantStatus: "Rejected",
-              isDirect: onboardType,
-            })
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Rejected",
+        isDirect: onboardType,
+      })
     );
   }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
@@ -229,7 +235,7 @@ const RejectedKYC = () => {
     );
   }, [rejectedMerchants, searchText]);
 
-  
+
 
   const searchByText = () => {
     // Set data with the memoized filteredData
@@ -319,7 +325,7 @@ const RejectedKYC = () => {
         <div className="">
           {!loadingState &&
             <MerchnatListExportToxl
-              
+
               URL={`export-excel/?search=Rejected&isDirect=${onboardType}`}
               filename={"Rejected"}
             />

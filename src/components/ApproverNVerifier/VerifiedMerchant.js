@@ -13,7 +13,7 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 
 function VerifiedMerchant() {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const verifiedList = useSelector(
     (state) => state.kyc.kycVerifiedList
   );
@@ -30,7 +30,7 @@ const dispatch = useDispatch();
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("")
- 
+
 
   useEffect(() => {
     const verifiedDataList = verifiedList?.results;
@@ -146,6 +146,12 @@ const dispatch = useDispatch();
       selector: (row) => row.zoneName,
     },
     {
+      id: "13r",
+      name: "Risk Category",
+      selector: (row) => row.risk_category_name,
+      width: "150px",
+    },
+    {
       id: "14",
       name: "View Status",
       width: "120px",
@@ -197,7 +203,7 @@ const dispatch = useDispatch();
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
-  
+
   const roles = roleBasedAccess();
 
   const kycSearch = (e, fieldType) => {
@@ -229,7 +235,7 @@ const dispatch = useDispatch();
     );
   };
 
- const fetchData = useCallback((startingSerialNumber) => {
+  const fetchData = useCallback((startingSerialNumber) => {
     dispatch(
       kycForVerified({
         page: currentPage,
@@ -275,9 +281,9 @@ const dispatch = useDispatch();
   ];
 
   return (
-    
+
     <div className="container-fluid">
-      
+
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <SearchFilter
@@ -311,9 +317,9 @@ const dispatch = useDispatch();
           />
         </div>
         <div className="">
-          {!loadingState  && dataCount===0 ? "" :
+          {!loadingState && dataCount === 0 ? "" :
             <MerchnatListExportToxl
-             URL={`export-excel/?search=Verified&isDirect=${onboardType}`}
+              URL={`export-excel/?search=Verified&isDirect=${onboardType}`}
               filename={"Pending-Approval"}
             />
           }

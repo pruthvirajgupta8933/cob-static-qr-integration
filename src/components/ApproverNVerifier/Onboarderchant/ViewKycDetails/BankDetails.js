@@ -95,7 +95,7 @@ const BankDetails = (props) => {
 
   return (
     <div className="row mb-4 border p-1">
-      <h5 className="">Bank Details</h5>
+      <h6>Bank Details</h6>
 
       <div className="form-row g-3">
         {inputFields.map((field, index) => (
