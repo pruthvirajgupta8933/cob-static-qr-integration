@@ -1,20 +1,15 @@
 import React, { useEffect } from "react";
+import { useRouteMatch, Switch, Route, Redirect, useHistory, useLocation } from "react-router-dom";
 import DashboardHeader from './header/DashboardHeader'
 import SideNavbar from './side-navbar/SideNavbar'
 import classes from "./dashboard-main.module.css"
 import Home from '../AllPages/Home'
 import TransactionEnquirey from "../AllPages/TransactionEnquirey";
 import SettlementReport from "../AllPages/SettlementReport";
-
-import {
-    useRouteMatch, Switch, Route, Redirect, useHistory, useLocation,
-} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
 import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
 import Paylink from "../AllPages/createpaymentlink/Paylink";
-// improt Profile
-// import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
 import PaymentResponse from "../AllPages/PaymentResponse";
 import KycForm from "../../KYC/KycForm";
@@ -401,7 +396,7 @@ function DashboardMainContent() {
 
 
                         <AuthorizedRoute exact path={`${path}/configuration`} Component={Configuration} roleList={{ approver: true, verifier: true }}>
-                            <Configuration/>
+                            <Configuration />
                         </AuthorizedRoute>
 
                         <AuthorizedRoute
@@ -609,19 +604,19 @@ function DashboardMainContent() {
                             <AssigneAccountManger />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true}}>
+                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true }}>
                             <EditKycDetail />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/website-whitelist`} Component={WebWhiteList} roleList={{ verifier: true}}>
-                            <WebWhiteList/>
+                        <AuthorizedRoute exact path={`${path}/website-whitelist`} Component={WebWhiteList} roleList={{ verifier: true }}>
+                            <WebWhiteList />
                         </AuthorizedRoute>
-                        
-
-                        
 
 
-                        
+
+
+
+
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
                             <UrlNotFound />
