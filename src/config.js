@@ -299,7 +299,7 @@ const API_LIVE = {
   VALIDATE_KYC: `${kyc_validate}/validator`,
 
   UDYAM_REGISTRATION: `${kyc_validate}/validator`,
-
+  CIN_DETAIL:`${kyc_validate}/validator/validate-master-data/cin-lookup/`,
   Aadhar_number: `${kyc_validate}/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_validate}/validator/validate-aadhar/verify-otp/`,
 
