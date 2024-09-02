@@ -276,7 +276,7 @@ const MerchantDocument = (props) => {
 
   return (
     <div className="row mb-4 border p-1">
-      <h5 className="">Merchant Documents</h5>
+      <h6>Merchant Documents</h6>
       {pendingDocument?.length === 0 ? null : <p className="font-weight-bold m-0">Not submitted document list:</p>}
       {pendingDocument?.map((item) => {
         return (<React.Fragment key={uuidv4()}> <span className="text-danger"> {item?.value}</span><br /></React.Fragment>)

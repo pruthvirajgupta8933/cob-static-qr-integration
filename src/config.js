@@ -287,11 +287,11 @@ const API_LIVE = {
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
 
   ///EDIT KYC FORM
-  UPDATE_CONATCT_INFO:`${kyc_url}/kyc/update-kyc/general-info/`,
-  UPDATE_BUSINESS_INFO:`${kyc_url}/kyc/update-kyc/business-info/`,
-  UPDATE_MERCHANT_INFO:`${kyc_url}/kyc/update-kyc/merchant-info/`,
-  UPDATE_SETTLEMENT_INFO:`${kyc_url}/kyc/update-kyc/settlement-info/`,
-  UPLOAD_DOCUMENT:`${kyc_url}/kyc/update-kyc/additional-doc/`,
+  UPDATE_CONATCT_INFO: `${kyc_url}/kyc/update-kyc/general-info/`,
+  UPDATE_BUSINESS_INFO: `${kyc_url}/kyc/update-kyc/business-info/`,
+  UPDATE_MERCHANT_INFO: `${kyc_url}/kyc/update-kyc/merchant-info/`,
+  UPDATE_SETTLEMENT_INFO: `${kyc_url}/kyc/update-kyc/settlement-info/`,
+  UPLOAD_DOCUMENT: `${kyc_url}/kyc/update-kyc/additional-doc/`,
 
 
   // Client Detail SandBox //
@@ -415,7 +415,7 @@ const API_LIVE = {
 
   //ipWhiteList
 
-  IP_WHITElIST:`${adminAPIURL}/REST/SaveURLWhitlisting`
+  IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`
 
 
 

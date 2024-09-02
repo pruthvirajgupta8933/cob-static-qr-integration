@@ -8,6 +8,7 @@ import { updateZoneData, getZoneInfo, getZoneEmployeName, getMccCodeMaster } fro
 import { riskCategory } from '../../slices/rateMappingSlice';
 import Yup from "../../_components/formik/Yup";
 import CustomModal from "../../_components/custom_modal";
+import toastConfig from "../../utilities/toastTypes";
 
 
 
@@ -78,14 +79,12 @@ const ViewZoneModal = ({ openZoneModal, setOpenZoneModal, userData }) => {
   }, []);
 
   useEffect(() => {
-
     dispatch(getMccCodeMaster()).then((resp) => {
-      const data = convertToFormikSelectJson("id", "mcc_ellaboration", resp?.payload);
+      const data = convertToFormikSelectJson("id", "mcc_ellaboration", resp?.payload, {}, false, false, true, "mcc");
       setMccCode(data)
     }).catch((err) => {
-
+      toastConfig.errorToast("MCC code not found")
     })
-
   }, []);
 
 
@@ -208,7 +207,7 @@ const ViewZoneModal = ({ openZoneModal, setOpenZoneModal, userData }) => {
               disabled={buttonDisable}
             >
               {buttonDisable && (
-                 <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
               )}
               Submit
             </button>

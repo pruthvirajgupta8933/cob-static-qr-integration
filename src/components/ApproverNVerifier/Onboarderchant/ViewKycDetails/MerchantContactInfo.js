@@ -83,7 +83,7 @@ function MerchantContactInfo(props) {
 
   return (
     <div className="row mb-4 p-1 border">
-      <h5 className="">Merchant Contact Info</h5>
+      <h6 className="">Merchant Contact Info</h6>
       <div className="form-row g-3">
         {inputFields?.map((field) => (
           <div className="col-sm-6 col-md-6 col-lg-6 mb-3" key={uuidv4()}>
