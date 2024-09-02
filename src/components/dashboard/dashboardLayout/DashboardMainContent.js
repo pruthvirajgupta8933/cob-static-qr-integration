@@ -89,7 +89,6 @@ import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/A
 import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attestr/AadharResponse";
 import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
 import WebWhiteList from "../../ApproverNVerifier/WebWhiteList";
-import CreateMandateApi from "../../../subscription_components/CreateMandateApi/CreateMandateApi";
 
 function DashboardMainContent() {
     let history = useHistory();
