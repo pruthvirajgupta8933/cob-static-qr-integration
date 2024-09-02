@@ -204,13 +204,12 @@ const ChallanTransactReport = () => {
         client_code: saveData?.clientCode,
       })
     ).then((res) => {
-
+      
       const blob = new Blob([res?.payload?.data], {
         type:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       saveAs(blob, `MIS_REPORT_${saveData?.clientCode}_${splitDate}.xlsx`)
-
     });
   };
 

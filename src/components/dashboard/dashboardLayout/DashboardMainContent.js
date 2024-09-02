@@ -508,10 +508,13 @@ function DashboardMainContent() {
                             <DebitReport />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/subscription/mandate_registration`}
-                            Component={CreateMandate} roleList={{ merchant: true }}>
-                            <CreateMandate />
-                        </AuthorizedRoute>
+
+
+                        {/* <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api`}
+                            Component={CreateMandateApi} roleList={{ merchant: true }}>
+                            <CreateMandateApi />
+
+                        </AuthorizedRoute> */}
 
                         {/* -----------------------------------------------------------------------------------------------------|| */}
 
