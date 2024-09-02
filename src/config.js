@@ -114,7 +114,8 @@ const API_LIVE = {
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
   // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
-  GetMerchantTxnHistory: reportAPIURL + "/REST/GetMerchantTxnHistoryN",
+  GetMerchantTxnHistory: `${url}/get-merchant-transaction-history`,
+  DownloadTxnHistory:`${url}/download-merchant-transaction-history`,
 
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",

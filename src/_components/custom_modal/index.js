@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "../../components/dashboard/css/Home.css"
 
 const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle, modalSize }) => {
+  
 
   const handleEscapeKey = (event) => {
     if (event.key === "Escape") {

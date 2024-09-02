@@ -58,6 +58,28 @@ export const txnChartDataSlice = createAsyncThunk(
     }
   );
 
+
+  
+  export const exportTxnHistory = createAsyncThunk(
+    "dashbaord/exportTxnHistory",
+    async (obj, thunkAPI ) => {
+        try {
+            const response = await Dashboardservice.dowlonadTransactionHistory(obj);
+            return response?.data;
+          } catch (error) {
+            const message =
+              (error.response &&
+                error.response.data &&
+                error.response.data.detail) ||
+              error.message ||
+              error.toString();
+            thunkAPI.dispatch(setMessage(message));
+            
+            return thunkAPI.rejectWithValue(message);
+          }
+    }
+  );
+
   export const subscriptionplan = createAsyncThunk(
     "dashbaord/subscriptionplan",
     async (object = {}, thunkAPI) => {
