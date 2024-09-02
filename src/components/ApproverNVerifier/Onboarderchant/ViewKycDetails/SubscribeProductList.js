@@ -2,21 +2,21 @@ import React from 'react'
 
 function SubscribeProductList({ SubscribedPlanData }) {
 
-    
 
 
-    const filterSubscibedData  = SubscribedPlanData
-    ?.filter(
-        (item) =>
-            item?.status?.toLowerCase() === 'verified' &&
-            item?.subscription_status?.toLowerCase() === 'subscribed'
-    )
+
+    const filterSubscibedData = SubscribedPlanData
+        ?.filter(
+            (item) =>
+                item?.status?.toLowerCase() === 'verified' &&
+                item?.subscription_status?.toLowerCase() === 'subscribed'
+        )
 
 
 
     return (
         <div className="row mb-4 border p-1">
-            <h5>Subscribed Product List</h5>
+            <h6>Subscribed Product List</h6>
             <div>
                 <table class="table mt-3">
                     <thead>

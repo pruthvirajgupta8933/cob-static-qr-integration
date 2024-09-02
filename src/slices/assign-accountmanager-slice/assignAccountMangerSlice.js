@@ -63,27 +63,7 @@ const initialState = {
     name: "assignAccountManager",
     initialState,
     reducers: {},
-     
-    extraReducers: {
-      [assignAccountMangerApi.pending]: (state, action) => {
-        state.status = "pending";
-        
-      },
-      [assignAccountMangerApi.fulfilled]: (state, action) => {
-       
-
-      },
-      [assignAccountMangerApi.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      // ------------------------------------ For Comments ---------------------
-
-
-      
-      
-    
-    }
+     extraReducers: {}
   });
   export const {
    

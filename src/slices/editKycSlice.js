@@ -154,22 +154,7 @@ export const editKycDetailSlice = createSlice({
   initialState,
   reducers: {},
 
-  extraReducers: {
-    [updateContactInfoEditDetails.pending]: (state, action) => {
-    //   state.status = "pending";
-
-    },
-    [updateContactInfoEditDetails.fulfilled]: (state, action) => {
-      
-
-
-    },
-    [updateContactInfoEditDetails.rejected]: (state, action) => {
-    //   state.status = "failed";
-    //   state.error = action.error.message;
-    },
-   
-  }
+  extraReducers: {}
 });
 
 export const editKycDetailReducer = editKycDetailSlice.reducer;

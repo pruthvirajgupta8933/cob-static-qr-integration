@@ -114,7 +114,8 @@ const API_LIVE = {
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
   // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
-  GetMerchantTxnHistory: reportAPIURL + "/REST/GetMerchantTxnHistoryN",
+  GetMerchantTxnHistory: `${url}/get-merchant-transaction-history`,
+  DownloadTxnHistory:`${url}/download-merchant-transaction-history`,
 
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
@@ -286,11 +287,11 @@ const API_LIVE = {
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
 
   ///EDIT KYC FORM
-  UPDATE_CONATCT_INFO:`${kyc_url}/kyc/update-kyc/general-info/`,
-  UPDATE_BUSINESS_INFO:`${kyc_url}/kyc/update-kyc/business-info/`,
-  UPDATE_MERCHANT_INFO:`${kyc_url}/kyc/update-kyc/merchant-info/`,
-  UPDATE_SETTLEMENT_INFO:`${kyc_url}/kyc/update-kyc/settlement-info/`,
-  UPLOAD_DOCUMENT:`${kyc_url}/kyc/update-kyc/additional-doc/`,
+  UPDATE_CONATCT_INFO: `${kyc_url}/kyc/update-kyc/general-info/`,
+  UPDATE_BUSINESS_INFO: `${kyc_url}/kyc/update-kyc/business-info/`,
+  UPDATE_MERCHANT_INFO: `${kyc_url}/kyc/update-kyc/merchant-info/`,
+  UPDATE_SETTLEMENT_INFO: `${kyc_url}/kyc/update-kyc/settlement-info/`,
+  UPLOAD_DOCUMENT: `${kyc_url}/kyc/update-kyc/additional-doc/`,
 
 
   // Client Detail SandBox //
@@ -299,7 +300,7 @@ const API_LIVE = {
   VALIDATE_KYC: `${kyc_validate}/validator`,
 
   UDYAM_REGISTRATION: `${kyc_validate}/validator`,
-
+  CIN_DETAIL:`${kyc_validate}/validator/validate-master-data/cin-lookup/`,
   Aadhar_number: `${kyc_validate}/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_validate}/validator/validate-aadhar/verify-otp/`,
 
@@ -414,7 +415,7 @@ const API_LIVE = {
 
   //ipWhiteList
 
-  IP_WHITElIST:`${adminAPIURL}/REST/SaveURLWhitlisting`
+  IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`
 
 
 

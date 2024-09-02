@@ -161,7 +161,7 @@ const StudentRecipets = () => {
                 <div className="card" key={uniqueId()}>
                   <div className="card-body table-responsive">
                     <div className="d-flex justify-content-end">
-                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i> Print</button>
                     </div>
                     <table className="table" id="data-table">
                       <thead className="">

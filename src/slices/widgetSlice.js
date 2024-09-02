@@ -104,36 +104,34 @@ export const widgetSlice = createSlice({
   initialState,
   reducers: {},
 
-  extraReducers: {
-    [widgetClientKeys.pending]: (state, action) => {
+  extraReducers: (builder)=>{
+    builder
+    .addCase(widgetClientKeys.pending,(state)=>{
       state.status = "pending";
+    })
 
-    },
-    [widgetClientKeys.fulfilled]: (state, action) => {
+    .addCase(widgetClientKeys.fulfilled,(state,action)=>{
       state.postdata.data.client_key = action.payload.data.client_key
-
-
-
-    },
-    [widgetClientKeys.rejected]: (state, action) => {
+      
+    })
+    .addCase(widgetClientKeys.rejected,(state,action)=>{
       state.status = "failed";
       state.error = action.error.message;
-    },
-    //////////////////////////////////////////
 
-    [widgetDetails.pending]: (state, action) => {
-      state.status = "pending";
-
-    },
-    [widgetDetails.fulfilled]: (state, action) => {
-      state.widgetDetail = action?.payload
-
-
-    },
-    [widgetDetails.rejected]: (state, action) => {
-      state.status = "failed";
+    })
+   .addCase(widgetDetails.pending,(state)=>{
+    state.status = "pending";
+   })
+   .addCase(widgetDetails.fulfilled,(state,action)=>{
+   state.widgetDetail = action?.payload
+   })
+   .addCase(widgetDetails.rejected,(state,action)=>{
+    state.status = "failed";
       state.error = action.error.message;
-    },
+
+   })
+
+    
 
   }
 });

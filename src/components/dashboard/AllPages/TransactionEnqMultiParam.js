@@ -578,13 +578,7 @@ function TransactionEnqMultiParam() {
                   <></>
                 )}
               </div>
-              <div className="container">
-                {/* {error && showData?.length <= 0 ? (
-                  <div className="showMsg">Data Not Found</div>
-                ) : (
-                  <div></div>
-                )} */}
-              </div>
+
             </div>
           </section>
         </div>

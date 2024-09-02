@@ -85,8 +85,8 @@ const ReceiptWalchand = () => {
             <div className="card">
               <div className="card-header text-center">
                 <p>
-                Dear payer, If money is debited by your bank but not confirmed to us in real-time, your bank will likely refund the amount as per their policy.
-                For any payment issues, please contact us at support@sabpaisa.in.
+                  Dear payer, If money is debited by your bank but not confirmed to us in real-time, your bank will likely refund the amount as per their policy.
+                  For any payment issues, please contact us at support@sabpaisa.in.
                 </p>
                 <p>
                   <strong>SABPAISA TRANSACTION RECEIPT</strong>
@@ -133,7 +133,7 @@ const ReceiptWalchand = () => {
                   <div className="card">
                     <div className="card-body table-responsive">
                       <div className="d-flex justify-content-end">
-                        <button onClick={() => { printHandler('table_' + i) }} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                        <button onClick={() => { printHandler('table_' + i) }} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i>Print</button>
                       </div>
                       <table className="table" id={`table_${i}`}>
                         <thead className="">

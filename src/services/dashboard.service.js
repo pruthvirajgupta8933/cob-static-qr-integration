@@ -45,7 +45,14 @@ const subscriptionPlanDetail = () => {
 const fetchTransactionHistory = (paramData) => {
   // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
   // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
-  return axiosInstance.post(API_URL.GetMerchantTxnHistory, paramData);
+  return axiosInstanceJWT.post(API_URL.GetMerchantTxnHistory, paramData);
+}
+
+const dowlonadTransactionHistory=(postData)=>{
+  return axiosInstanceJWT.post(API_URL.DownloadTxnHistory, postData,{
+    responseType: 'arraybuffer'
+})
+  
 }
 
 // const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`
@@ -70,5 +77,6 @@ export const Dashboardservice = {
   settlementReport,
   refundTransactionHistory,
   chargebackTxnHistory,
-  getTxnDataForGraph
+  getTxnDataForGraph,
+  dowlonadTransactionHistory
 };

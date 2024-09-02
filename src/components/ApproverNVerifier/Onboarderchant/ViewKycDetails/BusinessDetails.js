@@ -17,8 +17,8 @@ const BusinessDetails = (props) => {
   const { auth } = useSelector((state) => state);
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const { kycUserList } = useSelector(state => state?.kyc || {});
-  const factumData = kycUserList?.factum_data 
-  
+  const factumData = kycUserList?.factum_data
+
 
   const panListData = useSelector(
     (state) => state.kyc.panDetailsData.result
@@ -168,9 +168,9 @@ const BusinessDetails = (props) => {
     },
   ];
 
- return (
+  return (
     <div className="row mb-4 border p-1">
-      <h5 className="">Business Details</h5>
+      <h6>Business Details</h6>
       {formFields.map((field, index) => (
         <div key={uuidv4()} className={`${field.gridClasses}`}>
           <div className="form-group">
@@ -387,7 +387,7 @@ const BusinessDetails = (props) => {
       </>
 
       <>
-      {Array.isArray(factumData) && <ViewKycCollapse
+        {Array.isArray(factumData) && <ViewKycCollapse
           title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
           formContent={
             <>
@@ -429,7 +429,7 @@ const BusinessDetails = (props) => {
 
           }}
         />}
-        
+
       </>
 
       <div className="form-row g-3">

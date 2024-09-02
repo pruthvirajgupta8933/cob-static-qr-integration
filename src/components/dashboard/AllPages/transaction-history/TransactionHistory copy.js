@@ -14,6 +14,7 @@ import {
     exportTxnLoadingState,
     fetchTransactionHistorySlice
 } from "../../../../slices/dashboardSlice";
+import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
 import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -30,7 +31,10 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import classes from "../allpage.module.css"
 import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import TransactionRefund from "./TransactionRefund";
-import ExportTransactionHistory from "./ExportTransactionHistory";
+import CustomModal from "../../../../_components/custom_modal";
+import Blob from "blob";
+import { saveAs } from "file-saver";
+import toastConfig from "../../../../utilities/toastTypes";
 
 
 
@@ -63,7 +67,12 @@ const TransactionHistory = () => {
     const [refundModal, setRefundModal] = useState(false)
     const [openModal, setOpenModal] = useState(false);
     const[downloadData,setDownloadData]=useState({})
-
+const initialValuess={
+    password:""
+}
+const validationSchemaa=Yup.object().shape({
+    password:Yup.string().required("Required")
+})
 
 
     let now = moment().format("YYYY-M-D");
@@ -232,7 +241,7 @@ const TransactionHistory = () => {
         isButtonClicked(true);
         setDisable(true)
         const { fromDate, endDate, transaction_status, payment_mode } = values;
-        
+        console.log("transaction",transaction_status)
         const dateRangeValid = checkValidation(fromDate, endDate);
         if (dateRangeValid) {
             let strClientCode, clientCodeArrLength = "";
@@ -397,10 +406,119 @@ const TransactionHistory = () => {
     }
 
 
-   
+    const handleSubmit = (values) => {
+        const dateRangeValid = checkValidation(downloadData?.fromDate, downloadData?.endDate);
+        
+        if (dateRangeValid) {
+            let strClientCode = '';
+            let clientCodeArrLength = '';
+    
+            if (values.clientCode === "All") {
+                const allClientCode = clientCodeListArr?.map((item) => item.client_code);
+                clientCodeArrLength = allClientCode.length.toString();
+                strClientCode = allClientCode.join();
+            } else {
+                strClientCode = values.clientCode;
+                clientCodeArrLength = "1";
+            }
+    
+            dispatch(
+                exportTxnHistory({
+                    clientCode: downloadData?.clientCode,
+                    paymentStatus: downloadData?.transaction_status,
+                    paymentMode: downloadData?.payment_mode,
+                    fromDate: moment(downloadData?.fromDate).startOf('day').format('YYYY-MM-DD'),
+                    endDate: moment(downloadData?.endDate).startOf('day').format('YYYY-MM-DD'),
+                    length: "0",
+                    page: "0",
+                    noOfClient: clientCodeArrLength,
+                    profile_password: values.password,
+                })
+            ).then((res) => {
+                console.log("res",res)
+                if (res.meta.requestStatus === "fulfilled") {
+                    const blob = new Blob([res?.payload?.data], {
+                        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    });
+                    saveAs(blob, 'transaction_history.xlsx');
+                } else {
+                    toastConfig.errorToast(res?.payload);
+                }
+            });
+        }
+    };
     
 
+    const modalBody = () => {
+        return (
+          <div className="container-fluid">
+            <Formik
+               initialValues={initialValuess}
+              validationSchema={validationSchemaa}
     
+              onSubmit={(values, { resetForm }) => {
+                handleSubmit(values);
+                resetForm();
+              }}
+            >
+              {({ resetForm }) => (
+                <>
+    
+                  <div className="modal-body">
+    
+                   
+                    <div className="container">
+                      <Form>
+                        <div className="row">
+                          <div className="col-lg-6">
+                            <label className="col-form-label mt-0 p-2">
+                              Password<span style={{ color: "red" }}>*</span>
+                            </label>
+                            <FormikController
+                              control="input"
+                              type="password"
+                              name="password"
+                              placeholder="Enter Password"
+                              className="form-control"
+                            />
+                          </div>
+                          <div className="col-lg-3 mt-3">
+                         
+                         <button
+                           type="submit"
+                           className="submit-btn cob-btn-primary text-white btn btn-sm mt-3"
+                         //   disabled={disable}
+                         >
+                           {/* {disable && ( */}
+                             {/* <span
+                               className="spinner-border spinner-border-sm mr-1"
+                               role="status"
+                               ariaHidden="true"
+                             ></span> */}
+                           {/* )} */}
+                           Submit
+                         </button>
+                       
+                     </div>
+                        
+                        </div>
+                       
+    
+    
+    
+                      </Form>
+                    </div>
+                  </div>
+                </>
+              )}
+            </Formik>
+          
+           </div>
+    
+        )
+    
+    
+      }
 
 
     return (
@@ -516,7 +634,7 @@ const TransactionHistory = () => {
                                                          data-target="#exampleModalCenter"
                                                          onClick={() => setOpenModal(true)}
                                                     >
-                                                       <i className="fa fa-download"></i> Export
+                                                        Export
                                                     </button>
                                                 </div>
 
@@ -744,9 +862,10 @@ const TransactionHistory = () => {
                             </div>
                         </div>
                     </section>
-                <ExportTransactionHistory openModal={openModal} setOpenModal={setOpenModal} downloadData={downloadData} checkValidation={checkValidation} clientCodeListArr={clientCodeListArr} />
+                
             </main>
-           
+            <CustomModal modalBody={modalBody} headerTitle={""} modalSize={"modal-md"} modalToggle={openModal}
+        fnSetModalToggle={setOpenModal} />
         </section>
     );
 }

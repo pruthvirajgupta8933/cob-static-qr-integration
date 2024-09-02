@@ -22,7 +22,7 @@ const ReceiptByEmail = () => {
   const [btnDisable, setBtnDisable] = useState(false);
   const [data, setData] = useState([initialState]);
 
-  
+
   const onSubmit = async (e, transactionId, studentId) => {
     e.preventDefault();
     if (transactionId === null) {
@@ -76,7 +76,7 @@ const ReceiptByEmail = () => {
       });
   };
 
-  
+
   const onClick = () => {
     let tableContents = document.getElementById("data-table").innerHTML;
     let a = window.open("", "", "height=900, width=900");
@@ -98,8 +98,8 @@ const ReceiptByEmail = () => {
             <div className="card">
               <div className="card-header text-center">
                 <p>
-                Dear payer, If money is debited by your bank but not confirmed to us in real-time, your bank will likely refund the amount as per their policy.
-                For any payment issues, please contact us at support@sabpaisa.in.{" "}
+                  Dear payer, If money is debited by your bank but not confirmed to us in real-time, your bank will likely refund the amount as per their policy.
+                  For any payment issues, please contact us at support@sabpaisa.in.{" "}
                 </p>
                 <p>
                   <strong>SABPAISA TRANSACTION RECEIPT</strong>
@@ -154,7 +154,7 @@ const ReceiptByEmail = () => {
                 <div className="card" key={user.Id}>
                   <div className="card-body table-responsive">
                     <div className="d-flex justify-content-end">
-                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"></i></button>
+                      <button onClick={onClick} className="btn btn-light btn-sm"><i className="fa fa-print font-size-16"> Print</i></button>
                     </div>
                     <table className="table table-striped" id="data-table">
                       <thead>

@@ -6,12 +6,10 @@ import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
 import Yup from "../../_components/formik/Yup";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 // import { v4 as uuidv4 } from 'uuid';
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
-
-
-
     const validationSchema = Yup.object().shape({
         merchant_business_name: Yup.string()
             .required("Required"),
@@ -248,7 +246,8 @@ const BizzAppForm = (props) => {
                             </Formik>
                         </div>
                         <div className="card-footer text-muted text-center">
-                            sabpaisa.in
+                            <a href="https://sabpaisa.in/" target="_blank" rel="noreferrer">sabpaisa.in</a>
+
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ export const verifyOtp = createAsyncThunk(
   async (dataObj, thunkAPI) => {
     try {
       const response = await emailVerify(dataObj);
-      console.log("response",response.data)
+      
      // thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } 
@@ -34,36 +34,12 @@ export const verifyOtp = createAsyncThunk(
 );
 
 
-
-
-
-
-  
-
-  export const forgotPasswordSlice = createSlice({
-    name: "mid",
+export const forgotPasswordSlice = createSlice({
+    name: "forgotPassword",
     initialState,
     reducers: {},
      
-    extraReducers: {
-      [verifyOtp.pending]: (state, action) => {
-        state.status = "pending";
-        
-      },
-      [verifyOtp.fulfilled]: (state, action) => {
-       
-
-      },
-      [verifyOtp.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      // ------------------------------------ For Comments ---------------------
-
-
-       
-    
-    }
+    extraReducers: {}
   });
   export const {
    

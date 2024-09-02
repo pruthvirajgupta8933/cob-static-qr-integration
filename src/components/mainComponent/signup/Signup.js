@@ -42,7 +42,6 @@ const FORM_VALIDATION = Yup.object().shape({
         .min(10, "Phone number in not valid")
         .max(10, "too long")
         .allowOneSpace(),
-
     emaill: Yup.string()
         .email("Must be a valid email")
         .max(255)
@@ -63,18 +62,16 @@ function Signup() {
     const history = useHistory();
     const reduxState = useSelector((state) => state);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const { message, auth } = reduxState;
     const authData = auth;
     const { isUserRegistered } = authData;
-
     const [btnDisable, setBtnDisable] = useState(false);
     const [businessCode, setBusinessCode] = useState([]);
     const [queryString, setQueryString] = useState({});
-    const [passwordType, setPasswordType] = useState({
-        confirmpassword: "",
-        showPasswords: false,
-    });
+    // const [passwordType, setPasswordType] = useState({
+    //     confirmpassword: "",
+    //     showPasswords: false,
+    // });
 
     const [valuesIn, setValuesIn] = useState({
         password: "",
@@ -91,12 +88,12 @@ function Signup() {
     const isTablet = useMediaQuery('(min-width: 768px) and (max-width:  992px)');
     const isMobile = useMediaQuery('(max-width: 767px)');
 
-    const togglePassword = () => {
-        setPasswordType({
-            ...passwordType,
-            showPasswords: !passwordType.showPasswords,
-        });
-    };
+    // const togglePassword = () => {
+    //     setPasswordType({
+    //         ...passwordType,
+    //         showPasswords: !passwordType.showPasswords,
+    //     });
+    // };
 
 
 
@@ -488,7 +485,7 @@ function Signup() {
                 </div>
             </div>
 
-        
+
         </React.Fragment>
 
     )

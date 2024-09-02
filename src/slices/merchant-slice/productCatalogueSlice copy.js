@@ -198,57 +198,67 @@ export const subscribedPlanDetails = createAsyncThunk(
 const productCatalogueSlice = createSlice({
   name: "productCatalogue",
   initialState,
-  extraReducers:(builder)=> {
-    builder
-    .addCase(merchantSubscribedPlanData.pending, (state)=>{
+  extraReducers: {
+    [merchantSubscribedPlanData.pending]: (state) => {
       state.isLoading = true
       state.SubscribedPlanData = [];
       state.walletCommission=0;
-
-    })
-    .addCase(merchantSubscribedPlanData.fulfilled,(state,action)=>{
+    },
+    [merchantSubscribedPlanData.fulfilled]: (state, action) => {
       state.isLoading = false
       state.SubscribedPlanData = action.payload.data;
       state.walletCommission = action.payload.commission_data;
-    })
-    .addCase(merchantSubscribedPlanData.rejected,(state)=>{
+     
+    },
+    
+    [merchantSubscribedPlanData.rejected]: (state) => {
       state.isLoading = false
       state.errorState=true
       state.SubscribedPlanData = [];
       state.walletCommission=0;
+    },
 
-    })
-    .addCase(productPlanData.fulfilled,(state,action)=>{
+    [productPlanData.fulfilled]: (state, action) => {
       state.productPlanData = action.payload.data;
-    })
+    },
+    [updateSubscribeDetails.fulfilled]: (state, action) => {
+      state.clientSubscribeStatus = action.payload?.data?.data;
+    },
 
-   .addCase(updateSubscribeDetails.fulfilled,(state,action)=>{
-    state.clientSubscribeStatus = action.payload?.data?.data;
-   })
+    [productDetails.pending]: (state) => {
+      state.isLoading=true
+      
+    },
+    [productDetails.fulfilled]: (state, action) => {
+      state.productDetailsData=action.payload.ProductDetail
+      state.isLoading=false
+
+     
+    },
     
-   .addCase(productDetails.pending,(state)=>{
-    state.isLoading=true
-   })
-   .addCase(productDetails.fulfilled,(state,action)=>{
-    state.productDetailsData=action.payload.ProductDetail
-    state.isLoading=false
-   })
-   .addCase(productDetails.rejected,(state,action)=>{
-    state.isLoading=false
-   })
+    [productDetails.rejected]: (state) => {
+      state.isLoading=false
+    },
 
-   .addCase(productSubDetails.pending,(state)=>{
-    state.isLoading=true
-   })
-   .addCase(productSubDetails.fulfilled,(state,action)=>{
-    state.productSubDetails=action.payload.ProductDetail
-     state.isLoading=false
-   })
-   .addCase(productSubDetails.rejected,(state)=>{
-    state.isLoading=false
-   })
+    [productSubDetails.pending]:(state)=>{
+      state.isLoading=true
+
 
     },
+    [productSubDetails.fulfilled]:(state,action)=>{
+     state.productSubDetails=action.payload.ProductDetail
+     state.isLoading=false
+      
+
+    },
+    [productSubDetails.rejected]:(state)=>{
+      state.isLoading=false
+
+    }
+
+    
+
+},
 
 
 

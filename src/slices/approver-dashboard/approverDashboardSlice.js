@@ -66,28 +66,31 @@ const approverDashboardSlice = createSlice({
       state.generalFormData = action.payload
     }
   },
-  extraReducers: {
-    [businessCategoryType.pending]: (state, action) => {
+  extraReducers: (builder)=>{
+    builder
+ .addCase(businessCategoryType.pending,(state)=>{
       state.businessCategoryType = []
-    },
-    [businessCategoryType.fulfilled]: (state, action) => {
+    })
+
+    .addCase(businessCategoryType.fulfilled,(state,action)=>{
       state.businessCategoryType = action.payload.result
-
-    },
-    [businessCategoryType.rejected]: (state, action) => {
+    })
+    .addCase(businessCategoryType.rejected,(state,action)=>{
       state.businessCategoryType = []
-    },
 
-    [getAllCLientCodeSlice.pending]: (state, action) => {
+    })
+    
+    .addCase(getAllCLientCodeSlice.pending,(state)=>{
       state.clientCodeList = []
-    },
-    [getAllCLientCodeSlice.fulfilled]: (state, action) => {
+    })
+    .addCase(getAllCLientCodeSlice.fulfilled,(state,action)=>{
       state.clientCodeList = action.payload.result
-
-    },
-    [getAllCLientCodeSlice.rejected]: (state, action) => {
+    })
+    .addCase(getAllCLientCodeSlice.rejected,(state,action)=>{
       state.clientCodeList = []
-    },
+    })
+
+   
   }
 
 });
