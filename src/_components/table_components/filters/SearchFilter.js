@@ -84,9 +84,9 @@ const SearchFilter = ({
               setsearchQueryText("");
               showfilterbtn(false);
             }}
-            className="border p-1 clearfilter"
+            className="border my-1 clearfilter"
           >
-            <i className="fa fa-times"ariaHidden="true">
+            <i className="fa fa-times" ariaHidden="true">
               {" Clear Filter"}
             </i>
           </div>
