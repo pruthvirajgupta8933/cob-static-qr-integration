@@ -90,6 +90,7 @@ import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attest
 import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
 import WebWhiteList from "../../ApproverNVerifier/WebWhiteList";
 import CreateMandateApi from "../../../subscription_components/CreateMandateApi/CreateMandateApi";
+import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
 
 function DashboardMainContent() {
     let history = useHistory();
@@ -522,6 +523,12 @@ function DashboardMainContent() {
                         <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api`}
                             Component={CreateMandateApi} roleList={{ merchant: true }}>
                             <CreateMandateApi/>
+                        </AuthorizedRoute >
+
+                        
+                        <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api-response`}
+                            Component={CreateMandateApiResponse} roleList={{ merchant: true }}>
+                            <CreateMandateApiResponse/>
                         </AuthorizedRoute >
 
                       

@@ -62,6 +62,15 @@ const createMandateApi=(formData)=>{
   .catch((err) => console.log(err));
 };
 
+const handleCreateMandateApiResponse=()=>{
+  return axiosInstance.post(subAPIURL.CREATE_MANDATE_API_RESPONSE)
+  .then((resp)=>{
+    return resp;
+  })
+  .catch((err)=> console.log(err))
+
+}
+
 const netBannkingBankList=()=>{
   return axiosInstance
   .get(API_URL.BANK_LIST_NB)
@@ -95,5 +104,6 @@ export const createMandateService = {
   creatingMandate,
   createMandateApi,
   netBannkingBankList,
-  debitCardBankList
+  debitCardBankList,
+  handleCreateMandateApiResponse
 };

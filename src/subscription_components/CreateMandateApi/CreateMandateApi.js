@@ -15,44 +15,13 @@ import { fetchFrequency, fetchMandatePurpose, fetchMandateType, fetchRequestType
 import Yup from "../../_components/formik/Yup";
 import { createMandateService } from "../../services/subscription-service/create.mandate.service";
 
-const options1 = [
-  { key: "Select", value: "Select" },
-  { key: "Fixed", value: "Fixed" },
-];
-
-const FORM_VALIDATION = Yup.object().shape({
-  consumerReferenceNumber: Yup.string().required("Required"),
-  mandatePurpose: Yup.string().required("Required"),
-  mandateEndDate: Yup.string().when("untilCancelled", {
-    is: true,
-    then: Yup.string().notRequired().nullable(),
-    otherwise: Yup.string()
-      .required("Specify End Date or check Until cancelled")
-      .nullable(),
-  }),
-  payerName: Yup.string().required("Required"),
-  mandateMaxAmount: Yup.string()
-    .required('Required')
-    .matches(/^[0-9]+$/, 'Only numbers are allowed'),
-  mandateStartDate: Yup.string().required("Required"),
-
-  mandateCategory: Yup.string().required("Required"),
-  payerAccountNumber: Yup.string().required("Required"),
-  payerAccountType: Yup.string().required("Required"),
-  payerBank: Yup.string().required("Required"),
-  payerEmail: Yup.string().required("Required"),
-  payerMobile: Yup.string().required("Required"),
-
-  payerBankIfscCode: Yup.string().required("Required"),
-  authenticationMode: Yup.string().required("Required"),
-  frequency: Yup.string().required("Required"),
 
 
-  fixedmaxAmount: Yup.string().required("Required"),
-  schemeReferenceNumber: Yup.string().required("Required"),
-  emiamount: Yup.string().required("Required"),
-  requestType: Yup.string().required("Required"),
-});
+
+
+
+
+
 
 
 
@@ -60,6 +29,56 @@ const FORM_VALIDATION = Yup.object().shape({
 
 
 const CreateMandateApi = () => {
+  const initialValues = {
+    consumerReferenceNumber: "",
+    mandatePurpose: "",
+    mandateEndDate: "",
+    payerName: "",
+    mandateMaxAmount: "",
+    mandateStartDate: "",
+    panNo: "",
+    mandateCategory: "",
+    payerAccountNumber: "",
+    payerAccountType: "",
+    payerBank: "",
+    payerEmail: "",
+    payerMobile: "",
+    telePhone: "",
+    payerBankIfscCode: "",
+    authenticationMode: "",
+    frequency: "",
+    npciPaymentBankCode:"",
+    schemeReferenceNumber:""
+  
+  
+  }
+  const FORM_VALIDATION = Yup.object().shape({
+    consumerReferenceNumber: Yup.string().required("Required"),
+    mandatePurpose: Yup.string().required("Required"),
+    mandateEndDate: Yup.string()
+        .required("Required")
+        .nullable(),
+    
+    payerName: Yup.string().required("Required"),
+    mandateMaxAmount: Yup.string()
+      .required('Required')
+      .matches(/^[0-9]+$/, 'Only numbers are allowed'),
+    mandateStartDate: Yup.string().required("Required"),
+  
+    mandateCategory: Yup.string().required("Required"),
+    payerAccountNumber: Yup.string().required("Required"),
+    payerAccountType: Yup.string().required("Required"),
+    payerBank: Yup.string().required("Required"),
+    payerEmail: Yup.string().required("Required"),
+    payerMobile: Yup.string().required("Required"),
+  
+    payerBankIfscCode: Yup.string().required("Required"),
+    authenticationMode: Yup.string().required("Required"),
+    frequency: Yup.string().required("Required"),
+    schemeReferenceNumber: Yup.string().required("Required"),
+    npciPaymentBankCode: Yup.string().required("Required")
+   
+  });
 
 
 
@@ -81,29 +100,31 @@ const CreateMandateApi = () => {
 
 
 
-  const initialValues = {
-    consumerReferenceNumber: "",
-    mandatePurpose: "",
-    mandateEndDate: "",
-    payerName: "",
-    mandateMaxAmount: "",
-    mandateStartDate: "",
-    panNo: "",
-    mandateCategory: "",
-    payerAccountNumber: "",
-    payerAccountType: "",
-    payerBank: "",
-    payerEmail: "",
-    payerMobile: "",
-    telePhone: "",
-    payerBankIfscCode: "",
-    authenticationMode: "",
-    frequency: "",
-    npciPaymentBankCode:"",
-    schemeReferenceNumber:""
+
+  const location = useLocation();
+  const { search } = location;
+  const mendateRegId = search.split("?mendateRegId=")[1];
+  console.log("mendateRegId",mendateRegId)
 
 
-  }
+  const handleResponseApi = () => {
+    if (mendateRegId) {
+      axiosInstance
+        .post(subAPIURL.CREATE_MANDATE_API_RESPONSE + mendateRegId)
+        .then((response) => {
+         console.log("response",response)
+          if (response.status === 200) {
+            
+          }
+          // console.log(response.data,"this is response");
+        })
+    }
+
+
+  };
+  useEffect(()=>{
+    handleResponseApi()
+  },[mendateRegId])
 
 
 
@@ -170,75 +191,97 @@ const CreateMandateApi = () => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  const handleSubmit = (values) => {
-   
-
-    const getDescriptionById = (code) => {
-      const result = mandateCatogoryData.filter((item) => item.code === code);
-      return result.length > 0 ? result[0].description : "";
-    };
-
-    const startDate = values.mandateStartDate.split("-").map(Number);
-    const startDateObj = new Date(
-      Date.UTC(
-        startDate[0],
-        startDate[1] - 1,
-        startDate[2],
-        now.getUTCHours(),
-        now.getUTCMinutes(),
-        now.getUTCSeconds(),
-        now.getUTCMilliseconds()
-      )
-    );
-    const startIsoDate = startDateObj.toISOString();
-
-    const endDate = values.mandateEndDate.split("-").map(Number);
-    const endDateObj = new Date(
-      Date.UTC(
-        endDate[0],
-        endDate[1] - 1,
-        endDate[2],
-        now.getUTCHours(),
-        now.getUTCMinutes(),
-        now.getUTCSeconds(),
-        now.getUTCMilliseconds()
-      )
-    );
-    const endIsoDate = endDateObj.toISOString();
-
-    // Create a FormData object
-    const formData = new FormData();
-    formData.append("consumerReferenceNumber", values.consumerReferenceNumber ?? generateRandomNumber());
-    formData.append("mandatePurpose", getDescriptionById(values.mandateCategory).toString());
-    formData.append("mandateEndDate", endIsoDate);
-    formData.append("mandateMaxAmount", parseFloat(values.mandateMaxAmount).toFixed(2) ?? '0.00');
-    formData.append("mandateStartDate", startIsoDate);
-    formData.append("schemeReferenceNumber", values.schemeReferenceNumber);
-    formData.append("npciPaymentBankCode", values.npciPaymentBankCode);
-   formData.append("frequency", values.frequency);
-    formData.append("mandateCategory", values.mandateCategory);
-    formData.append("payerName", values.payerName);
-    formData.append("panNo", values.panNo);
-    formData.append("payerAccountNumber", values.payerAccountNumber);
-    formData.append("payerAccountType", values.payerAccountType);
-    formData.append("payerBank", values.payerBank);
-    formData.append("payerEmail", values.payerEmail);
-    formData.append("payerMobile", `+91-${values?.payerMobile}`);
-    formData.append("telePhone", values.telePhone);
-    formData.append("payerBankIfscCode", values.payerBankIfscCode);
-    formData.append("authenticationMode", values.authenticationMode);
-    
-
-    
-    
-    createMandateService.createMandateApi((formData))
-      .then(response => {
-        console.log('Response:', response);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+  const handleSubmit = async (values) => {
+    try {
+      const getDescriptionById = (code) => {
+        const result = mandateCatogoryData.filter((item) => item.code === code);
+        return result.length > 0 ? result[0].description : "";
+      };
+  
+      const startDate = values.mandateStartDate.split("-").map(Number);
+      const startDateObj = new Date(
+        Date.UTC(
+          startDate[0],
+          startDate[1] - 1,
+          startDate[2],
+          now.getUTCHours(),
+          now.getUTCMinutes(),
+          now.getUTCSeconds(),
+          now.getUTCMilliseconds()
+        )
+      );
+      const startIsoDate = startDateObj.toISOString();
+  
+      const endDate = values.mandateEndDate.split("-").map(Number);
+      const endDateObj = new Date(
+        Date.UTC(
+          endDate[0],
+          endDate[1] - 1,
+          endDate[2],
+          now.getUTCHours(),
+          now.getUTCMinutes(),
+          now.getUTCSeconds(),
+          now.getUTCMilliseconds()
+        )
+      );
+      const endIsoDate = endDateObj.toISOString();
+  
+      const formData = new FormData();
+      formData.append("consumerReferenceNumber", values.consumerReferenceNumber ?? generateRandomNumber());
+      formData.append("mandatePurpose", getDescriptionById(values.mandateCategory).toString());
+      formData.append("mandateEndDate", endIsoDate);
+      formData.append("mandateMaxAmount", parseFloat(values.mandateMaxAmount).toFixed(2) ?? '0.00');
+      formData.append("mandateStartDate", startIsoDate);
+      formData.append("schemeReferenceNumber", values.schemeReferenceNumber);
+      formData.append("npciPaymentBankCode", values.npciPaymentBankCode);
+      formData.append("frequency", values.frequency);
+      formData.append("mandateCategory", values.mandateCategory);
+      formData.append("payerName", values.payerName);
+      formData.append("panNo", values.panNo);
+      formData.append("payerAccountNumber", values.payerAccountNumber);
+      formData.append("payerAccountType", values.payerAccountType);
+      formData.append("payerBank", values.payerBank);
+      formData.append("payerEmail", values.payerEmail);
+      formData.append("payerMobile", `+91-${values?.payerMobile}`);
+      formData.append("telePhone", values.telePhone);
+      formData.append("payerBankIfscCode", values.payerBankIfscCode);
+      formData.append("authenticationMode", values.authenticationMode);
+  
+      const response = await createMandateService.createMandateApi(formData);
+  
+      if (response && response.headers && response.headers["content-type"].includes("text/html")) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response.data, "text/html");
+        const form = doc.querySelector("form");
+  
+        if (form) {
+          const newForm = document.createElement("form");
+          newForm.action = form.action;
+          newForm.method = form.method;
+  
+          Array.from(form.elements).forEach((input) => {
+            const newInput = document.createElement("input");
+            newInput.type = "hidden";
+            newInput.name = input.name;
+            newInput.value = input.value;
+            newForm.appendChild(newInput);
+          });
+  
+          document.body.appendChild(newForm);
+          newForm.submit();
+        }
+      } else {
+        console.log("Unexpected response format or no headers found:", response?.data);
+      }
+    } catch (err) {
+      console.error("Error occurred while submitting the form:", err);
+    }
   };
+
+  
+  
+
+  
 
 
 
@@ -303,7 +346,7 @@ const CreateMandateApi = () => {
           <div className="col-lg-8">
             <Formik
               initialValues={initialValues}
-              //   validationSchema={FORM_VALIDATION}
+                validationSchema={FORM_VALIDATION}
               enableReinitialize={true}
               // onSubmit={handleSubmit}
               onSubmit={(values) => {
@@ -394,7 +437,7 @@ const CreateMandateApi = () => {
 
                         <FormikController
                           control="input"
-                          label=" Npci Payment Code"
+                          label="Npci Payment Code *"
                           name="npciPaymentBankCode"
                           className="form-control rounded-0"
                           placeholder="Enter Npci Payment Code"
@@ -403,7 +446,7 @@ const CreateMandateApi = () => {
                       <div className="col-lg-6 form-group ">
                         <FormikController
                           control="input"
-                          label="Scheme Reference Number"
+                          label="Scheme Reference Number *"
                           name="schemeReferenceNumber"
                           className="form-control rounded-0"
                           placeholder="Enter Scheme Reference Number"
@@ -542,9 +585,12 @@ const CreateMandateApi = () => {
                         />
                       </div>
                     </div>
-                    <button className="btn bttn cob-btn-primary mt-3" type="submit">
+                    <div className="d-flex justify-content-center">
+                    <button className="btn bttn cob-btn-primary mt-3 mb-3" type="submit">
                       Submit
                     </button>
+                    </div>
+                    
                   </div>
 
                 </Form>
