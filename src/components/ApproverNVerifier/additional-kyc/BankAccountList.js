@@ -58,6 +58,9 @@ const BankAccountList = ({selectedDocType}) => {
         setBankStatus(false);
     }, [selectedDocType]);
     return (
+        <div className="container-fluid flleft">
+        <div className="form-row">
+        <div>
         <div>
             {selectedDocType === "3" && (
                 <Formik
@@ -141,6 +144,11 @@ const BankAccountList = ({selectedDocType}) => {
                 </div>
             )}
         </div>
+           
+        </div>
+
+        </div>
+      </div>
     )
 }
 

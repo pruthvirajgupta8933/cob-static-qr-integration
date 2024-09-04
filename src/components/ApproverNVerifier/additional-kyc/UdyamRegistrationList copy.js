@@ -58,10 +58,8 @@ const UdyamRegistrationList = ({ selectedDocType }) => {
     }, [selectedDocType]);
 
     return (
-        <div className="container-fluid flleft">
-        <div className="form-row">
         <div>
-        <div className="form-inline">
+            <div className="form-inline">
                 <div className="form-group">
                     <input
                         type="text"
@@ -96,6 +94,7 @@ const UdyamRegistrationList = ({ selectedDocType }) => {
                     </button>
                 </div>
             </div>
+
             {udyamRegstatus && selectedDocType === "4" && (
                 <div className="container" style={{ marginTop: "32px" }}>
                     <div className="row">
@@ -216,10 +215,8 @@ const UdyamRegistrationList = ({ selectedDocType }) => {
                     </div>
                 </div>
             )}
-        </div>
 
         </div>
-      </div>
     )
 }
 
