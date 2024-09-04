@@ -6,6 +6,7 @@ import AdditionalKycForPan from "./AdditionalKycForPan";
 import UdyamRegistrationList from "./UdyamRegistrationList";
 import AadharVerify from "./aadhar-attestr/AadharVerify";
 import KycCin from "./KycCin";
+import ValidateCredReport from "./cred-report-validate";
 
 const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
@@ -16,12 +17,34 @@ const AdditionalKYC = () => {
     { documentType: "UDYAM", value: "4" },
     { documentType: "FRM", value: "5" },
     { documentType: "AADHAR VERIFICATION", value: "6" },
-    { documentType: "CIN", value: "7" }
+    { documentType: "CIN", value: "7" },
+    { documentType: "CRED REPORT VALIDATION", value: "8" },
   ];
 
   // Helper functions
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
+  };
+
+  const renderKycVerification = () => {
+    switch (selectedDocType) {
+      case "1":
+        return <AdditionalKycForPan selectedDocType={selectedDocType} />;
+      case "2":
+        return <GstinAdditionalKyc selectedDocType={selectedDocType} />;
+      case "3":
+        return <BankAccountList selectedDocType={selectedDocType} />;
+      case "4":
+        return <UdyamRegistrationList selectedDocType={selectedDocType} />;
+      case "5":
+        return <FrmVerification />;
+      case "6":
+        return <AadharVerify />;
+      case "7":
+        return <KycCin />;
+      case "8":
+        return <ValidateCredReport />;
+    }
   };
 
   return (
@@ -50,7 +73,8 @@ const AdditionalKYC = () => {
               </div>
             </div>
             <div className="mt-4">
-              {selectedDocType === "1" && (
+              {renderKycVerification()}
+              {/* {selectedDocType === "1" && (
                 <AdditionalKycForPan selectedDocType={selectedDocType} />
               )}
 
@@ -64,9 +88,9 @@ const AdditionalKYC = () => {
 
               {selectedDocType === "4" && (
                 <UdyamRegistrationList selectedDocType={selectedDocType} />
-              )}
+              )} */}
             </div>
-            {selectedDocType === "5" && (
+            {/* {selectedDocType === "5" && (
               <FrmVerification />
             )}
             {selectedDocType === "6" && (
@@ -75,17 +99,12 @@ const AdditionalKYC = () => {
 
             {selectedDocType === "7" && (
               <KycCin />
-            )}
+            )} */}
           </div>
-
         </div>
-
       </main>
     </section>
   );
 };
-
-
-
 
 export default AdditionalKYC;
