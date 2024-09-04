@@ -1,15 +1,20 @@
 import React, { useEffect } from "react";
-import { useRouteMatch, Switch, Route, Redirect, useHistory, useLocation } from "react-router-dom";
 import DashboardHeader from './header/DashboardHeader'
 import SideNavbar from './side-navbar/SideNavbar'
 import classes from "./dashboard-main.module.css"
 import Home from '../AllPages/Home'
 import TransactionEnquirey from "../AllPages/TransactionEnquirey";
 import SettlementReport from "../AllPages/SettlementReport";
+
+import {
+    useRouteMatch, Switch, Route, Redirect, useHistory, useLocation,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
 import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
 import Paylink from "../AllPages/createpaymentlink/Paylink";
+// improt Profile
+// import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
 import PaymentResponse from "../AllPages/PaymentResponse";
 import KycForm from "../../KYC/KycForm";
@@ -84,6 +89,8 @@ import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/A
 import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attestr/AadharResponse";
 import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
 import WebWhiteList from "../../ApproverNVerifier/WebWhiteList";
+import CreateMandateApi from "../../../subscription_components/CreateMandateApi/CreateMandateApi";
+import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
 
 function DashboardMainContent() {
     let history = useHistory();
@@ -395,7 +402,7 @@ function DashboardMainContent() {
 
 
                         <AuthorizedRoute exact path={`${path}/configuration`} Component={Configuration} roleList={{ approver: true, verifier: true }}>
-                            <Configuration />
+                            <Configuration/>
                         </AuthorizedRoute>
 
                         <AuthorizedRoute
@@ -507,13 +514,23 @@ function DashboardMainContent() {
                             <DebitReport />
                         </AuthorizedRoute>
 
+                        <AuthorizedRoute exact path={`${path}/subscription/mandate_registration`}
+                            Component={CreateMandate} roleList={{ merchant: true }}>
+                            <CreateMandate />
+                        </AuthorizedRoute >
 
-
-                        {/* <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api`}
+                        <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api`}
                             Component={CreateMandateApi} roleList={{ merchant: true }}>
-                            <CreateMandateApi />
+                            <CreateMandateApi/>
+                        </AuthorizedRoute >
 
-                        </AuthorizedRoute> */}
+                        
+                        <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api-response`}
+                            Component={CreateMandateApiResponse} roleList={{ merchant: true }}>
+                            <CreateMandateApiResponse/>
+                        </AuthorizedRoute >
+
+                      
 
                         {/* -----------------------------------------------------------------------------------------------------|| */}
 
@@ -606,19 +623,20 @@ function DashboardMainContent() {
                             <AssigneAccountManger />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true }}>
+
+                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true}}>
                             <EditKycDetail />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/website-whitelist`} Component={WebWhiteList} roleList={{ verifier: true }}>
-                            <WebWhiteList />
+                        <AuthorizedRoute exact path={`${path}/website-whitelist`} Component={WebWhiteList} roleList={{ verifier: true}}>
+                            <WebWhiteList/>
                         </AuthorizedRoute>
+                        
+
+                        
 
 
-
-
-
-
+                        
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
                             <UrlNotFound />

@@ -46,6 +46,9 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
 
 
     return (
+        
+        <div className="container-fluid flleft">
+        <div className="form-row">
         <div>
             <div className="form-inline">
                 <div className="form-group">
@@ -101,6 +104,9 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
                 </div>
             )}
         </div>
+
+        </div>
+      </div>
 
     )
 }
