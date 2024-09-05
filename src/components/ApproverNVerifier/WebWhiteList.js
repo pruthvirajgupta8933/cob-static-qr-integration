@@ -16,6 +16,8 @@ const WebWhiteList = () => {
     const [selectedId, setSelectedId] = useState(null);
     const [showInput, setShowInput] = useState(false);
     const [disable, setDisable] = useState(false)
+    const [selectedClientCode, setSelectedClientCode] = useState("")
+
     const { kyc } = useSelector((state) => state);
     // const { user } = auth;
     // const { loginId } = user;
@@ -42,11 +44,15 @@ const WebWhiteList = () => {
             .nullable().required("Required").allowOneSpace(),
     });
 
+
+
     useEffect(() => {
         dispatch(getAllCLientCodeSlice()).then((resp) => {
             setCliencodeList(resp?.payload?.result);
         });
     }, [dispatch]);
+
+
 
     useEffect(() => {
         if (selectedId) {
@@ -54,8 +60,15 @@ const WebWhiteList = () => {
         }
     }, [selectedId, dispatch]);
 
+
     const handleSelectChange = (selectedOption, formik) => {
+
+        let arrLable = selectedOption.label?.split("-")
+        let lableClientCode = arrLable[0].trim()
+
         setSelectedId(selectedOption.value);
+        setSelectedClientCode(lableClientCode)
+
         setShowInput(true);
         // Update the website_app_url field when client code changes
         formik.setFieldValue('website_app_url', KycList?.website_app_url || '');
@@ -64,7 +77,7 @@ const WebWhiteList = () => {
     const clientCodeOption = [
         { value: '', label: 'Select Client Code' },
         ...clientCodeList?.map((data) => ({
-            value: data?.clientCode,
+            value: data?.loginMasterId,
             label: `${data?.clientCode} - ${data?.name}`
         }))
     ];
@@ -73,7 +86,7 @@ const WebWhiteList = () => {
         setDisable(true)
         try {
             const postData = {
-                "client_code": selectedId,
+                "client_code": selectedClientCode,
                 "website_url": values.website_app_url
             };
             const response = await webWhiteListApi(postData)

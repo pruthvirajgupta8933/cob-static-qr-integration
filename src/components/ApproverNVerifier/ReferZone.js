@@ -190,6 +190,7 @@ const ReferZone = () => {
 
 
   const kycSearch = (e, fieldType) => {
+    setCurrentPage(1)
     fieldType === "text"
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
@@ -199,6 +200,7 @@ const ReferZone = () => {
 
 
   const searchByText = (text) => {
+    // console.log("search by text")
     setData(
       assignZone?.filter((item) =>
         Object.values(item)
