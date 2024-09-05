@@ -1077,6 +1077,7 @@ export const kycSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        
         builder
             .addCase(kycForNotFilled.pending, (state) => {
                 state.status = "pending";
