@@ -40,6 +40,8 @@ function DocumentsUpload(props) {
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [savedData, setSavedData] = useState([]);
+  console.log("saveData",savedData)
+
   const [imgAttr, setImgAttr] = useState("#");
   const [isRequiredDocUpload, setIsRequiredDocUpload] = useState(true)
   const [disable, setDisable] = useState(false);
@@ -58,6 +60,7 @@ function DocumentsUpload(props) {
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
+  console.log("KycDocUpload",KycDocUpload)
   const documentListData = savedData?.filter((data) => (String((data?.status)).toLowerCase()) !== "rejected")?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
