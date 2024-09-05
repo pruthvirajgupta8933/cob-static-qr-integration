@@ -152,7 +152,15 @@ function VerifiedMerchant() {
       width: "150px",
     },
     {
-      id: "14",
+      id:"14",
+      name:"MCC Elaboration",
+      selector:(row)=>row.mcc_elaboration,
+      width: "150px",
+
+
+    },
+    {
+      id: "15",
       name: "View Status",
       width: "120px",
       cell: (row) => (
@@ -175,7 +183,7 @@ function VerifiedMerchant() {
       ),
     },
     {
-      id: "15",
+      id: "16",
       name: "Action",
       cell: (row) => (
         <div>
