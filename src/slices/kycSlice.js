@@ -1055,376 +1055,343 @@ export const kycSlice = createSlice({
       state.merchantKycData = {};
     },
 
-    saveDropDownAndFinalArray: (state, action) => {
-      // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
-      // state.compareDocListArray.finalArray = action?.payload?.finalArray;
-      state.compareDocListArray.isRequireDataUploaded = action?.payload;
-    },
-    UpdateModalStatus: (state, action) => {
-      state.OpenModalForKycSubmit.isOpen = action?.payload;
-    },
-    clearFetchAllByKycStatus: (state) => {
-      state.allKycData.error = false;
-      state.allKycData.loading = false;
-      state.allKycData.result = [];
-      state.allKycData.message = "";
-    },
-    clearApproveKyc: (state) => {
-      state.approveKyc.isApproved = false;
-      state.approveKyc.isError = false;
-      state.approveKyc.logs = {};
-    },
-  },
-  extraReducers: {
-    [kycForNotFilled.pending]: (state, action) => {
-      state.status = "pending";
-      state.isLoading = true;
-      state.notFilledUserList.count = 0;
-    },
-    [kycForNotFilled.fulfilled]: (state, action) => {
-      state.notFilledUserList = action.payload;
-      state.isLoading = false;
-    },
-    [kycForNotFilled.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoading = false;
-    },
-    //--------------------------------------------
-    //////////////////////////////////////////
-    [MyMerchantListData.pending]: (state, action) => {
-      state.status = "pending";
-      state.isLoading = true;
-    },
-    [MyMerchantListData.fulfilled]: (state, action) => {
-      state.myMerchnatUserList = action.payload;
-      state.isLoading = false;
-    },
-    [MyMerchantListData.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoading = false;
-    },
+        saveDropDownAndFinalArray: (state, action) => {
 
-    ///////////////////////////////////////////////////////////
-
-    [getMerchantpanData.pending]: (state, action) => {
-      state.isLoadingForpanDetails = true;
-    },
-    [getMerchantpanData.fulfilled]: (state, action) => {
-      // console.log("action.payload", action.payload)
-      state.panDetailsData = action.payload;
-      state.isLoadingForpanDetails = false;
-    },
-    [getMerchantpanData.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoadingForpanDetails = false;
-    },
-
-    /////////////////////////////////////////////////
-    [kycForPendingMerchants.pending]: (state, action) => {
-      state.pendingKycuserList.count = 0;
-      state.status = "pending";
-
-      state.isLoadingForPending = true;
-      // state.pendingKycuserList={}
-    },
-    [kycForPendingMerchants.fulfilled]: (state, action) => {
-      state.pendingKycuserList = action.payload;
-      state.isLoadingForPending = false;
-    },
-    [kycForPendingMerchants.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoadingForPending = false;
-      state.pendingKycuserList = 0;
-      // state.pendingKycuserList={}
-    },
-    //------------------------------------------------
-    [kycForPending.pending]: (state, action) => {
-      state.status = "pending";
-      state.isLoadingForPendingVerification = true;
-      state.pendingVerificationKycList.count = 0;
-    },
-    [kycForPending.fulfilled]: (state, action) => {
-      state.pendingVerificationKycList = action.payload;
-      // state.kycUserList = action.payload;
-      state.isLoadingForPendingVerification = false;
-    },
-    [kycForPending.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoadingForPendingVerification = false;
-      state.pendingVerificationKycList.count = 0;
-    },
-    //-------------------------------------------
-    [kycForVerified.pending]: (state, action) => {
-      state.status = "pending";
-      state.isLoadingForPendingApproval = true;
-      state.kycVerifiedList.count = 0;
-    },
-    [kycForVerified.fulfilled]: (state, action) => {
-      state.kycVerifiedList = action.payload;
-
-      // state.kycUserList = action.payload;
-      state.isLoadingForPendingApproval = false;
-    },
-    [kycForVerified.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoadingForPendingApproval = false;
-    },
-    //-------------------------------------------
-    [onboardedReport.pending]: (state) => {
-      state.allKycData.loading = true;
-      state.allKycData.error = false;
-      state.allKycData.result = {};
-    },
-    [onboardedReport.fulfilled]: (state, action) => {
-      state.allKycData.loading = false;
-      state.allKycData.result = action.payload.results;
-      state.allKycData.count = action.payload.count;
-      state.allKycData.next = action.payload.next;
-      state.allKycData.previous = action.payload.previous;
-    },
-    [onboardedReport.rejected]: (state, action) => {
-      state.allKycData.loading = false;
-      state.allKycData.error = true;
-      state.allKycData.result = [];
-      // console.log(action.error)
-      state.allKycData.message = action.error.message;
-    },
-    //-------------------------------------------
-    [FetchAllByKycStatus.pending]: (state) => {
-      state.allKycData.loading = true;
-      state.allKycData.error = false;
-      state.allKycData.result = {};
-    },
-    [FetchAllByKycStatus.fulfilled]: (state, action) => {
-      state.allKycData.loading = false;
-      state.allKycData.result = action.payload.results;
-      state.allKycData.count = action.payload.count;
-      state.allKycData.next = action.payload.next;
-      state.allKycData.previous = action.payload.previous;
-    },
-    [FetchAllByKycStatus.rejected]: (state, action) => {
-      state.allKycData.loading = false;
-      state.allKycData.error = true;
-      state.allKycData.result = [];
-      state.allKycData.message = action.error.message;
-    },
-
-    //-------------------------------------------------
-    [kycForRejectedMerchants.pending]: (state, action) => {
-      state.status = "pending";
-      state.isLoadingForRejected = true;
-      state.rejectedKycList.count = 0;
-    },
-    [kycForRejectedMerchants.fulfilled]: (state, action) => {
-      state.rejectedKycList = action.payload;
-      // state.kycUserList = action.payload;
-      state.isLoadingForRejected = false;
-    },
-    [kycForRejectedMerchants.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoadingForRejected = false;
-    },
-    //-------------------------------------------------------------
-
-    //-------------------------------------------------
-    [kycUserList.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [kycUserList.fulfilled]: (state, action) => {
-      state.kycUserList = action.payload;
-    },
-    [kycUserList.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-    ///////////////////////////////////
-    [kycForApproved.pending]: (state, action) => {
-      state.status = "pending";
-      state.isLoadingForApproved = true;
-      state.kycApprovedList.count = 0;
-    },
-    [kycForApproved.fulfilled]: (state, action) => {
-      state.kycApprovedList = action.payload;
-      state.isLoadingForApproved = false;
-    },
-    [kycForApproved.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-      state.isLoadingForApproved = false;
-    },
-
-    [updateContactInfo.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [updateContactInfo.fulfilled]: (state, action) => {
-      state.allTabsValidate.merchantContactInfo.submitStatus = action.payload;
-    },
-    [updateContactInfo.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-    [saveBusinessInfo.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [saveBusinessInfo.fulfilled]: (state, action) => {
-      state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
-    },
-    [saveBusinessInfo.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-
-    [saveMerchantInfo.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [saveMerchantInfo.fulfilled]: (state, action) => {
-      state.allTabsValidate.BusinessDetailsStatus.submitStatus = action.payload;
-    },
-    [saveMerchantInfo.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-
-    [saveMerchantBankDetais.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [saveMerchantBankDetais.fulfilled]: (state, action) => {
-      state.allTabsValidate.BankDetails.submitStatus = action.payload;
-    },
-    [saveMerchantBankDetais.rejected]: (state, action) => {
-      state.status = "failed";
-    },
-
-    [merchantInfo.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [merchantInfo.fulfilled]: (state, action) => {
-      state.allTabsValidate.UploadDoc.submitStatus = action.payload;
-      // console.log(action.payload,"Action ===> 12")
-    },
-    [merchantInfo.rejected]: (state, action) => {
-      state.status = "failed";
-    },
-
-    // DOC UPLOAD KYC //
-    [kycDocumentUploadList.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [kycDocumentUploadList.fulfilled]: (state, action) => {
-      state.KycDocUpload = action.payload;
-    },
-    [kycDocumentUploadList.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-    //Kyc Verification for All Tabs
-    [GetKycTabsStatus.pending]: (state, action) => {
-      // console.log("alert 1" )
-      state.status = "pending";
-    },
-    [GetKycTabsStatus.fulfilled]: (state, action) => {
-      // console.log("alert 2" )
-
-      state.KycTabStatusStore = action.payload;
-    },
-    [GetKycTabsStatus.rejected]: (state, action) => {
-      // console.log("alert 3" )
-
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-
-    ////////////////////////////////////////////////////
-
-    [saveKycConsent.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [saveKycConsent.fulfilled]: (state, action) => {
-      state.consentKyc = action.payload;
-    },
-    [saveKycConsent.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
-
-    ////////////////////////////////////////////////////////
-    [otpForContactInfo.fulfilled]: (state, action) => {
-      if (action?.payload?.status) {
-        state.OtpResponse = action.payload;
-        if (action?.meta?.arg?.email) {
-          // state.OtpResponse.tempEmail = action?.meta?.arg?.email;
+            // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
+            // state.compareDocListArray.finalArray = action?.payload?.finalArray;
+            state.compareDocListArray.isRequireDataUploaded = action?.payload;
+        },
+        UpdateModalStatus: (state, action) => {
+            state.OpenModalForKycSubmit.isOpen = action?.payload
+        },
+        clearFetchAllByKycStatus: (state) => {
+            state.allKycData.error = false
+            state.allKycData.loading = false
+            state.allKycData.result = []
+            state.allKycData.message = ""
+        },
+        clearApproveKyc: (state) => {
+            state.approveKyc.isApproved = false
+            state.approveKyc.isError = false
+            state.approveKyc.logs = {}
         }
+    },
+    extraReducers: (builder) => {
+        
+        builder
+            .addCase(kycForNotFilled.pending, (state) => {
+                state.status = "pending";
+                state.isLoading = true;
+                state.notFilledUserList.count = 0;
+            })
+            .addCase(kycForNotFilled.fulfilled, (state, action) => {
+                state.notFilledUserList = action.payload;
+                state.isLoading = false;
+            })
+            .addCase(kycForNotFilled.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(MyMerchantListData.pending, (state) => {
+                state.status = "pending";
+                state.isLoading = true;
+            })
+            .addCase(MyMerchantListData.fulfilled, (state, action) => {
+                state.myMerchnatUserList = action.payload;
+                state.isLoading = false;
+            })
+            .addCase(MyMerchantListData.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoading = false;
+            })
+            .addCase(getMerchantpanData.pending, (state) => {
+                state.isLoadingForpanDetails = true;
+            })
+            .addCase(getMerchantpanData.fulfilled, (state, action) => {
+                state.panDetailsData = action.payload;
+                state.isLoadingForpanDetails = false;
+            })
+            .addCase(getMerchantpanData.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoadingForpanDetails = false;
+            })
+            .addCase(kycForPendingMerchants.pending, (state) => {
+                state.pendingKycuserList.count = 0;
+                state.status = "pending";
+                state.isLoadingForPending = true;
+            })
+            .addCase(kycForPendingMerchants.fulfilled, (state, action) => {
+                state.pendingKycuserList = action.payload;
+                state.isLoadingForPending = false;
+            })
+            .addCase(kycForPendingMerchants.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoadingForPending = false;
+                state.pendingKycuserList = 0;
+            })
+            .addCase(kycForPending.pending, (state) => {
+                state.status = "pending";
+                state.isLoadingForPendingVerification = true;
+                state.pendingVerificationKycList.count = 0;
+            })
+            .addCase(kycForPending.fulfilled, (state, action) => {
+                state.pendingVerificationKycList = action.payload;
+                state.isLoadingForPendingVerification = false;
+            })
+            .addCase(kycForPending.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoadingForPendingVerification = false;
+                state.pendingVerificationKycList.count = 0;
+            })
+            .addCase(kycForVerified.pending, (state) => {
+                state.status = "pending";
+                state.isLoadingForPendingApproval = true;
+                state.kycVerifiedList.count = 0;
+            })
+            .addCase(kycForVerified.fulfilled, (state, action) => {
+                state.kycVerifiedList = action.payload;
+                state.isLoadingForPendingApproval = false;
+            })
+            .addCase(kycForVerified.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoadingForPendingApproval = false;
+            })
+            .addCase(onboardedReport.pending, (state) => {
+                state.allKycData.loading = true;
+                state.allKycData.error = false;
+                state.allKycData.result = {};
+            })
+            .addCase(onboardedReport.fulfilled, (state, action) => {
+                state.allKycData.loading = false;
+                state.allKycData.result = action.payload.results;
+                state.allKycData.count = action.payload.count;
+                state.allKycData.next = action.payload.next;
+                state.allKycData.previous = action.payload.previous;
+            })
+            .addCase(onboardedReport.rejected, (state, action) => {
+                state.allKycData.loading = false;
+                state.allKycData.error = true;
+                state.allKycData.result = [];
+                state.allKycData.message = action.error.message;
+            })
+            .addCase(FetchAllByKycStatus.pending, (state) => {
+                state.allKycData.loading = true;
+                state.allKycData.error = false;
+                state.allKycData.result = {};
+            })
+            .addCase(FetchAllByKycStatus.fulfilled, (state, action) => {
+                state.allKycData.loading = false;
+                state.allKycData.result = action.payload.results;
+                state.allKycData.count = action.payload.count;
+                state.allKycData.next = action.payload.next;
+                state.allKycData.previous = action.payload.previous;
+            })
+            .addCase(FetchAllByKycStatus.rejected, (state, action) => {
+                state.allKycData.loading = false;
+                state.allKycData.error = true;
+                state.allKycData.result = [];
+                state.allKycData.message = action.error.message;
+            })
+            .addCase(kycForRejectedMerchants.pending, (state) => {
+                state.status = "pending";
+                state.isLoadingForRejected = true;
+                state.rejectedKycList.count = 0;
+            })
+            .addCase(kycForRejectedMerchants.fulfilled, (state, action) => {
+                state.rejectedKycList = action.payload;
+                state.isLoadingForRejected = false;
+            })
+            .addCase(kycForRejectedMerchants.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoadingForRejected = false;
+            })
+            .addCase(kycUserList.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(kycUserList.fulfilled, (state, action) => {
+                state.kycUserList = action.payload;
+            })
+            .addCase(kycUserList.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+            .addCase(kycForApproved.pending, (state) => {
+                state.status = "pending";
+                state.isLoadingForApproved = true;
+                state.kycApprovedList.count = 0;
+            })
+            .addCase(kycForApproved.fulfilled, (state, action) => {
+                state.kycApprovedList = action.payload;
+                state.isLoadingForApproved = false;
+            })
+            .addCase(kycForApproved.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+                state.isLoadingForApproved = false;
+            })
+            .addCase(updateContactInfo.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(updateContactInfo.fulfilled, (state, action) => {
+                state.allTabsValidate.merchantContactInfo.submitStatus = action.payload;
+            })
+            .addCase(updateContactInfo.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+            .addCase(saveBusinessInfo.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(saveBusinessInfo.fulfilled, (state, action) => {
+                state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
+            })
+            .addCase(saveBusinessInfo.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+            .addCase(saveMerchantInfo.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(saveMerchantInfo.fulfilled, (state, action) => {
+                state.allTabsValidate.BusinessDetailsStatus.submitStatus = action.payload;
+            })
+            .addCase(saveMerchantInfo.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+            .addCase(saveMerchantBankDetais.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(saveMerchantBankDetais.fulfilled, (state, action) => {
+                state.allTabsValidate.BankDetails.submitStatus = action.payload;
+            })
+            .addCase(saveMerchantBankDetais.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+            .addCase(merchantInfo.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(merchantInfo.fulfilled, (state, action) => {
+                state.allTabsValidate.UploadDoc.submitStatus = action.payload;
+            })
+            .addCase(merchantInfo.rejected, (state) => {
+                state.status = "failed";
+            })
+            .addCase(kycDocumentUploadList.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(kycDocumentUploadList.fulfilled, (state, action) => {
+                state.allTabsValidate.UploadDoc.submitStatus = action.payload;
+            })
+            .addCase(kycDocumentUploadList.rejected, (state) => {
+                state.status = "failed";
+            })
 
-        if (action?.meta?.arg?.mobile_number) {
-          // state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number;
-        }
-      }
-    },
-
-    ////////////////////////////////////////////////////////////
-    // OTP state update
-
-    [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
-      if (action.payload?.status === true) {
-        // state.kycUserList.isContactNumberVerified = 1;
-        // state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
-        // state.OtpResponse.tempPhone = "";
-      }
-    },
-
-    /////////////////////////////////////////////////////////////////
-
-    [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
-      if (action.payload?.status === true) {
-        state.kycUserList.isEmailVerified = 1;
-        state.kycUserList.emailId = state.OtpResponse.tempEmail;
-        state.OtpResponse.tempEmail = "";
-      }
-    },
-    [verifyKycEachTab.pending]: (state, action) => {
-      state.isLoading = true;
-    },
-
-    [verifyKycEachTab.fulfilled]: (state, action) => {
-      state.KycTabStatusStore = action.payload;
-      state.isLoading = false;
-    },
-    [verifyKycEachTab.rejected]: (state, action) => {
-      state.isLoading = false;
-    },
-
-    // when kyc approve
-    [approvekyc.pending]: (state) => {
-      state.approveKyc.isApproved = false;
-      state.approveKyc.isError = false;
-      state.approveKyc.logs = {};
-    },
-    [approvekyc.fulfilled]: (state, action) => {
-      state.approveKyc.isApproved = true;
-      state.approveKyc.logs = action.payload;
-    },
-    [approvekyc.rejected]: (state, action) => {
-      state.approveKyc.isApproved = false;
-      state.approveKyc.isError = true;
-      state.approveKyc.logs = action.payload;
-    },
-    [kycDetailsByMerchantLoginId.fulfilled]: (state, action) => {
-      state.merchantKycData = action.payload;
-    },
-    [kycDetailsByMerchantLoginId.pending]: (state) => {
-      state.merchantKycData = {};
-    },
-    [kycDetailsByMerchantLoginId.rejected]: (state) => {
-      state.merchantKycData = {};
-    },
-  },
+            .addCase(GetKycTabsStatus.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(GetKycTabsStatus.fulfilled, (state, action) => {
+                state.KycTabStatusStore = action.payload;
+            })
+            .addCase(GetKycTabsStatus.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+    
+            // saveKycConsent
+            .addCase(saveKycConsent.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(saveKycConsent.fulfilled, (state, action) => {
+                state.consentKyc = action.payload;
+            })
+            .addCase(saveKycConsent.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+    
+            // otpForContactInfo
+            .addCase(otpForContactInfo.fulfilled, (state, action) => {
+                if (action?.payload?.status) {
+                    state.OtpResponse = action.payload;
+    
+                    // Uncomment the following if you need to store temp email or phone
+                    // if (action?.meta?.arg?.email) {
+                    //     state.OtpResponse.tempEmail = action?.meta?.arg?.email;
+                    // }
+                    // if (action?.meta?.arg?.mobile_number) {
+                    //     state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number;
+                    // }
+                }
+            })
+    
+            // otpVerificationForContactForPhone
+            .addCase(otpVerificationForContactForPhone.fulfilled, (state, action) => {
+                if (action.payload?.status === true) {
+                    // Uncomment the following if you need to update contact number verification
+                    // state.kycUserList.isContactNumberVerified = 1;
+                    // state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
+                    // state.OtpResponse.tempPhone = "";
+                }
+            })
+    
+            // otpVerificationForContactForEmail
+            .addCase(otpVerificationForContactForEmail.fulfilled, (state, action) => {
+                if (action.payload?.status === true) {
+                    state.kycUserList.isEmailVerified = 1;
+                    state.kycUserList.emailId = state.OtpResponse.tempEmail;
+                    state.OtpResponse.tempEmail = "";
+                }
+            })
+    
+            // verifyKycEachTab
+            .addCase(verifyKycEachTab.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(verifyKycEachTab.fulfilled, (state, action) => {
+                state.KycTabStatusStore = action.payload;
+                state.isLoading = false;
+            })
+            .addCase(verifyKycEachTab.rejected, (state) => {
+                state.isLoading = false;
+            })
+    
+            // approvekyc
+            .addCase(approvekyc.pending, (state) => {
+                state.approveKyc.isApproved = false;
+                state.approveKyc.isError = false;
+                state.approveKyc.logs = {};
+            })
+            .addCase(approvekyc.fulfilled, (state, action) => {
+                state.approveKyc.isApproved = true;
+                state.approveKyc.logs = action.payload;
+            })
+            .addCase(approvekyc.rejected, (state, action) => {
+                state.approveKyc.isApproved = false;
+                state.approveKyc.isError = true;
+                state.approveKyc.logs = action.payload;
+            })
+    
+            // kycDetailsByMerchantLoginId
+            .addCase(kycDetailsByMerchantLoginId.pending, (state) => {
+                state.merchantKycData = {};
+            })
+            .addCase(kycDetailsByMerchantLoginId.fulfilled, (state, action) => {
+                state.merchantKycData = action.payload;
+            })
+            .addCase(kycDetailsByMerchantLoginId.rejected, (state) => {
+                state.merchantKycData = {};
+            });
+    }
+    
 });
 
 export const {
