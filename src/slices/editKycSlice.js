@@ -133,9 +133,10 @@ export const uploadDocument = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.detail) ||
+          error.response.data.message) ||
         error.message ||
         error.toString() || error.request.toString();
+        console.log("message",message)
         
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);

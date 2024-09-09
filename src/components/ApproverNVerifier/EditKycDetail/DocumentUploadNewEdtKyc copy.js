@@ -9,11 +9,11 @@ import { GetKycTabsStatus, kycDocumentUploadList, documentsUpload } from '../../
 const DocumentUploadNewEdtKyc = (props) => {
   const selectedId = props?.selectedId;
   const [selectedFile, setSelectedFile] = useState(null);
+  const [typeId, setTypeId] = useState(null);
   const [docTypeList, setDocTypeList] = useState([]);
   const [savedData, setSavedData] = useState([]);
   const [otherDocTypeId, setOtherDocTypeId] = useState(null);
-  const [disable, setIsDisable] = useState(false);
-  const [typeId, setTypeId] = useState("");
+  const [uploadedDocs, setUploadedDocs] = useState({});
   const { auth, kyc } = useSelector((state) => state);
   const dispatch = useDispatch();
   const { user } = auth;
@@ -40,29 +40,9 @@ const DocumentUploadNewEdtKyc = (props) => {
   ];
 
   const handleChange = (e, id) => {
-    const file = e.target.files[0];
-    if (file) {
-        const ext = file.name.split('.').pop().toLowerCase();
-        const allowedFormats = ["pdf", "jpg", "jpeg", "png"];
-        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-
-        if (file.size > maxSize) {
-            toast.error("File size exceeds maximum limit of 5MB");
-            e.target.value = ''; // Clear the file input
-            setSelectedFile(null);
-        } else if (!allowedFormats.includes(ext)) {
-            toast.error("Invalid file type. Please upload a PDF, JPG, JPEG, or PNG file.");
-            e.target.value = ''; // Clear the file input
-            setSelectedFile(null);
-        } else {
-            setSelectedFile(file);
-            readURL(e.target, id);
-        }
-    }
-};
-
-
-  
+    setSelectedFile(e.target.files[0]);
+    readURL(e.target, id);
+  };
 
   useEffect(() => {
     dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
@@ -96,9 +76,6 @@ const DocumentUploadNewEdtKyc = (props) => {
       return;
     }
 
-    
-  
-
     const bodyFormData = new FormData();
     bodyFormData.append("files", selectedFile);
     bodyFormData.append("login_id", selectedId);
@@ -116,16 +93,21 @@ const DocumentUploadNewEdtKyc = (props) => {
 
     dispatch(uploadDocument(bodyFormData))
       .then((response) => {
-        
         if (response?.payload?.status) {
           dispatch(GetKycTabsStatus({ login_id: selectedId }));
           toast.success(response?.payload?.message);
+
+          // Mark the document as uploaded successfully
+          setUploadedDocs(prevState => ({
+            ...prevState,
+            [typeId]: true
+          }));
+
           setSelectedFile(null);
           setTimeout(() => {
             getKycDocList();
           }, 2000);
         } else {
-          console.log("res.payload",response.payload)
           const message = response?.payload?.message || response?.payload;
           toast.error(message);
         }
@@ -187,6 +169,9 @@ const DocumentUploadNewEdtKyc = (props) => {
                       >
                         Upload
                       </button>
+                      {uploadedDocs[doc?.id] && (
+                        <i className={`fa fa-check text-success ml-3 ${classes.icon_size}`}></i>
+                      )}
                     </div>
                   </div>
                 ))}
