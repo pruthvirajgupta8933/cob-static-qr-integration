@@ -50,7 +50,8 @@
 
   .upload_icon{
     color: #286ECD !important;
-    font-size: 24px;
+    font-size: 16px;
+    
   }
 
 
@@ -59,7 +60,17 @@
     margin-left: 5px; 
     color: #28a745; 
   }
-
+  .custom_button {
+    background-color: transparent;
+    border-color: #286ECD /* Use the same color as the text color if needed */
+  }
+  
+  .custom_button:hover {
+    background-color: transparent; /* Ensure no change on hover */
+    /* color: #286ECD;  */
+    border-color: #286ECD; /* Maintain the border color */
+  }
+  
   .icon_add{
     /* font-size: 24px;  */
     /* color: white; */
