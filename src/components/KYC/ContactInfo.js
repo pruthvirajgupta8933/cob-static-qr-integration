@@ -44,7 +44,7 @@ function ContactInfo(props) {
   const [otpBtnDisable, setOtpBtnDisable] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(60);
-   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+  const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
 
   useEffect(() => {
     let interval;
@@ -252,6 +252,7 @@ function ContactInfo(props) {
     })
 
   }
+  
 
   const tooltipData = {
     "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
@@ -278,7 +279,6 @@ function ContactInfo(props) {
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_person_name}>
                   Contact Person Name<span className="text-danger"> *</span>
                 </label>
-
                 <FormikController
                   control="input"
                   type="text"
@@ -288,18 +288,26 @@ function ContactInfo(props) {
                 />
               </div>
 
-              <div className="col-sm-6 col-md-6 col-lg-6" >
-                <label className="col-form-label mt-0 p-2 " >
-                  Aadhaar Number<span className="text-danger"> *</span>
-                </label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="aadhar_number"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  className="form-control maskedInput"
-                />
+              {/* Aadhar number verification */}
+              <div className="col-sm-12 col-md-12 col-lg-6 d-flex">
+                <div className="col-lg-8 col-md-9 col-sm-12 col-9 p-0">
+                  <label className="col-form-label mt-0 p-2 " >
+                    Aadhaar Number<span className="text-danger"> *</span>
+                  </label>
+                  <FormikController
+                    control="input"
+                    type="password"
+                    name="aadhar_number"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    className="form-control maskedInput"
+                  />
+                </div>
+                <div className="col-lg-4 col-md-3 p-0 d-flex justify-content-end align-items-end">
+                  <button className="btn btn-sm cob-btn-primary">Send OTP</button>
+                </div>
+
               </div>
+
             </div>
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
@@ -490,26 +498,26 @@ function ContactInfo(props) {
                       />
                     </div>
                     <div className="row m-4 text-center">
-                     
+
                       <div className="col-lg-6">
                         {timer > 0 ? (
                           <button className={`${classes.resendOtp_border} btn btn-light btn-sm`} disabled>
-                           Resend OTP {timer}s
+                            Resend OTP {timer}s
                           </button>
                         ) : (
                           <button className={`${classes.resendOtp_border} btn btn-light btn-sm`}
-                          onClick={() => {
-                            if (!errors.contact_number) {
-                              checkInputIsValid(
-                                errors,
-                                values,
-                                setFieldError,
-                                "contact_number"
-                              )
-                              setResendDisabled(true);
-                              setTimer(40);
-                            }
-                          }}
+                            onClick={() => {
+                              if (!errors.contact_number) {
+                                checkInputIsValid(
+                                  errors,
+                                  values,
+                                  setFieldError,
+                                  "contact_number"
+                                )
+                                setResendDisabled(true);
+                                setTimer(40);
+                              }
+                            }}
                           >
                             Resend OTP
                           </button>
