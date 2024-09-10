@@ -53,8 +53,10 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
         setGstStatus(false);
     }, [selectedDocType]);
     return (
+        <div className="container-fluid flleft">
+        <div className="form-row">
         <div>
-            <div className="form-inline">
+        <div className="form-inline">
                 <div className="form-group">
 
                     <input
@@ -108,6 +110,9 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
                 </div>
             )}
         </div>
+
+        </div>
+      </div>
     )
 }
 

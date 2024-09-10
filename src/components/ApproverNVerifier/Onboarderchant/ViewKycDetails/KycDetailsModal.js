@@ -60,6 +60,7 @@ const KycDetailsModal = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab);
   const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId]);
   const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList]);
+ 
   const [productData, setProductData] = useState([])
 
   useEffect(() => {
@@ -203,11 +204,13 @@ const KycDetailsModal = (props) => {
                   <thead>
                     <tr>
                       <th scope="col">Risk Category</th>
+                      <th>MCC Elaboration</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>{selectedUserData.risk_category_name}</td>
+                      <td>{selectedUserData.mcc_elaboration ||"NA"}</td>
                     </tr>
                   </tbody>
                 </table>

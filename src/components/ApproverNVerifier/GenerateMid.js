@@ -128,9 +128,7 @@ function AssignZone() {
 
               <div className="modal-body">
 
-                {/* <p className="">
-                  Client Code: {selectedClientId}
-                </p> */}
+               
                 <h6 className="ml-3">
                   Payment Mode: {formValues?.mode_name}
                 </h6>
@@ -139,32 +137,7 @@ function AssignZone() {
                 </h6>
                 <div className="container">
                   <Form>
-                    <div className="row">
-                      {/* <div className="col-lg-6">
-                        <label className="col-form-label mt-0 p-2">
-                          Name<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <FormikController
-                          control="input"
-                          type="text"
-                          name="name"
-                          placeholder="Enter Name"
-                          className="form-control"
-                        />
-                      </div> */}
-                      {/* <div className="col-lg-6">
-                        <label className="col-form-label mt-0 p-2">
-                          Email<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <FormikController
-                          control="input"
-                          type="text"
-                          name="email"
-                          placeholder="Enter Email"
-                          className="form-control"
-                        />
-                      </div> */}
-                    </div>
+                    
                     <div className="">
                       {createMidData.onboardStatus !== 'SUCCESS' && (
                         <button

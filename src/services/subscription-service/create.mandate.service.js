@@ -1,5 +1,6 @@
+import API_URL from "../../config";
 import subAPIURL from "../../config";
-import { axiosInstance } from "../../utilities/axiosInstance";
+import { axiosInstance,axiosInstanceAuthSubscription} from "../../utilities/axiosInstance";
 
 const fetchFrequency = () => {
   return axiosInstance
@@ -51,6 +52,47 @@ const creatingMandate = (data) => {
     .catch((err) => console.log(err));
 };
 
+const createMandateApi=(formData)=>{
+  
+  return axiosInstanceAuthSubscription
+  .post(API_URL.MANDATE_REGISTRATION, formData)
+  .then((resp) => {
+    return resp;
+  })
+  .catch((err) => console.log(err));
+};
+
+const handleCreateMandateApiResponse=()=>{
+  return axiosInstance.post(subAPIURL.CREATE_MANDATE_API_RESPONSE)
+  .then((resp)=>{
+    return resp;
+  })
+  .catch((err)=> console.log(err))
+
+}
+
+const netBannkingBankList=()=>{
+  return axiosInstance
+  .get(API_URL.BANK_LIST_NB)
+  .then((resp) => {
+    return resp;
+  })
+  .catch((err) => console.log(err));
+
+}
+
+const debitCardBankList=()=>{
+  return axiosInstance
+  .get(API_URL.BANK_LIST_DC)
+  .then((resp) => {
+    return resp;
+  })
+  .catch((err) => console.log(err));
+
+}
+
+
+
 
 
 export const createMandateService = {
@@ -60,4 +102,8 @@ export const createMandateService = {
   fetchrequestType,
   fetchBankName,
   creatingMandate,
+  createMandateApi,
+  netBannkingBankList,
+  debitCardBankList,
+  handleCreateMandateApiResponse
 };

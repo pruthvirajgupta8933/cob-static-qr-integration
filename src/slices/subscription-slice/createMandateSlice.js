@@ -126,6 +126,26 @@ export const fetchMandateBankName = createAsyncThunk(
 );
 
 
+export const createMendateApiData=createAsyncThunk(
+  "subcription/createMendateApiData",
+  async (thunkAPI,formData) => {
+    console.log("formData",formData)
+    try {
+      const response = await createMandateService.createMandateApi(formData);
+
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
 
 
 

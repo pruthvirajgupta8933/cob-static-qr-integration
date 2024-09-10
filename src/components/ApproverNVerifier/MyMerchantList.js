@@ -11,6 +11,7 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { v4 as uuidv4 } from 'uuid';
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
 
 const MyMerchantList = () => {
     const roles = roleBasedAccess();
@@ -24,6 +25,7 @@ const MyMerchantList = () => {
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
     const [onboardType, setOnboardType] = useState("")
     const [kycSearchStatus, setKycSearchStatus] = useState("All")
+    const [openDocumentModal, setOpenDocumentModal] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -45,7 +47,7 @@ const MyMerchantList = () => {
             setNotFilledData(myAllMerchantDataList);
             setDataCount(dataCount)
         }
-    }, [myMerchantListData]); //
+    }, [myMerchantListData]);
 
 
     const kycSearch = (e, fieldType) => {
@@ -192,10 +194,33 @@ const MyMerchantList = () => {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                     >
-
-
                         View Status
                     </button>
+                </div>
+            ),
+        },
+        {
+            id: "16",
+            name: "Upload Agreement",
+            cell: (row) => (
+                <div >
+                    {
+                        roles?.accountManager === true ? (
+                            <button
+                                type="button"
+                                className="approve text-white  cob-btn-primary  btn-sm "
+                                data-toggle="modal"
+                                onClick={() => {
+                                    setCommentId({ loginMasterId: row.login_id.loginMasterId, clientName: row.login_id?.master_client_id?.clientName, clientCode: row.login_id?.master_client_id?.clientCode });
+                                    setOpenDocumentModal(true);
+                                }}
+                                disabled={row.login_id?.master_client_id?.clientCode === null ? true : false}
+                            >
+                                Upload
+                            </button>
+                        ) : (
+                            <></>
+                        )}
                 </div>
             ),
         },
@@ -242,6 +267,12 @@ const MyMerchantList = () => {
                 <h5 className="">My Merchant List</h5>
             </div>
             <div className="form-row">
+                {openDocumentModal && <ViewDocumentModal
+                    documentData={commentId}
+                    isModalOpen={openDocumentModal}
+                    setModalState={setOpenDocumentModal}
+                    tabName={"My Merchant List"}
+                />}
 
                 {openCommentModal &&
                     <CommentModal
@@ -301,7 +332,7 @@ const MyMerchantList = () => {
                             changeCurrentPage={changeCurrentPage}
                             data={data}
                         />
-                    )}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                    )}
                 </div>
                 {/* <CustomLoader loadingState={loadingState} /> */}
                 {loadingState &&

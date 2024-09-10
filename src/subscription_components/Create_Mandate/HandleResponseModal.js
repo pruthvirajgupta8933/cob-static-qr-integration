@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 function MandateRegResponse() {
   const { mendateRegId } = useParams();
-  console.log(mendateRegId);
+ 
 
   return (
     <div>

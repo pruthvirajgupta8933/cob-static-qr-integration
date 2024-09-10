@@ -167,6 +167,7 @@ const API_LIVE = {
   MANDATE_REGISTRATION:
     "https://subscription.sabpaisa.in/subscription/mandateRegistration",
 
+
   /* ViewTxnEnqMultiParam */
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
 
@@ -361,11 +362,14 @@ const API_LIVE = {
   bankName: `${subAPIURL}/REST/GetCommonData/0/nb`,
   // mandateRegistration: `${subAPIURL}/mandateRegistration`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReportCob`,
+  //handle Response create mandate api
+  CREATE_MANDATE_API_RESPONSE:`${subAPIURL}/REST/getMandateById`,
 
   // Debit Report
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
   mandateSubmit: `${subAPIURL}/registration`,
   mandateSendRequest: `https://enach.npci.org.in/onmags/sendRequest`,
+  
 
 
   // for chart

@@ -158,10 +158,18 @@ function ApprovedMerchant() {
       selector: (row) => row.zoneName,
     },
     {
-      id: "13r",
+      id: "13",
       name: "Risk Category",
       selector: (row) => row.risk_category_name,
       width: "150px",
+    },
+    {
+      id:"14",
+      name:"MCC Elaboration",
+      selector:(row)=>row.mcc_elaboration,
+      width: "150px",
+
+
     },
     {
       id: "15",
