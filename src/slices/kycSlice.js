@@ -1291,8 +1291,9 @@ export const kycSlice = createSlice({
             .addCase(kycDocumentUploadList.fulfilled, (state, action) => {
               state.KycDocUpload = action.payload;
             })
-            .addCase(kycDocumentUploadList.rejected, (state) => {
+            .addCase(kycDocumentUploadList.rejected, (state,action) => {
                 state.status = "failed";
+                state.error = action.error.message;
             })
 
             .addCase(GetKycTabsStatus.pending, (state) => {

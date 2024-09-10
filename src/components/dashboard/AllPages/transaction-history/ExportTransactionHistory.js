@@ -24,14 +24,14 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
 
     const dispatch = useDispatch();
 
-const handleSubmit = (values) => {
+    const handleSubmit = (values) => {
         setDisable(true)
         const dateRangeValid = checkValidation(downloadData?.fromDate, downloadData?.endDate);
-        
+
         if (dateRangeValid) {
             let strClientCode = '';
             let clientCodeArrLength = '';
-    
+
             if (values.clientCode === "All") {
                 const allClientCode = clientCodeListArr?.map((item) => item.client_code);
                 clientCodeArrLength = allClientCode.length.toString();
@@ -40,7 +40,7 @@ const handleSubmit = (values) => {
                 strClientCode = values.clientCode;
                 clientCodeArrLength = "1";
             }
-    
+
             dispatch(
                 exportTxnHistory({
                     clientCode: downloadData?.clientCode,
@@ -55,7 +55,7 @@ const handleSubmit = (values) => {
                 })
             ).then((res) => {
                 if (res.meta.requestStatus === "fulfilled") {
-                     const blob = new Blob([res.payload], {
+                    const blob = new Blob([res.payload], {
                         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     });
                     saveAs(blob, 'transaction_history.xlsx');
@@ -83,7 +83,7 @@ const handleSubmit = (values) => {
                 >
                     {({ resetForm }) => (
                         <Form>
-                            <div className="modal-body">
+                            <div className="modal-body p-0">
                                 <div className="row justify-content-center">
                                     <div className="col-lg-10">
                                         <label className="col-form-label mt-0">
