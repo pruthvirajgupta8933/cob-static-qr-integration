@@ -325,6 +325,7 @@ function ContactInfo(props) {
       if (resp.data.status) {
         setAadharOtpResp(resp.data)
         setAadharNumberVerifyToggle(true)
+        setAadharOtp("")
         setTimer(60)
       }
       setAadharVerificationLoader(false)
