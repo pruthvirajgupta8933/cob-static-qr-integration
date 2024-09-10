@@ -193,7 +193,7 @@ const Reports = () => {
             {(formik) => (
               <Form>
                 <div className="row mt-4">
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-md-4 col-lg-3 col-sm-12">
                     <FormikController
                       control="date"
                       label="From Date"
@@ -208,7 +208,7 @@ const Reports = () => {
                       errorMsg={formik.errors["fromDate"]}
                     />
                   </div>
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-md-4 col-lg-3 col-sm-12">
                     <FormikController
                       control="date"
                       label="End Date"
@@ -224,7 +224,7 @@ const Reports = () => {
                     />
                   </div>
 
-                  <div className="col-md-3 mt-lg-4">
+                  <div className="col-md-4 col-lg-3 col-sm-12 mt-4">
                     <button
                       type="submit"
                       className="btn cob-btn-primary approve text-white"
