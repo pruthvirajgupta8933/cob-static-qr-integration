@@ -8,12 +8,13 @@ import { emailVerify } from "../../services/forgotPassword-service/forgotPasswor
 import CreatePassword from "./CreatePassword";
 import { getEmailToSendOtpSlice } from "../../slices/auth";
 import toastConfig from "../../utilities/toastTypes";
+import TimerComponent from "../../utilities/TimerComponent";
 
 const VerifyEmailPhone = ({ inputValue }) => {
   const { auth } = useSelector((state) => state);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(40);
+  // const [timer, setTimer] = useState(40);
   const [loadingResnedOtp, setLoadingResnedOtp] = useState(false);
   const verification_token = auth.forgotPassword.otpResponse.verification_token;
   const dispatch = useDispatch();
@@ -28,15 +29,7 @@ const VerifyEmailPhone = ({ inputValue }) => {
       .allowOneSpace(),
   });
 
-  useEffect(() => {
-    let interval;
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [timer]);
+
 
   const emailverify = async (e) => {
     setLoading(true);
@@ -76,7 +69,7 @@ const VerifyEmailPhone = ({ inputValue }) => {
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           toastConfig.successToast("OTP Sent Successfully");
-          setTimer(40);
+          // setTimer(40);
           setLoadingResnedOtp(false);
         } else {
           toastConfig.errorToast(res?.payload ?? "Rejected");
@@ -121,19 +114,14 @@ const VerifyEmailPhone = ({ inputValue }) => {
                       </ErrorMessage>
                     </div>
                     <div className="d-flex justify-content-between">
-                    {timer > 0 ? (
-                        <button className={`${classes.resendOtp_border} btn btn-light btn-sm`} disabled>Resend OTP in {timer}s</button>
-                      ) : (
-                        <button className={`${classes.resendOtp_border} btn btn-light btn-sm`} onClick={resendOtp} type="button">
-                          {loadingResnedOtp && <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>}
-                          Resend OTP
-                        </button>
-                      )}
+
+                      <TimerComponent resend={resendOtp} />
+
                       <button type="submit" className="btn cob-btn-primary btn-sm" disabled={loading}>
                         {loading && <span className="spinner-grow spinner-grow-sm text-light"></span>}
                         Verify
                       </button>
-                    
+
                     </div>
                   </Form>
                 )}
