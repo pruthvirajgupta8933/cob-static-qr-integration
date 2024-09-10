@@ -42,34 +42,34 @@ const DocumentUploadNewEdtKyc = (props) => {
   const handleChange = (e, id) => {
     const file = e.target.files[0];
     if (file) {
-        const ext = file.name.split('.').pop().toLowerCase();
-        const allowedFormats = ["pdf", "jpg", "jpeg", "png"];
-        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      const ext = file.name.split('.').pop().toLowerCase();
+      const allowedFormats = ["pdf", "jpg", "jpeg", "png"];
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
 
-        if (file.size > maxSize) {
-            toast.error("File size exceeds maximum limit of 5MB");
-            e.target.value = ''; // Clear the file input
-            setSelectedFile(null);
-        } else if (!allowedFormats.includes(ext)) {
-            toast.error("Invalid file type. Please upload a PDF, JPG, JPEG, or PNG file.");
-            e.target.value = ''; // Clear the file input
-            setSelectedFile(null);
-        } else {
-            setSelectedFile(file);
-            readURL(e.target, id);
-        }
+      if (file.size > maxSize) {
+        toast.error("File size exceeds maximum limit of 5MB");
+        e.target.value = ''; // Clear the file input
+        setSelectedFile(null);
+      } else if (!allowedFormats.includes(ext)) {
+        toast.error("Invalid file type. Please upload a PDF, JPG, JPEG, or PNG file.");
+        e.target.value = ''; // Clear the file input
+        setSelectedFile(null);
+      } else {
+        setSelectedFile(file);
+        readURL(e.target, id);
+      }
     }
-};
+  };
 
 
-  
+
 
   useEffect(() => {
     dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
       .then((resp) => {
         setDocTypeList(resp?.payload);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, [dispatch, businessType, KycList?.is_udyam]);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const DocumentUploadNewEdtKyc = (props) => {
   const readURL = (input, id) => {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
-      reader.onload = function (e) {};
+      reader.onload = function (e) { };
       reader.readAsDataURL(input.files[0]);
     }
   };
@@ -96,8 +96,8 @@ const DocumentUploadNewEdtKyc = (props) => {
       return;
     }
 
-    
-  
+
+
 
     const bodyFormData = new FormData();
     bodyFormData.append("files", selectedFile);
@@ -116,7 +116,7 @@ const DocumentUploadNewEdtKyc = (props) => {
 
     dispatch(uploadDocument(bodyFormData))
       .then((response) => {
-        
+
         if (response?.payload?.status) {
           dispatch(GetKycTabsStatus({ login_id: selectedId }));
           toast.success(response?.payload?.message);
@@ -125,7 +125,7 @@ const DocumentUploadNewEdtKyc = (props) => {
             getKycDocList();
           }, 2000);
         } else {
-          console.log("res.payload",response.payload)
+          console.log("res.payload", response.payload)
           const message = response?.payload?.message || response?.payload;
           toast.error(message);
         }
@@ -182,10 +182,14 @@ const DocumentUploadNewEdtKyc = (props) => {
                     <div className="col-3">
                       <button
                         type="submit"
-                        className="btn btn-sm cob-btn-primary text-white ml-5"
+                        className={` ${classes.custom_button} btn btn-outline-primary text-white ml-5`}
                         onClick={() => setTypeId(doc?.id)}
                       >
-                        Upload
+                        <i
+
+                          className={`${classes.upload_icon} fa fa-cloud-upload`}
+
+                          aria-hidden="true"></i>
                       </button>
                     </div>
                   </div>
@@ -200,6 +204,7 @@ const DocumentUploadNewEdtKyc = (props) => {
                   }}>
                     <label className='text-primary btn cob-btn-primary'>
                       Click here to upload other documents
+                      <i className="fa fa-arrow-right ml-2"></i>
                     </label>
                   </div>
                 </div>
@@ -230,15 +235,28 @@ const DocumentUploadNewEdtKyc = (props) => {
                   <div className="col-md-2">
                     <button
                       type="submit"
-                      className="btn btn-sm cob-btn-primary text-white"
+                      className={` ${classes.custom_button} btn btn-outline-primary text-white ml-5`}
                     >
-                      Upload
+                      <i
+
+                        className={`${classes.upload_icon} fa fa-cloud-upload`}
+
+                        aria-hidden="true"></i>
                     </button>
                   </div>
+
+                  
                   <div className="col-md-2">
-                    <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer">
+
+                  <button
+                      type="button"
+                      className={` ${classes.custom_button} btn btn-outline-primary text-white ml-5`}
+                      onClick={() => handleRemoveField(index, values, setFieldValue)}
+                    >
+                    {/* <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer"> */}
                       <i className={`${classes.icon_large} fa fa-trash`}></i>
-                    </span>
+                    {/* </span> */}
+                    </button>
                   </div>
                 </div>
               ))}
