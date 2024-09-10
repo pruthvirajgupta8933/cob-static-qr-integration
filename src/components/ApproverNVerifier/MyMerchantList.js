@@ -271,7 +271,7 @@ const MyMerchantList = () => {
                     documentData={commentId}
                     isModalOpen={openDocumentModal}
                     setModalState={setOpenDocumentModal}
-                    tabName={"Approved Tab"}
+                    tabName={"My Merchant List"}
                 />}
 
                 {openCommentModal &&
