@@ -13,7 +13,7 @@ function Sandbox() {
   const [openCollapse, setOpenCollapse] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState([]);
-  console.log("data",data)
+  
   const [isCopied, setIsCopied] = useState(false);
 
   const roles = roleBasedAccess();
@@ -29,7 +29,7 @@ function Sandbox() {
   const clientDetailRequest = async () => {
     try {
       sandBoxService.clientDetailsListApi({clientCode: clientCodeOfMerchant}).then((res)=>{
-        setData(res.ClientData);
+        setData(res?.ClientData);
       })
       
     } catch (error) {

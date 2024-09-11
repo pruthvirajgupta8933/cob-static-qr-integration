@@ -20,8 +20,6 @@ import { convertToFormikSelectJson } from "../../../../_components/reuseable_com
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import Notification from "../../../../_components/reuseable_components/Notification";
-// import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
-import {exportToSpreadsheet} from "../../../../utilities/exportToSpreadsheet"
 import moment from "moment";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -398,162 +396,6 @@ const TransactionHistory = () => {
 
     }
 
-    let handleExportLoading = (state) => {
-        // console.log(state)
-        if (state) {
-            alert("Exporting Excel File, Please wait...")
-        }
-        dispatch(exportTxnLoadingState(state))
-        return state
-    }
-
-
-
-    const exportToExcelFn = () => {
-        const excelHeaderRow = [
-            "S.No",
-            "Trans ID",
-            "Client Trans ID",
-            "Challan Number / VAN",
-            "Amount",
-            "Transaction Date",
-            "Payment Status",
-            "Payee First Name",
-            "Payee Last Name",
-            "Payee Mob number",
-            "Payee Email",
-            "Client Code",
-            "Payment Mode",
-            "Payee Address",
-            "Encrypted PAN",
-            "Udf1",
-            "Udf2",
-            "Udf3",
-            "Udf4",
-            "Udf5",
-            "Udf6",
-            "Udf7",
-            "Udf8",
-            "Udf9",
-            "Udf10",
-            "Udf11",
-            "Udf12",
-            "Udf13",
-            "Udf14",
-            "Udf15",
-            "Udf16",
-            "Udf17",
-            "Udf18",
-            "Udf19",
-            "Udf20",
-            "Gr.No",
-            "Bank Response",
-            "IFSC Code",
-            "Payer Account No",
-            "Bank Txn Id",
-        ];
-
-        const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
-        txnList.forEach((item, index) => {
-            const {
-                srNo = index + 1,
-                txn_id = "",
-                client_txn_id = "",
-                challan_no = "",
-                payee_amount = "",
-                trans_complete_date = "",
-                status = "",
-                payee_first_name = "",
-                payee_lst_name = "",
-                payee_mob = "",
-                payee_email = "",
-                client_code = "",
-                payment_mode = "",
-                payee_address = "",
-                encrypted_pan = "",
-                udf1 = "",
-                udf2 = "",
-                udf3 = "",
-                udf4 = "",
-                udf5 = "",
-                udf6 = "",
-                udf7 = "",
-                udf8 = "",
-                udf9 = "",
-                udf10 = "",
-                udf11 = "",
-                udf12 = "",
-                udf13 = "",
-                udf14 = "",
-                udf15 = "",
-                udf16 = "",
-                udf17 = "",
-                udf18 = "",
-                udf19 = "",
-                udf20 = "",
-                gr_number = "",
-                bank_message = "",
-                ifsc_code = "",
-                payer_acount_number = "",
-                bank_txn_id = ""
-            } = item;
-
-            excelArr.push([
-                srNo,
-                txn_id,
-                client_txn_id,
-                challan_no,
-                payee_amount ? Number.parseFloat(payee_amount) : "",
-                trans_complete_date,
-                status,
-                payee_first_name,
-                payee_lst_name,
-                payee_mob,
-                payee_email,
-                client_code,
-                payment_mode,
-                payee_address,
-                encrypted_pan,
-                udf1,
-                udf2,
-                udf3,
-                udf4,
-                udf5,
-                udf6,
-                udf7,
-                udf8,
-                udf9,
-                udf10,
-                udf11,
-                udf12,
-                udf13,
-                udf14,
-                udf15,
-                udf16,
-                udf17,
-                udf18,
-                udf19,
-                udf20,
-                gr_number,
-                bank_message,
-                ifsc_code,
-                payer_acount_number,
-                bank_txn_id
-            ]);
-        });
-
-        const fileName = "Transactions-Report";
-        exportToSpreadsheet(excelArr, fileName, handleExportLoading);
-    };
-
-
-
-
-
-
-
-
-
     return (
         <section className="">
             <div className="profileBarStatus">
@@ -576,7 +418,7 @@ const TransactionHistory = () => {
                             {(formik) => (
 
                                 <Form>
-                                    {console.log("formik", formik)}
+                                   
                                     <div className="form-row mt-4">
                                         {(roles?.bank || roles?.referral) && (
                                             <div className="form-group col-md-4 col-lg-2 col-sm-12">
@@ -657,7 +499,7 @@ const TransactionHistory = () => {
 
                                         {txnList?.length > 0 && (
                                             <div className="form-group col-md-2 col-lg-1">
-                                                {roles.merchant && (
+                                                
                                                     <button
                                                         type="button"
                                                         className="approve cob-btn-primary"
@@ -667,17 +509,8 @@ const TransactionHistory = () => {
                                                     >
                                                         <i className="fa fa-download"></i> Export
                                                     </button>
-                                                )}
-                                                {(roles.bank || roles.referral) && (
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-sm text-white cob-btn-primary"
-                                                       
-                                                        onClick={() => exportToExcelFn()}
-                                                    >
-                                                        <i className="fa fa-download"></i> Export 
-                                                    </button>
-                                                )}
+                                                
+                                               
                                             </div>
                                         )}
 
