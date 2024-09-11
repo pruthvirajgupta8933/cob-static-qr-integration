@@ -17,6 +17,7 @@ import classes from "./kycForm.module.css"
 // import NavBar from "../dashboard/NavBar/NavBar";
 
 import { KYC_STATUS_APPROVED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import ContactInfoKyc from "./ContactInfoKyc";
 
 function KycForm() {
   const dispatch = useDispatch();
@@ -168,7 +169,7 @@ function KycForm() {
                     <div className="card-body">
                       <h6 className="mb-3 font-weight-bold">{title}</h6>
                       {(tab === 1 && (
-                        <ContactInfo
+                        <ContactInfoKyc
                           role={roles}
                           kycid={kycid}
                           merchantloginMasterId={merchantloginMasterId}
