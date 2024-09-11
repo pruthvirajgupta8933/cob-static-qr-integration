@@ -21,6 +21,7 @@ import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.serv
 import toastConfig from "../../utilities/toastTypes";
 
 function BusinessDetails(props) {
+  
   const setTab = props.tab;
   const setTitle = props.title;
   const merchantloginMasterId = props.merchantloginMasterId;
