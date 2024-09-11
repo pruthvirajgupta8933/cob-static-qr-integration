@@ -2,31 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { axiosInstance } from "../../utilities/axiosInstance";
 import subAPIURL from "../../config"
-import { Link } from 'react-router-dom'
-import { createMendateApiData } from "../../slices/subscription-slice/createMandateSlice";
-
 import FormikController from "../../_components/formik/FormikController";
-
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, useLocation } from "react-router-dom"
-import { fetchFrequency, fetchMandatePurpose, fetchMandateType, fetchRequestType, saveFormFirstData } from "../../slices/subscription-slice/createMandateSlice";
+import { useDispatch } from "react-redux";
+import {useLocation } from "react-router-dom"
+import { fetchFrequency, fetchMandatePurpose, fetchRequestType, } from "../../slices/subscription-slice/createMandateSlice";
 import Yup from "../../_components/formik/Yup";
 import { createMandateService } from "../../services/subscription-service/create.mandate.service";
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const CreateMandateApi = () => {
   const initialValues = {
@@ -47,41 +29,38 @@ const CreateMandateApi = () => {
     payerBankIfscCode: "",
     authenticationMode: "",
     frequency: "",
-    npciPaymentBankCode:"",
-    schemeReferenceNumber:""
-  
-  
+    npciPaymentBankCode: "",
+    schemeReferenceNumber: ""
+
+
   }
   const FORM_VALIDATION = Yup.object().shape({
     consumerReferenceNumber: Yup.string().required("Required"),
     mandatePurpose: Yup.string().required("Required"),
     mandateEndDate: Yup.string()
-        .required("Required")
-        .nullable(),
-    
+      .required("Required")
+      .nullable(),
+
     payerName: Yup.string().required("Required"),
     mandateMaxAmount: Yup.string()
       .required('Required')
       .matches(/^[0-9]+$/, 'Only numbers are allowed'),
     mandateStartDate: Yup.string().required("Required"),
-  
+
     mandateCategory: Yup.string().required("Required"),
     payerAccountNumber: Yup.string().required("Required"),
     payerAccountType: Yup.string().required("Required"),
     payerBank: Yup.string().required("Required"),
     payerEmail: Yup.string().required("Required"),
     payerMobile: Yup.string().required("Required"),
-  
+
     payerBankIfscCode: Yup.string().required("Required"),
     authenticationMode: Yup.string().required("Required"),
     frequency: Yup.string().required("Required"),
     schemeReferenceNumber: Yup.string().required("Required"),
     npciPaymentBankCode: Yup.string().required("Required")
-   
+
   });
-
-
-
 
   const [mandatePurpose, setMandatePurpose] = useState([])
   const [mandateRequestType, setMandateRequestType] = useState([])
@@ -90,21 +69,13 @@ const CreateMandateApi = () => {
   const [manDateFrequency, setMandateFrequency] = useState([])
   const [netBankingBankList, setNetbankingBankList] = useState([])
   const [debitCardBankList, setDebitCardBankList] = useState([])
-  const [selectedMode, setSelectedMode] = useState("Select"); 
-
-
+  const [selectedMode, setSelectedMode] = useState("Select");
   const now = new Date();
   const dispatch = useDispatch();
-
-
-
-
-
-
   const location = useLocation();
   const { search } = location;
   const mendateRegId = search.split("?mendateRegId=")[1];
-  console.log("mendateRegId",mendateRegId)
+  console.log("mendateRegId", mendateRegId)
 
 
   const handleResponseApi = () => {
@@ -112,9 +83,9 @@ const CreateMandateApi = () => {
       axiosInstance
         .post(subAPIURL.CREATE_MANDATE_API_RESPONSE + mendateRegId)
         .then((response) => {
-         console.log("response",response)
+          console.log("response", response)
           if (response.status === 200) {
-            
+
           }
           // console.log(response.data,"this is response");
         })
@@ -122,30 +93,18 @@ const CreateMandateApi = () => {
 
 
   };
-  useEffect(()=>{
-    handleResponseApi()
-  },[mendateRegId])
-
-
-
-
-
-
-
-
-
   useEffect(() => {
+    handleResponseApi()
+  }, [mendateRegId])
 
 
-
-    fetchManDatePurpose();
+useEffect(() => {
+   fetchManDatePurpose();
     fetchManDateFrequency();
     fetchMandateRequestType();
   }, []);
 
-
-
-  const fetchManDatePurpose = async () => {
+const fetchManDatePurpose = async () => {
     try {
       const resp = await dispatch(fetchMandatePurpose());
       setMandatecatogoryData(resp?.payload?.data)
@@ -158,10 +117,7 @@ const CreateMandateApi = () => {
     }
   };
 
-
-
-
-  const fetchManDateFrequency = async () => {
+const fetchManDateFrequency = async () => {
     try {
       const resp = await dispatch(fetchFrequency());
 
@@ -197,7 +153,7 @@ const CreateMandateApi = () => {
         const result = mandateCatogoryData.filter((item) => item.code === code);
         return result.length > 0 ? result[0].description : "";
       };
-  
+
       const startDate = values.mandateStartDate.split("-").map(Number);
       const startDateObj = new Date(
         Date.UTC(
@@ -211,7 +167,7 @@ const CreateMandateApi = () => {
         )
       );
       const startIsoDate = startDateObj.toISOString();
-  
+
       const endDate = values.mandateEndDate.split("-").map(Number);
       const endDateObj = new Date(
         Date.UTC(
@@ -225,7 +181,7 @@ const CreateMandateApi = () => {
         )
       );
       const endIsoDate = endDateObj.toISOString();
-  
+
       const formData = new FormData();
       formData.append("consumerReferenceNumber", values.consumerReferenceNumber ?? generateRandomNumber());
       formData.append("mandatePurpose", getDescriptionById(values.mandateCategory).toString());
@@ -246,19 +202,19 @@ const CreateMandateApi = () => {
       formData.append("telePhone", values.telePhone);
       formData.append("payerBankIfscCode", values.payerBankIfscCode);
       formData.append("authenticationMode", values.authenticationMode);
-  
+
       const response = await createMandateService.createMandateApi(formData);
-  
+
       if (response && response.headers && response.headers["content-type"].includes("text/html")) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(response.data, "text/html");
         const form = doc.querySelector("form");
-  
+
         if (form) {
           const newForm = document.createElement("form");
           newForm.action = form.action;
           newForm.method = form.method;
-  
+
           Array.from(form.elements).forEach((input) => {
             const newInput = document.createElement("input");
             newInput.type = "hidden";
@@ -266,7 +222,7 @@ const CreateMandateApi = () => {
             newInput.value = input.value;
             newForm.appendChild(newInput);
           });
-  
+
           document.body.appendChild(newForm);
           newForm.submit();
         }
@@ -278,15 +234,8 @@ const CreateMandateApi = () => {
     }
   };
 
-  
-  
-
-  
-
-
-
-  const referingMode = [
-    {key:"",value:"Select"},
+const referingMode = [
+    { key: "", value: "Select" },
     { key: "Netbanking", value: "Netbanking" },
     { key: "Debit Card", value: "Debit Card" },
   ];
@@ -315,10 +264,7 @@ const CreateMandateApi = () => {
     }
   };
 
-
-
-
-  useEffect(() => {
+ useEffect(() => {
     if (selectedMode === "Netbanking") {
       fetchNetbankingBankList();
     } else if (selectedMode === "Debit Card") {
@@ -327,43 +273,27 @@ const CreateMandateApi = () => {
   }, [selectedMode]);
 
 
-
-
-  return (
+return (
     <>
       <section className="ant-layout">
         <div >
           <h5 className="">Create Mandate API</h5>
         </div>
-
-     
-
-
-
-        <div className="d-flex justify-content-center mt-5">
-
-
-          <div className="col-lg-8">
+      <div className="d-flex justify-content-center mt-5">
+       <div className="col-lg-8">
             <Formik
               initialValues={initialValues}
-                validationSchema={FORM_VALIDATION}
+              validationSchema={FORM_VALIDATION}
               enableReinitialize={true}
-              // onSubmit={handleSubmit}
-              onSubmit={(values) => {
+             onSubmit={(values) => {
                 handleSubmit(values)
 
               }}
-            // validateOnChange={false}
-            // validateOnBlur={false}
-            >
+           >
               {({ values, setFieldValue }) => (
                 <Form id="createMandateForm">
-
-
-                  <div>
-
-
-                    <div className="row">
+                 <div>
+                  <div className="row">
                       <div className="col-lg-6 form-group">
 
                         <FormikController
@@ -384,9 +314,7 @@ const CreateMandateApi = () => {
                         />
                       </div>
                     </div>
-
-
-                    <div className="row">
+                     <div className="row">
                       <div className="col-lg-6 form-group">
 
                         <FormikController
@@ -475,8 +403,6 @@ const CreateMandateApi = () => {
                         />
                       </div>
                     </div>
-
-
                     <div className="row">
                       <div className="col-lg-6 form-group">
                         <FormikController
@@ -519,7 +445,7 @@ const CreateMandateApi = () => {
                       </div>
                     </div>
                     <div className="row">
-                    <div className="col-lg-6 ">
+                      <div className="col-lg-6 ">
                         <FormikController
                           control="select"
                           name="authenticationMode"
@@ -560,7 +486,7 @@ const CreateMandateApi = () => {
                           placeholder="Enter Account Type"
                         />
                       </div>
-                    
+
                     </div>
 
                     <div className="row mt-3">
@@ -586,11 +512,11 @@ const CreateMandateApi = () => {
                       </div>
                     </div>
                     <div className="d-flex justify-content-center">
-                    <button className="btn bttn cob-btn-primary mt-3 mb-3" type="submit">
-                      Submit
-                    </button>
+                      <button className="btn bttn cob-btn-primary mt-3 mb-3" type="submit">
+                        Submit
+                      </button>
                     </div>
-                    
+
                   </div>
 
                 </Form>

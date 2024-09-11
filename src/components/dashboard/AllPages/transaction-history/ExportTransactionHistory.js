@@ -12,7 +12,9 @@ import toastConfig from '../../../../utilities/toastTypes';
 import downloadTransactionHistory from "../../../../services/dashboard.service"
 
 const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, checkValidation, clientCodeListArr }) => {
+    
     const [disable, setDisable] = useState(false);
+  
 
     const initialValues = {
         password: ""
@@ -29,21 +31,24 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
         const dateRangeValid = checkValidation(downloadData?.fromDate, downloadData?.endDate);
 
         if (dateRangeValid) {
-            let strClientCode = '';
-            let clientCodeArrLength = '';
-
-            if (values.clientCode === "All") {
-                const allClientCode = clientCodeListArr?.map((item) => item.client_code);
+            let strClientCode, clientCodeArrLength = "";
+            if (downloadData.clientCode === "All") {
+                const allClientCode = [];
+                clientCodeListArr?.map((item) => {
+                    if (item.client_code) { // Check if client_code exists
+                        allClientCode.push(item.client_code);
+                    }
+                });
                 clientCodeArrLength = allClientCode.length.toString();
-                strClientCode = allClientCode.join();
+                strClientCode = allClientCode.join().toString();
             } else {
-                strClientCode = values.clientCode;
+                strClientCode = downloadData.clientCode;
                 clientCodeArrLength = "1";
             }
 
             dispatch(
                 exportTxnHistory({
-                    clientCode: downloadData?.clientCode,
+                    clientCode: strClientCode,
                     paymentStatus: downloadData?.transaction_status,
                     paymentMode: downloadData?.payment_mode,
                     fromDate: moment(downloadData?.fromDate).startOf('day').format('YYYY-MM-DD'),
@@ -54,6 +59,7 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
                     profile_password: values.password,
                 })
             ).then((res) => {
+                
                 if (res.meta.requestStatus === "fulfilled") {
                     const blob = new Blob([res.payload], {
                         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -62,7 +68,7 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
                     setDisable(false);
                     setOpenModal(false);
                 } else {
-                    toastConfig.errorToast(res?.payload);
+                    toastConfig.errorToast("Invalid Profile Password");
                     setDisable(false);
                     setOpenModal(true);
                 }
