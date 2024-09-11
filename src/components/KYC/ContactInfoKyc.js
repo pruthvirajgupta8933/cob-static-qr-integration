@@ -587,6 +587,20 @@ function ContactInfoKyc(props) {
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={true} />
+                  {
+                    KycList?.emailId !== null &&
+                    KycList?.isEmailVerified === 1 && (
+                      <span className="success input-group-append">
+                        <img
+                          src={gotVerified}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
+                      </span>
+                    )}
                 </div>
               </div>
             </div>
