@@ -68,7 +68,7 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
                     setDisable(false);
                     setOpenModal(false);
                 } else {
-                    toastConfig.errorToast("Invalid Profile Password");
+                    toastConfig.errorToast("Something went wrong");
                     setDisable(false);
                     setOpenModal(true);
                 }
@@ -101,6 +101,7 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
                                             name="password"
                                             placeholder="Enter Password"
                                             className="form-control"
+                                            disabled={disable}
                                         />
                                     </div>
                                 </div>
