@@ -96,6 +96,14 @@ a, span, label {
 input {
     font-family: "Sofia-Pro-Regular";
   }
+
+
+  .large_content_wrap {
+    word-wrap: break-word; /* Break long words */
+    word-break: break-all; /* Break long words anywhere */
+    white-space: normal; /* Allow wrapping within the container */
+  }
+  
   
   
 
