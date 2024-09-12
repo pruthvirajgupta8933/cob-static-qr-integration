@@ -28,6 +28,7 @@ const AadharVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => 
       const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { referenceId: aadharOtpResponse?.referenceId, otp: values.aadharOtpDigit })
       if (resp.data?.valid && resp.data?.status) {
         setFieldValue("oldAadharNumber", values.aadhar_number)
+        setFieldValue("isIdProofVerified", 1)
       }
       toastConfig.successToast(resp?.data?.message)
       modalCloseHandler()

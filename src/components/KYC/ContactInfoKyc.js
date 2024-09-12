@@ -85,6 +85,7 @@ function ContactInfoKyc(props) {
     aadharOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
+    isIdProofVerified: KycList?.aadharNumber ? 1 : "",
 
 
 
@@ -168,7 +169,8 @@ function ContactInfoKyc(props) {
         .required("Required")
         .nullable(),
       otherwise: Yup.string()
-    })
+    }),
+    isIdProofVerified: Yup.string().required("Please verify the ID Proof").nullable(),
   });
 
 
@@ -394,6 +396,13 @@ function ContactInfoKyc(props) {
 
                 </div>
                 <ErrorMessage name="aadhar_number">
+                  {(msg) => (
+                    <span className="text-danger">
+                      {msg}
+                    </span>
+                  )}
+                </ErrorMessage>
+                <ErrorMessage name="isIdProofVerified">
                   {(msg) => (
                     <span className="text-danger">
                       {msg}
