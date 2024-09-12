@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../_components/formik/Yup"
-import FormikController from "../../_components/formik/FormikController";
+// import FormikController from "../../_components/formik/FormikController";
 import { toast } from "react-toastify";
 import {
   otpForContactInfo,
   updateContactInfo,
   kycUserList,
   GetKycTabsStatus,
-  otpVerificationForContactForPhone,
+  // otpVerificationForContactForPhone,
 } from "../../slices/kycSlice";
 
 import {
@@ -22,13 +22,14 @@ import "./kyc-style.css";
 // import OtpInput from "react-otp-input";
 // import classes from "./kycForm.module.css"
 // import CustomModal from "../../_components/custom_modal";
-import { kycValidatorAuth } from "../../utilities/axiosInstance";
+// import { kycValidatorAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
-import API_URL from "../../config";
+// import API_URL from "../../config";
 // import Timer from "../../utilities/TimerComponent";
-import TimerComponent from "../../utilities/TimerComponent";
+// import TimerComponent from "../../utilities/TimerComponent";
 import AadharVerficationModal from "./OtpVerificationKYC/AadharVerficationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
+import { aadharNumberVerification } from "../../slices/kycValidatorSlice";
 
 
 function ContactInfoKyc(props) {
@@ -39,7 +40,7 @@ function ContactInfoKyc(props) {
 
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
-  const KycVerificationToken = useSelector((state) => state.kyc.OtpResponse.verification_token);
+  // const KycVerificationToken = useSelector((state) => state.kyc.OtpResponse.verification_token);
 
 
   const { user } = auth;
@@ -50,39 +51,48 @@ function ContactInfoKyc(props) {
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [otpBtnDisable, setOtpBtnDisable] = useState(false);
+  // const [otpBtnDisable, setOtpBtnDisable] = useState(false);
   // const [resendDisabled, setResendDisabled] = useState(false);
   // const [timer, setTimer] = useState(60);
-  const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+  // const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
 
   // aadhar number verification
-  const [aadharNuber, setAadharNumber] = useState("")
-  const [aadharNumberVerifyModalToggle, setAadharNumberVerifyToggle] = useState(false);
+  // const [aadharNuber, setAadharNumber] = useState("")
+  const [aadharNumberVerifyToggle, setAadharNumberVerifyToggle] = useState(false);
   // const [contactVerifyToggle, setContactVerifyToggle] = useState(false);
-  const [aadharOtpResp, setAadharOtpResp] = useState({});
-  const [aadharOtp, setAadharOtp] = useState("");
-  const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
+  // const [aadharOtpResp, setAadharOtpResp] = useState({});
+  // const [aadharOtp, setAadharOtp] = useState("");
+  // const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
   const [aadharVerificationLoader, setAadharVerificationLoader] = useState(false)
+  const [idProofInputToggle, setIdProofInputToggle] = useState(false)
 
 
-  useEffect(() => {
-    setAadharNumber(KycList?.aadharNumber)
-    if (KycList?.aadharNumber?.length === 12) {
-      setIsAadharNumberVerified(true)
-    }
-  }, [KycList])
+
+  // useEffect(() => {
+  //   if (KycList?.aadharNumber?.length === 12) {
+  //     setIsAadharNumberVerified(true)
+  //   }
+  // }, [KycList])
 
 
   const initialValues = {
     name: KycList?.name,
-    contact_number: KycList?.contactNumber,
     email_id: KycList?.emailId,
-    oldEmailId: KycList?.emailId,
-    oldContactNumber: KycList?.contactNumber,
+
+    // ID proof verification
     aadhar_number: KycList?.aadharNumber,
+    oldAadharNumber: KycList?.aadharNumber,
+    aadharOtpDigit: "",
+    proofOtpDigit: "",
+    isProofOtpSend: false,
+    isIdProofVerified: KycList?.aadharNumber ? 1 : "",
+
+
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
+    contact_number: KycList?.contactNumber,
+    oldContactNumber: KycList?.contactNumber,
     contactOtpDigit: "",
     isContactOtpSend: false,
   };
@@ -98,6 +108,14 @@ function ContactInfoKyc(props) {
       .max(100, "Maximum 100 characters are allowed")
       .nullable()
       .allowOneSpace(),
+    email_id: Yup.string()
+      .allowOneSpace()
+      .email("Invalid email")
+      .required("Required")
+      .nullable(),
+
+
+
     contact_number: Yup.string()
       .allowOneSpace()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
@@ -114,25 +132,7 @@ function ContactInfoKyc(props) {
       )
       .required("You need to verify Your Contact Number")
       .nullable(),
-    email_id: Yup.string()
-      .allowOneSpace()
-      .email("Invalid email")
-      .required("Required")
-      .nullable(),
-    oldEmailId: Yup.string()
-      .trim()
-      .oneOf([Yup.ref("email_id"), null], "You need to verify Your Email Id")
-      .required("You need to verify Your Email Id")
-      .nullable(),
-    aadhar_number: Yup.string()
-      .allowOneSpace()
-      .max(18, "Exceeds the limit")
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
-      .required("Required")
-      .nullable(),
     isContactNumberVerified: Yup.string().required("Please verify the contact number").nullable(),
-
     contactOtpDigit: Yup.string().when("isContactOtpSend", {
       is: true,
       then: Yup.string()
@@ -142,14 +142,42 @@ function ContactInfoKyc(props) {
         .required("Required")
         .nullable(),
       otherwise: Yup.string()
-    })
+    }),
+
+
+    aadhar_number: Yup.string()
+      .allowOneSpace()
+      .max(18, "Exceeds the limit")
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+      .required("Required")
+      .nullable(),
+    oldAadharNumber: Yup.string()
+      .trim()
+      .oneOf(
+        [Yup.ref("aadhar_number"), null],
+        "You need to verify Your Contact Number"
+      )
+      .required("You need to verify Your Contact Number")
+      .nullable(),
+    aadharOtpDigit: Yup.string().when("isProofOtpSend", {
+      is: true,
+      then: Yup.string()
+        .matches(Regex.digit, RegexMsg.digit)
+        .min(6, "Minimum 6 digits are required")
+        .max(6, "Maximum 6 digits are allowed")
+        .required("Required")
+        .nullable(),
+      otherwise: Yup.string()
+    }),
+    isIdProofVerified: Yup.string().required("Please verify the ID Proof").nullable(),
   });
 
 
 
-  useEffect(() => {
-    setOtpForPhone({ otp: "" })
-  }, [showOtpVerifyModalPhone])
+  // useEffect(() => {
+  //   setOtpForPhone({ otp: "" })
+  // }, [showOtpVerifyModalPhone])
 
 
   const handleSubmitContact = (values) => {
@@ -206,54 +234,13 @@ function ContactInfoKyc(props) {
 
 
     if (!hasErr && val[key] !== "" && key === "aadhar_number") {
-      await addharVerificationHandler(val[key]);
+      await addharVerificationHandler(val[key], setFieldVal);
     }
 
   };
 
 
 
-  const handleChangeForOtpPhone = (otp) => {
-    const regex = /^[0-9]*$/;
-    if (!otp || regex.test(otp.toString())) {
-      setOtpForPhone({ otp });
-    }
-  };
-
-
-  //-----------------Functionality To Verify The OTP ----------------------
-  const handleVerificationOfPhone = (setFieldValue, values) => {
-    setOtpBtnDisable(true)
-    // setOtpLoading(true)
-
-    dispatch(
-      otpVerificationForContactForPhone({
-        verification_token: KycVerificationToken,
-        otp: otpForPhone.otp
-      })
-    ).then((res) => {
-      setOtpBtnDisable(false)
-      if (res.meta.requestStatus === "fulfilled") {
-        if (res.payload.status === true) {
-          toast.success(res.payload.message)
-          setFieldValue("isContactNumberVerified", 1)
-          setFieldValue("oldContactNumber", values.contact_number)
-          setShowOtpVerifyModalPhone(false)
-        } else if (res?.payload?.status === false) {
-          toast.error(res.payload.message)
-          setFieldValue("isContactNumberVerified", null)
-        } else if (res?.payload?.status_code === 500) {
-          toast.error(res.payload.message)
-          setFieldValue("isContactNumberVerified", null)
-        }
-
-      }
-    }).catch(err => {
-      setOtpBtnDisable(false)
-      toast.error(err)
-    })
-
-  }
 
 
   const tooltipData = {
@@ -266,81 +253,21 @@ function ContactInfoKyc(props) {
 
 
   // aadhar verification
-  const aadharModalBody = () => {
-    return (
-      <div className="modal-body justify-content-center d-flex-inline">
-        <div className=" justify-content-center d-flex-inline d-flex" >
-          <input type="text" className="form-control otp-input-kyc"
-            maxLength={6}
-            placeholder="Enter OTP"
-            onChange={(e) => setAadharOtp(e.target.value)}
-            value={aadharOtp}
-            required={true}
-            disabled={aadharVerificationLoader}
-          />
-        </div>
-        <div className="row m-4 text-center">
-          <div className="col-lg-6">
-            <TimerComponent resend={addharVerificationHandler} />
-          </div>
-          <div className="col-lg-6">
-            <button className="btn btn cob-btn-primary btn-sm" type="button"
-              disabled={aadharVerificationLoader}
-              onClick={() => aadharOtpVerification()}
-            >
-              {aadharVerificationLoader ?
-                <span className="spinner-border spinner-border-sm" role="status">
-                  <span className="sr-only">Loading...</span>
-                </span>
-                :
-                "Verify OTP"
-              }
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const addharVerificationHandler = async () => {
+  const addharVerificationHandler = async (values, setFieldVal) => {
+    // console.log("values", values.aadhar_number)
     setAadharVerificationLoader(true)
     try {
-
+      const resp = await dispatch(aadharNumberVerification({ "aadhar_number": values.aadhar_number }))
+      // console.log("resp", resp)
       setAadharNumberVerifyToggle(true)
       setAadharVerificationLoader(false)
-      // const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
-      // if (resp.data.status) {
-      //   setAadharOtpResp(resp.data)
-      //   setAadharNumberVerifyToggle(true)
-      //   setAadharOtp("")
-      //   setTimer(60)
-      // }
-      // setAadharVerificationLoader(false)
-      // toastConfig.successToast(resp.data.message)
-      // console.log(1)
+      setFieldVal("isProofOtpSend", true);
+      setFieldVal("aadharOtpDigit", "");
+      toastConfig.successToast(resp.payload.message)
     } catch (error) {
+      // console.log("error", error)
       setAadharVerificationLoader(false)
       toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
-      // console.log(2)
-    }
-  }
-
-  const aadharOtpVerification = async () => {
-    setAadharVerificationLoader(true)
-    try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadharOtp })
-      // console.log(resp)
-      setAadharOtp("")
-      if (resp.data?.valid && resp.data?.status) {
-        setIsAadharNumberVerified(true)
-      }
-      toastConfig.successToast(resp?.data?.message)
-      setAadharVerificationLoader(false)
-      setAadharNumberVerifyToggle(false)
-    } catch (error) {
-      toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
-      setAadharVerificationLoader(false)
-      setAadharNumberVerifyToggle(false)
     }
   }
 
@@ -374,6 +301,9 @@ function ContactInfoKyc(props) {
   }
 
 
+  const idProofhandler = (value) => {
+    if (value === "1") { setIdProofInputToggle(false) } else { setIdProofInputToggle(true) }
+  }
 
 
   return (
@@ -404,55 +334,75 @@ function ContactInfoKyc(props) {
                 />
               </div>
 
-
               <div className="col-lg-6 col-sm-12 col-md-12">
-                <label className="col-form-label mt-0 p-2">Aadhar Number<span className="text-danger"> *</span></label>
+                <div className="col-form-label mt-0 p-2">
+                  <lable className="d-flex justify-content-between">
+                    <span>ID Proof<span className="text-danger"> *</span></span>
+                    <span className="text-decoration-underline text-primary cursor_pointer" onClick={() => setIdProofInputToggle(prev => !prev)}>Select ID Proof</span></lable>
+                </div>
                 <div className="input-group">
-                  <Field
-                    type="text"
-                    name="aadhar_number"
-                    autoComplete="off"
-                    className="form-control maskedInput"
-                    // onChange={(e) => {
-                    //   setFieldValue("aadhar_number", e.target.value)
-                    //   setAadharNumber(e.target.value)
-                    //   setIsAadharNumberVerified(false)
-                    // }}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                  />
-
-
-                  {/* {isAadharNumberVerified ? (
-                    <span className="success input-group-append">
-                      <img
-                        src={gotVerified}
-                        alt=""
-                        title=""
-                        width={"20px"}
-                        height={"20px"}
-                        className="btn-outline-secondary"
-                      />
-                    </span>
-                  ) :
-                    <div className="input-group-append">
-                      <a
-                        href={() => false}
-                        className={`btn cob-btn-primary btn-sm ${aadharVerificationLoader ? 'disabled' : ''}`}
-                        onClick={() => {
-                          addharVerificationHandler()
+                  {idProofInputToggle ?
+                    <select className="form-select" onChange={(e) => idProofhandler(e.target.value)} disabled={VerifyKycStatus === "Verified" ? true : false}>
+                      <option value="">Select ID Proof</option>
+                      <option value="1">Aadhar Number</option>
+                    </select> :
+                    <React.Fragment>
+                      <Field
+                        type="text"
+                        name="aadhar_number"
+                        autoComplete="off"
+                        className="form-control maskedInput"
+                        placeholder="Enter ID Proof Number"
+                        onChange={(e) => {
+                          setFieldValue("aadhar_number", e.target.value)
                         }}
-                      >
-                        {aadharVerificationLoader ? (
-                          <span className="spinner-border spinner-border-sm">
-                            <span className="sr-only">Loading...</span>
-                          </span>
-                        ) : (
-                          "Send OTP"
-                        )}
-                      </a>
-                    </div>} */}
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                      />
+
+                      {values.oldAadharNumber && values.aadhar_number && (values.oldAadharNumber === values.aadhar_number) ? (
+                        <span className="success input-group-append">
+                          <img
+                            src={gotVerified}
+                            alt=""
+                            title=""
+                            width={"20px"}
+                            height={"20px"}
+                            className="btn-outline-secondary"
+                          />
+                        </span>
+                      ) :
+                        <div className="input-group-append">
+                          <a
+                            href={() => false}
+                            className={`btn cob-btn-primary btn-sm ${aadharVerificationLoader ? 'disabled' : ''}`}
+                            onClick={() => {
+                              addharVerificationHandler(values, setFieldValue)
+                            }}
+                          >
+                            {aadharVerificationLoader ? (
+                              <span className="spinner-border spinner-border-sm">
+                                <span className="sr-only">Loading...</span>
+                              </span>
+                            ) : (
+                              "Send OTP"
+                            )}
+                          </a>
+                        </div>
+                      }
+                    </React.Fragment>
+                  }
+
+
+
                 </div>
                 <ErrorMessage name="aadhar_number">
+                  {(msg) => (
+                    <span className="text-danger">
+                      {msg}
+                    </span>
+                  )}
+                </ErrorMessage>
+                <ErrorMessage name="isIdProofVerified">
                   {(msg) => (
                     <span className="text-danger">
                       {msg}
@@ -462,15 +412,20 @@ function ContactInfoKyc(props) {
               </div>
 
 
-              {aadharNumberVerifyModalToggle &&
+              {aadharNumberVerifyToggle &&
                 <AadharVerficationModal formikFields={{
                   values,
                   errors,
                   setFieldError,
                   setFieldValue
                 }}
-                  isOpen={aadharNumberVerifyModalToggle}
+                  isOpen={aadharNumberVerifyToggle}
                   toggle={setAadharNumberVerifyToggle}
+                  resendOtp={(values, setFieldValue) => addharVerificationHandler(values, setFieldValue)}
+
+                // isOpen={showOtpVerifyModalPhone}
+                // toggle={setShowOtpVerifyModalPhone}
+                // resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
 
                 />
               }
@@ -537,30 +492,28 @@ function ContactInfoKyc(props) {
                 </div>
                 <ErrorMessage name="contact_number">
                   {(msg) => (
-                    <span className="text-danger">
+                    <p className="text-danger m-0">
                       {msg}
-                    </span>
+                    </p>
                   )}
                 </ErrorMessage>
 
                 <ErrorMessage name="oldContactNumber">
                   {(msg) => (
-                    <span className="text-danger">
+                    <p className="text-danger m-0">
                       {msg}
-                    </span>
+                    </p>
                   )}
                 </ErrorMessage>
 
                 <ErrorMessage name="isContactNumberVerified">
                   {(msg) => (
-                    <span className="text-danger">
+                    <p className="text-danger m-0">
                       {msg}
-                    </span>
+                    </p>
                   )}
                 </ErrorMessage>
               </div>
-
-
 
               {showOtpVerifyModalPhone &&
                 <PhoneVerficationModal formikFields={{
@@ -569,7 +522,8 @@ function ContactInfoKyc(props) {
                   setFieldError,
                   setFieldValue
                 }}
-                  isOpen={showOtpVerifyModalPhone} toggle={setShowOtpVerifyModalPhone}
+                  isOpen={showOtpVerifyModalPhone}
+                  toggle={setShowOtpVerifyModalPhone}
                   resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
                 />
               }
