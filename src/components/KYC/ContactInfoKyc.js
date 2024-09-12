@@ -340,7 +340,7 @@ function ContactInfoKyc(props) {
                 </div>
                 <div className="input-group">
                   {idProofInputToggle ?
-                    <select className="form-select" onChange={(e) => idProofhandler(e.target.value)}>
+                    <select className="form-select" onChange={(e) => idProofhandler(e.target.value)} disabled={VerifyKycStatus === "Verified" ? true : false}>
                       <option value="">Select ID Proof</option>
                       <option value="1">Aadhar Number</option>
                     </select> :
