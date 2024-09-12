@@ -21,7 +21,7 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import Notification from "../../../../_components/reuseable_components/Notification";
 // import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
-import {exportToSpreadsheet} from "../../../../utilities/exportToSpreadsheet"
+import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet"
 import moment from "moment";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -574,9 +574,7 @@ const TransactionHistory = () => {
                             onSubmit={submitHandler}
                         >
                             {(formik) => (
-
                                 <Form>
-                                    {console.log("formik", formik)}
                                     <div className="form-row mt-4">
                                         {(roles?.bank || roles?.referral) && (
                                             <div className="form-group col-md-4 col-lg-2 col-sm-12">
@@ -668,15 +666,15 @@ const TransactionHistory = () => {
                                                         <i className="fa fa-download"></i> Export
                                                     </button>
                                                 )} */}
-                                            
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-sm text-white cob-btn-primary"
-                                                       
-                                                        onClick={() => exportToExcelFn()}
-                                                    >
-                                                        <i className="fa fa-download"></i> Export 
-                                                    </button>
+
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-sm text-white cob-btn-primary"
+
+                                                    onClick={() => exportToExcelFn()}
+                                                >
+                                                    <i className="fa fa-download"></i> Export
+                                                </button>
 
                                             </div>
                                         )}

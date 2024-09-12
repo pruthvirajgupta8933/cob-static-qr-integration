@@ -127,7 +127,7 @@ const API_LIVE = {
     url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
-  VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
+  VIEW_TXN: `${url}/get-transaction-status`,
   VIEW_RECIPTS_TXN: reportAPIURL + "/Enquiry/ViewTxnPublic",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
