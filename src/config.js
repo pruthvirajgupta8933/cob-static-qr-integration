@@ -115,7 +115,7 @@ const API_LIVE = {
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
   // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
   GetMerchantTxnHistory: `${url}/get-merchant-transaction-history`,
-  DownloadTxnHistory:`${url}/download-merchant-transaction-history`,
+  DownloadTxnHistory: `${url}/download-merchant-transaction-history`,
 
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
@@ -127,7 +127,7 @@ const API_LIVE = {
     url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
-  VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
+  VIEW_TXN: `${url}/get-transaction-status`,
   VIEW_RECIPTS_TXN: reportAPIURL + "/Enquiry/ViewTxnPublic",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
@@ -216,7 +216,7 @@ const API_LIVE = {
   KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
   KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
-  MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
+  // MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
   KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
   KYC_FOR_SAVING_REFER_MERCHANT: `${kyc_url}/kyc/refer-zone/save-refer-zone/`,
@@ -249,7 +249,7 @@ const API_LIVE = {
   /* KYC VERIFICATION FOR ALL TABS */
   KYC_TAB_STATUS_URL: `${kyc_url}/kyc/verify-kyc`,
   /*Image Preview API */
-  Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
+  // Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
   /* Registered Address */
   Registered_Address: `${kyc_url}/kyc/save-registered-address/`,
   /* Registered Address */
@@ -301,7 +301,7 @@ const API_LIVE = {
   VALIDATE_KYC: `${kyc_validate}/validator`,
 
   UDYAM_REGISTRATION: `${kyc_validate}/validator`,
-  CIN_DETAIL:`${kyc_validate}/validator/validate-master-data/cin-lookup/`,
+  CIN_DETAIL: `${kyc_validate}/validator/validate-master-data/cin-lookup/`,
   Aadhar_number: `${kyc_validate}/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_validate}/validator/validate-aadhar/verify-otp/`,
 
@@ -363,13 +363,13 @@ const API_LIVE = {
   // mandateRegistration: `${subAPIURL}/mandateRegistration`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReportCob`,
   //handle Response create mandate api
-  CREATE_MANDATE_API_RESPONSE:`${subAPIURL}/REST/getMandateById`,
+  CREATE_MANDATE_API_RESPONSE: `${subAPIURL}/REST/getMandateById`,
 
   // Debit Report
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
   mandateSubmit: `${subAPIURL}/registration`,
   mandateSendRequest: `https://enach.npci.org.in/onmags/sendRequest`,
-  
+
 
 
   // for chart

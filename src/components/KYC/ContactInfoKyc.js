@@ -19,17 +19,20 @@ import {
 import gotVerified from "../../assets/images/verified.png";
 import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import "./kyc-style.css";
-import OtpInput from "react-otp-input";
-import classes from "./kycForm.module.css"
-import CustomModal from "../../_components/custom_modal";
+// import OtpInput from "react-otp-input";
+// import classes from "./kycForm.module.css"
+// import CustomModal from "../../_components/custom_modal";
 import { kycValidatorAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
 import API_URL from "../../config";
 // import Timer from "../../utilities/TimerComponent";
 import TimerComponent from "../../utilities/TimerComponent";
+import AadharVerficationModal from "./OtpVerificationKYC/AadharVerficationModal";
+import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 
 
-function ContactInfo(props) {
+function ContactInfoKyc(props) {
+  // console.log({ props })
   const setTab = props.tab;
   const setTitle = props.title;
   const merchantloginMasterId = props.merchantloginMasterId;
@@ -48,13 +51,14 @@ function ContactInfo(props) {
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [otpBtnDisable, setOtpBtnDisable] = useState(false);
-  const [resendDisabled, setResendDisabled] = useState(false);
-  const [timer, setTimer] = useState(60);
+  // const [resendDisabled, setResendDisabled] = useState(false);
+  // const [timer, setTimer] = useState(60);
   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
 
   // aadhar number verification
   const [aadharNuber, setAadharNumber] = useState("")
   const [aadharNumberVerifyModalToggle, setAadharNumberVerifyToggle] = useState(false);
+  // const [contactVerifyToggle, setContactVerifyToggle] = useState(false);
   const [aadharOtpResp, setAadharOtpResp] = useState({});
   const [aadharOtp, setAadharOtp] = useState("");
   const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
@@ -66,8 +70,6 @@ function ContactInfo(props) {
     if (KycList?.aadharNumber?.length === 12) {
       setIsAadharNumberVerified(true)
     }
-
-
   }, [KycList])
 
 
@@ -78,7 +80,11 @@ function ContactInfo(props) {
     oldEmailId: KycList?.emailId,
     oldContactNumber: KycList?.contactNumber,
     aadhar_number: KycList?.aadharNumber,
-    isContactNumberVerified: KycList?.isContactNumberVerified ?? null
+
+    // contact OTP initial values
+    isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
+    contactOtpDigit: "",
+    isContactOtpSend: false,
   };
 
 
@@ -125,7 +131,18 @@ function ContactInfo(props) {
       .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
       .required("Required")
       .nullable(),
-    isContactNumberVerified: Yup.string().required("Please verify the contact number").nullable()
+    isContactNumberVerified: Yup.string().required("Please verify the contact number").nullable(),
+
+    contactOtpDigit: Yup.string().when("isContactOtpSend", {
+      is: true,
+      then: Yup.string()
+        .matches(Regex.digit, RegexMsg.digit)
+        .min(6, "Minimum 6 digits are required")
+        .max(6, "Maximum 6 digits are allowed")
+        .required("Required")
+        .nullable(),
+      otherwise: Yup.string()
+    })
   });
 
 
@@ -133,6 +150,7 @@ function ContactInfo(props) {
   useEffect(() => {
     setOtpForPhone({ otp: "" })
   }, [showOtpVerifyModalPhone])
+
 
   const handleSubmitContact = (values) => {
     setIsDisable(true);
@@ -172,41 +190,8 @@ function ContactInfo(props) {
   };
 
 
-  //-----------------Functionality To Send OTP Via Button---------------------
 
-  const handleToSendOTPForVerificationPhone = (values) => {
-
-    dispatch(
-      otpForContactInfo({
-        mobile_number: values,
-        otp_type: "phone",
-        otp_for: "kyc",
-      })
-    ).then((res) => {
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true
-      ) {
-        toast.success("OTP Sent to the Registered Mobile Number ");
-        setShowOtpVerifyModalPhone(true);
-        setIsLoading(false);
-
-
-      } else {
-
-        toast.error(res.payload.message);
-        setShowOtpVerifyModalPhone(false);
-        setIsLoading(false);
-
-
-      }
-    });
-  };
-
-
-  const checkInputIsValid = async (err, val, setErr, key) => {
-
-
+  const inputFieldValidation = async (err, val, setErr, setFieldVal, key) => {
     const hasErr = err.hasOwnProperty(key);
     if (hasErr) {
       if (val[key] === "") {
@@ -216,12 +201,12 @@ function ContactInfo(props) {
 
     if (!hasErr && val[key] !== "" && key === "contact_number") {
       setIsLoading(true);
-      handleToSendOTPForVerificationPhone(val[key]);
+      await contactVerificationHandler(val[key], setFieldVal);
     }
 
 
     if (!hasErr && val[key] !== "" && key === "aadhar_number") {
-      await addharVerficationHandler(val[key]);
+      await addharVerificationHandler(val[key]);
     }
 
   };
@@ -281,11 +266,9 @@ function ContactInfo(props) {
 
 
   // aadhar verification
-
   const aadharModalBody = () => {
     return (
       <div className="modal-body justify-content-center d-flex-inline">
-
         <div className=" justify-content-center d-flex-inline d-flex" >
           <input type="text" className="form-control otp-input-kyc"
             maxLength={6}
@@ -298,7 +281,7 @@ function ContactInfo(props) {
         </div>
         <div className="row m-4 text-center">
           <div className="col-lg-6">
-            <TimerComponent resend={addharVerficationHandler} />
+            <TimerComponent resend={addharVerificationHandler} />
           </div>
           <div className="col-lg-6">
             <button className="btn btn cob-btn-primary btn-sm" type="button"
@@ -315,25 +298,25 @@ function ContactInfo(props) {
             </button>
           </div>
         </div>
-
       </div>
     )
   }
 
-  const addharVerficationHandler = async () => {
+  const addharVerificationHandler = async () => {
     setAadharVerificationLoader(true)
     try {
 
-
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
-      if (resp.data.status) {
-        setAadharOtpResp(resp.data)
-        setAadharNumberVerifyToggle(true)
-        setAadharOtp("")
-        setTimer(60)
-      }
+      setAadharNumberVerifyToggle(true)
       setAadharVerificationLoader(false)
-      toastConfig.successToast(resp.data.message)
+      // const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
+      // if (resp.data.status) {
+      //   setAadharOtpResp(resp.data)
+      //   setAadharNumberVerifyToggle(true)
+      //   setAadharOtp("")
+      //   setTimer(60)
+      // }
+      // setAadharVerificationLoader(false)
+      // toastConfig.successToast(resp.data.message)
       // console.log(1)
     } catch (error) {
       setAadharVerificationLoader(false)
@@ -365,51 +348,36 @@ function ContactInfo(props) {
 
 
   // contact number verification
-  const contactVerifyModalBody = () => {
-    return (
-      <div className="modal-body justify-content-center d-flex-inline">
+  const contactVerificationHandler = async (values, setFieldVal) => {
+    setIsLoading(true);
+    dispatch(otpForContactInfo({
+      mobile_number: values,
+      otp_type: "phone",
+      otp_for: "kyc",
+    })).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        toast.success("OTP Sent to the Registered Mobile Number ");
+        setShowOtpVerifyModalPhone(true);
+        setIsLoading(false);
+        setFieldVal("isContactOtpSend", true);
+        setFieldVal("contactOtpDigit", "");
 
-        <div className=" justify-content-center d-flex-inline d-flex" >
-          <input type="text" className="form-control otp-input-kyc"
-            maxLength={6}
-            placeholder="Enter OTP"
-            onChange={(e) => setAadharOtp(e.target.value)}
-            value={aadharOtp}
-            required={true}
-            disabled={aadharVerificationLoader}
-          />
-        </div>
-        <div className="row m-4 text-center">
-          <div className="col-lg-6">
-            <TimerComponent resend={addharVerficationHandler} />
-          </div>
-          <div className="col-lg-6">
-            <button className="btn btn cob-btn-primary btn-sm" type="button"
-              disabled={aadharVerificationLoader}
-              onClick={() => aadharOtpVerification()}
-            >
-              {aadharVerificationLoader ?
-                <span className="spinner-border spinner-border-sm" role="status">
-                  <span className="sr-only">Loading...</span>
-                </span>
-                :
-                "Verify OTP"
-              }
-            </button>
-          </div>
-        </div>
-
-      </div>
-    )
+      } else {
+        toast.error(res.payload.message);
+        setShowOtpVerifyModalPhone(false);
+        setIsLoading(false);
+      }
+    });
   }
+
 
 
 
   return (
     <div className="col-lg-12 p-0">
-      {aadharNumberVerifyModalToggle &&
-        <CustomModal headerTitle={"Aadhar Verifcation"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
-      }
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -428,8 +396,7 @@ function ContactInfo(props) {
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_person_name}>
                   Contact Person Name<span className="text-danger"> *</span>
                 </label>
-                <FormikController
-                  control="input"
+                <Field
                   type="text"
                   name="name"
                   className="form-control"
@@ -437,25 +404,25 @@ function ContactInfo(props) {
                 />
               </div>
 
-              {/* Aadhar number verification */}
-              <div className="col-sm-6 col-md-6 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Aadhar Number<span className="text-danger"> *</span>
-                </label>
+
+              <div className="col-lg-6 col-sm-12 col-md-12">
+                <label className="col-form-label mt-0 p-2">Aadhar Number<span className="text-danger"> *</span></label>
                 <div className="input-group">
                   <Field
-                    type="password"
+                    type="text"
                     name="aadhar_number"
-                    className="form-control"
-                    onChange={(e) => {
-                      setFieldValue("aadhar_number", e.target.value)
-                      setAadharNumber(e.target.value)
-                      setIsAadharNumberVerified(false)
-                    }}
+                    autoComplete="off"
+                    className="form-control maskedInput"
+                    // onChange={(e) => {
+                    //   setFieldValue("aadhar_number", e.target.value)
+                    //   setAadharNumber(e.target.value)
+                    //   setIsAadharNumberVerified(false)
+                    // }}
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
 
-                  {isAadharNumberVerified ? (
+
+                  {/* {isAadharNumberVerified ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -472,17 +439,7 @@ function ContactInfo(props) {
                         href={() => false}
                         className={`btn cob-btn-primary btn-sm ${aadharVerificationLoader ? 'disabled' : ''}`}
                         onClick={() => {
-                          // Check if the input is valid before triggering the loader
-                          if (!errors.aadhar_number) {
-                            checkInputIsValid(
-                              errors,
-                              values,
-                              setFieldError,
-                              "aadhar_number"
-                            );
-
-                          }
-                          setTimer(60)
+                          addharVerificationHandler()
                         }}
                       >
                         {aadharVerificationLoader ? (
@@ -493,10 +450,8 @@ function ContactInfo(props) {
                           "Send OTP"
                         )}
                       </a>
-                    </div>}
+                    </div>} */}
                 </div>
-
-
                 <ErrorMessage name="aadhar_number">
                   {(msg) => (
                     <span className="text-danger">
@@ -506,9 +461,25 @@ function ContactInfo(props) {
                 </ErrorMessage>
               </div>
 
+
+              {aadharNumberVerifyModalToggle &&
+                <AadharVerficationModal formikFields={{
+                  values,
+                  errors,
+                  setFieldError,
+                  setFieldValue
+                }}
+                  isOpen={aadharNumberVerifyModalToggle}
+                  toggle={setAadharNumberVerifyToggle}
+
+                />
+              }
             </div>
+
+
             <div className="row">
-              <div className="col-sm-6 col-md-6 col-lg-6">
+              {/* start contact verify field */}
+              <div className="col-lg-6 col-sm-12 col-md-12">
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_phone}>
                   Contact Number<span className="text-danger"> *</span>
                 </label>
@@ -523,7 +494,6 @@ function ContactInfo(props) {
                     }}
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
-
                   {KycList?.contactNumber !== null &&
                     values?.isContactNumberVerified === 1 &&
                     !errors.hasOwnProperty("contact_number") &&
@@ -544,17 +514,15 @@ function ContactInfo(props) {
                         href={() => false}
                         className={`btn cob-btn-primary btn-sm text-white ${isLoading ? 'disabled' : ''}`}
                         onClick={() => {
-                          // Check if the input is valid before triggering the loader
                           if (!errors.contact_number) {
-                            checkInputIsValid(
+                            inputFieldValidation(
                               errors,
                               values,
                               setFieldError,
+                              setFieldValue,
                               "contact_number"
-                            );
-
+                            )
                           }
-                          setTimer(60)
                         }}
                       >
                         {isLoading ? (
@@ -567,8 +535,6 @@ function ContactInfo(props) {
                       </a>
                     </div>}
                 </div>
-
-
                 <ErrorMessage name="contact_number">
                   {(msg) => (
                     <span className="text-danger">
@@ -576,6 +542,15 @@ function ContactInfo(props) {
                     </span>
                   )}
                 </ErrorMessage>
+
+                <ErrorMessage name="oldContactNumber">
+                  {(msg) => (
+                    <span className="text-danger">
+                      {msg}
+                    </span>
+                  )}
+                </ErrorMessage>
+
                 <ErrorMessage name="isContactNumberVerified">
                   {(msg) => (
                     <span className="text-danger">
@@ -584,7 +559,24 @@ function ContactInfo(props) {
                   )}
                 </ErrorMessage>
               </div>
-              <div className="col-sm-6 col-md-6 col-lg-6 ">
+
+
+
+              {showOtpVerifyModalPhone &&
+                <PhoneVerficationModal formikFields={{
+                  values,
+                  errors,
+                  setFieldError,
+                  setFieldValue
+                }}
+                  isOpen={showOtpVerifyModalPhone} toggle={setShowOtpVerifyModalPhone}
+                  resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
+                />
+              }
+              {/* end contact verify field */}
+
+
+              <div className="col-lg-6 col-sm-12 col-md-12">
                 <label className="col-form-label mt-0 p-2">
                   Email Id<span style={{ color: "red" }}>*</span>
                 </label>
@@ -610,15 +602,6 @@ function ContactInfo(props) {
                       </span>
                     )}
                 </div>
-
-                {<ErrorMessage name="email_id">
-                  {(msg) => (
-                    <span className="text-danger">
-                      {msg}
-                    </span>
-                  )}
-                </ErrorMessage>
-                }
               </div>
             </div>
 
@@ -643,106 +626,6 @@ function ContactInfo(props) {
                 )}
               </div>
             </div>
-
-
-            {/* Phone Number Verification modal */}
-            <div className="modal fade show mt-5" ariaHidden="true"
-              style={{ display: showOtpVerifyModalPhone ? "block" : "none", backgroundColor: "#000000a8" }}>
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-
-                  <div className="modal-header">
-                    <h6 className="modal-title paymentHeader" id="phoneModal">
-                      OTP Verification
-                    </h6>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal1"
-                      aria-label="Close"
-                      onClick={() => { setShowOtpVerifyModalPhone(false) }}
-                    >
-                      <span ariaHidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div className="mx-auto p-3">
-                    <h5 className="">
-                      Please enter the verification code sent to your phone number !
-                    </h5>
-                  </div>
-                  <div className="modal-body justify-content-center d-flex-inline">
-
-                    <div className=" justify-content-center d-flex-inline" >
-                      <OtpInput
-                        separator={
-                          <span>
-                            <strong>-</strong>
-                          </span>
-                        }
-                        containerStyle="d-flex justify-content-center"
-                        isInputNum={true}
-                        value={otpForPhone.otp}
-                        onChange={handleChangeForOtpPhone}
-                        inputStyle={{
-                          align: "centre",
-                          width: "3rem",
-                          height: "3rem",
-                          fontSize: "2rem",
-                          borderRadius: 4,
-                          border: "1px solid rgba(0,0,0,0.3)",
-                        }}
-                        numInputs={6}
-
-                      />
-                    </div>
-                    <div className="row m-4 text-center">
-
-                      <div className="col-lg-6">
-                        {timer > 0 ? (
-                          <button className={`${classes.resendOtp_border} btn btn-light btn-sm`} disabled>
-                            Resend OTP {timer}s
-                          </button>
-                        ) : (
-                          <button className={`${classes.resendOtp_border} btn btn-light btn-sm`}
-                            onClick={() => {
-                              if (!errors.contact_number) {
-                                checkInputIsValid(
-                                  errors,
-                                  values,
-                                  setFieldError,
-                                  "contact_number"
-                                )
-                                setResendDisabled(true);
-                                setTimer(40);
-                              }
-                            }}
-                          >
-                            Resend OTP
-                          </button>
-                        )}
-                      </div>
-                      <div className="col-lg-6">
-                        <button className="btn btn cob-btn-primary btn-sm" type="button"
-                          onClick={() => handleVerificationOfPhone(setFieldValue, values)}
-                          disabled={otpBtnDisable}
-                        >
-                          {otpBtnDisable ?
-                            <span className="spinner-border spinner-border-sm" role="status">
-                              <span className="sr-only">Loading...</span>
-                            </span>
-                            :
-                            "Verify OTP"
-                          }
-                        </button>
-                      </div>
-                    </div>
-
-                  </div>
-
-
-                </div>
-              </div>
-            </div>
           </Form>
         )}
       </Formik>
@@ -750,4 +633,4 @@ function ContactInfo(props) {
   );
 }
 
-export default ContactInfo;
+export default ContactInfoKyc;
