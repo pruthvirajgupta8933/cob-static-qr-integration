@@ -22,6 +22,8 @@ const TransactionEnquirey = React.memo(() => {
     disable: false,
     loadingState: false
   });
+
+  
   const { auth, merchantReferralOnboardReducer } = useSelector((state) => state);
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
@@ -34,17 +36,7 @@ const TransactionEnquirey = React.memo(() => {
     clientCode: Yup.string().nullable().required("Required").allowOneSpace(),
   });
 
-  const fetchData = useCallback(() => {
-    const roleType = roles;
-    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
-    if (type !== "default") {
-      const postObj = {
-        type: type,
-        login_id: auth?.user?.loginId
-      };
-      dispatch(fetchChiledDataList(postObj));
-    }
-  }, [roles, auth, dispatch]);
+ 
 
   useEffect(() => {
     const roleType = roles;
@@ -81,16 +73,26 @@ const TransactionEnquirey = React.memo(() => {
 
     const spTxnId = input.transaction_from === "1" ? input.transaction_id : 0;
     const clientTxnId = input.transaction_from === "2" ? input.transaction_id : 0;
-    const endPoint = `/${spTxnId}/${clientTxnId}/${input.clientCode}`;
+    
+
+    const postData = {
+      clientCode: input.clientCode
+    };
+    
+    if (input.transaction_from === "1") {
+      postData.sabpaisaTxnId = spTxnId;
+    } else if (input.transaction_from === "2") {
+      postData.clientTxnId = clientTxnId;
+    }
 
     try {
-      const response = await transactionEnquireyApi(endPoint)
-      if (response?.data?.length > 0) {
+      const response = await transactionEnquireyApi(postData)
+      if (response?.data?.result) {
         setState(prev => ({
           ...prev,
           loadingState: false,
           show: true,
-          data: response.data[0],
+          data: response?.data?.result,
           errMessage: ""
         }));
       } else {
@@ -115,20 +117,20 @@ const TransactionEnquirey = React.memo(() => {
 
   useEffect(() => {
     const tempArr = [
-      { key: "Txn Id", value: state.data.txn_id },
-      { key: "Payment Mode", value: state.data.payment_mode },
-      { key: "Payer Name", value: state.data.payee_name },
-      { key: "Payer Mobile", value: state.data.payee_mob },
-      { key: "Payer Email", value: state.data.payee_email },
+      { key: "Txn Id", value: state.data.sabpaisaTxnId},
+      { key: "Payment Mode", value: state.data.paymentMode},
+      { key: "Payer Name", value: state.data.payerName},
+      { key: "Payer Mobile", value: state.data.payerMobile},
+      { key: "Payer Email", value: state.data.payerEmail},
       { key: "Status ", value: state.data.status },
-      { key: "Bank Txn Id", value: state.data.bank_txn_id },
-      { key: "Client Name", value: state.data.client_name },
-      { key: "Client Id", value: state.data.client_id },
-      { key: "Payer Amount", value: state.data.payee_amount },
-      { key: "Paid Amount", value: state.data.paid_amount },
-      { key: "Transaction Date", value: convertDate(state.data.trans_date) },
-      { key: "Client Code ", value: state.data.client_code },
-      { key: "Client Txn Id", value: state.data.client_txn_Id },
+      { key: "Bank Txn Id", value: state.data.bankTxnId},
+      // { key: "Client Name", value: state.data.client_name },
+      // { key: "Client Id", value: state.data.client_id },
+      { key: "Payer Amount", value: state.data.amount },
+      { key: "Paid Amount", value: state.data. paidAmount },
+      { key: "Transaction Date", value: convertDate(state.data.transDate) },
+      { key: "Client Code ", value: state.data.clientCode},
+      { key: "Client Txn Id", value: state.data.clientTxnId},
       { key: "Refund Track Id ", value: state.data.udf4 },
       { key: "Chargeback ", value: state.data.udf2 },
       { key: "Refund ", value: state.data.udf3 },

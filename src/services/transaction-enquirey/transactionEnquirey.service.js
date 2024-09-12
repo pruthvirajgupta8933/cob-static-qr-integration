@@ -1,7 +1,7 @@
 import API_URL from "../../config"
-import { axiosInstance } from "../../utilities/axiosInstance"
+import { axiosInstance, axiosInstanceJWT } from "../../utilities/axiosInstance"
 
-export const transactionEnquireyApi = (endPoint) => {
-    return axiosInstance.get(API_URL.VIEW_TXN + endPoint)
+export const transactionEnquireyApi = (postData) => {
+    return axiosInstanceJWT.post(API_URL.VIEW_TXN,postData)
 }
 
