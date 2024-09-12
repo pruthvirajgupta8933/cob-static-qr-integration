@@ -6,7 +6,7 @@ import {
 import BankDetails from "./BankDetails";
 import BusinessDetails from "./BusinessDetails";
 import BusinessOverview from "./BusinessOverview";
-import ContactInfo from "./ContactInfo";
+// import ContactInfo from "./ContactInfo";
 import DocumentsUploadNew from "./DocumentsUploadNew";
 import SubmitKyc from "./SubmitKyc";
 import {
@@ -216,7 +216,7 @@ function KycForm() {
                         )) ||
                         (tab === 6 && (
                           <SubmitKyc role={roles} kycid={kycid} merchantloginMasterId={merchantloginMasterId} />
-                        )) || <ContactInfo role={roles}
+                        )) || <ContactInfoKyc role={roles}
                           kycid={kycid}
                           merchantloginMasterId={merchantloginMasterId}
                           tab={SetTab}
