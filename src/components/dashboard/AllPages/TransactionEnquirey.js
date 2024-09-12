@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../../_components/formik/Yup";
 import { Formik, Form } from "formik";
-import API_URL from "../../../config";
 import FormikController from "../../../_components/formik/FormikController";
 import PrintDocument from "../../../_components/reuseable_components/PrintDocument";
 import moment from "moment";
@@ -11,6 +10,7 @@ import CustomLoader from "../../../_components/loader";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { transactionEnquireyApi } from "../../../services/transaction-enquirey/transactionEnquirey.service";
 
 const TransactionEnquirey = React.memo(() => {
   const dispatch = useDispatch();
@@ -84,7 +84,7 @@ const TransactionEnquirey = React.memo(() => {
     const endPoint = `/${spTxnId}/${clientTxnId}/${input.clientCode}`;
 
     try {
-      const response = await axios.get(API_URL.VIEW_TXN + endPoint);
+      const response = await transactionEnquireyApi(endPoint)
       if (response?.data?.length > 0) {
         setState(prev => ({
           ...prev,
@@ -129,10 +129,11 @@ const TransactionEnquirey = React.memo(() => {
       { key: "Transaction Date", value: convertDate(state.data.trans_date) },
       { key: "Client Code ", value: state.data.client_code },
       { key: "Client Txn Id", value: state.data.client_txn_Id },
-      { key: "Settlement Status", value: state.data.udf1 },
+      { key: "Refund Track Id ", value: state.data.udf4 },
       { key: "Chargeback ", value: state.data.udf2 },
       { key: "Refund ", value: state.data.udf3 },
-      { key: "Refund Track Id ", value: state.data.udf4 },
+      { key: "Settlement Status", value: state.data.udf1 },
+      
     ];
     setState(prev => ({ ...prev, printData: tempArr }));
   }, [state.data, convertDate]);
@@ -229,9 +230,15 @@ const TransactionEnquirey = React.memo(() => {
                     <div className="row">
                       {state.printData.map((datas, key) => (
                         <div className="col-4 p-2" key={datas.key.toString()}>
-                          <p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p>
+                          <p>
+                            <span className="font-weight-bold"> {datas.key} :</span>
+                            <span className= "large_content_wrap">
+                              {datas.value}
+                            </span>
+                          </p>
                         </div>
                       ))}
+
                     </div>
                   </div>
                   <PrintDocument data={state.printData} />
