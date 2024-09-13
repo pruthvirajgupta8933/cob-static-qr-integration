@@ -5,28 +5,30 @@ import { useSelector, useDispatch } from "react-redux";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { updateBusinessOverViewEditDetails } from "../../../slices/editKycSlice";
 import FormikController from "../../../_components/formik/FormikController";
-import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import Yup from "../../../_components/formik/Yup";
 
 
 
-import { businessType,
-    busiCategory,
-    platformType,
-    // collectionFrequency,
-    // collectionType,
-    saveBusinessInfo,
-    kycUserList,
-    GetKycTabsStatus, } from "../../../slices/kycSlice";
+import {
+  businessType,
+  busiCategory,
+  platformType,
+  // collectionFrequency,
+  // collectionType,
+  saveBusinessInfo,
+  kycUserList,
+  GetKycTabsStatus,
+} from "../../../slices/kycSlice";
 
 import kycOperationService from "../../../services/kycOperation.service";
 // import { includes } from "lodash";
 
 function BusinessOverviewEditKyc(props) {
-  const selectedId=props.selectedId
+  const selectedId = props.selectedId
   const setTab = props.tab;
   const setTitle = props.title;
-  
+
 
   const dispatch = useDispatch();
 
@@ -75,7 +77,7 @@ function BusinessOverviewEditKyc(props) {
   // console.log("KycList", KycList)
   // *static data added after internal discussion
   const initialValues = {
-   business_type: KycList.businessType,
+    business_type: KycList.businessType,
     business_category: business_category_code,
     business_model: "Working",
     billing_label: KycList.billingLabel,
@@ -88,7 +90,7 @@ function BusinessOverviewEditKyc(props) {
     form_build: "Yes",
     ticket_size: "10",
     avg_ticket_size: KycList?.avg_ticket_size,
-    
+
     "is_website_url": true,
     seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
     website_app_url: KycList?.website_app_url,
@@ -109,15 +111,12 @@ function BusinessOverviewEditKyc(props) {
       business_category: Yup.string()
         .required("Select Business Category")
         .nullable(),
-      platform_id: Yup.string()
-        
-        .nullable(),
+      platform_id: Yup.string().nullable(),
       billing_label: Yup.string()
         .allowOneSpace()
         .min(60, 'Please enter more than 60 character')
         .max(400, 'Please do not enter more than 400 characters')
         .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
-       
         .nullable(),
 
       website_app_url: Yup.string().allowOneSpace().when(["seletcted_website_app_url"], {
@@ -134,22 +133,18 @@ function BusinessOverviewEditKyc(props) {
             } catch (error) {
               return false;
             }
-          })
-         
-          .nullable(),
+          }).nullable(),
         otherwise: Yup.string().notRequired().nullable(),
       }),
-      expected_transactions: Yup.string().trim().nullable(),
-      avg_ticket_size: Yup.string()
-        .trim()
 
-       .nullable(),
-      // .nullable(),
+      expected_transactions: Yup.string().required("Required").nullable(),
+      avg_ticket_size: Yup.string().required("Required").nullable(),
+
     },
     [["seletcted_website_app_url"]]
   );
 
- 
+
 
   ////Get Api for Buisness overview///////////
   useEffect(() => {
@@ -201,7 +196,7 @@ function BusinessOverviewEditKyc(props) {
 
   const onSubmit = (values) => {
 
-    let expectedTxn = values.expected_transactions.split("-");
+    let expectedTxn = values?.expected_transactions?.split("-");
     let numbers = {};
     let maxValueTxn = 0;
 
@@ -210,11 +205,11 @@ function BusinessOverviewEditKyc(props) {
         maxValueTxn = 500000
       }
     } else {
-      numbers = expectedTxn.map(part => parseInt(part));
+      numbers = expectedTxn?.map(part => parseInt(part));
       maxValueTxn = Math.max(...numbers);
     }
-    const ticketSize = values.avg_ticket_size.split("-");
-    const avgTicket = ticketSize.map(part => parseInt(part))
+    const ticketSize = values?.avg_ticket_size?.split("-");
+    const avgTicket = ticketSize?.map(part => parseInt(part))
     const maxTicketSize = Math.max(...avgTicket);
     const avgCount = maxValueTxn * maxTicketSize;
 
@@ -340,7 +335,7 @@ function BusinessOverviewEditKyc(props) {
     <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
-         validationSchema={validationSchema}
+        validationSchema={validationSchema}
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
@@ -357,8 +352,8 @@ function BusinessOverviewEditKyc(props) {
                   name="business_type"
                   options={data}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
@@ -371,8 +366,8 @@ function BusinessOverviewEditKyc(props) {
                   name="business_category"
                   options={businessCategory}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
               </div>
             </div>
@@ -388,8 +383,8 @@ function BusinessOverviewEditKyc(props) {
                   type="text"
                   name="billing_label"
                   className="form-control fs-12"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
                 <p className="fs-10">
                   Please give a brief description of the nature of your
@@ -442,8 +437,8 @@ function BusinessOverviewEditKyc(props) {
                         name="website_app_url"
                         placeHolder="Enter your website/app URL"
                         className="form-control pull-left"
-                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                        // readOnly={readOnly}
+                      // disabled={VerifyKycStatus === "Verified" ? true : false}
+                      // readOnly={readOnly}
                       />
                     </div>
                   </div>
@@ -515,19 +510,19 @@ function BusinessOverviewEditKyc(props) {
                 {/* {VerifyKycStatus === "Verified" ? (
                   <></>
                 ) : ( */}
-                  <button
-                    className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
-                    type="submit"
-                    disabled={disabled}
-                  >
-                    {disabled && <>
-                      <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
-                        <span className="sr-only">Loading...</span>
-                      </span>
-                    </>}
-                    {buttonText}
-                  </button>
+                <button
+                  className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
+                  type="submit"
+                  disabled={disabled}
+                >
+                  {disabled && <>
+                    <span className="mr-2">
+                      <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </span>
+                  </>}
+                  {buttonText}
+                </button>
                 {/* )} */}
               </div>
             </div>
