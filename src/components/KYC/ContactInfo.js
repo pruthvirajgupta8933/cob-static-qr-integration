@@ -408,7 +408,7 @@ function ContactInfo(props) {
   return (
     <div className="col-lg-12 p-0">
       {aadharNumberVerifyModalToggle &&
-        <CustomModal headerTitle={"Aadhar Verifcation"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
+        <CustomModal headerTitle={"Aadhaar Verification"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
       }
       <Formik
         initialValues={initialValues}

@@ -88,7 +88,7 @@ const AadhaarVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) =>
   }
 
 
-  return (isOpen ? <CustomModal headerTitle={"Aadhar Verifcation"} modalBody={aadharModalBody} modalToggle={isOpen} fnSetModalToggle={() => modalCloseHandler()} modalSize="modal-md" /> : <></>)
+  return (isOpen ? <CustomModal headerTitle={"Aadhaar Verification"} modalBody={aadharModalBody} modalToggle={isOpen} fnSetModalToggle={() => modalCloseHandler()} modalSize="modal-md" /> : <></>)
 }
 
 export default AadhaarVerficationModal
