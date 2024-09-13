@@ -33,8 +33,8 @@ export const cinLookupApi = createAsyncThunk(
 );
 
 
-export const aadharNumberVerification = createAsyncThunk(
-  "kycValidator/aadharNumberVerification",
+export const aadhaarNumberVerification = createAsyncThunk(
+  "kycValidator/aadhaarNumberVerification",
   async (requestParam, thunkAPI) => {
     try {
       const response = await aadharNumberVerify(requestParam)
@@ -47,7 +47,7 @@ export const aadharNumberVerification = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString() || error.request.toString();
-      thunkAPI.dispatch(setMessage(message));
+      thunkAPI.dispatch(setMessage({ message }));
       // console.log("message", message)
       return thunkAPI.rejectWithValue(message);
 
@@ -62,15 +62,18 @@ export const kycValidatorSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(aadharNumberVerification.pending, (state, action) => {
+      .addCase(aadhaarNumberVerification.pending, (state, action) => {
         state.aadharOtpResponse = {}
       })
-      .addCase(aadharNumberVerification.fulfilled, (state, action) => {
-        console.log(action.payload)
+      .addCase(aadhaarNumberVerification.fulfilled, (state, action) => {
         state.aadharOtpResponse = action.payload
       })
-      .addCase(aadharNumberVerification.rejected, (state, action) => {
-        state.aadharOtpResponse = {}
+      .addCase(aadhaarNumberVerification.rejected, (state, action) => {
+
+        state.aadharOtpResponse = {
+          message: action?.payload,
+          status: false
+        }
       })
   }
 });

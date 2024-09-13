@@ -21,7 +21,7 @@ import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.serv
 import toastConfig from "../../utilities/toastTypes";
 
 function BusinessDetails(props) {
-  
+
   const setTab = props.tab;
   const setTitle = props.title;
   const merchantloginMasterId = props.merchantloginMasterId;
@@ -637,7 +637,7 @@ function BusinessDetails(props) {
                 {(JSON.parse(values?.registerd_with_udyam) === true && JSON.parse(values?.registerd_with_gst) === false) &&
                   <React.Fragment >
                     <label className="col-form-label pt-0 p-2">
-                      Udyam Aadhar Number<span className="text-danger">*</span>
+                      Udyam Aadhaar Number<span className="text-danger">*</span>
                     </label>
                     <div className="input-group">
                       <Field

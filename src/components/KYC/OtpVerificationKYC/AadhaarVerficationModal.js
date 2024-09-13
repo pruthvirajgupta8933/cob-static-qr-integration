@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-// import { toast } from "react-toastify";
-// import { otpVerificationForContactForPhone } from "../../../slices/kycSlice";
-// import OtpInput from "react-otp-input";
-// import { useEffect } from "react";
 import CustomModal from "../../../_components/custom_modal";
 import TimerComponent from "../../../utilities/TimerComponent";
 import toastConfig from "../../../utilities/toastTypes";
@@ -12,20 +8,16 @@ import API_URL from "../../../config";
 import { ErrorMessage, Field } from "formik";
 
 
-const AadharVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => {
+const AadhaarVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => {
   const { values, setFieldValue, errors } = formikFields
   const [isLoading, setIsLoading] = useState(false);
-  // const [aadharNumberVerifyModalToggle, setAadharNumberVerifyToggle] = useState(false);
-  // const [aadharVerificationLoader, setAadharVerificationLoader] = useState(false);
-
   const { aadharOtpResponse } = useSelector((state) => state.kycValidatorReducer)
-  // console.log("vlaues", values)
 
 
   const aadharOtpVerification = async () => {
     setIsLoading(true)
     try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { referenceId: aadharOtpResponse?.referenceId, otp: values.aadharOtpDigit })
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { referenceId: aadharOtpResponse?.referenceId, otp: values.aadhaarOtpDigit })
       if (resp.data?.valid && resp.data?.status) {
         setFieldValue("oldAadharNumber", values.aadhar_number)
         setFieldValue("isIdProofVerified", 1)
@@ -57,7 +49,7 @@ const AadharVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => 
         <div className=" justify-content-center d-flex-inline d-flex" >
           <Field
             type="text" className="form-control otp-input-kyc"
-            name="aadharOtpDigit"
+            name="aadhaarOtpDigit"
             maxLength={6}
             placeholder="Enter OTP"
             required={true}
@@ -65,7 +57,7 @@ const AadharVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => 
           />
 
         </div>
-        <ErrorMessage name="aadharOtpDigit">
+        <ErrorMessage name="aadhaarOtpDigit">
           {(msg) => (
             <p className="text-danger text-center m-1">
               {msg}
@@ -78,7 +70,7 @@ const AadharVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => 
           </div>
           <div className="col-lg-6">
             <button className="btn btn cob-btn-primary btn-sm" type="button"
-              disabled={isLoading || errors.hasOwnProperty("aadharOtpDigit")}
+              disabled={isLoading || errors.hasOwnProperty("aadhaarOtpDigit")}
               onClick={aadharOtpVerification}
             >
               {isLoading ?
@@ -99,4 +91,4 @@ const AadharVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) => 
   return (isOpen ? <CustomModal headerTitle={"Aadhar Verifcation"} modalBody={aadharModalBody} modalToggle={isOpen} fnSetModalToggle={() => modalCloseHandler()} modalSize="modal-md" /> : <></>)
 }
 
-export default AadharVerficationModal
+export default AadhaarVerficationModal
