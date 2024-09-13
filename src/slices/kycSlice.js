@@ -187,8 +187,8 @@ export const updateContactInfo = createAsyncThunk(
 // KYC OTP function
 
 // Aadhar OTP verification
-export const aadharOTPDetails = createAsyncThunk(
-  "aadharOTP/aadharOTPDetails",
+export const aadhaarOTPDetails = createAsyncThunk(
+  "aadhaarOTP/aadhaarOTPDetails",
   async (requestParam) => {
     const response = await merchantKycService
       .otpForContactInfo(requestParam)
