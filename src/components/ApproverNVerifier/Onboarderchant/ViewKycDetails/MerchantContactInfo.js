@@ -74,7 +74,7 @@ function MerchantContactInfo(props) {
   };
   const inputFields = [
     { label: 'Contact Person Name', value: selectedUserData?.name },
-    { label: 'Aadhaar Number', value: maskedString(selectedUserData?.aadharNumber, 7) },
+    { label: 'ID Proof (Aadhaar Number)', value: maskedString(selectedUserData?.aadharNumber, 7) },
     { label: 'Contact Number', value: selectedUserData?.contactNumber, verified: selectedUserData?.isContactNumberVerified },
     { label: 'Email Id', value: selectedUserData?.emailId, verified: selectedUserData?.isEmailVerified }
   ];
