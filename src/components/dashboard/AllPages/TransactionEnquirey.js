@@ -63,7 +63,7 @@ const TransactionEnquirey = React.memo(() => {
   const initialValues = useMemo(() => ({
     clientCode: roles.merchant && clientCodeListArr.length > 0 ? clientCodeListArr[0][fnKey] : "",
     transaction_id: "",
-    transaction_from: "1"
+    transaction_from: "2"
   }), [roles.merchant, clientCodeListArr, fnKey]);
 
   const convertDate = useCallback((yourDate) => moment(yourDate).format("DD/MM/YYYY hh:mm a"), []);

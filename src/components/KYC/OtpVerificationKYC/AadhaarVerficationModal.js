@@ -36,7 +36,7 @@ const AadhaarVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) =>
   }
 
   const resendOtpHandler = () => {
-    resendOtp(values.contact_number, setFieldValue)
+    resendOtp(values.aadhar_number, setFieldValue)
   }
 
 
