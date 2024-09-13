@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import classes from "./editkycDetails.module.css"
 import ContactInfoEdtkyc from "./ContactInfoEdtkyc";
 import BusinessOverviewEditKyc from "./BusinessOverviewEditKyc";
@@ -27,7 +27,7 @@ function EditKycDetail() {
     react_select: ""
   }
 
-   useEffect(() => {
+  useEffect(() => {
     dispatch(getAllCLientCodeSlice()).then((resp) => {
       setCliencodeList(resp?.payload?.result)
     })
@@ -45,7 +45,7 @@ function EditKycDetail() {
 
   const clientCodeOption = [
     { value: '', label: 'Select Client Code' },
-    ...clientCodeList.map((data) => ({
+    ...clientCodeList?.map((data) => ({
       value: data.loginMasterId,
       label: `${data.clientCode} - ${data.name}`
     }))
@@ -84,35 +84,35 @@ function EditKycDetail() {
               SetTab(2);
               setTitle("BUSINESS OVERVIEW");
             }}>
-              
+
               Business Overview</a>
 
             <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 3 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(3);
               setTitle("BUSINESS DETAILS");
             }}>
-              
+
               Business Details</a>
 
             <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 4 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(4);
               setTitle("BANK DETAILS");
             }}>
-             
+
               Bank Details</a>
 
             <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 5 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(5);
               setTitle("DOCUMENTS UPLOAD");
             }} >
-             
+
               Upload Document</a>
 
-              <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 6 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 6 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(6);
               setTitle("VIEW DOCUMENT");
             }} >
-             
+
               View Document</a>
           </div>
 
@@ -158,12 +158,12 @@ function EditKycDetail() {
                     />
                   )) ||
                   (tab === 6 && (
-                    <ViewDocument  selectedId={selectedId} />
+                    <ViewDocument selectedId={selectedId} />
                   )) || <ContactInfoEdtkyc
-                    
-                  tab={SetTab}
-                  title={setTitle}
-                  selectedId={selectedId}/>}
+
+                    tab={SetTab}
+                    title={setTitle}
+                    selectedId={selectedId} />}
               </div>
             </div>
           </div>
