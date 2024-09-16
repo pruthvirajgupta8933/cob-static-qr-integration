@@ -67,6 +67,7 @@ export const txnChartDataSlice = createAsyncThunk(
             const response = await Dashboardservice.dowlonadTransactionHistory(obj);
             return response?.data;
           } catch (error) {
+            console.log("error is here",error.response)
             const message =
               (error.response &&
                 error.response.data &&
@@ -74,6 +75,7 @@ export const txnChartDataSlice = createAsyncThunk(
               error.message ||
               error.toString();
             thunkAPI.dispatch(setMessage(message));
+            console.log("error.response.data.detail",error.response.data.detail)
             
             return thunkAPI.rejectWithValue(message);
           }

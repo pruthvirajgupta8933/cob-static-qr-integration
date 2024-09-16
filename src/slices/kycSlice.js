@@ -186,6 +186,19 @@ export const updateContactInfo = createAsyncThunk(
 
 // KYC OTP function
 
+// Aadhar OTP verification
+export const aadhaarOTPDetails = createAsyncThunk(
+  "aadhaarOTP/aadhaarOTPDetails",
+  async (requestParam) => {
+    const response = await merchantKycService
+      .otpForContactInfo(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
+
 //--------------For Sending the Contact Otp ---------------------
 export const otpForContactInfo = createAsyncThunk(
   "OtpForContact/otpContactInfo",
