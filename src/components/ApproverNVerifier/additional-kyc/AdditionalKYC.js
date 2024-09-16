@@ -7,6 +7,8 @@ import UdyamRegistrationList from "./UdyamRegistrationList";
 import AadharVerify from "./aadhar-attestr/AadharVerify";
 import KycCin from "./KycCin";
 import ValidateCredReport from "./cred-report-validate";
+import ValidateVoterCard from "./voter-card-validate";
+import ValidateDrivingLicense from "./dl-validate";
 
 const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
@@ -19,6 +21,8 @@ const AdditionalKYC = () => {
     { documentType: "AADHAR VERIFICATION", value: "6" },
     { documentType: "CIN", value: "7" },
     { documentType: "CRED REPORT VALIDATION", value: "8" },
+    { documentType: "DRIVING LICENSE VALIDATION", value: "9" },
+    { documentType: "VOTER CARD VALIDATION", value: "10" },
   ];
 
   // Helper functions
@@ -44,6 +48,10 @@ const AdditionalKYC = () => {
         return <KycCin />;
       case "8":
         return <ValidateCredReport />;
+      case "9":
+        return <ValidateDrivingLicense />;
+      case "10":
+        return <ValidateVoterCard />;
     }
   };
 

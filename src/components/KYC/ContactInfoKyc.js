@@ -254,11 +254,10 @@ function ContactInfoKyc(props) {
 
 
   // aadhar verification
-  const aadhaarVerificationHandler = async (values, setFieldVal) => {
-    // console.log("values", values.aadhar_number)
+  const aadhaarVerificationHandler = async (aadhar_number, setFieldVal) => {
     setAadhaarVerificationLoader(true)
 
-    dispatch(aadhaarNumberVerification({ "aadhar_number": values.aadhar_number })).then(resp => {
+    dispatch(aadhaarNumberVerification({ "aadhar_number": aadhar_number })).then(resp => {
       if (resp.type === "kycValidator/aadhaarNumberVerification/fulfilled") {
         setAadhaarNumberVerifyToggle(true)
         setAadhaarVerificationLoader(false)
@@ -381,7 +380,7 @@ function ContactInfoKyc(props) {
                             href={() => false}
                             className={`btn cob-btn-primary btn-sm ${aadhaarVerificationLoader || errors?.aadhar_number ? 'disabled' : ''}`}
                             onClick={() => {
-                              aadhaarVerificationHandler(values, setFieldValue)
+                              aadhaarVerificationHandler(values.aadhar_number, setFieldValue)
                             }}
                           // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
                           >

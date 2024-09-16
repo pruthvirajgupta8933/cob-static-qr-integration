@@ -39,7 +39,7 @@ function AadharVerify() {
             toastConfig.successToast(resp.data.message)
         } catch (error) {
             setAdharOtpDisable(false)
-            toastConfig.errorToast("Something went wrong, Please try again")
+            toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
         }
     }
 
