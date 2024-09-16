@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { voterCardValidation } from "../../../../slices/kycSlice";
+import { voterCardValidation } from "../../../../slices/kycValidatorSlice";
 
 const ValidateVoterCard = () => {
   const [voterId, setVoterId] = useState();

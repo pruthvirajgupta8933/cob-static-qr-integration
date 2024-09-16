@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { dlValidation } from "../../../../slices/kycSlice";
+import { dlValidation } from "../../../../slices/kycValidatorSlice";
 
 const ValidateDrivingLicense = () => {
   const [drivingLicense, setDrivingLicense] = useState({
