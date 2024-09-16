@@ -247,7 +247,7 @@ function AssignZone() {
           setDisable(false)
           setLoading(false)
         } else {
-          toastConfig.errorToast(resp?.payload ?? "Something Went Wrong");
+          toastConfig.errorToast(resp?.payload ?? "Something went wrong");
           setDisable(false)
           setLoading(false)
         }

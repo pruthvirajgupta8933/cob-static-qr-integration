@@ -21,7 +21,7 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import Notification from "../../../../_components/reuseable_components/Notification";
 // import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
-import {exportToSpreadsheet} from "../../../../utilities/exportToSpreadsheet"
+import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet"
 import moment from "moment";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -411,7 +411,7 @@ const TransactionHistory = () => {
 
     const exportToExcelFn = () => {
         const excelHeaderRow = [
-            "S.No",
+            // "S.No",
             "Trans ID",
             "Client Trans ID",
             "Challan Number / VAN",
@@ -456,7 +456,7 @@ const TransactionHistory = () => {
         const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
         txnList.forEach((item, index) => {
             const {
-                srNo = index + 1,
+                // srNo = index + 1,
                 txn_id = "",
                 client_txn_id = "",
                 challan_no = "",
@@ -499,7 +499,7 @@ const TransactionHistory = () => {
             } = item;
 
             excelArr.push([
-                srNo,
+                // srNo,
                 txn_id,
                 client_txn_id,
                 challan_no,
@@ -574,9 +574,7 @@ const TransactionHistory = () => {
                             onSubmit={submitHandler}
                         >
                             {(formik) => (
-
                                 <Form>
-                                    {console.log("formik", formik)}
                                     <div className="form-row mt-4">
                                         {(roles?.bank || roles?.referral) && (
                                             <div className="form-group col-md-4 col-lg-2 col-sm-12">
@@ -657,7 +655,7 @@ const TransactionHistory = () => {
 
                                         {txnList?.length > 0 && (
                                             <div className="form-group col-md-2 col-lg-1">
-                                                {roles.merchant && (
+                                                {/* {roles.merchant && (
                                                     <button
                                                         type="button"
                                                         className="approve cob-btn-primary"
@@ -667,17 +665,17 @@ const TransactionHistory = () => {
                                                     >
                                                         <i className="fa fa-download"></i> Export
                                                     </button>
-                                                )}
-                                                {(roles.bank || roles.referral) && (
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-sm text-white cob-btn-primary"
-                                                       
-                                                        onClick={() => exportToExcelFn()}
-                                                    >
-                                                        <i className="fa fa-download"></i> Export 
-                                                    </button>
-                                                )}
+                                                )} */}
+
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-sm text-white cob-btn-primary"
+
+                                                    onClick={() => exportToExcelFn()}
+                                                >
+                                                    <i className="fa fa-download"></i> Export
+                                                </button>
+
                                             </div>
                                         )}
 

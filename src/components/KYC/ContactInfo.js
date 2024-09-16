@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../_components/formik/Yup"
@@ -11,7 +11,7 @@ import {
   GetKycTabsStatus,
   otpVerificationForContactForPhone,
 } from "../../slices/kycSlice";
-// import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
+
 import {
   Regex,
   RegexMsg,
@@ -52,11 +52,11 @@ function ContactInfo(props) {
   const [timer, setTimer] = useState(60);
   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
 
-  // aadhar number verification
+  // Aadhaar Number verification
   const [aadharNuber, setAadharNumber] = useState("")
   const [aadharNumberVerifyModalToggle, setAadharNumberVerifyToggle] = useState(false);
   const [aadharOtpResp, setAadharOtpResp] = useState({});
-  const [aadharOtp, setAadharOtp] = useState("");
+  const [aadhaarOTP, setAadharOtp] = useState("");
   const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
   const [aadharVerificationLoader, setAadharVerificationLoader] = useState(false)
 
@@ -205,7 +205,7 @@ function ContactInfo(props) {
 
 
   const checkInputIsValid = async (err, val, setErr, key) => {
-    setIsLoading(true);
+
 
     const hasErr = err.hasOwnProperty(key);
     if (hasErr) {
@@ -215,6 +215,7 @@ function ContactInfo(props) {
     }
 
     if (!hasErr && val[key] !== "" && key === "contact_number") {
+      setIsLoading(true);
       handleToSendOTPForVerificationPhone(val[key]);
     }
 
@@ -276,6 +277,11 @@ function ContactInfo(props) {
   }
 
 
+
+
+
+  // aadhar verification
+
   const aadharModalBody = () => {
     return (
       <div className="modal-body justify-content-center d-flex-inline">
@@ -285,7 +291,90 @@ function ContactInfo(props) {
             maxLength={6}
             placeholder="Enter OTP"
             onChange={(e) => setAadharOtp(e.target.value)}
-            value={aadharOtp}
+            value={aadhaarOTP}
+            required={true}
+            disabled={aadharVerificationLoader}
+          />
+        </div>
+        <div className="row m-4 text-center">
+          <div className="col-lg-6">
+            <TimerComponent resend={addharVerficationHandler} />
+          </div>
+          <div className="col-lg-6">
+            <button className="btn btn cob-btn-primary btn-sm" type="button"
+              disabled={aadharVerificationLoader}
+              onClick={() => aadharOtpVerification()}
+            >
+              {aadharVerificationLoader ?
+                <span className="spinner-border spinner-border-sm" role="status">
+                  <span className="sr-only">Loading...</span>
+                </span>
+                :
+                "Verify OTP"
+              }
+            </button>
+          </div>
+        </div>
+
+      </div>
+    )
+  }
+
+  const addharVerficationHandler = async () => {
+    setAadharVerificationLoader(true)
+    try {
+
+
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
+      if (resp.data.status) {
+        setAadharOtpResp(resp.data)
+        setAadharNumberVerifyToggle(true)
+        setAadharOtp("")
+        setTimer(60)
+      }
+      setAadharVerificationLoader(false)
+      toastConfig.successToast(resp.data.message)
+      // console.log(1)
+    } catch (error) {
+      setAadharVerificationLoader(false)
+      toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
+      // console.log(2)
+    }
+  }
+
+  const aadharOtpVerification = async () => {
+    setAadharVerificationLoader(true)
+    try {
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadhaarOTP })
+      // console.log(resp)
+      setAadharOtp("")
+      if (resp.data?.valid && resp.data?.status) {
+        setIsAadharNumberVerified(true)
+      }
+      toastConfig.successToast(resp?.data?.message)
+      setAadharVerificationLoader(false)
+      setAadharNumberVerifyToggle(false)
+    } catch (error) {
+      toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
+      setAadharVerificationLoader(false)
+      setAadharNumberVerifyToggle(false)
+    }
+  }
+
+
+
+
+  // contact number verification
+  const contactVerifyModalBody = () => {
+    return (
+      <div className="modal-body justify-content-center d-flex-inline">
+
+        <div className=" justify-content-center d-flex-inline d-flex" >
+          <input type="text" className="form-control otp-input-kyc"
+            maxLength={6}
+            placeholder="Enter OTP"
+            onChange={(e) => setAadharOtp(e.target.value)}
+            value={aadhaarOTP}
             required={true}
             disabled={aadharVerificationLoader}
           />
@@ -316,53 +405,10 @@ function ContactInfo(props) {
 
 
 
-  const addharVerficationHandler = async () => {
-    setAadharVerificationLoader(true)
-    try {
-
-
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
-      if (resp.data.status) {
-        setAadharOtpResp(resp.data)
-        setAadharNumberVerifyToggle(true)
-        setAadharOtp("")
-        setTimer(60)
-      }
-      setAadharVerificationLoader(false)
-      toastConfig.successToast(resp.data.message)
-      // console.log(1)
-    } catch (error) {
-      setAadharVerificationLoader(false)
-      toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
-      // console.log(2)
-    }
-  }
-  // console.log("aadharVerificationLoader", aadharVerificationLoader)
-
-  const aadharOtpVerification = async () => {
-    setAadharVerificationLoader(true)
-    try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadharOtp })
-      // console.log(resp)
-      setAadharOtp("")
-      if (resp.data?.valid && resp.data?.status) {
-        setIsAadharNumberVerified(true)
-      }
-      toastConfig.successToast(resp?.data?.message)
-      setAadharVerificationLoader(false)
-      setAadharNumberVerifyToggle(false)
-    } catch (error) {
-      toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
-      setAadharVerificationLoader(false)
-      setAadharNumberVerifyToggle(false)
-    }
-  }
-
-
   return (
     <div className="col-lg-12 p-0">
       {aadharNumberVerifyModalToggle &&
-        <CustomModal headerTitle={"Aadhar Verifcation"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
+        <CustomModal headerTitle={"Aadhaar Verification"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
       }
       <Formik
         initialValues={initialValues}
@@ -391,10 +437,10 @@ function ContactInfo(props) {
                 />
               </div>
 
-              {/* Aadhar number verification */}
+              {/* Aadhaar Number verification */}
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Aadhar Number<span className="text-danger"> *</span>
+                  Aadhaar Number<span className="text-danger"> *</span>
                 </label>
                 <div className="input-group">
                   <Field
@@ -451,48 +497,14 @@ function ContactInfo(props) {
                 </div>
 
 
-                {/* <ErrorMessage name="contact_number">
+                <ErrorMessage name="aadhar_number">
                   {(msg) => (
                     <span className="text-danger">
                       {msg}
                     </span>
                   )}
                 </ErrorMessage>
-                <ErrorMessage name="isContactNumberVerified">
-                  {(msg) => (
-                    <span className="text-danger">
-                      {msg}
-                    </span>
-                  )}
-                </ErrorMessage> */}
               </div>
-              {/* <div className="col-sm-12 col-md-12 col-lg-6 d-flex"> */}
-              {/* <div className="col-lg-8 col-md-9 col-sm-12 col-9 p-0">
-                  <label className="col-form-label mt-0 p-2 " >
-                    Aadhaar Number<span className="text-danger"> *</span>
-                  </label>
-                  <FormikController
-                    control="input"
-                    type="password"
-                    name="aadhar_number"
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    className="form-control maskedInput"
-                    onChange={
-                      (e) => {
-                        setFieldValue("aadhar_number", e.target.value)
-                        setAadharNumber(e.target.value)
-                      }
-                    }
-                  />
-                </div> */}
-              {/* setAadharVerificationLoader(false) */}
-              {/* <div className="col-lg-4 col-md-3 p-0 d-flex justify-content-end align-items-end">
-                  <button href={false} className="btn btn-sm cob-btn-primary" onClick={() => addharVerficationHandler()} disabled={aadharVerificationLoader}>
-                    {aadharVerificationLoader ? <span className="spinner-border spinner-border-sm">
-                      <span className="sr-only">Loading...</span>
-                    </span> : 'Send OTP'}</button>
-                </div> */}
-              {/* </div> */}
 
             </div>
             <div className="row">

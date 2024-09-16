@@ -8,14 +8,16 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { updateMerchantInfo } from "../../../slices/editKycSlice";
 
 
-import { businessOverviewState, 
-    panValidation,
-    authPanValidation,
-    gstValidation,
-    kycUserList,
-    GetKycTabsStatus,} from "../../../slices/kycSlice";
+import {
+  businessOverviewState,
+  panValidation,
+  authPanValidation,
+  gstValidation,
+  kycUserList,
+  GetKycTabsStatus,
+} from "../../../slices/kycSlice";
 // import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 // import gotVerified from "../../assets/images/verified.png";
 import gotVerified from "../../../assets/images/verified.png"
 import { isNull } from "lodash";
@@ -25,7 +27,7 @@ import toastConfig from "../../../utilities/toastTypes";
 function BusinessDetailEdtKyc(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  const selectedId=props.selectedId
+  const selectedId = props.selectedId
   const merchantloginMasterId = props.merchantloginMasterId;
 
   const reqexPinCode = /^[1-9][0-9]{5}$/;
@@ -49,7 +51,7 @@ function BusinessDetailEdtKyc(props) {
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
   const [isLoader, setIsloader] = useState(false)
   const [udyamResponseData, setUdyamResponseData] = useState({})
- 
+
 
   const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation?.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
   const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
@@ -115,35 +117,35 @@ function BusinessDetailEdtKyc(props) {
   const validationSchema = Yup.object().shape({
     company_name: Yup.string()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
-     
+
       .nullable(),
-      gst_number: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
-        is: true,
-        then: Yup.string()
-          .trim()
-          .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-          // .matches(regexGSTN, "GSTIN Number is Invalid")
-          .required("Required")
-          .nullable(),
-        otherwise: Yup.string()
-          .notRequired()
-          .nullable(),
-      }),
-      prevGstNumber: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
-        is: true,
-        then: Yup.string().oneOf(
-          [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
-          .required("You need to verify Your GSTIN Number")
-          .nullable(),
-        otherwise: Yup.string().notRequired().nullable()
-      }),
-   
+    gst_number: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
+      is: true,
+      then: Yup.string()
+        .trim()
+        .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+        // .matches(regexGSTN, "GSTIN Number is Invalid")
+        .required("Required")
+        .nullable(),
+      otherwise: Yup.string()
+        .notRequired()
+        .nullable(),
+    }),
+    prevGstNumber: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
+      is: true,
+      then: Yup.string().oneOf(
+        [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
+        .required("You need to verify Your GSTIN Number")
+        .nullable(),
+      otherwise: Yup.string().notRequired().nullable()
+    }),
+
     udyam_number: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
       is: true,
       then: Yup.string()
 
         .max(25, "Invalid Format")
-        
+
         .nullable(),
       otherwise: Yup.string()
         .notRequired()
@@ -154,20 +156,20 @@ function BusinessDetailEdtKyc(props) {
       then: Yup.string().oneOf(
         [Yup.ref("udyam_number"), null], "You need to verify Your Udyam Reg. Number")
         .required("Udyam Reg. Number Required")
-        
+
         .nullable(),
       otherwise: Yup.string().notRequired().nullable()
     }),
     pan_card: Yup.string().allowOneSpace()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      
+
       .nullable(),
     isPanVerified: Yup.string().nullable(),
 
     signatory_pan: Yup.string()
       .allowOneSpace()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      
+
       .nullable(),
     isSignatoryPanVerified: Yup.string().allowOneSpace().nullable(),
     prevSignatoryPan: Yup.string().allowOneSpace()
@@ -175,32 +177,32 @@ function BusinessDetailEdtKyc(props) {
         [Yup.ref("signatory_pan"), null],
         "You need to verify Your Authorized Signatory PAN Number"
       )
-      
+
       .nullable(),
 
     name_on_pancard: Yup.string()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
-      
+
       .nullable(),
     city_id: Yup.string()
       .allowOneSpace()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
-      
+
       .max(50, "City name character length exceeded")
       .wordLength("Word character length exceeded")
       .nullable(),
     state_id: Yup.string().allowOneSpace()
-     
+
       .nullable(),
     pin_code: Yup.string()
       .allowOneSpace()
       .matches(reqexPinCode, "Pin Code is Invalid")
-      
+
       .nullable(),
     operational_address: Yup.string()
       .allowOneSpace()
       .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
-      
+
       .wordLength("Word character length exceeded")
       .max(120, "Address Max length exceeded, 120 charactes are allowed")
       .nullable(),
@@ -210,7 +212,7 @@ function BusinessDetailEdtKyc(props) {
 
     [["registerd_with_gst", "registerd_with_udyam"]]
   );
- 
+
 
 
   useEffect(() => {
@@ -424,12 +426,12 @@ function BusinessDetailEdtKyc(props) {
   };
 
   const onSubmit = (values) => {
-    
+
     // Check if any required fields are empty
     const emptyFields = [
-      'company_name', 
-      'gst_number', 
-      'registerd_with_gst', 
+      'company_name',
+      'gst_number',
+      'registerd_with_gst',
       'gst_number',
       'pan_card',
       'signatory_pan',
@@ -441,18 +443,18 @@ function BusinessDetailEdtKyc(props) {
       'is_udyam',
       'udyam_data'
     ].some((field) => !values[field]);
-  
+
     // If any required fields are empty, confirm with the user
     if (emptyFields) {
       const confirmSubmit = window.confirm(
         "Some fields are empty. Are you sure you want to proceed?"
       );
-  
+
       if (!confirmSubmit) {
         return; // Exit the function if the user cancels
       }
     }
-  
+
     // Disable the form and prepare data for submission
     setIsDisable(true);
     const postData = {
@@ -471,7 +473,7 @@ function BusinessDetailEdtKyc(props) {
       "is_udyam": JSON.parse(values.registerd_with_udyam),
       "udyam_data": udyamResponseData
     };
-  
+
     // Dispatch the action to update the merchant information
     dispatch(updateMerchantInfo(postData)).then((res) => {
       console.log("res", res);
@@ -493,7 +495,7 @@ function BusinessDetailEdtKyc(props) {
       }
     });
   };
-  
+
 
 
   const registeredWithGstHandler = (value, setFieldValue) => {
@@ -536,7 +538,7 @@ function BusinessDetailEdtKyc(props) {
     <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
-         validationSchema={validationSchema}
+        validationSchema={validationSchema}
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
@@ -565,8 +567,8 @@ function BusinessDetailEdtKyc(props) {
                       options={radioBtnOptions}
                       className="form-check-input"
                       onChange={(e) => { registeredWithGstHandler(e.target.value, setFieldValue) }}
-                      // disabled={VerifyKycStatus === "Verified" ? true : false}
-                      // readOnly={readOnly}
+                    // disabled={VerifyKycStatus === "Verified" ? true : false}
+                    // readOnly={readOnly}
                     />
                   </div>
                 </div>
@@ -581,8 +583,8 @@ function BusinessDetailEdtKyc(props) {
                         options={radioBtnOptions}
                         className="form-check-input"
                         onChange={(e) => { registeredWithUdyamHandler(e.target.value, setFieldValue) }}
-                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                        // readOnly={readOnly}
+                      // disabled={VerifyKycStatus === "Verified" ? true : false}
+                      // readOnly={readOnly}
                       />
                     </div>
                   </div>}
@@ -600,8 +602,8 @@ function BusinessDetailEdtKyc(props) {
                         type="text"
                         name="gst_number"
                         className="form-control"
-                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                        // readOnly={readOnly}
+                      // disabled={VerifyKycStatus === "Verified" ? true : false}
+                      // readOnly={readOnly}
                       />
 
                       {values?.gst_number !== null &&
@@ -671,15 +673,15 @@ function BusinessDetailEdtKyc(props) {
                 {(JSON.parse(values?.registerd_with_udyam) === true && JSON.parse(values?.registerd_with_gst) === false) &&
                   <React.Fragment >
                     <label className="col-form-label pt-0 p-2">
-                      Udyam Aadhar Number<span className="text-danger">*</span>
+                      Udyam Aadhaar Number<span className="text-danger">*</span>
                     </label>
                     <div className="input-group">
                       <Field
                         type="text"
                         name="udyam_number"
                         className="form-control"
-                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                        // readOnly={readOnly}
+                      // disabled={VerifyKycStatus === "Verified" ? true : false}
+                      // readOnly={readOnly}
                       />
 
                       {values?.udyam_number !== null &&
@@ -753,8 +755,8 @@ function BusinessDetailEdtKyc(props) {
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
                     }}
-                    // disabled={VerifyKycStatus === "Verified"}
-                    // readOnly={JSON.parse(values?.registerd_with_gst)}
+                  // disabled={VerifyKycStatus === "Verified"}
+                  // readOnly={JSON.parse(values?.registerd_with_gst)}
 
                   />
 
@@ -899,7 +901,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="company_name"
                   className="form-control"
-                  // readOnly={readOnly === false ? true : readOnly}
+                // readOnly={readOnly === false ? true : readOnly}
                 />
               </div>
 
@@ -912,7 +914,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="name_on_pancard"
                   className="form-control"
-                  // readOnly={readOnly === false ? true : readOnly}
+                // readOnly={readOnly === false ? true : readOnly}
                 />
               </div>
             </div>
@@ -926,8 +928,8 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="operational_address"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
               </div>
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -939,8 +941,8 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="city_id"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
               </div>
             </div>
@@ -955,8 +957,8 @@ function BusinessDetailEdtKyc(props) {
 
                   options={BusinessOverview}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
               </div>
 
@@ -969,29 +971,29 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="pin_code"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+                // disabled={VerifyKycStatus === "Verified" ? true : false}
+                // readOnly={readOnly}
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-               
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="float-lg-right cob-btn-primary text-white btn-sm btn border-0"
-                  >
-                    {disable && <>
-                      <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
-                        <span className="sr-only">Loading...</span>
-                      </span>
-                    </>}
 
-                    {buttonText}
-                  </button>
-              
+                <button
+                  type="submit"
+                  disabled={disable}
+                  className="float-lg-right cob-btn-primary text-white btn-sm btn border-0"
+                >
+                  {disable && <>
+                    <span className="mr-2">
+                      <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </span>
+                  </>}
+
+                  {buttonText}
+                </button>
+
               </div>
             </div>
           </Form>
