@@ -109,7 +109,7 @@ function SideNavbar() {
                                 href="https://sabpaisa.in/anti-phishing/"
                                 target="_blank"
                                 rel="noreferrer"
-                                className={`nav-link ${sideNavClasses.sidebar_menu}  ${true ? sideNavClasses.selected_memu : ""}`}>
+                                className={`nav-link ${sideNavClasses.sidebar_menu}`}>
                                 <i className='fa fa-info-circle'></i>&nbsp;Information Bulletin
                             </a>
                         </li>
