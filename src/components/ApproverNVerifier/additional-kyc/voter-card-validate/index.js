@@ -10,7 +10,7 @@ const ValidateVoterCard = () => {
   const [buttonDisable, setButtonDisable] = useState(false);
   const dispatch = useDispatch();
   const handleVoterSubmit = async () => {
-    if (!voterId.length > 0) {
+    if (!voterId?.length > 0) {
       toast.error("Enter Transaction ID");
       return;
     }

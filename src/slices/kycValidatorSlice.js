@@ -3,7 +3,6 @@ import { setMessage } from "./message";
 import {
   cinDetail,
   aadharNumberVerify,
-  aadharOtpVerify,
 } from "../services/kyc-validator-service/kycValidator.service";
 import { kycValidatorAuth } from "../utilities/axiosInstance";
 import API_URL from "../config";
