@@ -22,6 +22,7 @@ function SideNavbar() {
 
     const toggleMenu = (e) => {
         const menuElement = e.currentTarget.nextSibling;
+        console.log(menuElement)
         menuElement.classList.toggle("hide-menu-nav");
 
         const iconElement = e.currentTarget.querySelector('i');
@@ -50,19 +51,19 @@ function SideNavbar() {
                 )}
 
                 {/* render menu from API */}
-                {menuListReducer?.enableMenu?.map((menu) => (
+                {menuListReducer?.enableMenu?.map((menu, index) => (
                     menu?.is_active &&
                     <React.Fragment key={menu.app_name}>
                         <div onClick={(e) => toggleMenu(e)} >
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
                                 <span className="font-size-14">{menu.app_name}</span>
                                 <div className="link-secondary">
-                                    <i className={`fa ${isMenuOpen ? 'fa-plus' : 'fa-minus'}`} id={`icon_${menu?.app_code}`}></i>
+                                    <i className={`fa ${index !== 0 ? 'fa-plus' : 'fa-minus'}`} id={`icon_${menu?.app_code}`}></i>
                                 </div>
                             </h6>
                         </div>
 
-                        <ul id={`menulist_${menu.app_code}`} className="nav flex-column mb-2" role="menu">
+                        <ul id={`menulist_${menu.app_code}`} className={`${index !== 0 && 'hide-menu-nav'} nav flex-column mb-2 ml-2`} role="menu">
                             {menu.submenu?.map((submenu) => (
                                 submenu?.is_active && <li className="nav-item" role="menuitem" key={submenu.id}>
                                     <Link
@@ -79,31 +80,18 @@ function SideNavbar() {
                     </React.Fragment>
                 ))}
 
-                {/* display menu for selected merchant */}
-                {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
-                    <ul className="nav flex-column" role="menu">
-                        <li className="nav-item" role="menuitem">
-                            <Link
-                                to={`${url}/settlement-report`}
-                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settlement-report" ? sideNavClasses.selected_memu : ""}`}
-                            >
-                                <i className="fa fa-bank mr-1"></i>
-                                Settlement Report (Files)
-                            </Link>
-                        </li>
-                    </ul>
-                )}
+
                 <React.Fragment>
                     <div onClick={(e) => toggleMenu(e)} >
                         <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
                             <span className="font-size-14">Latest updates</span>
                             <div className="link-secondary">
-                                <i className={`fa ${isMenuOpen ? 'fa-plus' : 'fa-minus'}`}></i>
+                                <i className={`fa fa-plus`}></i>
                             </div>
                         </h6>
                     </div>
 
-                    <ul className="nav flex-column mb-2" role="menu">
+                    <ul className=" nav flex-column mb-2 ml-2 hide-menu-nav" role="menu">
                         <li className="nav-item" role="menuitem" >
                             <a
                                 href="https://sabpaisa.in/anti-phishing/"
@@ -116,7 +104,22 @@ function SideNavbar() {
                     </ul>
                 </React.Fragment>
 
-                <ul className="nav flex-column" role="menu">
+                {/* display menu for selected merchant */}
+                {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
+                    <ul className="nav flex-column mt-3" role="menu">
+                        <li className="nav-item" role="menuitem">
+                            <Link
+                                to={`${url}/settlement-report`}
+                                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settlement-report" ? sideNavClasses.selected_memu : ""}`}
+                            >
+                                <i className="fa fa-bank mr-1"></i>
+                                Settlement Report (Files)
+                            </Link>
+                        </li>
+                    </ul>
+                )}
+
+                <ul className="nav flex-column mt-2" role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
                             to={`${url}/faq`}
