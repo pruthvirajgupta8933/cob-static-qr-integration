@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
@@ -93,6 +93,28 @@ function SideNavbar() {
                         </li>
                     </ul>
                 )}
+                <React.Fragment>
+                    <div onClick={(e) => toggleMenu(e)} >
+                        <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
+                            <span className="font-size-14">Latest updates</span>
+                            <div className="link-secondary">
+                                <i className={`fa ${isMenuOpen ? 'fa-plus' : 'fa-minus'}`}></i>
+                            </div>
+                        </h6>
+                    </div>
+
+                    <ul className="nav flex-column mb-2" role="menu">
+                        <li className="nav-item" role="menuitem" >
+                            <a
+                                href="https://sabpaisa.in/anti-phishing/"
+                                target="_blank"
+                                rel="noreferrer"
+                                className={`nav-link ${sideNavClasses.sidebar_menu}`}>
+                                <i className='fa fa-info-circle'></i>&nbsp;Information Bulletin
+                            </a>
+                        </li>
+                    </ul>
+                </React.Fragment>
 
                 <ul className="nav flex-column" role="menu">
                     <li className="nav-item" role="menuitem">

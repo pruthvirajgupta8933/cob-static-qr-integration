@@ -13,7 +13,6 @@ const AadhaarVerficationModal = ({ formikFields, isOpen, toggle, resendOtp }) =>
   const [isLoading, setIsLoading] = useState(false);
   const { aadharOtpResponse } = useSelector((state) => state.kycValidatorReducer)
 
-
   const aadharOtpVerification = async () => {
     setIsLoading(true)
     try {

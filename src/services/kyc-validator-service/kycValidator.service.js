@@ -8,7 +8,6 @@ export const cinDetail = (paramData) => {
 
 
 export const aadharNumberVerify = (paramData) => {
-    console.log("paramData", paramData)
     return kycValidatorAuth.post(API_URL.Aadhar_number, paramData);
 }
 
