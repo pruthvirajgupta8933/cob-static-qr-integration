@@ -22,7 +22,6 @@ function SideNavbar() {
 
     const toggleMenu = (e) => {
         const menuElement = e.currentTarget.nextSibling;
-        console.log(menuElement)
         menuElement.classList.toggle("hide-menu-nav");
 
         const iconElement = e.currentTarget.querySelector('i');
