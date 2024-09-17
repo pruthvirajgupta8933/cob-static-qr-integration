@@ -55,14 +55,14 @@ function SideNavbar() {
                     <React.Fragment key={menu.app_name}>
                         <div onClick={(e) => toggleMenu(e)} >
                             <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
-                                <span className="font-size-14">{menu.app_name}</span>
+                                <span className="font-size-14 ">{menu.app_name}</span>
                                 <div className="link-secondary">
                                     <i className={`fa ${index !== 0 ? 'fa-plus' : 'fa-minus'}`} id={`icon_${menu?.app_code}`}></i>
                                 </div>
                             </h6>
                         </div>
 
-                        <ul id={`menulist_${menu.app_code}`} className={`${index !== 0 && 'hide-menu-nav'} nav flex-column mb-2 ml-2`} role="menu">
+                        <ul id={`menulist_${menu.app_code}`} className={`${index !== 0 && 'hide-menu-nav'} nav flex-column mb-2 ml-2 ${sideNavClasses.submenu_border}`} role="menu">
                             {menu.submenu?.map((submenu) => (
                                 submenu?.is_active && <li className="nav-item" role="menuitem" key={submenu.id}>
                                     <Link
@@ -83,14 +83,14 @@ function SideNavbar() {
                 <React.Fragment>
                     <div onClick={(e) => toggleMenu(e)} >
                         <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
-                            <span className="font-size-14">Latest updates</span>
+                            <span className="font-size-14 ">Latest updates</span>
                             <div className="link-secondary">
                                 <i className={`fa fa-plus`}></i>
                             </div>
                         </h6>
                     </div>
 
-                    <ul className=" nav flex-column mb-2 ml-2 hide-menu-nav" role="menu">
+                    <ul className={` nav flex-column mb-2 ml-2 hide-menu-nav ${sideNavClasses.submenu_border} `} role="menu">
                         <li className="nav-item" role="menuitem" >
                             <a
                                 href="https://sabpaisa.in/anti-phishing/"
@@ -105,7 +105,7 @@ function SideNavbar() {
 
                 {/* display menu for selected merchant */}
                 {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
-                    <ul className="nav flex-column mt-3" role="menu">
+                    <ul className="nav flex-column mt-3 " role="menu">
                         <li className="nav-item" role="menuitem">
                             <Link
                                 to={`${url}/settlement-report`}
