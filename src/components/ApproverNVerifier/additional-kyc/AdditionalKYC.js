@@ -52,6 +52,8 @@ const AdditionalKYC = () => {
         return <ValidateDrivingLicense />;
       case "10":
         return <ValidateVoterCard />;
+      default:
+        return;
     }
   };
 

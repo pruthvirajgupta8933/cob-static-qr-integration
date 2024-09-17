@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { voterCardValidation } from "../../../../slices/kycSlice";
+import { voterCardValidation } from "../../../../slices/kycValidatorSlice";
 
 const ValidateVoterCard = () => {
   const [voterId, setVoterId] = useState();
@@ -10,7 +10,7 @@ const ValidateVoterCard = () => {
   const [buttonDisable, setButtonDisable] = useState(false);
   const dispatch = useDispatch();
   const handleVoterSubmit = async () => {
-    if (!voterId.length > 0) {
+    if (!voterId?.length > 0) {
       toast.error("Enter Transaction ID");
       return;
     }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { dlValidation } from "../../../../slices/kycSlice";
+import { dlValidation } from "../../../../slices/kycValidatorSlice";
 
 const ValidateDrivingLicense = () => {
   const [drivingLicense, setDrivingLicense] = useState({
@@ -50,7 +50,10 @@ const ValidateDrivingLicense = () => {
       <div className="form-inline">
         <div className="form-group">
           <div className="input-container">
-            <label className="form-label justify-content-start">
+            <label
+              className="form-label justify-content-start"
+              htmlFor="dl_number"
+            >
               Driving License Number
             </label>
             <input
@@ -68,7 +71,7 @@ const ValidateDrivingLicense = () => {
             />
           </div>
           <div className="input-container">
-            <label className="form-label justify-content-start">
+            <label className="form-label justify-content-start" htmlFor="dob">
               Date Of Birth
             </label>
             <input
