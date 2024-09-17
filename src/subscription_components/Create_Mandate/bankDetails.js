@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import FormikController from "../../_components/formik/FormikController";
-// import * as Yup from "yup";
-
-import { bankAccountVerification } from "../../slices/kycSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { fetchMandateBankName, saveFormThirdData } from "../../slices/subscription-slice/createMandateSlice";
+import { bankAccountVerification } from "../../slices/kycValidatorSlice";
+import {
+  fetchMandateBankName,
+  saveFormThirdData,
+} from "../../slices/subscription-slice/createMandateSlice";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import Yup from "../../_components/formik/Yup";
+import FormikController from "../../_components/formik/FormikController";
 
-
-const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmission, setBankScreen, showbankData }) => {
-  const [bankName, setBankName] = useState([])
+const BankDetails = ({
+  backToPersonalScreen,
+  setProgressBar,
+  setMandateSubmission,
+  setBankScreen,
+  showbankData,
+}) => {
+  const [bankName, setBankName] = useState([]);
   // useSelector((state) => {
 
   //   const { createMandate } = state;
@@ -33,36 +39,33 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
   // console.log(createMandate.createMandate
   //   ?.formData?.firstForm ,"this is createmen")
 
-
   // console.log("firstForm",firstForm)
   // console.log("secondForm",secondForm)
   // console.log("thirdForm",thirdForm)
 
-
-  const { firstForm, secondForm, thirdForm } = createMandate.createMandate.formData;
+  const { firstForm, secondForm, thirdForm } =
+    createMandate.createMandate.formData;
   const mergedForm = {
     ...firstForm,
     ...secondForm,
-    ...thirdForm
+    ...thirdForm,
   };
 
-
-
-
-
   const initialValues = {
-    authenticationMode: thirdForm.authenticationMode ? thirdForm.authenticationMode : "",
+    authenticationMode: thirdForm.authenticationMode
+      ? thirdForm.authenticationMode
+      : "",
     payerBank: thirdForm.payerBank ? thirdForm.payerBank : "",
-    payerBankIfscCode: thirdForm.payerBankIfscCode ? thirdForm.payerBankIfscCode : "",
-    payerAccountNumber: thirdForm.payerAccountNumber ? thirdForm.payerAccountNumber : "",
-    payerAccountType: thirdForm.payerAccountType ? thirdForm.payerAccountType : "",
-  }
-
-
-
-
-
-
+    payerBankIfscCode: thirdForm.payerBankIfscCode
+      ? thirdForm.payerBankIfscCode
+      : "",
+    payerAccountNumber: thirdForm.payerAccountNumber
+      ? thirdForm.payerAccountNumber
+      : "",
+    payerAccountType: thirdForm.payerAccountType
+      ? thirdForm.payerAccountType
+      : "",
+  };
 
   const dispatch = useDispatch();
 
@@ -70,21 +73,23 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
     fetchBankName();
   }, []);
 
-
   const fetchBankName = async () => {
     try {
       const resp = await dispatch(fetchMandateBankName());
 
-      const data = convertToFormikSelectJson("code", "description", resp.payload.data);
+      const data = convertToFormikSelectJson(
+        "code",
+        "description",
+        resp.payload.data
+      );
       setBankName(data);
     } catch (err) {
       // console.log(err);
     }
   };
 
-  const [verifiedStatus, setVerifiedStatus] = useState(false)
-  const [validStatus, setValidStatus] = useState(false)
-
+  const [verifiedStatus, setVerifiedStatus] = useState(false);
+  const [validStatus, setValidStatus] = useState(false);
 
   let authModeOptions = [
     { key: "Select", value: "Select" },
@@ -97,32 +102,28 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
     { key: "Current", value: "Current" },
   ];
   const FORM_VALIDATION = Yup.object().shape({
-    authenticationMode: Yup.string().test(
-      "isRequired",
-      "Required",
-      function (value) {
+    authenticationMode: Yup.string()
+      .test("isRequired", "Required", function (value) {
         return value !== "Select";
-      }).nullable(),
+      })
+      .nullable(),
     payerBank: Yup.string().required("Required").nullable(),
     payerAccountNumber: Yup.string()
-      .required('Required')
-      .matches(/^[0-9]+$/, 'Only numbers are allowed'),
+      .required("Required")
+      .matches(/^[0-9]+$/, "Only numbers are allowed"),
 
-    payerAccountType: Yup.string().test(
-      "isRequired",
-      "Required",
-      function (value) {
+    payerAccountType: Yup.string()
+      .test("isRequired", "Required", function (value) {
         return value !== "Select";
-      }
-    ).nullable(),
+      })
+      .nullable(),
   });
   const handleSubmit = (values) => {
     // setMandateSubmission(true)
     // setBankScreen(false)
     // setProgressBar(false)
-    showbankData(values, validStatus, verifiedStatus)
-    dispatch(saveFormThirdData({ values }))
-
+    showbankData(values, validStatus, verifiedStatus);
+    dispatch(saveFormThirdData({ values }));
 
     // console.log(values,"=====================>");
 
@@ -145,17 +146,16 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
         setValidStatus(true);
         setVerifiedStatus(true);
         setProgressBar(false);
-      } else if (res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === false) {
+      } else if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === false
+      ) {
         toast.error(res?.payload?.message);
       } else if (res?.payload?.detail) {
         toast.error(res?.payload?.detail);
       }
-    }
+    };
     verifyBankAccount();
-
-
-
-
   };
   return (
     <div className="col-lg-8">
@@ -202,7 +202,7 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
                 label="Account Number"
                 name="payerAccountNumber"
                 className="form-control rounded-0 mt-0"
-              // options={frequencyOptionsData}
+                // options={frequencyOptionsData}
               />
             </div>
           </div>
@@ -229,7 +229,6 @@ const BankDetails = ({ backToPersonalScreen, setProgressBar, setMandateSubmissio
           </button>
         </Form>
       </Formik>
-
     </div>
   );
 };

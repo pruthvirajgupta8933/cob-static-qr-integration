@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { credReportValidation } from "../../../../slices/kycSlice";
+import { credReportValidation } from "../../../../slices/kycValidatorSlice";
 
 const ValidateCredReport = ({ selectedDocType }) => {
   const [txn, setTxn] = useState({
