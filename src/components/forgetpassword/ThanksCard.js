@@ -8,14 +8,10 @@ function ThanksCard(props) {
         <div className="col-lg-12 mx-auto">
           <div className="card ">
             <div className="card-body NunitoSans-Regular">
-              <h5 className="card-title">Password Changed Successfully </h5>
-
-             
+              <h5 className="card-title">Password Changed Successfully</h5>
               <Link to="/" className="btn  cob-btn-primary btn-sm mt-3 ">Back to login</Link>
             </div>
-            <div className="card-footer text-muted text-center mt-4">
-              Sabpaisa.in
-            </div>
+
           </div>
         </div>
       </div>

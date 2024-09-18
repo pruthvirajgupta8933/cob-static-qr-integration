@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
+// import toastConfig from "../../utilities/toastTypes";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import CommentModal from "./Onboarderchant/CommentModal";
@@ -11,9 +11,10 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
-import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
+
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
+import AgreementDocModal from "./Onboarderchant/AgreementDocModal";
 
 
 function ApprovedMerchant() {
@@ -158,21 +159,21 @@ function ApprovedMerchant() {
       selector: (row) => row.zoneName,
     },
     {
-      id: "13",
+      id: "15",
       name: "Risk Category",
       selector: (row) => row.risk_category_name,
       width: "150px",
     },
     {
-      id:"14",
-      name:"MCC Elaboration",
-      selector:(row)=>row.mcc_elaboration,
+      id: "16",
+      name: "MCC Code",
+      selector: (row) => row.mcc_code,
       width: "150px",
 
 
     },
     {
-      id: "15",
+      id: "17",
       name: "View Status",
       width: "110px",
       cell: (row) => (
@@ -193,7 +194,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "16",
+      id: "18",
       name: "Upload Agreement",
       cell: (row) => (
         <div >
@@ -220,7 +221,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "17",
+      id: "19",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (
@@ -400,7 +401,7 @@ function ApprovedMerchant() {
 
 
       <div>
-        {openDocumentModal && <ViewDocumentModal
+        {openDocumentModal && <AgreementDocModal
           documentData={commentId}
           isModalOpen={openDocumentModal}
           setModalState={setOpenDocumentModal}

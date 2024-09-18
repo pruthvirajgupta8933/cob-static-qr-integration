@@ -128,9 +128,9 @@ function PendingVerification() {
     },
 
     {
-      id:"14",
-      name:"MCC Elaboration",
-      selector:(row)=>row.mcc_elaboration,
+      id: "14",
+      name: "MCC Code",
+      selector: (row) => row.mcc_code,
       width: "150px",
 
 
