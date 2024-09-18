@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { credReportValidation } from "../../../../slices/kycValidatorSlice";
+import { voterCardValidation } from "../../../../slices/kycValidatorSlice";
 
-const ValidateCredReport = ({ selectedDocType }) => {
-  const [txn, setTxn] = useState({
-    id: "",
-  });
-  const [credReportData, setCredReporData] = useState();
-  const [credStatus, setCredStatus] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+const ValidateVoterCard = () => {
+  const [voterId, setVoterId] = useState();
+  const [isLoading, setIsLoading] = useState();
+  const [voterData, setVoterData] = useState();
   const [buttonDisable, setButtonDisable] = useState(false);
   const dispatch = useDispatch();
-  const handleTxnIdSubmit = async () => {
-    if (!txn.id.length > 0) {
+  const handleVoterSubmit = async () => {
+    if (!voterId?.length > 0) {
       toast.error("Enter Transaction ID");
       return;
     }
@@ -21,18 +18,16 @@ const ValidateCredReport = ({ selectedDocType }) => {
     setIsLoading(true);
     let res;
     try {
-      res = await dispatch(credReportValidation({ txn_id: txn.id }));
+      res = await dispatch(voterCardValidation({ voter: voterId }));
       setButtonDisable(false);
-      setCredReporData(res?.payload);
+      setVoterData(res?.payload);
       setIsLoading(false);
 
       if (
         res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true &&
-        res.payload.valid === true
+        !res.payload.status &&
+        !res.payload.valid
       ) {
-        setCredStatus(res.payload.status);
-      } else {
         toast.error(res?.payload?.message);
       }
     } catch (error) {
@@ -40,9 +35,6 @@ const ValidateCredReport = ({ selectedDocType }) => {
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    setCredStatus(false);
-  }, [selectedDocType]);
 
   return (
     <div>
@@ -53,10 +45,10 @@ const ValidateCredReport = ({ selectedDocType }) => {
               type="text"
               name="txn_id"
               className="form-control mr-4"
-              placeholder="Enter Your Transaction ID"
-              value={txn.id}
+              placeholder="Enter Your Voter ID"
+              value={voterId}
               onChange={(e) => {
-                setTxn({ id: e.target.value });
+                setVoterId(e.target.value);
               }}
             />
           </div>
@@ -65,7 +57,7 @@ const ValidateCredReport = ({ selectedDocType }) => {
           <button
             type="button"
             className="btn cob-btn-primary text-white btn-sm"
-            onClick={handleTxnIdSubmit}
+            onClick={handleVoterSubmit}
             disabled={isLoading}
           >
             {isLoading ? (
@@ -80,11 +72,11 @@ const ValidateCredReport = ({ selectedDocType }) => {
           </button>
         </div>
       </div>
-      {credStatus && selectedDocType === "8" && (
+      {voterData && (
         <div className="container mt-5">
-          <h5 className="">CRED Report Validation Details</h5>
+          <h5 className="">Voter ID Validation Details</h5>
           <div className="row">
-            {credReportData?.map(([key, value]) => (
+            {Object.entries(voterData)?.map(([key, value]) => (
               <div className="col-md-6 p-2 text-uppercase" key={key}>
                 <span className="font-weight-bold mb-1">
                   {key.replace("_", " ")}:
@@ -102,5 +94,4 @@ const ValidateCredReport = ({ selectedDocType }) => {
     </div>
   );
 };
-
-export default ValidateCredReport;
+export default ValidateVoterCard;

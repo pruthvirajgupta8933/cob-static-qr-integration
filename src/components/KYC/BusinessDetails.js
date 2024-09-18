@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import Yup from "../../_components/formik/Yup";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
+import { isNull } from "lodash";
 import FormikController from "../../_components/formik/FormikController";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import Yup from "../../_components/formik/Yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import {
   businessOverviewState,
   saveMerchantInfo,
-  panValidation,
-  authPanValidation,
-  gstValidation,
   kycUserList,
   GetKycTabsStatus,
 } from "../../slices/kycSlice";
-import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import {
+  panValidation,
+  authPanValidation,
+  gstValidation,
+} from "../../slices/kycValidatorSlice";
 import gotVerified from "../../assets/images/verified.png";
-import { isNull } from "lodash";
 import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.service";
 import toastConfig from "../../utilities/toastTypes";
 
 function BusinessDetails(props) {
-  
   const setTab = props.tab;
   const setTitle = props.title;
   const merchantloginMasterId = props.merchantloginMasterId;
@@ -43,27 +44,34 @@ function BusinessDetails(props) {
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingForGst, setLoadingForGst] = useState(false)
-  const [loadingForSiganatory, setLoadingForSignatory] = useState(false)
-  const [isLoader, setIsloader] = useState(false)
-  const [udyamResponseData, setUdyamResponseData] = useState({})
+  const [loadingForGst, setLoadingForGst] = useState(false);
+  const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
+  const [isLoader, setIsloader] = useState(false);
+  const [udyamResponseData, setUdyamResponseData] = useState({});
 
+  const busiAuthFirstName =
+    BusinessDetailsStatus.AuthPanValidation?.first_name === null
+      ? ""
+      : BusinessDetailsStatus?.AuthPanValidation.first_name;
+  const busiAuthLastName =
+    BusinessDetailsStatus?.AuthPanValidation?.last_name === null
+      ? ""
+      : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation?.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
-  const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
-
-  let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
-    } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
+  let businessAuthName = `${
+    busiAuthFirstName !== undefined ? busiAuthFirstName : ""
+  } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
   const trimFullName = (strOne, strTwo) => {
-    let fullStr = isNull(strOne) ? "" : strOne
-    fullStr += isNull(strTwo) ? "" : strTwo
-    return fullStr
-  }
+    let fullStr = isNull(strOne) ? "" : strOne;
+    fullStr += isNull(strTwo) ? "" : strTwo;
+    return fullStr;
+  };
 
-
-  const radioBtnOptions = [{ "value": true, "key": "Yes" },
-  { "value": false, "key": "No" }]
+  const radioBtnOptions = [
+    { value: true, key: "Yes" },
+    { value: false, key: "No" },
+  ];
 
   let registerd_with_udyam;
 
@@ -77,12 +85,12 @@ function BusinessDetails(props) {
     registerd_with_udyam = {};
   }
 
-
   const initialValues = {
     company_name: KycList?.companyName,
     registerd_with_gst: KycList?.registerdWithGST ?? true,
 
-    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
+    name_on_pancard:
+      businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
@@ -94,7 +102,10 @@ function BusinessDetails(props) {
 
     registerd_with_udyam: registerd_with_udyam,
     udyam_number: KycList?.udyam_data?.reg_number ?? "",
-    prevUdyamNumber: KycList?.udyam_data?.reg_number?.length > 2 ? KycList?.udyam_data?.reg_number : "0000",
+    prevUdyamNumber:
+      KycList?.udyam_data?.reg_number?.length > 2
+        ? KycList?.udyam_data?.reg_number
+        : "0000",
 
     pan_card: KycList?.panCard,
     prev_pan_card: KycList?.panCard?.length > 2 ? KycList?.panCard : "pan",
@@ -108,103 +119,118 @@ function BusinessDetails(props) {
   // console.log("isPanVerified", isPanVerified)
 
   // console.log("initialValues-----reupdate", initialValues)
-  const validationSchema = Yup.object().shape({
-    company_name: Yup.string()
-      .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
-      .required("Required")
-      .nullable(),
-    gst_number: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
-      is: true,
-      then: Yup.string()
-        .trim()
+  const validationSchema = Yup.object().shape(
+    {
+      company_name: Yup.string()
+        .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
+        .required("Required")
+        .nullable(),
+      gst_number: Yup.string()
+        .allowOneSpace()
+        .when(["registerd_with_gst"], {
+          is: true,
+          then: Yup.string()
+            .trim()
+            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+            // .matches(regexGSTN, "GSTIN Number is Invalid")
+            .required("Required")
+            .nullable(),
+          otherwise: Yup.string().notRequired().nullable(),
+        }),
+      prevGstNumber: Yup.string()
+        .allowOneSpace()
+        .when(["registerd_with_gst"], {
+          is: true,
+          then: Yup.string()
+            .oneOf(
+              [Yup.ref("gst_number"), null],
+              "You need to verify Your GSTIN Number"
+            )
+            .required("You need to verify Your GSTIN Number")
+            .nullable(),
+          otherwise: Yup.string().notRequired().nullable(),
+        }),
+      udyam_number: Yup.string()
+        .allowOneSpace()
+        .when(["registerd_with_udyam"], {
+          is: true,
+          then: Yup.string()
+
+            .max(25, "Invalid Format")
+            .required("Required")
+            .nullable(),
+          otherwise: Yup.string().notRequired().nullable(),
+        }),
+      prevUdyamNumber: Yup.string()
+        .allowOneSpace()
+        .when(["registerd_with_udyam"], {
+          is: true,
+          then: Yup.string()
+            .oneOf(
+              [Yup.ref("udyam_number"), null],
+              "You need to verify Your Udyam Reg. Number"
+            )
+            .required("Udyam Reg. Number Required")
+            .nullable(),
+          otherwise: Yup.string().notRequired().nullable(),
+        }),
+      pan_card: Yup.string()
+        .allowOneSpace()
         .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-        // .matches(regexGSTN, "GSTIN Number is Invalid")
         .required("Required")
         .nullable(),
-      otherwise: Yup.string()
-        .notRequired()
+      isPanVerified: Yup.string()
+        .required("Please verify the pan number")
         .nullable(),
-    }),
-    prevGstNumber: Yup.string().allowOneSpace().when(["registerd_with_gst"], {
-      is: true,
-      then: Yup.string().oneOf(
-        [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
-        .required("You need to verify Your GSTIN Number")
-        .nullable(),
-      otherwise: Yup.string().notRequired().nullable()
-    }),
-    udyam_number: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
-      is: true,
-      then: Yup.string()
 
-        .max(25, "Invalid Format")
+      signatory_pan: Yup.string()
+        .allowOneSpace()
+        .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
         .required("Required")
         .nullable(),
-      otherwise: Yup.string()
-        .notRequired()
+      isSignatoryPanVerified: Yup.string()
+        .allowOneSpace()
+        .required("Please verify the signatory pan number")
         .nullable(),
-    }),
-    prevUdyamNumber: Yup.string().allowOneSpace().when(["registerd_with_udyam"], {
-      is: true,
-      then: Yup.string().oneOf(
-        [Yup.ref("udyam_number"), null], "You need to verify Your Udyam Reg. Number")
-        .required("Udyam Reg. Number Required")
+      prevSignatoryPan: Yup.string()
+        .allowOneSpace()
+        .oneOf(
+          [Yup.ref("signatory_pan"), null],
+          "You need to verify Your Authorized Signatory PAN Number"
+        )
+        .required("Authorized Signatory PAN Number Required")
         .nullable(),
-      otherwise: Yup.string().notRequired().nullable()
-    }),
-    pan_card: Yup.string().allowOneSpace()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .required("Required")
-      .nullable(),
-    isPanVerified: Yup.string().required("Please verify the pan number").nullable(),
 
-    signatory_pan: Yup.string()
-      .allowOneSpace()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .required("Required")
-      .nullable(),
-    isSignatoryPanVerified: Yup.string().allowOneSpace().required("Please verify the signatory pan number").nullable(),
-    prevSignatoryPan: Yup.string().allowOneSpace()
-      .oneOf(
-        [Yup.ref("signatory_pan"), null],
-        "You need to verify Your Authorized Signatory PAN Number"
-      )
-      .required("Authorized Signatory PAN Number Required")
-      .nullable(),
-
-    name_on_pancard: Yup.string()
-      .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
-      .required("Required")
-      .nullable(),
-    city_id: Yup.string()
-      .allowOneSpace()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
-      .required("Required")
-      .max(50, "City name character length exceeded")
-      .wordLength("Word character length exceeded")
-      .nullable(),
-    state_id: Yup.string().allowOneSpace()
-      .required("Required")
-      .nullable(),
-    pin_code: Yup.string()
-      .allowOneSpace()
-      .matches(reqexPinCode, "Pin Code is Invalid")
-      .required("Required")
-      .nullable(),
-    operational_address: Yup.string()
-      .allowOneSpace()
-      .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
-      .required("Required")
-      .wordLength("Word character length exceeded")
-      .max(120, "Address Max length exceeded, 120 charactes are allowed")
-      .nullable(),
-    registerd_with_gst: Yup.boolean().required("Required").nullable(),
-    registerd_with_udyam: Yup.boolean().required("Required").nullable(),
-  },
+      name_on_pancard: Yup.string()
+        .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
+        .required("Required")
+        .nullable(),
+      city_id: Yup.string()
+        .allowOneSpace()
+        .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+        .required("Required")
+        .max(50, "City name character length exceeded")
+        .wordLength("Word character length exceeded")
+        .nullable(),
+      state_id: Yup.string().allowOneSpace().required("Required").nullable(),
+      pin_code: Yup.string()
+        .allowOneSpace()
+        .matches(reqexPinCode, "Pin Code is Invalid")
+        .required("Required")
+        .nullable(),
+      operational_address: Yup.string()
+        .allowOneSpace()
+        .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
+        .required("Required")
+        .wordLength("Word character length exceeded")
+        .max(120, "Address Max length exceeded, 120 charactes are allowed")
+        .nullable(),
+      registerd_with_gst: Yup.boolean().required("Required").nullable(),
+      registerd_with_udyam: Yup.boolean().required("Required").nullable(),
+    },
 
     [["registerd_with_gst", "registerd_with_udyam"]]
   );
-
 
   useEffect(() => {
     dispatch(businessOverviewState())
@@ -220,45 +246,46 @@ function BusinessDetails(props) {
     // console.log("useEffect call")
   }, []);
 
-
-
-
   const panValidate = (values, key, setFieldValue) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     dispatch(
       panValidation({
         pan_number: values,
       })
-    ).then((res) => {
-      if (
+    )
+      .then((res) => {
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true &&
+          res.payload.valid === true
+        ) {
+          const fullNameByPan = trimFullName(
+            res?.payload?.first_name,
+            res?.payload?.last_name
+          );
+          setFieldValue(key, fullNameByPan);
 
-        res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true &&
-        res.payload.valid === true
-      ) {
-        const fullNameByPan = trimFullName(res?.payload?.first_name, res?.payload?.last_name)
-        setFieldValue(key, fullNameByPan)
-
-        setFieldValue("pan_card", values)
-        setFieldValue("prev_pan_card", values)
-        setFieldValue("isPanVerified", 1)
-        toast.success(res?.payload?.message);
-        setIsLoading(false)
-
-      } else {
-        setFieldValue(key, "")
-        setIsLoading(false)
-        toast.error(res?.payload?.message);
-      }
-    }).catch(err => { console.log("err", err) })
-    setIsLoading(false)
+          setFieldValue("pan_card", values);
+          setFieldValue("prev_pan_card", values);
+          setFieldValue("isPanVerified", 1);
+          toast.success(res?.payload?.message);
+          setIsLoading(false);
+        } else {
+          setFieldValue(key, "");
+          setIsLoading(false);
+          toast.error(res?.payload?.message);
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+    setIsLoading(false);
     // setRegisterWithGstState(false)
   };
 
-
   const gstinValidate = (values, key, setFieldValue) => {
-    setLoadingForGst(true)
+    setLoadingForGst(true);
     dispatch(
       gstValidation({
         gst_number: values,
@@ -271,30 +298,28 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
+        const fullName = trimFullName(res?.payload?.trade_name, "");
+        setFieldValue(key, fullName);
+        setFieldValue("gst_number", values);
+        setFieldValue("prevGstNumber", values);
 
-        const fullName = trimFullName(res?.payload?.trade_name, "")
-        setFieldValue(key, fullName)
-        setFieldValue("gst_number", values)
-        setFieldValue("prevGstNumber", values)
+        setFieldValue("pan_card", res?.payload?.pan);
+        setFieldValue("prev_pan_card", res?.payload?.pan);
+        setFieldValue("isPanVerified", 1);
 
-        setFieldValue("pan_card", res?.payload?.pan)
-        setFieldValue("prev_pan_card", res?.payload?.pan)
-        setFieldValue("isPanVerified", 1)
-
-        setFieldValue("registerd_with_gst", true)
-        setFieldValue("registerd_with_udyam", false)
-        setFieldValue("udyam_number", "")
-        setLoadingForGst(false)
+        setFieldValue("registerd_with_gst", true);
+        setFieldValue("registerd_with_udyam", false);
+        setFieldValue("udyam_number", "");
+        setLoadingForGst(false);
 
         toast.success(res?.payload?.message);
       } else {
-        setFieldValue(key, "")
+        setFieldValue(key, "");
         toast.error(res?.payload?.message);
-        setLoadingForGst(false)
+        setLoadingForGst(false);
       }
-    })
+    });
   };
-
 
   // const udyamValidation = (values, key, setFieldValue) => {
   //   setIsloader(true)
@@ -316,7 +341,7 @@ function BusinessDetails(props) {
   //         setIsloader(false)
   //         toastConfig.errorToast("Detail is not valid");
   //       }
-  //     }).catch(err => 
+  //     }).catch(err =>
   //       toastConfig.errorToast(err.response?.data?.detail)
 
   //       )
@@ -325,30 +350,31 @@ function BusinessDetails(props) {
     setIsloader(true);
     setUdyamData("");
 
-    udyamValidate({ "reg_number": values }).then(
-      resp => {
+    udyamValidate({ reg_number: values })
+      .then((resp) => {
         if (resp?.data?.valid === true) {
           setFieldValue(key, values);
           setFieldValue("prevUdyamNumber", values);
           setUdyamResponseData(resp?.data);
           toastConfig.successToast(resp?.data?.message);
-          setUdyamData({ entity: resp?.data?.entity, valid: resp?.data?.valid });
+          setUdyamData({
+            entity: resp?.data?.entity,
+            valid: resp?.data?.valid,
+          });
         } else {
           setUdyamResponseData({});
           toastConfig.errorToast("Detail is not valid");
         }
         setIsloader(false);
-      }).catch(err => {
+      })
+      .catch((err) => {
         setIsloader(false);
         toastConfig.errorToast(err.response?.data?.detail);
       });
   };
 
-
-
-
   const authValidation = (values, key, setFieldValue) => {
-    setLoadingForSignatory(true)
+    setLoadingForSignatory(true);
     // console.log("auth", "auth pan")
     dispatch(
       authPanValidation({
@@ -360,28 +386,31 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-        const authName = res.payload.first_name + ' ' + res.payload?.last_name
+        const authName = res.payload.first_name + " " + res.payload?.last_name;
 
-        setFieldValue(key, values)
-        setLoadingForSignatory(false)
-        setFieldValue("prevSignatoryPan", values)
-        setFieldValue("name_on_pancard", authName)
-        setFieldValue("isSignatoryPanVerified", 1)
+        setFieldValue(key, values);
+        setLoadingForSignatory(false);
+        setFieldValue("prevSignatoryPan", values);
+        setFieldValue("name_on_pancard", authName);
+        setFieldValue("isSignatoryPanVerified", 1);
 
         toast.success(res.payload.message);
       } else {
-
         toast.error(res?.payload?.message);
-        setLoadingForSignatory(false)
+        setLoadingForSignatory(false);
         // setIsLoading(false)
       }
     });
   };
 
-
-
-  const checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = () => { }) => {
-
+  const checkInputIsValid = async (
+    err,
+    val,
+    setErr,
+    setFieldTouched,
+    key,
+    setFieldValue = () => {}
+  ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -396,48 +425,52 @@ function BusinessDetails(props) {
       }
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
-
-      // for  -Business PAN 
+      // for  -Business PAN
       panValidate(val[key], "company_name", setFieldValue, setIsLoading);
-      setIsLoading(true)
+      setIsLoading(true);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       // auth signatory pan
       // console.log("dfdfdf")
-      authValidation(val[key], "signatory_pan", setFieldValue, setLoadingForSignatory);
+      authValidation(
+        val[key],
+        "signatory_pan",
+        setFieldValue,
+        setLoadingForSignatory
+      );
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
       gstinValidate(val[key], "company_name", setFieldValue, setLoadingForGst);
-      setLoadingForGst(true)
+      setLoadingForGst(true);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "udyam_number") {
       udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
-      setIsloader(true)
+      setIsloader(true);
     }
   };
 
   const onSubmit = (values) => {
     setIsDisable(true);
     const postData = {
-      "company_name": values.company_name,
-      "registerd_with_gst": JSON.parse(values.registerd_with_gst),
-      "gst_number": values.gst_number,
+      company_name: values.company_name,
+      registerd_with_gst: JSON.parse(values.registerd_with_gst),
+      gst_number: values.gst_number,
 
-      "pan_card": values.pan_card,
-      "signatory_pan": values.signatory_pan,
+      pan_card: values.pan_card,
+      signatory_pan: values.signatory_pan,
 
-      "name_on_pancard": values.name_on_pancard,
-      "pin_code": values.pin_code,
-      "city_id": values.city_id,
-      "state_id": values.state_id,
-      "operational_address": values.operational_address,
-      "registered_business_address": values.registered_business_address,
-      "files": null,
-      "modified_by": loginId,
-      "login_id": merchantloginMasterId,
-      "is_udyam": JSON.parse(values.registerd_with_udyam),
-      "udyam_data": udyamResponseData
-    }
+      name_on_pancard: values.name_on_pancard,
+      pin_code: values.pin_code,
+      city_id: values.city_id,
+      state_id: values.state_id,
+      operational_address: values.operational_address,
+      registered_business_address: values.registered_business_address,
+      files: null,
+      modified_by: loginId,
+      login_id: merchantloginMasterId,
+      is_udyam: JSON.parse(values.registerd_with_udyam),
+      udyam_data: udyamResponseData,
+    };
 
     // console.log("postData", postData)
 
@@ -458,45 +491,41 @@ function BusinessDetails(props) {
         setIsDisable(false);
       }
     });
-
   };
 
-
   const registeredWithGstHandler = (value, setFieldValue) => {
-    const valueGst = JSON.parse(value)
-    setFieldValue("registerd_with_gst", valueGst)
-    setFieldValue("gst_number", "")
-    setFieldValue("prevGstNumber", "")
+    const valueGst = JSON.parse(value);
+    setFieldValue("registerd_with_gst", valueGst);
+    setFieldValue("gst_number", "");
+    setFieldValue("prevGstNumber", "");
 
-    setFieldValue("company_name", "")
-    setFieldValue("pan_card", "")
-    setFieldValue("prev_pan_card", "")
+    setFieldValue("company_name", "");
+    setFieldValue("pan_card", "");
+    setFieldValue("prev_pan_card", "");
 
-    setFieldValue("registerd_with_udyam", false)
-    setFieldValue("udyam_number", "")
-    setFieldValue("prevUdyamNumber", "")
-  }
-
+    setFieldValue("registerd_with_udyam", false);
+    setFieldValue("udyam_number", "");
+    setFieldValue("prevUdyamNumber", "");
+  };
 
   const registeredWithUdyamHandler = (value, setFieldValue) => {
-    setUdyamData("")
-    const valueUdyam = JSON.parse(value)
-    setFieldValue("registerd_with_udyam", valueUdyam)
-    setFieldValue("udyam_number", "")
-    setFieldValue("prevUdyamNumber", "")
+    setUdyamData("");
+    const valueUdyam = JSON.parse(value);
+    setFieldValue("registerd_with_udyam", valueUdyam);
+    setFieldValue("udyam_number", "");
+    setFieldValue("prevUdyamNumber", "");
 
-    setFieldValue("gst_number", "")
-    setFieldValue("company_name", "")
-    setFieldValue("pan_card", "")
-    setFieldValue("prev_pan_card", "")
+    setFieldValue("gst_number", "");
+    setFieldValue("company_name", "");
+    setFieldValue("pan_card", "");
+    setFieldValue("prev_pan_card", "");
 
-    setUdyamResponseData({})
-  }
-
+    setUdyamResponseData({});
+  };
 
   useEffect(() => {
-    setUdyamResponseData(KycList?.udyam_data)
-  }, [KycList])
+    setUdyamResponseData(KycList?.udyam_data);
+  }, [KycList]);
 
   return (
     <div className="col-lg-12 p-0">
@@ -512,11 +541,10 @@ function BusinessDetails(props) {
           setFieldValue,
           errors,
           setFieldError,
-          setFieldTouched
+          setFieldTouched,
         }) => (
           <Form>
             <div className="row">
-
               {/* {console.log("initialValues",initialValues)}
             {console.log("values",values)}
             {console.log("errors",errors)} */}
@@ -524,20 +552,21 @@ function BusinessDetails(props) {
                 <div className="input-group">
                   <lable>Do you have a GST number?</lable>
                   <div className="d-flex d-flex justify-content-between w-50">
-
                     <FormikController
                       control="radio"
                       name="registerd_with_gst"
                       options={radioBtnOptions}
                       className="form-check-input"
-                      onChange={(e) => { registeredWithGstHandler(e.target.value, setFieldValue) }}
+                      onChange={(e) => {
+                        registeredWithGstHandler(e.target.value, setFieldValue);
+                      }}
                       disabled={VerifyKycStatus === "Verified" ? true : false}
                       readOnly={readOnly}
                     />
                   </div>
                 </div>
 
-                {JSON.parse(values.registerd_with_gst) === false &&
+                {JSON.parse(values.registerd_with_gst) === false && (
                   <div className="input-group mt-2">
                     <lable>Do you have a Udyam Number?</lable>
                     <div className="d-flex d-flex justify-content-between w-50">
@@ -546,17 +575,23 @@ function BusinessDetails(props) {
                         name="registerd_with_udyam"
                         options={radioBtnOptions}
                         className="form-check-input"
-                        onChange={(e) => { registeredWithUdyamHandler(e.target.value, setFieldValue) }}
+                        onChange={(e) => {
+                          registeredWithUdyamHandler(
+                            e.target.value,
+                            setFieldValue
+                          );
+                        }}
                         disabled={VerifyKycStatus === "Verified" ? true : false}
                         readOnly={readOnly}
                       />
                     </div>
-                  </div>}
+                  </div>
+                )}
               </div>
 
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b pb-3">
                 {/* {console.log("{JSON.parse(values?.registerd_with_gst)",JSON.parse(values?.registerd_with_gst))} */}
-                {JSON.parse(values?.registerd_with_gst) === true &&
+                {JSON.parse(values?.registerd_with_gst) === true && (
                   <React.Fragment>
                     <label className="col-form-label pt-0 p-2 ">
                       GSTIN<span className="text-danger">*</span>
@@ -571,31 +606,35 @@ function BusinessDetails(props) {
                       />
 
                       {values?.gst_number !== null &&
-                        values?.gst_number !== undefined &&
-                        values?.gst_number !== "" &&
-                        !errors.hasOwnProperty("gst_number") &&
-                        !errors.hasOwnProperty("prevGstNumber") ? (
+                      values?.gst_number !== undefined &&
+                      values?.gst_number !== "" &&
+                      !errors.hasOwnProperty("gst_number") &&
+                      !errors.hasOwnProperty("prevGstNumber") ? (
                         <span className="success input-group-append">
-                          <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                          <img
+                            src={gotVerified}
+                            alt=""
+                            title=""
+                            width={"20px"}
+                            height={"20px"}
+                            className="btn-outline-secondary"
+                          />
                         </span>
                       ) : (
                         <div className="input-group-append">
                           <a
                             href={() => false}
                             className="btn cob-btn-primary text-white btn-sm"
-                            onClick={
-                              () => {
-                                checkInputIsValid(
-                                  errors,
-                                  values,
-                                  setFieldError,
-                                  setFieldTouched,
-                                  "gst_number",
-                                  setFieldValue
-                                );
-                              }
-
-                            }
+                            onClick={() => {
+                              checkInputIsValid(
+                                errors,
+                                values,
+                                setFieldError,
+                                setFieldTouched,
+                                "gst_number",
+                                setFieldValue
+                              );
+                            }}
                           >
                             {loadingForGst ? (
                               <span className="spinner-border spinner-border-sm">
@@ -610,94 +649,107 @@ function BusinessDetails(props) {
                     </div>
 
                     <ErrorMessage name="gst_number">
-                      {(msg) => (
-                        <p className="text-danger m-0">
-                          {msg}
-                        </p>
-                      )}
+                      {(msg) => <p className="text-danger m-0">{msg}</p>}
                     </ErrorMessage>
                     {errors?.prevGstNumber && (
-                      <p className="text-danger m-0">
-                        {errors?.prevGstNumber}
-                      </p>
+                      <p className="text-danger m-0">{errors?.prevGstNumber}</p>
                     )}
-                  </React.Fragment>}
+                  </React.Fragment>
+                )}
 
-                {(JSON.parse(values?.registerd_with_udyam) === false && JSON.parse(values?.registerd_with_gst) === false) &&
-                  <div className="input-group">
-                    <label>
-                      Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
-                    </label>
-                    <a className="btn cob-btn-primary text-white btn-sm mb-1" href="https://firebasestorage.googleapis.com/v0/b/cob-staging.appspot.com/o/SRS-GST-Declaration.pdf?alt=media&token=9eaae583-b357-4146-b7d9-96b58073d075" target="_blank" rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
-                  </div>
-
-                }
-
-
-                {(JSON.parse(values?.registerd_with_udyam) === true && JSON.parse(values?.registerd_with_gst) === false) &&
-                  <React.Fragment >
-                    <label className="col-form-label pt-0 p-2">
-                      Udyam Aadhar Number<span className="text-danger">*</span>
-                    </label>
+                {JSON.parse(values?.registerd_with_udyam) === false &&
+                  JSON.parse(values?.registerd_with_gst) === false && (
                     <div className="input-group">
-                      <Field
-                        type="text"
-                        name="udyam_number"
-                        className="form-control"
-                        disabled={VerifyKycStatus === "Verified" ? true : false}
-                        readOnly={readOnly}
-                      />
+                      <label>
+                        Kindly fill the donwloaded form and upload in the{" "}
+                        <strong>Upload Document</strong> Tab"
+                      </label>
+                      <a
+                        className="btn cob-btn-primary text-white btn-sm mb-1"
+                        href="https://firebasestorage.googleapis.com/v0/b/cob-staging.appspot.com/o/SRS-GST-Declaration.pdf?alt=media&token=9eaae583-b357-4146-b7d9-96b58073d075"
+                        target="_blank"
+                        rel="noreferrer"
+                        alt="GST Declaration Form"
+                      >
+                        Download GST Declaration Format{" "}
+                      </a>
+                    </div>
+                  )}
 
-                      {values?.udyam_number !== null &&
+                {JSON.parse(values?.registerd_with_udyam) === true &&
+                  JSON.parse(values?.registerd_with_gst) === false && (
+                    <React.Fragment>
+                      <label className="col-form-label pt-0 p-2">
+                        Udyam Aadhaar Number
+                        <span className="text-danger">*</span>
+                      </label>
+                      <div className="input-group">
+                        <Field
+                          type="text"
+                          name="udyam_number"
+                          className="form-control"
+                          disabled={
+                            VerifyKycStatus === "Verified" ? true : false
+                          }
+                          readOnly={readOnly}
+                        />
+
+                        {values?.udyam_number !== null &&
                         values?.udyam_number !== "" &&
                         values?.udyam_number !== undefined &&
                         !errors.hasOwnProperty("udyam_number") &&
                         !errors.hasOwnProperty("prevUdyamNumber") ? (
-                        <span className="success input-group-append">
-                          <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
-                        </span>
-                      ) : (
-                        <div className="input-group-append">
-                          <button
-                            href={() => false}
-                            className="btn cob-btn-primary text-white btn-sm"
-                            onClick={() => {
-                              checkInputIsValid(
-                                errors,
-                                values,
-                                setFieldError,
-                                setFieldTouched,
-                                "udyam_number",
-                                setFieldValue
-                              );
-                            }}
-                          >
-                            {isLoader ?
-                              <span className="spinner-border spinner-border-sm" role="status">
-                                <span className="sr-only">Loading...</span>
-                              </span>
-                              :
-                              "Verify"
-                            }
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <ErrorMessage name="udyam_number">
-                      {(msg) => (
-                        <p className="text-danger">
-                          {msg}
+                          <span className="success input-group-append">
+                            <img
+                              src={gotVerified}
+                              alt=""
+                              title=""
+                              width={"20px"}
+                              height={"20px"}
+                              className="btn-outline-secondary"
+                            />
+                          </span>
+                        ) : (
+                          <div className="input-group-append">
+                            <button
+                              href={() => false}
+                              className="btn cob-btn-primary text-white btn-sm"
+                              onClick={() => {
+                                checkInputIsValid(
+                                  errors,
+                                  values,
+                                  setFieldError,
+                                  setFieldTouched,
+                                  "udyam_number",
+                                  setFieldValue
+                                );
+                              }}
+                            >
+                              {isLoader ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  role="status"
+                                >
+                                  <span className="sr-only">Loading...</span>
+                                </span>
+                              ) : (
+                                "Verify"
+                              )}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <ErrorMessage name="udyam_number">
+                        {(msg) => <p className="text-danger">{msg}</p>}
+                      </ErrorMessage>
+                      {errors?.prevUdyamNumber && (
+                        <p className="text-danger mb-0">
+                          {errors?.prevUdyamNumber}
                         </p>
                       )}
-                    </ErrorMessage>
-                    {errors?.prevUdyamNumber && (
-                      <p className="text-danger mb-0">
-                        {errors?.prevUdyamNumber}
-                      </p>
-                    )}
-                    <p className="m-0">{udyamData?.entity}</p>
-                  </React.Fragment>
-                }
+                      <p className="m-0">{udyamData?.entity}</p>
+                    </React.Fragment>
+                  )}
               </div>
             </div>
 
@@ -715,33 +767,37 @@ function BusinessDetails(props) {
                     name="pan_card"
                     className="form-control"
                     onChange={(e) => {
-                      setFieldValue("isPanVerified", "")
+                      setFieldValue("isPanVerified", "");
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
                     }}
                     disabled={VerifyKycStatus === "Verified"}
                     readOnly={JSON.parse(values?.registerd_with_gst)}
-
                   />
 
-
-                  {(values?.pan_card !== null &&
-                    values?.isPanVerified !== "" &&
-                    values?.pan_card !== "" &&
-                    values?.pan_card !== undefined &&
-                    !errors.hasOwnProperty("pan_card") &&
-                    !errors.hasOwnProperty("prev_pan_card") &&
-                    (values?.pan_card === values?.prev_pan_card)) ?
+                  {values?.pan_card !== null &&
+                  values?.isPanVerified !== "" &&
+                  values?.pan_card !== "" &&
+                  values?.pan_card !== undefined &&
+                  !errors.hasOwnProperty("pan_card") &&
+                  !errors.hasOwnProperty("prev_pan_card") &&
+                  values?.pan_card === values?.prev_pan_card ? (
                     <span className="success input-group-append">
-                      <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
                     </span>
-                    : <div className="input-group-append">
+                  ) : (
+                    <div className="input-group-append">
                       <button
                         href={() => false}
                         className="btn cob-btn-primary text-white btn btn-sm"
-
                         onClick={() => {
-
                           checkInputIsValid(
                             errors,
                             values,
@@ -752,15 +808,19 @@ function BusinessDetails(props) {
                           );
                         }}
                       >
-                        {isLoading ?
-                          <span className="spinner-border spinner-border-sm" role="status">
+                        {isLoading ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                          >
                             <span className="sr-only">Loading...</span>
                           </span>
-                          :
+                        ) : (
                           "Verify"
-                        }
+                        )}
                       </button>
-                    </div>}
+                    </div>
+                  )}
                 </div>
                 {errors?.pan_card && (
                   <p className="notVerifiedtext- text-danger mb-0">
@@ -779,10 +839,7 @@ function BusinessDetails(props) {
                     {errors?.isPanVerified}
                   </p>
                 )}
-
-
               </div>
-
 
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
@@ -799,16 +856,22 @@ function BusinessDetails(props) {
                     onChange={(e) => {
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("signatory_pan", uppercaseValue); // Set the uppercase value to form state
-                      setFieldValue("isSignatoryPanVerified", "")
+                      setFieldValue("isSignatoryPanVerified", "");
                     }}
-
                   />
                   {values?.signatory_pan &&
-                    values?.isSignatoryPanVerified &&
-                    !errors.hasOwnProperty("signatory_pan") &&
-                    !errors.hasOwnProperty("prevSignatoryPan") ? (
+                  values?.isSignatoryPanVerified &&
+                  !errors.hasOwnProperty("signatory_pan") &&
+                  !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
-                      <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
                     </span>
                   ) : (
                     <div className="input-group-append">
@@ -826,13 +889,16 @@ function BusinessDetails(props) {
                           );
                         }}
                       >
-                        {loadingForSiganatory ?
-                          <span className="spinner-border spinner-border-sm" role="status">
+                        {loadingForSiganatory ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                          >
                             <span className="sr-only">Loading...</span>
                           </span>
-                          :
+                        ) : (
                           "Verify"
-                        }
+                        )}
                       </a>
                     </div>
                   )}
@@ -918,7 +984,6 @@ function BusinessDetails(props) {
                 <FormikController
                   control="select"
                   name="state_id"
-
                   options={BusinessOverview}
                   className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -948,12 +1013,18 @@ function BusinessDetails(props) {
                     disabled={disable}
                     className="float-lg-right cob-btn-primary text-white btn-sm btn border-0"
                   >
-                    {disable && <>
-                      <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
-                        <span className="sr-only">Loading...</span>
-                      </span>
-                    </>}
+                    {disable && (
+                      <>
+                        <span className="mr-2">
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            ariaHidden="true"
+                          />
+                          <span className="sr-only">Loading...</span>
+                        </span>
+                      </>
+                    )}
 
                     {buttonText}
                   </button>

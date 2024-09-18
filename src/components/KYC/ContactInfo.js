@@ -52,11 +52,11 @@ function ContactInfo(props) {
   const [timer, setTimer] = useState(60);
   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
 
-  // aadhar number verification
+  // Aadhaar Number verification
   const [aadharNuber, setAadharNumber] = useState("")
   const [aadharNumberVerifyModalToggle, setAadharNumberVerifyToggle] = useState(false);
   const [aadharOtpResp, setAadharOtpResp] = useState({});
-  const [aadharOtp, setAadharOtp] = useState("");
+  const [aadhaarOTP, setAadharOtp] = useState("");
   const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
   const [aadharVerificationLoader, setAadharVerificationLoader] = useState(false)
 
@@ -291,7 +291,7 @@ function ContactInfo(props) {
             maxLength={6}
             placeholder="Enter OTP"
             onChange={(e) => setAadharOtp(e.target.value)}
-            value={aadharOtp}
+            value={aadhaarOTP}
             required={true}
             disabled={aadharVerificationLoader}
           />
@@ -345,7 +345,7 @@ function ContactInfo(props) {
   const aadharOtpVerification = async () => {
     setAadharVerificationLoader(true)
     try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadharOtp })
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadhaarOTP })
       // console.log(resp)
       setAadharOtp("")
       if (resp.data?.valid && resp.data?.status) {
@@ -374,7 +374,7 @@ function ContactInfo(props) {
             maxLength={6}
             placeholder="Enter OTP"
             onChange={(e) => setAadharOtp(e.target.value)}
-            value={aadharOtp}
+            value={aadhaarOTP}
             required={true}
             disabled={aadharVerificationLoader}
           />
@@ -408,7 +408,7 @@ function ContactInfo(props) {
   return (
     <div className="col-lg-12 p-0">
       {aadharNumberVerifyModalToggle &&
-        <CustomModal headerTitle={"Aadhar Verifcation"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
+        <CustomModal headerTitle={"Aadhaar Verification"} modalBody={aadharModalBody} modalToggle={aadharNumberVerifyModalToggle} fnSetModalToggle={() => setAadharNumberVerifyToggle()} modalSize="modal-md" />
       }
       <Formik
         initialValues={initialValues}
@@ -437,10 +437,10 @@ function ContactInfo(props) {
                 />
               </div>
 
-              {/* Aadhar number verification */}
+              {/* Aadhaar Number verification */}
               <div className="col-sm-6 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Aadhar Number<span className="text-danger"> *</span>
+                  Aadhaar Number<span className="text-danger"> *</span>
                 </label>
                 <div className="input-group">
                   <Field

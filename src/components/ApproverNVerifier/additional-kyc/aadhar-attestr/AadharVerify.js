@@ -10,7 +10,7 @@ function AadharVerify() {
     const [aadharOtpResp, setAadharOtpResp] = React.useState({})
     const [otpDigit, setOtpDigit] = React.useState('')
     const [aadharJsonResponse, setAadharJsonResponse] = React.useState('')
-   
+
     const [adharOtpDisable, setAdharOtpDisable] = React.useState(false)
     const [otpVerified, setOtpVerified] = React.useState(false)
 
@@ -25,7 +25,7 @@ function AadharVerify() {
         } catch (error) {
             setIsLoading(false)
             setDisable(false)
-            toastConfig.errorToast("Something went wrong, Please try again")
+            toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
         }
     }
 
@@ -39,7 +39,7 @@ function AadharVerify() {
             toastConfig.successToast(resp.data.message)
         } catch (error) {
             setAdharOtpDisable(false)
-            toastConfig.errorToast("Something went wrong, Please try again")
+            toastConfig.errorToast(error?.response?.data?.message ?? "Something went wrong, Please try again")
         }
     }
 
@@ -67,7 +67,7 @@ function AadharVerify() {
                             type="text"
                             name="aadhar_number"
                             className="form-control mr-4"
-                            placeholder="Enter Aadhar Number"
+                            placeholder="Enter Aadhaar Number"
                             value={aadharNumber}
                             onChange={handleAadharNumberChange}
                             disabled={disable}
@@ -90,16 +90,16 @@ function AadharVerify() {
                         </button>
                     </div>
                     {(isLoading || disable) &&
-                    <div className="form-group ml-2">
-                        <button
-                            type="button"
-                            className="btn cob-btn-primary text-white btn-sm"
-                            onClick={resetHandler}
-                            disabled={isLoading}
-                        >
-                            Reset
-                        </button>
-                    </div>}
+                        <div className="form-group ml-2">
+                            <button
+                                type="button"
+                                className="btn cob-btn-primary text-white btn-sm"
+                                onClick={resetHandler}
+                                disabled={isLoading}
+                            >
+                                Reset
+                            </button>
+                        </div>}
                 </div>
 
                 {/* Enter otp */}
@@ -152,7 +152,7 @@ function AadharVerify() {
                             <div className="card-body">
                                 <h5 className="card-title">{`${JSON.parse(aadharJsonResponse)?.first_name} ${JSON.parse(aadharJsonResponse)?.last_name}`}</h5>
 
-                                {/* Masked Aadhar Number */}
+                                {/* Masked Aadhaar Number */}
                                 <p className="card-text">
                                     <strong>{JSON.parse(aadharJsonResponse)?.masked_aadhar_number}</strong>
                                 </p>
