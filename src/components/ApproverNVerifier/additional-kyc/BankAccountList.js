@@ -112,7 +112,7 @@ const BankAccountList = ({selectedDocType}) => {
                                         ariaHidden="true"
                                     ></span>
                                 ) : (
-                                    "Verify" ? "Verify" : ""
+                                    "Verify"
                                 )}
                             </button>
                         </div>
