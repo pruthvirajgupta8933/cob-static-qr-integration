@@ -11,7 +11,7 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { v4 as uuidv4 } from 'uuid';
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
-import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
+import AgreementDocModal from "./Onboarderchant/AgreementDocModal";
 
 const MyMerchantList = () => {
     const roles = roleBasedAccess();
@@ -267,7 +267,7 @@ const MyMerchantList = () => {
                 <h5 className="">My Merchant List</h5>
             </div>
             <div className="form-row">
-                {openDocumentModal && <ViewDocumentModal
+                {openDocumentModal && <AgreementDocModal
                     documentData={commentId}
                     isModalOpen={openDocumentModal}
                     setModalState={setOpenDocumentModal}

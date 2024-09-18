@@ -8,17 +8,20 @@ import { forSavingDocument, forGettingDocumentList, removeDocumentSlice } from "
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
-import downloadIcon from "../../../assets/images/download-icon.svg";
-import _ from "lodash";
+// import downloadIcon from "../../../assets/images/download-icon.svg";
+// import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../_components/formik/Yup";
+import DocViewerComponent from "../../../utilities/DocViewerComponent";
 
-const ViewDocumentModal = (props) => {
+const AgreementDocModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false)
+  const [docPreviewToggle, setDocPreviewToggle] = useState(false)
+  const [selectViewDoc, setSelectedViewDoc] = useState("#")
 
 
   const initialValues = {
@@ -36,14 +39,11 @@ const ViewDocumentModal = (props) => {
       forGettingDocumentList({
         login_id: props?.documentData?.loginMasterId
       })
-    )
-      .then((resp) => {
-
-        setCommentsList(resp.payload);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    ).then((resp) => {
+      setCommentsList(resp.payload);
+    }).catch((err) => {
+      console.error(err);
+    });
   };
 
 
@@ -64,13 +64,13 @@ const ViewDocumentModal = (props) => {
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
       .max(200, "Please do not enter more than 200 characters")
-      .required("Required")
+      .required("Add the comment and attached the file, Required")
       .nullable(),
   });
 
 
   const handleSubmit = async (values) => {
-    // console.log("values ::", values);
+
     setBtnDisable(true)
     let formData = new FormData();
     formData.append("type", "22")
@@ -115,31 +115,29 @@ const ViewDocumentModal = (props) => {
       setUploadStatus(true);
     }
   };
-  const isUrlValid = (userInput) => {
-    let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g);
-    if (res == null)
-      return false;
-    else
-      return true;
-  }
-  const fileTypeCheck = (file) => {
-    let ext = file.split('.').pop();
-    const formats = ["pdf", "jpg", "jpeg", "png"];
-    let htmlType = _.includes(formats, `${ext}`);
-    if (!htmlType) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
 
-  // API for delete button--------------------------------------------------------||
-  // 3)REMOVE API
-  // a)
+  // const isUrlValid = (userInput) => {
+  //   let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g);
+  //   if (res == null)
+  //     return false;
+  //   else
+  //     return true;
+  // }
+
+  // const fileTypeCheck = (file) => {
+  //   let ext = file.split('.').pop();
+  //   const formats = ["pdf", "jpg", "jpeg", "png"];
+  //   let htmlType = _.includes(formats, `${ext}`);
+  //   if (!htmlType) {
+  //     return false;
+  //   }
+  //   else {
+  //     return true;
+  //   }
+  // }
+
+
   const removeDocument = (id) => {
-   
-
     const rejectDetails = {
       document_id: id,
       removed_by: loginId,
@@ -162,7 +160,7 @@ const ViewDocumentModal = (props) => {
       });
   };
 
-  // b)
+
   const getKycDocList = (role) => {
     dispatch(
       forSavingDocument({
@@ -171,18 +169,31 @@ const ViewDocumentModal = (props) => {
     );
   };
 
-  // ---------------------------------------------------------------------------------||
+  // document modal
+  const docModalToggle = (docData) => {
+    // console.log(docData)
+    setDocPreviewToggle(true)
+    setSelectedViewDoc(docData)
+  }
 
   const modalBody = () => {
     return (
       <div className="container-fluid">
+        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.file_path, documentName: "Agreement" }} />}
+        <div className="row">
+          <div className="d-flex justify-content-between">
+            <p>
+              <span className="fw-bold">Merchant Name : </span> {props?.documentData?.clientName}
+            </p>
+            <p>
+              <span className="fw-bold"> Client Code : </span>
+              {props?.documentData?.clientCode}
+            </p>
+          </div>
 
-        <h6 className="">
-          Merchant Name: {props?.documentData?.clientName}
-        </h6>
-        <h6 className="">
-          Client Code: {props?.documentData?.clientCode}
-        </h6>
+        </div>
+
+
         <div className="row">
           <Formik
             initialValues={initialValues}
@@ -199,28 +210,27 @@ const ViewDocumentModal = (props) => {
                   <FormikController
                     control="textArea"
                     name="comments"
+                    row={10}
                     className="form-control"
                   />
                 </div>
 
                 <div className="col-md-6">
                   <div className="file-input">
-                    <h6 className="">Attachments</h6>
-
-                    <div className="d-flex">
+                    <div className="">
                       <div>
-                        <label for="file-upload" className="btn btn-sm cob-btn-primary">
-                          <i className="fa fa-cloud-upload"></i> Upload
+                        <label for="file-upload" className="btn btn-sm cob-btn-secondary font-sm text-white">
+                          <i className="fa fa-paperclip"></i> Attach file
                         </label>
                         <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
-
                       </div>
-                      <div className="ml-3">
+                      <div>
                         <button
                           type="submit"
-                          className="submit-btn approve text-white  cob-btn-primary  btn-sm"
+                          className="btn cob-btn-primary btn-sm"
                           disabled={btnDisable}
                         >
+                          <i className="fa fa-cloud-upload"></i>&nbsp;
                           Submit
                         </button>
                       </div>
@@ -247,6 +257,8 @@ const ViewDocumentModal = (props) => {
             </Form>
           </Formik>
         </div>
+
+        <hr />
         <div className="row">
           <div className="container">
             <div className="row">
@@ -291,30 +303,13 @@ const ViewDocumentModal = (props) => {
                             {dateManipulate(remark?.comment_on)}
                           </td>
                           <td>
-                            {remark?.file_path !== null && isUrlValid(remark?.file_path) && fileTypeCheck(remark?.file_path) && (
-                              <a
-                                href={remark?.file_path}
-                                target={"_blank"}
-                                rel="noreferrer"
-                                download
-                              >
-                                <img
-                                  src={downloadIcon}
-                                  style={{
-                                    height: "20px",
-                                    width: "20px",
-                                    margin: "auto",
-                                  }}
-                                  alt=""
-                                />
-                              </a>
-                            )}
+                            <p className="text-decoration-underline text-primary cursor_pointer" onClick={() => docModalToggle(remark)}>View Document</p>
                           </td>
                           <td>
                             <button
                               aria-label="button"
                               type="button"
-                             onClick={() => {
+                              onClick={() => {
                                 if (window.confirm("Are you sure you want to delete it?")) {
                                   removeDocument(remark?.document_id);
                                 }
@@ -330,11 +325,8 @@ const ViewDocumentModal = (props) => {
                 </table>
               </div>
             </div>
-
           </div>
         </div>
-
-
       </div>
     )
   }
@@ -360,6 +352,12 @@ const ViewDocumentModal = (props) => {
     )
   }
 
+
+
+
+
+
+
   return (
     <>
       <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
@@ -368,4 +366,4 @@ const ViewDocumentModal = (props) => {
   );
 };
 
-export default ViewDocumentModal;
+export default AgreementDocModal;
