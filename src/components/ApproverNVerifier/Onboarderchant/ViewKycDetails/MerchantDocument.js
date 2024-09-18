@@ -11,6 +11,7 @@ import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 import { useRef } from 'react';
 import { trimValue } from '../../../../utilities/trim';
 import CustomModal from '../../../../_components/custom_modal';
+import DocViewerComponent from '../../../../utilities/DocViewerComponent';
 // import DocViewerComponent from '../../../../utilities/DocViewerComponent';
 
 const MerchantDocument = (props) => {
@@ -253,82 +254,31 @@ const MerchantDocument = (props) => {
 
 
 
-  const getFileType = (url) => {
+  // const getFileType = (url) => {
 
-    const extension = url?.split('.')?.pop()?.toLowerCase(); // Get the file extension
+  //   const extension = url?.split('.')?.pop()?.toLowerCase(); // Get the file extension
 
-    if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) {
-      return 'image';
-    } else if (extension === 'pdf') {
-      return 'pdf';
-    } else {
-      return 'unsupported';
-    }
-  };
+  //   if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) {
+  //     return 'image';
+  //   } else if (extension === 'pdf') {
+  //     return 'pdf';
+  //   } else {
+  //     return 'unsupported';
+  //   }
+  // };
 
-  const docModalBody = () => {
-    const fileType = getFileType(selectViewDoc);
-
-    const disableRightClick = (e) => {
-      e.preventDefault();
-    };
-
-    return (
-      <div>
-        {fileType === 'image' ? (
-          <img
-            src={selectViewDoc}
-            alt="Doc"
-            width={'100%'}
-            height={'auto'}
-            onContextMenu={disableRightClick}
-          />
-        ) : fileType === 'pdf' ? (
-          <div style={{ position: 'relative', width: '100%', height: 610 }}>
-            <iframe
-              title="document"
-              src={`${selectViewDoc}`}
-              style={{ width: '100%', height: '100%', border: 'none' }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: 40,
-                backgroundColor: 'transparent',
-                zIndex: 999,
-              }}
-            />
-          </div>
-        ) : (
-          <p>Unsupported file type</p>
-        )}
-      </div>
-    );
-  };
 
 
   // console.log("=========merchant doc start==========")
   // console.log("enableBtnVerifier", enableBtnVerifier)
   // console.log("=========merchant doc end==========")
   // console.log("Check boolean", checkedClicked)
-  // const refsByDocId = useMemo(() => {
-  //   const refs = {}
-  //   KycDocUpload.forEach((item, i) => {
-  //     refs[item.documentId] = React.createRef(null)
-  //   })
-  //   return refs
-  // }, [KycDocUpload])
 
 
 
-
-
-  const docModalToggle = (url) => {
+  const docModalToggle = (docData) => {
     setDocPreviewToggle(true)
-    setSelectedViewDoc(url)
+    setSelectedViewDoc(docData)
   }
 
   return (
@@ -339,7 +289,7 @@ const MerchantDocument = (props) => {
         return (<React.Fragment key={uuidv4()}> <span className="text-danger"> {item?.value}</span><br /></React.Fragment>)
       })}
 
-      {docPreviewToggle && <CustomModal headerTitle={"Document Preview"} modalBody={docModalBody} modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} />}
+      {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.filePath, documentName: selectViewDoc?.doc_type_name }} />}
       <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
           <thead>
@@ -393,12 +343,12 @@ const MerchantDocument = (props) => {
 
                     <td>{i + 1}</td>
 
-                    <td><p className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
+                    <td><p className="text-wrap mb-1"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
                       <p><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</p>
                       <p
-                        className="text-primary cursor-pointer"
+                        className="text-primary cursor_pointer text-decoration-underline"
                         rel="noreferrer"
-                        onClick={() => docModalToggle(doc?.filePath)}
+                        onClick={() => docModalToggle(doc)}
                       >
                         View Document
                       </p>
