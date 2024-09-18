@@ -85,27 +85,27 @@ const BankAccountList = ({ selectedDocType }) => {
                     </div>
                   </div>
 
-                  <div className="form-group">
-                    <button
-                      type="submit"
-                      className="btn cob-btn-primary text-white btn-sm"
-                      disabled={buttonDisable}
-                    >
-                      {isLoading ? (
-                        <span
-                          className="spinner-border spinner-border-sm"
-                          role="status"
-                          ariaHidden="true"
-                        ></span>
-                      ) : "Verify" ? (
-                        "Verify"
-                      ) : (
-                        ""
-                      )}
-                    </button>
-                  </div>
-                </Form>
-              </Formik>
+                        <div className="form-group">
+                            <button
+                                type="submit"
+                                className="btn cob-btn-primary text-white btn-sm"
+                                disabled={buttonDisable}
+                            >
+                                {isLoading ? (
+                                    <span
+                                        className="spinner-border spinner-border-sm"
+                                        role="status"
+                                        ariaHidden="true"
+                                    ></span>
+                                ) : (
+                                    "Verify"
+                                )}
+                            </button>
+                        </div>
+                    </Form>
+
+
+                </Formik>
             )}
 
             {bankStatus && selectedDocType === "3" && (

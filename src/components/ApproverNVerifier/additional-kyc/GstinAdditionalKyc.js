@@ -54,59 +54,59 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
     <div className="container-fluid flleft">
       <div className="form-row">
         <div>
-          <div className="form-inline">
-            <div className="form-group">
-              <input
-                type="text"
-                name="gst_number"
-                className="form-control mr-4"
-                placeholder="Enter Your GSTIN Number"
-                value={initialValuesForGSTIN.gst_number}
-                onChange={(e) => {
-                  setInitialValuesForGSTIN({ gst_number: e.target.value });
-                }}
-              />
+        <div className="form-inline">
+                <div className="form-group">
+
+                    <input
+                        type="text"
+                        name="gst_number"
+                        className="form-control mr-4"
+                        placeholder="Enter Your GSTIN Number"
+                        value={initialValuesForGSTIN.gst_number}
+                        onChange={(e) => {
+                            setInitialValuesForGSTIN({ gst_number: e.target.value });
+
+                        }}
+                    />
+                </div>
+                <div className="form-group">
+                    <button
+                        type="button"
+                        className="btn cob-btn-primary text-white btn-sm"
+                        onClick={() => handleGstinSubmit(initialValuesForGSTIN)}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                ariaHidden="true"
+                            ></span>
+                        ) : (
+                            "Verify" 
+                        )}
+                    </button>
+                </div>
             </div>
-            <div className="form-group">
-              <button
-                type="button"
-                className="btn cob-btn-primary text-white btn-sm"
-                onClick={() => handleGstinSubmit(initialValuesForGSTIN)}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    ariaHidden="true"
-                  ></span>
-                ) : "Verify" ? (
-                  "Verify"
-                ) : (
-                  ""
-                )}
-              </button>
-            </div>
-          </div>
-          {gstStatus && selectedDocType === "2" && (
-            <div className="container mt-5">
-              <h5 className="">GSTIN Information</h5>
-              <div className="row">
-                {objArray.map(([key, value]) => (
-                  <div className="col-md-6 p-2 text-uppercase" key={key}>
-                    <span className="font-weight-bold mb-1">
-                      {key.replace("_", " ")}:
-                    </span>
-                    {typeof value === "boolean" ? (
-                      <span>{value.toString()}</span>
-                    ) : (
-                      <span>&nbsp;{value}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            {gstStatus && selectedDocType === "2" && (
+                <div className="container mt-5">
+                    <h5 className="">GSTIN Information</h5>
+                    <div className="row">
+                        {objArray.map(([key, value]) => (
+                            <div className="col-md-6 p-2 text-uppercase" key={key}>
+                                <span className="font-weight-bold mb-1">
+                                    {key.replace("_", " ")}:
+                                </span>
+                                {typeof value === "boolean" ? (
+                                    <span>{value.toString()}</span>
+                                ) : (
+                                    <span>&nbsp;{value}</span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
       </div>
     </div>
