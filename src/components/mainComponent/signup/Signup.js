@@ -15,7 +15,7 @@ import CustomModal from "../../../_components/custom_modal";
 import signupBnr from "../../../assets/images/signup-banner.svg"
 // import { v4 as uuidv4 } from 'uuid';
 import toastConfig from "../../../utilities/toastTypes";
-import useMediaQuery from "../../../hooks/useMediaQuery";
+import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import arrow_one from "../../../assets/images/arrow_one.png"
 import arrow_two from "../../../assets/images/arrow_two.png"
 
