@@ -12,7 +12,7 @@ import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from "../header/Header";
 import classes from "./login.module.css";
 import toastConfig from "../../../utilities/toastTypes";
-import useMediaQuery from "../../../hooks/useMediaQuery";
+import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -20,12 +20,12 @@ const INITIAL_FORM_STATE = {
 };
 
 const validationSchema = Yup.object().shape({
-    clientUserId: Yup.string()
-        .required("Please enter username")
-        .allowOneSpace(),
-    userPassword: Yup.string()
-        .required("Please enter Password")
-        .allowOneSpace(),
+  clientUserId: Yup.string()
+    .required("Please enter username")
+    .allowOneSpace(),
+  userPassword: Yup.string()
+    .required("Please enter Password")
+    .allowOneSpace(),
 });
 
 

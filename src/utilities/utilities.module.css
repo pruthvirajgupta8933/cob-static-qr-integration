@@ -1,0 +1,4 @@
+.pdf_preview_frame {
+    z-index: 9999;
+    position: absolute;
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import CustomModal from "../_components/custom_modal";
+import classes from "./utilities.module.css"
 
 const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) => {
   const getFileType = (url) => {
@@ -34,6 +35,7 @@ const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) =>
           <div style={{ position: 'relative', width: '100%', height: 610 }}>
             <iframe
               title="document"
+              className={classes.pdf_preview_frame}
               src={`${selectViewDoc?.documentUrl ?? '#'}`}
               style={{ width: '100%', height: '100%', border: 'none' }}
             />
@@ -62,7 +64,10 @@ const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) =>
   };
 
   return (
-    <CustomModal headerTitle={`Document : ${selectViewDoc?.documentName}`} modalBody={docModalBody} modalToggle={modalToggle} fnSetModalToggle={modalToggleHandler} modalSize={'modal-lg'} />
+    <div className="document-preview-modal">
+      <CustomModal headerTitle={`Document : ${selectViewDoc?.documentName}`} modalBody={docModalBody} modalToggle={modalToggle} fnSetModalToggle={modalToggleHandler} modalSize={'modal-lg'} />
+    </div>
+
   );
 };
 
