@@ -63,8 +63,8 @@ function BankDetails(props) {
       KycList?.merchant_account_details?.accountType === "Current"
         ? 1
         : KycList?.merchant_account_details?.accountType === "Saving"
-        ? 2
-        : "",
+          ? 2
+          : "",
     branch: KycList?.merchant_account_details?.branch,
     isAccountNumberVerified:
       KycList?.merchant_account_details?.account_number !== null ? "1" : "",
@@ -212,8 +212,8 @@ function BankDetails(props) {
       values.account_type.toString() === "1"
         ? "Current"
         : values.account_type.toString() === "2"
-        ? "Saving"
-        : "";
+          ? "Saving"
+          : "";
 
     setIsDisable(true);
     dispatch(
@@ -296,7 +296,6 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-            {console.log(errors)}
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
