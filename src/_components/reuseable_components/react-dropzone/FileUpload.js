@@ -6,6 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import { kycDocumentUploadList } from "../../../slices/kycSlice";
 import toastConfig from "../../../utilities/toastTypes";
 import { v4 as uuidv4 } from 'uuid';
+import DocViewerComponent from '../../../utilities/DocViewerComponent';
 
 
 const FileUploader = ({ setCurrentTab, isEditableInput }) => {
@@ -13,6 +14,9 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [submitLoader, setSubmitLoader] = useState(false);
     const [documentUploadResponse, setDocumentUploadResponse] = useState({})
+    const [docPreviewToggle, setDocPreviewToggle] = useState(false)
+  const [selectViewDoc, setSelectedViewDoc] = useState("#")
+ 
     // console.log("documentUploadResponse",documentUploadResponse)
 
 
@@ -78,9 +82,17 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
         onDrop,
     });
 
+    const docModalToggle = (docData) => {
+        setDocPreviewToggle(true)
+        setSelectedViewDoc(docData)
+      }
+
 
     return (
         <div>
+
+{docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.filePath, documentName: selectViewDoc?.doc_type_name }} />}
+
             {!isEditableInput &&
                 <div className="file-uploader">
                     {uploadedFiles[0]?.name ?
@@ -100,7 +112,7 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
                                 <span className="sr-only">Loading...</span>
                             </>} Upload Files
                         </button>} {documentUploadResponse === true &&
-                            <a className="btn active-secondary btn-sm m-2" href={() => false} onClick={() => setCurrentTab(5)}>Next</a>
+                            <a className="btn active-secondary btn-sm m-2 mt-3" href={() => false} onClick={() => setCurrentTab(5)}>Next</a>
                     }
                 </div>
             }
@@ -108,7 +120,16 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
                 <h6>Uploaded Document</h6>
                 <ul>
                     {KycDocUpload?.map((d, i) => (
-                        <li key={uuidv4()}><a href={d.filePath} target="_blank" rel="noreferrer">View Document - {d.name}</a></li>
+                        // <li key={uuidv4()}>
+                        //     <a href={d.filePath} target="_blank" rel="noreferrer">
+                        //         View Document - {d.name}</a></li>
+                        <p
+                         className="text-primary cursor_pointer text-decoration-underline"
+                        rel="noreferrer"
+                        onClick={() => docModalToggle(d)}
+                      >
+                        View Document - {d.name}
+                      </p>
                     ))}
                 </ul>
             </div>}

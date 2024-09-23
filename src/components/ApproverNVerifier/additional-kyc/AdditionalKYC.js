@@ -18,7 +18,7 @@ const AdditionalKYC = () => {
     { documentType: "BANK ACCOUNT", value: "3" },
     { documentType: "UDYAM", value: "4" },
     { documentType: "FRM", value: "5" },
-    { documentType: "AADHAR VERIFICATION", value: "6" },
+    { documentType: "AADHAAR VERIFICATION", value: "6" },
     { documentType: "CIN", value: "7" },
     { documentType: "CRED REPORT VALIDATION", value: "8" },
     { documentType: "DRIVING LICENSE VALIDATION", value: "9" },
