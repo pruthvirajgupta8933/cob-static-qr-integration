@@ -62,7 +62,7 @@ const TransactionEnquirey = React.memo(() => {
   const initialValues = useMemo(() => ({
     clientCode: roles.merchant && clientCodeListArr.length > 0 ? clientCodeListArr[0][fnKey] : "",
     transaction_id: "",
-    transaction_from: "2"
+    transaction_from: "1"
   }), [roles.merchant, clientCodeListArr, fnKey]);
 
   const convertDate = useCallback((yourDate) => moment(yourDate).format("DD/MM/YYYY hh:mm a"), []);
@@ -145,7 +145,7 @@ const TransactionEnquirey = React.memo(() => {
   }, []);
 
   const txnOption = useMemo(() => [
-    // { key: "1", value: "Sabpaisa Transaction ID" },
+    { key: "1", value: "Sabpaisa Transaction ID" },
     { key: "2", value: "Client Transaction ID" }
   ], []);
 
