@@ -43,10 +43,10 @@ function fixKey(key) {
 // AES Encryption Function
 export function encryptPHP7(data, key, iv) {
   try {
-      console.log("fixedKey: before", key)
+
     // Fix the key to ensure it's 16 bytes
       const fixedKey = fixKey(key);
-      console.log("fixedKey: after", fixedKey)
+
       
       // Parse the key and IV to CryptoJS format (WordArray)
       const keyUtf8 = CryptoJS.enc.Utf8.parse(fixedKey);
@@ -66,19 +66,17 @@ export function encryptPHP7(data, key, iv) {
       // Return the encrypted data with IV appended at the end
       return `${encryptedDataInBase64}:${ivInBase64}`;
   } catch (error) {
-      console.error('Encryption failed: ', error);
+
       throw new Error('Encryption failed due to an unexpected error.');
   }
 }
 
 // AES Decryption Function For PHP7
-export function decryptPHP7(data,key) {
-  
+export function decryptPHP7(data, key) {
   try {
       // Split the encrypted data and the IV (separated by ':')
-      const parts = data.split(':');
-
-      if (parts.length !== 2) {
+    const parts = data.split(':');
+    if (parts.length !== 2) {
           throw new Error('Invalid encrypted data format.');
       }
 
@@ -105,7 +103,6 @@ export function decryptPHP7(data,key) {
 
       return decryptedText;
   } catch (error) {
-      console.error('Decryption failed: ', error);
       throw new Error('Decryption failed due to an unexpected error.');
   }
 }
@@ -124,19 +121,15 @@ function md5(key) {
 // str, authKey, authIV
 export function encryptAES256HEX(toBeEncryptString, key, authIV ) {
   if (!toBeEncryptString) {
-      console.error('String to be encrypted must not be null');
-      throw new Error('String to be encrypted must not be null');
+    throw new Error('String to be encrypted must not be null');
   }
   try {
       // Generate the key using SHA-256
       const secretKey = sha256(key);
 
       // Generate the IV using MD5
-      const iv = md5(authIV);
-      // console.log("MD5-key", secretKey.toString())
-      // console.log("MD5-IV", iv.toString())
+    const iv = md5(authIV);
 
-      // Encrypt the data using AES/CBC/PKCS7Padding (equivalent to PKCS5)
       const encrypted = CryptoJS.AES.encrypt(toBeEncryptString, secretKey, {
           iv: iv,
           mode: CryptoJS.mode.CBC,
@@ -146,15 +139,13 @@ export function encryptAES256HEX(toBeEncryptString, key, authIV ) {
       // Return the encrypted string in Base64 format
       return encrypted.toString();
   } catch (error) {
-      console.error('Encryption failed: ', error);
-      return null;
+    return null;
   }
 }
 
 // AES Decryption Function
 export function decryptAES256HEX(key, toBeDecryptString) {
   if (!toBeDecryptString) {
-      console.error('String to be decrypted must not be null');
       throw new Error('String to be decrypted must not be null');
   }
   try {
@@ -176,7 +167,6 @@ export function decryptAES256HEX(key, toBeDecryptString) {
 
       return decryptedText;
   } catch (error) {
-      console.error('Decryption failed: ', error);
       throw new Error('Decryption failed due to an unexpected error.');
   }
 }

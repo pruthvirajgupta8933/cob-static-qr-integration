@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import FormikController from '../../../../_components/formik/FormikController';
 // import { v4 as uuidv4 } from 'uuid';
 import CustomModal from '../../../../_components/custom_modal';
-import { Decrypt, Encrypt,encryptPHP7,decryptPHP7,encryptAES256HEX,decryptAES256HEX } from '../../../../utilities/aes';
+import { Decrypt, Encrypt, encryptPHP7, decryptPHP7, encryptAES256HEX, decryptAES256HEX } from '../../../../utilities/aes';
 import { axiosInstance, axiosInstanceAuth } from '../../../../utilities/axiosInstance';
 import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
@@ -45,27 +45,27 @@ function TransactionRefund(props) {
         payee_amount: Yup.number().required("Required")
     });
 
-const handleSubmit = async (values) => {
+    const handleSubmit = async (values) => {
         setSubmitLoader(true);
         const clientCode = values.clientCode;
         const amount = values.refund_amt;
         const spTxnId = values.txn_id;
         const clientTxnId = values.client_txn_id;
         const message = values.refund_reason;
-    
+
         try {
             const response = await axiosInstanceAuth.post(API_URL.CLIENT_DETAIL, {
                 clientCode: values.clientCode
             });
-    
+
             const authIV = response.data?.ClientData?.authIV;
             const authKey = response.data?.ClientData?.authKey;
             const authType = response?.data?.ClientData?.authType;
-           if (authIV && authKey && authType) {
+            if (authIV && authKey && authType) {
                 const str = `clientCode=${clientCode}&amount=${amount}&spTxnId=${spTxnId}&clientTxnId=${clientTxnId}&message=${message}`;
                 let enc;
                 let dc;
-                console.log("plain text", str)    
+
                 // Dynamically encrypt and decrypt based on authType
                 switch (authType) {
                     case "Encryption":
@@ -84,17 +84,14 @@ const handleSubmit = async (values) => {
                         return;
                 }
 
-                // console.log("ecrypt-str",enc)
-                 enc = enc.replace(/\+/g, "%2B");
- 
-    
+                enc = enc.replace(/\+/g, "%2B");
                 const reqBody = {
                     clientCode: clientCode,
                     refundQuery: enc
                 };
 
-               const refundResponse = await axiosInstance.post(API_URL.refundTxn, reqBody);
-                 switch (authType) {
+                const refundResponse = await axiosInstance.post(API_URL.refundTxn, reqBody);
+                switch (authType) {
                     case "Encryption":
                         dc = Decrypt(refundResponse.data.refundResponse, authKey, authIV);
                         // dc = decryptPHP7(refundResponse?.data?.refundResponse, authKey);
@@ -111,13 +108,13 @@ const handleSubmit = async (values) => {
                         return;
                 }
 
-                 const jsonRsp = JSON.parse(dc);
-                console.log("decrypt-code",dc)
-    
+                const jsonRsp = JSON.parse(dc);
+
+
                 refundResponse?.data?.apiStatusCode === '00'
                     ? toastConfig.successToast(jsonRsp.message || "Refund Request Initiated")
                     : toastConfig.warningToast(jsonRsp.message);
-    
+
                 setSubmitLoader(false);
                 //  props.setRefundModal(false);
             }
@@ -126,7 +123,7 @@ const handleSubmit = async (values) => {
             setSubmitLoader(false);
         }
     };
-    
+
 
     const headerTitle = "Refund Payment"
 
@@ -211,8 +208,6 @@ const handleSubmit = async (values) => {
                 </div>
             </div>)
     };
-
-
 
     return (
         <CustomModal headerTitle={headerTitle} modalBody={modalbody} modalToggle={props?.refundModal} fnSetModalToggle={props?.setRefundModal} modalSize={"modal-md"} />
