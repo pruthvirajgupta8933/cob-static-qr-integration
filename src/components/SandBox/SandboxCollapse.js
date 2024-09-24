@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Collapse from 'react-collapse';
 
 const CollapsibleForm = ({ title, formContent, isOpen, onToggle }) => {
@@ -12,13 +12,10 @@ const CollapsibleForm = ({ title, formContent, isOpen, onToggle }) => {
         ) : (
           <i className="fa fa-caret-right me-2"></i>
         )}
-
         <h6 className="mb-0 text-primary">{title}</h6>
       </div>
       <Collapse isOpened={isOpen}>
-        <form>
-          {formContent}
-        </form>
+        {formContent}
       </Collapse>
     </div>
   );
