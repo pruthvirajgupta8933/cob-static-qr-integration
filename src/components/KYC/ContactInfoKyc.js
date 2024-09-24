@@ -180,6 +180,12 @@ function ContactInfoKyc(props) {
 
   const handleSubmitContact = (values) => {
     setIsDisable(true);
+    const id_number =
+      idType === "1"
+        ? values.aadhar_number
+        : idType === "2"
+        ? values.dl_number
+        : "";
     dispatch(
       updateContactInfo({
         login_id: merchantloginMasterId,
@@ -187,7 +193,8 @@ function ContactInfoKyc(props) {
         contact_number: values.contact_number,
         email_id: values.email_id,
         modified_by: loginId,
-        aadhar_number: values.aadhar_number,
+        aadhar_number: id_number,
+        id_proof: idType,
       })
     )
       .then((res) => {
@@ -412,6 +419,7 @@ function ContactInfoKyc(props) {
     }
   };
   const handleDlVerification = async ({ values, setFieldValue }) => {
+    setIsLoading(true);
     const res = await dispatch(
       dlValidation({
         dl_number: values.dl_number,
@@ -427,18 +435,17 @@ function ContactInfoKyc(props) {
     } else if (res.payload?.status && res.payload?.valid) {
       setFieldValue("isDlVerified", 1);
     }
+    setIsLoading(false);
     setDlDobToggle(false);
   };
   const renderDobModal = ({ values, setFieldValue }) => {
     return (
       <>
-        <div class="mx-auto text-center">
+        <div className=" justify-content-between align-items-baseline d-flex-inline d-flex">
           <h6>Please enter your Date Of Birth</h6>
-        </div>
-        <div className=" justify-content-center d-flex-inline d-flex">
           <Field
             type="date"
-            className="form-control dob-input-kyc"
+            className="form-control dob-input-kyc w-50"
             name="dob"
             onChange={(e) => setFieldValue("dob", e.target.value)}
             placeholder="Enter DOB"
@@ -447,7 +454,7 @@ function ContactInfoKyc(props) {
           />
         </div>
         <div className="row m-4 text-center">
-          <div className="col-lg-6">
+          <div className="col-lg-12">
             <button
               className="btn btn cob-btn-primary btn-sm"
               type="button"
