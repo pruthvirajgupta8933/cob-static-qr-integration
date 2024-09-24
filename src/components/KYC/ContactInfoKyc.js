@@ -65,7 +65,7 @@ function ContactInfoKyc(props) {
   // const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
   const [aadhaarVerificationLoader, setAadhaarVerificationLoader] =
     useState(false);
-  const [idProofInputToggle, setIdProofInputToggle] = useState(false);
+  const [idProofInputToggle, setIdProofInputToggle] = useState(true);
   const [dlDobToggle, setDlDobToggle] = useState(false);
   const [idType, setIdType] = useState();
 
@@ -394,7 +394,7 @@ function ContactInfoKyc(props) {
               <a
                 href={() => false}
                 className={`btn cob-btn-primary btn-sm ${
-                  values.dl_number.length < 14 || errors?.dl_number
+                  values.dl_number?.length < 14 || errors?.dl_number
                     ? "disabled"
                     : ""
                 }`}
