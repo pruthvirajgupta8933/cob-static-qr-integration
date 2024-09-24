@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../../_components/formik/Yup";
@@ -124,17 +123,14 @@ const TransactionEnquirey = React.memo(() => {
       { key: "Payer Email", value: state.data.payerEmail },
       { key: "Status ", value: state.data.status },
       { key: "Bank Txn Id", value: state.data.bankTxnId },
-      // { key: "Client Name", value: state.data.client_name },
-      // { key: "Client Id", value: state.data.client_id },
       { key: "Payer Amount", value: state.data.amount },
       { key: "Paid Amount", value: state.data.paidAmount },
       { key: "Transaction Date", value: convertDate(state.data.transDate) },
       { key: "Client Code ", value: state.data.clientCode },
       { key: "Client Txn Id", value: state.data.clientTxnId },
-      { key: "Refund Track Id ", value: state.data.udf4 },
-      { key: "Chargeback ", value: state.data.udf2 },
-      { key: "Refund ", value: state.data.udf3 },
-      { key: "Settlement Status", value: state.data.udf1 },
+      { key: "Chargeback Status ", value: state.data.chargeBackStatus },
+      { key: "Refund Status", value: state.data.refundStatusCode },
+      { key: "Settlement Status", value: state.data.settlementStatus },
 
     ];
     setState(prev => ({ ...prev, printData: tempArr }));

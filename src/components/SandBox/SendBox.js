@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
-import API_URL from "../../config";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import SandboxCollapse from "./SandboxCollapse";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { sandBoxService } from "../../services/sandbox/sandbox.service";
@@ -13,7 +11,7 @@ function Sandbox() {
   const [openCollapse, setOpenCollapse] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState([]);
-  
+
   const [isCopied, setIsCopied] = useState(false);
 
   const roles = roleBasedAccess();
@@ -28,10 +26,10 @@ function Sandbox() {
 
   const clientDetailRequest = async () => {
     try {
-      sandBoxService.clientDetailsListApi({clientCode: clientCodeOfMerchant}).then((res)=>{
+      sandBoxService.clientDetailsListApi({ clientCode: clientCodeOfMerchant }).then((res) => {
         setData(res?.ClientData);
       })
-      
+
     } catch (error) {
       console.error("Error fetching client details", error);
     }
@@ -134,42 +132,28 @@ function Sandbox() {
                       onToggle={() => handleToggle(index + 1)}
                       title={form.title}
                       formContent={
-                        <form>
-                          <div className="form-group row">
-                            {form.initialValues.map((item, i) => (
-                              <div className="col-lg-4" key={i}>
-                                <label className="col-form-label">{item.label}</label>
-                                <div className="input-group">
-                                  <input
-                                    type={item.label === "Password" && !showPassword ? "password" : "text"}
-                                    className="form-control"
-                                    disabled
-                                    value={item.value}
-                                  />
-                                  {item.label === "Password" && (
-                                    <>
-                                      <div className="input-group-append">
-                                        <span
-                                          className="input-group-text"
-                                          style={{ cursor: "pointer" }}
-                                          onClick={togglePasswordVisibility}
-                                        >
-                                          <i className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`} style={{ fontSize: "12px" }}></i>
-                                        </span>
-                                      </div>
-                                      <div className="input-group-append">
-                                        <span
-                                          className="input-group-text"
-                                          style={{ cursor: "pointer" }}
-                                          onClick={() => copyToClipboard(item.value)}
-                                          data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
-                                        >
-                                          <i className="fa fa-copy" style={{ fontSize: "12px" }}></i>
-                                        </span>
-                                      </div>
-                                    </>
-                                  )}
-                                  {item.label !== "Password" && (
+                        <div className="form-group row px-3">
+                          {form.initialValues.map((item, i) => (
+                            <div className="col-lg-4" key={i}>
+                              <label className="col-form-label">{item.label}</label>
+                              <div className="input-group">
+                                <input
+                                  type={item.label === "Password" && !showPassword ? "password" : "text"}
+                                  className="form-control"
+                                  disabled
+                                  value={item.value}
+                                />
+                                {item.label === "Password" && (
+                                  <>
+                                    <div className="input-group-append">
+                                      <span
+                                        className="input-group-text"
+                                        style={{ cursor: "pointer" }}
+                                        onClick={togglePasswordVisibility}
+                                      >
+                                        <i className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`} style={{ fontSize: "12px" }}></i>
+                                      </span>
+                                    </div>
                                     <div className="input-group-append">
                                       <span
                                         className="input-group-text"
@@ -180,12 +164,24 @@ function Sandbox() {
                                         <i className="fa fa-copy" style={{ fontSize: "12px" }}></i>
                                       </span>
                                     </div>
-                                  )}
-                                </div>
+                                  </>
+                                )}
+                                {item.label !== "Password" && (
+                                  <div className="input-group-append">
+                                    <span
+                                      className="input-group-text"
+                                      style={{ cursor: "pointer" }}
+                                      onClick={() => copyToClipboard(item.value)}
+                                      data-tip={isCopied ? "Copied!" : "Copy to clipboard"}
+                                    >
+                                      <i className="fa fa-copy" style={{ fontSize: "12px" }}></i>
+                                    </span>
+                                  </div>
+                                )}
                               </div>
-                            ))}
-                          </div>
-                        </form>
+                            </div>
+                          ))}
+                        </div>
                       }
                     />
                   )
