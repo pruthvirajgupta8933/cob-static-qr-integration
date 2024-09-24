@@ -48,7 +48,7 @@ function SideNavbar() {
                     menu?.is_active &&
                     <React.Fragment key={menu.app_name}>
                         <div onClick={(e) => toggleMenu(e)} >
-                            <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
+                            <h6 className={`sidebar-heading context-menu d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
                                 <span className="font-size-14 ">{menu.app_name}</span>
                                 <div className="link-secondary">
                                     <i className={`fa ${index !== 0 ? 'fa-plus' : 'fa-minus'}`} id={`icon_${menu?.app_code}`}></i>
@@ -76,7 +76,7 @@ function SideNavbar() {
 
 
                 <div onClick={(e) => toggleMenu(e)} >
-                    <h6 className={`sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
+                    <h6 className={`sidebar-heading context-menu d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}>
                         <span className="font-size-14 ">Latest updates</span>
                         <div className="link-secondary">
                             <i className={`fa fa-plus`}></i>
