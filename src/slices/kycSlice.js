@@ -162,6 +162,7 @@ const initialState = {
     logs: {},
   },
   merchantKycData: {},
+  kycIdList: [],
 };
 
 export const updateContactInfo = createAsyncThunk(
@@ -929,6 +930,15 @@ export const saveKycConsent = createAsyncThunk(
 );
 
 //---------------- KYC CONSENT TAP API INTEGRATION --------------//
+export const getKycIDList = createAsyncThunk(
+  "kyc/getIDList",
+  async (requestParam) => {
+    const response = await axiosInstanceJWT
+      .get(API_URL.KYC_ID_LIST, requestParam)
+      .catch((error) => error.response);
+    return response.data;
+  }
+);
 
 export const kycSlice = createSlice({
   name: "kyc",
@@ -1293,6 +1303,17 @@ export const kycSlice = createSlice({
       })
       .addCase(kycDetailsByMerchantLoginId.rejected, (state) => {
         state.merchantKycData = {};
+      })
+
+      //kycIDList
+      .addCase(getKycIDList.pending, (state) => {
+        state.kycIdList = [];
+      })
+      .addCase(getKycIDList.fulfilled, (state, action) => {
+        state.kycIdList = action.payload;
+      })
+      .addCase(getKycIDList.rejected, (state) => {
+        state.kycIdList = [];
       });
   },
 });

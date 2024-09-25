@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../_components/formik/Yup";
@@ -9,6 +9,7 @@ import {
   updateContactInfo,
   kycUserList,
   GetKycTabsStatus,
+  getKycIDList,
   // otpVerificationForContactForPhone,
 } from "../../slices/kycSlice";
 
@@ -68,12 +69,10 @@ function ContactInfoKyc(props) {
   const [idProofInputToggle, setIdProofInputToggle] = useState(true);
   const [dlDobToggle, setDlDobToggle] = useState(false);
   const [idType, setIdType] = useState();
-
-  // useEffect(() => {
-  //   if (KycList?.aadharNumber?.length === 12) {
-  //     setIsAadharNumberVerified(true)
-  //   }
-  // }, [KycList])
+  const kycIdList = useSelector((state) => state.kyc.kycIdList);
+  useEffect(() => {
+    dispatch(getKycIDList());
+  }, []);
 
   const initialValues = {
     name: KycList?.name,
@@ -183,7 +182,7 @@ function ContactInfoKyc(props) {
     const id_number =
       idType === "1"
         ? values.aadhar_number
-        : idType === "2"
+        : idType === "4"
         ? values.dl_number
         : "";
     dispatch(
@@ -194,7 +193,7 @@ function ContactInfoKyc(props) {
         email_id: values.email_id,
         modified_by: loginId,
         aadhar_number: id_number,
-        id_proof: idType,
+        id_proof_type: idType,
       })
     )
       .then((res) => {
@@ -301,7 +300,7 @@ function ContactInfoKyc(props) {
   };
 
   const idProofhandler = (value) => {
-    if (value === "1" || value === "2") {
+    if (value === "1" || value === "4") {
       setIdProofInputToggle(false);
       setIdType(value);
     } else {
@@ -367,7 +366,7 @@ function ContactInfoKyc(props) {
           )}
         </>
       );
-    else if (idType === "2") {
+    else if (idType === "4") {
       return (
         <>
           <Field
@@ -524,8 +523,16 @@ function ContactInfoKyc(props) {
                       disabled={VerifyKycStatus === "Verified" ? true : false}
                     >
                       <option value="">Select ID Proof</option>
-                      <option value="1">Aadhaar Number</option>
-                      <option value="2">Driving License Number</option>
+                      {kycIdList.data?.map((item) => {
+                        if (item.is_active)
+                          return (
+                            <option value={item.id}>{item.id_type}</option>
+                          );
+                        return <></>;
+                      })}
+                      <option value={kycIdList.data?.length + 1}>
+                        Driving License Number
+                      </option>
                     </select>
                   ) : (
                     <React.Fragment>
