@@ -33,6 +33,7 @@ import classes from "../allpage.module.css"
 import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import TransactionRefund from "./TransactionRefund";
 import ExportTransactionHistory from "./ExportTransactionHistory";
+import TransactionDetailModal from "./TransactionDetailModal";
 
 
 
@@ -560,6 +561,7 @@ const TransactionHistory = () => {
                 <Notification />
                 {/* refundModal, setRefundModal */}
                 {refundModal && <TransactionRefund refundModal={refundModal} setRefundModal={setRefundModal} radioInputVal={radioInputVal} />}
+                <TransactionDetailModal />
 
             </div>
             <main>
@@ -864,7 +866,6 @@ const TransactionHistory = () => {
                                         onPageChange={(selectedItem) => {
                                             setCurrentPage(selectedItem.selected + 1)
                                             setRadioInputVal({})
-
                                         }}
                                         containerClassName={'pagination justify-content-center'}
                                         activeClassName={'active'}
@@ -877,7 +878,6 @@ const TransactionHistory = () => {
                                         pageLinkClassName={'page-link'}
                                     />
                                 </div>
-
                             ) : (
                                 <></>
                             )}
