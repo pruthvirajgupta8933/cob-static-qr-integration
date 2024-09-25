@@ -230,12 +230,12 @@ const MultiUserOnboard = () => {
           )}
           {isEnable("individual_referral") && (
             <div className="card py-2 px-2 mt-5">
-              <Referral type="individual" />
+              <Referral type="individual" zoneCode={selectedValue} />
             </div>
           )}
           {isEnable("company_referral") && (
             <div className="card py-2 px-2 mt-5">
-              <Referral type="company" />
+              <Referral type="company" zoneCode={selectedValue} />
             </div>
           )}
           {isEnable("referrer") && showForm && (

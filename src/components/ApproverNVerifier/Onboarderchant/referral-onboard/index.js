@@ -63,7 +63,7 @@ const Referral = ({ type }) => {
               <a
                 className={`nav-link cursor_pointer px-2 ${
                   currentTab === tab.id && "active-secondary"
-                }  `}
+                } pe-none`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}
                 data-mdb-toggle="pill"
