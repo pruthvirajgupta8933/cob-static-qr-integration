@@ -559,7 +559,6 @@ const TransactionHistory = () => {
         <section className="">
             <div className="profileBarStatus">
                 <Notification />
-                {/* refundModal, setRefundModal */}
                 {refundModal && <TransactionRefund refundModal={refundModal} setRefundModal={setRefundModal} radioInputVal={radioInputVal} />}
                 <TransactionDetailModal />
 
