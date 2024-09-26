@@ -742,7 +742,7 @@ const TransactionHistory = () => {
                         )}
 
                         <div className="overflow-auto">
-                            <table className="table table-bordered">
+                            <table className="table table-bordered table-hover">
                                 <thead>
                                     {txnList.length > 0 ? (
                                         <tr>
