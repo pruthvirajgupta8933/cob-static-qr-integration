@@ -79,16 +79,12 @@ function ContactInfoKyc(props) {
     email_id: KycList?.emailId,
 
     // ID proof verification
-    aadhar_number: KycList?.aadharNumber,
-    oldAadharNumber: KycList?.aadharNumber,
+    id_number: KycList?.aadharNumber,
+    oldIdNumber: KycList?.aadharNumber,
     aadhaarOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
     isIdProofVerified: KycList?.aadharNumber ? 1 : "",
-
-    dl_number: KycList?.dlNumber,
-    oldDlNumber: KycList?.dlNumber,
-    isDlVerified: KycList?.dlNumber ? 1 : "",
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
@@ -143,20 +139,20 @@ function ContactInfoKyc(props) {
       otherwise: Yup.string(),
     }),
 
-    aadhar_number: Yup.string()
+    id_number: Yup.string()
       .allowOneSpace()
-      .max(12, "Exceeds the limit")
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+      // .max(12, "Exceeds the limit")
+      // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      // .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
       .required("Required")
       .nullable(),
-    oldAadharNumber: Yup.string()
+    oldIdNumber: Yup.string()
       .trim()
-      .oneOf(
-        [Yup.ref("aadhar_number"), null],
-        "You need to verify Your Aadhaar Number"
-      )
-      .required("You need to verify Your Aadhaar Number")
+      // .oneOf(
+      //   [Yup.ref("aadhar_number"), null],
+      //   "You need to verify Your Aadhaar Number"
+      // )
+      // .required("You need to verify Your Aadhaar Number")
       .nullable(),
     aadhaarOtpDigit: Yup.string().when("isProofOtpSend", {
       is: true,
@@ -173,18 +169,8 @@ function ContactInfoKyc(props) {
       .nullable(),
   });
 
-  // useEffect(() => {
-  //   setOtpForPhone({ otp: "" })
-  // }, [showOtpVerifyModalPhone])
-
   const handleSubmitContact = (values) => {
     setIsDisable(true);
-    const id_number =
-      idType === "1"
-        ? values.aadhar_number
-        : idType === "4"
-        ? values.dl_number
-        : "";
     dispatch(
       updateContactInfo({
         login_id: merchantloginMasterId,
@@ -192,7 +178,7 @@ function ContactInfoKyc(props) {
         contact_number: values.contact_number,
         email_id: values.email_id,
         modified_by: loginId,
-        aadhar_number: id_number,
+        aadhar_number: values.id_number,
         id_proof_type: idType,
       })
     )
@@ -309,48 +295,47 @@ function ContactInfoKyc(props) {
   };
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
-    if (idType === "1")
-      return (
-        <>
-          <Field
-            type="text"
-            name="aadhar_number"
-            autoComplete="off"
-            className="form-control maskedInput"
-            placeholder="Enter ID Proof Number"
-            onChange={(e) => {
-              setFieldValue("aadhar_number", e.target.value);
-            }}
-            disabled={VerifyKycStatus === "Verified" ? true : false}
-          />
+    return (
+      <>
+        <Field
+          type="text"
+          name="id_number"
+          autoComplete="off"
+          className="form-control maskedInput"
+          placeholder="Enter ID Proof Number"
+          onChange={(e) => {
+            setFieldValue("id_number", e.target.value);
+          }}
+          disabled={VerifyKycStatus === "Verified" ? true : false}
+        />
 
-          {values.oldAadharNumber &&
-          values.aadhar_number &&
-          values.oldAadharNumber === values.aadhar_number ? (
-            <span className="success input-group-append">
-              <img
-                src={gotVerified}
-                alt=""
-                title=""
-                width={"20px"}
-                height={"20px"}
-                className="btn-outline-secondary"
-              />
-            </span>
-          ) : (
-            <div className="input-group-append">
+        {values.oldIdNumber &&
+        values.id_number &&
+        values.oldIdNumber === values.id_number ? (
+          <span className="success input-group-append">
+            <img
+              src={gotVerified}
+              alt=""
+              title=""
+              width={"20px"}
+              height={"20px"}
+              className="btn-outline-secondary"
+            />
+          </span>
+        ) : (
+          <div className="input-group-append">
+            {idType === "1" && (
               <a
                 href={() => false}
                 className={`btn cob-btn-primary btn-sm ${
-                  aadhaarVerificationLoader || errors?.aadhar_number
+                  values.id_number?.length < 12 ||
+                  aadhaarVerificationLoader ||
+                  errors?.id_number
                     ? "disabled"
                     : ""
                 }`}
                 onClick={() => {
-                  aadhaarVerificationHandler(
-                    values.aadhar_number,
-                    setFieldValue
-                  );
+                  aadhaarVerificationHandler(values.id_number, setFieldValue);
                 }}
                 // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
               >
@@ -362,60 +347,26 @@ function ContactInfoKyc(props) {
                   "Send OTP"
                 )}
               </a>
-            </div>
-          )}
-        </>
-      );
-    else if (idType === "4") {
-      return (
-        <>
-          <Field
-            type="text"
-            name="dl_number"
-            autoComplete="off"
-            className="form-control maskedInput"
-            placeholder="Enter ID Proof Number"
-            onChange={(e) => {
-              setFieldValue("dl_number", e.target.value);
-            }}
-            disabled={VerifyKycStatus === "Verified" ? true : false}
-          />
-
-          {(values.oldDlNumber &&
-            values.dl_number &&
-            values.oldDlNumber === values.dl_number) ||
-          values.isDlVerified === 1 ? (
-            <span className="success input-group-append">
-              <img
-                src={gotVerified}
-                alt=""
-                title=""
-                width={"20px"}
-                height={"20px"}
-                className="btn-outline-secondary"
-              />
-            </span>
-          ) : (
-            <div className="input-group-append">
+            )}
+            {idType === "4" && (
               <a
                 href={() => false}
                 className={`btn cob-btn-primary btn-sm ${
-                  values.dl_number?.length < 14 || errors?.dl_number
+                  values.id_number?.length < 14 || errors?.id_number
                     ? "disabled"
                     : ""
                 }`}
                 onClick={() => {
                   setDlDobToggle(true);
                 }}
-                // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
               >
                 Verify
               </a>
-            </div>
-          )}
-        </>
-      );
-    }
+            )}
+          </div>
+        )}
+      </>
+    );
   };
   const handleDlVerification = async ({ values, setFieldValue }) => {
     setIsLoading(true);
@@ -440,8 +391,10 @@ function ContactInfoKyc(props) {
   const renderDobModal = ({ values, setFieldValue }) => {
     return (
       <>
-        <div className=" justify-content-between align-items-baseline d-flex-inline d-flex">
-          <h6>Please enter your Date Of Birth</h6>
+        <label className="col-form-label mx-auto w-100 p-2 text-center">
+          Please enter your Date Of Birth
+        </label>
+        <div className="input-group mb-3 text-center mx-auto w-50">
           <Field
             type="date"
             className="form-control dob-input-kyc w-50"
@@ -451,26 +404,19 @@ function ContactInfoKyc(props) {
             required={true}
             disabled={isLoading}
           />
-        </div>
-        <div className="row m-4 text-center">
-          <div className="col-lg-12">
-            <button
-              className="btn btn cob-btn-primary btn-sm"
-              type="button"
-              onClick={() => handleDlVerification({ values, setFieldValue })}
-            >
-              {isLoading ? (
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                >
-                  <span className="sr-only">Loading...</span>
-                </span>
-              ) : (
-                "Verify"
-              )}
-            </button>
-          </div>
+          <button
+            className="btn btn cob-btn-primary btn-sm"
+            type="button"
+            onClick={() => handleDlVerification({ values, setFieldValue })}
+          >
+            {isLoading ? (
+              <span className="spinner-border spinner-border-sm" role="status">
+                <span className="sr-only">Loading...</span>
+              </span>
+            ) : (
+              "Submit"
+            )}
+          </button>
         </div>
       </>
     );
@@ -502,19 +448,17 @@ function ContactInfoKyc(props) {
               </div>
 
               <div className="col-lg-6 col-sm-12 col-md-12">
-                <div className="col-form-label mt-0 p-2">
-                  <label className="d-flex justify-content-between">
-                    <span>
-                      ID Proof<span className="text-danger"> *</span>
-                    </span>
-                    <span
-                      className="text-decoration-underline text-primary cursor_pointer"
-                      onClick={() => setIdProofInputToggle((prev) => !prev)}
-                    >
-                      Select ID Proof
-                    </span>
-                  </label>
-                </div>
+                <label className="d-flex justify-content-between col-form-label mt-0 p-2">
+                  <span>
+                    ID Proof<span className="text-danger"> *</span>
+                  </span>
+                  <span
+                    className="text-decoration-underline text-primary cursor_pointer"
+                    onClick={() => setIdProofInputToggle((prev) => !prev)}
+                  >
+                    Select ID Proof
+                  </span>
+                </label>
                 <div className="input-group">
                   {idProofInputToggle ? (
                     <select
@@ -543,7 +487,7 @@ function ContactInfoKyc(props) {
                 <ErrorMessage name="aadhar_number">
                   {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
-                <ErrorMessage name="oldAadharNumber">
+                <ErrorMessage name="oldIdNumber">
                   {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
                 <ErrorMessage name="isIdProofVerified">
