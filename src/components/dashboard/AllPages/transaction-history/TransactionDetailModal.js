@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import classes from "./transaction.module.css"
+import moment from 'moment'
 
 function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
 
@@ -10,6 +11,16 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
             setUdfToggle(false)
         }
     }, [])
+
+    const convertDate = (yourDate) => {
+        let date;
+        if (yourDate === null) {
+            date = "N/A"
+        } else {
+            date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+        }
+        return date;
+    };
 
     return (
         <div className={`modal fade mymodals show d-flex justify-content-end ${classes.z_index_99999}`}>
@@ -32,9 +43,9 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
                                     </tr>
                                     <tr>
                                         <th>Transaction Date</th>
-                                        <td>{transactionData.trans_date}</td>
-                                        <th>Payment Status</th>
-                                        <td>{transactionData.status}</td>
+                                        <td>{convertDate(transactionData.trans_date)}</td>
+                                        <th>Transaction Complete Date</th>
+                                        <td>{convertDate(transactionData.trans_complete_date)}</td>
                                     </tr>
                                     <tr>
                                         <th>Bank Response</th>
@@ -44,6 +55,8 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
                                     </tr>
 
                                     <tr>
+                                        <th>Payment Status</th>
+                                        <td>{transactionData.status}</td>
                                         <th>Client Code</th>
                                         <td>{transactionData.client_code}</td>
                                     </tr>

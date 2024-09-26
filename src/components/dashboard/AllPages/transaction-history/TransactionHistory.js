@@ -751,10 +751,9 @@ const TransactionHistory = () => {
                                             <th> Client Transaction ID</th>
                                             <th> Amount</th>
                                             <th> Transaction Date</th>
+                                            <th> Transaction Complete Date</th>
                                             <th> Payment Status</th>
                                             <th> Payer First Name</th>
-                                            <th> Payer Last Name</th>
-                                            <th> Payer Mob number</th>
                                             <th> Payment Mode</th>
                                         </tr>
                                     ) : (
@@ -781,10 +780,9 @@ const TransactionHistory = () => {
                                                         {Number.parseFloat(item.payee_amount).toFixed(2)}
                                                     </td>
                                                     <td onClick={() => transactionDetailModalHandler(item)}>{convertDate(item.trans_date)}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>{convertDate(item.trans_complete_date)}</td>
                                                     <td onClick={() => transactionDetailModalHandler(item)}>{item.status}</td>
                                                     <td onClick={() => transactionDetailModalHandler(item)}>{item.payee_first_name}</td>
-                                                    <td onClick={() => transactionDetailModalHandler(item)}>{item.payee_lst_name}</td>
-                                                    <td onClick={() => transactionDetailModalHandler(item)}>{item.payee_mob}</td>
                                                     <td onClick={() => transactionDetailModalHandler(item)}>{item.payment_mode}</td>
 
                                                 </tr>
