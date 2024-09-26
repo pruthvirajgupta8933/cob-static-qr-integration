@@ -12,8 +12,8 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
     }, [])
 
     return (
-        <div className="modal fade mymodals show d-flex justify-content-end">
-            <div className={`modal-dialog modal-xl m-0 ${classes.z_index_99999} `} >
+        <div className={`modal fade mymodals show d-flex justify-content-end ${classes.z_index_99999}`}>
+            <div className={`modal-dialog modal-xl m-0 `} >
                 <div className="modal-content rounded-0">
                     <div className="modal-header">
                         <h1 className="modal-title fs-5 border-start border-5 ps-2">Sabpaisa Transaction ID : <span className='text-primary'>123412341234</span></h1>
