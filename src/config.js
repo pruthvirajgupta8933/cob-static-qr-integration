@@ -11,8 +11,6 @@ let url,
   qwick_form_url,
   refund_url = "";
 
-
-
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
@@ -21,33 +19,29 @@ if (ENV_PROD) {
   b2b_url = "https://b2becollect.sabpaisa.in";
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
-  widget_url = "https://paywidget.sabpaisa.in"
-  widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js"
-  refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi"
+  widget_url = "https://paywidget.sabpaisa.in";
+  widget_script =
+    "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
+  refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
-  qwick_form_url = "https://qwikforms.in"
-
-
+  qwick_form_url = "https://qwikforms.in";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
-  widget_url = "https://stage-widget.sabpaisa.in"
+  widget_url = "https://stage-widget.sabpaisa.in";
   payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
-  widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js"
-  refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi"
-  qwick_form_url = "https://stage-qwikform.sabpaisa.in"
-
-
+  widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js";
+  refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi";
+  qwick_form_url = "https://stage-qwikform.sabpaisa.in";
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
-
 
 const API_LIVE = {
   BASE_URL_COB: url,
@@ -58,10 +52,6 @@ const API_LIVE = {
 
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
   getExpectedTransaction: `${kyc_url}/kyc/get-range/transaction-range`,
-
-
-
-
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
@@ -83,12 +73,12 @@ const API_LIVE = {
   MID_CREATE_API: `${url}/mid/create/`,
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
 
-
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/REST/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:
+    adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE: adminAPIURL + "/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
@@ -138,8 +128,7 @@ const API_LIVE = {
   GET_CUSTOMERS: `${payLinkAPIURL}/getCustomers/`,
   SMART_UPLOAD: `${payLinkAPIURL}/smartupload`,
   EDIT_CUSTOMER: `${payLinkAPIURL}/editCustomer/`,
-  GET_CUSTOMER_TYPE:
-    `${payLinkAPIURL}/getCustomerTypes`,
+  GET_CUSTOMER_TYPE: `${payLinkAPIURL}/getCustomerTypes`,
   ADD_LINK: `${payLinkAPIURL}/addLink`,
   ADD_CUSTOMER: `${payLinkAPIURL}/addCustomers`,
   DELETE_CUSTOMER: `${payLinkAPIURL}/deleteCustomer`,
@@ -166,7 +155,6 @@ const API_LIVE = {
   NODE_PG_URL: "https://cob-node-server.herokuapp.com/getPg/pg-url/",
   MANDATE_REGISTRATION:
     "https://subscription.sabpaisa.in/subscription/mandateRegistration",
-
 
   /* ViewTxnEnqMultiParam */
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
@@ -294,7 +282,7 @@ const API_LIVE = {
   UPDATE_SETTLEMENT_INFO: `${kyc_url}/kyc/update-kyc/settlement-info/`,
   UPLOAD_DOCUMENT: `${kyc_url}/kyc/update-kyc/additional-doc/`,
 
-
+  KYC_ID_LIST: `${kyc_url}/kyc/id-proof/`,
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
@@ -304,7 +292,6 @@ const API_LIVE = {
   CIN_DETAIL: `${kyc_validate}/validator/validate-master-data/cin-lookup/`,
   Aadhar_number: `${kyc_validate}/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_validate}/validator/validate-aadhar/verify-otp/`,
-
 
   // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,
@@ -370,14 +357,11 @@ const API_LIVE = {
   mandateSubmit: `${subAPIURL}/registration`,
   mandateSendRequest: `https://enach.npci.org.in/onmags/sendRequest`,
 
-
-
   // for chart
   GET_TRANSACTION_DATA_CHART: reportAPIURL + "/REST/getSuccessGraph",
 
   //////  client list export to xl
   exportOflineMerchant: `${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`,
-
 
   // bank merchant onboard API's // kyc_url 'http://192.168.34.91:8000'
   saveBasicDetails: `${kyc_url}/kyc/bank-merchant/basic-detail/`,
@@ -389,11 +373,9 @@ const API_LIVE = {
   /// userInfo api
   userInfoLoginData: `${kyc_url}/kyc/get-merchant-data/login-data/`,
 
-
   //   merchant list with the subscription data
   fetchAllMerchantListWithSubscriptionData: `${url}/subscription/?order_by=-id`,
   unsubscribeProductPlan: `${url}/subscription/unsubscribe-plan/`,
-
 
   // adding referral merchant
   addReferral: `${kyc_url}/kyc/referrer/add-referrer/`,
@@ -413,22 +395,13 @@ const API_LIVE = {
   // merchant onboarding in qwick form
   qwickFormOnboard: `${qwick_form_url}/QwikForms/cobMerchant/saveClientCredentials`,
 
-
   // get merchant data by client id
   clientDataById: `${url}/GetClientByID`,
 
   //ipWhiteList
 
-  IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`
-
-
-
-
+  IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`,
 };
-
-
-
-
 
 const B2B_API_LIVE = {
   challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`,
@@ -437,31 +410,30 @@ const B2B_API_LIVE = {
 
 const WIDGET_LIVE = {
   WIDGET_CLIENT_KEY: `${widget_url}/widget/client-master/create-client/`,
-  WIDGET_DETAILS: `${widget_url}/widget/client-master/get_client_details/`
-}
+  WIDGET_DETAILS: `${widget_url}/widget/client-master/get_client_details/`,
+};
 const WIDGET_SCRIPT_LIVE = {
-  SCRIPT_URL: `${widget_script}`
-}
-
+  SCRIPT_URL: `${widget_script}`,
+};
 
 export const wsConnectUrl = {
   connectionURL: webSocketUrl,
-  readNotification: `${kyc_url}/kyc/notification/fetch_all/` //?page_size=5&page=1
-}
+  readNotification: `${kyc_url}/kyc/notification/fetch_all/`, //?page_size=5&page=1
+};
 
 const API_URL = API_LIVE;
 
 export const WIDGET_URL = WIDGET_LIVE;
 // export const Qwick_Form = qwick_form_url;
 
-export const WIDGET_SCRIPT_URL = WIDGET_SCRIPT_LIVE
+export const WIDGET_SCRIPT_URL = WIDGET_SCRIPT_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
 
 export const APP_ENV = ENV_PROD;
 
-export const TIMEOUT = 300000; // add milisecond 
+export const TIMEOUT = 300000; // add milisecond
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";
 
 // COB PG credential
