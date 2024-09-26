@@ -33,6 +33,7 @@ import classes from "../allpage.module.css"
 import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import TransactionRefund from "./TransactionRefund";
 import ExportTransactionHistory from "./ExportTransactionHistory";
+import TransactionDetailModal from "./TransactionDetailModal";
 
 
 
@@ -65,6 +66,8 @@ const TransactionHistory = () => {
     const [refundModal, setRefundModal] = useState(false)
     const [openModal, setOpenModal] = useState(false);
     const [downloadData, setDownloadData] = useState({})
+    const [transactionDetailModal, setTransactionDetailModal] = useState(false)
+    const [selectedTransaction, setSelectedTransaction] = useState({})
 
 
 
@@ -549,8 +552,11 @@ const TransactionHistory = () => {
 
 
 
-
-
+    // handle transaction detail modal and display the selected record
+    const transactionDetailModalHandler = (transactionData) => {
+        setSelectedTransaction(transactionData)
+        setTransactionDetailModal(true)
+    }
 
 
 
@@ -558,8 +564,8 @@ const TransactionHistory = () => {
         <section className="">
             <div className="profileBarStatus">
                 <Notification />
-                {/* refundModal, setRefundModal */}
                 {refundModal && <TransactionRefund refundModal={refundModal} setRefundModal={setRefundModal} radioInputVal={radioInputVal} />}
+                {transactionDetailModal && <TransactionDetailModal fnSetModalToggle={() => setTransactionDetailModal()} transactionData={selectedTransaction} />}
 
             </div>
             <main>
@@ -741,46 +747,14 @@ const TransactionHistory = () => {
                                     {txnList.length > 0 ? (
                                         <tr>
                                             <th> {radioInputVal?.status ? <p className="text-primary m-0 user_info" onClick={() => setRadioInputVal({})}> Unselect </p> : "Select"}</th>
-                                            <th> S.No</th>
-                                            <th> Trans ID</th>
-                                            <th> Client Trans ID</th>
-                                            <th> Challan Number / VAN</th>
+                                            <th> Transaction ID</th>
+                                            <th> Client Transaction ID</th>
                                             <th> Amount</th>
                                             <th> Transaction Date</th>
+                                            <th> Transaction Complete Date</th>
                                             <th> Payment Status</th>
                                             <th> Payer First Name</th>
-                                            <th> Payer Last Name</th>
-                                            <th> Payer Mob number</th>
-                                            <th> Payer Email</th>
-                                            <th> Client Code</th>
                                             <th> Payment Mode</th>
-                                            <th> Payer Address</th>
-                                            <th> Encrypted PAN</th>
-                                            <th> Udf1</th>
-                                            <th> Udf2</th>
-                                            <th> Udf3</th>
-                                            <th> Udf4</th>
-                                            <th> Udf5</th>
-                                            <th> Udf6</th>
-                                            <th> Udf7</th>
-                                            <th> Udf8</th>
-                                            <th> Udf9</th>
-                                            <th> Udf10</th>
-                                            <th> Udf11</th>
-                                            <th> Udf12</th>
-                                            <th> Udf13</th>
-                                            <th> Udf14</th>
-                                            <th> Udf15</th>
-                                            <th> Udf16</th>
-                                            <th> Udf17</th>
-                                            <th> Udf18</th>
-                                            <th> Udf19</th>
-                                            <th> Udf20</th>
-                                            <th> Gr.No</th>
-                                            <th> Bank Response</th>
-                                            <th> IFSC Code</th>
-                                            <th> Payer Account No</th>
-                                            <th> Bank Txn Id</th>
                                         </tr>
                                     ) : (
                                         <></>
@@ -799,50 +773,18 @@ const TransactionHistory = () => {
                                                             onClick={(e) => setRadioInputVal(item)}
                                                             checked={item.txn_id === radioInputVal?.txn_id}
                                                         />}
-
                                                     </td>
-                                                    <td>{indexMemo + (i + 1)}</td>
-                                                    <td>{item.txn_id}</td>
-                                                    <td>{item.client_txn_id}</td>
-                                                    <td>{item.challan_no}</td>
-                                                    <td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)} >{item.txn_id}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)} >{item.client_txn_id}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>
                                                         {Number.parseFloat(item.payee_amount).toFixed(2)}
                                                     </td>
-                                                    <td>{convertDate(item.trans_date)}</td>
-                                                    <td>{item.status}</td>
-                                                    <td>{item.payee_first_name}</td>
-                                                    <td>{item.payee_lst_name}</td>
-                                                    <td>{item.payee_mob}</td>
-                                                    <td>{item.payee_email}</td>
-                                                    <td>{item.client_code}</td>
-                                                    <td>{item.payment_mode}</td>
-                                                    <td>{item.payee_address}</td>
-                                                    <td>{item.encrypted_pan}</td>
-                                                    <td>{item.udf1}</td>
-                                                    <td>{item.udf2}</td>
-                                                    <td>{item.udf3}</td>
-                                                    <td>{item.udf4}</td>
-                                                    <td>{item.udf5}</td>
-                                                    <td>{item.udf6}</td>
-                                                    <td>{item.udf7}</td>
-                                                    <td>{item.udf8}</td>
-                                                    <td>{item.udf9}</td>
-                                                    <td>{item.udf10}</td>
-                                                    <td>{item.udf11}</td>
-                                                    <td>{item.udf12}</td>
-                                                    <td>{item.udf13}</td>
-                                                    <td>{item.udf14}</td>
-                                                    <td>{item.udf15}</td>
-                                                    <td>{item.udf16}</td>
-                                                    <td>{item.udf17}</td>
-                                                    <td>{item.udf18}</td>
-                                                    <td>{item.udf19}</td>
-                                                    <td>{item.udf20}</td>
-                                                    <td>{item.gr_number}</td>
-                                                    <td>{item.bank_message}</td>
-                                                    <td>{item.ifsc_code}</td>
-                                                    <td>{item.payer_acount_number}</td>
-                                                    <td>{item.bank_txn_id}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>{convertDate(item.trans_date)}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>{convertDate(item.trans_complete_date)}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>{item.status}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>{item.payee_first_name}</td>
+                                                    <td onClick={() => transactionDetailModalHandler(item)}>{item.payment_mode}</td>
+
                                                 </tr>
                                             );
                                         })}
@@ -864,7 +806,6 @@ const TransactionHistory = () => {
                                         onPageChange={(selectedItem) => {
                                             setCurrentPage(selectedItem.selected + 1)
                                             setRadioInputVal({})
-
                                         }}
                                         containerClassName={'pagination justify-content-center'}
                                         activeClassName={'active'}
@@ -877,7 +818,6 @@ const TransactionHistory = () => {
                                         pageLinkClassName={'page-link'}
                                     />
                                 </div>
-
                             ) : (
                                 <></>
                             )}

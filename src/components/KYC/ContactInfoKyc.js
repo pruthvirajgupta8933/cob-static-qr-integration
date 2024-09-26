@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import Yup from "../../_components/formik/Yup"
-// import FormikController from "../../_components/formik/FormikController";
+import Yup from "../../_components/formik/Yup";
+import CustomModal from "../../_components/custom_modal";
 import { toast } from "react-toastify";
 import {
   otpForContactInfo,
   updateContactInfo,
   kycUserList,
   GetKycTabsStatus,
+  getKycIDList,
   // otpVerificationForContactForPhone,
 } from "../../slices/kycSlice";
 
-import {
-  Regex,
-  RegexMsg,
-} from "../../_components/formik/ValidationRegex";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
 import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import "./kyc-style.css";
@@ -29,9 +27,11 @@ import toastConfig from "../../utilities/toastTypes";
 // import TimerComponent from "../../utilities/TimerComponent";
 import AadhaarVerficationModal from "./OtpVerificationKYC/AadhaarVerficationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
-import { aadhaarNumberVerification } from "../../slices/kycValidatorSlice";
+import {
+  aadhaarNumberVerification,
+  dlValidation,
+} from "../../slices/kycValidatorSlice";
 // import { error } from "jquery";
-
 
 function ContactInfoKyc(props) {
   // console.log({ props })
@@ -42,7 +42,6 @@ function ContactInfoKyc(props) {
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   // const KycVerificationToken = useSelector((state) => state.kyc.OtpResponse.verification_token);
-
 
   const { user } = auth;
   const { loginId } = user;
@@ -59,36 +58,33 @@ function ContactInfoKyc(props) {
 
   // Aadhaar Number verification
   // const [aadharNuber, setAadharNumber] = useState("")
-  const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] = useState(false);
+  const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
+    useState(false);
   // const [contactVerifyToggle, setContactVerifyToggle] = useState(false);
   // const [aadharOtpResp, setAadharOtpResp] = useState({});
   // const [aadhaarOTP, setAadharOtp] = useState("");
   // const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
-  const [aadhaarVerificationLoader, setAadhaarVerificationLoader] = useState(false)
-  const [idProofInputToggle, setIdProofInputToggle] = useState(false)
-
-
-
-  // useEffect(() => {
-  //   if (KycList?.aadharNumber?.length === 12) {
-  //     setIsAadharNumberVerified(true)
-  //   }
-  // }, [KycList])
-
+  const [aadhaarVerificationLoader, setAadhaarVerificationLoader] =
+    useState(false);
+  const [idProofInputToggle, setIdProofInputToggle] = useState(true);
+  const [dlDobToggle, setDlDobToggle] = useState(false);
+  const [idType, setIdType] = useState();
+  const kycIdList = useSelector((state) => state.kyc.kycIdList);
+  useEffect(() => {
+    dispatch(getKycIDList());
+  }, []);
 
   const initialValues = {
     name: KycList?.name,
     email_id: KycList?.emailId,
 
     // ID proof verification
-    aadhar_number: KycList?.aadharNumber,
-    oldAadharNumber: KycList?.aadharNumber,
+    id_number: KycList?.aadharNumber,
+    oldIdNumber: KycList?.aadharNumber,
     aadhaarOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
     isIdProofVerified: KycList?.aadharNumber ? 1 : "",
-
-
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
@@ -97,8 +93,6 @@ function ContactInfoKyc(props) {
     contactOtpDigit: "",
     isContactOtpSend: false,
   };
-
-
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -114,8 +108,6 @@ function ContactInfoKyc(props) {
       .email("Invalid email")
       .required("Required")
       .nullable(),
-
-
 
     contact_number: Yup.string()
       .allowOneSpace()
@@ -133,7 +125,9 @@ function ContactInfoKyc(props) {
       )
       .required("You need to verify Your Contact Number")
       .nullable(),
-    isContactNumberVerified: Yup.string().required("Please verify the contact number").nullable(),
+    isContactNumberVerified: Yup.string()
+      .required("Please verify the contact number")
+      .nullable(),
     contactOtpDigit: Yup.string().when("isContactOtpSend", {
       is: true,
       then: Yup.string()
@@ -142,24 +136,23 @@ function ContactInfoKyc(props) {
         .max(6, "Maximum 6 digits are allowed")
         .required("Required")
         .nullable(),
-      otherwise: Yup.string()
+      otherwise: Yup.string(),
     }),
 
-
-    aadhar_number: Yup.string()
+    id_number: Yup.string()
       .allowOneSpace()
-      .max(12, "Exceeds the limit")
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+      // .max(12, "Exceeds the limit")
+      // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      // .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
       .required("Required")
       .nullable(),
-    oldAadharNumber: Yup.string()
+    oldIdNumber: Yup.string()
       .trim()
-      .oneOf(
-        [Yup.ref("aadhar_number"), null],
-        "You need to verify Your Aadhaar Number"
-      )
-      .required("You need to verify Your Aadhaar Number")
+      // .oneOf(
+      //   [Yup.ref("aadhar_number"), null],
+      //   "You need to verify Your Aadhaar Number"
+      // )
+      // .required("You need to verify Your Aadhaar Number")
       .nullable(),
     aadhaarOtpDigit: Yup.string().when("isProofOtpSend", {
       is: true,
@@ -169,17 +162,12 @@ function ContactInfoKyc(props) {
         .max(6, "Maximum 6 digits are allowed")
         .required("Required")
         .nullable(),
-      otherwise: Yup.string()
+      otherwise: Yup.string(),
     }),
-    isIdProofVerified: Yup.string().required("Please verify the ID Proof").nullable(),
+    isIdProofVerified: Yup.string()
+      .required("Please verify the ID Proof")
+      .nullable(),
   });
-
-
-
-  // useEffect(() => {
-  //   setOtpForPhone({ otp: "" })
-  // }, [showOtpVerifyModalPhone])
-
 
   const handleSubmitContact = (values) => {
     setIsDisable(true);
@@ -190,35 +178,32 @@ function ContactInfoKyc(props) {
         contact_number: values.contact_number,
         email_id: values.email_id,
         modified_by: loginId,
-        aadhar_number: values.aadhar_number,
+        aadhar_number: values.id_number,
+        id_proof_type: idType,
       })
-    ).then((res) => {
-
-      if (
-        res?.meta?.requestStatus === "fulfilled" &&
-        res.payload?.status === true
-      ) {
-        setTab(2);
-        setTitle("BUSINESS OVERVIEW");
-        setIsDisable(false);
-        toast.success(res.payload?.message);
-        dispatch(kycUserList({ login_id: loginId }));
-        dispatch(GetKycTabsStatus({ login_id: loginId }));
-      } else {
-        toast.error(res.payload);
-        toast.error(res.payload?.message);
-        toast.error(res.payload?.detail);
-        setIsDisable(false);
-      }
-    }).catch((error) => {
-
-      toast.error("Something went wrong");
-    })
-
-
+    )
+      .then((res) => {
+        if (
+          res?.meta?.requestStatus === "fulfilled" &&
+          res.payload?.status === true
+        ) {
+          setTab(2);
+          setTitle("BUSINESS OVERVIEW");
+          setIsDisable(false);
+          toast.success(res.payload?.message);
+          dispatch(kycUserList({ login_id: loginId }));
+          dispatch(GetKycTabsStatus({ login_id: loginId }));
+        } else {
+          toast.error(res.payload);
+          toast.error(res.payload?.message);
+          toast.error(res.payload?.detail);
+          setIsDisable(false);
+        }
+      })
+      .catch((error) => {
+        toast.error("Something went wrong");
+      });
   };
-
-
 
   const inputFieldValidation = async (err, val, setErr, setFieldVal, key) => {
     const hasErr = err.hasOwnProperty(key);
@@ -233,59 +218,56 @@ function ContactInfoKyc(props) {
       await contactVerificationHandler(val[key], setFieldVal);
     }
 
-
     if (!hasErr && val[key] !== "" && key === "aadhar_number") {
       await aadhaarVerificationHandler(val[key], setFieldVal);
     }
-
   };
 
-
-
-
-
   const tooltipData = {
-    "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
-    "contact_phone": "We will reach out to this phone for any account related issues."
-  }
-
-
-
-
+    contact_person_name:
+      "The name of an individual who serves as a point of contact for a particular organization or business.",
+    contact_phone:
+      "We will reach out to this phone for any account related issues.",
+  };
 
   // aadhar verification
   const aadhaarVerificationHandler = async (aadhar_number, setFieldVal) => {
-    setAadhaarVerificationLoader(true)
+    setAadhaarVerificationLoader(true);
 
-    dispatch(aadhaarNumberVerification({ "aadhar_number": aadhar_number })).then(resp => {
-      if (resp.type === "kycValidator/aadhaarNumberVerification/fulfilled") {
-        setAadhaarNumberVerifyToggle(true)
-        setAadhaarVerificationLoader(false)
-        setFieldVal("isProofOtpSend", true);
-        setFieldVal("aadhaarOtpDigit", "");
-        toastConfig.successToast(resp.payload.message)
-      } else {
-        setAadhaarVerificationLoader(false)
-        toastConfig.errorToast(resp.payload ?? "Something went wrong, Please try again")
-      }
-
-    }).catch(err => {
-      setAadhaarVerificationLoader(false)
-      toastConfig.errorToast(err?.response?.data?.message ?? "Something went wrong, Please try again")
-    })
-  }
-
-
-
+    dispatch(aadhaarNumberVerification({ aadhar_number: aadhar_number }))
+      .then((resp) => {
+        if (resp.type === "kycValidator/aadhaarNumberVerification/fulfilled") {
+          setAadhaarNumberVerifyToggle(true);
+          setAadhaarVerificationLoader(false);
+          setFieldVal("isProofOtpSend", true);
+          setFieldVal("aadhaarOtpDigit", "");
+          toastConfig.successToast(resp.payload.message);
+        } else {
+          setAadhaarVerificationLoader(false);
+          toastConfig.errorToast(
+            resp.payload ?? "Something went wrong, Please try again"
+          );
+        }
+      })
+      .catch((err) => {
+        setAadhaarVerificationLoader(false);
+        toastConfig.errorToast(
+          err?.response?.data?.message ??
+            "Something went wrong, Please try again"
+        );
+      });
+  };
 
   // contact number verification
   const contactVerificationHandler = async (values, setFieldVal) => {
     setIsLoading(true);
-    dispatch(otpForContactInfo({
-      mobile_number: values,
-      otp_type: "phone",
-      otp_for: "kyc",
-    })).then((res) => {
+    dispatch(
+      otpForContactInfo({
+        mobile_number: values,
+        otp_type: "phone",
+        otp_for: "kyc",
+      })
+    ).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
@@ -295,21 +277,150 @@ function ContactInfoKyc(props) {
         setIsLoading(false);
         setFieldVal("isContactOtpSend", true);
         setFieldVal("contactOtpDigit", "");
-
       } else {
         toast.error(res.payload.message);
         setShowOtpVerifyModalPhone(false);
         setIsLoading(false);
       }
     });
-  }
-
+  };
 
   const idProofhandler = (value) => {
-    if (value === "1") { setIdProofInputToggle(false) } else { setIdProofInputToggle(true) }
-  }
+    if (value === "1" || value === "4") {
+      setIdProofInputToggle(false);
+      setIdType(value);
+    } else {
+      setIdProofInputToggle(true);
+    }
+  };
 
+  const renderInputField = ({ values, errors, setFieldValue }) => {
+    return (
+      <>
+        <Field
+          type="text"
+          name="id_number"
+          autoComplete="off"
+          className="form-control maskedInput"
+          placeholder="Enter ID Proof Number"
+          onChange={(e) => {
+            setFieldValue("id_number", e.target.value);
+          }}
+          disabled={VerifyKycStatus === "Verified" ? true : false}
+        />
 
+        {values.oldIdNumber &&
+        values.id_number &&
+        values.oldIdNumber === values.id_number ? (
+          <span className="success input-group-append">
+            <img
+              src={gotVerified}
+              alt=""
+              title=""
+              width={"20px"}
+              height={"20px"}
+              className="btn-outline-secondary"
+            />
+          </span>
+        ) : (
+          <div className="input-group-append">
+            {idType === "1" && (
+              <a
+                href={() => false}
+                className={`btn cob-btn-primary btn-sm ${
+                  values.id_number?.length < 12 ||
+                  aadhaarVerificationLoader ||
+                  errors?.id_number
+                    ? "disabled"
+                    : ""
+                }`}
+                onClick={() => {
+                  aadhaarVerificationHandler(values.id_number, setFieldValue);
+                }}
+                // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+              >
+                {aadhaarVerificationLoader ? (
+                  <span className="spinner-border spinner-border-sm">
+                    <span className="sr-only">Loading...</span>
+                  </span>
+                ) : (
+                  "Send OTP"
+                )}
+              </a>
+            )}
+            {idType === "4" && (
+              <a
+                href={() => false}
+                className={`btn cob-btn-primary btn-sm ${
+                  values.id_number?.length < 14 || errors?.id_number
+                    ? "disabled"
+                    : ""
+                }`}
+                onClick={() => {
+                  setDlDobToggle(true);
+                }}
+              >
+                Verify
+              </a>
+            )}
+          </div>
+        )}
+      </>
+    );
+  };
+  const handleDlVerification = async ({ values, setFieldValue }) => {
+    setIsLoading(true);
+    const res = await dispatch(
+      dlValidation({
+        dl_number: values.dl_number,
+        date_of_birth: values.dob.split("-").reverse().join("-"), //format required for sending to call
+      })
+    );
+    if (
+      res.meta?.requestStatus === "fulfilled" &&
+      !res.payload?.status &&
+      !res.payload?.valid
+    ) {
+      toast.error(res?.payload?.message);
+    } else if (res.payload?.status && res.payload?.valid) {
+      setFieldValue("isDlVerified", 1);
+    }
+    setIsLoading(false);
+    setDlDobToggle(false);
+  };
+  const renderDobModal = ({ values, setFieldValue }) => {
+    return (
+      <>
+        <label className="col-form-label mx-auto w-100 p-2 text-center">
+          Please enter your Date Of Birth
+        </label>
+        <div className="input-group mb-3 text-center mx-auto w-50">
+          <Field
+            type="date"
+            className="form-control dob-input-kyc w-50"
+            name="dob"
+            onChange={(e) => setFieldValue("dob", e.target.value)}
+            placeholder="Enter DOB"
+            required={true}
+            disabled={isLoading}
+          />
+          <button
+            className="btn btn cob-btn-primary btn-sm"
+            type="button"
+            onClick={() => handleDlVerification({ values, setFieldValue })}
+          >
+            {isLoading ? (
+              <span className="spinner-border spinner-border-sm" role="status">
+                <span className="sr-only">Loading...</span>
+              </span>
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
+      </>
+    );
+  };
   return (
     <div className="col-lg-12 p-0">
       <Formik
@@ -318,16 +429,14 @@ function ContactInfoKyc(props) {
         onSubmit={handleSubmitContact}
         enableReinitialize={true}
       >
-        {({
-          values,
-          errors,
-          setFieldError,
-          setFieldValue
-        }) => (
+        {({ values, errors, setFieldError, setFieldValue }) => (
           <Form>
             <div className="row">
               <div className="col-lg-6 col-sm-12 col-md-12">
-                <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_person_name}>
+                <label
+                  className="col-form-label mt-0 p-2"
+                  data-tip={tooltipData.contact_person_name}
+                >
                   Contact Person Name<span className="text-danger"> *</span>
                 </label>
                 <Field
@@ -339,115 +448,90 @@ function ContactInfoKyc(props) {
               </div>
 
               <div className="col-lg-6 col-sm-12 col-md-12">
-                <div className="col-form-label mt-0 p-2">
-                  <lable className="d-flex justify-content-between">
-                    <span>ID Proof<span className="text-danger"> *</span></span>
-                    <span className="text-decoration-underline text-primary cursor_pointer" onClick={() => setIdProofInputToggle(prev => !prev)}>Select ID Proof</span></lable>
-                </div>
+                <label className="d-flex justify-content-between col-form-label mt-0 p-2">
+                  <span>
+                    ID Proof<span className="text-danger"> *</span>
+                  </span>
+                  <span
+                    className="text-decoration-underline text-primary cursor_pointer"
+                    onClick={() => setIdProofInputToggle((prev) => !prev)}
+                  >
+                    Select ID Proof
+                  </span>
+                </label>
                 <div className="input-group">
-                  {idProofInputToggle ?
-                    <select className="form-select" onChange={(e) => idProofhandler(e.target.value)} disabled={VerifyKycStatus === "Verified" ? true : false}>
+                  {idProofInputToggle ? (
+                    <select
+                      className="form-select"
+                      onChange={(e) => idProofhandler(e.target.value)}
+                      disabled={VerifyKycStatus === "Verified" ? true : false}
+                    >
                       <option value="">Select ID Proof</option>
-                      <option value="1">Aadhaar Number</option>
-                    </select> :
+                      {kycIdList.data?.map((item) => {
+                        if (item.is_active)
+                          return (
+                            <option value={item.id}>{item.id_type}</option>
+                          );
+                        return <></>;
+                      })}
+                      <option value={kycIdList.data?.length + 1}>
+                        Driving License Number
+                      </option>
+                    </select>
+                  ) : (
                     <React.Fragment>
-                      <Field
-                        type="text"
-                        name="aadhar_number"
-                        autoComplete="off"
-                        className="form-control maskedInput"
-                        placeholder="Enter ID Proof Number"
-                        onChange={(e) => {
-                          setFieldValue("aadhar_number", e.target.value)
-                        }}
-                        disabled={VerifyKycStatus === "Verified" ? true : false}
-                      />
-
-                      {values.oldAadharNumber && values.aadhar_number && (values.oldAadharNumber === values.aadhar_number) ? (
-                        <span className="success input-group-append">
-                          <img
-                            src={gotVerified}
-                            alt=""
-                            title=""
-                            width={"20px"}
-                            height={"20px"}
-                            className="btn-outline-secondary"
-                          />
-                        </span>
-                      ) :
-                        <div className="input-group-append">
-                          <a
-                            href={() => false}
-                            className={`btn cob-btn-primary btn-sm ${aadhaarVerificationLoader || errors?.aadhar_number ? 'disabled' : ''}`}
-                            onClick={() => {
-                              aadhaarVerificationHandler(values.aadhar_number, setFieldValue)
-                            }}
-                          // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
-                          >
-                            {aadhaarVerificationLoader ? (
-                              <span className="spinner-border spinner-border-sm">
-                                <span className="sr-only">Loading...</span>
-                              </span>
-                            ) : (
-                              "Send OTP"
-                            )}
-                          </a>
-                        </div>
-                      }
+                      {renderInputField({ values, errors, setFieldValue })}
                     </React.Fragment>
-                  }
-
-
-
+                  )}
                 </div>
                 <ErrorMessage name="aadhar_number">
-                  {(msg) => (
-                    <p className="text-danger m-0">
-                      {msg}
-                    </p>
-                  )}
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
-                <ErrorMessage name="oldAadharNumber">
-                  {(msg) => (
-                    <p className="text-danger m-0">
-                      {msg}
-                    </p>
-                  )}
+                <ErrorMessage name="oldIdNumber">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
                 <ErrorMessage name="isIdProofVerified">
-                  {(msg) => (
-                    <p className="text-danger m-0">
-                      {msg}
-                    </p>
-                  )}
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
               </div>
 
-
-              {aadhaarNumberVerifyToggle &&
-                <AadhaarVerficationModal formikFields={{
-                  values,
-                  errors,
-                  setFieldError,
-                  setFieldValue
-                }}
+              {aadhaarNumberVerifyToggle && (
+                <AadhaarVerficationModal
+                  formikFields={{
+                    values,
+                    errors,
+                    setFieldError,
+                    setFieldValue,
+                  }}
                   isOpen={aadhaarNumberVerifyToggle}
                   toggle={setAadhaarNumberVerifyToggle}
-                  resendOtp={(values, setFieldValue) => aadhaarVerificationHandler(values, setFieldValue)}
+                  resendOtp={(values, setFieldValue) =>
+                    aadhaarVerificationHandler(values, setFieldValue)
+                  }
 
-                // isOpen={showOtpVerifyModalPhone}
-                // toggle={setShowOtpVerifyModalPhone}
-                // resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
-
+                  // isOpen={showOtpVerifyModalPhone}
+                  // toggle={setShowOtpVerifyModalPhone}
+                  // resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
                 />
-              }
+              )}
+              {dlDobToggle && (
+                <CustomModal
+                  modalToggle={dlDobToggle}
+                  headerTitle={"Driving License Verification"}
+                  modalBody={() => renderDobModal({ values, setFieldValue })}
+                  modalSize="modal-md"
+                  fnSetModalToggle={() => setDlDobToggle(false)}
+                />
+              )}
             </div>
-
 
             <div className="row">
               {/* start contact verify field */}
               <div className="col-lg-6 col-sm-12 col-md-12">
-                <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_phone}>
+                <label
+                  className="col-form-label mt-0 p-2"
+                  data-tip={tooltipData.contact_phone}
+                >
                   Contact Number<span className="text-danger"> *</span>
                 </label>
                 <div className="input-group">
@@ -456,15 +540,15 @@ function ContactInfoKyc(props) {
                     name="contact_number"
                     className="form-control"
                     onChange={(e) => {
-                      setFieldValue("contact_number", e.target.value)
-                      setFieldValue("isContactNumberVerified", 0)
+                      setFieldValue("contact_number", e.target.value);
+                      setFieldValue("isContactNumberVerified", 0);
                     }}
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
                   {KycList?.contactNumber !== null &&
-                    values?.isContactNumberVerified === 1 &&
-                    !errors.hasOwnProperty("contact_number") &&
-                    !errors.hasOwnProperty("oldContactNumber") ? (
+                  values?.isContactNumberVerified === 1 &&
+                  !errors.hasOwnProperty("contact_number") &&
+                  !errors.hasOwnProperty("oldContactNumber") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -475,11 +559,13 @@ function ContactInfoKyc(props) {
                         className="btn-outline-secondary"
                       />
                     </span>
-                  ) :
+                  ) : (
                     <div className="input-group-append">
                       <a
                         href={() => false}
-                        className={`btn cob-btn-primary btn-sm text-white ${isLoading ? 'disabled' : ''}`}
+                        className={`btn cob-btn-primary btn-sm text-white ${
+                          isLoading ? "disabled" : ""
+                        }`}
                         onClick={() => {
                           if (!errors.contact_number) {
                             inputFieldValidation(
@@ -488,7 +574,7 @@ function ContactInfoKyc(props) {
                               setFieldError,
                               setFieldValue,
                               "contact_number"
-                            )
+                            );
                           }
                         }}
                       >
@@ -500,47 +586,38 @@ function ContactInfoKyc(props) {
                           "Send OTP"
                         )}
                       </a>
-                    </div>}
+                    </div>
+                  )}
                 </div>
                 <ErrorMessage name="contact_number">
-                  {(msg) => (
-                    <p className="text-danger m-0">
-                      {msg}
-                    </p>
-                  )}
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
 
                 <ErrorMessage name="oldContactNumber">
-                  {(msg) => (
-                    <p className="text-danger m-0">
-                      {msg}
-                    </p>
-                  )}
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
 
                 <ErrorMessage name="isContactNumberVerified">
-                  {(msg) => (
-                    <p className="text-danger m-0">
-                      {msg}
-                    </p>
-                  )}
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
               </div>
 
-              {showOtpVerifyModalPhone &&
-                <PhoneVerficationModal formikFields={{
-                  values,
-                  errors,
-                  setFieldError,
-                  setFieldValue
-                }}
+              {showOtpVerifyModalPhone && (
+                <PhoneVerficationModal
+                  formikFields={{
+                    values,
+                    errors,
+                    setFieldError,
+                    setFieldValue,
+                  }}
                   isOpen={showOtpVerifyModalPhone}
                   toggle={setShowOtpVerifyModalPhone}
-                  resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
+                  resendOtp={(values, setFieldValue) =>
+                    contactVerificationHandler(values, setFieldValue)
+                  }
                 />
-              }
+              )}
               {/* end contact verify field */}
-
 
               <div className="col-lg-6 col-sm-12 col-md-12">
                 <label className="col-form-label mt-0 p-2">
@@ -552,9 +629,9 @@ function ContactInfoKyc(props) {
                     name="email_id"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={true} />
-                  {
-                    KycList?.emailId !== null &&
+                    readOnly={true}
+                  />
+                  {KycList?.emailId !== null &&
                     KycList?.isEmailVerified === 1 && (
                       <span className="success input-group-append">
                         <img
@@ -581,12 +658,16 @@ function ContactInfoKyc(props) {
                     type="submit"
                     className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
                   >
-                    {disable &&
+                    {disable && (
                       <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          ariaHidden="true"
+                        />
                         <span className="sr-only">Loading...</span>
                       </span>
-                    }
+                    )}
                     {"Save and Next"}
                   </button>
                 )}
