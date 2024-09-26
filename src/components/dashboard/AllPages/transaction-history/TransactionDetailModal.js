@@ -27,7 +27,7 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
             <div className={`modal-dialog modal-xl m-0 `} >
                 <div className="modal-content rounded-0">
                     <div className="modal-header">
-                        <h1 className="modal-title fs-5 border-start border-5 ps-2">Sabpaisa Transaction ID : <span className='text-primary'>123412341234</span></h1>
+                        <h1 className="modal-title fs-5 border-start border-5 ps-2">Sabpaisa Transaction ID : <span className='text-primary'>{transactionData.txn_id}</span></h1>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => fnSetModalToggle(false)} />
                     </div>
                     <div className="modal-body">
@@ -85,8 +85,6 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
                                     <tr>
                                         <th>Address</th>
                                         <td>{transactionData.payee_address}</td>
-                                        <th>Account Number</th>
-                                        <td>{transactionData.payer_acount_number}</td>
                                     </tr>
 
                                 </tbody>
