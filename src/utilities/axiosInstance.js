@@ -3,7 +3,7 @@ import { decode as base64_decode } from 'base-64';
 import { Buffer } from 'buffer';
 
 const username = '0007';
-const passwordEncoded = 'Admin@007'; 
+const passwordEncoded = 'Admin@007';
 // const password = base64_decode(passwordEncoded); // Decode Base64 password
 const basicAuth = Buffer.from(`${username}:${passwordEncoded}`, 'utf-8').toString('base64');
 
@@ -18,7 +18,7 @@ export const axiosInstance = axios.create({
 
 export const kycValidatorAuth = axios.create({
   headers: {
-    "api-key": "6fecdd37ceb7416f89ef60623952d852",
+    "api-key": "c2c31c4071474ec788ca3513b4935e55",
   },
 });
 
