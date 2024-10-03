@@ -1,25 +1,29 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import Yup from "../../../../_components/formik/Yup";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../../../_components/formik/FormikController";
 
+import toastConfig from "../../../../utilities/toastTypes";
 import { businessType, busiCategory } from "../../../../slices/kycSlice";
+import { saveBusinessOverview } from "../../../../slices/approver-dashboard/referral-onboard-slice";
 
 const BusinessOverview = ({ setCurrentTab }) => {
   const [bizTypeData, setBizTypeData] = useState([]);
   const [bizCategory, setBizCategory] = useState([]);
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse?.data
+  );
   const initialValues = {
     type: "",
     category: "",
     description: "",
-    yearOfEst: "",
   };
   const validationSchema = Yup.object().shape({
     type: Yup.string().required("Select Business Type").nullable(),
     category: Yup.string().required("Select Business Category").nullable(),
-    yearOfEst: Yup.number().required("Enter Establishment Year").nullable(),
   });
   const dispatch = useDispatch();
 
@@ -50,7 +54,23 @@ const BusinessOverview = ({ setCurrentTab }) => {
       })
       .catch((err) => console.log(err));
   }, []);
-  const onSubmit = () => {};
+  const onSubmit = async (values) => {
+    setSubmitLoader(true);
+    const postData = {
+      loginMasterId: basicDetailsResponse?.login_master_id,
+      businessCategory: values.category,
+      businessType: values.type,
+      billingLabel: values.description,
+    };
+    try {
+      const res = await dispatch(saveBusinessOverview(postData));
+      res?.data?.status && toastConfig.successToast("Data Saved");
+      setSubmitLoader(false);
+    } catch (e) {
+      setSubmitLoader(false);
+      toastConfig.errorToast(e?.response?.data?.detail);
+    }
+  };
   return (
     <div
       className="tab-pane fade show active"
@@ -74,11 +94,9 @@ const BusinessOverview = ({ setCurrentTab }) => {
 
                 <FormikController
                   control="select"
-                  name="business_type"
+                  name="type"
                   options={bizTypeData}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
                 />
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
@@ -88,11 +106,9 @@ const BusinessOverview = ({ setCurrentTab }) => {
 
                 <FormikController
                   control="select"
-                  name="business_category"
+                  name="category"
                   options={bizCategory}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
                 />
               </div>
             </div>
@@ -106,10 +122,8 @@ const BusinessOverview = ({ setCurrentTab }) => {
                 <FormikController
                   control="textArea"
                   type="text"
-                  name="billing_label"
+                  name="description"
                   className="form-control fs-12"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
                 />
                 <p className="fs-10">
                   Please give a brief description of the nature of your
@@ -127,7 +141,7 @@ const BusinessOverview = ({ setCurrentTab }) => {
                   />
                 </div>
               </div>
-              <div className="col-sm-12 col-md-12 col-lg-6">
+              {/* <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   Year of Establishment
                   <span className="text-danger">*</span>
@@ -145,32 +159,34 @@ const BusinessOverview = ({ setCurrentTab }) => {
                   name="seletcted_website_app_url"
                   className="form-control"
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
+              <div className="col-6">
                 <button
-                  className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
                   type="submit"
-                  onClick={() => setCurrentTab("biz_details")}
-                  // disabled={disabled}
+                  className="btn cob-btn-primary btn-sm m-2"
                 >
-                  {/* {disabled &&  */}
-                  <>
-                    <span className="mr-2">
-                      {/* <span
+                  {submitLoader ? (
+                    <>
+                      <span
                         className="spinner-border spinner-border-sm"
                         role="status"
                         ariaHidden="true"
                       />
-                      <span className="sr-only">Loading...</span> */}
-                    </span>
-                  </>
-                  {/* } */}
-                  {"Next"}
+                      <span className="sr-only">Loading...</span>
+                    </>
+                  ) : (
+                    "Save"
+                  )}
                 </button>
-                {/* )} */}
+                <a
+                  className="btn active-secondary btn-sm m-2"
+                  onClick={() => setCurrentTab("biz_details")}
+                >
+                  Next
+                </a>
               </div>
             </div>
           </Form>

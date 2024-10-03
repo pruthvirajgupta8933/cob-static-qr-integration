@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
+import { Prompt } from "react-router-dom";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,7 @@ import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferral
 import classes from "./multi-user-onboard.module.css";
 import Yup from "../../_components/formik/Yup";
 import Referral from "../ApproverNVerifier/Onboarderchant/referral-onboard";
+import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
 
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([]);
@@ -91,6 +93,9 @@ const MultiUserOnboard = () => {
 
       setRefferalList(data);
     });
+    return () => {
+      // dispatch(referralOnboardSlice.actions.resetBasicDetails());
+    };
   }, []);
 
   useEffect(() => {
@@ -114,6 +119,19 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
+        <Prompt
+          message={() => {
+            if (
+              window.confirm(
+                "You might have unsaved changes. Are you sure you want to leave?"
+              )
+            ) {
+              dispatch(referralOnboardSlice.actions.resetBasicDetails());
+              return true; // Allow navigation
+            }
+            return false;
+          }}
+        />
         <div className="container-fluid p-0">
           <Formik
             initialValues={initialValues}

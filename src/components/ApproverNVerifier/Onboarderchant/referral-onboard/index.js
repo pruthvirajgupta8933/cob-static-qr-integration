@@ -1,16 +1,21 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import BasicDetails from "./BasicDetails";
 import BankDetails from "./BankDetails";
 import UploadDocuments from "./UploadDocuments";
 import ViewDocuments from "./ViewDocuments";
 import BusinessOverview from "./BusinessOverview";
 import BusinessDetails from "./BusinessDetails";
+import AddressDetails from "./AddressDetails";
+import ReferralId from "./ReferralId";
 
 const Referral = ({ type }) => {
   let tabs = [];
   if (type === "individual") {
     tabs = [
       { id: "basic", name: "Basic Details" },
+      { id: "address", name: "Address Details" },
+      { id: "referral_id", name: "Referral ID" },
       { id: "bank", name: "Bank Details" },
       { id: "upload_doc", name: "Upload Document" },
       { id: "view_doc", name: "View Document" },
@@ -27,13 +32,19 @@ const Referral = ({ type }) => {
   }
   const [currentTab, setCurrentTab] = useState("basic");
 
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse?.data
+  );
   const handleTabClick = (tabId) => setCurrentTab(tabId);
-  const handleSubmit = () => {};
 
   const renderTabContent = () => {
     switch (currentTab) {
       case "basic":
         return <BasicDetails setCurrentTab={setCurrentTab} type={type} />;
+      case "address":
+        return <AddressDetails setCurrentTab={setCurrentTab} />;
+      case "referral_id":
+        return <ReferralId setCurrentTab={setCurrentTab} />;
       case "bank":
         return <BankDetails setCurrentTab={setCurrentTab} />;
       case "upload_doc":
@@ -63,7 +74,13 @@ const Referral = ({ type }) => {
               <a
                 className={`nav-link cursor_pointer px-2 ${
                   currentTab === tab.id && "active-secondary"
-                } pe-none`}
+                } ${
+                  tab.id === "basic"
+                    ? "pe-auto"
+                    : basicDetailsResponse?.loginMasterId
+                    ? "pe-auto"
+                    : "pe-none"
+                }`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}
                 data-mdb-toggle="pill"

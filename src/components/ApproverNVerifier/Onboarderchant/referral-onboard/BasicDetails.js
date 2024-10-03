@@ -1,35 +1,89 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { toast } from "react-toastify";
-import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
-import API_URL from "../../../../config";
-import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
 import FormikController from "../../../../_components/formik/FormikController";
 import {
   Regex,
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
-import { addReferralService } from "../../../../services/approver-dashboard/merchantReferralOnboard.service";
-import { authPanValidation } from "../../../../slices/kycSlice";
-import verifiedIcon from "../../../../assets/images/verified.png";
-import CustomModal from "../../../../_components/custom_modal";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import { generateWord } from "../../../../utilities/generateClientCode";
+import API_URL from "../../../../config";
+import authService from "../../../../services/auth.service";
+import { saveBasicDetails } from "../../../../slices/approver-dashboard/referral-onboard-slice";
 
 const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const dispatch = useDispatch();
-  const [otpBox, showOtpBox] = useState(false);
   const initialValues = {
     name: "",
     contactNumber: "",
     email: "",
-    pan: "",
-    aadhar: "",
+    password: "",
+    // pan: "",
+    // aadhar: "",
   };
-  const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
-    (state) => state
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse
   );
+  const createdBy = useSelector((state) => state.auth.user?.loginId);
+  useEffect(() => {
+    const createClientCode = async () => {
+      const clientFullName = basicDetailsResponse?.data?.name;
+      const clientMobileNo = basicDetailsResponse?.data?.mobileNumber;
+      const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+
+      // check client code is existing
+      let newClientCode;
+      const checkClientCode = await authService.checkClintCode({
+        client_code: arrayOfClientCode,
+      });
+      if (
+        checkClientCode?.data?.clientCode !== "" &&
+        checkClientCode?.data?.status === true
+      ) {
+        newClientCode = checkClientCode?.data?.clientCode;
+      } else {
+        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+      }
+
+      const data = {
+        loginId: basicDetailsResponse.data?.loginMasterId,
+        clientName: clientFullName,
+        clientCode: newClientCode,
+      };
+
+      try {
+        (async () =>
+          await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data))();
+      } catch (error) {
+        // console.log("console is here")
+        setSubmitLoader(false);
+        // toast.error('An error occurred while creating the Client Code. Please try again.');
+        return;
+      }
+    };
+    // const data = {
+    //   loginId: 11477,
+    //   clientName: "test ri",
+    //   clientCode:
+    //     Math.random().toString(36).slice(-6).toUpperCase() || "TEST98",
+    // };
+    // await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
+    // try {
+    //   (async () =>
+    //     await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data))();
+    // } catch (error) {
+    //   // console.log("console is here")
+    //   setSubmitLoader(false);
+    //   // toast.error('An error occurred while creating the Client Code. Please try again.');
+    //   return;
+    // }
+
+    if (basicDetailsResponse?.loading) setSubmitLoader(true);
+    else if (basicDetailsResponse?.data) createClientCode();
+  }, [basicDetailsResponse]);
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .allowOneSpace()
@@ -48,82 +102,35 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       .email("Invalid email")
       .required("Required")
       .nullable(),
-    aadhar: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .length(12, "Only 12 digits are allowed")
-      .nullable(),
-    pan: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .length(10, "Only 10 digits are allowed")
-      .nullable(),
+    password: Yup.string()
+      .matches(Regex.password, RegexMsg.password)
+      .required("Required"),
+    // aadhar: Yup.string()
+    //   .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+    //   .length(12, "Only 12 digits are allowed")
+    //   .required("Required"),
+    // pan: Yup.string()
+    //   .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+    //   .length(10, "Only 10 digits are allowed")
+    //   .required("Required"),
   });
+
   const handleSubmit = async (values) => {
     const postData = {
       name: values.name,
       email: values.email,
       mobileNumber: values.contactNumber,
-      created_by: auth?.user?.loginId,
+      created_by: createdBy,
       zone_code: zoneCode,
-      pan_card: values.pan,
-      name_on_pan_card: values.panName,
-      aadhar_number: values.aadhar,
+      password: values.password,
+      // pan_card: values.pan,
+      // name_on_pan_card: values.panName,
+      // aadhar_number: values.aadhar,
       onboard_type:
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
     };
 
-    const resp1 = await addReferralService(postData);
-
-    resp1?.data?.status && toastConfig.successToast("Data Saved");
-    const refLoginId = resp1?.data?.data?.loginMasterId;
-  };
-  const sendAadharOtp = async ({ values, setFieldValue }) => {
-    const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
-      aadhar_number: values.aadhar,
-    });
-    if (resp.data.status) {
-      showOtpBox(true);
-      setFieldValue("otp_ref_id", resp.data.referenceId);
-    }
-  };
-  const verifyAadhar = async ({ values, setFieldValue }) => {
-    try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, {
-        referenceId: values?.otp_ref_id,
-        otp: values.aadhar_otp,
-      });
-      if (resp.data?.valid && resp.data?.status) {
-        setFieldValue("isAadharVerified", 1);
-      }
-      toastConfig.successToast(resp?.data?.message);
-      showOtpBox(false);
-      // setIsLoading(false)
-    } catch (error) {
-      toastConfig.errorToast(
-        error?.response?.data?.message ??
-          "Something went wrong, Please try again"
-      );
-      // setIsLoading(false)
-    }
-  };
-  const verifyPan = async (pan, setFieldValue) => {
-    try {
-      const res = await dispatch(authPanValidation({ pan_number: pan }));
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true &&
-        res.payload.valid === true
-      ) {
-        setFieldValue("isPanVerified", res.payload.status);
-        setFieldValue(
-          "panName",
-          `${res.payload.first_name} ${res.payload.last_name}`
-        );
-      } else {
-        toast.error(res?.payload?.message);
-      }
-    } catch (error) {
-      setFieldValue("isPanVerified", false);
-    }
+    dispatch(saveBasicDetails(postData));
   };
   return (
     <div
@@ -173,6 +180,17 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                 />
               </div>
               <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="password"
+                  className="form-control"
+                  placeholder="Enter Password"
+                  label="Create Password"
+                  autoComplete="off"
+                  type="password"
+                />
+              </div>
+              {/* <div className="col-md-6">
                 <label className="col-form-label px-2 py-0 mb-2 lh-sm">
                   Aadhar
                 </label>
@@ -293,16 +311,15 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     </span>
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="row">
               <div className="col-6">
                 <button
                   type="submit"
                   className="btn cob-btn-primary btn-sm m-2"
-                  onClick={() => console.log("click")}
                 >
-                  {submitLoader && (
+                  {submitLoader ? (
                     <>
                       <span
                         className="spinner-border spinner-border-sm"
@@ -311,8 +328,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       />
                       <span className="sr-only">Loading...</span>
                     </>
+                  ) : (
+                    "Save"
                   )}
-                  Save
                 </button>
 
                 {/* {merchantKycData?.isContactNumberVerified === 1 && */}
@@ -320,7 +338,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   className="btn active-secondary btn-sm m-2"
                   onClick={() =>
                     type === "individual"
-                      ? setCurrentTab("bank")
+                      ? setCurrentTab("address")
                       : setCurrentTab("biz_overview")
                   }
                 >

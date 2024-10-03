@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 import Yup from "../../../../_components/formik/Yup";
@@ -8,16 +8,22 @@ import {
   Regex,
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
+import toastConfig from "../../../../utilities/toastTypes";
 import {
   ifscValidation,
   bankAccountVerification,
   getBankId,
 } from "../../../../slices/kycSlice";
+import { saveBankDetails } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import verifiedIcon from "../../../../assets/images/verified.png";
 
 const BankDetails = ({ setCurrentTab }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse?.data
+  );
   const initialValues = {
     acHolderName: "",
     acNumber: "",
@@ -37,8 +43,8 @@ const BankDetails = ({ setCurrentTab }) => {
     ifsc: Yup.string()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(Regex.ifscRegex, RegexMsg.ifscRegex)
-      .min(6, "Username must be at least 6 characters")
-      .max(20, "Username must not exceed 20 characters")
+      .min(6, "IFSC must be at least 6 characters")
+      .max(20, "IFSC must not exceed 20 characters")
       .required("Required")
       .nullable(),
     acNumber: Yup.string()
@@ -49,30 +55,68 @@ const BankDetails = ({ setCurrentTab }) => {
     acType: Yup.string().required("Required").nullable(),
     branch: Yup.string().allowOneSpace().required("Required").nullable(),
     bankName: Yup.string().required("Required").nullable(),
+    bank_id: Yup.number().required(),
   });
 
-  const handleSubmit = () => {};
-
-  const verifyBank = (ifsc, setFieldValue) => {
+  const handleSubmit = (values) => {
+    setSubmitLoader(true);
     dispatch(
+      saveBankDetails({
+        account_holder_name: values.acHolderName,
+        account_number: values.acNumber,
+        ifsc_code: values.ifsc,
+        bank_id: values.bank_id,
+        account_type: selectedType.find((type) => type.key == values.acType)
+          ?.value,
+        branch: values.branch,
+        login_id: basicDetailsResponse?.loginMasterId || 11477,
+        modified_by: user?.loginId,
+      })
+    )
+      .then((resp) => {
+        setSubmitLoader(false);
+        if (resp?.payload?.detail) {
+          toastConfig.errorToast(resp?.payload?.detail);
+        }
+
+        if (resp?.payload?.status === true) {
+          toastConfig.successToast(resp?.payload?.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setSubmitLoader(false);
+      });
+  };
+
+  const verifyBank = async (ifsc, setFieldValue) => {
+    const bankRes = await dispatch(
       ifscValidation({
         ifsc_number: ifsc,
       })
-    ).then((res) => {
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true &&
-        res.payload.valid === true
-      ) {
-        setFieldValue("branch", res?.payload?.branch);
-        setFieldValue("isIfscVerified", true);
-        setFieldValue("bankName", res?.payload?.bank);
-        // toast.success(res?.payload?.message);
-      } else {
-        // setLoading(false)
-        toast.error(res?.payload?.message);
-      }
-    });
+    );
+    if (
+      bankRes.meta.requestStatus === "fulfilled" &&
+      bankRes.payload.status === true &&
+      bankRes.payload.valid === true
+    ) {
+      setFieldValue("branch", bankRes?.payload?.branch);
+      setFieldValue("isIfscVerified", true);
+      setFieldValue("bankName", bankRes?.payload?.bank);
+      // toast.success(res?.payload?.message);
+    } else {
+      // setLoading(false)
+      toast.error(bankRes?.payload?.message);
+    }
+    dispatch(getBankId({ bank_name: bankRes?.payload?.bank }))
+      .then((resp) => {
+        if (resp?.payload?.length > 0) {
+          setFieldValue("bank_id", resp?.payload[0]?.bankId);
+        }
+      })
+      .catch((err) => {
+        console.log(err?.payload?.bankName);
+      });
   };
 
   const verifyAccount = (ifsc, acNumber, setFieldValue) => {
@@ -136,7 +180,6 @@ const BankDetails = ({ setCurrentTab }) => {
                     onChange={(e) => {
                       setFieldValue("ifsc", e.target.value);
                       setFieldValue("isIfscVerified", "");
-                      console.log(e.target.value);
                       if (e.target.value.length === 11)
                         verifyBank(e.target.value, setFieldValue);
                     }}
@@ -152,7 +195,7 @@ const BankDetails = ({ setCurrentTab }) => {
                 <div className="input-group">
                   <Field
                     type="text"
-                    name="account_number"
+                    name="acNumber"
                     className="form-control"
                     // disabled={isEditableInput}
                     onChange={(e) => {
@@ -214,7 +257,7 @@ const BankDetails = ({ setCurrentTab }) => {
 
                 <FormikController
                   control="select"
-                  name="account_type"
+                  name="acType"
                   options={selectedType}
                   className="form-select"
                 />
