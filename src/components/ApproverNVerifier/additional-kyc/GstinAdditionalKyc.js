@@ -1,60 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { gstValidation } from "../../../slices/kycSlice";
+import { gstValidation } from "../../../slices/kycValidatorSlice";
 
 const GstinAdditionalKyc = ({ selectedDocType }) => {
-    const [gstinData, setGstinData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [gstStatus, setGstStatus] = useState(false);
-    const objArray = Object.entries(gstinData);
-    const [initialValuesForGSTIN, setInitialValuesForGSTIN] = useState({
-        gst_number: "",
+  const [gstinData, setGstinData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [gstStatus, setGstStatus] = useState(false);
+  const objArray = Object.entries(gstinData);
+  const [initialValuesForGSTIN, setInitialValuesForGSTIN] = useState({
+    gst_number: "",
+  });
+  const dispatch = useDispatch();
 
-    });
-    const dispatch = useDispatch();
+  const handleGstinSubmit = async (values) => {
+    if (!values.gst_number) {
+      toast.error("Enter GSTIN Number.");
+      return;
+    }
+    setIsLoading(true);
 
-    const handleGstinSubmit = async (values) => {
+    try {
+      const res = await dispatch(
+        gstValidation({
+          gst_number: values.gst_number,
+          fetchFilings: false,
+          fy: "2018-19",
+        })
+      );
 
-        if (!values.gst_number) {
-            toast.error("Enter GSTIN Number.");
-            return;
-        }
-        setIsLoading(true);
+      setIsLoading(false);
+      setGstinData(res?.payload);
 
-        try {
-            const res = await dispatch(
-                gstValidation({
-                    gst_number: values.gst_number,
-                    fetchFilings: false,
-                    fy: "2018-19",
-                })
-            );
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        setGstStatus(res.payload.status);
+      } else {
+        toast.error(res?.payload?.message);
+      }
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
 
-            setIsLoading(false);
-            setGstinData(res?.payload);
-
-            if (
-                res.meta.requestStatus === "fulfilled" &&
-                res.payload.status === true &&
-                res.payload.valid === true
-            ) {
-                setGstStatus(res.payload.status);
-            } else {
-                toast.error(res?.payload?.message);
-            }
-        } catch (error) {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        // setPanStatus(false);
-        setGstStatus(false);
-    }, [selectedDocType]);
-    return (
-        <div className="container-fluid flleft">
-        <div className="form-row">
+  useEffect(() => {
+    // setPanStatus(false);
+    setGstStatus(false);
+  }, [selectedDocType]);
+  return (
+    <div className="container-fluid flleft">
+      <div className="form-row">
         <div>
         <div className="form-inline">
                 <div className="form-group">
@@ -85,7 +83,7 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
                                 ariaHidden="true"
                             ></span>
                         ) : (
-                            "Verify" ? "Verify" : ""
+                            "Verify" 
                         )}
                     </button>
                 </div>
@@ -110,10 +108,9 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
                 </div>
             )}
         </div>
-
-        </div>
       </div>
-    )
-}
+    </div>
+  );
+};
 
-export default GstinAdditionalKyc
+export default GstinAdditionalKyc;

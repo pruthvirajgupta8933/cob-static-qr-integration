@@ -557,11 +557,12 @@ const SettlementReportNew = () => {
                                                 <th> Client Code</th>
                                                 <th> Client Name</th>
                                                 <th> SP Transaction ID</th>
-                                                <th> GR Number</th>
+                                                {/* <th> GR Number</th> */}
                                                 <th> Client Transaction ID</th>
                                                 <th> Amount</th>
                                                 <th> Settlement Amount</th>
                                                 <th> Transaction Date</th>
+                                                <th> Transaction Complete Date</th>
                                                 <th> Settlement Date</th>
                                                 <th> Settlement Bank Ref</th>
                                                 <th> Settlement UTR</th>
@@ -581,7 +582,7 @@ const SettlementReportNew = () => {
                                                         <td>{item.client_code}</td>
                                                         <td>{item.client_name}</td>
                                                         <td>{item.txn_id}</td>
-                                                        <td>{item?.gr_number}</td>
+                                                        {/* <td>{item?.gr_number}</td> */}
                                                         <td>{item.client_txn_id}</td>
                                                         <td>
                                                             {Number.parseFloat(item.payee_amount).toFixed(2)}
@@ -592,6 +593,7 @@ const SettlementReportNew = () => {
                                                             ).toFixed(2)}
                                                         </td>
                                                         <td>{convertDate(item.trans_date)}</td>
+                                                        <td>{convertDate(item.trans_complete_date)}</td>
                                                         <td>{convertDate(item.settlement_date)}</td>
                                                         <td>{item.settlement_bank_ref}</td>
                                                         <td>{item.settlement_utr}</td>

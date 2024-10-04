@@ -282,6 +282,7 @@ const API_LIVE = {
   UPDATE_SETTLEMENT_INFO: `${kyc_url}/kyc/update-kyc/settlement-info/`,
   UPLOAD_DOCUMENT: `${kyc_url}/kyc/update-kyc/additional-doc/`,
 
+  KYC_ID_LIST: `${kyc_url}/kyc/id-proof/`,
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL

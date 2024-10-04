@@ -11,11 +11,11 @@ import {
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
-import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../_components/formik/Yup";
+import DocViewerComponent from "../../../utilities/DocViewerComponent";
 
 
 const CommentModal = (props) => {
@@ -24,6 +24,8 @@ const CommentModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
+  const [docPreviewToggle, setDocPreviewToggle] = useState(false)
+  const [selectViewDoc, setSelectedViewDoc] = useState("#")
 
   const initialValues = {
     comments: "",
@@ -122,36 +124,18 @@ const CommentModal = (props) => {
     }
   };
 
-  const headerTitle = () => {
-    return (
-      <>
+  const docModalToggle = (docData) => {
+    setDocPreviewToggle(true)
+    setSelectedViewDoc(docData)
+  }
 
-        <h5
-          className="modal-title bolding text-black"
-          id="exampleModalLongTitle"
-        >
-          Add your comments
-        </h5>
-
-        <button
-          type="button"
-          className="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          onClick={() => {
-            setCommentsList([]);
-            props?.setModalState(false);
-          }}
-        >
-          <span ariaHidden="true">&times;</span>
-        </button>
-      </>
-    );
-  };
+  
 
   const modalbody = () => {
     return (
       <div className="container-fluid">
+        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.file_path, documentName: "" }} />}
+
         <div>
           <h6>
             Merchant Name: {props?.commentData?.clientName}
@@ -212,7 +196,7 @@ const CommentModal = (props) => {
                         <th>Comments</th>
                         <th>Date of Comments</th>
                         <th>Comments from tab</th>
-                        <th>Download Attachments</th>
+                        <th>View Document</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -232,6 +216,7 @@ const CommentModal = (props) => {
                         Array.isArray(commentsList)
                         ? commentsList?.map((commentData, i) => (
                           <tr key={uuidv4()}>
+                            {console.log(commentData)}
                             <td>
                               {commentData?.comment_by_user_name.toUpperCase()}
                             </td>
@@ -248,22 +233,30 @@ const CommentModal = (props) => {
                               {commentData?.file_path !== null &&
                                 isUrlValid(commentData?.file_path) &&
                                 fileTypeCheck(commentData?.file_path) && (
-                                  <a
-                                    href={commentData?.file_path}
-                                    target={"_blank"}
-                                    download
-                                    rel="noreferrer"
-                                  >
-                                    <img
-                                      src={downloadIcon}
-                                      style={{
-                                        height: "20px",
-                                        width: "20px",
-                                        margin: "auto",
-                                      }}
-                                      alt=""
-                                    />
-                                  </a>
+                                  // <a
+                                  //   href={commentData?.file_path}
+                                  //   target={"_blank"}
+                                  //   download
+                                  //   rel="noreferrer"
+                                  // >
+                                  //   <img
+                                  //     src={downloadIcon}
+                                  //     style={{
+                                  //       height: "20px",
+                                  //       width: "20px",
+                                  //       margin: "auto",
+                                  //     }}
+                                  //     alt=""
+                                  //   />
+                                  // </a>
+
+                                  <p
+                                  className="text-primary cursor_pointer text-decoration-underline"
+                                 rel="noreferrer"
+                                 onClick={() => docModalToggle(commentData)}
+                               >
+                                 View Document
+                               </p>
                                 )}
                             </td>
                           </tr>

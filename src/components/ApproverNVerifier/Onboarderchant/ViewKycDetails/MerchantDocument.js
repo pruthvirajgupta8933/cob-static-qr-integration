@@ -10,6 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 import { useRef } from 'react';
 import { trimValue } from '../../../../utilities/trim';
+import CustomModal from '../../../../_components/custom_modal';
+import DocViewerComponent from '../../../../utilities/DocViewerComponent';
+// import DocViewerComponent from '../../../../utilities/DocViewerComponent';
 
 const MerchantDocument = (props) => {
   const { docList, docTypeList, role, selectedUserData } = props;
@@ -72,6 +75,9 @@ const MerchantDocument = (props) => {
   const [documentsIdList, setdocumentsIdList] = useState([])
   const [checkedClicked, setCheckedClicked] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
+
+  const [docPreviewToggle, setDocPreviewToggle] = useState(false)
+  const [selectViewDoc, setSelectedViewDoc] = useState("#")
 
 
 
@@ -190,38 +196,21 @@ const MerchantDocument = (props) => {
     }
     if (role?.verifier === true) {
       setButtonText("Verify")
-
     }
   }, [role, Allow_To_Do_Verify_Kyc_details]);
 
 
   useEffect(() => {
-    /////////////////////////////////////////////// button enable condition for verifier
-    // const verifier = () => {
-    // let enableBtn = false;
     if (currenTab === 3) {
       if (roles.verifier === true || Allow_To_Do_Verify_Kyc_details === true)
-        // enableBtn = true;
         setEnableBtnVerifier(true);
     }
 
-    // };
-    // verifier()
-
-
-
-
-    /////////////////////////////////////////////// button enable condition  for approver
-    // const approver = () => {
-    // let enableBtn = false;
     if (currenTab === 4) {
       if (roles.approver === true)
-        // enableBtn = true;
         setEnableBtnApprover(true);
     }
 
-    // }
-    // approver()
   }, [currenTab, roles, Allow_To_Do_Verify_Kyc_details])
 
 
@@ -261,18 +250,36 @@ const MerchantDocument = (props) => {
 
 
 
+  // document viewer 
+
+
+
+  // const getFileType = (url) => {
+
+  //   const extension = url?.split('.')?.pop()?.toLowerCase(); // Get the file extension
+
+  //   if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) {
+  //     return 'image';
+  //   } else if (extension === 'pdf') {
+  //     return 'pdf';
+  //   } else {
+  //     return 'unsupported';
+  //   }
+  // };
+
+
+
   // console.log("=========merchant doc start==========")
   // console.log("enableBtnVerifier", enableBtnVerifier)
   // console.log("=========merchant doc end==========")
   // console.log("Check boolean", checkedClicked)
-  // const refsByDocId = useMemo(() => {
-  //   const refs = {}
-  //   KycDocUpload.forEach((item, i) => {
-  //     refs[item.documentId] = React.createRef(null)
-  //   })
-  //   return refs
-  // }, [KycDocUpload])
 
+
+
+  const docModalToggle = (docData) => {
+    setDocPreviewToggle(true)
+    setSelectedViewDoc(docData)
+  }
 
   return (
     <div className="row mb-4 border p-1">
@@ -282,6 +289,7 @@ const MerchantDocument = (props) => {
         return (<React.Fragment key={uuidv4()}> <span className="text-danger"> {item?.value}</span><br /></React.Fragment>)
       })}
 
+      {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.filePath, documentName: selectViewDoc?.doc_type_name }} />}
       <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
           <thead>
@@ -335,14 +343,15 @@ const MerchantDocument = (props) => {
 
                     <td>{i + 1}</td>
 
-                    <td><p className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
+                    <td><p className="text-wrap mb-1"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
                       <p><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</p>
-                      <a href={doc?.filePath}
-                        target="_blank"
+                      <p
+                        className="text-primary cursor_pointer text-decoration-underline"
                         rel="noreferrer"
-                        className="text-primary" >
+                        onClick={() => docModalToggle(doc)}
+                      >
                         View Document
-                      </a>
+                      </p>
 
                     </td>
 

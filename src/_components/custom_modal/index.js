@@ -25,9 +25,7 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
         ((modalToggle) ? " show d-block" : " d-none")
       }
       id="web"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      ariaHidden="true"
+
     >
       <div className={`modal-dialog ${modalSize ? modalSize : 'modal-lg'}`} role="document">
         <div className="modal-content">

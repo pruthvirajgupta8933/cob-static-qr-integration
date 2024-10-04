@@ -147,9 +147,9 @@ const RejectedKYC = () => {
       width: "150px",
     },
     {
-      id:"14",
-      name:"MCC Elaboration",
-      selector:(row)=>row.mcc_elaboration,
+      id: "14",
+      name: "MCC Code",
+      selector: (row) => row.mcc_code,
       width: "150px",
 
 
@@ -177,7 +177,7 @@ const RejectedKYC = () => {
       ),
     },
     {
-      id: "15",
+      id: "16",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (

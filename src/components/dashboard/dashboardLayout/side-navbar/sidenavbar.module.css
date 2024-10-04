@@ -49,6 +49,9 @@
   /* color: #cacacacc !important */
 }
 
+.submenu_border {
+  border-left: none;
+}
 
 @media (max-width: 767.98px) {
   .sidebar_cob {

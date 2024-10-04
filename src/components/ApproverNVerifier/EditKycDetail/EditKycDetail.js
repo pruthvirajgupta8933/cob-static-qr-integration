@@ -74,41 +74,41 @@ function EditKycDetail() {
       {showForm &&
         <div className="d-lg-flex align-items-start mt-5">
           <div className={`${classes.kyc_tab_nav} nav flex-column nav-pills`} id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0  ${tab === 1 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" role="tab" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0  ${tab === 1 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" role="tab" onClick={() => {
               SetTab(1);
               setTitle("CONTACT INFO");
             }} >
               Merchant Contact Info</a>
 
-            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 2 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 2 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(2);
               setTitle("BUSINESS OVERVIEW");
             }}>
 
               Business Overview</a>
 
-            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 3 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 3 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(3);
               setTitle("BUSINESS DETAILS");
             }}>
 
               Business Details</a>
 
-            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 4 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 4 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(4);
               setTitle("BANK DETAILS");
             }}>
 
               Bank Details</a>
 
-            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 5 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 5 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(5);
               setTitle("DOCUMENTS UPLOAD");
             }} >
 
               Upload Document</a>
 
-            <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 6 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 6 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(6);
               setTitle("VIEW DOCUMENT");
             }} >

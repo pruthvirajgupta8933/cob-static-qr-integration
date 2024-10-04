@@ -146,21 +146,21 @@ function VerifiedMerchant() {
       selector: (row) => row.zoneName,
     },
     {
-      id: "13r",
+      id: "14r",
       name: "Risk Category",
       selector: (row) => row.risk_category_name,
       width: "150px",
     },
     {
-      id:"14",
-      name:"MCC Elaboration",
-      selector:(row)=>row.mcc_elaboration,
+      id: "15",
+      name: "MCC Code",
+      selector: (row) => row.mcc_code,
       width: "150px",
 
 
     },
     {
-      id: "15",
+      id: "16",
       name: "View Status",
       width: "120px",
       cell: (row) => (
@@ -183,7 +183,7 @@ function VerifiedMerchant() {
       ),
     },
     {
-      id: "16",
+      id: "17",
       name: "Action",
       cell: (row) => (
         <div>

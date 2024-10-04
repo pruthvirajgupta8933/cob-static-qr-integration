@@ -162,6 +162,7 @@ const initialState = {
     logs: {},
   },
   merchantKycData: {},
+  kycIdList: [],
 };
 
 export const updateContactInfo = createAsyncThunk(
@@ -198,8 +199,6 @@ export const aadhaarOTPDetails = createAsyncThunk(
     return response.data;
   }
 );
-
-
 
 //--------------For Sending the Contact Otp ---------------------
 export const otpForContactInfo = createAsyncThunk(
@@ -255,7 +254,7 @@ export const businessType = createAsyncThunk(
       });
 
     // hide other type
-    return response.data?.filter((item) => item.businessTypeId !== 11);
+    return response.data?.filter((item) => item.businessTypeId !== 11 && item.businessTypeId !== 13);
     // return response.data;
   }
 );
@@ -809,115 +808,6 @@ export const approveDoc = createAsyncThunk(
   }
 );
 
-//----- GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
-export const panValidation = createAsyncThunk(
-  "kyc/panValidation",
-  async (requestParam) => {
-    // console.log("check 1",requestParam)
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    // console.log("check 3")
-    return response.data;
-  }
-);
-
-export const authPanValidationrr = createAsyncThunk(
-  "kyc/authPanValidationrr",
-  async (requestParam) => {
-    // console.log("check 4")
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
-export const authPanValidation = createAsyncThunk(
-  "kyc/authPanValidation",
-  async (requestParam) => {
-    // console.log("check 5")
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
-export const gstValidation = createAsyncThunk(
-  "kyc/gstValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-gst/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
-export const udyamRegistration = createAsyncThunk(
-  "kyc/gstValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.UDYAM_REGISTRATION}/validate-udyam/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
-export const ifscValidation = createAsyncThunk(
-  "kyc/ifscValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-ifsc/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
-export const bankAccountVerification = createAsyncThunk(
-  "kyc/bankAccountVerification",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-account/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
-export const credReportValidation = createAsyncThunk(
-  "kyc/credReportValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-cred-report/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
-  }
-);
-
 //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
 //--Get Bank Id ------------//
@@ -1027,6 +917,15 @@ export const saveKycConsent = createAsyncThunk(
 );
 
 //---------------- KYC CONSENT TAP API INTEGRATION --------------//
+export const getKycIDList = createAsyncThunk(
+  "kyc/getIDList",
+  async (requestParam) => {
+    const response = await axiosInstanceJWT
+      .get(API_URL.KYC_ID_LIST, requestParam)
+      .catch((error) => error.response);
+    return response.data;
+  }
+);
 
 export const kycSlice = createSlice({
   name: "kyc",
@@ -1058,28 +957,26 @@ export const kycSlice = createSlice({
     },
 
     saveDropDownAndFinalArray: (state, action) => {
-
       // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
       // state.compareDocListArray.finalArray = action?.payload?.finalArray;
       state.compareDocListArray.isRequireDataUploaded = action?.payload;
     },
     UpdateModalStatus: (state, action) => {
-      state.OpenModalForKycSubmit.isOpen = action?.payload
+      state.OpenModalForKycSubmit.isOpen = action?.payload;
     },
     clearFetchAllByKycStatus: (state) => {
-      state.allKycData.error = false
-      state.allKycData.loading = false
-      state.allKycData.result = []
-      state.allKycData.message = ""
+      state.allKycData.error = false;
+      state.allKycData.loading = false;
+      state.allKycData.result = [];
+      state.allKycData.message = "";
     },
     clearApproveKyc: (state) => {
-      state.approveKyc.isApproved = false
-      state.approveKyc.isError = false
-      state.approveKyc.logs = {}
-    }
+      state.approveKyc.isApproved = false;
+      state.approveKyc.isError = false;
+      state.approveKyc.logs = {};
+    },
   },
   extraReducers: (builder) => {
-
     builder
       .addCase(kycForNotFilled.pending, (state) => {
         state.status = "pending";
@@ -1262,7 +1159,8 @@ export const kycSlice = createSlice({
         state.status = "pending";
       })
       .addCase(saveMerchantInfo.fulfilled, (state, action) => {
-        state.allTabsValidate.BusinessDetailsStatus.submitStatus = action.payload;
+        state.allTabsValidate.BusinessDetailsStatus.submitStatus =
+          action.payload;
       })
       .addCase(saveMerchantInfo.rejected, (state, action) => {
         state.status = "failed";
@@ -1392,9 +1290,19 @@ export const kycSlice = createSlice({
       })
       .addCase(kycDetailsByMerchantLoginId.rejected, (state) => {
         state.merchantKycData = {};
-      });
-  }
+      })
 
+      //kycIDList
+      .addCase(getKycIDList.pending, (state) => {
+        state.kycIdList = [];
+      })
+      .addCase(getKycIDList.fulfilled, (state, action) => {
+        state.kycIdList = action.payload;
+      })
+      .addCase(getKycIDList.rejected, (state) => {
+        state.kycIdList = [];
+      });
+  },
 });
 
 export const {
