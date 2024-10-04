@@ -8,6 +8,7 @@ import BusinessOverview from "./BusinessOverview";
 import BusinessDetails from "./BusinessDetails";
 import AddressDetails from "./AddressDetails";
 import ReferralId from "./ReferralId";
+import Submit from "./Submit";
 
 const Referral = ({ type }) => {
   let tabs = [];
@@ -19,6 +20,7 @@ const Referral = ({ type }) => {
       { id: "bank", name: "Bank Details" },
       { id: "upload_doc", name: "Upload Document" },
       { id: "view_doc", name: "View Document" },
+      { id: "submit", name: "Submit" },
     ];
   } else if (type === "company") {
     tabs = [
@@ -56,7 +58,7 @@ const Referral = ({ type }) => {
       case "biz_details":
         return <BusinessDetails setCurrentTab={setCurrentTab} />;
       default:
-        return <BasicDetails setCurrentTab={setCurrentTab} />;
+        return <Submit />;
     }
   };
   return (
@@ -77,7 +79,7 @@ const Referral = ({ type }) => {
                 } ${
                   tab.id === "basic"
                     ? "pe-auto"
-                    : basicDetailsResponse?.loginMasterId
+                    : !basicDetailsResponse?.loginMasterId
                     ? "pe-auto"
                     : "pe-none"
                 }`}

@@ -27,6 +27,10 @@ const MultiUserOnboard = () => {
   const [showForm, setShowForm] = useState(false);
   // const [showSecondDropdown, setShowSecondDropdown] = useState(false);
   const [showBankForm, setShowBankForm] = useState(false);
+
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse
+  );
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
 
@@ -119,19 +123,21 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        <Prompt
-          message={() => {
-            if (
-              window.confirm(
-                "You might have unsaved changes. Are you sure you want to leave?"
-              )
-            ) {
-              dispatch(referralOnboardSlice.actions.resetBasicDetails());
-              return true; // Allow navigation
-            }
-            return false;
-          }}
-        />
+        {basicDetailsResponse.data && (
+          <Prompt
+            message={() => {
+              if (
+                window.confirm(
+                  "You might have unsaved changes. Are you sure you want to leave?"
+                )
+              ) {
+                dispatch(referralOnboardSlice.actions.resetBasicDetails());
+                return true; // Allow navigation
+              }
+              return false;
+            }}
+          />
+        )}
         <div className="container-fluid p-0">
           <Formik
             initialValues={initialValues}
