@@ -34,7 +34,6 @@ import {
 // import { error } from "jquery";
 
 function ContactInfoKyc(props) {
-  // console.log({ props })
   const setTab = props.tab;
   const setTitle = props.title;
   const merchantloginMasterId = props.merchantloginMasterId;
@@ -51,25 +50,16 @@ function ContactInfoKyc(props) {
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [otpBtnDisable, setOtpBtnDisable] = useState(false);
-  // const [resendDisabled, setResendDisabled] = useState(false);
-  // const [timer, setTimer] = useState(60);
-  // const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+  const [selectedIdProofName, setSelectedIdProofName] = useState("")
 
-  // Aadhaar Number verification
-  // const [aadharNuber, setAadharNumber] = useState("")
   const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
     useState(false);
-  // const [contactVerifyToggle, setContactVerifyToggle] = useState(false);
-  // const [aadharOtpResp, setAadharOtpResp] = useState({});
-  // const [aadhaarOTP, setAadharOtp] = useState("");
-  // const [isAadharNumberVerified, setIsAadharNumberVerified] = useState(false);
   const [aadhaarVerificationLoader, setAadhaarVerificationLoader] =
     useState(false);
   const [idProofInputToggle, setIdProofInputToggle] = useState(true);
   const [dlDobToggle, setDlDobToggle] = useState(false);
   const [idType, setIdType] = useState();
-  const kycIdList = useSelector((state) => state.kyc.kycIdList);
+  const proofIdList = useSelector((state) => state.kyc.kycIdList);
   useEffect(() => {
     dispatch(getKycIDList());
   }, []);
@@ -79,6 +69,7 @@ function ContactInfoKyc(props) {
     email_id: KycList?.emailId,
 
     // ID proof verification
+    id_proof_type: KycList?.id_proof_type,
     id_number: KycList?.aadharNumber,
     oldIdNumber: KycList?.aadharNumber,
     aadhaarOtpDigit: "",
@@ -139,13 +130,26 @@ function ContactInfoKyc(props) {
       otherwise: Yup.string(),
     }),
 
-    id_number: Yup.string()
-      .allowOneSpace()
-      // .max(12, "Exceeds the limit")
-      // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      // .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
-      .required("Required")
-      .nullable(),
+    id_number: Yup.string().when("id_proof_type", {
+      is: (value) => value === 1, // For id_proof_type = 1
+      then: Yup.string()
+        // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+        .max(12, "Maximum 12 digits are required")
+        .required("Required")
+        .nullable(),
+      otherwise: Yup.string().when("id_proof_type", {
+        is: (value) => value === 4, // For id_proof_type = 4
+        then: Yup.string()
+          .min(14, "Minimum 14 digits are required")
+          .max(14, "Maximum 14 digits are required")
+          .required("Required")
+          .nullable(),
+        otherwise: Yup.string()
+          .allowOneSpace()
+          .required("Required")
+          .nullable(), // Default case if none of the above conditions match
+      })
+    }),
     oldIdNumber: Yup.string()
       .trim()
       // .oneOf(
@@ -154,6 +158,7 @@ function ContactInfoKyc(props) {
       // )
       // .required("You need to verify Your Aadhaar Number")
       .nullable(),
+
     aadhaarOtpDigit: Yup.string().when("isProofOtpSend", {
       is: true,
       then: Yup.string()
@@ -253,7 +258,7 @@ function ContactInfoKyc(props) {
         setAadhaarVerificationLoader(false);
         toastConfig.errorToast(
           err?.response?.data?.message ??
-            "Something went wrong, Please try again"
+          "Something went wrong, Please try again"
         );
       });
   };
@@ -289,6 +294,7 @@ function ContactInfoKyc(props) {
     if (value === "1" || value === "4") {
       setIdProofInputToggle(false);
       setIdType(value);
+
     } else {
       setIdProofInputToggle(true);
     }
@@ -305,13 +311,15 @@ function ContactInfoKyc(props) {
           placeholder="Enter ID Proof Number"
           onChange={(e) => {
             setFieldValue("id_number", e.target.value);
+            setFieldValue("isIdProofVerified", "");
+
           }}
           disabled={VerifyKycStatus === "Verified" ? true : false}
         />
 
         {values.oldIdNumber &&
-        values.id_number &&
-        values.oldIdNumber === values.id_number ? (
+          values.id_number &&
+          values.oldIdNumber === values.id_number ? (
           <span className="success input-group-append">
             <img
               src={gotVerified}
@@ -327,35 +335,33 @@ function ContactInfoKyc(props) {
             {idType === "1" && (
               <a
                 href={() => false}
-                className={`btn cob-btn-primary btn-sm ${
-                  values.id_number?.length < 12 ||
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 12 ||
                   aadhaarVerificationLoader ||
                   errors?.id_number
-                    ? "disabled"
-                    : ""
-                }`}
+                  ? "disabled"
+                  : ""
+                  }`}
                 onClick={() => {
                   aadhaarVerificationHandler(values.id_number, setFieldValue);
                 }}
-                // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+              // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
               >
                 {aadhaarVerificationLoader ? (
                   <span className="spinner-border spinner-border-sm">
                     <span className="sr-only">Loading...</span>
                   </span>
                 ) : (
-                  "Send OTP"
+                  'Verify'
                 )}
               </a>
             )}
             {idType === "4" && (
               <a
                 href={() => false}
-                className={`btn cob-btn-primary btn-sm ${
-                  values.id_number?.length < 14 || errors?.id_number
-                    ? "disabled"
-                    : ""
-                }`}
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
+                  ? "disabled"
+                  : ""
+                  }`}
                 onClick={() => {
                   setDlDobToggle(true);
                 }}
@@ -368,11 +374,14 @@ function ContactInfoKyc(props) {
       </>
     );
   };
+
+
   const handleDlVerification = async ({ values, setFieldValue }) => {
     setIsLoading(true);
+
     const res = await dispatch(
       dlValidation({
-        dl_number: values.dl_number,
+        dl_number: values.id_number,
         date_of_birth: values.dob.split("-").reverse().join("-"), //format required for sending to call
       })
     );
@@ -381,13 +390,18 @@ function ContactInfoKyc(props) {
       !res.payload?.status &&
       !res.payload?.valid
     ) {
-      toast.error(res?.payload?.message);
+      toastConfig.errorToast(res?.payload?.message || "Something went wrong. Please try again");
     } else if (res.payload?.status && res.payload?.valid) {
       setFieldValue("isDlVerified", 1);
+      setFieldValue("isIdProofVerified", 1);
+      setFieldValue("oldIdNumber", values.id_number);
+
     }
     setIsLoading(false);
     setDlDobToggle(false);
   };
+
+
   const renderDobModal = ({ values, setFieldValue }) => {
     return (
       <>
@@ -421,6 +435,28 @@ function ContactInfoKyc(props) {
       </>
     );
   };
+
+
+  // handle input toggle if id proof type is null then show dropdown else show input field
+
+  useEffect(() => {
+    if (KycList?.id_proof_type === null) {
+      setIdProofInputToggle(true)
+    } else {
+      setIdProofInputToggle(false)
+      setIdType(KycList?.id_proof_type)
+    }
+
+    const IdProofName = proofIdList.data?.filter((item) => item?.id === KycList?.id_proof_type)
+    if (IdProofName?.length > 0 && IdProofName[0]?.id_type) {
+      setSelectedIdProofName(IdProofName[0]?.id_type)
+    }
+
+
+  }, [KycList?.id_proof_type, proofIdList])
+
+
+
   return (
     <div className="col-lg-12 p-0">
       <Formik
@@ -429,7 +465,7 @@ function ContactInfoKyc(props) {
         onSubmit={handleSubmitContact}
         enableReinitialize={true}
       >
-        {({ values, errors, setFieldError, setFieldValue }) => (
+        {({ values, errors, isValid, setFieldError, setFieldValue }) => (
           <Form>
             <div className="row">
               <div className="col-lg-6 col-sm-12 col-md-12">
@@ -448,9 +484,10 @@ function ContactInfoKyc(props) {
               </div>
 
               <div className="col-lg-6 col-sm-12 col-md-12">
+
                 <label className="d-flex justify-content-between col-form-label mt-0 p-2">
                   <span>
-                    ID Proof<span className="text-danger"> *</span>
+                    ID Proof ({selectedIdProofName})<span className="text-danger"> *</span>
                   </span>
                   <span
                     className="text-decoration-underline text-primary cursor_pointer"
@@ -459,24 +496,28 @@ function ContactInfoKyc(props) {
                     Select ID Proof
                   </span>
                 </label>
+
+
                 <div className="input-group">
                   {idProofInputToggle ? (
                     <select
                       className="form-select"
-                      onChange={(e) => idProofhandler(e.target.value)}
+                      onChange={(e) => {
+                        idProofhandler(e.target.value)
+                        setFieldValue('id_number', "")
+                        setFieldValue('id_proof_type', e.target.value)
+                        setSelectedIdProofName(e.target[e.target.selectedIndex].text)
+                      }}
                       disabled={VerifyKycStatus === "Verified" ? true : false}
                     >
                       <option value="">Select ID Proof</option>
-                      {kycIdList.data?.map((item) => {
+                      {proofIdList.data?.map((item) => {
                         if (item.is_active)
                           return (
-                            <option value={item.id}>{item.id_type}</option>
+                            <option value={item.id} dataRel={item.id_type}>{item.id_type}</option>
                           );
                         return <></>;
                       })}
-                      <option value={kycIdList.data?.length + 1}>
-                        Driving License Number
-                      </option>
                     </select>
                   ) : (
                     <React.Fragment>
@@ -484,15 +525,9 @@ function ContactInfoKyc(props) {
                     </React.Fragment>
                   )}
                 </div>
-                <ErrorMessage name="aadhar_number">
-                  {(msg) => <p className="text-danger m-0">{msg}</p>}
-                </ErrorMessage>
-                <ErrorMessage name="oldIdNumber">
-                  {(msg) => <p className="text-danger m-0">{msg}</p>}
-                </ErrorMessage>
-                <ErrorMessage name="isIdProofVerified">
-                  {(msg) => <p className="text-danger m-0">{msg}</p>}
-                </ErrorMessage>
+                {errors?.id_number && <p className="text-danger m-0">{errors?.id_number}</p>}
+                {errors?.isIdProofVerified && <p className="text-danger m-0">{errors?.isIdProofVerified}</p>}
+                {errors?.oldIdNumber && <p className="text-danger m-0">{errors?.oldIdNumber}</p>}
               </div>
 
               {aadhaarNumberVerifyToggle && (
@@ -508,10 +543,6 @@ function ContactInfoKyc(props) {
                   resendOtp={(values, setFieldValue) =>
                     aadhaarVerificationHandler(values, setFieldValue)
                   }
-
-                  // isOpen={showOtpVerifyModalPhone}
-                  // toggle={setShowOtpVerifyModalPhone}
-                  // resendOtp={(values, setFieldValue) => contactVerificationHandler(values, setFieldValue)}
                 />
               )}
               {dlDobToggle && (
@@ -546,9 +577,9 @@ function ContactInfoKyc(props) {
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
                   {KycList?.contactNumber !== null &&
-                  values?.isContactNumberVerified === 1 &&
-                  !errors.hasOwnProperty("contact_number") &&
-                  !errors.hasOwnProperty("oldContactNumber") ? (
+                    values?.isContactNumberVerified === 1 &&
+                    !errors.hasOwnProperty("contact_number") &&
+                    !errors.hasOwnProperty("oldContactNumber") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -563,9 +594,8 @@ function ContactInfoKyc(props) {
                     <div className="input-group-append">
                       <a
                         href={() => false}
-                        className={`btn cob-btn-primary btn-sm text-white ${
-                          isLoading ? "disabled" : ""
-                        }`}
+                        className={`btn cob-btn-primary btn-sm text-white ${isLoading ? "disabled" : ""
+                          }`}
                         onClick={() => {
                           if (!errors.contact_number) {
                             inputFieldValidation(
@@ -654,7 +684,7 @@ function ContactInfoKyc(props) {
                   <></>
                 ) : (
                   <button
-                    disabled={disable}
+                    disabled={!isValid}
                     type="submit"
                     className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
                   >

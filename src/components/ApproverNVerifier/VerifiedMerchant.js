@@ -153,8 +153,8 @@ function VerifiedMerchant() {
     },
     {
       id: "15",
-      name: "MCC Code",
-      selector: (row) => row.mcc_code,
+      name: "MCC",
+      selector: (row) => row.mcc,
       width: "150px",
 
 

@@ -38,7 +38,7 @@ function FormPaymentLink(props) {
 
 
   })
-  
+
 
 
 
@@ -68,7 +68,7 @@ function FormPaymentLink(props) {
 
   const submitHandler = async (e) => {
     setDisable(true)
-     const postData = {
+    const postData = {
       Customer_id: e.Customer_id,
       Remarks: e.Remarks,
       Amount: e.Amount,
@@ -79,7 +79,7 @@ function FormPaymentLink(props) {
     }
     createPaymentLinkService.createPaymentLink(postData)
       .then(resp => {
-        const message=resp.data?.message
+        const message = resp.data?.message
         const capitalizedMessage = capitalizeFirstLetter(message)
         if (resp.data?.response_code === '1') {
           toastConfig.successToast(capitalizedMessage);
@@ -267,7 +267,7 @@ function FormPaymentLink(props) {
                         className="btn btn-sm  cob-btn-secondary mb-3 text-white ml-3"
                         data-dismiss="modal"
                       >
-                        CANCEL
+                        Cancel
                       </button>
                     </div>
 

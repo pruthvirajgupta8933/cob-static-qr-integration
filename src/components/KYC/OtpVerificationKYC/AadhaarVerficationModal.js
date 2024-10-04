@@ -20,7 +20,6 @@ const AadhaarVerficationModal = ({
   );
 
   const aadharOtpVerification = async () => {
-    console.log(values);
     setIsLoading(true);
     try {
       const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, {
@@ -37,7 +36,7 @@ const AadhaarVerficationModal = ({
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
-          "Something went wrong, Please try again"
+        "Something went wrong, Please try again"
       );
       setIsLoading(false);
     }
