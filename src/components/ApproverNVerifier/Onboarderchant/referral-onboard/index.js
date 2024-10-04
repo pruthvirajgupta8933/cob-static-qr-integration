@@ -16,7 +16,7 @@ const Referral = ({ type }) => {
     tabs = [
       { id: "basic", name: "Basic Details" },
       { id: "address", name: "Address Details" },
-      { id: "referral_id", name: "Referral ID" },
+      // { id: "referral_id", name: "Referral ID" },
       { id: "bank", name: "Bank Details" },
       { id: "upload_doc", name: "Upload Document" },
       { id: "view_doc", name: "View Document" },

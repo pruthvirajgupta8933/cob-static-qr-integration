@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { toast } from "react-toastify";
 import Yup from "../../../../_components/formik/Yup";
+import CustomModal from "../../../../_components/custom_modal";
 import FormikController from "../../../../_components/formik/FormikController";
 import {
   Regex,
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
-import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import {
+  axiosInstanceJWT,
+  axiosInstanceAuth,
+} from "../../../../utilities/axiosInstance";
 import { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
 import authService from "../../../../services/auth.service";
 import { saveBasicDetails } from "../../../../slices/approver-dashboard/referral-onboard-slice";
+import { authPanValidation } from "../../../../slices/kycValidatorSlice";
+import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
+import toastConfig from "../../../../utilities/toastTypes";
+import verifiedIcon from "../../../../assets/images/verified.png";
 
 const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [otpBox, showOtpBox] = useState(false);
   const dispatch = useDispatch();
   const initialValues = {
     name: "",
@@ -55,12 +65,17 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       };
 
       try {
-        (async () =>
-          await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data))();
+        const clientCreated = await axiosInstanceJWT.post(
+          API_URL.AUTH_CLIENT_CREATE,
+          data
+        );
+        clientCreated.status === 200 && setSubmitLoader(false);
       } catch (error) {
         // console.log("console is here")
         setSubmitLoader(false);
-        // toast.error('An error occurred while creating the Client Code. Please try again.');
+        toast.error(
+          "An error occurred while creating the Client Code. Please try again."
+        );
         return;
       }
     };
@@ -82,7 +97,18 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     // }
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
-    else if (basicDetailsResponse?.data) createClientCode();
+    else if (basicDetailsResponse?.data) {
+      axiosInstanceAuth
+        .put(
+          `${API_URL.EMAIL_VERIFY}${basicDetailsResponse.data?.loginMasterId}`
+        )
+        .then((response) => {
+          response.data && createClientCode();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }, [basicDetailsResponse]);
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -105,16 +131,70 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     password: Yup.string()
       .matches(Regex.password, RegexMsg.password)
       .required("Required"),
-    // aadhar: Yup.string()
-    //   .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-    //   .length(12, "Only 12 digits are allowed")
-    //   .required("Required"),
-    // pan: Yup.string()
-    //   .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-    //   .length(10, "Only 10 digits are allowed")
-    //   .required("Required"),
+    aadhaar: Yup.string()
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .length(12, "Only 12 digits are allowed")
+      .required("Required"),
+    isAadhaarVerified: Yup.boolean().required(),
+    pan:
+      type === "individual"
+        ? Yup.string()
+            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+            .length(10, "Only 10 digits are allowed")
+            .required("Required")
+        : null,
+    isPanVerified: type === "individual" ? Yup.boolean().required() : null,
   });
 
+  const verifyPan = async (pan, setFieldValue) => {
+    try {
+      const res = await dispatch(authPanValidation({ pan_number: pan }));
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        setFieldValue("isPanVerified", res.payload.status);
+        setFieldValue(
+          "panName",
+          `${res.payload.first_name} ${res.payload.last_name}`
+        );
+      } else {
+        toast.error(res?.payload?.message);
+      }
+    } catch (error) {
+      setFieldValue("isPanVerified", false);
+    }
+  };
+  const sendAadharOtp = async ({ values, setFieldValue }) => {
+    const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
+      aadhar_number: values.aadhaar,
+    });
+    if (resp.data.status) {
+      showOtpBox(true);
+      setFieldValue("otp_ref_id", resp.data.referenceId);
+    }
+  };
+  const verifyAadhar = async ({ values, setFieldValue }) => {
+    try {
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, {
+        referenceId: values?.otp_ref_id,
+        otp: values.aadhar_otp,
+      });
+      if (resp.data?.valid && resp.data?.status) {
+        setFieldValue("isAadhaarVerified", 1);
+      }
+      toastConfig.successToast(resp?.data?.message);
+      showOtpBox(false);
+      // setIsLoading(false)
+    } catch (error) {
+      toastConfig.errorToast(
+        error?.response?.data?.message ??
+          "Something went wrong, Please try again"
+      );
+      // setIsLoading(false)
+    }
+  };
   const handleSubmit = async (values) => {
     const postData = {
       name: values.name,
@@ -123,13 +203,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       created_by: createdBy,
       zone_code: zoneCode,
       password: values.password,
-      // pan_card: values.pan,
-      // name_on_pan_card: values.panName,
-      // aadhar_number: values.aadhar,
+      pan_card: values.pan,
+      name_on_pan_card: values.panName,
+      aadhar_number: values.aadhaar,
       onboard_type:
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
     };
-
     dispatch(saveBasicDetails(postData));
   };
   return (
@@ -190,27 +269,25 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   type="password"
                 />
               </div>
-              {/* <div className="col-md-6">
-                <label className="col-form-label px-2 py-0 mb-2 lh-sm">
-                  Aadhar
-                </label>
+              <div className="col-md-6">
+                <label className="col-form-label mb-2 lh-sm">Aadhaar</label>
                 <div className="input-group">
                   <Field
                     type="text"
-                    name="aadhar"
+                    name="aadhaar"
                     className="form-control"
                     onChange={(e) => {
-                      setFieldValue("isAadharVerified", "");
-                      setFieldValue("aadhar", e.target.value); // Set the uppercase value to form state
+                      setFieldValue("isAadhaarVerified", "");
+                      setFieldValue("aadhaar", e.target.value); // Set the uppercase value to form state
                     }}
                   />
-                  {values?.aadhar !== null &&
-                  values?.aadhar !== "" &&
-                  values?.aadhar !== undefined &&
+                  {values?.aadhaar !== null &&
+                  values?.aadhaar !== "" &&
+                  values?.aadhaar !== undefined &&
                   // !errors.hasOwnProperty("pan_card") &&
                   // !errors.hasOwnProperty("is_pan_verified") &&
 
-                  values?.isAadharVerified !== "" ? (
+                  values?.isAadhaarVerified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -243,7 +320,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                           className="form-control"
                           placeholder="Please Enter OTP sent to your phone number"
                           onChange={(e) => {
-                            setFieldValue("isAadharVerified", "");
+                            setFieldValue("isAadhaarVerified", "");
                             setFieldValue("aadhar_otp", e.target.value); // Set the uppercase value to form state
                           }}
                         />
@@ -262,56 +339,58 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     )}
                     modalSize={"md"}
                     modalToggle={otpBox}
-                    headerTitle={"Aadhar Verification"}
+                    headerTitle={"Aadhaar Verification"}
                     fnSetModalToggle={() => showOtpBox(false)}
                   />
                 )}
               </div>
-              <div className="col-md-6">
-                <label className="col-form-label p-2">PAN</label>
-                <div className="input-group">
-                  <Field
-                    type="text"
-                    name="pan"
-                    className="form-control"
-                    onChange={(e) => {
-                      setFieldValue("isPanVerified", "");
-                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
-                      setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
-                    }}
-                  />
-                  {values?.pan !== null &&
-                  values?.pan !== "" &&
-                  values?.pan !== undefined &&
-                  // !errors.hasOwnProperty("pan_card") &&
-                  // !errors.hasOwnProperty("is_pan_verified") &&
+              {type === "individual" && (
+                <div className="col-md-6">
+                  <label className="col-form-label mb-2 lh-sm">PAN</label>
+                  <div className="input-group">
+                    <Field
+                      type="text"
+                      name="pan"
+                      className="form-control"
+                      onChange={(e) => {
+                        setFieldValue("isPanVerified", "");
+                        const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                        setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
+                      }}
+                    />
+                    {values?.pan !== null &&
+                    values?.pan !== "" &&
+                    values?.pan !== undefined &&
+                    // !errors.hasOwnProperty("pan_card") &&
+                    // !errors.hasOwnProperty("is_pan_verified") &&
 
-                  values?.isPanVerified !== "" ? (
-                    <span className="success input-group-append">
-                      <img
-                        src={verifiedIcon}
-                        alt=""
-                        title=""
-                        width={"20px"}
-                        height={"20px"}
-                        className="btn-outline-secondary"
-                      />
-                    </span>
-                  ) : (
-                    <span className="input-group-append">
-                      <a
-                        href={() => false}
-                        className="btn cob-btn-primary text-white btn btn-sm"
-                        onClick={() => {
-                          verifyPan(values.pan, setFieldValue);
-                        }}
-                      >
-                        Verify
-                      </a>
-                    </span>
-                  )}
+                    values?.isPanVerified !== "" ? (
+                      <span className="success input-group-append">
+                        <img
+                          src={verifiedIcon}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
+                      </span>
+                    ) : (
+                      <span className="input-group-append">
+                        <a
+                          href={() => false}
+                          className="btn cob-btn-primary text-white btn btn-sm"
+                          onClick={() => {
+                            verifyPan(values.pan, setFieldValue);
+                          }}
+                        >
+                          Verify
+                        </a>
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div> */}
+              )}
             </div>
             <div className="row">
               <div className="col-6">
@@ -333,18 +412,18 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   )}
                 </button>
 
-                {/* {merchantKycData?.isContactNumberVerified === 1 && */}
-                <a
-                  className="btn active-secondary btn-sm m-2"
-                  onClick={() =>
-                    type === "individual"
-                      ? setCurrentTab("address")
-                      : setCurrentTab("biz_overview")
-                  }
-                >
-                  Next
-                </a>
-                {/* } */}
+                {basicDetailsResponse.data && !submitLoader && (
+                  <a
+                    className="btn active-secondary btn-sm m-2"
+                    onClick={() =>
+                      type === "individual"
+                        ? setCurrentTab("address")
+                        : setCurrentTab("biz_overview")
+                    }
+                  >
+                    Next
+                  </a>
+                )}
               </div>
             </div>
           </Form>

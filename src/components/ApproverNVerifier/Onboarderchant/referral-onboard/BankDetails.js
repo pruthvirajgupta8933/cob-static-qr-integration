@@ -9,16 +9,17 @@ import {
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
 import toastConfig from "../../../../utilities/toastTypes";
+import { getBankId } from "../../../../slices/kycSlice";
 import {
   ifscValidation,
   bankAccountVerification,
-  getBankId,
-} from "../../../../slices/kycSlice";
+} from "../../../../slices/kycValidatorSlice";
 import { saveBankDetails } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import verifiedIcon from "../../../../assets/images/verified.png";
 
 const BankDetails = ({ setCurrentTab }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [showNext, setShowNext] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const basicDetailsResponse = useSelector(
@@ -81,6 +82,7 @@ const BankDetails = ({ setCurrentTab }) => {
 
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
+          setShowNext(true);
         }
       })
       .catch((err) => {
@@ -308,14 +310,14 @@ const BankDetails = ({ setCurrentTab }) => {
                 </button>
                 {/* } */}
 
-                {/* {bankDetails?.resp?.status === true && */}
-                <a
-                  className="btn active-secondary btn-sm m-2"
-                  onClick={() => setCurrentTab("upload_doc")}
-                >
-                  Next
-                </a>
-                {/* } */}
+                {showNext && (
+                  <a
+                    className="btn active-secondary btn-sm m-2"
+                    onClick={() => setCurrentTab("upload_doc")}
+                  >
+                    Next
+                  </a>
+                )}
               </div>
             </div>
           </Form>

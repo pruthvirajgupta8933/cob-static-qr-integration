@@ -13,7 +13,7 @@ import {
   saveAddressDetails,
   saveReferralIds,
 } from "../../../../slices/approver-dashboard/referral-onboard-slice";
-import { authPanValidation } from "../../../../slices/kycSlice";
+import { authPanValidation } from "../../../../slices/kycValidatorSlice";
 import verifiedIcon from "../../../../assets/images/verified.png";
 
 const ReferralId = ({ setCurrentTab }) => {

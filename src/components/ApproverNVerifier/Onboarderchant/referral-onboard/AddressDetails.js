@@ -12,6 +12,7 @@ import { saveAddressDetails } from "../../../../slices/approver-dashboard/referr
 const AddressDetails = ({ setCurrentTab }) => {
   const [stateData, setStateData] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [showNext, setShowNext] = useState(false);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
@@ -55,6 +56,7 @@ const AddressDetails = ({ setCurrentTab }) => {
       const res = await dispatch(saveAddressDetails(postData));
       res?.data?.status && toastConfig.successToast("Data Saved");
       setSubmitLoader(false);
+      setShowNext(true);
     } catch (e) {
       setSubmitLoader(false);
       toastConfig.errorToast(e?.response?.data?.detail);
@@ -152,12 +154,14 @@ const AddressDetails = ({ setCurrentTab }) => {
                   )}
                 </button>
 
-                <a
-                  className="btn active-secondary btn-sm m-2"
-                  onClick={() => setCurrentTab("referral_id")}
-                >
-                  Next
-                </a>
+                {showNext && (
+                  <a
+                    className="btn active-secondary btn-sm m-2"
+                    onClick={() => setCurrentTab("bank")}
+                  >
+                    Next
+                  </a>
+                )}
               </div>
             </div>
           </Form>

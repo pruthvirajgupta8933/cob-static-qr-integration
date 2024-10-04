@@ -10,13 +10,10 @@ import {
 import Yup from "../../../../_components/formik/Yup";
 import FormikController from "../../../../_components/formik/FormikController";
 import {
-  businessOverviewState,
-  panValidation,
   authPanValidation,
   gstValidation,
-  kycUserList,
-  GetKycTabsStatus,
-} from "../../../../slices/kycSlice";
+} from "../../../../slices/kycValidatorSlice";
+import { businessOverviewState } from "../../../../slices/kycSlice";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 
 const BusinessDetails = ({ setCurrentTab }) => {
