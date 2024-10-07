@@ -177,15 +177,23 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const sendAadharOtp = async ({ values, setFieldValue }) => {
     if (values.aadhaar?.length !== 12) return;
     setOtpLoader(true);
-    const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
-      aadhar_number: values.aadhaar,
-    });
-    if (resp.data.status) {
-      showOtpBox(true);
+    try {
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
+        aadhar_number: values.aadhaar,
+      });
+      if (resp.data.status) {
+        showOtpBox(true);
+        setOtpLoader(false);
+        setFieldValue("otp_ref_id", resp.data.referenceId);
+      } else {
+        setOtpLoader(true);
+      }
+    } catch (error) {
+      toastConfig.errorToast(
+        error?.response?.data?.message ??
+          "Something went wrong, Please try again"
+      );
       setOtpLoader(false);
-      setFieldValue("otp_ref_id", resp.data.referenceId);
-    } else {
-      setOtpLoader(true);
     }
   };
   const verifyAadhar = async ({ values, setFieldValue }) => {
