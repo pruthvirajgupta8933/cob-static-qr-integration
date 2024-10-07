@@ -20,6 +20,7 @@ import verifiedIcon from "../../../../assets/images/verified.png";
 const BankDetails = ({ setCurrentTab }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [showNext, setShowNext] = useState(false);
+  const [accountLoader, setAccountLoader] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const basicDetailsResponse = useSelector(
@@ -223,8 +224,11 @@ const BankDetails = ({ setCurrentTab }) => {
                     <span className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white btn btn-sm"
+                        className={`btn cob-btn-primary text-white btn btn-sm ${
+                          accountLoader ? "disabled" : "pe-auto"
+                        }`}
                         onClick={() => {
+                          setAccountLoader(true);
                           verifyAccount(
                             values.ifsc,
                             values.acNumber,

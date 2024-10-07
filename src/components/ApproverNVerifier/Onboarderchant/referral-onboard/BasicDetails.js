@@ -25,14 +25,17 @@ import verifiedIcon from "../../../../assets/images/verified.png";
 const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [otpBox, showOtpBox] = useState(false);
+  const [panLoader, setPanLoader] = useState(false);
+  const [otpLoader, setOtpLoader] = useState(false);
+  const [aadhaarLoader, setAadhaarLoader] = useState(false);
   const dispatch = useDispatch();
   const initialValues = {
     name: "",
     contactNumber: "",
     email: "",
     password: "",
-    // pan: "",
-    // aadhar: "",
+    pan: "",
+    aadhar: "",
   };
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
@@ -147,6 +150,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   });
 
   const verifyPan = async (pan, setFieldValue) => {
+    if (pan?.length !== 10) return;
+    setPanLoader(true);
     try {
       const res = await dispatch(authPanValidation({ pan_number: pan }));
       if (
@@ -159,23 +164,32 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
           "panName",
           `${res.payload.first_name} ${res.payload.last_name}`
         );
+        setPanLoader(false);
       } else {
         toast.error(res?.payload?.message);
+        setPanLoader(false);
       }
     } catch (error) {
       setFieldValue("isPanVerified", false);
+      setPanLoader(false);
     }
   };
   const sendAadharOtp = async ({ values, setFieldValue }) => {
+    if (values.aadhaar?.length !== 12) return;
+    setOtpLoader(true);
     const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
       aadhar_number: values.aadhaar,
     });
     if (resp.data.status) {
       showOtpBox(true);
+      setOtpLoader(false);
       setFieldValue("otp_ref_id", resp.data.referenceId);
+    } else {
+      setOtpLoader(true);
     }
   };
   const verifyAadhar = async ({ values, setFieldValue }) => {
+    setAadhaarLoader(true);
     try {
       const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, {
         referenceId: values?.otp_ref_id,
@@ -186,13 +200,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       }
       toastConfig.successToast(resp?.data?.message);
       showOtpBox(false);
-      // setIsLoading(false)
+      setAadhaarLoader(false);
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
           "Something went wrong, Please try again"
       );
-      // setIsLoading(false)
+      setAadhaarLoader(true);
     }
   };
   const handleSubmit = async (values) => {
@@ -302,7 +316,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     <span className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white btn btn-sm"
+                        className={`btn cob-btn-primary text-white btn btn-sm ${
+                          otpLoader ? "disabled" : "pe-auto"
+                        }`}
                         onClick={() => sendAadharOtp({ values, setFieldValue })}
                       >
                         Send OTP
@@ -313,29 +329,35 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                 {otpBox && (
                   <CustomModal
                     modalBody={() => (
-                      <div className="input-group w-40">
-                        <Field
-                          type="text"
-                          name="aadhar-otp"
-                          className="form-control"
-                          placeholder="Please Enter OTP sent to your phone number"
-                          onChange={(e) => {
-                            setFieldValue("isAadhaarVerified", "");
-                            setFieldValue("aadhar_otp", e.target.value); // Set the uppercase value to form state
-                          }}
-                        />
-                        <span className="input-group-append">
-                          <a
-                            href={() => false}
-                            className="btn cob-btn-primary text-white btn btn-sm"
-                            onClick={() =>
-                              verifyAadhar({ values, setFieldValue })
-                            }
-                          >
-                            Verify
-                          </a>
-                        </span>
-                      </div>
+                      <>
+                        <label>
+                          Please Enter OTP sent to your phone number
+                        </label>
+                        <div className="input-group w-40">
+                          <Field
+                            type="text"
+                            name="aadhar-otp"
+                            className="form-control"
+                            onChange={(e) => {
+                              setFieldValue("isAadhaarVerified", "");
+                              setFieldValue("aadhar_otp", e.target.value); // Set the uppercase value to form state
+                            }}
+                          />
+                          <span className="input-group-append">
+                            <a
+                              href={() => false}
+                              className={`btn cob-btn-primary text-white btn btn-sm ${
+                                aadhaarLoader ? "disabled" : "pe-auto"
+                              }`}
+                              onClick={() =>
+                                verifyAadhar({ values, setFieldValue })
+                              }
+                            >
+                              Verify
+                            </a>
+                          </span>
+                        </div>
+                      </>
                     )}
                     modalSize={"md"}
                     modalToggle={otpBox}
@@ -379,10 +401,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       <span className="input-group-append">
                         <a
                           href={() => false}
-                          className="btn cob-btn-primary text-white btn btn-sm"
-                          onClick={() => {
-                            verifyPan(values.pan, setFieldValue);
-                          }}
+                          className={`btn cob-btn-primary text-white btn btn-sm ${
+                            panLoader ? "disabled" : "pe-auto"
+                          }`}
+                          onClick={() => verifyPan(values.pan, setFieldValue)}
                         >
                           Verify
                         </a>
