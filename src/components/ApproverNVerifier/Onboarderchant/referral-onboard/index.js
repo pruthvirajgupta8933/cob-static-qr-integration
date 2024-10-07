@@ -79,7 +79,7 @@ const Referral = ({ type }) => {
                 } ${
                   tab.id === "basic"
                     ? "pe-auto"
-                    : !basicDetailsResponse?.loginMasterId
+                    : basicDetailsResponse?.loginMasterId
                     ? "pe-auto"
                     : "pe-none"
                 }`}
