@@ -412,7 +412,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
               )}
             </div>
             <div className="row">
-              {console.log(isValid)}
               <div className="col-6">
                 <button
                   type="submit"
