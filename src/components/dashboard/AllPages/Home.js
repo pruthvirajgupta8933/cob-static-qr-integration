@@ -243,11 +243,46 @@ function Home() {
           </div>
         </div>
       }
+
+
+      {roles?.bank &&
+        <div className="row">
+          <h5>Dashboard</h5>
+          <div className="col-lg-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Transaction Overview</h5>
+                <p className="card-text">Stay updated with a summary of recent transactions. Quickly identify key details like amounts, statuses, and payment sources, with options to dive deeper.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-4">
+            <div className="card" >
+              <div className="card-body">
+                <h5 className="card-title">Initiate Payment</h5>
+                <p className="card-text">Easily send or request payments through a variety of secure options. Choose from multiple payment methods and get real-time confirmation on transaction statuses.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-4">
+            <div className="card" >
+              <div className="card-body">
+                <h5 className="card-title">Financial Insights</h5>
+                <p className="card-text">Access powerful tools to analyze your financial activities. Identify trends, generate custom reports, and forecast future revenue or expenses to stay ahead of the curve.  </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
       <hr />
       <br />
       {/* static content displaying */}
 
-      {/* <HomeContent /> */}
+
+
+
       {/* Display the products  */}
       <HomeProduct />
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
