@@ -222,22 +222,31 @@ const BankDetails = ({ setCurrentTab }) => {
                     </span>
                   ) : (
                     <span className="input-group-append">
-                      <a
-                        href={() => false}
-                        className={`btn cob-btn-primary text-white btn btn-sm ${
-                          accountLoader ? "disabled" : "pe-auto"
-                        }`}
-                        onClick={() => {
-                          setAccountLoader(true);
-                          verifyAccount(
-                            values.ifsc,
-                            values.acNumber,
-                            setFieldValue
-                          );
-                        }}
-                      >
-                        Verify
-                      </a>
+                      {accountLoader ? (
+                        <div className="bg-primary text-white w-100 p-2">
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            ariaHidden="true"
+                          />
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        <a
+                          href={() => false}
+                          className="btn cob-btn-primary text-white btn btn-sm"
+                          onClick={() => {
+                            setAccountLoader(true);
+                            verifyAccount(
+                              values.ifsc,
+                              values.acNumber,
+                              setFieldValue
+                            );
+                          }}
+                        >
+                          Verify
+                        </a>
+                      )}
                     </span>
                   )}
                 </div>
