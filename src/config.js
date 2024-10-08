@@ -387,6 +387,9 @@ const API_LIVE = {
   fetchParentClientCodes: `${adminAPIURL}/getDataByCommonProc/getCommonData/35/0`,
   perentTypeMerchantData: `${kyc_url}/kyc/get-merchant-data/parent-type/`,
   getAllzone: `${kyc_url}/kyc/refer-zone/get-all-zone/`,
+  saveReferralBizOverview: `${kyc_url}/kyc/referrer/company-referrer-business-overview/`,
+  saveReferralAddress: `${kyc_url}/kyc/referrer/referrer-address/`,
+  saveReferralIds: `${kyc_url}/kyc/referrer/referrer-id/`,
   // Geo location saving
   saveGeoCord: `${kyc_url}/kyc/coordinate/save/`,
   // Refund transaction
