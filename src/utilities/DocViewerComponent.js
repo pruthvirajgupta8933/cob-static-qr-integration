@@ -1,6 +1,8 @@
 import React from "react";
 import CustomModal from "../_components/custom_modal";
 import classes from "./utilities.module.css"
+// import testTimage from "../assets/images/Background.png"
+import { saveImage } from "./saveImage";
 
 const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) => {
   const getFileType = (url) => {
@@ -15,22 +17,28 @@ const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) =>
   };
 
   const docModalBody = () => {
-    // console.log(selectViewDoc?.filePath)
     const fileType = getFileType(selectViewDoc?.documentUrl);
-    const disableRightClick = (e) => {
-      e.preventDefault();
-    };
 
     return (
       <div>
         {fileType === 'image' ? (
-          <img
-            src={selectViewDoc?.documentUrl ?? '#'}
-            alt="Doc"
-            width={'100%'}
-            height={'auto'}
-            onContextMenu={disableRightClick}
-          />
+          <React.Fragment>
+            <div className="text-end p-3">
+              <button className="btn btn-sm cob-btn-primary" onClick={() => saveImage(selectViewDoc?.documentUrl, selectViewDoc?.documentName)}>
+                <i className="fa fa-download" />
+                <span className="d-none">download</span>
+              </button>
+            </div>
+
+            <img
+              src={selectViewDoc?.documentUrl ?? '#'}
+              alt="Doc"
+              width={'100%'}
+              height={'auto'}
+            />
+          </React.Fragment>
+
+
         ) : fileType === 'pdf' ? (
           <div style={{ position: 'relative', width: '100%', height: 610 }}>
             <iframe
