@@ -4,8 +4,9 @@ import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
 
 const initialState = {
-  basicDetailsResponse:
-    JSON.parse(localStorage.getItem("onboardingStatusByReferrer")) || {},
+  basicDetailsResponse: localStorage.getItem("onboardingStatusByReferrer")
+    ? { data: JSON.parse(localStorage.getItem("onboardingStatusByReferrer")) }
+    : {},
 };
 
 export const saveBasicDetails = createAsyncThunk(
@@ -83,6 +84,24 @@ export const referralOnboardSlice = createSlice({
       state.basicDetailsResponse = {};
       localStorage.removeItem("onboardingStatusByReferrer");
     },
+    updateBasicDetails: (state) => {
+      // console.log("hi");
+      state.basicDetailsResponse = {
+        data: {
+          ...state.basicDetailsResponse.data,
+          clientCodeCreated: true,
+        },
+      };
+      let onboardingStatusByReferrer = JSON.parse(
+        localStorage.getItem("onboardingStatusByReferrer")
+      );
+      onboardingStatusByReferrer.clientCodeCreated = true;
+      localStorage.setItem(
+        "onboardingStatusByReferrer",
+        JSON.stringify(onboardingStatusByReferrer)
+      );
+      // console.log("herer");
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -92,8 +111,10 @@ export const referralOnboardSlice = createSlice({
       .addCase(saveBasicDetails.fulfilled, (state, action) => {
         state.basicDetailsResponse = { data: action.payload.data };
         const onboardingStatusByReferrer = {
-          masterLoginId: action.payload.data?.loginMasterId,
+          name: action.payload.data?.name,
+          loginMasterId: action.payload.data?.loginMasterId,
           businessType: action.payload?.data?.business_cat_code,
+          status: action.payload?.data?.status,
           isOnboardStart: true,
         };
         localStorage.setItem(
@@ -108,3 +129,29 @@ export const referralOnboardSlice = createSlice({
 });
 
 export default referralOnboardSlice.reducer;
+// {
+//     "loginMasterId": 11489,
+//     "name": "Test",
+//     "email": "bac11106@rinseart.com",
+//     "mobileNumber": "3245782751",
+//     "password": "pbkdf2_sha256$320000$3c7KmB0Tu0ru0fWnz6xWNf$1m9RSiLNBEiF+RYb0TG1AEPsko7M+L+XwVMnyG4tycU=",
+//     "username": "bac11106@rinseart.com",
+//     "createdDate": "2024-10-08T11:49:27.431877",
+//     "modifiedDate": null,
+//     "modifiedBy": null,
+//     "status": "Pending",
+//     "reason": null,
+//     "last_login": null,
+//     "requestId": null,
+//     "requestedClientType": null,
+//     "requestedParentClientId": null,
+//     "isDirect": false,
+//     "is_social": false,
+//     "business_cat_code": "13",
+//     "onboard_type": "Referrer (Individual)",
+//     "parent_bank_login_id": null,
+//     "account_details_client_account_id": null,
+//     "master_client_id": null,
+//     "roleId": 13,
+//     "created_by": 10829
+// }

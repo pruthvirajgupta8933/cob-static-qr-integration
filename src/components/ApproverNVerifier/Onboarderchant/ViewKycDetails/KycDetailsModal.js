@@ -205,14 +205,14 @@ const KycDetailsModal = (props) => {
                     <tr>
                       <th>Risk Category</th>
                       <th>MCC Elaboration</th>
-                      <th>MCC Code</th>
+                      <th>MCC</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>{selectedUserData.risk_category_name}</td>
                       <td>{selectedUserData.mcc_elaboration || "NA"}</td>
-                      <td>{selectedUserData.mcc_code || "NA"}</td>
+                      <td>{selectedUserData.mcc || "NA"}</td>
                     </tr>
                   </tbody>
                 </table>

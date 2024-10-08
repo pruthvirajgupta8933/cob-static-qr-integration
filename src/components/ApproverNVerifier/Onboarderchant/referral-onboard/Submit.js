@@ -1,14 +1,15 @@
-import React from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
 
 const Submit = () => {
+  const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
   let history = useHistory();
   const handleSubmit = () => {
     dispatch(referralOnboardSlice.actions.resetBasicDetails());
-    history.push("/dashboard/referral-onboarding");
+    setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
   };
   return (
     <div
@@ -24,6 +25,7 @@ const Submit = () => {
               type="checkbox"
               name="term_condition"
               className="mr-2 mt-1"
+              onChange={() => setChecked(!checked)}
             />
             <span>
               I have submitted the details to the best of my knowledge.
@@ -35,6 +37,7 @@ const Submit = () => {
         <div className="col-12">
           <button
             className="btn btn-sm float-lg-center cob-btn-primary text-white"
+            disabled={!checked}
             onClick={handleSubmit}
           >
             Submit

@@ -21,6 +21,7 @@ import { authPanValidation } from "../../../../slices/kycValidatorSlice";
 import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
 import toastConfig from "../../../../utilities/toastTypes";
 import verifiedIcon from "../../../../assets/images/verified.png";
+import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
 
 const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
@@ -29,18 +30,21 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [otpLoader, setOtpLoader] = useState(false);
   const [aadhaarLoader, setAadhaarLoader] = useState(false);
   const dispatch = useDispatch();
-  const initialValues = {
-    name: "",
-    contactNumber: "",
-    email: "",
-    password: "",
-    pan: "",
-    aadhaar: "",
-  };
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
   const createdBy = useSelector((state) => state.auth.user?.loginId);
+
+  const initialValues = {
+    name: basicDetailsResponse?.data?.name ?? "",
+    contactNumber: basicDetailsResponse?.data?.mobileNumber ?? "",
+    email: basicDetailsResponse?.data?.email ?? "",
+    password: "",
+    pan: basicDetailsResponse?.data?.pan_card ?? "",
+    aadhaar: basicDetailsResponse?.data?.aadhar_number ?? "",
+    isAadhaarVerified: basicDetailsResponse?.data?.aadhar_number ? 1 : "",
+    isPanVerified: basicDetailsResponse?.data?.pan_number ? 1 : "",
+  };
   useEffect(() => {
     const createClientCode = async () => {
       const clientFullName = basicDetailsResponse?.data?.name;
@@ -72,7 +76,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
           API_URL.AUTH_CLIENT_CREATE,
           data
         );
-        clientCreated.status === 200 && setSubmitLoader(false);
+        if (clientCreated.status === 200) {
+          setSubmitLoader(false);
+          toastConfig.successToast("Client code created");
+          dispatch(referralOnboardSlice.actions.updateBasicDetails());
+        }
       } catch (error) {
         // console.log("console is here")
         setSubmitLoader(false);
@@ -100,7 +108,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     // }
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
-    else if (basicDetailsResponse?.data) {
+    else if (
+      basicDetailsResponse?.data &&
+      !basicDetailsResponse?.data?.clientCodeCreated
+    ) {
       axiosInstanceAuth
         .put(
           `${API_URL.EMAIL_VERIFY}${basicDetailsResponse.data?.loginMasterId}`
@@ -110,7 +121,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         })
         .catch((e) => {
           console.log(e);
+          toastConfig.errorToast("Email Verification not done");
         });
+    } else if (basicDetailsResponse?.error) {
+      toastConfig.errorToast("Error saving data! Please try again");
+      setSubmitLoader(false);
     }
   }, [basicDetailsResponse]);
   const validationSchema = Yup.object().shape({
@@ -177,15 +192,23 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const sendAadharOtp = async ({ values, setFieldValue }) => {
     if (values.aadhaar?.length !== 12) return;
     setOtpLoader(true);
-    const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
-      aadhar_number: values.aadhaar,
-    });
-    if (resp.data.status) {
-      showOtpBox(true);
+    try {
+      const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
+        aadhar_number: values.aadhaar,
+      });
+      if (resp.data.status) {
+        showOtpBox(true);
+        setOtpLoader(false);
+        setFieldValue("otp_ref_id", resp.data.referenceId);
+      } else {
+        setOtpLoader(true);
+      }
+    } catch (error) {
+      toastConfig.errorToast(
+        error?.response?.data?.message ??
+          "Something went wrong, Please try again"
+      );
       setOtpLoader(false);
-      setFieldValue("otp_ref_id", resp.data.referenceId);
-    } else {
-      setOtpLoader(true);
     }
   };
   const verifyAadhar = async ({ values, setFieldValue }) => {
@@ -206,7 +229,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         error?.response?.data?.message ??
           "Something went wrong, Please try again"
       );
-      setAadhaarLoader(true);
+      setAadhaarLoader(false);
     }
   };
   const handleSubmit = async (values) => {
@@ -249,6 +272,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   placeholder="Enter Name"
                   label="Full Name"
                   autoComplete="off"
+                  disabled={basicDetailsResponse?.data}
                 />
               </div>
 
@@ -260,6 +284,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   className="form-control"
                   label="Contact Number"
                   autoComplete="off"
+                  disabled={basicDetailsResponse?.data}
                 />
               </div>
               <div className="col-md-6">
@@ -270,6 +295,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   placeholder="Enter Email Id"
                   label="Email ID"
                   autoComplete="off"
+                  disabled={basicDetailsResponse?.data}
                 />
               </div>
               <div className="col-md-6">
@@ -281,6 +307,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Create Password"
                   autoComplete="off"
                   type="password"
+                  disabled={basicDetailsResponse?.data}
                 />
               </div>
               <div className="col-md-6">
@@ -294,6 +321,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       setFieldValue("isAadhaarVerified", "");
                       setFieldValue("aadhaar", e.target.value); // Set the uppercase value to form state
                     }}
+                    disabled={basicDetailsResponse?.data}
                   />
                   {values?.aadhaar !== null &&
                   values?.aadhaar !== "" &&
@@ -371,7 +399,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                             ) : (
                               <a
                                 href={() => false}
-                                className="btn cob-btn-primary text-white btn btn-sm"
+                                className={`btn cob-btn-primary text-white btn btn-sm ${
+                                  !values.aadhar_otp ||
+                                  values.aadhar_otp.length < 6
+                                    ? "disabled"
+                                    : ""
+                                }`}
                                 onClick={() =>
                                   verifyAadhar({ values, setFieldValue })
                                 }
@@ -403,6 +436,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                         setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
                       }}
+                      disabled={basicDetailsResponse?.data}
                     />
                     {values?.pan !== null &&
                     values?.pan !== "" &&
@@ -446,6 +480,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       </span>
                     )}
                   </div>
+                  <span>{values.panName}</span>
                 </div>
               )}
             </div>
@@ -454,7 +489,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                 <button
                   type="submit"
                   className="btn cob-btn-primary btn-sm m-2"
-                  disabled={!isValid}
+                  disabled={
+                    !isValid || basicDetailsResponse?.data?.loginMasterId
+                  }
                 >
                   {submitLoader ? (
                     <>

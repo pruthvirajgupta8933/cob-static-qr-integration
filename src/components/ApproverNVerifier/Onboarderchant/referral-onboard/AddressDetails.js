@@ -57,6 +57,7 @@ const AddressDetails = ({ setCurrentTab }) => {
       res?.data?.status && toastConfig.successToast("Data Saved");
       setSubmitLoader(false);
       setShowNext(true);
+      toastConfig.successToast(res?.payload?.message);
     } catch (e) {
       setSubmitLoader(false);
       toastConfig.errorToast(e?.response?.data?.detail);

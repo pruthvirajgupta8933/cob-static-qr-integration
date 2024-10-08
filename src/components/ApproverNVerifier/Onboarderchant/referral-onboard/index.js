@@ -40,6 +40,7 @@ const Referral = ({ type }) => {
   const handleTabClick = (tabId) => setCurrentTab(tabId);
 
   const renderTabContent = () => {
+    // console.log(basicDetailsResponse);
     switch (currentTab) {
       case "basic":
         return <BasicDetails setCurrentTab={setCurrentTab} type={type} />;
@@ -64,6 +65,24 @@ const Referral = ({ type }) => {
   return (
     <section className="container-fluid">
       <div className="row">
+        {basicDetailsResponse && (
+          <div className="d-flex bg-light justify-content-between px-0 my-2">
+            <div>
+              <p className="p-2 m-0">
+                Session Start : {basicDetailsResponse?.name}
+              </p>
+              <p className="p-2 m-0">
+                KYC Status : {basicDetailsResponse?.status}
+              </p>
+            </div>
+            <div>
+              <p className="p-2 m-0">
+                Merchant Onboard Login ID :{" "}
+                {basicDetailsResponse?.loginMasterId}
+              </p>
+            </div>
+          </div>
+        )}
         <div className="col-2 bg-light p-1">
           {/* Tab navs */}
           <div

@@ -57,7 +57,7 @@ const BankDetails = ({ setCurrentTab }) => {
     acType: Yup.string().required("Required").nullable(),
     branch: Yup.string().allowOneSpace().required("Required").nullable(),
     bankName: Yup.string().required("Required").nullable(),
-    bank_id: Yup.number().required(),
+    bank_id: Yup.number().required("Bank ID required"),
   });
 
   const handleSubmit = (values) => {
@@ -98,18 +98,20 @@ const BankDetails = ({ setCurrentTab }) => {
         ifsc_number: ifsc,
       })
     );
-    if (
-      bankRes.meta.requestStatus === "fulfilled" &&
-      bankRes.payload.status === true &&
-      bankRes.payload.valid === true
-    ) {
-      setFieldValue("branch", bankRes?.payload?.branch);
-      setFieldValue("isIfscVerified", true);
-      setFieldValue("bankName", bankRes?.payload?.bank);
-      // toast.success(res?.payload?.message);
-    } else {
-      // setLoading(false)
-      toast.error(bankRes?.payload?.message);
+    try {
+      if (
+        bankRes.meta.requestStatus === "fulfilled" &&
+        bankRes.payload.status === true &&
+        bankRes.payload.valid === true
+      ) {
+        setFieldValue("branch", bankRes?.payload?.branch);
+        setFieldValue("isIfscVerified", true);
+        setFieldValue("bankName", bankRes?.payload?.bank);
+      } else {
+        toast.error(bankRes?.payload?.message);
+      }
+    } catch (err) {
+      toast.error(err?.payload?.bankName ?? "Error while fetching bank name");
     }
     dispatch(getBankId({ bank_name: bankRes?.payload?.bank }))
       .then((resp) => {
@@ -118,11 +120,12 @@ const BankDetails = ({ setCurrentTab }) => {
         }
       })
       .catch((err) => {
-        console.log(err?.payload?.bankName);
+        toast.error(err?.payload?.bankName ?? "Error while fetching bank");
       });
   };
 
   const verifyAccount = (ifsc, acNumber, setFieldValue) => {
+    setAccountLoader(true);
     dispatch(
       bankAccountVerification({
         account_number: acNumber,
@@ -141,8 +144,10 @@ const BankDetails = ({ setCurrentTab }) => {
         setFieldValue("acHolderName", fullName.trim());
         setFieldValue("isAccountNumberVerified", 1);
         toast.success(res?.payload?.message);
+        setAccountLoader(false);
       } else {
         toast.error(res?.payload?.message);
+        setAccountLoader(false);
       }
     });
   };
@@ -160,14 +165,7 @@ const BankDetails = ({ setCurrentTab }) => {
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({
-          values,
-          errors,
-          setFieldError,
-          setFieldValue,
-          setFieldTouched,
-          handleChange,
-        }) => (
+        {({ values, errors, setFieldError, setFieldValue, isValid }) => (
           <Form>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
@@ -181,7 +179,7 @@ const BankDetails = ({ setCurrentTab }) => {
                     className="form-control"
                     // disabled={isEditableInput}
                     onChange={(e) => {
-                      setFieldValue("ifsc", e.target.value);
+                      setFieldValue("ifsc", e.target.value.toUpperCase());
                       setFieldValue("isIfscVerified", "");
                       if (e.target.value.length === 11)
                         verifyBank(e.target.value, setFieldValue);
@@ -235,14 +233,13 @@ const BankDetails = ({ setCurrentTab }) => {
                         <a
                           href={() => false}
                           className="btn cob-btn-primary text-white btn btn-sm"
-                          onClick={() => {
-                            setAccountLoader(true);
+                          onClick={() =>
                             verifyAccount(
                               values.ifsc,
                               values.acNumber,
                               setFieldValue
-                            );
-                          }}
+                            )
+                          }
                         >
                           Verify
                         </a>
@@ -307,6 +304,7 @@ const BankDetails = ({ setCurrentTab }) => {
                 <button
                   className="cob-btn-primary btn text-white btn-sm"
                   type="submit"
+                  disabled={!isValid}
                 >
                   {/* // disabled={disable} > */}
                   {submitLoader && (
