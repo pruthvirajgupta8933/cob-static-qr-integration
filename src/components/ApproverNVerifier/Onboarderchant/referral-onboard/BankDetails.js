@@ -71,7 +71,7 @@ const BankDetails = ({ setCurrentTab }) => {
         account_type: selectedType.find((type) => type.key == values.acType)
           ?.value,
         branch: values.branch,
-        login_id: basicDetailsResponse?.loginMasterId || 11477,
+        login_id: basicDetailsResponse?.loginMasterId,
         modified_by: user?.loginId,
       })
     )

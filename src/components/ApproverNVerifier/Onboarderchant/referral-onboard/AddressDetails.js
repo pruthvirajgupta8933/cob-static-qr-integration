@@ -46,7 +46,7 @@ const AddressDetails = ({ setCurrentTab }) => {
   const onSubmit = async (values) => {
     setSubmitLoader(true);
     const postData = {
-      login_id: basicDetailsResponse?.login_master_id || 11477,
+      login_id: basicDetailsResponse?.login_master_id,
       address: values.operational_address,
       city: values.city,
       state: values.state,
