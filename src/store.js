@@ -16,11 +16,12 @@ import merchantReportSlice from "./slices/merchant-slice/reportSlice";
 import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 import { DebitReportsDataReducer } from "./slices/subscription-slice/debitSlice";
 import { createMandateReducer } from "./slices/subscription-slice/createMandateSlice";
-import approverDashboardSlice from "./slices/approver-dashboard/approverDashboardSlice"
-import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice"
-import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice"
+import approverDashboardSlice from "./slices/approver-dashboard/approverDashboardSlice";
+import rateMappingSlice from "./slices/approver-dashboard/rateMappingSlice";
+import merchantReferralOnboardReducer from "./slices/approver-dashboard/merchantReferralOnboardSlice";
+import referralOnboardSliceReducer from "./slices/approver-dashboard/referral-onboard-slice";
 // import notificationSlice from "./slices/notification-slice/notificationSlice"
-import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice"
+import productSubscriptionServiceAdminReducer from "./slices/approver-dashboard/productSubscriptionServiceAdminSlice";
 import { widgetReducer } from "./slices/widgetSlice";
 import { themeReducer } from "./slices/theme/themeSlice";
 import { signupDataReducer } from "./slices/signupDataSlice";
@@ -30,7 +31,7 @@ import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
 import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { editKycDetailReducer } from "./slices/editKycSlice";
 import { kycValidatorReducer } from "./slices/kycValidatorSlice";
-
+import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 
 const reducer = {
   auth: authReducer,
@@ -40,9 +41,9 @@ const reducer = {
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
   signupData: signupDataReducer,
-  mid:genreateMidReducer,
-  forgotPassword:forgotPassworReducer,
-  frm:frmReducer,
+  mid: genreateMidReducer,
+  forgotPassword: forgotPassworReducer,
+  frm: frmReducer,
   widget: widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
@@ -64,21 +65,23 @@ const reducer = {
 
   //merchantOnboardByOps
   merchantReferralOnboardReducer: merchantReferralOnboardReducer,
-
+  referralOnboard: referralOnboardSliceReducer,
   //notification
   // notificationSlice: notificationSlice,
 
   //   product subscription
-  productSubscriptionServiceAdminReducer: productSubscriptionServiceAdminReducer,
+  productSubscriptionServiceAdminReducer:
+    productSubscriptionServiceAdminReducer,
 
-///Edit Kyc Detail
-  editKycDetailReducer:editKycDetailReducer,
+  ///Edit Kyc Detail
+  editKycDetailReducer: editKycDetailReducer,
   // theme
   themeReducer: themeReducer,
   //Assign-Account-Manager
-  assignAccountManagerReducer:assignAccountManagerReducer,
-  kycValidatorReducer :kycValidatorReducer 
-  
+  assignAccountManagerReducer: assignAccountManagerReducer,
+  kycValidatorReducer: kycValidatorReducer,
+  bankDashboardReducer: bankDashboardReducer
+
 };
 
 const store = configureStore({

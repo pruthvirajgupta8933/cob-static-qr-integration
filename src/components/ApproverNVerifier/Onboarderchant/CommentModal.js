@@ -129,12 +129,12 @@ const CommentModal = (props) => {
     setSelectedViewDoc(docData)
   }
 
-  
 
   const modalbody = () => {
+
     return (
       <div className="container-fluid">
-        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.file_path, documentName: "" }} />}
+        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.file_path, documentName: selectViewDoc?.file_name }} />}
 
         <div>
           <h6>
@@ -251,12 +251,12 @@ const CommentModal = (props) => {
                                   // </a>
 
                                   <p
-                                  className="text-primary cursor_pointer text-decoration-underline"
-                                 rel="noreferrer"
-                                 onClick={() => docModalToggle(commentData)}
-                               >
-                                 View Document
-                               </p>
+                                    className="text-primary cursor_pointer text-decoration-underline"
+                                    rel="noreferrer"
+                                    onClick={() => docModalToggle(commentData)}
+                                  >
+                                    View Document
+                                  </p>
                                 )}
                             </td>
                           </tr>

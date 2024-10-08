@@ -91,6 +91,8 @@ import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
 import WebWhiteList from "../../ApproverNVerifier/WebWhiteList";
 import CreateMandateApi from "../../../subscription_components/CreateMandateApi/CreateMandateApi";
 import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
+import MerchantDetailList from "../../bank/MerchantDetailList";
+import MerchantSummary from "../../bank/MerchantSummary";
 
 function DashboardMainContent() {
     let history = useHistory();
@@ -219,6 +221,7 @@ function DashboardMainContent() {
                         <Route exact path={`${path}/profile`}>
                             <Profile />
                         </Route>
+
                         <AuthorizedRoute exact path={`${path}/onboard-merchant`} Component={OnboardMerchant} roleList={{ approver: true, viewer: true, accountManager: true }}>
                             <OnboardMerchant />
                         </AuthorizedRoute>
@@ -402,7 +405,7 @@ function DashboardMainContent() {
 
 
                         <AuthorizedRoute exact path={`${path}/configuration`} Component={Configuration} roleList={{ approver: true, verifier: true }}>
-                            <Configuration/>
+                            <Configuration />
                         </AuthorizedRoute>
 
                         <AuthorizedRoute
@@ -517,20 +520,18 @@ function DashboardMainContent() {
                         <AuthorizedRoute exact path={`${path}/subscription/mandate_registration`}
                             Component={CreateMandate} roleList={{ merchant: true }}>
                             <CreateMandate />
-                        </AuthorizedRoute >
+                        </AuthorizedRoute>
 
                         <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api`}
                             Component={CreateMandateApi} roleList={{ merchant: true }}>
-                            <CreateMandateApi/>
-                        </AuthorizedRoute >
+                            <CreateMandateApi />
+                        </AuthorizedRoute>
 
-                        
+
                         <AuthorizedRoute exact path={`${path}/subscription/create-mandate-api-response`}
                             Component={CreateMandateApiResponse} roleList={{ merchant: true }}>
-                            <CreateMandateApiResponse/>
-                        </AuthorizedRoute >
-
-                      
+                            <CreateMandateApiResponse />
+                        </AuthorizedRoute>
 
                         {/* -----------------------------------------------------------------------------------------------------|| */}
 
@@ -624,19 +625,18 @@ function DashboardMainContent() {
                         </AuthorizedRoute>
 
 
-                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true}}>
+                        <AuthorizedRoute exact path={`${path}/edit-kyc-detail`} Component={EditKycDetail} roleList={{ verifier: true }}>
                             <EditKycDetail />
                         </AuthorizedRoute>
 
-                        <AuthorizedRoute exact path={`${path}/website-whitelist`} Component={WebWhiteList} roleList={{ verifier: true}}>
-                            <WebWhiteList/>
+                        <AuthorizedRoute exact path={`${path}/website-whitelist`} Component={WebWhiteList} roleList={{ verifier: true }}>
+                            <WebWhiteList />
                         </AuthorizedRoute>
-                        
 
-                        
+                        <AuthorizedRoute exact path={`${path}/merchant-detail-list`} Component={MerchantDetailList} roleList={{ bank: true }} />
 
+                        <AuthorizedRoute exact path={`${path}/merchant-summary`} Component={MerchantSummary} roleList={{ bank: true }} />
 
-                        
 
                         <Route path={`${path}/*`} component={UrlNotFound}>
                             <UrlNotFound />

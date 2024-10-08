@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from "../../../_components/custom_modal";
-import { fetchChiledDataList } from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
+import { fetchChildDataList } from '../../../slices/approver-dashboard/merchantReferralOnboardSlice';
 import ReferralOnboardForm from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
 import Table from '../../../_components/table_components/table/Table';
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
@@ -180,7 +180,7 @@ function ClientList() {
         clientListExportApi({ bank_login_id: user?.loginId, type }).then((res) => {
             if (res.status === 200) {
                 const data = res?.data;
-                console.log("data",data)
+                console.log("data", data)
                 setLoading(false);
                 setDisable(false);
                 const blob = new Blob([data], {
@@ -252,7 +252,7 @@ function ClientList() {
             login_id: user?.loginId
         }
         //  console.log(postObj)
-        dispatch(fetchChiledDataList(postObj));
+        dispatch(fetchChildDataList(postObj));
     };
 
     const changeCurrentPage = (page) => {

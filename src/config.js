@@ -9,6 +9,7 @@ let url,
   widget_script,
   payLinkAPIURL,
   qwick_form_url,
+  temp_url,
   refund_url = "";
 
 if (ENV_PROD) {
@@ -25,6 +26,7 @@ if (ENV_PROD) {
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
   qwick_form_url = "https://qwikforms.in";
+  temp_url = ""
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -37,6 +39,7 @@ if (ENV_PROD) {
   widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://stage-qwikform.sabpaisa.in";
+  temp_url = "https://stage-python-reportapi.sabpaisa.in"
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -384,6 +387,9 @@ const API_LIVE = {
   fetchParentClientCodes: `${adminAPIURL}/getDataByCommonProc/getCommonData/35/0`,
   perentTypeMerchantData: `${kyc_url}/kyc/get-merchant-data/parent-type/`,
   getAllzone: `${kyc_url}/kyc/refer-zone/get-all-zone/`,
+  saveReferralBizOverview: `${kyc_url}/kyc/referrer/company-referrer-business-overview/`,
+  saveReferralAddress: `${kyc_url}/kyc/referrer/referrer-address/`,
+  saveReferralIds: `${kyc_url}/kyc/referrer/referrer-id/`,
   // Geo location saving
   saveGeoCord: `${kyc_url}/kyc/coordinate/save/`,
   // Refund transaction
@@ -401,6 +407,12 @@ const API_LIVE = {
   //ipWhiteList
 
   IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`,
+
+
+  // Bank merchant related reports
+  BANK_MERCHANT_DETAIL_LIST: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary/`,
+  BANK_MERCHANT_SUMMARY: `${temp_url}/transactions/merchantSummary/`
+
 };
 
 const B2B_API_LIVE = {

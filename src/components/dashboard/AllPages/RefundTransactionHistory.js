@@ -16,7 +16,7 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../_components/formik/Yup";
@@ -127,7 +127,7 @@ const RefundTransactionHistory = () => {
                 type: type,  // Set the type based on roleType
                 login_id: auth?.user?.loginId
             }
-            dispatch(fetchChiledDataList(postObj));
+            dispatch(fetchChildDataList(postObj));
         }
     };
     useEffect(() => {
@@ -321,273 +321,273 @@ const RefundTransactionHistory = () => {
 
     return (
         <section className="ant-layout">
-           
+
             <main>
-               
-             <h5>Refund Transaction History</h5>
 
-                    <section>
-                        <div className="container-fluid p-0">
-                            <Formik
-                                initialValues={initialValues}
-                                validationSchema={validationSchema}
-                                onSubmit={onSubmitHandler}
-                            >
-                                {(formik) => (
-                                    <Form>
-                                        <div className="form-row mt-4">
-                                            <div className="form-group col-md-3">
-                                                <FormikController
-                                                    control="select"
-                                                    label="Client Code"
-                                                    name="clientCode"
-                                                    className="form-select rounded-0 mt-0"
-                                                    options={clientCodeOption}
-                                                />
-                                            </div>
+                <h5>Refund Transaction History</h5>
 
-                                            <div className="form-group col-md-3">
-                                                <FormikController
-                                                    control="date"
-                                                    label="From Date"
-                                                    id="fromDate"
-                                                    name="fromDate"
-                                                    value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                                                    onChange={date => formik.setFieldValue('fromDate', date)}
-                                                    format="dd-MM-y"
-                                                    clearIcon={null}
-                                                    className="form-control rounded-0 p-0"
-                                                    required={true}
-                                                    errorMsg={formik.errors["fromDate"]}
-                                                />
-                                            </div>
-
-                                            <div className="form-group col-md-3">
-                                                <FormikController
-                                                    control="date"
-                                                    label="End Date"
-                                                    id="endDate"
-                                                    name="endDate"
-                                                    value={formik.values.endDate ? new Date(formik.values.endDate) : null}
-                                                    onChange={date => formik.setFieldValue('endDate', date)}
-                                                    format="dd-MM-y"
-                                                    clearIcon={null}
-                                                    className="form-control rounded-0 p-0"
-                                                    required={true}
-                                                    errorMsg={formik.errors["endDate"]}
-                                                />
-                                            </div>
+                <section>
+                    <div className="container-fluid p-0">
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={onSubmitHandler}
+                        >
+                            {(formik) => (
+                                <Form>
+                                    <div className="form-row mt-4">
+                                        <div className="form-group col-md-3">
+                                            <FormikController
+                                                control="select"
+                                                label="Client Code"
+                                                name="clientCode"
+                                                className="form-select rounded-0 mt-0"
+                                                options={clientCodeOption}
+                                            />
                                         </div>
-                                      
-                                        <div className="form-row">
+
+                                        <div className="form-group col-md-3">
+                                            <FormikController
+                                                control="date"
+                                                label="From Date"
+                                                id="fromDate"
+                                                name="fromDate"
+                                                value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                                                onChange={date => formik.setFieldValue('fromDate', date)}
+                                                format="dd-MM-y"
+                                                clearIcon={null}
+                                                className="form-control rounded-0 p-0"
+                                                required={true}
+                                                errorMsg={formik.errors["fromDate"]}
+                                            />
+                                        </div>
+
+                                        <div className="form-group col-md-3">
+                                            <FormikController
+                                                control="date"
+                                                label="End Date"
+                                                id="endDate"
+                                                name="endDate"
+                                                value={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                                                onChange={date => formik.setFieldValue('endDate', date)}
+                                                format="dd-MM-y"
+                                                clearIcon={null}
+                                                className="form-control rounded-0 p-0"
+                                                required={true}
+                                                errorMsg={formik.errors["endDate"]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-row">
+                                        <div className="form-group col-lg-1">
+                                            <button
+                                                disabled={disable}
+                                                className="btn cob-btn-primary text-white btn-sm"
+                                                type="submit"
+                                            >
+                                                {" "}
+                                                {loading ? "Loading..." : "Search"}{" "}
+                                            </button>
+                                        </div>
+
+                                        {txnList?.length > 0 && (
                                             <div className="form-group col-lg-1">
+
+
                                                 <button
-                                                    disabled={disable}
-                                                    className="btn cob-btn-primary text-white btn-sm"
-                                                    type="submit"
+                                                    className="btn btn-sm text-white cob-btn-primary"
+                                                    type=""
+                                                    onClick={() => {
+                                                        exportToExcelFn();
+                                                    }}
                                                 >
-                                                    {" "}
-                                                    {loading ? "Loading..." : "Search"}{" "}
+                                                    <i className="fa fa-download"></i> Export
                                                 </button>
                                             </div>
 
-                                            {txnList?.length > 0 && (
-                                                <div className="form-group col-lg-1">
-                                                   
-                                                   
-                                                     <button
-                                                        className="btn btn-sm text-white cob-btn-primary"
-                                                        type=""
-                                                        onClick={() => {
-                                                            exportToExcelFn();
-                                                        }}
-                                                    >
-                                                        <i className="fa fa-download"></i> Export
-                                                    </button>
-                                                </div>
+                                        )}
 
-                                         )} 
-
-                                        </div>
-                                    </Form>
-                                )}
-                            </Formik>
-                            <hr className="hr" />
-                            {txnList?.length > 0 ? (
-                                <div className="form-row">
-                                    <div className="form-group col-md-3">
-                                        <label>Search</label>
-                                        <input
-                                            type="text"
-                                            label="Search"
-                                            name="search"
-                                            placeholder="Search Here"
-                                            className="form-control rounded-0"
-                                            onChange={(e) => {
-                                                SetSearchText(e.target.value);
-                                            }}
-                                        />
                                     </div>
-                                    <div className="form-group col-md-3">
-                                        <label>Count Per Page</label>
-                                        <select
-                                            value={pageSize}
-                                            rel={pageSize}
-                                            className="form-select"
-                                            onChange={(e) => setPageSize(parseInt(e.target.value))}
-                                        >
-                                            <DropDownCountPerPage datalength={txnList.length} />
-                                        </select>
-                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                        <hr className="hr" />
+                        {txnList?.length > 0 ? (
+                            <div className="form-row">
+                                <div className="form-group col-md-3">
+                                    <label>Search</label>
+                                    <input
+                                        type="text"
+                                        label="Search"
+                                        name="search"
+                                        placeholder="Search Here"
+                                        className="form-control rounded-0"
+                                        onChange={(e) => {
+                                            SetSearchText(e.target.value);
+                                        }}
+                                    />
                                 </div>
-                            ) : (
-                                <> </>
-                            )}
+                                <div className="form-group col-md-3">
+                                    <label>Count Per Page</label>
+                                    <select
+                                        value={pageSize}
+                                        rel={pageSize}
+                                        className="form-select"
+                                        onChange={(e) => setPageSize(parseInt(e.target.value))}
+                                    >
+                                        <DropDownCountPerPage datalength={txnList.length} />
+                                    </select>
+                                </div>
+                            </div>
+                        ) : (
+                            <> </>
+                        )}
+                    </div>
+                </section>
+
+                <section className="features8 cid-sg6XYTl25a flleft w-100">
+                    <div className="container-fluid  p-3 my-3 ">
+                        {txnList.length > 0 ? (
+                            <h4>Total Record : {txnList.length} </h4>
+                        ) : (
+                            <></>
+                        )}
+
+                        <div className="overflow-auto">
+                            <table className="table table-bordered">
+                                <thead>
+                                    {txnList.length > 0 ? (
+                                        <tr>
+                                            <th> S.No</th>
+                                            <th> Client Code</th>
+                                            <th> Client Name</th>
+                                            <th> SP Transaction ID</th>
+                                            <th> Client Transaction ID</th>
+                                            <th> Amount</th>
+                                            <th> amount_adjust_on</th>
+                                            <th> amount_available_to_adjust</th>
+                                            <th> bank_name</th>
+                                            <th> money_asked_from_merchant</th>
+                                            <th> Payment Mode</th>
+                                            <th> refund_initiated_on</th>
+                                            <th> refund_process_on</th>
+                                            <th> refund_reason</th>
+                                            <th> refund_track_id</th>
+                                            <th> refunded_amount</th>
+                                            <th> trans_date</th>
+                                        </tr>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </thead>
+                                <tbody>
+                                    {txnList.length > 0 &&
+                                        paginatedata.map((item, i) => {
+                                            return (
+                                                <tr key={uuidv4()}>
+                                                    <td>{i + 1}</td>
+                                                    <td>{item.client_code}</td>
+                                                    <td>{item.client_name}</td>
+                                                    <td>{item.txn_id}</td>
+                                                    <td>{item.client_txn_id}</td>
+                                                    <td>
+                                                        {Number.parseFloat(item.payee_amount).toFixed(2)}
+                                                    </td>
+                                                    <td>{item.amount_adjust_on}</td>
+                                                    <td>{item.amount_available_to_adjust}</td>
+                                                    <td>{item.bank_name}</td>
+                                                    <td>{item.money_asked_from_merchant}</td>
+                                                    <td>{item.payment_mode}</td>
+                                                    <td>{item.refund_initiated_on}</td>
+                                                    <td>{item.refund_process_on}</td>
+                                                    <td>{item.refund_reason}</td>
+                                                    <td>{item.refund_track_id}</td>
+                                                    <td>{Number.parseFloat(item.refunded_amount)}</td>
+                                                    <td>{item.trans_date}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
                         </div>
-                    </section>
 
-                    <section className="features8 cid-sg6XYTl25a flleft w-100">
-                        <div className="container-fluid  p-3 my-3 ">
+                        <div>
                             {txnList.length > 0 ? (
-                                <h4>Total Record : {txnList.length} </h4>
-                            ) : (
-                                <></>
-                            )}
-
-                            <div className="overflow-auto">
-                                <table className="table table-bordered">
-                                    <thead>
-                                        {txnList.length > 0 ? (
-                                            <tr>
-                                                <th> S.No</th>
-                                                <th> Client Code</th>
-                                                <th> Client Name</th>
-                                                <th> SP Transaction ID</th>
-                                                <th> Client Transaction ID</th>
-                                                <th> Amount</th>
-                                                <th> amount_adjust_on</th>
-                                                <th> amount_available_to_adjust</th>
-                                                <th> bank_name</th>
-                                                <th> money_asked_from_merchant</th>
-                                                <th> Payment Mode</th>
-                                                <th> refund_initiated_on</th>
-                                                <th> refund_process_on</th>
-                                                <th> refund_reason</th>
-                                                <th> refund_track_id</th>
-                                                <th> refunded_amount</th>
-                                                <th> trans_date</th>
-                                            </tr>
+                                <nav aria-label="Page navigation example">
+                                    <ul className="pagination">
+                                        <a
+                                            className="page-link"
+                                            onClick={(prev) =>
+                                                setCurrentPage((prev) =>
+                                                    prev === 1 ? prev : prev - 1
+                                                )
+                                            }
+                                            href={() => false}
+                                        >
+                                            Previous
+                                        </a>
+                                        {pages
+                                            .slice(currentPage - 1, currentPage + 6)
+                                            .map((page, i) => (
+                                                <li
+                                                    key={uuidv4()}
+                                                    className={
+                                                        page === currentPage
+                                                            ? " page-item active"
+                                                            : "page-item"
+                                                    }
+                                                >
+                                                    <a
+                                                        className={`page-link data_${i}`}
+                                                        href={() => false}
+                                                    >
+                                                        <p onClick={() => pagination(page)}>{page}</p>
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        {pages.length !== currentPage ? (
+                                            <a
+                                                className="page-link"
+                                                onClick={(nex) => {
+                                                    setCurrentPage((nex) =>
+                                                        nex === pages.length > 9 ? nex : nex + 1
+                                                    );
+                                                }}
+                                                href={() => false}
+                                            >
+                                                Next
+                                            </a>
                                         ) : (
                                             <></>
                                         )}
-                                    </thead>
-                                    <tbody>
-                                        {txnList.length > 0 &&
-                                            paginatedata.map((item, i) => {
-                                                return (
-                                                    <tr key={uuidv4()}>
-                                                        <td>{i + 1}</td>
-                                                        <td>{item.client_code}</td>
-                                                        <td>{item.client_name}</td>
-                                                        <td>{item.txn_id}</td>
-                                                        <td>{item.client_txn_id}</td>
-                                                        <td>
-                                                            {Number.parseFloat(item.payee_amount).toFixed(2)}
-                                                        </td>
-                                                        <td>{item.amount_adjust_on}</td>
-                                                        <td>{item.amount_available_to_adjust}</td>
-                                                        <td>{item.bank_name}</td>
-                                                        <td>{item.money_asked_from_merchant}</td>
-                                                        <td>{item.payment_mode}</td>
-                                                        <td>{item.refund_initiated_on}</td>
-                                                        <td>{item.refund_process_on}</td>
-                                                        <td>{item.refund_reason}</td>
-                                                        <td>{item.refund_track_id}</td>
-                                                        <td>{Number.parseFloat(item.refunded_amount)}</td>
-                                                        <td>{item.trans_date}</td>
-                                                    </tr>
-                                                );
-                                            })}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div>
-                                {txnList.length > 0 ? (
-                                    <nav aria-label="Page navigation example">
-                                        <ul className="pagination">
-                                            <a
-                                                className="page-link"
-                                                onClick={(prev) =>
-                                                    setCurrentPage((prev) =>
-                                                        prev === 1 ? prev : prev - 1
-                                                    )
-                                                }
-                                                href={() => false}
-                                            >
-                                                Previous
-                                            </a>
-                                            {pages
-                                                .slice(currentPage - 1, currentPage + 6)
-                                                .map((page, i) => (
-                                                    <li
-                                                        key={uuidv4()}
-                                                        className={
-                                                            page === currentPage
-                                                                ? " page-item active"
-                                                                : "page-item"
-                                                        }
-                                                    >
-                                                        <a
-                                                            className={`page-link data_${i}`}
-                                                            href={() => false}
-                                                        >
-                                                            <p onClick={() => pagination(page)}>{page}</p>
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            {pages.length !== currentPage ? (
-                                                <a
-                                                    className="page-link"
-                                                    onClick={(nex) => {
-                                                        setCurrentPage((nex) =>
-                                                            nex === pages.length > 9 ? nex : nex + 1
-                                                        );
-                                                    }}
-                                                    href={() => false}
-                                                >
-                                                    Next
-                                                </a>
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </ul>
-                                    </nav>
-                                ) : (
-                                    <></>
-                                )}
-                            </div>
-                            <div className="container">
-                                {isLoadingTxnHistory ? (
-                                    <div className="col-lg-12 col-md-12">
-                                        <div className="text-center">
-                                            <div className="spinner-border" role="status">
-                                                <span className="sr-only">Loading...</span>
-                                            </div>
+                                    </ul>
+                                </nav>
+                            ) : (
+                                <></>
+                            )}
+                        </div>
+                        <div className="container">
+                            {isLoadingTxnHistory ? (
+                                <div className="col-lg-12 col-md-12">
+                                    <div className="text-center">
+                                        <div className="spinner-border" role="status">
+                                            <span className="sr-only">Loading...</span>
                                         </div>
                                     </div>
-                                ) : buttonClicked && dataFound && txnList.length === 0 ? (
-                                    <div>
-                                        <h5 className="d-flex justify-content-center align-items-center">Data Not
-                                            Found</h5>
-                                    </div>
-                                ) : (
-                                    <></>
-                                )}
-                            </div>
+                                </div>
+                            ) : buttonClicked && dataFound && txnList.length === 0 ? (
+                                <div>
+                                    <h5 className="d-flex justify-content-center align-items-center">Data Not
+                                        Found</h5>
+                                </div>
+                            ) : (
+                                <></>
+                            )}
                         </div>
-                    </section>
-              
+                    </div>
+                </section>
+
             </main>
         </section>
     );

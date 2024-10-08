@@ -11,7 +11,7 @@ import moment from "moment";
 import CustomLoader from "../../../_components/loader";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 
 function TransactionEnquirey() {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function TransactionEnquirey() {
         type: type,  // Set the type based on roleType
         login_id: auth?.user?.loginId
       }
-      dispatch(fetchChiledDataList(postObj));
+      dispatch(fetchChildDataList(postObj));
     }
   };
   useEffect(() => {
@@ -96,7 +96,7 @@ function TransactionEnquirey() {
   }
 
 
-  
+
   const [loadingState, setLoadingState] = useState(false)
 
 
@@ -193,112 +193,112 @@ function TransactionEnquirey() {
     <section className="">
 
       <main className="">
-       <h5 className="">Transaction Enquiry</h5>
-          {/* </div> */}
-          <section className="">
-            <div className="container-fluid p-0">
+        <h5 className="">Transaction Enquiry</h5>
+        {/* </div> */}
+        <section className="">
+          <div className="container-fluid p-0">
 
-              <div className="row">
+            <div className="row">
 
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={onSubmit}
-                >
-                  {(formik) => (
-                    <Form>
-                      <div className="form-row mt-4">
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                {(formik) => (
+                  <Form>
+                    <div className="form-row mt-4">
 
-                        <div className="form-group col-lg-2">
-                          <FormikController
-                            control="select"
-                            label="Client Code"
-                            name="clientCode"
-                            className="form-select rounded-0 mt-0"
-                            options={clientCodeOption}
-                          />
-                        </div>
-
-                        <div className="form-group col-lg-3">
-                          <FormikController
-                            control="select"
-                            label="Search By"
-                            name="transaction_from"
-                            className="form-select rounded-0 mt-0"
-                            onChange={(e) => {
-                              formik.setFieldValue("transaction_from", e.target.value)
-                              formik.setFieldValue("transaction_id", "")
-                            }}
-                            options={txnOption}
-                          />
-                        </div>
-
+                      <div className="form-group col-lg-2">
+                        <FormikController
+                          control="select"
+                          label="Client Code"
+                          name="clientCode"
+                          className="form-select rounded-0 mt-0"
+                          options={clientCodeOption}
+                        />
                       </div>
-                      <div className="form-row mt-3 ">
-                        <div className="form-group col-md-12 col-sm-12 col-lg-5">
-                          <FormikController
-                            control="input"
-                            label="Transaction ID"
-                            lableClassName="font-weight-bold"
-                            name="transaction_id"
-                            placeholder="Enter Transaction ID"
-                            className="form-control"
-                          />
 
-                          <button
-                            disabled={disable}
-                            className="btn btn-sm text-white cob-btn-primary mt-4"
-                            type="submit"
-                          >
-                            {disable && (
-                              <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                            )} {/* Show spinner if disabled */}
-                            View
-                          </button>
-                          {(show && printData?.length > 0) && <button
-                            Value="click"
-                            onClick={onClick}
-                            className="btn btn-secondary text-white mt-4 ml-3 btn-sm"
-                          >
-                            <i className="fa fa-print" ariaHidden="true"></i> Print
-                          </button>}
-
-                        </div>
+                      <div className="form-group col-lg-3">
+                        <FormikController
+                          control="select"
+                          label="Search By"
+                          name="transaction_from"
+                          className="form-select rounded-0 mt-0"
+                          onChange={(e) => {
+                            formik.setFieldValue("transaction_from", e.target.value)
+                            formik.setFieldValue("transaction_id", "")
+                          }}
+                          options={txnOption}
+                        />
                       </div>
-                    </Form>
-                  )}
-                </Formik>
 
+                    </div>
+                    <div className="form-row mt-3 ">
+                      <div className="form-group col-md-12 col-sm-12 col-lg-5">
+                        <FormikController
+                          control="input"
+                          label="Transaction ID"
+                          lableClassName="font-weight-bold"
+                          name="transaction_id"
+                          placeholder="Enter Transaction ID"
+                          className="form-control"
+                        />
 
-                <CustomLoader loadingState={loadingState} />
+                        <button
+                          disabled={disable}
+                          className="btn btn-sm text-white cob-btn-primary mt-4"
+                          type="submit"
+                        >
+                          {disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                          )} {/* Show spinner if disabled */}
+                          View
+                        </button>
+                        {(show && printData?.length > 0) && <button
+                          Value="click"
+                          onClick={onClick}
+                          className="btn btn-secondary text-white mt-4 ml-3 btn-sm"
+                        >
+                          <i className="fa fa-print" ariaHidden="true"></i> Print
+                        </button>}
 
-                {!loadingState && show && printData?.length > 0 && (
-                  <div className="overflow-auto col-lg-12 mb-5 border">
-                    <div className="container-fluid">
-                      <div className="row">
-                        {printData?.map((datas, key) =>
-                          (<div className="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
-                        )}
                       </div>
                     </div>
-
-                    {/* Print Data  */}
-                    <PrintDocument data={printData} />
-                  </div>
+                  </Form>
                 )}
+              </Formik>
 
-                {errMessage && (
-                  <div className="col">
-                    <h5 className=" text-center">
+
+              <CustomLoader loadingState={loadingState} />
+
+              {!loadingState && show && printData?.length > 0 && (
+                <div className="overflow-auto col-lg-12 mb-5 border">
+                  <div className="container-fluid">
+                    <div className="row">
+                      {printData?.map((datas, key) =>
+                        (<div className="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Print Data  */}
+                  <PrintDocument data={printData} />
+                </div>
+              )}
+
+              {errMessage && (
+                <div className="col">
+                  <h5 className=" text-center">
                     Data Not Found
-                    </h5>
-                  </div>
+                  </h5>
+                </div>
 
-                )}
-              </div>
+              )}
             </div>
-          </section>
-        
+          </div>
+        </section>
+
       </main>
     </section>
   );

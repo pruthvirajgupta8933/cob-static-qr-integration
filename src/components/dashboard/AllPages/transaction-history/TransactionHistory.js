@@ -30,7 +30,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
 import classes from "../allpage.module.css"
-import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import TransactionRefund from "./TransactionRefund";
 import ExportTransactionHistory from "./ExportTransactionHistory";
 import TransactionDetailModal from "./TransactionDetailModal";
@@ -100,7 +100,7 @@ const TransactionHistory = () => {
                 type: type,  // Set the type based on roleType
                 login_id: auth?.user?.loginId
             }
-            dispatch(fetchChiledDataList(postObj));
+            dispatch(fetchChildDataList(postObj));
         }
 
     };

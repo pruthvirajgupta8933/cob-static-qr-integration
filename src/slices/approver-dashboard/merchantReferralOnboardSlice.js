@@ -132,11 +132,11 @@ export const businessDetailsSlice = createAsyncThunk(
     }
 );
 
-export const fetchChiledDataList = createAsyncThunk(
-    "merchantReferralOnboardSlice/bank/fetchChiledDataList",
+export const fetchChildDataList = createAsyncThunk(
+    "merchantReferralOnboardSlice/bank/fetchChildDataList",
     async (data) => {
 
-       
+
         const login_id = data?.login_id
         const refrerType = data?.type
         let param = ""
@@ -288,14 +288,14 @@ export const merchantReferralOnboardSlice = createSlice({
                 state.loading = 'failed';
             })
 
-            .addCase(fetchChiledDataList.pending, (state) => {
+            .addCase(fetchChildDataList.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(fetchChiledDataList.fulfilled, (state, action) => {
+            .addCase(fetchChildDataList.fulfilled, (state, action) => {
                 state.refrerChiledList.resp = action.payload;
                 state.isLoading = false;
             })
-            .addCase(fetchChiledDataList.rejected, (state, action) => {
+            .addCase(fetchChildDataList.rejected, (state, action) => {
                 state.loading = 'failed';
                 state.isLoading = false;
             })
