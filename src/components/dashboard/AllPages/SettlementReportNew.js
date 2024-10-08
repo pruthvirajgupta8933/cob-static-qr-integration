@@ -412,6 +412,11 @@ const SettlementReportNew = () => {
     };
 
 
+    const settlementAmount = txnList?.reduce((prevVal, currVal) => {
+        return prevVal + parseFloat(currVal.settlement_amount, 2)
+    }, 0)
+
+
     return (
         <section className="ant-layout">
             <div className="profileBarStatus">
@@ -541,9 +546,9 @@ const SettlementReportNew = () => {
                     </section>
 
                     <section className="features8 cid-sg6XYTl25a flleft w-100">
-                        <div className="container-fluid  p-3 my-3 ">
+                        <div className="container-fluid p-0 my-3 ">
                             {txnList.length > 0 ? (
-                                <h6>Total Record : {txnList.length} </h6>
+                                <h6> <span> <strong>Total Record</strong> : {txnList.length} | <strong>Settlement Amount</strong> : {settlementAmount.toFixed(2)}</span>  </h6>
                             ) : (
                                 <></>
                             )}
