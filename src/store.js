@@ -30,6 +30,7 @@ import { forgotPassworReducer } from "./slices/forgotPasswordSlice";
 import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { editKycDetailReducer } from "./slices/editKycSlice";
 import { kycValidatorReducer } from "./slices/kycValidatorSlice";
+import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 
 
 const reducer = {
@@ -40,9 +41,9 @@ const reducer = {
   kyc: kycReducer,
   zone: merchantZoneMappingReducer,
   signupData: signupDataReducer,
-  mid:genreateMidReducer,
-  forgotPassword:forgotPassworReducer,
-  frm:frmReducer,
+  mid: genreateMidReducer,
+  forgotPassword: forgotPassworReducer,
+  frm: frmReducer,
   widget: widgetReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
@@ -71,14 +72,15 @@ const reducer = {
   //   product subscription
   productSubscriptionServiceAdminReducer: productSubscriptionServiceAdminReducer,
 
-///Edit Kyc Detail
-  editKycDetailReducer:editKycDetailReducer,
+  ///Edit Kyc Detail
+  editKycDetailReducer: editKycDetailReducer,
   // theme
   themeReducer: themeReducer,
   //Assign-Account-Manager
-  assignAccountManagerReducer:assignAccountManagerReducer,
-  kycValidatorReducer :kycValidatorReducer 
-  
+  assignAccountManagerReducer: assignAccountManagerReducer,
+  kycValidatorReducer: kycValidatorReducer,
+  bankDashboardReducer: bankDashboardReducer
+
 };
 
 const store = configureStore({

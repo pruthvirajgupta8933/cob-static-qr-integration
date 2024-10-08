@@ -8,7 +8,7 @@ import moment from "moment";
 import CustomLoader from "../../../_components/loader";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { transactionEnquireyApi } from "../../../services/transaction-enquirey/transactionEnquirey.service";
 
 const TransactionEnquirey = React.memo(() => {
@@ -45,7 +45,7 @@ const TransactionEnquirey = React.memo(() => {
         type: type,
         login_id: auth?.user?.loginId
       };
-      dispatch(fetchChiledDataList(postObj));
+      dispatch(fetchChildDataList(postObj));
     }
   }, []);
 

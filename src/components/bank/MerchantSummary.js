@@ -1,70 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
-// import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import { toast } from "react-toastify";
-import {
-    clearSettlementReport,
-    fetchRefundTransactionHistory,
-} from "../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { fetchChiledDataList } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { v4 as uuidv4 } from 'uuid';
+import { fetchChildDataList } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import Yup from "../../_components/formik/Yup";
+import toastConfig from "../../utilities/toastTypes";
+import { fetchBankMerchantSummary } from "../../slices/bank-dashboard-slice/bankDashboardSlice";
+import Table from "../../_components/table_components/table/Table";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 function MerchantSummary() {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const [txnList, SetTxnList] = useState([]);
     const [searchText, SetSearchText] = useState("");
-    const [loading, setLoading] = useState(false);
     const [pageSize, setPageSize] = useState(10);
-    const [paginatedata, setPaginatedData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [showData, setShowData] = useState([]);
     const [updateTxnList, setUpdateTxnList] = useState([]);
-    const [pageCount, setPageCount] = useState(0);
-    const [dataFound, setDataFound] = useState(false);
-    const [buttonClicked, isButtonClicked] = useState(false);
-    const [disable, setIsDisable] = useState(false);
-    const roles = roleBasedAccess();
-    const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+    const [formValues, setFormValues] = useState({})
+
+
+    const { auth, bankDashboardReducer, merchantReferralOnboardReducer } = useSelector((state) => state);
+
     const { user } = auth;
     const { refrerChiledList } = merchantReferralOnboardReducer
+    const { merchantSummary, reportLoading } = bankDashboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
-    const { isLoadingTxnHistory } = dashboard;
-    var clientMerchantDetailsList = [];
-    if (
-        user &&
-        user?.clientMerchantDetailsList === null &&
-        user?.roleId !== 3 &&
-        user?.roleId !== 13
-    ) {
-        history.push("/dashboard/profile");
-    } else {
-        clientMerchantDetailsList = user?.clientMerchantDetailsList;
-    }
 
     let now = moment().format("YYYY-M-D");
-    let splitDate = now.split("-");
-    if (splitDate[1].length === 1) {
-        splitDate[1] = "0" + splitDate[1];
+    let todayDate = now.split("-");
+    if (todayDate[1].length === 1) {
+        todayDate[1] = "0" + todayDate[1];
     }
-    if (splitDate[2].length === 1) {
-        splitDate[2] = "0" + splitDate[2];
+    if (todayDate[2].length === 1) {
+        todayDate[2] = "0" + todayDate[2];
     }
-    splitDate = splitDate.join("-");
-
-    const [todayDate, setTodayDate] = useState(splitDate);
-
+    todayDate = todayDate.join("-");
 
 
     const validationSchema = Yup.object({
@@ -74,6 +51,7 @@ function MerchantSummary() {
             .min(Yup.ref("fromDate"), "End date can't be before Start date")
             .required("Required"),
     });
+
 
     let isExtraDataRequired = false;
     let extraDataObj = {};
@@ -87,15 +65,12 @@ function MerchantSummary() {
 
     let fnKey, fnVal = ""
     let clientCodeListArr = []
-    if (roles?.merchant === true) {
-        fnKey = "clientCode"
-        fnVal = "clientName"
-        clientCodeListArr = clientMerchantDetailsList
-    } else {
-        fnKey = "client_code"
-        fnVal = "name"
-        clientCodeListArr = clientCodeData
-    }
+
+
+    fnKey = "client_code"
+    fnVal = "name"
+    clientCodeListArr = clientCodeData
+
     const clientCodeOption = convertToFormikSelectJson(
         fnKey,
         fnVal,
@@ -110,115 +85,79 @@ function MerchantSummary() {
         clientCode: "",
         fromDate: todayDate,
         endDate: todayDate,
-        noOfClient: "1",
-        rpttype: "0",
+        paymentStatus: "all",
+        length: 10,
+        page: 1
+
     };
-    if (roles.merchant === true && clientCodeListArr && clientCodeListArr.length > 0 && clientCodeListArr[0] && clientCodeListArr[0][fnKey]) {
-        initialValues.clientCode = clientCodeListArr[0][fnKey];
+
+
+    // fetch the bank child data for the dropdown
+    useEffect(() => {
+        let postObj = {
+            type: 'bank',  // Set the type based on roleType
+            login_id: auth?.user?.loginId
+        }
+        dispatch(fetchChildDataList(postObj));
+    }, []);
+
+
+    const fetchReportData = async (objData) => {
+
+        let strClientCode = "";
+        if (objData.clientCode === "All") {
+            const allClientCode = [];
+            clientCodeListArr?.map((item) => {
+                if (item.client_code) {
+                    allClientCode.push(item.client_code);
+                }
+
+            });
+            strClientCode = allClientCode.join().toString();
+        } else {
+            strClientCode = objData.clientCode;
+        }
+
+        const paramData = {
+            clientCode: strClientCode,
+            fromDate: moment(objData.fromDate).startOf('day').format('YYYY-MM-DD'),
+            endDate: moment(objData.endDate).startOf('day').format('YYYY-MM-DD'),
+            paymentStatus: objData.paymentStatus,
+            page: currentPage,
+            length: pageSize,
+        };
+        dispatch(fetchBankMerchantSummary(paramData))
     }
 
 
-    const fetchData = () => {
-        const roleType = roles
-        const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
-        if (type !== "default") {
-            let postObj = {
-                type: type,  // Set the type based on roleType
-                login_id: auth?.user?.loginId
-            }
-            dispatch(fetchChiledDataList(postObj));
-        }
-    };
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (
-                showData.length < 1 &&
-                (updateTxnList.length > 0 || updateTxnList.length === 0)
-            ) {
-                setDataFound(true);
-            } else {
-                setDataFound(false);
-            }
-        });
-    }, [showData, updateTxnList]);
-
-    const pagination = (pageNo) => {
-        setCurrentPage(pageNo);
-    };
 
     const onSubmitHandler = async (values) => {
-        let strClientCode, clientCodeArrLength = "";
-
-        strClientCode = values.clientCode;
-        const paramData = {
-            clientCode: strClientCode,
-            fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
-            endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
-            noOfClient: values.noOfClient,
-            rpttype: clientCodeArrLength,
-        };
-
-        setLoading(true);
-        isButtonClicked(true);
-        setIsDisable(true);
-
         try {
-            const res = await dispatch(fetchRefundTransactionHistory(paramData));
-            const ApiStatus = res?.meta?.requestStatus;
-            const ApiPayload = res?.payload;
-
-            if (ApiStatus === "rejected") {
-                toast.error("Request Rejected");
-            }
-
-            // if (ApiStatus === "fulfilled" && ApiPayload?.length < 1) {
-
-            // }
+            setFormValues(values)
+            await fetchReportData(values)
         } catch (error) {
-
-            toast.error("An error occurred");
-        } finally {
-            setLoading(false);
-            setIsDisable(false);
+            toastConfig.errorToast("An error occurred");
         }
     };
 
 
     useEffect(() => {
-        // Remove initiated from transaction history response
-        const TxnListArrUpdated = dashboard.settlementReport;
-        setUpdateTxnList(TxnListArrUpdated);
-        setShowData(TxnListArrUpdated);
-        SetTxnList(TxnListArrUpdated);
-        setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dashboard]);
+        if (formValues?.fromDate && formValues?.endDate) {
+            fetchReportData(formValues)
+        }
+    }, [pageSize, currentPage])
+
+
 
     useEffect(() => {
-        setPaginatedData(_(showData).slice(0).take(pageSize).value());
-        setPageCount(
-            showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
-        );
-    }, [pageSize, showData]);
+        setUpdateTxnList(merchantSummary.results || []);
+        setShowData(merchantSummary.results || []);
+        SetTxnList(merchantSummary.results || []);
 
-    useEffect(() => {
-        const startIndex = (currentPage - 1) * pageSize;
-        const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
-        setPaginatedData(paginatedPost);
+    }, [merchantSummary]);
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage]);
 
-    useEffect(() => {
-        return () => {
-            dispatch(clearSettlementReport());
-        };
-    }, []);
+
 
     useEffect(() => {
         if (searchText !== "") {
@@ -235,72 +174,37 @@ function MerchantSummary() {
         }
     }, [searchText]);
 
-    const pages = _.range(1, pageCount + 1);
+
 
     const exportToExcelFn = () => {
         const excelHeaderRow = [
-            "S. No.",
-            "txn_id",
-            "client_txn_id",
-            "trans_date",
-            "payee_amount",
-            "client_code",
-            "client_name",
-            "payment_mode",
-            "bank_name",
-            "amount_available_to_adjust",
-            "amount_adjust_on",
-            "money_asked_from_merchant",
-            "refund_initiated_on",
-            "refund_process_on",
-            "refund_reason",
-            "refunded_amount",
-            "refund_track_id",
+            "Merchant ID",
+            "Merchant Name",
+            "Transaction Date",
+            "Payment Mode",
+            "No. of Txns",
+            "GMV Processed",
+            "Settlement Date",
+            "Settlement Amount"
         ];
         const excelArr = [excelHeaderRow];
         // eslint-disable-next-line array-callback-return
-        txnList.map((item, index) => {
+        txnList.map((item) => {
             const allowDataToShow = {
-                srNo: item.srNo === null ? "" : index + 1,
-                txn_id: item.txn_id === null ? "" : item.txn_id,
-                client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-                trans_date: item.trans_date === null ? "" : item.trans_date,
-                payee_amount:
-                    item.payee_amount === null
-                        ? ""
-                        : Number.parseFloat(item.payee_amount),
-                client_code: item.client_code === null ? "" : item.client_code,
-                client_name: item.client_name === null ? "" : item.client_name,
-                payment_mode: item.payment_mode === null ? "" : item.payment_mode,
-                bank_name: item.bank_name === null ? "" : item.bank_name,
-                amount_available_to_adjust:
-                    item.amount_available_to_adjust === null
-                        ? ""
-                        : item.amount_available_to_adjust,
-                amount_adjust_on:
-                    item.amount_adjust_on === null ? "" : item.amount_adjust_on,
-                money_asked_from_merchant:
-                    item.money_asked_from_merchant === null
-                        ? ""
-                        : item.money_asked_from_merchant,
-                refund_initiated_on:
-                    item.refund_initiated_on === null ? "" : item.refund_initiated_on,
-                refund_process_on:
-                    item.refund_process_on === null ? "" : item.refund_process_on,
-                refund_reason: item.refund_reason === null ? "" : item.refund_reason,
-                refunded_amount:
-                    item.refunded_amount === null
-                        ? ""
-                        : Number.parseFloat(item.refunded_amount),
-                refund_track_id:
-                    item.refund_track_id === null ? "" : item.refund_track_id,
+                client_id: item.client_id || "",
+                client_name: item.client_name || "",
+                transaction_date: item.transaction_date || "",
+                payment_mode: item.payment_mode || "",
+                number_of_txns: item.number_of_txns || "",
+                gmv_processed: item.gmv_processed || "",
+                settlement_date: item.settlement_date || "",
+                settlement_amount: item.settlement_amount || "",
             };
 
             excelArr.push(Object.values(allowDataToShow));
         });
-        const fileName = "Refund-Txn-Report";
+        const fileName = "Bank-Merchant-Summary";
         let handleExportLoading = (state) => {
-            // console.log(state)
             if (state) {
                 alert("Exporting Excel File, Please wait...")
             }
@@ -309,10 +213,73 @@ function MerchantSummary() {
         exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     };
 
+    const countPageHandler = (val) => {
+        setPageSize(val)
+    }
+
+    //function for change current page
+    const changeCurrentPage = (page) => {
+        setCurrentPage(page);
+    };
+    const tableRow = [
+        {
+            id: "1",
+            name: "S.No",
+            selector: (row) => row.id,
+            sortable: true
+        },
+        {
+            id: "2",
+            name: "Merchant ID",
+            selector: (row) => row.client_id,
+            sortable: true
+        },
+        {
+            id: "3",
+            name: "Merchant Name",
+            selector: (row) => row.client_name,
+            cell: (row) => <div className="removeWhiteSpace">{row?.client_name}</div>,
+        },
+        {
+            id: "4",
+            name: "Transaction Date",
+            selector: (row) => row.transaction_date
+        },
+        {
+            id: "5",
+            name: "Payment Mode",
+            selector: (row) => row.payment_mode,
+        },
+        {
+            id: "6",
+            name: "No. of Txns",
+            selector: (row) => row.number_of_txns
+        },
+        {
+            id: "7",
+            name: "GMV Processed",
+            selector: (row) => row.gmv_processed,
+        },
+        {
+            id: "8",
+            name: "Settlement Date",
+            selector: (row) => row.settlement_date,
+            sortable: true
+        },
+
+        {
+            id: "9",
+            name: "Settlement Amount",
+            selector: (row) => row.settlement_amount
+        },
+    ]
+
+
+
     return (
         <section>
             <main>
-                <h5>Merchant Detail List</h5>
+                <h5>Merchant Summary</h5>
                 <section>
                     <div className="container-fluid p-0">
                         <Formik
@@ -369,12 +336,10 @@ function MerchantSummary() {
                                     <div className="form-row">
                                         <div className="form-group col-lg-1">
                                             <button
-                                                disabled={disable}
+                                                disabled={reportLoading}
                                                 className="btn cob-btn-primary text-white btn-sm"
                                                 type="submit"
-                                            >
-                                                {" "}
-                                                {loading ? "Loading..." : "Search"}{" "}
+                                            >Search
                                             </button>
                                         </div>
                                         {txnList?.length > 0 && (
@@ -416,9 +381,9 @@ function MerchantSummary() {
                                         value={pageSize}
                                         rel={pageSize}
                                         className="form-select"
-                                        onChange={(e) => setPageSize(parseInt(e.target.value))}
+                                        onChange={(e) => countPageHandler(parseInt(e.target.value))}
                                     >
-                                        <DropDownCountPerPage datalength={txnList.length} />
+                                        <DropDownCountPerPage datalength={merchantSummary?.count} />
                                     </select>
                                 </div>
                             </div>
@@ -428,141 +393,29 @@ function MerchantSummary() {
                     </div>
                 </section>
 
-                <section className="features8 cid-sg6XYTl25a flleft w-100">
-                    <div className="container-fluid  p-3 my-3 ">
-                        {txnList.length > 0 ? (
-                            <h4>Total Record : {txnList.length} </h4>
-                        ) : (
-                            <></>
+
+                <section className="">
+                    <div className="scroll overflow-auto">
+                        {!reportLoading && txnList?.length !== 0 && (
+                            <React.Fragment>
+                                <h6>Total Count : {merchantSummary?.count}</h6>
+                                <Table
+                                    row={tableRow}
+                                    data={showData}
+                                    dataCount={merchantSummary?.count}
+                                    pageSize={pageSize}
+                                    currentPage={currentPage}
+                                    changeCurrentPage={changeCurrentPage}
+                                />
+                            </React.Fragment>
+
                         )}
-
-                        <div className="overflow-auto">
-                            <table className="table table-bordered">
-                                <thead>
-                                    {txnList.length > 0 ? (
-                                        <tr>
-                                            <th> S.No</th>
-                                            <th> Merchant ID</th>
-                                            <th> Sub Merchant ID</th>
-                                            <th> Merchant Name</th>
-                                            <th> Transaction Date</th>
-                                            <th> Payment Mode</th>
-                                            <th> No. of Txns</th>
-                                            <th> GMV Processed</th>
-                                            <th> Settlement Date</th>
-                                            <th> Settlement Amount</th>
-                                        </tr>
-                                    ) : (
-                                        <></>
-                                    )}
-                                </thead>
-                                <tbody>
-                                    {txnList.length > 0 &&
-                                        paginatedata.map((item, i) => {
-                                            return (
-                                                <tr key={uuidv4()}>
-                                                    <td>{i + 1}</td>
-                                                    <td>{item.client_code}</td>
-                                                    <td>{item.client_name}</td>
-                                                    <td>{item.txn_id}</td>
-                                                    <td>{item.client_txn_id}</td>
-                                                    <td>
-                                                        {Number.parseFloat(item.payee_amount).toFixed(2)}
-                                                    </td>
-                                                    <td>{item.amount_adjust_on}</td>
-                                                    <td>{item.amount_available_to_adjust}</td>
-                                                    <td>{item.bank_name}</td>
-                                                    <td>{item.money_asked_from_merchant}</td>
-                                                    <td>{item.payment_mode}</td>
-                                                    <td>{item.refund_initiated_on}</td>
-                                                    <td>{item.refund_process_on}</td>
-                                                    <td>{item.refund_reason}</td>
-                                                    <td>{item.refund_track_id}</td>
-                                                    <td>{Number.parseFloat(item.refunded_amount)}</td>
-                                                    <td>{item.trans_date}</td>
-                                                </tr>
-                                            );
-                                        })}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div>
-                            {txnList.length > 0 ? (
-                                <nav aria-label="Page navigation example">
-                                    <ul className="pagination">
-                                        <a
-                                            className="page-link"
-                                            onClick={(prev) =>
-                                                setCurrentPage((prev) =>
-                                                    prev === 1 ? prev : prev - 1
-                                                )
-                                            }
-                                            href={() => false}
-                                        >
-                                            Previous
-                                        </a>
-                                        {pages
-                                            .slice(currentPage - 1, currentPage + 6)
-                                            .map((page, i) => (
-                                                <li
-                                                    key={uuidv4()}
-                                                    className={
-                                                        page === currentPage
-                                                            ? " page-item active"
-                                                            : "page-item"
-                                                    }
-                                                >
-                                                    <a
-                                                        className={`page-link data_${i}`}
-                                                        href={() => false}
-                                                    >
-                                                        <p onClick={() => pagination(page)}>{page}</p>
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        {pages.length !== currentPage ? (
-                                            <a
-                                                className="page-link"
-                                                onClick={(nex) => {
-                                                    setCurrentPage((nex) =>
-                                                        nex === pages.length > 9 ? nex : nex + 1
-                                                    );
-                                                }}
-                                                href={() => false}
-                                            >
-                                                Next
-                                            </a>
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </ul>
-                                </nav>
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                        <div className="container">
-                            {isLoadingTxnHistory ? (
-                                <div className="col-lg-12 col-md-12">
-                                    <div className="text-center">
-                                        <div className="spinner-border" role="status">
-                                            <span className="sr-only">Loading...</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : buttonClicked && dataFound && txnList.length === 0 ? (
-                                <div>
-                                    <h5 className="d-flex justify-content-center align-items-center">Data Not
-                                        Found</h5>
-                                </div>
-                            ) : (
-                                <></>
-                            )}
-                        </div>
                     </div>
+                    {reportLoading && <SkeletonTable />}
+                    {txnList?.length == 0 && !reportLoading && (
+                        <h6 className="text-center font-weight-bold">No Data Found</h6>
+                    )}
                 </section>
-
             </main>
         </section>
     )

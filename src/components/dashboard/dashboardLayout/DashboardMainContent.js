@@ -92,6 +92,7 @@ import WebWhiteList from "../../ApproverNVerifier/WebWhiteList";
 import CreateMandateApi from "../../../subscription_components/CreateMandateApi/CreateMandateApi";
 import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
 import MerchantDetailList from "../../bank/MerchantDetailList";
+import MerchantSummary from "../../bank/MerchantSummary";
 
 function DashboardMainContent() {
     let history = useHistory();
@@ -633,10 +634,9 @@ function DashboardMainContent() {
                             <WebWhiteList />
                         </AuthorizedRoute>
 
-
-
-
                         <AuthorizedRoute exact path={`${path}/merchant-detail-list`} Component={MerchantDetailList} roleList={{ bank: true }} />
+
+                        <AuthorizedRoute exact path={`${path}/merchant-summary`} Component={MerchantSummary} roleList={{ bank: true }} />
 
 
                         <Route path={`${path}/*`} component={UrlNotFound}>

@@ -6,7 +6,7 @@ import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { fetchChiledDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { v4 as uuidv4 } from 'uuid';
 
 function TransactionSummery() {
@@ -89,7 +89,7 @@ function TransactionSummery() {
                 type: type,  // Set the type based on roleType
                 login_id: auth?.user?.loginId
             }
-            dispatch(fetchChiledDataList(postObj));
+            dispatch(fetchChildDataList(postObj));
         }
     };
     useEffect(() => {
@@ -145,51 +145,51 @@ function TransactionSummery() {
     return (
         <section className="">
             <main>
-               
-                    <h5 className="">Transaction Summary</h5>
-                    <section className="">
-                        <div className="container-fluid p-0">
-                            <div className="row mt-4">
-                                <div className="form-group col-md-3">
-                                    <select
-                                        className="form-select"
-                                        value={dttype}
-                                        onChange={(e) => setDttype(e.currentTarget.value)}
-                                    >
-                                        <option defaultValue="selected" value="1">
-                                            Today
-                                        </option>
-                                        <option value="2">Yesterday</option>
-                                        <option value="3">Last 7 Days</option>
-                                        <option value="4">Current Month</option>
-                                        <option value="5">Last Month</option>
-                                    </select>
-                                </div>
 
-                                {txnList.length > 0 ? (
-                                    <div className="col-lg-3">
-                                        {/* <label>Search</label> */}
-                                        <input
-                                            type="text"
-                                            className="form-control "
-                                            onChange={(e) => {
-                                                handleChange(e.currentTarget.value);
-                                            }}
-                                            placeholder="Search from here"
-                                        />
-                                    </div>
-                                ) : (
-                                    <></>
-                                )}
-                                <div className="">
-                                    {(showData.length !== 0) &&
-                                        <p className="m-0">
-                                            Total Successful Transactions: {totalSuccessTxn} | Total
-                                            Amount {`(INR)`}: {totalAmt}{" "}
-                                        </p>
-                                    }
+                <h5 className="">Transaction Summary</h5>
+                <section className="">
+                    <div className="container-fluid p-0">
+                        <div className="row mt-4">
+                            <div className="form-group col-md-3">
+                                <select
+                                    className="form-select"
+                                    value={dttype}
+                                    onChange={(e) => setDttype(e.currentTarget.value)}
+                                >
+                                    <option defaultValue="selected" value="1">
+                                        Today
+                                    </option>
+                                    <option value="2">Yesterday</option>
+                                    <option value="3">Last 7 Days</option>
+                                    <option value="4">Current Month</option>
+                                    <option value="5">Last Month</option>
+                                </select>
+                            </div>
+
+                            {txnList.length > 0 ? (
+                                <div className="col-lg-3">
+                                    {/* <label>Search</label> */}
+                                    <input
+                                        type="text"
+                                        className="form-control "
+                                        onChange={(e) => {
+                                            handleChange(e.currentTarget.value);
+                                        }}
+                                        placeholder="Search from here"
+                                    />
                                 </div>
-                                <div>
+                            ) : (
+                                <></>
+                            )}
+                            <div className="">
+                                {(showData.length !== 0) &&
+                                    <p className="m-0">
+                                        Total Successful Transactions: {totalSuccessTxn} | Total
+                                        Amount {`(INR)`}: {totalAmt}{" "}
+                                    </p>
+                                }
+                            </div>
+                            <div>
                                 <table
                                     cellPadding={10}
                                     border={0}
@@ -219,21 +219,21 @@ function TransactionSummery() {
                                             })}
                                     </tbody>
                                 </table>
-                                </div>
-                               
-
-                                {(showData.length <= 0 && isLoading === false) && (
-                                    <div className="text-center p-4 m-4">
-                                        <h6>I can't find the result for you with the given search, I'm sorry, could you
-                                            try it once again.</h6>
-                                    </div>
-                                )}
-
-                                {isLoading ? <ProgressBar /> : <></>}
                             </div>
+
+
+                            {(showData.length <= 0 && isLoading === false) && (
+                                <div className="text-center p-4 m-4">
+                                    <h6>I can't find the result for you with the given search, I'm sorry, could you
+                                        try it once again.</h6>
+                                </div>
+                            )}
+
+                            {isLoading ? <ProgressBar /> : <></>}
                         </div>
-                    </section>
-                
+                    </div>
+                </section>
+
             </main>
         </section>
     );

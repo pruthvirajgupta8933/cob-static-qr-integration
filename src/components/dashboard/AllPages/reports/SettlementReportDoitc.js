@@ -17,7 +17,7 @@ import { clearSettledTransactionHistory, settledTransactionHistoryDoitc } from "
 import { v4 as uuidv4 } from 'uuid';
 import Yup from "../../../../_components/formik/Yup";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import { fetchChiledDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReactPaginate from "react-paginate";
 
 
@@ -121,7 +121,7 @@ const SettlementReportDoitc = () => {
         type: type,  // Set the type based on roleType
         login_id: auth?.user?.loginId
       }
-      dispatch(fetchChiledDataList(postObj));
+      dispatch(fetchChildDataList(postObj));
     }
 
   };
