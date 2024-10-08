@@ -157,9 +157,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     pan:
       type === "individual"
         ? Yup.string()
-            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-            .length(10, "Only 10 digits are allowed")
-            .required("Required")
+          .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+          .length(10, "Only 10 digits are allowed")
+          .required("Required")
         : null,
     isPanVerified: type === "individual" ? Yup.boolean().required() : null,
   });
@@ -227,7 +227,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
-          "Something went wrong, Please try again"
+        "Something went wrong, Please try again"
       );
       setAadhaarLoader(false);
     }
@@ -324,12 +324,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     disabled={basicDetailsResponse?.data}
                   />
                   {values?.aadhaar !== null &&
-                  values?.aadhaar !== "" &&
-                  values?.aadhaar !== undefined &&
-                  // !errors.hasOwnProperty("pan_card") &&
-                  // !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.aadhaar !== "" &&
+                    values?.aadhaar !== undefined &&
+                    // !errors.hasOwnProperty("pan_card") &&
+                    // !errors.hasOwnProperty("is_pan_verified") &&
 
-                  values?.isAadhaarVerified !== "" ? (
+                    values?.isAadhaarVerified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -354,11 +354,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       ) : (
                         <a
                           href={() => false}
-                          className={`btn cob-btn-primary text-white btn btn-sm ${
-                            values.aadhaar?.length !== 12
+                          className={`btn cob-btn-primary text-white btn btn-sm ${values.aadhaar?.length !== 12
                               ? "disabled"
                               : "pe-auto"
-                          }`}
+                            }`}
                           onClick={() =>
                             sendAadharOtp({ values, setFieldValue })
                           }
@@ -439,12 +438,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       disabled={basicDetailsResponse?.data}
                     />
                     {values?.pan !== null &&
-                    values?.pan !== "" &&
-                    values?.pan !== undefined &&
-                    // !errors.hasOwnProperty("pan_card") &&
-                    // !errors.hasOwnProperty("is_pan_verified") &&
+                      values?.pan !== "" &&
+                      values?.pan !== undefined &&
+                      // !errors.hasOwnProperty("pan_card") &&
+                      // !errors.hasOwnProperty("is_pan_verified") &&
 
-                    values?.isPanVerified !== "" ? (
+                      values?.isPanVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
@@ -469,9 +468,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         ) : (
                           <a
                             href={() => false}
-                            className={`btn cob-btn-primary text-white btn btn-sm ${
-                              values.pan?.length !== 10 ? "disabled" : "pe-auto"
-                            }`}
+                            className={`btn cob-btn-primary text-white btn btn-sm ${values.pan?.length !== 10 ? "disabled" : "pe-auto"
+                              }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
                             Verify
