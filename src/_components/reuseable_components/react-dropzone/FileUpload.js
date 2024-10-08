@@ -5,7 +5,7 @@ import { saveDocumentDetails } from '../../../services/approver-dashboard/mercha
 import { useDropzone } from 'react-dropzone';
 import { kycDocumentUploadList } from "../../../slices/kycSlice";
 import toastConfig from "../../../utilities/toastTypes";
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import DocViewerComponent from '../../../utilities/DocViewerComponent';
 
 
@@ -15,8 +15,8 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
     const [submitLoader, setSubmitLoader] = useState(false);
     const [documentUploadResponse, setDocumentUploadResponse] = useState({})
     const [docPreviewToggle, setDocPreviewToggle] = useState(false)
-  const [selectViewDoc, setSelectedViewDoc] = useState("#")
- 
+    const [selectViewDoc, setSelectedViewDoc] = useState("#")
+
     // console.log("documentUploadResponse",documentUploadResponse)
 
 
@@ -85,13 +85,12 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
     const docModalToggle = (docData) => {
         setDocPreviewToggle(true)
         setSelectedViewDoc(docData)
-      }
+    }
 
 
     return (
         <div>
-
-{docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.filePath, documentName: selectViewDoc?.doc_type_name }} />}
+            {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.filePath, documentName: selectViewDoc?.doc_type_name }} />}
 
             {!isEditableInput &&
                 <div className="file-uploader">
@@ -124,12 +123,12 @@ const FileUploader = ({ setCurrentTab, isEditableInput }) => {
                         //     <a href={d.filePath} target="_blank" rel="noreferrer">
                         //         View Document - {d.name}</a></li>
                         <p
-                         className="text-primary cursor_pointer text-decoration-underline"
-                        rel="noreferrer"
-                        onClick={() => docModalToggle(d)}
-                      >
-                        View Document - {d.name}
-                      </p>
+                            className="text-primary cursor_pointer text-decoration-underline"
+                            rel="noreferrer"
+                            onClick={() => docModalToggle(d)}
+                        >
+                            View Document - {d.name}
+                        </p>
                     ))}
                 </ul>
             </div>}

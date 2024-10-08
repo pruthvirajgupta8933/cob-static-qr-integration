@@ -49,6 +49,10 @@ body {
   overflow: auto;
 }
 
+table tbody td {
+  text-wrap: balance;
+}
+
 
 .bg-auth {
   background-color: #FAFDFF;
