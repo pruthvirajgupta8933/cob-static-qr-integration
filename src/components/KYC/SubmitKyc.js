@@ -7,8 +7,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
-
-import { KYC_STATUS_APPROVED, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
+import {
+  KYC_STATUS_APPROVED,
+  KYC_STATUS_REJECTED,
+  KYC_STATUS_VERIFIED,
+} from "../../utilities/enums";
 import { toLower } from "lodash";
 import toastConfig from "../../utilities/toastTypes";
 import Yup from "../../_components/formik/Yup";
@@ -24,12 +28,10 @@ function SubmitKyc(props) {
   const { loginId } = user;
 
   const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
-  const { isRequireDataUploaded } = compareDocListArray
+  const { isRequireDataUploaded } = compareDocListArray;
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
   const kyc_status = kycUserList?.status;
   const [disable, setIsDisable] = useState(false);
-
-
 
   const initialValues = {
     term_condition: merchant_consent,
@@ -42,16 +44,19 @@ function SubmitKyc(props) {
     ),
   });
 
-
-
-  const rejectedDocList = KycDocUpload && KycDocUpload?.filter(item => toLower(item.status) === toLower(KYC_STATUS_REJECTED))
-
+  const rejectedDocList =
+    KycDocUpload &&
+    KycDocUpload?.filter(
+      (item) => toLower(item.status) === toLower(KYC_STATUS_REJECTED)
+    );
 
   const onSubmit = (value) => {
     setIsDisable(true);
-
+    dispatch(referralOnboardSlice.actions.resetBasicDetails());
     if (rejectedDocList?.length > 0) {
-      toast.error("Kindly Remove / Update the rejected document from the document list.")
+      toast.error(
+        "Kindly Remove / Update the rejected document from the document list."
+      );
       setIsDisable(false);
     } else {
       if (isRequireDataUploaded) {
@@ -75,15 +80,13 @@ function SubmitKyc(props) {
             setIsDisable(false);
           }
         });
-
       } else {
-        toastConfig.errorToast("Required Document is missing. Kindly Upload the required documents");
-        setIsDisable(false)
+        toastConfig.errorToast(
+          "Required Document is missing. Kindly Upload the required documents"
+        );
+        setIsDisable(false);
       }
-
     }
-
-
   };
 
   return (
@@ -97,8 +100,7 @@ function SubmitKyc(props) {
         >
           {(formik) => (
             <Form>
-              <div className="row">
-              </div>
+              <div className="row"></div>
 
               <div className="row">
                 <div className="col-lg-12 checkboxstyle">
@@ -107,14 +109,17 @@ function SubmitKyc(props) {
                       type="checkbox"
                       name="term_condition"
                       disabled={
-                        kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
-                          kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()
+                        kyc_status.toLowerCase() ===
+                          KYC_STATUS_VERIFIED.toLowerCase() ||
+                        kyc_status.toLowerCase() ===
+                          KYC_STATUS_APPROVED.toLowerCase()
                           ? true
                           : false
                       }
                       className="mr-2 mt-1"
                     />
-                    <span>I have read and understood the&nbsp;
+                    <span>
+                      I have read and understood the&nbsp;
                       <a
                         href="https://sabpaisa.in/term-conditions/"
                         className="text-decoration-none text-primary"
@@ -124,7 +129,8 @@ function SubmitKyc(props) {
                         title="Term & Conditions"
                       >
                         Terms & Conditions
-                      </a>,{" "}
+                      </a>
+                      ,{" "}
                       <a
                         href="https://sabpaisa.in/privacy-policy/"
                         alt="Privacy Policy"
@@ -143,39 +149,47 @@ function SubmitKyc(props) {
                         title="Service Agreement"
                         rel="noreferrer"
                         className="text-decoration-none text-primary"
-                      >&nbsp;Service Agreement.
-                      </a>&nbsp;By submitting the form, I agree to abide by the rules at
-                      all times.
+                      >
+                        &nbsp;Service Agreement.
+                      </a>
+                      &nbsp;By submitting the form, I agree to abide by the
+                      rules at all times.
                     </span>
                   </div>
-                  <div className="col-lg-11 para-style2 ">
-
-                  </div>
+                  <div className="col-lg-11 para-style2 "></div>
                   {
                     <ErrorMessage name="term_condition">
-                      {(msg) => (<p className="text-danger">{msg}</p>)}
+                      {(msg) => <p className="text-danger">{msg}</p>}
                     </ErrorMessage>
                   }
                 </div>
               </div>
 
-
               <br />
               <br />
               <div className="row">
                 <div className="col-12">
-                  {(kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
-                    kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></> : (
+                  {kyc_status.toLowerCase() ===
+                    KYC_STATUS_VERIFIED.toLowerCase() ||
+                  kyc_status.toLowerCase() ===
+                    KYC_STATUS_APPROVED.toLowerCase() ? (
+                    <></>
+                  ) : (
                     <button
                       disabled={disable}
                       className="btn btn-sm float-lg-right cob-btn-primary text-white"
                       type="submit"
-
                     >
-                      {disable && <>
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
-                        <span className="sr-only">Loading...</span>
-                      </>}
+                      {disable && (
+                        <>
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            ariaHidden="true"
+                          />
+                          <span className="sr-only">Loading...</span>
+                        </>
+                      )}
                       Submit
                     </button>
                   )}
@@ -183,7 +197,6 @@ function SubmitKyc(props) {
               </div>
               <br />
               <br />
-
             </Form>
           )}
         </Formik>

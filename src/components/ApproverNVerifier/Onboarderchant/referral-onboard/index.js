@@ -25,11 +25,11 @@ const Referral = ({ type }) => {
   } else if (type === "company") {
     tabs = [
       { id: "basic", name: "Basic Details" },
-      { id: "biz_overview", name: "Business Overview" },
-      { id: "biz_details", name: "Business Details" },
-      { id: "bank", name: "Bank Details" },
-      { id: "upload_doc", name: "Upload Document" },
-      { id: "view_doc", name: "View Document" },
+      // { id: "biz_overview", name: "Business Overview" },
+      // { id: "biz_details", name: "Business Details" },
+      // { id: "bank", name: "Bank Details" },
+      // { id: "upload_doc", name: "Upload Document" },
+      // { id: "view_doc", name: "View Document" },
     ];
   }
   const [currentTab, setCurrentTab] = useState("basic");

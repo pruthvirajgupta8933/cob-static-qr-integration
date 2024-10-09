@@ -73,7 +73,7 @@ const MultiUserOnboard = () => {
     { key: "", value: "Select" },
     { key: "normal_merchant", value: "Direct Merchant" },
     { key: "individual_referral", value: "Referral (Individual)" },
-    // { key: "company_referral", value: "Referral (Company)" },
+    { key: "company_referral", value: "Referral (Company)" },
     { key: "referrer", value: "Referral Merchant " },
     { key: "bank", value: "Bank Merchant" },
   ];
@@ -123,7 +123,7 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {basicDetailsResponse.data && (
+        {basicDetailsResponse.data?.businessType && (
           <Prompt
             message={() => {
               if (
