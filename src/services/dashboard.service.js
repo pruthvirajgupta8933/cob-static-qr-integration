@@ -57,7 +57,7 @@ const dowlonadTransactionHistory = (postData) => {
 
 // const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`
 const settlementReport = (paramData) => {
-  return axiosInstanceAuth.post(API_URL.SettlementReport, paramData)
+  return axiosInstanceJWT.post(API_URL.SettlementReport, paramData)
 }
 
 const refundTransactionHistory = (paramData) => {
@@ -65,7 +65,7 @@ const refundTransactionHistory = (paramData) => {
 
 }
 const chargebackTxnHistory = (paramData) => {
-  return axiosInstance.post(API_URL.ChargeBankTxnHistory, paramData)
+  return axiosInstanceJWT.post(API_URL.ChargeBankTxnHistory, paramData)
 
 }
 
