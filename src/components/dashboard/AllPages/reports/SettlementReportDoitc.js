@@ -372,10 +372,10 @@ const SettlementReportDoitc = () => {
       <main className="">
         <div className="">
           <div className="">
-            <h6 className="">Settlement Report</h6>
+            <h5 className="">Settlement Report</h5>
           </div>
           <section className="">
-            <div className="container-fluid mt-5">
+            <div className="container-fluid mt-5 p-0">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
