@@ -26,7 +26,7 @@ if (ENV_PROD) {
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
   qwick_form_url = "https://qwikforms.in";
-  report_api_url = "https://preprod-reportapi.sabpaisa.in";
+  report_api_url = "https://reportapi.sabpaisa.in";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
