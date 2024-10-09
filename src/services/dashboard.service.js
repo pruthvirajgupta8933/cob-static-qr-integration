@@ -5,7 +5,7 @@ import { axiosInstance, axiosInstanceJWT, axiosInstanceAuth } from "../utilities
 
 const successTxnSummary = (object) => {
   // console.log("object", object)
-  return axiosInstance.post(API_URL.SUCCESS_TXN_SUMMARY, object).then((response) => {
+  return axiosInstanceJWT.post(API_URL.SUCCESS_TXN_SUMMARY, object).then((response) => {
     return response.data;
   }).catch(err => console.log(err));
 };
@@ -48,11 +48,11 @@ const fetchTransactionHistory = (paramData) => {
   return axiosInstanceJWT.post(API_URL.GetMerchantTxnHistory, paramData);
 }
 
-const dowlonadTransactionHistory=(postData)=>{
-  return axiosInstanceJWT.post(API_URL.DownloadTxnHistory, postData,{
+const dowlonadTransactionHistory = (postData) => {
+  return axiosInstanceJWT.post(API_URL.DownloadTxnHistory, postData, {
     responseType: 'arraybuffer'
-})
-  
+  })
+
 }
 
 // const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`

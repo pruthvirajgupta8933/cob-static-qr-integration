@@ -99,11 +99,9 @@ function TransactionSummery() {
     // filter api response data with client code
     useEffect(() => {
         if (successTxnsumry?.length > 0) {
-            // console.log("clientCodeArr", clientCodeArr)
-            // console.log("successTxnsumry", successTxnsumry)
             var filterData = successTxnsumry?.filter((txnsummery) => {
-                if (clientCodeArr.includes(txnsummery.clientCode)) {
-                    return clientCodeArr.includes(txnsummery.clientCode);
+                if (clientCodeArr.includes(txnsummery.client_code)) {
+                    return clientCodeArr.includes(txnsummery.client_code);
                 }
             });
             SetTxnList(filterData);
@@ -128,19 +126,11 @@ function TransactionSummery() {
         SetSearch(e);
     };
 
-    if (user.roleId !== 3 && user.roleId !== 13) {
-        if (user.clientMerchantDetailsList === null) {
-            return <Redirect to={`${path}/profile`} />;
-        }
-    }
-
     showData.map((item) => {
-        totalSuccessTxn += item.noOfTransaction;
+        totalSuccessTxn += item.no_of_transaction;
         totalAmt += item.payeeamount;
     });
 
-    // console.log("showData",showData)
-    // console.log("txnList",txnList)
 
     return (
         <section className="">
@@ -185,7 +175,7 @@ function TransactionSummery() {
                                 {(showData.length !== 0) &&
                                     <p className="m-0">
                                         Total Successful Transactions: {totalSuccessTxn} | Total
-                                        Amount {`(INR)`}: {totalAmt}{" "}
+                                        Amount {`(INR)`}: {totalAmt.toFixed}{" "}
                                     </p>
                                 }
                             </div>
@@ -211,8 +201,8 @@ function TransactionSummery() {
                                                 return (
                                                     <tr key={uuidv4()}>
                                                         <td>{i + 1}</td>
-                                                        <td>{item.clientName}</td>
-                                                        <td>{item.noOfTransaction}</td>
+                                                        <td>{item.client_name}</td>
+                                                        <td>{item.no_of_transaction}</td>
                                                         <td>Rs {item.payeeamount}</td>
                                                     </tr>
                                                 );
