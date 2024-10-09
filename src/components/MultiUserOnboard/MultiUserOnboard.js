@@ -123,7 +123,7 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {basicDetailsResponse.data?.businessType && (
+        {basicDetailsResponse.data?.business_cat_code && (
           <Prompt
             message={() => {
               if (

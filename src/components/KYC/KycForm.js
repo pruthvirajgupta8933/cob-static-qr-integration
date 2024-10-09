@@ -76,10 +76,9 @@ function KycForm() {
   }, [merchantloginMasterId]);
 
   const redirect = () => {
-    console.log(isNull(basicDetailsResponse.data?.businessType));
     if (
       roles.accountManager &&
-      isNull(basicDetailsResponse.data?.businessType)
+      isNull(basicDetailsResponse.data?.business_cat_code)
     ) {
       if (
         window.confirm(
