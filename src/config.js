@@ -26,7 +26,7 @@ if (ENV_PROD) {
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
   qwick_form_url = "https://qwikforms.in";
-  report_api_url = "https://preprod-reportapi.sabpaisa.in"
+  report_api_url = "https://preprod-reportapi.sabpaisa.in";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -39,9 +39,8 @@ if (ENV_PROD) {
   widget_script = "https://payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://stage-qwikform.sabpaisa.in";
-  report_api_url = "https://stage-python-reportapi.sabpaisa.in"
+  report_api_url = "https://stage-python-reportapi.sabpaisa.in";
 }
-
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
@@ -79,8 +78,8 @@ const API_LIVE = {
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
 
-
-  SUCCESS_TXN_SUMMARY: report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
+  SUCCESS_TXN_SUMMARY:
+    report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob:
@@ -115,8 +114,9 @@ const API_LIVE = {
 
   /* Settlement Report */
   SettlementReport: report_api_url + "/transactions/GetSettledTxnHistory/",
-  RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
-  ChargeBankTxnHistory: report_api_url + "/transactions/GetChargebackTxnHistory/",
+  ChargeBankTxnHistory:
+    report_api_url + "/transactions/GetChargebackTxnHistory/",
+  RefundTxnHistory: report_api_url + "/transactions/GetRefundTxnHistory/",
   GET_DOITC_SETTLED_TXN_HISTORY:
     url + "/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
   GET_DOITC_MERCHANT_TXN_HISTORY:
@@ -124,7 +124,7 @@ const API_LIVE = {
 
   /* Transaction Enquiry */
   VIEW_TXN: `${url}/get-transaction-status`,
-  VIEW_RECIPTS_TXN: reportAPIURL + "/Enquiry/ViewTxnPublic",
+  VIEW_RECIPTS_TXN: report_api_url + "/transactions/ViewTxnPublic",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
@@ -364,7 +364,7 @@ const API_LIVE = {
   mandateSendRequest: `https://enach.npci.org.in/onmags/sendRequest`,
 
   // for chart
-  GET_TRANSACTION_DATA_CHART: reportAPIURL + "/REST/getSuccessGraph",
+  GET_TRANSACTION_DATA_CHART: report_api_url + "/transactions/getSuccessGraph/",
 
   //////  client list export to xl
   exportOflineMerchant: `${kyc_url}/kyc/get-merchant-data/export-offline-merchant/`,
@@ -411,11 +411,9 @@ const API_LIVE = {
 
   IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`,
 
-
   // Bank merchant related reports
   BANK_MERCHANT_DETAIL_LIST: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary/`,
-  BANK_MERCHANT_SUMMARY: `${report_api_url}/transactions/merchantSummary/`
-
+  BANK_MERCHANT_SUMMARY: `${report_api_url}/transactions/merchantSummary/`,
 };
 
 const B2B_API_LIVE = {
