@@ -79,7 +79,6 @@ const API_LIVE = {
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
 
-  // SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
   SUCCESS_TXN_SUMMARY: report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
@@ -109,18 +108,15 @@ const API_LIVE = {
 
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
-  // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
-  GetMerchantTxnHistory: `${url}/get-merchant-transaction-history`,
+  GetMerchantTxnHistory: `${report_api_url}/transactions/getMerchantTransactionHistory/`,
   DownloadTxnHistory: `${url}/download-merchant-transaction-history`,
 
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
-  GET_DOITC_SETTLED_TXN_HISTORY:
-    url + "/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
-  GET_DOITC_MERCHANT_TXN_HISTORY:
-    url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
+  GET_DOITC_SETTLED_TXN_HISTORY: report_api_url + "/transactions/GetDOITCSettledTxnHistory/",
+  GET_DOITC_MERCHANT_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: `${url}/get-transaction-status`,

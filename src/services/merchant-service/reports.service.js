@@ -4,12 +4,11 @@ import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../../utilit
 
 export const fetchTransactionHistoryDoitc = (paramData) => {
   // console.log("dd")
-    return axiosInstanceJWT.post(API_URL.GET_DOITC_MERCHANT_TXN_HISTORY, paramData);
-  }
+  return axiosInstanceJWT.post(API_URL.GET_DOITC_MERCHANT_TXN_HISTORY, paramData);
+}
 
 
-  export const fetchSettledTransactionHistoryDsoitc = (paramData) => {
-    return axiosInstanceJWT.post(API_URL.GET_DOITC_SETTLED_TXN_HISTORY, paramData);
-  }
+export const fetchSettledTransactionHistoryDsoitc = (paramData) => {
+  return axiosInstanceJWT.post(API_URL.GET_DOITC_SETTLED_TXN_HISTORY, paramData);
+}
 
-  

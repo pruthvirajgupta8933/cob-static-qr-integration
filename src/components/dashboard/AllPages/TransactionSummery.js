@@ -175,7 +175,7 @@ function TransactionSummery() {
                                 {(showData.length !== 0) &&
                                     <p className="m-0">
                                         Total Successful Transactions: {totalSuccessTxn} | Total
-                                        Amount {`(INR)`}: {totalAmt.toFixed}{" "}
+                                        Amount {`(INR)`}: {totalAmt.toFixed()}{" "}
                                     </p>
                                 }
                             </div>
