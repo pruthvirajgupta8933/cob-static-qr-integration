@@ -22,6 +22,8 @@ import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
 import toastConfig from "../../../../utilities/toastTypes";
 import verifiedIcon from "../../../../assets/images/verified.png";
 import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { stringEnc } from "../../../../utilities/encodeDecode";
 
 const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
@@ -30,6 +32,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [otpLoader, setOtpLoader] = useState(false);
   const [aadhaarLoader, setAadhaarLoader] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
@@ -157,9 +160,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     pan:
       type === "individual"
         ? Yup.string()
-          .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-          .length(10, "Only 10 digits are allowed")
-          .required("Required")
+            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+            .length(10, "Only 10 digits are allowed")
+            .required("Required")
         : null,
     isPanVerified: type === "individual" ? Yup.boolean().required() : null,
   });
@@ -227,7 +230,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
-        "Something went wrong, Please try again"
+          "Something went wrong, Please try again"
       );
       setAadhaarLoader(false);
     }
@@ -245,6 +248,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       aadhar_number: values.aadhaar,
       onboard_type:
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
+      id_proof_type: 1,
     };
     dispatch(saveBasicDetails(postData));
   };
@@ -324,12 +328,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     disabled={basicDetailsResponse?.data}
                   />
                   {values?.aadhaar !== null &&
-                    values?.aadhaar !== "" &&
-                    values?.aadhaar !== undefined &&
-                    // !errors.hasOwnProperty("pan_card") &&
-                    // !errors.hasOwnProperty("is_pan_verified") &&
+                  values?.aadhaar !== "" &&
+                  values?.aadhaar !== undefined &&
+                  // !errors.hasOwnProperty("pan_card") &&
+                  // !errors.hasOwnProperty("is_pan_verified") &&
 
-                    values?.isAadhaarVerified !== "" ? (
+                  values?.isAadhaarVerified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -354,10 +358,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       ) : (
                         <a
                           href={() => false}
-                          className={`btn cob-btn-primary text-white btn btn-sm ${values.aadhaar?.length !== 12
+                          className={`btn cob-btn-primary text-white btn btn-sm ${
+                            values.aadhaar?.length !== 12
                               ? "disabled"
                               : "pe-auto"
-                            }`}
+                          }`}
                           onClick={() =>
                             sendAadharOtp({ values, setFieldValue })
                           }
@@ -438,12 +443,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       disabled={basicDetailsResponse?.data}
                     />
                     {values?.pan !== null &&
-                      values?.pan !== "" &&
-                      values?.pan !== undefined &&
-                      // !errors.hasOwnProperty("pan_card") &&
-                      // !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.pan !== "" &&
+                    values?.pan !== undefined &&
+                    // !errors.hasOwnProperty("pan_card") &&
+                    // !errors.hasOwnProperty("is_pan_verified") &&
 
-                      values?.isPanVerified !== "" ? (
+                    values?.isPanVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
@@ -468,8 +473,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         ) : (
                           <a
                             href={() => false}
-                            className={`btn cob-btn-primary text-white btn btn-sm ${values.pan?.length !== 10 ? "disabled" : "pe-auto"
-                              }`}
+                            className={`btn cob-btn-primary text-white btn btn-sm ${
+                              values.pan?.length !== 10 ? "disabled" : "pe-auto"
+                            }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
                             Verify
@@ -511,7 +517,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     onClick={() =>
                       type === "individual"
                         ? setCurrentTab("address")
-                        : setCurrentTab("biz_overview")
+                        : history.push(
+                            `kyc?kycid=${stringEnc(
+                              basicDetailsResponse.data?.loginMasterId
+                            )}`
+                          )
                     }
                   >
                     Next
