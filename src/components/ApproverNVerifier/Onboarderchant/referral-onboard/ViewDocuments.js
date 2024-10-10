@@ -34,7 +34,7 @@ const ViewDocuments = () => {
           <tr>
             <th>Type</th>
             <th scope="col">Name</th>
-            <th scope="col">Description</th>
+            {/* <th scope="col">Description</th> */}
             <th scope="col">View</th>
           </tr>
         </thead>
@@ -44,7 +44,7 @@ const ViewDocuments = () => {
             <tr>
               <td>{doc.doc_type_name}</td>
               <td>{doc.name}</td>
-              <td>{doc.description}</td>
+              {/* <td>{doc.description}</td> */}
               <td
                 className="text-primary cursor_pointer text-decoration-underline"
                 onClick={() => setDocViewer(doc)}

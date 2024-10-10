@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
+import { clearKycState } from "../../../../slices/kycSlice";
 
 const Submit = () => {
   const [checked, setChecked] = useState(false);
@@ -9,6 +10,7 @@ const Submit = () => {
   let history = useHistory();
   const handleSubmit = () => {
     dispatch(referralOnboardSlice.actions.resetBasicDetails());
+    dispatch(clearKycState());
     setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
   };
   return (

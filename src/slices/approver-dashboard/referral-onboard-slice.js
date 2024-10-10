@@ -113,7 +113,7 @@ export const referralOnboardSlice = createSlice({
         const onboardingStatusByReferrer = {
           name: action.payload.data?.name,
           loginMasterId: action.payload.data?.loginMasterId,
-          businessType: action.payload?.data?.business_cat_code,
+          business_cat_code: action.payload?.data?.business_cat_code,
           status: action.payload?.data?.status,
           isOnboardStart: true,
         };
@@ -122,8 +122,11 @@ export const referralOnboardSlice = createSlice({
           JSON.stringify(onboardingStatusByReferrer)
         );
       })
-      .addCase(saveBasicDetails.rejected, (state) => {
-        state.basicDetailsResponse = { error: true };
+      .addCase(saveBasicDetails.rejected, (state, action) => {
+        state.basicDetailsResponse = {
+          error: true,
+          message: action.payload,
+        };
       });
   },
 });

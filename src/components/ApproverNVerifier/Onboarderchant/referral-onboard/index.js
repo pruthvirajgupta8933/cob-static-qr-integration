@@ -25,11 +25,11 @@ const Referral = ({ type }) => {
   } else if (type === "company") {
     tabs = [
       { id: "basic", name: "Basic Details" },
-      { id: "biz_overview", name: "Business Overview" },
-      { id: "biz_details", name: "Business Details" },
-      { id: "bank", name: "Bank Details" },
-      { id: "upload_doc", name: "Upload Document" },
-      { id: "view_doc", name: "View Document" },
+      // { id: "biz_overview", name: "Business Overview" },
+      // { id: "biz_details", name: "Business Details" },
+      // { id: "bank", name: "Bank Details" },
+      // { id: "upload_doc", name: "Upload Document" },
+      // { id: "view_doc", name: "View Document" },
     ];
   }
   const [currentTab, setCurrentTab] = useState("basic");
@@ -84,7 +84,6 @@ const Referral = ({ type }) => {
           </div>
         )}
         <div className="col-2 bg-light p-1">
-          {/* Tab navs */}
           <div
             className="nav flex-column nav-pills text-start "
             id="v-pills-tab"
@@ -115,14 +114,10 @@ const Referral = ({ type }) => {
             ))}
           </div>
         </div>
-        {/* Tab navs */}
         <div className="col-8">
-          {/* Tab content */}
-
           <div className="tab-content" id="v-pills-tabContent">
             {renderTabContent()}
           </div>
-          {/* Tab content */}
         </div>
       </div>
     </section>
