@@ -154,8 +154,8 @@ const SettlementReportDoitc = () => {
       clientCodeListArr?.map((item) => {
         allClientCode.push(item.client_code);
       });
-      clientCodeArrLength = allClientCode.length.toString();
-      strClientCode = allClientCode.join().toString();
+      clientCodeArrLength = allClientCode.length?.toString();
+      strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = values.clientCode;
       clientCodeArrLength = "1";
@@ -321,12 +321,12 @@ const SettlementReportDoitc = () => {
     function arrayToCSV(data, exportType) {
       const csv = data.map(row => row.map(val => {
         if (typeof val === 'number') {
-          if (val.toString().length >= 14) {
-            return `${val.toString()};`
+          if (val?.toString().length >= 14) {
+            return `${val?.toString()};`
           }
-          return val.toString()
+          return val?.toString()
         } else {
-          return `"${val.toString()}"`;
+          return `"${val?.toString()}"`;
         }
 
       })
