@@ -30,7 +30,7 @@ function MerchantDetailList() {
     const { auth, bankDashboardReducer, merchantReferralOnboardReducer } = useSelector((state) => state);
 
     // const { user } = auth;
-    const { refrerChiledList } = merchantReferralOnboardReducer
+    const { refrerChiledList, isLoading } = merchantReferralOnboardReducer
     const { merhcantDetailsList, reportLoading } = bankDashboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
 
@@ -133,9 +133,9 @@ function MerchantDetailList() {
 
 
     useEffect(() => {
-        setUpdateTxnList(merhcantDetailsList.results || []);
+        // setUpdateTxnList(merhcantDetailsList.results || []);
         setShowData(merhcantDetailsList.results || []);
-        SetTxnList(merhcantDetailsList.results || []);
+        // SetTxnList(merhcantDetailsList.results || []);
 
     }, [merhcantDetailsList]);
 
@@ -145,7 +145,7 @@ function MerchantDetailList() {
     useEffect(() => {
         if (searchText !== "") {
             setShowData(
-                updateTxnList.filter((txnItme) =>
+                merhcantDetailsList?.results?.filter((txnItme) =>
                     Object.values(txnItme)
                         .join(" ")
                         .toLowerCase()
@@ -153,7 +153,7 @@ function MerchantDetailList() {
                 )
             );
         } else {
-            setShowData(updateTxnList);
+            setShowData(merhcantDetailsList?.results);
         }
     }, [searchText]);
 
@@ -168,7 +168,7 @@ function MerchantDetailList() {
         ];
         const excelArr = [excelHeaderRow];
         // eslint-disable-next-line array-callback-return
-        txnList.map((item) => {
+        merhcantDetailsList?.results?.map((item) => {
             const allowDataToShow = {
                 client_name: item.sub_merchant_id || "",
                 transaction_date: item.merchant_name || "",
@@ -245,13 +245,16 @@ function MerchantDetailList() {
                                 <Form>
                                     <div className="form-row mt-4">
                                         <div className="form-group col-md-3">
-                                            <FormikController
-                                                control="select"
-                                                label="Client Code"
-                                                name="clientCode"
-                                                className="form-select rounded-0 mt-0"
-                                                options={clientCodeOption}
-                                            />
+                                            {!isLoading ?
+                                                <FormikController
+                                                    control="select"
+                                                    label="Client Code"
+                                                    name="clientCode"
+                                                    className="form-select rounded-0 mt-0"
+                                                    options={clientCodeOption}
+                                                />
+                                                : <p>Loading...</p>
+                                            }
                                         </div>
 
                                         <div className="form-group col-md-3">
@@ -296,7 +299,7 @@ function MerchantDetailList() {
                                             >Search
                                             </button>
                                         </div>
-                                        {txnList?.length > 0 && (
+                                        {merhcantDetailsList?.count > 0 && (
                                             <div className="form-group col-lg-1">
                                                 <button
                                                     className="btn btn-sm text-white cob-btn-primary"
@@ -314,7 +317,7 @@ function MerchantDetailList() {
                             )}
                         </Formik>
                         <hr className="hr" />
-                        {txnList?.length > 0 ? (
+                        {merhcantDetailsList?.count > 0 ? (
                             <div className="form-row">
                                 <div className="form-group col-md-3">
                                     <label>Search</label>
@@ -350,8 +353,8 @@ function MerchantDetailList() {
 
                 <section className="">
                     <div className="scroll overflow-auto">
-                        {!reportLoading && txnList?.length !== 0 && (
-                            <React.Fragment>
+                        {!reportLoading && merhcantDetailsList?.count > 0 && (
+                            <>
                                 <h6>Total Count : {merhcantDetailsList?.count}</h6>
                                 <Table
                                     row={tableRow}
@@ -361,14 +364,15 @@ function MerchantDetailList() {
                                     currentPage={currentPage}
                                     changeCurrentPage={changeCurrentPage}
                                 />
-                            </React.Fragment>
+                            </>
 
                         )}
                     </div>
                     {reportLoading && <SkeletonTable />}
-                    {txnList?.length == 0 && !reportLoading && (
+                    {merhcantDetailsList?.count === 0 && !reportLoading && (
                         <h6 className="text-center font-weight-bold">No Data Found</h6>
                     )}
+
                 </section>
             </main>
         </section>

@@ -17,19 +17,19 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 function MerchantSummary() {
 
     const dispatch = useDispatch();
-    const [txnList, SetTxnList] = useState([]);
+    // const [txnList, SetTxnList] = useState([]);
     const [searchText, SetSearchText] = useState("");
     const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [showData, setShowData] = useState([]);
-    const [updateTxnList, setUpdateTxnList] = useState([]);
+    // const [updateTxnList, setUpdateTxnList] = useState([]);
     const [formValues, setFormValues] = useState({})
 
 
     const { auth, bankDashboardReducer, merchantReferralOnboardReducer } = useSelector((state) => state);
 
     const { user } = auth;
-    const { refrerChiledList } = merchantReferralOnboardReducer
+    const { refrerChiledList, isLoading } = merchantReferralOnboardReducer
     const { merchantSummary, reportLoading } = bankDashboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
 
@@ -61,12 +61,8 @@ function MerchantSummary() {
     }
 
     const forClientCode = true;
-
-
     let fnKey, fnVal = ""
     let clientCodeListArr = []
-
-
     fnKey = "client_code"
     fnVal = "name"
     clientCodeListArr = clientCodeData
@@ -99,7 +95,7 @@ function MerchantSummary() {
             login_id: auth?.user?.loginId
         }
         dispatch(fetchChildDataList(postObj));
-    }, []);
+    }, [auth]);
 
 
     const fetchReportData = async (objData) => {
@@ -150,19 +146,16 @@ function MerchantSummary() {
 
 
     useEffect(() => {
-        setUpdateTxnList(merchantSummary.results || []);
+
         setShowData(merchantSummary.results || []);
-        SetTxnList(merchantSummary.results || []);
 
-    }, [merchantSummary]);
-
-
+    }, [merchantSummary, refrerChiledList]);
 
 
     useEffect(() => {
         if (searchText !== "") {
             setShowData(
-                updateTxnList.filter((txnItme) =>
+                merchantSummary?.results.filter((txnItme) =>
                     Object.values(txnItme)
                         .join(" ")
                         .toLowerCase()
@@ -170,7 +163,7 @@ function MerchantSummary() {
                 )
             );
         } else {
-            setShowData(updateTxnList);
+            setShowData(merchantSummary?.results);
         }
     }, [searchText]);
 
@@ -189,7 +182,7 @@ function MerchantSummary() {
         ];
         const excelArr = [excelHeaderRow];
         // eslint-disable-next-line array-callback-return
-        txnList.map((item) => {
+        merchantSummary?.results?.map((item) => {
             const allowDataToShow = {
                 client_id: item.client_id || "",
                 client_name: item.client_name || "",
@@ -276,6 +269,7 @@ function MerchantSummary() {
 
 
 
+
     return (
         <section>
             <main>
@@ -291,13 +285,16 @@ function MerchantSummary() {
                                 <Form>
                                     <div className="form-row mt-4">
                                         <div className="form-group col-md-3">
-                                            <FormikController
+                                            {!isLoading ? <FormikController
                                                 control="select"
                                                 label="Client Code"
                                                 name="clientCode"
                                                 className="form-select rounded-0 mt-0"
                                                 options={clientCodeOption}
-                                            />
+                                            /> : <p>Loading...</p>}
+
+
+
                                         </div>
 
                                         <div className="form-group col-md-3">
@@ -342,7 +339,7 @@ function MerchantSummary() {
                                             >Search
                                             </button>
                                         </div>
-                                        {txnList?.length > 0 && (
+                                        {merchantSummary?.count > 0 && (
                                             <div className="form-group col-lg-1">
                                                 <button
                                                     className="btn btn-sm text-white cob-btn-primary"
@@ -360,7 +357,7 @@ function MerchantSummary() {
                             )}
                         </Formik>
                         <hr className="hr" />
-                        {txnList?.length > 0 ? (
+                        {merchantSummary?.count > 0 ? (
                             <div className="form-row">
                                 <div className="form-group col-md-3">
                                     <label>Search</label>
@@ -396,7 +393,7 @@ function MerchantSummary() {
 
                 <section className="">
                     <div className="scroll overflow-auto">
-                        {!reportLoading && txnList?.length !== 0 && (
+                        {!reportLoading && merchantSummary?.count > 0 && (
                             <React.Fragment>
                                 <h6>Total Count : {merchantSummary?.count}</h6>
                                 <Table
@@ -412,7 +409,7 @@ function MerchantSummary() {
                         )}
                     </div>
                     {reportLoading && <SkeletonTable />}
-                    {txnList?.length == 0 && !reportLoading && (
+                    {merchantSummary?.count === 0 && !reportLoading && (
                         <h6 className="text-center font-weight-bold">No Data Found</h6>
                     )}
                 </section>
