@@ -81,13 +81,28 @@ const TransactionHistory = () => {
     }
     splitDate = splitDate.join("-");
 
-    const convertDate = (yourDate) => {
+    const convertDate = (dateVal) => {
+        //convert only this format 2024-10-10T12:36:30Z 
+
         let date;
-        if (yourDate === null) {
+        if (dateVal === null && isNaN(date)) {
             date = "N/A"
         } else {
-            date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+            // Extract date components
+            const sdate = new Date(dateVal);
+            const day = String(sdate?.getUTCDate()).padStart(2, '0');
+            const month = String(sdate?.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = sdate?.getUTCFullYear();
+
+            // Extract time components
+            const hours = String(sdate?.getUTCHours()).padStart(2, '0');
+            const minutes = String(sdate?.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(sdate?.getUTCSeconds()).padStart(2, '0');
+
+            // Format the date and time
+            date = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
         }
+
         return date;
     };
 
@@ -131,7 +146,7 @@ const TransactionHistory = () => {
     const todayDate = splitDate;
 
 
-    const indexMemo = useMemo(() => (currentPage - 1) * pageSize, [pageSize, currentPage])
+    // const indexMemo = useMemo(() => (currentPage - 1) * pageSize, [pageSize, currentPage])
 
 
     const initialValues = {

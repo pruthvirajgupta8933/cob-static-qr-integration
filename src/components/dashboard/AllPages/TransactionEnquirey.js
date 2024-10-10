@@ -65,7 +65,8 @@ const TransactionEnquirey = React.memo(() => {
     transaction_from: "1"
   }), [roles.merchant, clientCodeListArr, fnKey]);
 
-  const convertDate = useCallback((yourDate) => moment(yourDate).format("DD/MM/YYYY hh:mm a"), []);
+
+  const convertDate = useCallback((dateValue) => moment(dateValue).format("DD/MM/YYYY hh:mm a"), []);
 
   const onSubmit = useCallback(async (input) => {
     setState(prev => ({ ...prev, loadingState: true, data: {}, disable: true }));
@@ -229,7 +230,7 @@ const TransactionEnquirey = React.memo(() => {
                       {state.printData.map((datas, key) => (
                         <div className="col-4 p-2" key={datas.key.toString()}>
                           <p>
-                            <span className="font-weight-bold"> {datas.key} :</span>
+                            <span className="font-weight-bold"> {datas.key}: </span>
                             <span className="large_content_wrap">
                               {datas.value}
                             </span>
