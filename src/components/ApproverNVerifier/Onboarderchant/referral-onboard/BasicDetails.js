@@ -133,17 +133,18 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       basicDetailsResponse?.data &&
       !basicDetailsResponse?.data?.clientCodeCreated
     ) {
-      axiosInstanceAuth
-        .put(
-          `${API_URL.EMAIL_VERIFY}${basicDetailsResponse.data?.loginMasterId}`
-        )
-        .then((response) => {
-          response.data && createClientCode();
-        })
-        .catch((e) => {
-          console.log(e);
-          toastConfig.errorToast("Email Verification not done");
-        });
+      createClientCode();
+      // axiosInstanceAuth
+      //   .put(
+      //     `${API_URL.EMAIL_VERIFY}${basicDetailsResponse.data?.loginMasterId}`
+      //   )
+      //   .then((response) => {
+      //     response.data && createClientCode();
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //     toastConfig.errorToast("Email Verification not done");
+      //   });
     } else if (basicDetailsResponse?.error) {
       toastConfig.errorToast(
         basicDetailsResponse?.message ?? "Error saving data! Please try again"
