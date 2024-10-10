@@ -6,11 +6,14 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 import { useDispatch, useSelector } from "react-redux";
 import OnboardMerchant from "../ApproverNVerifier/Onboarderchant/OnboardMerchant";
 import ReferralOnboardForm from "../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
-import { fetchParentTypeData } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import {
+  fetchParentTypeData,
+  getAllZoneName,
+} from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { clearKycState } from "../../slices/kycSlice";
 // import * as Yup from 'yup';
 
 import BankMerchantOnboard from "../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
-import { getAllZoneName } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import classes from "./multi-user-onboard.module.css";
 import Yup from "../../_components/formik/Yup";
 import Referral from "../ApproverNVerifier/Onboarderchant/referral-onboard";
@@ -73,7 +76,7 @@ const MultiUserOnboard = () => {
     { key: "", value: "Select" },
     { key: "normal_merchant", value: "Direct Merchant" },
     { key: "individual_referral", value: "Referral (Individual)" },
-    // { key: "company_referral", value: "Referral (Company)" },
+    { key: "company_referral", value: "Referral (Company)" },
     { key: "referrer", value: "Referral Merchant " },
     { key: "bank", value: "Bank Merchant" },
   ];
@@ -123,7 +126,7 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {basicDetailsResponse.data && (
+        {basicDetailsResponse.data?.business_cat_code && (
           <Prompt
             message={() => {
               if (
@@ -132,6 +135,7 @@ const MultiUserOnboard = () => {
                 )
               ) {
                 dispatch(referralOnboardSlice.actions.resetBasicDetails());
+                dispatch(clearKycState());
                 return true; // Allow navigation
               }
               return false;
