@@ -218,7 +218,7 @@ const TransactionHistoryDoitc = () => {
         });
         // console.log("allClientCode", allClientCode)
         clientCodeArrLength = allClientCode.length.toString();
-        strClientCode = allClientCode.join().toString();
+        strClientCode = allClientCode.join()?.toString();
       } else {
         strClientCode = values.clientCode;
         clientCodeArrLength = "1";
@@ -380,7 +380,7 @@ const TransactionHistoryDoitc = () => {
     merchantReportSlice?.transactionHistoryDoitc?.data?.map((item, index) => {
       const allowDataToShow = {
         srNo: item.srNo === null ? "null" : index + 1,
-        txn_id: item.txn_id === null ? "null" : item?.txn_id.toString(),
+        txn_id: item.txn_id === null ? "null" : item?.txn_id?.toString(),
         client_txn_id: item.client_txn_id === null ? "null" : item.client_txn_id,
         challan_no: item.challan_no === null ? "null" : item.challan_no,
         payee_amount: item.payee_amount === null ? "null" : Number.parseFloat(item.payee_amount),
@@ -424,12 +424,12 @@ const TransactionHistoryDoitc = () => {
     function arrayToCSV(data, exportType) {
       const csv = data.map(row => row.map(val => {
         if (typeof val === 'number') {
-          if (val.toString().length >= 14) {
+          if (val?.toString().length >= 14) {
             return `${val.toString()};`
           }
-          return val.toString()
+          return val?.toString()
         } else {
-          return `"${val.toString()}"`;
+          return `"${val?.toString()}"`;
         }
 
       })

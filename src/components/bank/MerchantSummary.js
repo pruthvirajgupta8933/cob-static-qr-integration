@@ -128,12 +128,9 @@ function MerchantSummary() {
 
 
     const onSubmitHandler = async (values) => {
-        try {
-            setFormValues(values)
-            await fetchReportData(values)
-        } catch (error) {
-            toastConfig.errorToast("An error occurred");
-        }
+        setFormValues(values)
+        setPageSize(10)
+        setCurrentPage(1)
     };
 
 
@@ -141,7 +138,7 @@ function MerchantSummary() {
         if (formValues?.fromDate && formValues?.endDate) {
             fetchReportData(formValues)
         }
-    }, [pageSize, currentPage])
+    }, [pageSize, currentPage, formValues])
 
 
 

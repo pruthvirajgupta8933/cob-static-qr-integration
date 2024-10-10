@@ -117,7 +117,7 @@ const API_LIVE = {
     report_api_url + "/transactions/GetChargebackTxnHistory/",
   RefundTxnHistory: report_api_url + "/transactions/GetRefundTxnHistory/",
   GET_DOITC_SETTLED_TXN_HISTORY: report_api_url + "/transactions/GetDOITCSettledTxnHistory/",
-  GET_DOITC_MERCHANT_TXN_HISTORY: report_api_url + "/transactions/GetDOITCMerchantTxnHistory",
+  GET_DOITC_MERCHANT_TXN_HISTORY: report_api_url + "/transactions/GetDOITCMerchantTxnHistory/",
 
   /* Transaction Enquiry */
   VIEW_TXN: `${url}/get-transaction-status`,
