@@ -128,7 +128,10 @@ function MerchantSummary() {
 
 
     const onSubmitHandler = async (values) => {
+        setPageSize(10)
+        setCurrentPage(1)
         try {
+
             setFormValues(values)
             await fetchReportData(values)
         } catch (error) {
@@ -138,6 +141,7 @@ function MerchantSummary() {
 
 
     useEffect(() => {
+        console.log("formValues", formValues)
         if (formValues?.fromDate && formValues?.endDate) {
             fetchReportData(formValues)
         }
