@@ -122,8 +122,11 @@ export const referralOnboardSlice = createSlice({
           JSON.stringify(onboardingStatusByReferrer)
         );
       })
-      .addCase(saveBasicDetails.rejected, (state) => {
-        state.basicDetailsResponse = { error: true };
+      .addCase(saveBasicDetails.rejected, (state, action) => {
+        state.basicDetailsResponse = {
+          error: true,
+          message: action.payload,
+        };
       });
   },
 });

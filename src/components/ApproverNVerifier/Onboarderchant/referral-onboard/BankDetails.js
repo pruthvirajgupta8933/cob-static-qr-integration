@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
@@ -9,7 +9,7 @@ import {
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
 import toastConfig from "../../../../utilities/toastTypes";
-import { getBankId } from "../../../../slices/kycSlice";
+import { getBankId, kycUserList } from "../../../../slices/kycSlice";
 import {
   ifscValidation,
   bankAccountVerification,
@@ -23,27 +23,35 @@ const BankDetails = ({ setCurrentTab }) => {
   const [accountLoader, setAccountLoader] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
-  const initialValues = {
-    acHolderName: "",
-    acNumber: "",
-    acType: "",
-    ifsc: "",
-    bankName: "",
-    branch: "",
-  };
   const selectedType = [
     { key: "", value: "Select" },
     { key: "1", value: "Current" },
     { key: "2", value: "Saving" },
   ];
-
+  const initialValues = {
+    acHolderName: kycData?.merchant_account_details?.account_holder_name ?? "",
+    acNumber: kycData?.merchant_account_details?.account_number ?? "",
+    acType:
+      selectedType.find(
+        (type) => type.value == kycData?.merchant_account_details?.accountType
+      )?.key ?? "",
+    ifsc: kycData?.merchant_account_details?.ifsc_code ?? "",
+    bankName: kycData?.merchant_account_details?.bankName ?? "",
+    branch: kycData?.merchant_account_details?.branch ?? "",
+    bank_id: kycData?.merchant_account_details?.bankId ?? "",
+  };
+  useEffect(() => {
+    if (basicDetailsResponse)
+      dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
+  }, []);
   const validationSchema = Yup.object().shape({
     acHolderName: Yup.string().allowOneSpace().required("Required").nullable(),
     ifsc: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(Regex.ifscRegex, RegexMsg.ifscRegex)
       .min(6, "IFSC must be at least 6 characters")
       .max(20, "IFSC must not exceed 20 characters")
@@ -58,6 +66,9 @@ const BankDetails = ({ setCurrentTab }) => {
     branch: Yup.string().allowOneSpace().required("Required").nullable(),
     bankName: Yup.string().required("Required").nullable(),
     bank_id: Yup.number().required("Bank ID required"),
+    isAccountNumberVerified: Yup.boolean().required(
+      "Please verify the account number"
+    ),
   });
 
   const handleSubmit = (values) => {
@@ -170,7 +181,8 @@ const BankDetails = ({ setCurrentTab }) => {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
-                  IFSC Code<span className="text-danger"></span>
+                  IFSC Code
+                  <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
                   <Field
@@ -186,16 +198,19 @@ const BankDetails = ({ setCurrentTab }) => {
                     }}
                   />
                 </div>
+                <ErrorMessage name={"ifsc"}>
+                  {(msg) => <p className="text-danger">{msg}</p>}
+                </ErrorMessage>
               </div>
 
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
                   Account Number
-                  <span className="text-danger"></span>
+                  <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
                   <Field
-                    type="text"
+                    type="number"
                     name="acNumber"
                     className="form-control"
                     // disabled={isEditableInput}
@@ -247,12 +262,16 @@ const BankDetails = ({ setCurrentTab }) => {
                     </span>
                   )}
                 </div>
+                <ErrorMessage name={"acNumber"}>
+                  {(msg) => <p className="text-danger">{msg}</p>}
+                </ErrorMessage>
               </div>
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Account Holder Name<span></span>
+                  Account Holder Name
+                  <span style={{ color: "red" }}>*</span>
                 </label>
                 <FormikController
                   control="input"
@@ -264,7 +283,8 @@ const BankDetails = ({ setCurrentTab }) => {
 
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Account Type<span></span>
+                  Account Type
+                  <span style={{ color: "red" }}>*</span>
                 </label>
 
                 <FormikController
@@ -278,7 +298,8 @@ const BankDetails = ({ setCurrentTab }) => {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Bank Name<span className=""></span>
+                  Bank Name
+                  <span style={{ color: "red" }}>*</span>
                 </label>
                 <FormikController
                   control="input"
@@ -289,7 +310,8 @@ const BankDetails = ({ setCurrentTab }) => {
 
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Branch<span className=""></span>
+                  Branch
+                  <span style={{ color: "red" }}>*</span>
                 </label>
                 <FormikController
                   control="input"

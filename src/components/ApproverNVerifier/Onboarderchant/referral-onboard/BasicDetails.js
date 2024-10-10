@@ -16,12 +16,15 @@ import {
 import { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
 import authService from "../../../../services/auth.service";
-import { saveBasicDetails } from "../../../../slices/approver-dashboard/referral-onboard-slice";
+import { kycUserList } from "../../../../slices/kycSlice";
+import {
+  saveBasicDetails,
+  referralOnboardSlice,
+} from "../../../../slices/approver-dashboard/referral-onboard-slice";
 import { authPanValidation } from "../../../../slices/kycValidatorSlice";
 import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
 import toastConfig from "../../../../utilities/toastTypes";
 import verifiedIcon from "../../../../assets/images/verified.png";
-import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { stringEnc } from "../../../../utilities/encodeDecode";
 
@@ -37,16 +40,31 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     (state) => state.referralOnboard.basicDetailsResponse
   );
   const createdBy = useSelector((state) => state.auth.user?.loginId);
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
 
   const initialValues = {
-    name: basicDetailsResponse?.data?.name ?? "",
-    contactNumber: basicDetailsResponse?.data?.mobileNumber ?? "",
-    email: basicDetailsResponse?.data?.email ?? "",
+    name: kycData?.name ?? basicDetailsResponse?.data?.name ?? "",
+    contactNumber:
+      kycData?.contactNumber ?? basicDetailsResponse?.data?.mobileNumber ?? "",
+    email: kycData?.emailId ?? basicDetailsResponse?.data?.email ?? "",
     password: "",
-    pan: basicDetailsResponse?.data?.pan_card ?? "",
-    aadhaar: basicDetailsResponse?.data?.aadhar_number ?? "",
-    isAadhaarVerified: basicDetailsResponse?.data?.aadhar_number ? 1 : "",
-    isPanVerified: basicDetailsResponse?.data?.pan_number ? 1 : "",
+    pan:
+      kycData?.signatoryPAN ??
+      kycData?.panCard ??
+      basicDetailsResponse?.data?.pan_card ??
+      "",
+    aadhaar:
+      kycData?.aadharNumber ?? basicDetailsResponse?.data?.aadhar_number ?? "",
+    isAadhaarVerified:
+      kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
+        ? 1
+        : "",
+    isPanVerified:
+      kycData?.signatoryPAN ||
+      kycData?.panCard ||
+      basicDetailsResponse?.data?.pan_number
+        ? 1
+        : "",
   };
   useEffect(() => {
     const createClientCode = async () => {
@@ -127,14 +145,21 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
           toastConfig.errorToast("Email Verification not done");
         });
     } else if (basicDetailsResponse?.error) {
-      toastConfig.errorToast("Error saving data! Please try again");
+      toastConfig.errorToast(
+        basicDetailsResponse?.message ?? "Error saving data! Please try again"
+      );
       setSubmitLoader(false);
     }
+    if (basicDetailsResponse?.data)
+      dispatch(
+        kycUserList({ login_id: basicDetailsResponse?.data.loginMasterId })
+      );
   }, [basicDetailsResponse]);
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .allowOneSpace()
       .max(100, "Maximum 100 characters are allowed")
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     contactNumber: Yup.string()
@@ -156,7 +181,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .length(12, "Only 12 digits are allowed")
       .required("Required"),
-    isAadhaarVerified: Yup.boolean().required(),
+    isAadhaarVerified: Yup.boolean().required("Please verify aadhaar"),
     pan:
       type === "individual"
         ? Yup.string()
@@ -164,7 +189,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
             .length(10, "Only 10 digits are allowed")
             .required("Required")
         : null,
-    isPanVerified: type === "individual" ? Yup.boolean().required() : null,
+    isPanVerified:
+      type === "individual"
+        ? Yup.boolean().required("Please verify PAN")
+        : null,
   });
 
   const verifyPan = async (pan, setFieldValue) => {
@@ -266,7 +294,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         enableReinitialize={true}
       >
         {({ values, setFieldValue, isValid }) => (
-          <Form>
+          <Form autoComplete="off">
             <div className="row g-3">
               <div className="col-md-6">
                 <FormikController
@@ -275,6 +303,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   className="form-control"
                   placeholder="Enter Name"
                   label="Full Name"
+                  required
                   autoComplete="off"
                   disabled={basicDetailsResponse?.data}
                 />
@@ -287,7 +316,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   placeholder="Enter Mobile Number"
                   className="form-control"
                   label="Contact Number"
-                  autoComplete="off"
+                  autoComplete="nope"
+                  required
                   disabled={basicDetailsResponse?.data}
                 />
               </div>
@@ -298,7 +328,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   className="form-control"
                   placeholder="Enter Email Id"
                   label="Email ID"
-                  autoComplete="off"
+                  autoComplete="nope"
+                  required
                   disabled={basicDetailsResponse?.data}
                 />
               </div>
@@ -311,11 +342,14 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Create Password"
                   autoComplete="off"
                   type="password"
+                  required
                   disabled={basicDetailsResponse?.data}
                 />
               </div>
               <div className="col-md-6">
-                <label className="col-form-label mb-2 lh-sm">Aadhaar</label>
+                <label className="col-form-label mb-2 lh-sm">
+                  Aadhaar<span style={{ color: "red" }}>*</span>
+                </label>
                 <div className="input-group">
                   <Field
                     type="text"
@@ -382,7 +416,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         </label>
                         <div className="input-group w-40">
                           <Field
-                            type="text"
+                            type="number"
                             name="aadhar-otp"
                             className="form-control"
                             onChange={(e) => {
@@ -429,7 +463,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
               </div>
               {type === "individual" && (
                 <div className="col-md-6">
-                  <label className="col-form-label mb-2 lh-sm">PAN</label>
+                  <label className="col-form-label mb-2 lh-sm">
+                    PAN<span style={{ color: "red" }}>*</span>
+                  </label>
                   <div className="input-group">
                     <Field
                       type="text"

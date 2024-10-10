@@ -6,8 +6,15 @@ import { convertToFormikSelectJson } from "../../../../_components/reuseable_com
 import FormikController from "../../../../_components/formik/FormikController";
 
 import toastConfig from "../../../../utilities/toastTypes";
-import { businessOverviewState } from "../../../../slices/kycSlice";
+import {
+  businessOverviewState,
+  kycUserList,
+} from "../../../../slices/kycSlice";
 import { saveAddressDetails } from "../../../../slices/approver-dashboard/referral-onboard-slice";
+import {
+  Regex,
+  RegexMsg,
+} from "../../../../_components/formik/ValidationRegex";
 
 const AddressDetails = ({ setCurrentTab }) => {
   const [stateData, setStateData] = useState([]);
@@ -16,23 +23,29 @@ const AddressDetails = ({ setCurrentTab }) => {
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
   const initialValues = {
-    operational_address: "",
-    city: "",
-    state: "",
-    pin_code: "",
+    operational_address: kycData?.merchant_address_details?.address ?? "",
+    city: kycData?.merchant_address_details?.city ?? "",
+    state: kycData?.merchant_address_details?.state ?? "",
+    pin_code: kycData?.merchant_address_details?.pin_code ?? "",
   };
   const validationSchema = Yup.object().shape({
-    operational_address: Yup.string().required("Required").nullable(),
-    city: Yup.string().required("Required").nullable(),
+    operational_address: Yup.string()
+      .required("Required")
+      .matches(Regex.address, RegexMsg.address)
+      .nullable(),
+    city: Yup.string()
+      .required("Required")
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .nullable(),
     state: Yup.string().required("Please select state").nullable(),
     pin_code: Yup.string().required("Required").nullable(),
   });
   const dispatch = useDispatch();
 
-  ////Get Api for Buisness overview///////////
   useEffect(() => {
-    dispatch(businessOverviewState())
+    dispatch(businessOverviewState()) //api for fetching indian states
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "stateId",
@@ -42,11 +55,13 @@ const AddressDetails = ({ setCurrentTab }) => {
         setStateData(data);
       })
       .catch((err) => console.log(err));
+    if (basicDetailsResponse?.data)
+      dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
   }, []);
   const onSubmit = async (values) => {
     setSubmitLoader(true);
     const postData = {
-      login_id: basicDetailsResponse?.login_master_id,
+      login_id: basicDetailsResponse?.loginMasterId,
       address: values.operational_address,
       city: values.city,
       state: values.state,
@@ -127,7 +142,7 @@ const AddressDetails = ({ setCurrentTab }) => {
                 </label>
                 <FormikController
                   control="input"
-                  type="text"
+                  type="number"
                   name="pin_code"
                   className="form-control"
                   // disabled={VerifyKycStatus === "Verified" ? true : false}
