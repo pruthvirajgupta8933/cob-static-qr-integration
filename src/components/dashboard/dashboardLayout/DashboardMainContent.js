@@ -97,6 +97,7 @@ import CreateMandateApi from "../../../subscription_components/CreateMandateApi/
 import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
 import MerchantDetailList from "../../bank/MerchantDetailList";
 import MerchantSummary from "../../bank/MerchantSummary";
+import InformationBulletin from "../../InfoBulletin";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -617,7 +618,13 @@ function DashboardMainContent() {
               <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
                 <Faq />
               </AllowedForAll>
-
+              <AllowedForAll
+                exact
+                path={`${path}/info-bulletin`}
+                Component={InformationBulletin}
+              >
+                <InformationBulletin />
+              </AllowedForAll>
               <AuthorizedRoute
                 exact
                 path={`${path}/widget`}
