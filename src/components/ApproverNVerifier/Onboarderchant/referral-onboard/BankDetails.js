@@ -43,6 +43,9 @@ const BankDetails = ({ setCurrentTab }) => {
     bankName: kycData?.merchant_account_details?.bankName ?? "",
     branch: kycData?.merchant_account_details?.branch ?? "",
     bank_id: kycData?.merchant_account_details?.bankId ?? "",
+    isAccountNumberVerified: kycData?.merchant_account_details?.account_number
+      ? 1
+      : "",
   };
   useEffect(() => {
     if (basicDetailsResponse)
@@ -176,185 +179,189 @@ const BankDetails = ({ setCurrentTab }) => {
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({ values, errors, setFieldError, setFieldValue, isValid }) => (
-          <Form>
-            <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-6 ">
-                <label className="col-form-label mt-0 p-2">
-                  IFSC Code
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <div className="input-group">
-                  <Field
-                    text="text"
-                    name="ifsc"
+        {({ values, errors, setFieldError, setFieldValue, isValid }) => {
+          console.log(values);
+          return (
+            <Form>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-6 ">
+                  <label className="col-form-label mt-0 p-2">
+                    IFSC Code
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <div className="input-group">
+                    <Field
+                      text="text"
+                      name="ifsc"
+                      className="form-control"
+                      // disabled={isEditableInput}
+                      onChange={(e) => {
+                        setFieldValue("ifsc", e.target.value.toUpperCase());
+                        setFieldValue("isIfscVerified", "");
+                        if (e.target.value.length === 11)
+                          verifyBank(e.target.value, setFieldValue);
+                      }}
+                    />
+                  </div>
+                  <ErrorMessage name={"ifsc"}>
+                    {(msg) => <p className="text-danger">{msg}</p>}
+                  </ErrorMessage>
+                </div>
+
+                <div className="col-sm-12 col-md-12 col-lg-6">
+                  <label className="col-form-label mt-0 p-2">
+                    Account Number
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <div className="input-group">
+                    <Field
+                      type="number"
+                      name="acNumber"
+                      className="form-control"
+                      // disabled={isEditableInput}
+                      onChange={(e) => {
+                        setFieldValue("acNumber", e.target.value);
+                        setFieldValue("isAccountNumberVerified", "");
+                      }}
+                    />
+                    {values?.acNumber !== null &&
+                    values?.acNumber !== "" &&
+                    values?.acNumber !== undefined &&
+                    values?.isAccountNumberVerified !== "" ? (
+                      <span className="success input-group-append">
+                        <img
+                          src={verifiedIcon}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
+                      </span>
+                    ) : (
+                      <span className="input-group-append">
+                        {accountLoader ? (
+                          <div className="bg-primary text-white w-100 p-2">
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                              ariaHidden="true"
+                            />
+                            <span className="sr-only">Loading...</span>
+                          </div>
+                        ) : (
+                          <a
+                            href={() => false}
+                            className="btn cob-btn-primary text-white btn btn-sm"
+                            onClick={() =>
+                              verifyAccount(
+                                values.ifsc,
+                                values.acNumber,
+                                setFieldValue
+                              )
+                            }
+                          >
+                            Verify
+                          </a>
+                        )}
+                      </span>
+                    )}
+                  </div>
+                  <ErrorMessage name={"acNumber"}>
+                    {(msg) => <p className="text-danger">{msg}</p>}
+                  </ErrorMessage>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-6">
+                  <label className="col-form-label mt-0 p-2">
+                    Account Holder Name
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <FormikController
+                    control="input"
+                    type="text"
+                    name="acHolderName"
                     className="form-control"
-                    // disabled={isEditableInput}
-                    onChange={(e) => {
-                      setFieldValue("ifsc", e.target.value.toUpperCase());
-                      setFieldValue("isIfscVerified", "");
-                      if (e.target.value.length === 11)
-                        verifyBank(e.target.value, setFieldValue);
-                    }}
                   />
                 </div>
-                <ErrorMessage name={"ifsc"}>
-                  {(msg) => <p className="text-danger">{msg}</p>}
-                </ErrorMessage>
-              </div>
 
-              <div className="col-sm-12 col-md-12 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Account Number
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <div className="input-group">
-                  <Field
-                    type="number"
-                    name="acNumber"
-                    className="form-control"
-                    // disabled={isEditableInput}
-                    onChange={(e) => {
-                      setFieldValue("acNumber", e.target.value);
-                      setFieldValue("isAccountNumberVerified", "");
-                    }}
+                <div className="col-sm-12 col-md-12 col-lg-6">
+                  <label className="col-form-label mt-0 p-2">
+                    Account Type
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+
+                  <FormikController
+                    control="select"
+                    name="acType"
+                    options={selectedType}
+                    // onChange={(e) => console.log(e.target.value)}
+                    className="form-select"
                   />
-                  {values?.acNumber !== null &&
-                  values?.acNumber !== "" &&
-                  values?.acNumber !== undefined &&
-                  values?.isAccountNumberVerified !== "" ? (
-                    <span className="success input-group-append">
-                      <img
-                        src={verifiedIcon}
-                        alt=""
-                        title=""
-                        width={"20px"}
-                        height={"20px"}
-                        className="btn-outline-secondary"
-                      />
-                    </span>
-                  ) : (
-                    <span className="input-group-append">
-                      {accountLoader ? (
-                        <div className="bg-primary text-white w-100 p-2">
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            ariaHidden="true"
-                          />
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      ) : (
-                        <a
-                          href={() => false}
-                          className="btn cob-btn-primary text-white btn btn-sm"
-                          onClick={() =>
-                            verifyAccount(
-                              values.ifsc,
-                              values.acNumber,
-                              setFieldValue
-                            )
-                          }
-                        >
-                          Verify
-                        </a>
-                      )}
-                    </span>
-                  )}
                 </div>
-                <ErrorMessage name={"acNumber"}>
-                  {(msg) => <p className="text-danger">{msg}</p>}
-                </ErrorMessage>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Account Holder Name
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="acHolderName"
-                  className="form-control"
-                />
-              </div>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-6">
+                  <label className="col-form-label mt-0 p-2">
+                    Bank Name
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <FormikController
+                    control="input"
+                    name="bankName"
+                    className="form-control"
+                  />
+                </div>
 
-              <div className="col-sm-12 col-md-12 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Account Type
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-
-                <FormikController
-                  control="select"
-                  name="acType"
-                  options={selectedType}
-                  className="form-select"
-                />
+                <div className="col-sm-12 col-md-12 col-lg-6">
+                  <label className="col-form-label mt-0 p-2">
+                    Branch
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <FormikController
+                    control="input"
+                    type="text"
+                    name="branch"
+                    className="form-control"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Bank Name
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <FormikController
-                  control="input"
-                  name="bankName"
-                  className="form-control"
-                />
-              </div>
-
-              <div className="col-sm-12 col-md-12 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Branch
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="branch"
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-6 mt-2">
-                <button
-                  className="cob-btn-primary btn text-white btn-sm"
-                  type="submit"
-                  disabled={!isValid}
-                >
-                  {/* // disabled={disable} > */}
-                  {submitLoader && (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        ariaHidden="true"
-                      />
-                      <span className="sr-only">Loading...</span>
-                    </>
-                  )}
-                  Save
-                </button>
-                {/* } */}
-
-                {showNext && (
-                  <a
-                    className="btn active-secondary btn-sm m-2"
-                    onClick={() => setCurrentTab("upload_doc")}
+              <div className="row">
+                <div className="col-lg-6 mt-2">
+                  <button
+                    className="cob-btn-primary btn text-white btn-sm"
+                    type="submit"
+                    disabled={!isValid}
                   >
-                    Next
-                  </a>
-                )}
+                    {/* // disabled={disable} > */}
+                    {submitLoader && (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          ariaHidden="true"
+                        />
+                        <span className="sr-only">Loading...</span>
+                      </>
+                    )}
+                    Save
+                  </button>
+                  {/* } */}
+
+                  {showNext && (
+                    <a
+                      className="btn active-secondary btn-sm m-2"
+                      onClick={() => setCurrentTab("upload_doc")}
+                    >
+                      Next
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          </Form>
-        )}
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );
