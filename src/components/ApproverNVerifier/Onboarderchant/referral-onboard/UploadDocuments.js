@@ -23,7 +23,11 @@ const UploadDocuments = () => {
       .then((resp) => {
         setDocTypeList(resp?.payload);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toastConfig.errorToast(
+          err?.message ?? "Error fetching the list of required documents"
+        );
+      });
   }, [dispatch]);
 
   const initialValues = {
