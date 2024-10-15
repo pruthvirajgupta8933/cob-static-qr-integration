@@ -244,7 +244,6 @@ const BizzAppForm = (props) => {
                                     </Form>
                                 )}
                             </Formik>
-
                         </div>
                         <div className="card-footer text-muted text-center">
                             <a href="https://sabpaisa.in/" target="_blank" rel="noreferrer">sabpaisa.in</a>

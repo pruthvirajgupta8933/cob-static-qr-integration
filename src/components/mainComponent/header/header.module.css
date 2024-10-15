@@ -10,12 +10,10 @@
 
 .position_sticky {
     position: sticky;
+    padding-top: 2px;
+    padding-bottom: 3px;
     top: 0;
     right: 0;
     left: 0;
     z-index: 1030
-}
-
-.logo_container {
-    padding-left: 10px;
 }

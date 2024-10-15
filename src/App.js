@@ -13,8 +13,6 @@ const App = () => {
   const dispatch = useDispatch();
   const [login, setLogin] = useState(false)
 
-
-
   useCallback(() => {
     dispatch(logout());
   }, [dispatch]);
