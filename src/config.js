@@ -116,8 +116,10 @@ const API_LIVE = {
   ChargeBankTxnHistory:
     report_api_url + "/transactions/GetChargebackTxnHistory/",
   RefundTxnHistory: report_api_url + "/transactions/GetRefundTxnHistory/",
-  GET_DOITC_SETTLED_TXN_HISTORY: report_api_url + "/transactions/GetDOITCSettledTxnHistory/",
-  GET_DOITC_MERCHANT_TXN_HISTORY: report_api_url + "/transactions/GetDOITCMerchantTxnHistory/",
+  GET_DOITC_SETTLED_TXN_HISTORY:
+    report_api_url + "/transactions/GetDOITCSettledTxnHistory/",
+  GET_DOITC_MERCHANT_TXN_HISTORY:
+    report_api_url + "/transactions/GetDOITCMerchantTxnHistory/",
 
   /* Transaction Enquiry */
   VIEW_TXN: `${url}/get-transaction-status`,
@@ -411,6 +413,8 @@ const API_LIVE = {
   // Bank merchant related reports
   BANK_MERCHANT_DETAIL_LIST: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary/`,
   BANK_MERCHANT_SUMMARY: `${report_api_url}/transactions/merchantSummary/`,
+
+  GET_INFORMATION_BULLETIN: `${url}/get-information-bulletin/?order_by=-id`,
 };
 
 const B2B_API_LIVE = {

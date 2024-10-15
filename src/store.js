@@ -32,6 +32,7 @@ import { assignAccountManagerReducer } from "./slices/assign-accountmanager-slic
 import { editKycDetailReducer } from "./slices/editKycSlice";
 import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
+import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 
 const reducer = {
   auth: authReducer,
@@ -80,8 +81,8 @@ const reducer = {
   //Assign-Account-Manager
   assignAccountManagerReducer: assignAccountManagerReducer,
   kycValidatorReducer: kycValidatorReducer,
-  bankDashboardReducer: bankDashboardReducer
-
+  bankDashboardReducer: bankDashboardReducer,
+  infoBulletinReducer: infoBulletinReducer,
 };
 
 const store = configureStore({

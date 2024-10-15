@@ -336,6 +336,15 @@ const TransactionHistoryDoitc = () => {
     SetSearchText(e.target.value);
   };
 
+  const convertDate = (yourDate) => {
+    return yourDate ? moment(yourDate).format("YYYY-MM-DD HH:mm:ss") : "N/A";
+  };
+
+
+
+
+
+
 
   // export to excel
   const exportToExcelFn = (exportType) => {
@@ -388,7 +397,7 @@ const TransactionHistoryDoitc = () => {
         p_ep_charges: item.p_ep_charges === null ? "null" : Number.parseFloat(item.p_ep_charges),
         p_gst: item.p_gst === null ? "null" : item.p_gst,
         total_amount: item.total_amount === null ? "null" : Number.parseFloat(item.total_amount),
-        trans_date: item.trans_date === null ? "null" : item.trans_date,
+        trans_date: item.trans_date === null ? "null" : convertDate(item.trans_date),
         status: item.status === null ? "null" : item.status,
         payee_first_name: item.payee_first_name === null ? "null" : item.payee_first_name,
         payee_mob: item.payee_mob === null ? "null" : item.payee_mob,
@@ -685,7 +694,7 @@ const TransactionHistoryDoitc = () => {
                             <td>{Number.parseFloat(item.p_ep_charges).toFixed(2)}</td>
                             <td>{item.p_gst}</td>
                             <td>{Number.parseFloat(item.total_amount).toFixed(2)}</td>
-                            <td>{item.trans_date}</td>
+                            <td>{convertDate(item.trans_date)}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_mob}</td>

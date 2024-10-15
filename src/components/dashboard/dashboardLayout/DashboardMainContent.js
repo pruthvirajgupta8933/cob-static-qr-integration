@@ -97,6 +97,7 @@ import CreateMandateApi from "../../../subscription_components/CreateMandateApi/
 import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
 import MerchantDetailList from "../../bank/MerchantDetailList";
 import MerchantSummary from "../../bank/MerchantSummary";
+import InformationBulletin from "../../InfoBulletin";
 
 function DashboardMainContent() {
     let history = useHistory();
@@ -545,283 +546,290 @@ function DashboardMainContent() {
                                     <PgResponse />
                                 </Route> */}
 
-                            <Route
-                                exact
-                                path={`${path}/sabpaisa-pg/:subscribeId/:applicationid`}
-                                Component={SpPg}
-                            >
-                                <SpPg />
-                            </Route>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/payout/ledger`}
-                                Component={PayoutTransaction}
-                                roleList={{ merchant: true }}
-                            >
-                                <PayoutTransaction />
-                            </AuthorizedRoute>
+              <Route
+                exact
+                path={`${path}/sabpaisa-pg/:subscribeId/:applicationid`}
+                Component={SpPg}
+              >
+                <SpPg />
+              </Route>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/payout/transactions`}
-                                Component={TransactionsPayoutHistory}
-                                roleList={{ merchant: true }}
-                            >
-                                <PayoutTransaction />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/ledger`}
+                Component={PayoutTransaction}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/payout/beneficiary`}
-                                Component={Beneficiary}
-                                roleList={{ merchant: true }}
-                            >
-                                <PayoutTransaction />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/transactions`}
+                Component={TransactionsPayoutHistory}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/payout/mis_report`}
-                                Component={MISReport}
-                                roleList={{ merchant: true }}
-                            >
-                                <PayoutTransaction />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/beneficiary`}
+                Component={Beneficiary}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/payout/payment_status`}
-                                Component={MakePayment}
-                                roleList={{ merchant: true }}
-                            >
-                                <PayoutTransaction />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/mis_report`}
+                Component={MISReport}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/merchant-balance`}
-                                Component={MerchantBalance}
-                                roleList={{
-                                    approver: true,
-                                    verifier: true,
-                                    viewer: true,
-                                    accountManager: true,
-                                }}
-                            >
-                                <MerchantBalance />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/payment_status`}
+                Component={MakePayment}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
 
-                            {/* Routing for Faq */}
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-balance`}
+                Component={MerchantBalance}
+                roleList={{
+                  approver: true,
+                  verifier: true,
+                  viewer: true,
+                  accountManager: true,
+                }}
+              >
+                <MerchantBalance />
+              </AuthorizedRoute>
 
-                            <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
-                                <Faq />
-                            </AllowedForAll>
+              {/* Routing for Faq */}
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/widget`}
-                                Component={Widget}
-                                roleList={{ merchant: true }}
-                            >
-                                <Widget />
-                            </AuthorizedRoute>
+              <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
+                <Faq />
+              </AllowedForAll>
+              <AllowedForAll
+                exact
+                path={`${path}/info-bulletin`}
+                Component={InformationBulletin}
+              >
+                <InformationBulletin />
+              </AllowedForAll>
+              <AuthorizedRoute
+                exact
+                path={`${path}/widget`}
+                Component={Widget}
+                roleList={{ merchant: true }}
+              >
+                <Widget />
+              </AuthorizedRoute>
 
-                            {/* Routing for subscription */}
-                            {/* ----------------------------------------------------------------------------------------------------|| */}
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/subscription/mandateReports`}
-                                Component={MandateReport}
-                                roleList={{ merchant: true }}
-                            >
-                                <MandateReport />
-                            </AuthorizedRoute>
+              {/* Routing for subscription */}
+              {/* ----------------------------------------------------------------------------------------------------|| */}
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/mandateReports`}
+                Component={MandateReport}
+                roleList={{ merchant: true }}
+              >
+                <MandateReport />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/subscription/debitReports`}
-                                Component={DebitReport}
-                                roleList={{ merchant: true }}
-                            >
-                                <DebitReport />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/debitReports`}
+                Component={DebitReport}
+                roleList={{ merchant: true }}
+              >
+                <DebitReport />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/subscription/mandate_registration`}
-                                Component={CreateMandate}
-                                roleList={{ merchant: true }}
-                            >
-                                <CreateMandate />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/mandate_registration`}
+                Component={CreateMandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandate />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/subscription/create-mandate-api`}
-                                Component={CreateMandateApi}
-                                roleList={{ merchant: true }}
-                            >
-                                <CreateMandateApi />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/create-mandate-api`}
+                Component={CreateMandateApi}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandateApi />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/subscription/create-mandate-api-response`}
-                                Component={CreateMandateApiResponse}
-                                roleList={{ merchant: true }}
-                            >
-                                <CreateMandateApiResponse />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/create-mandate-api-response`}
+                Component={CreateMandateApiResponse}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandateApiResponse />
+              </AuthorizedRoute>
 
-                            {/* -----------------------------------------------------------------------------------------------------|| */}
+              {/* -----------------------------------------------------------------------------------------------------|| */}
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/onboarded-report`}
-                                Component={OnboardedReport}
-                                roleList={{ approver: true, verifier: true }}
-                            >
-                                <OnboardedReport />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/onboarded-report`}
+                Component={OnboardedReport}
+                roleList={{ approver: true, verifier: true }}
+              >
+                <OnboardedReport />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/referzone`}
-                                Component={ReferZone}
-                                roleList={{ approver: true, verifier: true }}
-                            >
-                                <ReferZone />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/referzone`}
+                Component={ReferZone}
+                roleList={{ approver: true, verifier: true }}
+              >
+                <ReferZone />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/generatemid`}
-                                Component={GenerateMid}
-                                roleList={{ approver: true }}
-                            >
-                                <GenerateMid />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/generatemid`}
+                Component={GenerateMid}
+                roleList={{ approver: true }}
+              >
+                <GenerateMid />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/bank-onboarding`}
-                                Component={BankMerchantOnboard}
-                                roleList={{ bank: true, approver: true }}
-                            />
+              <AuthorizedRoute
+                exact
+                path={`${path}/bank-onboarding`}
+                Component={BankMerchantOnboard}
+                roleList={{ bank: true, approver: true }}
+              />
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/referral-onboarding`}
-                                Component={MerchantReferralOnboard}
-                                roleList={{
-                                    approver: true,
-                                    viewer: true,
-                                    accountManager: true,
-                                }}
-                            />
+              <AuthorizedRoute
+                exact
+                path={`${path}/referral-onboarding`}
+                Component={MerchantReferralOnboard}
+                roleList={{
+                  approver: true,
+                  viewer: true,
+                  accountManager: true,
+                }}
+              />
 
-                            {roles?.approver && (
-                                <Route
-                                    exact
-                                    path={`${path}/ratemapping/:loginid`}
-                                    Component={ManualRateMapping}
-                                >
-                                    <ManualRateMapping />
-                                </Route>
-                            )}
+              {roles?.approver && (
+                <Route
+                  exact
+                  path={`${path}/ratemapping/:loginid`}
+                  Component={ManualRateMapping}
+                >
+                  <ManualRateMapping />
+                </Route>
+              )}
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/emami/challan-transactions`}
-                                Component={ChallanTransactReport}
-                                roleList={{ b2b: true }}
-                            >
-                                <ChallanTransactReport />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/emami/challan-transactions`}
+                Component={ChallanTransactReport}
+                roleList={{ b2b: true }}
+              >
+                <ChallanTransactReport />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/bizz-appdata`}
-                                Component={BizzAppData}
-                                roleList={{
-                                    approver: true,
-                                    verifier: true,
-                                    viewer: true,
-                                    accountManager: true,
-                                }}
-                            >
-                                <BizzAppData />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/bizz-appdata`}
+                Component={BizzAppData}
+                roleList={{
+                  approver: true,
+                  verifier: true,
+                  viewer: true,
+                  accountManager: true,
+                }}
+              >
+                <BizzAppData />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/my-merchant`}
-                                Component={MyMerchantList}
-                                roleList={{ viewer: true, accountManager: true }}
-                            >
-                                <MyMerchantList />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/my-merchant`}
+                Component={MyMerchantList}
+                roleList={{ viewer: true, accountManager: true }}
+              >
+                <MyMerchantList />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/multi-user-onboard`}
-                                Component={MultiUserOnboard}
-                                roleList={{ accountManager: true, viewer: true }}
-                            >
-                                <MultiUserOnboard />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/multi-user-onboard`}
+                Component={MultiUserOnboard}
+                roleList={{ accountManager: true, viewer: true }}
+              >
+                <MultiUserOnboard />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/merchant-assignment`}
-                                Component={AssigneAccountManger}
-                                roleList={{ approver: true }}
-                            >
-                                <AssigneAccountManger />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-assignment`}
+                Component={AssigneAccountManger}
+                roleList={{ approver: true }}
+              >
+                <AssigneAccountManger />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/edit-kyc-detail`}
-                                Component={EditKycDetail}
-                                roleList={{ verifier: true }}
-                            >
-                                <EditKycDetail />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/edit-kyc-detail`}
+                Component={EditKycDetail}
+                roleList={{ verifier: true }}
+              >
+                <EditKycDetail />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/website-whitelist`}
-                                Component={WebWhiteList}
-                                roleList={{ verifier: true }}
-                            >
-                                <WebWhiteList />
-                            </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/website-whitelist`}
+                Component={WebWhiteList}
+                roleList={{ verifier: true }}
+              >
+                <WebWhiteList />
+              </AuthorizedRoute>
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/merchant-detail-list`}
-                                Component={MerchantDetailList}
-                                roleList={{ bank: true }}
-                            />
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-detail-list`}
+                Component={MerchantDetailList}
+                roleList={{ bank: true }}
+              />
 
-                            <AuthorizedRoute
-                                exact
-                                path={`${path}/merchant-summary`}
-                                Component={MerchantSummary}
-                                roleList={{ bank: true }}
-                            />
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-summary`}
+                Component={MerchantSummary}
+                roleList={{ bank: true }}
+              />
 
-                            <Route path={`${path}/*`} component={UrlNotFound}>
-                                <UrlNotFound />
-                            </Route>
-                        </Switch>
-                    </main>
-                </div>
-            </div>
-        </React.Fragment>
-    );
+              <Route path={`${path}/*`} component={UrlNotFound}>
+                <UrlNotFound />
+              </Route>
+            </Switch>
+          </main>
+        </div>
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default DashboardMainContent;

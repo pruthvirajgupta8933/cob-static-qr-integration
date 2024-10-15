@@ -24,6 +24,12 @@ export const kycValidatorAuth = axios.create({
   },
 });
 
+export const bankValidatorAuth = axios.create({
+  headers: {
+    "api-key": "cb1c45b3ee43416884a720f02d449d8d", //befisc
+  },
+});
+
 // Instance for JWT
 export const axiosInstanceJWT = axios.create({
   headers: {

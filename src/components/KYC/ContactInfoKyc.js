@@ -50,6 +50,7 @@ function ContactInfoKyc(props) {
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [otpLoader, setOtpLoader] = useState(false);
   const [selectedIdProofName, setSelectedIdProofName] = useState("");
 
   const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
@@ -373,7 +374,7 @@ function ContactInfoKyc(props) {
   };
 
   const handleDlVerification = async ({ values, setFieldValue }) => {
-    setIsLoading(true);
+    setOtpLoader(true);
 
     const res = await dispatch(
       dlValidation({
@@ -394,7 +395,7 @@ function ContactInfoKyc(props) {
       setFieldValue("isIdProofVerified", 1);
       setFieldValue("oldIdNumber", values.id_number);
     }
-    setIsLoading(false);
+    setOtpLoader(false);
     setDlDobToggle(false);
   };
 
@@ -412,14 +413,14 @@ function ContactInfoKyc(props) {
             onChange={(e) => setFieldValue("dob", e.target.value)}
             placeholder="Enter DOB"
             required={true}
-            disabled={isLoading}
+            disabled={otpLoader}
           />
           <button
             className="btn btn cob-btn-primary btn-sm"
             type="button"
             onClick={() => handleDlVerification({ values, setFieldValue })}
           >
-            {isLoading ? (
+            {otpLoader ? (
               <span className="spinner-border spinner-border-sm" role="status">
                 <span className="sr-only">Loading...</span>
               </span>
