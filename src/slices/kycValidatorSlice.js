@@ -4,7 +4,10 @@ import {
   cinDetail,
   aadharNumberVerify,
 } from "../services/kyc-validator-service/kycValidator.service";
-import { kycValidatorAuth } from "../utilities/axiosInstance";
+import {
+  bankValidatorAuth,
+  kycValidatorAuth,
+} from "../utilities/axiosInstance";
 import API_URL from "../config";
 
 const initialState = {};
@@ -80,7 +83,7 @@ export const udyamRegistration = createAsyncThunk(
 export const ifscValidation = createAsyncThunk(
   "kyc/ifscValidation",
   async (requestParam) => {
-    const response = await kycValidatorAuth
+    const response = await bankValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-ifsc/`, requestParam)
       .catch((error) => {
         return error.response;
@@ -93,7 +96,7 @@ export const ifscValidation = createAsyncThunk(
 export const bankAccountVerification = createAsyncThunk(
   "kyc/bankAccountVerification",
   async (requestParam) => {
-    const response = await kycValidatorAuth
+    const response = await bankValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-account/`, requestParam)
       .catch((error) => {
         return error.response;
