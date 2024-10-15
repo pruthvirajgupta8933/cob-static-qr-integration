@@ -28,7 +28,7 @@ const SettlementReportDoitc = () => {
   const { auth, merchantReportSlice, merchantReferralOnboardReducer } = useSelector((state) => state);
   const { refrerChiledList } = merchantReferralOnboardReducer
   const clientCodeData = refrerChiledList?.resp?.results ?? []
-  console.log("clientCodeData", clientCodeData)
+
   const { user } = auth;
 
   const [txnList, SetTxnList] = useState([]);
