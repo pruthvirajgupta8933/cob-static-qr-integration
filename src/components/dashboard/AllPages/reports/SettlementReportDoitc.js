@@ -28,6 +28,7 @@ const SettlementReportDoitc = () => {
   const { auth, merchantReportSlice, merchantReferralOnboardReducer } = useSelector((state) => state);
   const { refrerChiledList } = merchantReferralOnboardReducer
   const clientCodeData = refrerChiledList?.resp?.results ?? []
+  console.log("clientCodeData", clientCodeData)
   const { user } = auth;
 
   const [txnList, SetTxnList] = useState([]);
@@ -254,6 +255,10 @@ const SettlementReportDoitc = () => {
 
   const pages = _.range(1, pageCount + 1);
 
+  const convertDate = (yourDate) => {
+    return yourDate ? moment(yourDate).format("YYYY-MM-DD HH:mm:ss") : "N/A";
+  };
+
   const exportToExcelFn = (exportType) => {
     const excelHeaderRow = [
       "Sr. No.",
@@ -293,7 +298,7 @@ const SettlementReportDoitc = () => {
         'client_txn_id': item.client_txn_id === null ? "null" : item.client_txn_id,
         'challan_no': item.challan_no === null ? "null" : item.challan_no,
         'payee_amount': item.payee_amount === null ? "null" : Number.parseFloat(item.payee_amount),
-        'trans_date': item.trans_date === null ? "null" : item.trans_date,
+        'trans_date': item.trans_date === null ? "null" : convertDate(item.trans_date),
         'status': item.status === null ? "null" : item.status,
         'payee_first_name': item.payee_first_name === null ? "null" : item.payee_first_name,
         'client_code': item.client_code === null ? "null" : item.client_code,
@@ -528,7 +533,7 @@ const SettlementReportDoitc = () => {
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>
                             <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
-                            <td>{item?.trans_date}</td>
+                            <td>{convertDate(item?.trans_date)}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.client_code}</td>
