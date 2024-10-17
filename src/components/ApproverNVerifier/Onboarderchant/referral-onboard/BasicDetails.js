@@ -133,7 +133,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       basicDetailsResponse?.data &&
       !basicDetailsResponse?.data?.clientCodeCreated
     ) {
-      createClientCode();
+      // createClientCode();
       // axiosInstanceAuth
       //   .put(
       //     `${API_URL.EMAIL_VERIFY}${basicDetailsResponse.data?.loginMasterId}`

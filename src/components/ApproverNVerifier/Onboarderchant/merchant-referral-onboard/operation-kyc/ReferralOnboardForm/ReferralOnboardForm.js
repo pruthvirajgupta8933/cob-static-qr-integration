@@ -90,7 +90,7 @@ function ReferralOnboardForm({
     state_id: "",
     pin_code: "",
     company_name: "",
-    password: generateRandomPassword(),
+    password: "", //generateRandomPassword(),
     isPasswordReq: referralChild,
   };
 
@@ -198,7 +198,13 @@ function ReferralOnboardForm({
       otherwise: Yup.string(),
     }),
 
-    password: Yup.string(),
+    password: Yup.string().when("isPasswordReq", {
+      is: true,
+      then: Yup.string()
+        .matches(Regex.userNameRegex, RegexMsg.userNameRegex)
+        .required("Required"),
+      otherwise: Yup.string(),
+    }),
   });
 
   const handleSubmitContact = async (value, { resetForm }) => {
@@ -504,16 +510,28 @@ function ReferralOnboardForm({
               </div>
 
               {referralChild && (
-                <div className={`col-lg-6`}>
-                  <FormikController
-                    control="input"
-                    type="text"
-                    name="username"
-                    placeholder="Create User Name"
-                    className="form-control"
-                    label="Username *"
-                  />
-                </div>
+                <>
+                  <div className={`col-lg-6`}>
+                    <FormikController
+                      control="input"
+                      type="text"
+                      name="username"
+                      placeholder="Create User Name"
+                      className="form-control"
+                      label="Username *"
+                    />
+                  </div>
+                  <div className={`col-lg-6`}>
+                    <FormikController
+                      control="input"
+                      type="password"
+                      name="password"
+                      placeholder="Create Password"
+                      className="form-control"
+                      label="Password *"
+                    />
+                  </div>
+                </>
               )}
 
               {!referralChild && (
