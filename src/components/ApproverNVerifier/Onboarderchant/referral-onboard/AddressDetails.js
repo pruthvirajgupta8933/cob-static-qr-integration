@@ -70,12 +70,14 @@ const AddressDetails = ({ setCurrentTab }) => {
     try {
       const res = await dispatch(saveAddressDetails(postData));
       res?.data?.status && toastConfig.successToast("Data Saved");
+      res?.error &&
+        toastConfig.errorToast(res.error.message ?? "Some error occurred");
       setSubmitLoader(false);
       setShowNext(true);
       toastConfig.successToast(res?.payload?.message);
     } catch (e) {
       setSubmitLoader(false);
-      toastConfig.errorToast(e?.response?.data?.detail);
+      toastConfig.errorToast(e?.data?.detail);
     }
   };
   return (

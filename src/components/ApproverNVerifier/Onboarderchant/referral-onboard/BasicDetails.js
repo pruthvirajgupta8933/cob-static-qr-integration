@@ -130,9 +130,14 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
     else if (
-      basicDetailsResponse?.data &&
-      !basicDetailsResponse?.data?.clientCodeCreated
+      basicDetailsResponse?.data
+      // && !basicDetailsResponse?.data?.clientCodeCreated
     ) {
+      toastConfig.successToast(
+        "Data saved successfully. Please verify the email sent"
+      );
+      setSubmitLoader(false);
+
       // createClientCode();
       // axiosInstanceAuth
       //   .put(
@@ -182,7 +187,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .length(12, "Only 12 digits are allowed")
       .required("Required"),
-    isAadhaarVerified: Yup.boolean().required("Please verify aadhaar"),
+    // isAadhaarVerified: Yup.boolean().required("Please verify aadhaar"),
     pan:
       type === "individual"
         ? Yup.string()
