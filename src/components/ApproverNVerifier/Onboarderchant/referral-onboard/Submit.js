@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
-import { clearKycState, kycUserList } from "../../../../slices/kycSlice";
+import { clearKycState, saveKycConsent } from "../../../../slices/kycSlice";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
@@ -14,6 +14,7 @@ const Submit = () => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const dispatch = useDispatch();
   let history = useHistory();
+  const createdBy = useSelector((state) => state.auth.user?.loginId);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
@@ -54,6 +55,8 @@ const Submit = () => {
         setSubmitLoader(false);
         toastConfig.successToast("Client code created");
         dispatch(referralOnboardSlice.actions.resetBasicDetails());
+        dispatch(clearKycState());
+        setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
       }
     } catch (error) {
       // console.log("console is here")
@@ -66,11 +69,25 @@ const Submit = () => {
     }
   };
   const handleSubmit = () => {
-    if (!basicDetailsResponse?.data?.clientCodeCreated && !kycData?.clientCode)
-      createClientCode();
-    else dispatch(referralOnboardSlice.actions.resetBasicDetails());
-    dispatch(clearKycState());
-    setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
+    setSubmitLoader(true);
+    dispatch(
+      saveKycConsent({
+        term_condition: checked,
+        login_id: basicDetailsResponse?.data?.loginMasterId,
+        submitted_by: createdBy,
+      })
+    ).then((res) => {
+      if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true
+      ) {
+        toastConfig.successToast(res?.payload?.message);
+        createClientCode();
+      } else {
+        toastConfig.errorToast(res?.payload?.detail);
+        setSubmitLoader(false);
+      }
+    });
   };
   return (
     <div
