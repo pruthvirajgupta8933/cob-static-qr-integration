@@ -182,7 +182,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .length(12, "Only 12 digits are allowed")
       .required("Required"),
-    isAadhaarVerified: Yup.boolean().required("Please verify aadhaar"),
+    // isAadhaarVerified: Yup.boolean().required("Please verify aadhaar"),
     pan:
       type === "individual"
         ? Yup.string()

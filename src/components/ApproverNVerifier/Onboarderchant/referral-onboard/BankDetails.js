@@ -180,7 +180,7 @@ const BankDetails = ({ setCurrentTab }) => {
         enableReinitialize={true}
       >
         {({ values, errors, setFieldError, setFieldValue, isValid }) => {
-          console.log(values);
+          // console.log(values);
           return (
             <Form>
               <div className="row">
