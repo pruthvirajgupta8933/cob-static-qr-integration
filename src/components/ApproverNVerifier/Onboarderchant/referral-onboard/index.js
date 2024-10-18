@@ -10,7 +10,7 @@ import AddressDetails from "./AddressDetails";
 import ReferralId from "./ReferralId";
 import Submit from "./Submit";
 
-const Referral = ({ type }) => {
+const Referral = ({ type, zoneCode }) => {
   let tabs = [];
   if (type === "individual") {
     tabs = [
@@ -43,7 +43,13 @@ const Referral = ({ type }) => {
     // console.log(basicDetailsResponse);
     switch (currentTab) {
       case "basic":
-        return <BasicDetails setCurrentTab={setCurrentTab} type={type} />;
+        return (
+          <BasicDetails
+            setCurrentTab={setCurrentTab}
+            type={type}
+            zoneCode={zoneCode}
+          />
+        );
       case "address":
         return <AddressDetails setCurrentTab={setCurrentTab} />;
       case "referral_id":
