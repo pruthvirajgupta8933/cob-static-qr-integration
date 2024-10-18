@@ -62,7 +62,7 @@ const UploadDocuments = () => {
         setFieldValue(`${doc_id}_loading`, false);
       });
   };
-  return (
+  return docTypeList?.length > 0 ? (
     <Formik initialValues={initialValues}>
       {({ values, setFieldValue, resetForm }) => (
         <Form>
@@ -144,6 +144,8 @@ const UploadDocuments = () => {
         </Form>
       )}
     </Formik>
+  ) : (
+    <p>Document List not found</p>
   );
 };
 export default UploadDocuments;

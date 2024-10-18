@@ -130,9 +130,14 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
     else if (
-      basicDetailsResponse?.data &&
-      !basicDetailsResponse?.data?.clientCodeCreated
+      basicDetailsResponse?.data
+      // && !basicDetailsResponse?.data?.clientCodeCreated
     ) {
+      toastConfig.successToast(
+        "Data saved successfully. Please verify the email sent"
+      );
+      setSubmitLoader(false);
+
       // createClientCode();
       // axiosInstanceAuth
       //   .put(

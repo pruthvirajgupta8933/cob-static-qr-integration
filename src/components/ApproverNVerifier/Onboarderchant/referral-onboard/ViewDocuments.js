@@ -13,7 +13,7 @@ const ViewDocuments = () => {
   useEffect(() => {
     dispatch(
       kycDocumentUploadList({
-        login_id: basicDetailsResponse.data?.loginMasterId || 11395,
+        login_id: basicDetailsResponse.data?.loginMasterId,
       })
     );
   }, []);

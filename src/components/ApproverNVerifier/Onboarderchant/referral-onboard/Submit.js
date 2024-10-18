@@ -1,15 +1,74 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
-import { clearKycState } from "../../../../slices/kycSlice";
+import { clearKycState, kycUserList } from "../../../../slices/kycSlice";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import { generateWord } from "../../../../utilities/generateClientCode";
+import API_URL from "../../../../config";
+import authService from "../../../../services/auth.service";
+import toastConfig from "../../../../utilities/toastTypes";
 
 const Submit = () => {
   const [checked, setChecked] = useState(false);
+  const [submitLoader, setSubmitLoader] = useState(false);
   const dispatch = useDispatch();
   let history = useHistory();
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse
+  );
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
+  const createClientCode = async () => {
+    const clientFullName = basicDetailsResponse?.data?.name ?? kycData?.name;
+    const clientMobileNo =
+      basicDetailsResponse?.data?.mobileNumber ?? kycData?.contactNumber;
+    const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+
+    // check client code is existing
+    let newClientCode;
+    const checkClientCode = await authService.checkClintCode({
+      client_code: arrayOfClientCode,
+    });
+    if (
+      checkClientCode?.data?.clientCode !== "" &&
+      checkClientCode?.data?.status === true
+    ) {
+      newClientCode = checkClientCode?.data?.clientCode;
+    } else {
+      newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+    }
+
+    const data = {
+      loginId:
+        basicDetailsResponse.data?.loginMasterId ?? kycData?.loginMasterId,
+      clientName: clientFullName,
+      clientCode: newClientCode,
+    };
+
+    try {
+      const clientCreated = await axiosInstanceJWT.post(
+        API_URL.AUTH_CLIENT_CREATE,
+        data
+      );
+      if (clientCreated.status === 200) {
+        setSubmitLoader(false);
+        toastConfig.successToast("Client code created");
+        dispatch(referralOnboardSlice.actions.resetBasicDetails());
+      }
+    } catch (error) {
+      // console.log("console is here")
+      setSubmitLoader(false);
+      toastConfig.errorToast(
+        error?.message?.details ||
+          "An error occurred while creating the Client Code. Please try again."
+      );
+      return;
+    }
+  };
   const handleSubmit = () => {
-    dispatch(referralOnboardSlice.actions.resetBasicDetails());
+    if (!basicDetailsResponse?.data?.clientCodeCreated && !kycData?.clientCode)
+      createClientCode();
+    else dispatch(referralOnboardSlice.actions.resetBasicDetails());
     dispatch(clearKycState());
     setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
   };
@@ -39,7 +98,7 @@ const Submit = () => {
         <div className="col-12">
           <button
             className="btn btn-sm float-lg-center cob-btn-primary text-white"
-            disabled={!checked}
+            disabled={!checked || submitLoader}
             onClick={handleSubmit}
           >
             Submit

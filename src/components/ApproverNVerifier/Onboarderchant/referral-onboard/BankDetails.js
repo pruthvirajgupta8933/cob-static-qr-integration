@@ -131,10 +131,11 @@ const BankDetails = ({ setCurrentTab }) => {
       .then((resp) => {
         if (resp?.payload?.length > 0) {
           setFieldValue("bank_id", resp?.payload[0]?.bankId);
-        }
+        } else if (resp?.payload?.message)
+          toastConfig.errorToast(resp.payload.detail);
       })
       .catch((err) => {
-        toast.error(err?.payload?.bankName ?? "Error while fetching bank");
+        toast.error(err?.payload?.detail ?? "Error while fetching bank");
       });
   };
 
@@ -198,6 +199,7 @@ const BankDetails = ({ setCurrentTab }) => {
                       onChange={(e) => {
                         setFieldValue("ifsc", e.target.value.toUpperCase());
                         setFieldValue("isIfscVerified", "");
+                        setFieldValue("bank_id", "");
                         if (e.target.value.length === 11)
                           verifyBank(e.target.value, setFieldValue);
                       }}
@@ -307,11 +309,25 @@ const BankDetails = ({ setCurrentTab }) => {
                     Bank Name
                     <span style={{ color: "red" }}>*</span>
                   </label>
-                  <FormikController
-                    control="input"
-                    name="bankName"
-                    className="form-control"
-                  />
+                  <div className="input-group">
+                    <FormikController
+                      control="input"
+                      name="bankName"
+                      className="form-control"
+                    />
+                    {values?.bank_id !== "" && (
+                      <span className="success input-group-append">
+                        <img
+                          src={verifiedIcon}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="col-sm-12 col-md-12 col-lg-6">
