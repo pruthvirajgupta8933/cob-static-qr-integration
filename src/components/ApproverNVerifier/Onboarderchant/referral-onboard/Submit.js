@@ -52,42 +52,47 @@ const Submit = () => {
         data
       );
       if (clientCreated.status === 200) {
-        setSubmitLoader(false);
         toastConfig.successToast("Client code created");
-        dispatch(referralOnboardSlice.actions.resetBasicDetails());
-        dispatch(clearKycState());
-        setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
+        return true;
       }
     } catch (error) {
       // console.log("console is here")
       setSubmitLoader(false);
       toastConfig.errorToast(
         error?.message?.details ||
-          "An error occurred while creating the Client Code. Please try again."
+        "An error occurred while creating the Client Code. Please try again."
       );
-      return;
+      return false;
     }
   };
   const handleSubmit = () => {
     setSubmitLoader(true);
-    dispatch(
-      saveKycConsent({
-        term_condition: checked,
-        login_id: basicDetailsResponse?.data?.loginMasterId,
-        submitted_by: createdBy,
-      })
-    ).then((res) => {
-      if (
-        res?.meta?.requestStatus === "fulfilled" &&
-        res?.payload?.status === true
-      ) {
-        toastConfig.successToast(res?.payload?.message);
-        createClientCode();
-      } else {
-        toastConfig.errorToast(res?.payload?.detail);
-        setSubmitLoader(false);
-      }
-    });
+    if (createClientCode()) {
+      dispatch(
+        saveKycConsent({
+          term_condition: checked,
+          login_id: basicDetailsResponse?.data?.loginMasterId,
+          submitted_by: createdBy,
+        })
+      ).then((res) => {
+        if (
+          res?.meta?.requestStatus === "fulfilled" &&
+          res?.payload?.status === true
+        ) {
+          setSubmitLoader(false);
+          toastConfig.successToast(res?.payload?.message);
+          dispatch(referralOnboardSlice.actions.resetBasicDetails());
+          dispatch(clearKycState());
+          setTimeout(
+            () => history.push("/dashboard/referral-onboarding"),
+            2000
+          );
+        } else {
+          toastConfig.errorToast(res?.payload?.detail);
+          setSubmitLoader(false);
+        }
+      });
+    }
   };
   return (
     <div

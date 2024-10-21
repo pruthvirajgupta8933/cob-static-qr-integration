@@ -54,7 +54,7 @@ function Sandbox() {
   const formDetails = [
     {
       id: 1,
-      title: "Test Credentials ( PHP )",
+      title: "Test Credentials (PHP)",
       initialValues: [
         { label: "Client Code", value: "DCRBP" },
         { label: "User Name", value: "userph.jha_3036" },
@@ -78,7 +78,7 @@ function Sandbox() {
     },
     {
       id: 3,
-      title: "Test Credentials ( OpenCart | WooCommerce)",
+      title: "Test Credentials (OpenCart | WooCommerce)",
       initialValues: [
         { label: "Client Code", value: "NITE5" },
         { label: "User Name", value: "Ish988@sp" },
@@ -90,6 +90,18 @@ function Sandbox() {
     },
     {
       id: 4,
+      title: "Test Credentials (WIX)",
+      initialValues: [
+        { label: "Client Code", value: "DEMO1" },
+        { label: "User Name", value: "spuser_2211" },
+        { label: "Password", value: "DEMO1_SP2211" },
+        { label: "Authentication Key", value: "QL0EARobZPabc8s7" },
+        { label: "Authentication IV", value: "EtjZsnCjXDwUIicC" },
+        { label: "Environment Base URL", value: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit" },
+      ],
+    },
+    {
+      id: 5,
       title: "Live Credentials",
       initialValues: [
         { label: "Client Code", value: data?.clientCode },
@@ -100,6 +112,8 @@ function Sandbox() {
         { label: "SabPaisa Domain/Environment Base URL", value: `https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion === 1 ? '?v=1' : ''}` },
       ],
     },
+
+
   ];
 
   return (
