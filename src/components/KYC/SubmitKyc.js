@@ -8,6 +8,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { generateWord } from "../../utilities/generateClientCode";
+import API_URL from "../../config";
+import authService from "../../services/auth.service";
 import {
   KYC_STATUS_APPROVED,
   KYC_STATUS_REJECTED,
@@ -27,6 +31,9 @@ function SubmitKyc(props) {
   const { user } = auth;
   const { loginId } = user;
 
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse
+  );
   const { kycUserList, compareDocListArray, KycDocUpload } = kyc;
   const { isRequireDataUploaded } = compareDocListArray;
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
@@ -49,10 +56,55 @@ function SubmitKyc(props) {
     KycDocUpload?.filter(
       (item) => toLower(item.status) === toLower(KYC_STATUS_REJECTED)
     );
+  const createClientCode = async () => {
+    const clientFullName =
+      basicDetailsResponse?.data?.name ?? kycUserList?.name;
+    const clientMobileNo =
+      basicDetailsResponse?.data?.mobileNumber ?? kycUserList?.contactNumber;
+    const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
+    // check client code is existing
+    let newClientCode;
+    const checkClientCode = await authService.checkClintCode({
+      client_code: arrayOfClientCode,
+    });
+    if (
+      checkClientCode?.data?.clientCode !== "" &&
+      checkClientCode?.data?.status === true
+    ) {
+      newClientCode = checkClientCode?.data?.clientCode;
+    } else {
+      newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+    }
+
+    const data = {
+      loginId:
+        basicDetailsResponse.data?.loginMasterId ?? kycUserList?.loginMasterId,
+      clientName: clientFullName,
+      clientCode: newClientCode,
+    };
+
+    try {
+      const clientCreated = await axiosInstanceJWT.post(
+        API_URL.AUTH_CLIENT_CREATE,
+        data
+      );
+      if (clientCreated.status === 200) {
+        toastConfig.successToast("Client code created");
+        return true;
+      }
+    } catch (error) {
+      // console.log("console is here")
+      setIsDisable(false);
+      toastConfig.errorToast(
+        error?.message?.details ||
+          "An error occurred while creating the Client Code. Please try again."
+      );
+      return false;
+    }
+  };
   const onSubmit = (value) => {
     setIsDisable(true);
-    dispatch(referralOnboardSlice.actions.resetBasicDetails());
     if (rejectedDocList?.length > 0) {
       toast.error(
         "Kindly Remove / Update the rejected document from the document list."
@@ -60,26 +112,30 @@ function SubmitKyc(props) {
       setIsDisable(false);
     } else {
       if (isRequireDataUploaded) {
-        dispatch(
-          saveKycConsent({
-            term_condition: value.term_condition,
-            login_id: merchantloginMasterId,
-            submitted_by: loginId,
-          })
-        ).then((res) => {
-          if (
-            res?.meta?.requestStatus === "fulfilled" &&
-            res?.payload?.status === true
-          ) {
-            toast.success(res?.payload?.message);
-            setIsDisable(false);
-            dispatch(UpdateModalStatus(true));
-            history.push("/dashboard");
-          } else {
-            toast.error(res?.payload?.detail);
-            setIsDisable(false);
-          }
-        });
+        const isClientCodeCreated =
+          Boolean(kycUserList?.clientCode) || createClientCode();
+        if (isClientCodeCreated)
+          dispatch(
+            saveKycConsent({
+              term_condition: value.term_condition,
+              login_id: merchantloginMasterId,
+              submitted_by: loginId,
+            })
+          ).then((res) => {
+            if (
+              res?.meta?.requestStatus === "fulfilled" &&
+              res?.payload?.status === true
+            ) {
+              toast.success(res?.payload?.message);
+              dispatch(referralOnboardSlice.actions.resetBasicDetails());
+              setIsDisable(false);
+              dispatch(UpdateModalStatus(true));
+              history.push("/dashboard");
+            } else {
+              toast.error(res?.payload?.detail);
+              setIsDisable(false);
+            }
+          });
       } else {
         toastConfig.errorToast(
           "Required Document is missing. Kindly Upload the required documents"

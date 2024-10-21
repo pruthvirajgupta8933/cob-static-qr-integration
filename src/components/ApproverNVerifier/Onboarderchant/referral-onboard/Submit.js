@@ -8,10 +8,85 @@ const Submit = () => {
   const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
   let history = useHistory();
+  const createdBy = useSelector((state) => state.auth.user?.loginId);
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse
+  );
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
+  const createClientCode = async () => {
+    const clientFullName = basicDetailsResponse?.data?.name ?? kycData?.name;
+    const clientMobileNo =
+      basicDetailsResponse?.data?.mobileNumber ?? kycData?.contactNumber;
+    const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+
+    // check client code is existing
+    let newClientCode;
+    const checkClientCode = await authService.checkClintCode({
+      client_code: arrayOfClientCode,
+    });
+    if (
+      checkClientCode?.data?.clientCode !== "" &&
+      checkClientCode?.data?.status === true
+    ) {
+      newClientCode = checkClientCode?.data?.clientCode;
+    } else {
+      newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+    }
+
+    const data = {
+      loginId:
+        basicDetailsResponse.data?.loginMasterId ?? kycData?.loginMasterId,
+      clientName: clientFullName,
+      clientCode: newClientCode,
+    };
+
+    try {
+      const clientCreated = await axiosInstanceJWT.post(
+        API_URL.AUTH_CLIENT_CREATE,
+        data
+      );
+      if (clientCreated.status === 200) {
+        toastConfig.successToast("Client code created");
+        return true;
+      }
+    } catch (error) {
+      // console.log("console is here")
+      setSubmitLoader(false);
+      toastConfig.errorToast(
+        error?.message?.details ||
+        "An error occurred while creating the Client Code. Please try again."
+      );
+      return false;
+    }
+  };
   const handleSubmit = () => {
-    dispatch(referralOnboardSlice.actions.resetBasicDetails());
-    dispatch(clearKycState());
-    setTimeout(() => history.push("/dashboard/referral-onboarding"), 2000);
+    setSubmitLoader(true);
+    if (createClientCode()) {
+      dispatch(
+        saveKycConsent({
+          term_condition: checked,
+          login_id: basicDetailsResponse?.data?.loginMasterId,
+          submitted_by: createdBy,
+        })
+      ).then((res) => {
+        if (
+          res?.meta?.requestStatus === "fulfilled" &&
+          res?.payload?.status === true
+        ) {
+          setSubmitLoader(false);
+          toastConfig.successToast(res?.payload?.message);
+          dispatch(referralOnboardSlice.actions.resetBasicDetails());
+          dispatch(clearKycState());
+          setTimeout(
+            () => history.push("/dashboard/referral-onboarding"),
+            2000
+          );
+        } else {
+          toastConfig.errorToast(res?.payload?.detail);
+          setSubmitLoader(false);
+        }
+      });
+    }
   };
   return (
     <div
