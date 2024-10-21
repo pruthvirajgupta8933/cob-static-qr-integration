@@ -30,6 +30,7 @@ import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import {
   aadhaarNumberVerification,
   dlValidation,
+  voterCardValidation,
 } from "../../slices/kycValidatorSlice";
 // import { error } from "jquery";
 
@@ -288,13 +289,32 @@ function ContactInfoKyc(props) {
     });
   };
 
-  const idProofhandler = (value) => {
-    if (value === "1" || value === "4") {
-      setIdProofInputToggle(false);
-      setIdType(value);
-    } else {
-      setIdProofInputToggle(true);
+  const voterVerificationHandler = async (voterId, setFieldVal) => {
+    setOtpLoader(true);
+    let res;
+    try {
+      res = await dispatch(voterCardValidation({ voter: voterId }));
+      setOtpLoader(false);
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        setOtpLoader(false);
+        setFieldVal("oldIdNumber", voterId);
+        setFieldVal("isIdProofVerified", 1);
+      }
+    } catch (error) {
+      toast.error(res?.payload?.message);
+      setOtpLoader(false);
     }
+  };
+  const idProofhandler = (value) => {
+    // if (value === "1" || value === "4") {
+    setIdProofInputToggle(!idProofInputToggle);
+    setIdType(value);
+    // } else {
+    //   setIdProofInputToggle(true);
+    // }
   };
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
@@ -344,6 +364,26 @@ function ContactInfoKyc(props) {
                 // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
               >
                 {aadhaarVerificationLoader ? (
+                  <span className="spinner-border spinner-border-sm">
+                    <span className="sr-only">Loading...</span>
+                  </span>
+                ) : (
+                  "Verify"
+                )}
+              </a>
+            )}
+            {idType === "3" && (
+              <a
+                href={() => false}
+                className={`btn cob-btn-primary btn-sm ${
+                  values.id_number?.length < 10 ? "disabled" : ""
+                }`}
+                onClick={() => {
+                  voterVerificationHandler(values.id_number, setFieldValue);
+                }}
+                // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+              >
+                {otpLoader ? (
                   <span className="spinner-border spinner-border-sm">
                     <span className="sr-only">Loading...</span>
                   </span>
