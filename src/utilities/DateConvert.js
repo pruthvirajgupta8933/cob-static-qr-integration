@@ -19,7 +19,8 @@ export const dateFormatBasic = (dateVal) => {
   //convert only this format 2024-10-10T12:36:30Z 
 
   let date;
-  if (dateVal === null && isNaN(date)) {
+  console.log("dateVal", dateVal)
+  if ((dateVal === null && isNaN(date)) || dateVal === 'NA') {
     date = "N/A"
   } else {
     // Extract date components
@@ -34,7 +35,7 @@ export const dateFormatBasic = (dateVal) => {
     const seconds = String(sdate?.getUTCSeconds()).padStart(2, '0');
 
     // Format the date and time
-    date = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+    date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
   return date;
