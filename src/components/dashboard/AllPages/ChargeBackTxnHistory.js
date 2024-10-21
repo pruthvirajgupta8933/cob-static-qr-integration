@@ -20,14 +20,20 @@ import moment from "moment";
 import { v4 as uuidv4 } from 'uuid';
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import Yup from "../../../_components/formik/Yup";
+import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { dateFormatBasic } from "../../../utilities/DateConvert";
 
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
-  const { auth, dashboard } = useSelector((state) => state);
+  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
   const { user } = auth;
   const { isLoadingTxnHistory } = dashboard;
+
+  const { refrerChiledList } = merchantReferralOnboardReducer
+  const clientCodeData = refrerChiledList?.resp?.results ?? []
+
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [pageSize, setPageSize] = useState(10);
@@ -51,6 +57,46 @@ const ChargeBackTxnHistory = () => {
   splitDate = splitDate.join("-");
 
 
+  // let clientMerchantDetailsList = [];
+  // if (
+  //   user &&
+  //   user?.clientMerchantDetailsList === null &&
+  //   user?.roleId !== 3 &&
+  //   user?.roleId !== 13
+  // ) {
+  //   history.push("/dashboard/profile");
+  // } else {
+  //   clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  // }
+
+
+
+  const validationSchema = Yup.object({
+    clientCode: Yup.string().required("Required"),
+    fromDate: Yup.date().required("Required"),
+    endDate: Yup.date()
+      .min(Yup.ref("fromDate"), "End date can't be before Start date")
+      .required("Required"),
+  });
+
+  const fetchData = () => {
+    const roleType = roles
+    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    if (type !== "default") {
+      let postObj = {
+        type: type,  // Set the type based on roleType
+        login_id: auth?.user?.loginId
+      }
+      dispatch(fetchChildDataList(postObj));
+    }
+
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
   let clientMerchantDetailsList = [];
   if (
     user &&
@@ -63,15 +109,45 @@ const ChargeBackTxnHistory = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
+  const clientcode_rolebased = roles.bank
+    ? "All"
+    : roles.merchant
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
+
+  const clientCode = clientcode_rolebased;
 
 
-  const validationSchema = Yup.object({
-    clientCode: Yup.string().required("Required"),
-    fromDate: Yup.date().required("Required"),
-    endDate: Yup.date()
-      .min(Yup.ref("fromDate"), "End date can't be before Start date")
-      .required("Required"),
-  });
+  let isExtraDataRequired = false;
+  let extraDataObj = {};
+  if (user.roleId === 3 || user.roleId === 13) {
+    isExtraDataRequired = true;
+    extraDataObj = { key: "All", value: "All" };
+  }
+
+  const forClientCode = true;
+
+  let fnKey, fnVal = ""
+  let clientCodeListArr = []
+  if (roles?.merchant === true) {
+    fnKey = "clientCode"
+    fnVal = "clientName"
+    clientCodeListArr = clientMerchantDetailsList
+  } else {
+    fnKey = "client_code"
+    fnVal = "name"
+    clientCodeListArr = clientCodeData
+  }
+  const clientCodeOption = convertToFormikSelectJson(
+    fnKey,
+    fnVal,
+    clientCodeListArr,
+    extraDataObj,
+    isExtraDataRequired,
+    forClientCode
+  );
+
+
 
   const initialValues = {
     clientCode: roles.merchant ? (clientMerchantDetailsList && clientMerchantDetailsList.length > 0 ? clientMerchantDetailsList[0].clientCode : "") : "",
@@ -81,14 +157,6 @@ const ChargeBackTxnHistory = () => {
     rpttype: "0",
   };
 
-  const clientCodeOption = convertToFormikSelectJson(
-    "clientCode",
-    "clientName",
-    clientMerchantDetailsList,
-    {},
-    false,
-    true
-  );
 
   useEffect(() => {
 
@@ -110,11 +178,25 @@ const ChargeBackTxnHistory = () => {
   };
 
   const onSubmitHandler = (values) => {
+
+    let strClientCode, clientCodeArrLength = "";
+    if (values.clientCode === "All") {
+      const allClientCode = [];
+      clientCodeListArr?.map((item) => {
+        allClientCode.push(item.client_code);
+      });
+      clientCodeArrLength = allClientCode.length.toString();
+      strClientCode = allClientCode.join().toString();
+    } else {
+      strClientCode = values.clientCode;
+      clientCodeArrLength = "1";
+    }
+
     const paramData = {
-      clientCode: values.clientCode,
+      clientCode: strClientCode,
       fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
       endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
-      noOfClient: values.noOfClient,
+      noOfClient: clientCodeArrLength,
       rpttype: values.rpttype,
     }
 
@@ -232,8 +314,8 @@ const ChargeBackTxnHistory = () => {
         'bank_cb_fee': item.bank_cb_fee === null ? "" : item.bank_cb_fee,
         'cb_credit_date_txn_reject': item.cb_credit_date_txn_reject === null ? "" : item.cb_credit_date_txn_reject,
         'charge_back_amount': item.charge_back_amount === null ? "" : Number.parseFloat(item.charge_back_amount),
-        'charge_back_credit_date_to_merchant': item.charge_back_credit_date_to_merchant === null ? "" : item.charge_back_credit_date_to_merchant,
-        'charge_back_date': item.charge_back_date === null ? "" : item.charge_back_date,
+        'charge_back_credit_date_to_merchant': item.charge_back_credit_date_to_merchant === null ? "" : dateFormatBasic(item.charge_back_credit_date_to_merchant),
+        'charge_back_date': item.charge_back_date === null ? "" : dateFormatBasic(item.charge_back_date),
         'charge_back_debit_amount': item.charge_back_debit_amount === null ? "" : item.charge_back_debit_amount,
         'charge_back_remarks': item.charge_back_remarks === null ? "" : item.charge_back_remarks,
         'charge_back_status': item.charge_back_status === null ? "" : item.charge_back_status,
@@ -243,7 +325,7 @@ const ChargeBackTxnHistory = () => {
         'merchant_cb_status': item.merchant_cb_status === null ? "" : item.merchant_cb_status,
         'payee_amount': item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
         'payment_mode': item.payment_mode === null ? "" : item.payment_mode,
-        'prearb_date': item.prearb_date === null ? "" : item.prearb_date,
+        'prearb_date': item.prearb_date === null ? "" : dateFormatBasic(item.prearb_date),
         'status': item.status === null ? "" : item.status,
         'txn_id': item.txn_id === null ? "" : item.txn_id
 
@@ -445,14 +527,14 @@ const ChargeBackTxnHistory = () => {
                             <td>{item.bank_cb_fee}</td>
                             <td>{item.cb_credit_date_txn_reject}</td>
                             <td>{item.charge_back_amount}</td>
-                            <td>{item.charge_back_credit_date_to_merchant}</td>
-                            <td>{item.charge_back_date}</td>
+                            <td>{dateFormatBasic(item.charge_back_credit_date_to_merchant)}</td>
+                            <td>{dateFormatBasic(item.charge_back_date)}</td>
                             <td>{Number.parseFloat(item.charge_back_debit_amount).toFixed(2)}</td>
                             <td>{item.charge_back_remarks}</td>
                             <td>{item.charge_back_status}</td>
                             <td>{item.merchant_cb_status}</td>
                             <td>{item.payment_mode}</td>
-                            <td>{item.prearb_date}</td>
+                            <td>{dateFormatBasic(item.prearb_date)}</td>
                             <td>{item.status}</td>
                           </tr>
                         );
