@@ -6,6 +6,7 @@ import {
 } from "../services/kyc-validator-service/kycValidator.service";
 import {
   bankValidatorAuth,
+  cinValidatorAuth,
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
 import API_URL from "../config";
@@ -17,7 +18,7 @@ export const panValidation = createAsyncThunk(
   "kyc/panValidation",
   async (requestParam) => {
     // console.log("check 1",requestParam)
-    const response = await kycValidatorAuth
+    const response = await bankValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
@@ -31,7 +32,7 @@ export const authPanValidationrr = createAsyncThunk(
   "kyc/authPanValidationrr",
   async (requestParam) => {
     // console.log("check 4")
-    const response = await kycValidatorAuth
+    const response = await bankValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
@@ -44,7 +45,7 @@ export const authPanValidationrr = createAsyncThunk(
 export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam) => {
-    const response = await kycValidatorAuth
+    const response = await bankValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
@@ -163,6 +164,19 @@ export const cinLookupApi = createAsyncThunk(
       console.log("message", message);
       return thunkAPI.rejectWithValue(message);
     }
+  }
+);
+
+export const cinValidation = createAsyncThunk(
+  "kyc/cinValidation",
+  async (requestParam) => {
+    const response = await cinValidatorAuth
+      .post(`${API_URL.VALIDATE_KYC}/validate-cin/`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
   }
 );
 

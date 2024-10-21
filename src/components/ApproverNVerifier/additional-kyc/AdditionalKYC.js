@@ -9,6 +9,7 @@ import KycCin from "./KycCin";
 import ValidateCredReport from "./cred-report-validate";
 import ValidateVoterCard from "./voter-card-validate";
 import ValidateDrivingLicense from "./dl-validate";
+import ValidateCIN from "./cin-validate";
 
 const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
@@ -23,6 +24,7 @@ const AdditionalKYC = () => {
     { documentType: "CRED REPORT VALIDATION", value: "8" },
     { documentType: "DRIVING LICENSE VALIDATION", value: "9" },
     { documentType: "VOTER CARD VALIDATION", value: "10" },
+    { documentType: "CIN VALIDATION(1)", value: "11" },
   ];
 
   // Helper functions
@@ -52,6 +54,8 @@ const AdditionalKYC = () => {
         return <ValidateDrivingLicense />;
       case "10":
         return <ValidateVoterCard />;
+      case "11":
+        return <ValidateCIN selectedDocType={selectedDocType} />;
       default:
         return;
     }

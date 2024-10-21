@@ -20,13 +20,19 @@ export const axiosInstance = axios.create({
 
 export const kycValidatorAuth = axios.create({
   headers: {
-    "api-key": "c2c31c4071474ec788ca3513b4935e55",
+    "api-key": "cb1c45b3ee43416884a720f02d449d8d",
   },
 });
 
 export const bankValidatorAuth = axios.create({
   headers: {
     "api-key": "cb1c45b3ee43416884a720f02d449d8d", //befisc
+  },
+});
+
+export const cinValidatorAuth = axios.create({
+  headers: {
+    "api-key": "b553fcecb9094b90804d8c954f251046",
   },
 });
 
