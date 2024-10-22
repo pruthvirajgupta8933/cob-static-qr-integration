@@ -86,12 +86,12 @@ const BusinessDetails = (props) => {
     try {
       const panDetails = {
         login_id: selectedUserData?.loginMasterId,
-        pan: selectedUserData?.panCard,
-        signatory_pan: selectedUserData?.signatoryPAN,
+        // pan: selectedUserData?.panCard,
+        // signatory_pan: selectedUserData?.signatoryPAN,
       };
 
       await dispatch(getMerchantpanData(panDetails));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const toggleCollapse = (index) => {
@@ -114,9 +114,8 @@ const BusinessDetails = (props) => {
         ? "Verified"
         : "Not Verified",
       gridClasses: "col-sm-12 col-md-6 col-lg-6",
-      inputClasses: `form-control ${
-        selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"
-      }`,
+      inputClasses: `form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"
+        }`,
     },
     {
       label: "Business PAN",
