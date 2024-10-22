@@ -114,7 +114,7 @@ function DashboardMainContent() {
   // const mendateRegId = queryParams.get("mendateRegId");
   const createAndSaveClientCode = async () => {
     if (
-      roles?.merchant && roles?.referral &&
+      (roles?.merchant || roles?.referral) &&
       user?.clientMerchantDetailsList[0]?.clientCode === null
     ) {
       const clientFullName = user?.clientContactPersonName;
