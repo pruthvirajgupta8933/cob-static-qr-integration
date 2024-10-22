@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { successTxnSummary } from "../../../slices/dashboardSlice";
 import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
-import { useRouteMatch, Redirect } from "react-router-dom";
+// import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 function TransactionSummery() {
 
     const dispatch = useDispatch();
-    const { path } = useRouteMatch();
+    // const { path } = useRouteMatch();
     const userRole = roleBasedAccess()
 
     let currentDate = new Date().toJSON().slice(0, 10);
@@ -31,9 +31,9 @@ function TransactionSummery() {
     const { isLoading, successTxnsumry } = dashboard;
     const { user } = auth;
 
-    var clientCodeArr = [];
-    var totalSuccessTxn = 0;
-    var totalAmt = 0;
+    let clientCodeArr = [];
+    let totalSuccessTxn = 0;
+    let totalAmt = 0;
 
     // dispatch action when client code change
     useEffect(() => {
@@ -61,12 +61,12 @@ function TransactionSummery() {
             clientcodelst: strClientCode,
             clientNo: clientCodeArrLength
         };
-        var DefaulttxnList = [];
+        let DefaulttxnList = [];
 
-        SetTxnList(DefaulttxnList);
-        SetShowData(DefaulttxnList);
+        // SetTxnList(DefaulttxnList);
+        // SetShowData(DefaulttxnList);
         dispatch(successTxnSummary(objParam));
-    }, [dttype, merchantReferralOnboardReducer]);
+    }, [dttype]);
 
     //make client code array
     if (
@@ -99,7 +99,7 @@ function TransactionSummery() {
     // filter api response data with client code
     useEffect(() => {
         if (successTxnsumry?.length > 0) {
-            var filterData = successTxnsumry?.filter((txnsummery) => {
+            let filterData = successTxnsumry?.filter((txnsummery) => {
                 if (clientCodeArr.includes(txnsummery.client_code)) {
                     return clientCodeArr.includes(txnsummery.client_code);
                 }

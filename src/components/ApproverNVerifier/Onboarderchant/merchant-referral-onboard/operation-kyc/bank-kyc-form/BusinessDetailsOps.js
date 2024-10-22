@@ -301,7 +301,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -374,11 +374,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                   />
 
                   {values?.pan_card !== null &&
-                  values?.pan_card !== "" &&
-                  values?.pan_card !== undefined &&
-                  !errors.hasOwnProperty("pan_card") &&
-                  !errors.hasOwnProperty("is_pan_verified") &&
-                  values?.is_pan_verified !== "" ? (
+                    values?.pan_card !== "" &&
+                    values?.pan_card !== undefined &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.is_pan_verified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -455,6 +455,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 <div className="input-group">
                   <Field
                     type="text"
+                    disabled={isEditableInput}
                     name="signatory_pan"
                     className="form-control"
                     placeholder="Enter Signatory PAN "
@@ -465,9 +466,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     }}
                   />
                   {values?.signatory_pan &&
-                  values?.isSignatoryPanVerified &&
-                  !errors.hasOwnProperty("signatory_pan") &&
-                  !errors.hasOwnProperty("prevSignatoryPan") ? (
+                    values?.isSignatoryPanVerified &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -537,6 +538,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
                 <FormikController
                   control="input"
+                  disabled={isEditableInput}
                   type="text"
                   name="address"
                   className="form-control fs-12"
@@ -550,6 +552,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
                 <FormikController
                   control="input"
+                  disabled={isEditableInput}
                   type="text"
                   name="city"
                   className="form-control fs-12"
@@ -564,6 +567,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
                 <FormikController
                   control="select"
+                  disabled={isEditableInput}
                   name="state_id"
                   options={BusinessOverview}
                   className="form-select"
@@ -576,6 +580,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
                 <FormikController
                   control="input"
+                  disabled={isEditableInput}
                   type="text"
                   name="pin_code"
                   className="form-control fs-12"
@@ -590,6 +595,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
                 <FormikController
                   control="textArea"
+                  disabled={isEditableInput}
                   type="text"
                   name="billing_label"
                   className="form-control fs-12"
@@ -653,6 +659,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                 </label>
                 <FormikController
                   control="input"
+                  disabled={isEditableInput}
                   name="company_name"
                   placeholder="Company Name"
                   className="form-control"
