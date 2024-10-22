@@ -1,12 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Link,
-  useRouteMatch,
-  useHistory
-} from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import { logout } from "../../../slices/auth";
 import { clearKycState } from "../../../slices/kycSlice";
+import { referralOnboardSlice } from "../../../slices/approver-dashboard/referral-onboard-slice";
 
 function SideNavbarNav() {
   let history = useHistory();
@@ -21,6 +18,7 @@ function SideNavbarNav() {
   const handle = () => {
     dispatch(logout());
     dispatch(clearKycState());
+    dispatch(referralOnboardSlice.actions.resetBasicDetails());
   };
 
   return (
@@ -60,8 +58,7 @@ function SideNavbarNav() {
           {roleId === 3 || roleId === 13 ? (
             <li className="calendar" role="menuitem">
               <Link to={`${url}/client-list`} className="txt-white">
-                <i className="fa fa-university" ariaHidden="true" /> Client
-                List{" "}
+                <i className="fa fa-university" ariaHidden="true" /> Client List{" "}
               </Link>
             </li>
           ) : (
@@ -79,8 +76,7 @@ function SideNavbarNav() {
               style={{ paddingLeft: "48px" }}
             >
               <Link to={`${url}/client-list`} className="txt-white">
-                <i className="fa fa-university" ariaHidden="true" /> Client
-                List{" "}
+                <i className="fa fa-university" ariaHidden="true" /> Client List{" "}
               </Link>
             </li>
           ) : (

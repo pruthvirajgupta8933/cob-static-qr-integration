@@ -6,28 +6,29 @@ import toastConfig from "../../../../utilities/toastTypes";
 import { documentsUpload, merchantInfo } from "../../../../slices/kycSlice";
 
 const UploadDocuments = () => {
-  const [docTypeList, setDocTypeList] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
-
+  const docList = useSelector((state) => state.kyc.documentsUpload);
+  const [docTypeList, setDocTypeList] = useState(docList ?? []);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      documentsUpload({
-        businessType: basicDetailsResponse?.business_cat_code,
-        is_udyam: false,
-      })
-    )
-      .then((resp) => {
-        setDocTypeList(resp?.payload);
-      })
-      .catch((err) => {
-        toastConfig.errorToast(
-          err?.message ?? "Error fetching the list of required documents"
-        );
-      });
+    if (!docList?.length > 0)
+      dispatch(
+        documentsUpload({
+          businessType: basicDetailsResponse?.business_cat_code,
+          is_udyam: false,
+        })
+      )
+        .then((resp) => {
+          setDocTypeList(resp?.payload);
+        })
+        .catch((err) => {
+          toastConfig.errorToast(
+            err?.message ?? "Error fetching the list of required documents"
+          );
+        });
   }, [dispatch]);
 
   const initialValues = {
