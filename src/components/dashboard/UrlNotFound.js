@@ -8,7 +8,7 @@ const UrlNotFound = () => {
         <h1>404</h1>
         <h4>Page not found</h4>
         <p>Oops! The page you are looking for does not exist. It might have been moved or deleted.</p>
-        <Link className='btn cob-btn-primary ' to={`/`}>Back To Home</Link>
+        <Link className='btn cob-btn-primary btn-sm' to={`/`}>Back To Home</Link>
       </div>
 
     </div>

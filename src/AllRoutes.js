@@ -64,7 +64,9 @@ function AllRoutes() {
       <Route exact path="/ViewTransactionDetails">
         <Suspense fallback={fallbackMsg} > <ViewTransactionDetails /> </Suspense>
       </Route>
-      <Route path="*" component={UrlNotFound} />
+      <Route path="*" >
+        <Suspense fallback={fallbackMsg} > <UrlNotFound /> </Suspense>
+      </Route>
     </Switch>
 
   );
