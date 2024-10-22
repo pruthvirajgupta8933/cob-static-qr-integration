@@ -185,7 +185,8 @@ function ContactInfoKyc(props) {
         email_id: values.email_id,
         modified_by: loginId,
         aadhar_number: values.id_number,
-        id_proof_type: idType,
+        // id_proof_type: idType,
+        id_proof_type: 1,
       })
     )
       .then((res) => {
