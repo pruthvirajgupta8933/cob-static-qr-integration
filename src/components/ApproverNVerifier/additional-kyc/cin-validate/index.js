@@ -84,8 +84,8 @@ const ValidateCIN = ({ selectedDocType }) => {
                   <span className="font-weight-bold mb-1">
                     {key.replace("_", " ")}:
                   </span>
-                  {typeof value === "boolean" ? (
-                    <span>{key}</span>
+                  {Array.isArray(cinData[key]) ? (
+                    <span>&nbsp; {cinData[key]?.length}</span>
                   ) : (
                     <span>&nbsp; {cinData[key].toString()}</span>
                   )}
