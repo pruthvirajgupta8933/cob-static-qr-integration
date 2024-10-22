@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { referralOnboardSlice } from "../../../../slices/approver-dashboard/referral-onboard-slice";
-import { clearKycState, saveKycConsent } from "../../../../slices/kycSlice";
+import {
+  clearKycState,
+  saveKycConsent,
+  kycUserList,
+} from "../../../../slices/kycSlice";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
@@ -19,6 +23,13 @@ const Submit = () => {
     (state) => state.referralOnboard.basicDetailsResponse
   );
   const kycData = useSelector((state) => state.kyc?.kycUserList);
+
+  useEffect(() => {
+    if (basicDetailsResponse?.data)
+      dispatch(
+        kycUserList({ login_id: basicDetailsResponse?.data.loginMasterId })
+      );
+  }, []);
   const createClientCode = async () => {
     const clientFullName = basicDetailsResponse?.data?.name ?? kycData?.name;
     const clientMobileNo =
@@ -60,14 +71,16 @@ const Submit = () => {
       setSubmitLoader(false);
       toastConfig.errorToast(
         error?.message?.details ||
-        "An error occurred while creating the Client Code. Please try again."
+          "An error occurred while creating the Client Code. Please try again."
       );
       return false;
     }
   };
   const handleSubmit = () => {
     setSubmitLoader(true);
-    if (createClientCode()) {
+    const isClientCodeCreated =
+      Boolean(kycData?.clientCode) || createClientCode();
+    if (isClientCodeCreated) {
       dispatch(
         saveKycConsent({
           term_condition: checked,

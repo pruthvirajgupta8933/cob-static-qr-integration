@@ -61,8 +61,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         : "",
     isPanVerified:
       kycData?.signatoryPAN ||
-        kycData?.panCard ||
-        basicDetailsResponse?.data?.pan_number
+      kycData?.panCard ||
+      basicDetailsResponse?.data?.pan_number
         ? 1
         : "",
   };
@@ -130,7 +130,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
     else if (
-      basicDetailsResponse?.data
+      basicDetailsResponse?.data &&
+      !kycData?.merchant_address_details
       // && !basicDetailsResponse?.data?.clientCodeCreated
     ) {
       toastConfig.successToast(
@@ -156,7 +157,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       );
       setSubmitLoader(false);
     }
-    if (basicDetailsResponse?.data)
+    if (basicDetailsResponse?.data && !kycData?.merchant_address_details)
       dispatch(
         kycUserList({ login_id: basicDetailsResponse?.data.loginMasterId })
       );
@@ -191,9 +192,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     pan:
       type === "individual"
         ? Yup.string()
-          .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-          .length(10, "Only 10 digits are allowed")
-          .required("Required")
+            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+            .length(10, "Only 10 digits are allowed")
+            .required("Required")
         : null,
     isPanVerified:
       type === "individual"
@@ -243,7 +244,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
-        "Something went wrong, Please try again"
+          "Something went wrong, Please try again"
       );
       setOtpLoader(false);
     }
@@ -264,7 +265,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
-        "Something went wrong, Please try again"
+          "Something went wrong, Please try again"
       );
       setAadhaarLoader(false);
     }
@@ -368,12 +369,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     disabled={basicDetailsResponse?.data}
                   />
                   {values?.aadhaar !== null &&
-                    values?.aadhaar !== "" &&
-                    values?.aadhaar !== undefined &&
-                    // !errors.hasOwnProperty("pan_card") &&
-                    // !errors.hasOwnProperty("is_pan_verified") &&
+                  values?.aadhaar !== "" &&
+                  values?.aadhaar !== undefined &&
+                  // !errors.hasOwnProperty("pan_card") &&
+                  // !errors.hasOwnProperty("is_pan_verified") &&
 
-                    values?.isAadhaarVerified !== "" ? (
+                  values?.isAadhaarVerified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -398,10 +399,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       ) : (
                         <a
                           href={() => false}
-                          className={`btn cob-btn-primary text-white btn btn-sm ${values.aadhaar?.length !== 12
+                          className={`btn cob-btn-primary text-white btn btn-sm ${
+                            values.aadhaar?.length !== 12
                               ? "disabled"
                               : "pe-auto"
-                            }`}
+                          }`}
                           onClick={() =>
                             sendAadharOtp({ values, setFieldValue })
                           }
@@ -442,11 +444,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                             ) : (
                               <a
                                 href={() => false}
-                                className={`btn cob-btn-primary text-white btn btn-sm ${!values.aadhar_otp ||
-                                    values.aadhar_otp.length < 6
+                                className={`btn cob-btn-primary text-white btn btn-sm ${
+                                  !values.aadhar_otp ||
+                                  values.aadhar_otp.length < 6
                                     ? "disabled"
                                     : ""
-                                  }`}
+                                }`}
                                 onClick={() =>
                                   verifyAadhar({ values, setFieldValue })
                                 }
@@ -483,12 +486,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       disabled={basicDetailsResponse?.data}
                     />
                     {values?.pan !== null &&
-                      values?.pan !== "" &&
-                      values?.pan !== undefined &&
-                      // !errors.hasOwnProperty("pan_card") &&
-                      // !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.pan !== "" &&
+                    values?.pan !== undefined &&
+                    // !errors.hasOwnProperty("pan_card") &&
+                    // !errors.hasOwnProperty("is_pan_verified") &&
 
-                      values?.isPanVerified !== "" ? (
+                    values?.isPanVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
@@ -513,8 +516,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         ) : (
                           <a
                             href={() => false}
-                            className={`btn cob-btn-primary text-white btn btn-sm ${values.pan?.length !== 10 ? "disabled" : "pe-auto"
-                              }`}
+                            className={`btn cob-btn-primary text-white btn btn-sm ${
+                              values.pan?.length !== 10 ? "disabled" : "pe-auto"
+                            }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
                             Verify
@@ -557,10 +561,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       type === "individual"
                         ? setCurrentTab("address")
                         : history.push(
-                          `kyc?kycid=${stringEnc(
-                            basicDetailsResponse.data?.loginMasterId
-                          )}`
-                        )
+                            `kyc?kycid=${stringEnc(
+                              basicDetailsResponse.data?.loginMasterId
+                            )}`
+                          )
                     }
                   >
                     Next

@@ -254,7 +254,9 @@ export const businessType = createAsyncThunk(
       });
 
     // hide other type
-    return response.data?.filter((item) => item.businessTypeId !== 11 && item.businessTypeId !== 13);
+    return response.data?.filter(
+      (item) => item.businessTypeId !== 11 && item.businessTypeId !== 13
+    );
     // return response.data;
   }
 );
@@ -504,8 +506,10 @@ export const kycForNotFilled = createAsyncThunk(
     const searchQuery = data?.searchquery;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_NOT_FILLED}&search=${data.merchantStatus
-        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_NOT_FILLED}&search=${
+          data.merchantStatus
+        }&search_query=${searchQuery}&page=${
+          searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -522,8 +526,9 @@ export const MyMerchantListData = createAsyncThunk(
     const requestParam = data?.page;
     const requestParam1 = data?.page_size;
     const searchQuery = data?.searchquery;
-    let apiUrl = `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam
-      }&page_size=${requestParam1}&order_by=-login_id`;
+    let apiUrl = `${API_URL.MY_MERCHANT_LIST}?page=${
+      searchQuery ? 1 : requestParam
+    }&page_size=${requestParam1}&order_by=-login_id`;
     // Check if kyc_status is present and not equal to 'ALL'
     if (data?.kyc_status && data.kyc_status !== "All") {
       apiUrl += `&kyc_status=${data.kyc_status}`;
@@ -550,8 +555,10 @@ export const kycForPendingMerchants = createAsyncThunk(
 
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${data.merchantStatus
-        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${
+          data.merchantStatus
+        }&search_query=${searchQuery}&page=${
+          searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -571,8 +578,10 @@ export const kycForRejectedMerchants = createAsyncThunk(
     const searchQuery = data?.searchquery;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${data.merchantStatus
-        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${
+          data.merchantStatus
+        }&search_query=${searchQuery}&page=${
+          searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`,
         {
           headers: {},
@@ -596,8 +605,10 @@ export const kycForPending = createAsyncThunk(
 
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PROCESSING}&search=${data.merchantStatus
-        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_PROCESSING}&search=${
+          data.merchantStatus
+        }&search_query=${searchQuery}&page=${
+          searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -638,8 +649,10 @@ export const kycForVerified = createAsyncThunk(
 
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus
-        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_VERIFIED}&search=${
+          data.merchantStatus
+        }&search_query=${searchQuery}&page=${
+          searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -691,8 +704,10 @@ export const kycForApproved = createAsyncThunk(
     // console.log("isDirect",isDirect)
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus
-        }&search_query=${searchquery}&page=${searchquery ? 1 : requestParam
+        `${API_URL.KYC_FOR_APPROVED}&search=${
+          data.merchantStatus
+        }&search_query=${searchquery}&page=${
+          searchquery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -1301,6 +1316,9 @@ export const kycSlice = createSlice({
       })
       .addCase(getKycIDList.rejected, (state) => {
         state.kycIdList = [];
+      })
+      .addCase(documentsUpload.fulfilled, (state, action) => {
+        state.documentsUpload = action.payload;
       });
   },
 });

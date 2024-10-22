@@ -125,7 +125,7 @@ export const referralOnboardSlice = createSlice({
       .addCase(saveBasicDetails.rejected, (state, action) => {
         state.basicDetailsResponse = {
           error: true,
-          message: action.payload.message,
+          message: action.payload || action.payload.message,
         };
       });
   },
