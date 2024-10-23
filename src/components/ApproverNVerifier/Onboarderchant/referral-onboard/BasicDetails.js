@@ -81,50 +81,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     dispatch(getKycIDList());
   }, []);
   useEffect(() => {
-    const createClientCode = async () => {
-      const clientFullName = basicDetailsResponse?.data?.name;
-      const clientMobileNo = basicDetailsResponse?.data?.mobileNumber;
-      const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
-
-      // check client code is existing
-      let newClientCode;
-      const checkClientCode = await authService.checkClintCode({
-        client_code: arrayOfClientCode,
-      });
-      if (
-        checkClientCode?.data?.clientCode !== "" &&
-        checkClientCode?.data?.status === true
-      ) {
-        newClientCode = checkClientCode?.data?.clientCode;
-      } else {
-        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-      }
-
-      const data = {
-        loginId: basicDetailsResponse.data?.loginMasterId,
-        clientName: clientFullName,
-        clientCode: newClientCode,
-      };
-
-      try {
-        const clientCreated = await axiosInstanceJWT.post(
-          API_URL.AUTH_CLIENT_CREATE,
-          data
-        );
-        if (clientCreated.status === 200) {
-          setSubmitLoader(false);
-          toastConfig.successToast("Client code created");
-          dispatch(referralOnboardSlice.actions.updateBasicDetails());
-        }
-      } catch (error) {
-        // console.log("console is here")
-        setSubmitLoader(false);
-        toast.error(
-          "An error occurred while creating the Client Code. Please try again."
-        );
-        return;
-      }
-    };
     // const data = {
     //   loginId: 11477,
     //   clientName: "test ri",
@@ -145,7 +101,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
     else if (
       basicDetailsResponse?.data &&
-      !kycData?.merchant_address_details
+      !kycData?.isEmailVerified
       // && !basicDetailsResponse?.data?.clientCodeCreated
     ) {
       toastConfig.successToast(
@@ -382,12 +338,14 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
           name="id_number"
           autoComplete="off"
           className="form-control"
-          placeholder="Enter ID Proof Number"
+          placeholder={
+            idType ? "Enter ID Proof Number" : "Please select ID type"
+          }
           onChange={(e) => {
             setFieldValue("id_number", e.target.value);
             setFieldValue("isIdProofVerified", "");
           }}
-          // disabled={VerifyKycStatus === "Verified" ? true : false}
+          disabled={!idType}
         />
 
         {values.id_number && values.isIdProofVerified ? (

@@ -72,22 +72,29 @@ const Referral = ({ type, zoneCode }) => {
     <section className="container-fluid">
       <div className="row">
         {basicDetailsResponse && (
-          <div className="d-flex bg-light justify-content-between px-0 my-2">
-            <div>
-              <p className="p-2 m-0">
-                Session Start : {basicDetailsResponse?.name}
-              </p>
-              <p className="p-2 m-0">
-                KYC Status : {basicDetailsResponse?.status}
-              </p>
+          <>
+            <div className="d-flex bg-light justify-content-between px-0 my-2">
+              <div>
+                <p className="p-2 m-0">
+                  Session Start : {basicDetailsResponse?.name}
+                </p>
+                <p className="p-2 m-0">
+                  KYC Status : {basicDetailsResponse?.status}
+                </p>
+              </div>
+              <div>
+                <p className="p-2 m-0">
+                  Merchant Onboard Login ID :{" "}
+                  {basicDetailsResponse?.loginMasterId}
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="p-2 m-0">
-                Merchant Onboard Login ID :{" "}
-                {basicDetailsResponse?.loginMasterId}
-              </p>
-            </div>
-          </div>
+            <p>
+              Important Note: A verification link has been sent to the
+              registered email associated with your merchant account. Please
+              verify the link to proceed to the next step.
+            </p>
+          </>
         )}
         <div className="col-2 bg-light p-1">
           <div
