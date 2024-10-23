@@ -89,7 +89,7 @@ function Sandbox() {
       ],
     },
     {
-      id: 4,
+      id: 100,
       title: "Test Credentials (WIX)",
       initialValues: [
         { label: "Client Code", value: "DEMO1" },
@@ -101,7 +101,7 @@ function Sandbox() {
       ],
     },
     {
-      id: 5,
+      id: 4,
       title: "Live Credentials",
       initialValues: [
         { label: "Client Code", value: data?.clientCode },
