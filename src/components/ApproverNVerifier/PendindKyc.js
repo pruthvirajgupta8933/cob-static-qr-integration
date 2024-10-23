@@ -121,9 +121,15 @@ const PendindKyc = () => {
       selector: (row) => row.zoneName,
     },
     {
-      id: "9",
-      name: "Onboard Type",
+      id: "16",
+      name: "Source",
       selector: (row) => row.isDirect,
+    },
+    {
+      id: "17",
+      name: "Onboard Type",
+      width: "150px",
+      selector: (row) => row.onboard_type,
     },
     {
       id: "10",
@@ -306,7 +312,7 @@ const PendindKyc = () => {
 
       <div>
         <div className="scroll overflow-auto">
-          {dataCount===undefined ?"" :<h6>Total Count : {dataCount}</h6>}
+          {dataCount === undefined ? "" : <h6>Total Count : {dataCount}</h6>}
           {!loadingState && data?.length !== 0 && (
             <Table
               row={PendindKycRowData}

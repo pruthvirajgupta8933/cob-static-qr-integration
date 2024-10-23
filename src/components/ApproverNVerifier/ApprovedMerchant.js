@@ -144,9 +144,15 @@ function ApprovedMerchant() {
     },
 
     {
-      id: "12",
-      name: "Onboard Type",
+      id: "25",
+      name: "Source",
       selector: (row) => row.isDirect,
+    },
+    {
+      id: "26",
+      name: "Onboard Type",
+      width: "150px",
+      selector: (row) => row.onboard_type,
     },
     {
       id: "13",

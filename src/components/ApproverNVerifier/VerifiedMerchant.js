@@ -131,9 +131,15 @@ function VerifiedMerchant() {
       width: "150px",
     },
     {
-      id: "11",
-      name: "Onboard Type",
+      id: "25",
+      name: "Source",
       selector: (row) => row.isDirect,
+    },
+    {
+      id: "26",
+      name: "Onboard Type",
+      width: "150px",
+      selector: (row) => row.onboard_type,
     },
     {
       id: "12",

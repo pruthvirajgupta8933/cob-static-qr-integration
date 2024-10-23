@@ -71,8 +71,13 @@ export const NotFilledKYCData = [
   },
   {
     id: "8",
-    name: "Onboard Type",
+    name: "Source",
     selector: (row) => row.isDirect,
+  },
+  {
+    id: "9",
+    name: "Onboard Type",
+    selector: (row) => row.onboard_type,
   },
 
   {
