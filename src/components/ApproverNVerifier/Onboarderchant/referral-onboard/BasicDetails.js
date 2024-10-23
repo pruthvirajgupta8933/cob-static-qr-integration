@@ -355,7 +355,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
             setFieldValue("id_number", e.target.value);
             setFieldValue("isIdProofVerified", "");
           }}
-          disabled={!idType}
+          disabled={!idType || kycData?.id_proof_type}
         />
 
         {values.id_number && values.isIdProofVerified ? (
