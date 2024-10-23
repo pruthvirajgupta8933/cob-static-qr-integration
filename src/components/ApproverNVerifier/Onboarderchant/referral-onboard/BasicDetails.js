@@ -9,19 +9,21 @@ import {
   Regex,
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
-import {
-  axiosInstanceJWT,
-  axiosInstanceAuth,
-} from "../../../../utilities/axiosInstance";
+import AadhaarVerficationModal from "../../../KYC/OtpVerificationKYC/AadhaarVerficationModal";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
 import authService from "../../../../services/auth.service";
-import { kycUserList } from "../../../../slices/kycSlice";
+import { kycUserList, getKycIDList } from "../../../../slices/kycSlice";
 import {
   saveBasicDetails,
   referralOnboardSlice,
 } from "../../../../slices/approver-dashboard/referral-onboard-slice";
-import { authPanValidation } from "../../../../slices/kycValidatorSlice";
+import {
+  authPanValidation,
+  dlValidation,
+  voterCardValidation,
+} from "../../../../slices/kycValidatorSlice";
 import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
 import toastConfig from "../../../../utilities/toastTypes";
 import verifiedIcon from "../../../../assets/images/verified.png";
@@ -30,12 +32,20 @@ import { stringEnc } from "../../../../utilities/encodeDecode";
 
 const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
-  const [otpBox, showOtpBox] = useState(false);
   const [panLoader, setPanLoader] = useState(false);
-  const [otpLoader, setOtpLoader] = useState(false);
-  const [aadhaarLoader, setAadhaarLoader] = useState(false);
+  const [idProofLoader, setIdProofLoader] = useState(false);
+  const [selectedIdProofName, setSelectedIdProofName] = useState("");
+  const [idProofInputToggle, setIdProofInputToggle] = useState(true);
+  const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
+    useState(false);
+  const [idType, setIdType] = useState();
+  const [dlDobToggle, setDlDobToggle] = useState(false);
+  const [dlLoader, setDlLoader] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const proofIdList = useSelector((state) => state.kyc.kycIdList);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
@@ -53,9 +63,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       kycData?.panCard ??
       basicDetailsResponse?.data?.pan_card ??
       "",
-    aadhaar:
+    id_proof:
       kycData?.aadharNumber ?? basicDetailsResponse?.data?.aadhar_number ?? "",
-    isAadhaarVerified:
+    isIdProofVerified:
       kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
         ? 1
         : "",
@@ -66,6 +76,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         ? 1
         : "",
   };
+
+  useEffect(() => {
+    dispatch(getKycIDList());
+  }, []);
   useEffect(() => {
     const createClientCode = async () => {
       const clientFullName = basicDetailsResponse?.data?.name;
@@ -162,6 +176,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         kycUserList({ login_id: basicDetailsResponse?.data.loginMasterId })
       );
   }, [basicDetailsResponse]);
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .allowOneSpace()
@@ -184,11 +199,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     password: Yup.string()
       .matches(Regex.password, RegexMsg.password)
       .required("Required"),
-    aadhaar: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .length(12, "Only 12 digits are allowed")
-      .required("Required"),
-    // isAadhaarVerified: Yup.boolean().required("Please verify aadhaar"),
+    // aadhaar: Yup.string()
+    //   .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+    //   .length(12, "Only 12 digits are allowed")
+    //   .required("Required"),
+    isIdProofVerified: Yup.boolean().required("Please verify id proof"),
     pan:
       type === "individual"
         ? Yup.string()
@@ -201,6 +216,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         ? Yup.boolean().required("Please verify PAN")
         : null,
   });
+
+  const idProofhandler = (value) => {
+    setIdProofInputToggle(!idProofInputToggle);
+    setIdType(value);
+  };
 
   const verifyPan = async (pan, setFieldValue) => {
     if (pan?.length !== 10) return;
@@ -227,49 +247,47 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       setPanLoader(false);
     }
   };
+
   const sendAadharOtp = async ({ values, setFieldValue }) => {
-    if (values.aadhaar?.length !== 12) return;
-    setOtpLoader(true);
+    setIdProofLoader(true);
     try {
       const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, {
-        aadhar_number: values.aadhaar,
+        aadhar_number: values.id_number,
       });
       if (resp.data.status) {
-        showOtpBox(true);
-        setOtpLoader(false);
+        setIdProofLoader(false);
+        setAadhaarNumberVerifyToggle(true);
         setFieldValue("otp_ref_id", resp.data.referenceId);
       } else {
-        setOtpLoader(true);
+        setIdProofLoader(false);
       }
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
           "Something went wrong, Please try again"
       );
-      setOtpLoader(false);
+      setIdProofLoader(false);
     }
   };
-  const verifyAadhar = async ({ values, setFieldValue }) => {
-    setAadhaarLoader(true);
+
+  const voterVerificationHandler = async (voterId, setFieldVal) => {
+    setIdProofLoader(true);
+    let res;
     try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, {
-        referenceId: values?.otp_ref_id,
-        otp: values.aadhar_otp,
-      });
-      if (resp.data?.valid && resp.data?.status) {
-        setFieldValue("isAadhaarVerified", 1);
+      res = await dispatch(voterCardValidation({ voter: voterId }));
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        setIdProofLoader(false);
+        setFieldVal("isIdProofVerified", 1);
       }
-      toastConfig.successToast(resp?.data?.message);
-      showOtpBox(false);
-      setAadhaarLoader(false);
     } catch (error) {
-      toastConfig.errorToast(
-        error?.response?.data?.message ??
-          "Something went wrong, Please try again"
-      );
-      setAadhaarLoader(false);
+      toast.error(res?.payload?.message);
+      setIdProofLoader(false);
     }
   };
+
   const handleSubmit = async (values) => {
     const postData = {
       name: values.name,
@@ -280,12 +298,162 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       password: values.password,
       pan_card: values.pan,
       name_on_pan_card: values.panName,
-      aadhar_number: values.aadhaar,
+      aadhar_number: values.id_number,
       onboard_type:
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
-      id_proof_type: 1,
+      id_proof_type: idType,
     };
     dispatch(saveBasicDetails(postData));
+  };
+
+  const handleDlVerification = async ({ values, setFieldValue }) => {
+    setDlLoader(true);
+
+    const res = await dispatch(
+      dlValidation({
+        dl_number: values.id_number,
+        date_of_birth: values.dob.split("-").reverse().join("-"), //format required for sending to call
+      })
+    );
+    if (
+      res.meta?.requestStatus === "fulfilled" &&
+      !res.payload?.status &&
+      !res.payload?.valid
+    ) {
+      toastConfig.errorToast(
+        res?.payload?.message || "Something went wrong. Please try again"
+      );
+    } else if (res.payload?.status && res.payload?.valid) {
+      setFieldValue("isIdProofVerified", 1);
+      setDlDobToggle(false);
+    }
+    setDlLoader(false);
+  };
+
+  const renderDobModal = ({ values, setFieldValue }) => {
+    return (
+      <>
+        <label className="col-form-label mx-auto w-100 p-2 text-center">
+          Please enter your Date Of Birth
+        </label>
+        <div className="input-group mb-3 text-center mx-auto w-50">
+          <Field
+            type="date"
+            className="form-control dob-input-kyc w-50"
+            name="dob"
+            onChange={(e) => setFieldValue("dob", e.target.value)}
+            placeholder="Enter DOB"
+            required={true}
+            disabled={dlLoader}
+          />
+          <button
+            className="btn btn cob-btn-primary btn-sm"
+            type="button"
+            onClick={() => handleDlVerification({ values, setFieldValue })}
+          >
+            {dlLoader ? (
+              <span className="spinner-border spinner-border-sm" role="status">
+                <span className="sr-only">Loading...</span>
+              </span>
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
+      </>
+    );
+  };
+
+  const renderInputField = ({ values, errors, setFieldValue }) => {
+    let disableClass = false;
+    if (idType === "1") {
+      if (values.id_number?.length < 12 || idProofLoader || errors?.id_number)
+        disableClass = true;
+    } else if (idType === "3") {
+      if (values.id_number?.length < 10) disableClass = true;
+    } else if (idType === "4") {
+      if (values.id_number?.length < 14 || errors?.id_number)
+        disableClass = true;
+    }
+    return (
+      <>
+        <Field
+          type="text"
+          name="id_number"
+          autoComplete="off"
+          className="form-control"
+          placeholder="Enter ID Proof Number"
+          onChange={(e) => {
+            setFieldValue("id_number", e.target.value);
+            setFieldValue("isIdProofVerified", "");
+          }}
+          // disabled={VerifyKycStatus === "Verified" ? true : false}
+        />
+
+        {values.id_number && values.isIdProofVerified ? (
+          <span className="success input-group-append">
+            <img
+              src={verifiedIcon}
+              alt=""
+              title=""
+              width={"20px"}
+              height={"20px"}
+              className="btn-outline-secondary"
+            />
+          </span>
+        ) : (
+          <div className="input-group-append">
+            <a
+              href={() => false}
+              className={`btn cob-btn-primary btn-sm ${
+                disableClass ? "disabled" : ""
+              }`}
+              onClick={() =>
+                idType === "1"
+                  ? sendAadharOtp({ values, setFieldValue })
+                  : idType === "3"
+                  ? voterVerificationHandler(values.id_number, setFieldValue)
+                  : idType === "4"
+                  ? setDlDobToggle(true)
+                  : {}
+              }
+              // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+            >
+              {idProofLoader ? (
+                <span className="spinner-border spinner-border-sm">
+                  <span className="sr-only">Loading...</span>
+                </span>
+              ) : (
+                "Verify"
+              )}
+            </a>
+          </div>
+        )}
+        {aadhaarNumberVerifyToggle && (
+          <AadhaarVerficationModal
+            formikFields={{
+              values,
+              errors,
+              setFieldValue,
+            }}
+            isOpen={aadhaarNumberVerifyToggle}
+            toggle={setAadhaarNumberVerifyToggle}
+            resendOtp={(values, setFieldValue) =>
+              sendAadharOtp({ values, setFieldValue })
+            }
+          />
+        )}
+        {dlDobToggle && (
+          <CustomModal
+            modalToggle={dlDobToggle}
+            headerTitle={"Driving License Verification"}
+            modalBody={() => renderDobModal({ values, setFieldValue })}
+            modalSize="modal-md"
+            fnSetModalToggle={() => setDlDobToggle(false)}
+          />
+        )}
+      </>
+    );
   };
   return (
     <div
@@ -300,7 +468,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({ values, setFieldValue, isValid }) => (
+        {({ values, errors, setFieldValue, isValid }) => (
           <Form autoComplete="off">
             <div className="row g-3">
               <div className="col-md-6">
@@ -354,7 +522,49 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                 />
               </div>
               <div className="col-md-6">
-                <label className="col-form-label mb-2 lh-sm">
+                <label className="d-flex justify-content-between col-form-label">
+                  <span>
+                    ID Proof ({selectedIdProofName})
+                    <span className="text-danger"> *</span>
+                  </span>
+                  <span
+                    className="text-decoration-underline text-primary cursor_pointer"
+                    onClick={() => setIdProofInputToggle((prev) => !prev)}
+                  >
+                    Select ID Proof
+                  </span>
+                </label>
+
+                <div className="input-group">
+                  {idProofInputToggle ? (
+                    <select
+                      className="form-select"
+                      onChange={(e) => {
+                        idProofhandler(e.target.value);
+                        setFieldValue("id_number", "");
+                        setFieldValue("id_proof_type", e.target.value);
+                        setSelectedIdProofName(
+                          e.target[e.target.selectedIndex].text
+                        );
+                      }}
+                      // disabled={VerifyKycStatus === "Verified" ? true : false}
+                    >
+                      <option value="">Select ID Proof</option>
+                      {proofIdList.data?.map((item) => {
+                        if (item.is_active)
+                          return (
+                            <option value={item.id} dataRel={item.id_type}>
+                              {item.id_type}
+                            </option>
+                          );
+                        return <></>;
+                      })}
+                    </select>
+                  ) : (
+                    renderInputField({ values, errors, setFieldValue })
+                  )}
+                </div>
+                {/* <label className="col-form-label mb-2 lh-sm">
                   Aadhaar<span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
@@ -466,11 +676,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                     headerTitle={"Aadhaar Verification"}
                     fnSetModalToggle={() => showOtpBox(false)}
                   />
-                )}
+                )} */}
               </div>
               {type === "individual" && (
                 <div className="col-md-6">
-                  <label className="col-form-label mb-2 lh-sm">
+                  <label className="col-form-label d-flex">
                     PAN<span style={{ color: "red" }}>*</span>
                   </label>
                   <div className="input-group">
