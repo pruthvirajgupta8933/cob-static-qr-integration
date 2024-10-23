@@ -782,7 +782,7 @@ const TransactionHistory = () => {
                                     {txnList.length > 0 &&
                                         paginatedata.map((item, i) => {
                                             return (
-                                                <tr key={uuidv4()}>
+                                                <tr key={uuidv4()} className="cursor_pointer">
                                                     <td className="text-center">
                                                         {(item?.status?.toLocaleLowerCase() === "success" || item?.status?.toLocaleLowerCase() === "settled") && <input
                                                             name="refund_request"

@@ -38,8 +38,8 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
     };
 
     return (
-        <div className={`modal fade mymodals show d-flex justify-content-end ${classes.z_index_99999}`}>
-            <div className={`modal-dialog modal-xl m-0 `} >
+        <div className={`modal fade mymodals show d-flex justify-content-end ${classes.z_index_99999}`} data-bs-backdrop="true" data-bs-keyboard="true" tabIndex="-1" onClick={() => fnSetModalToggle(false)}>
+            <div className={`modal-dialog modal-xl m-0 `} onClick={(e) => e.stopPropagation()} >
                 <div className="modal-content rounded-0">
                     <div className="modal-header">
                         <h1 className="modal-title fs-5 border-start border-5 ps-2">Sabpaisa Transaction ID : <span className='text-primary'>{transactionData.txn_id}</span></h1>

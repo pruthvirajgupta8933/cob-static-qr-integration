@@ -28,12 +28,27 @@ const TransactionEnquirey = React.memo(() => {
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   const roles = roleBasedAccess();
   const { user } = auth;
+  const [placeholder, setPlaceholder] = useState("Enter SabPaisa Transaction ID");
 
   const validationSchema = Yup.object().shape({
     transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required").allowOneSpace(),
     transaction_from: Yup.string().nullable().required("Required").allowOneSpace(),
     clientCode: Yup.string().nullable().required("Required").allowOneSpace(),
   });
+  const handleSearchByChange = (formik) => (e) => {
+    const value = e.target.value;
+    formik.setFieldValue("transaction_from", value);
+    formik.setFieldValue("transaction_id", "");
+
+    // Update placeholder dynamically
+    if (value === "1") {
+      setPlaceholder("Enter SabPaisa Transaction ID");
+    } else if (value === "2") {
+      setPlaceholder("Enter Client Transaction ID");
+    } else {
+      setPlaceholder("Enter SabPaisa Transaction ID");
+    }
+  };
 
 
 
@@ -155,7 +170,7 @@ const TransactionEnquirey = React.memo(() => {
       <main className="">
         <h5 className="">Transaction Enquiry</h5>
         <section className="">
-          <div className="container-fluid p-0">
+          <div className="card p-4">
             <div className="row">
               <Formik
                 initialValues={initialValues}
@@ -165,12 +180,12 @@ const TransactionEnquirey = React.memo(() => {
                 {(formik) => (
                   <Form>
                     <div className="form-row mt-4">
-                      <div className="form-group col-lg-2">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-select rounded-0 mt-0"
+                          className="form-select  mt-0"
                           options={clientCodeOption}
                         />
                       </div>
@@ -179,16 +194,59 @@ const TransactionEnquirey = React.memo(() => {
                           control="select"
                           label="Search By"
                           name="transaction_from"
-                          className="form-select rounded-0 mt-0"
-                          onChange={(e) => {
-                            formik.setFieldValue("transaction_from", e.target.value);
-                            formik.setFieldValue("transaction_id", "");
-                          }}
+                          className="form-select  mt-0"
+                          onChange={handleSearchByChange(formik)}
                           options={txnOption}
                         />
                       </div>
+                      <div className="form-group col-md-12 col-sm-12 col-lg-3">
+                        <FormikController
+                          control="input"
+                          label="Transaction ID"
+                          name="transaction_id"
+                          placeholder={placeholder}
+                          className="form-control"
+                        />
+
+
+                      </div>
+                      <div className="form-group col-md-12 col-sm-12 col-lg-3" >
+                        <button
+                          disabled={state.disable}
+                          className="btn btn-sm text-white cob-btn-primary mt-4"
+                          type="submit"
+                        >
+                          {state.disable && (
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                          )}
+                          View
+                        </button>
+
+
+                      </div>
                     </div>
-                    <div className="form-row mt-3">
+                    {state.show && state.printData.length > 0 && (
+                      <div className=" row ">
+                        {/* <hr></hr> */}
+                        <div className="border-bottom mt-2"></div>
+
+
+                        <div className="col-auto ms-auto">
+                          <button
+                            Value="click"
+                            onClick={onClick}
+                            className="btn cob-btn-primary text-white mt-4 ml-3 btn-sm"
+                          >
+                            <i className="fa fa-print" ariaHidden="true"></i> Print
+                          </button>
+                        </div>
+
+                      </div>)}
+
+
+
+
+                    {/* <div className="form-row mt-3">
                       <div className="form-group col-md-12 col-sm-12 col-lg-5">
                         <FormikController
                           control="input"
@@ -198,6 +256,7 @@ const TransactionEnquirey = React.memo(() => {
                           placeholder="Enter Transaction ID"
                           className="form-control"
                         />
+
                         <button
                           disabled={state.disable}
                           className="btn btn-sm text-white cob-btn-primary mt-4"
@@ -218,29 +277,26 @@ const TransactionEnquirey = React.memo(() => {
                           </button>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                   </Form>
                 )}
               </Formik>
               <CustomLoader loadingState={state.loadingState} />
               {!state.loadingState && state.show && state.printData.length > 0 && (
-                <div className="overflow-auto col-lg-12 mb-5 border">
-                  <div className="container-fluid">
-                    <div className="row">
-                      {state.printData.map((datas, key) => (
-                        <div className="col-4 p-2" key={datas.key.toString()}>
-                          <p>
-                            <span className="font-weight-bold"> {datas.key}: </span>
-                            <span className="large_content_wrap">
-                              {datas.value}
-                            </span>
-                          </p>
-                        </div>
-                      ))}
-
-                    </div>
+                <div className='mt-4 table_scrollar' style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                  <div className="table-responsive" >
+                    <table className="table ">
+                      <tbody>
+                        {state?.printData.map((item, idx) => (
+                          <tr key={idx}>
+                            <th className='table-striped background_color'>{item.key}</th>
+                            <td>{item.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <PrintDocument data={state.printData} />
                   </div>
-                  <PrintDocument data={state.printData} />
                 </div>
               )}
               {state.errMessage && (
