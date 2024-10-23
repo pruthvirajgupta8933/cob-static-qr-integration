@@ -35,10 +35,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const [panLoader, setPanLoader] = useState(false);
   const [idProofLoader, setIdProofLoader] = useState(false);
   const [selectedIdProofName, setSelectedIdProofName] = useState("");
-  const [idProofInputToggle, setIdProofInputToggle] = useState(true);
+
   const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
     useState(false);
-  const [idType, setIdType] = useState();
   const [dlDobToggle, setDlDobToggle] = useState(false);
   const [dlLoader, setDlLoader] = useState(false);
 
@@ -51,6 +50,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   );
   const createdBy = useSelector((state) => state.auth.user?.loginId);
   const kycData = useSelector((state) => state.kyc?.kycUserList);
+  const [idType, setIdType] = useState(kycData?.id_proof_type);
+  const [idProofInputToggle, setIdProofInputToggle] = useState(
+    !Boolean(kycData?.id_proof_type)
+  );
 
   const initialValues = {
     name: kycData?.name ?? basicDetailsResponse?.data?.name ?? "",
@@ -63,7 +66,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       kycData?.panCard ??
       basicDetailsResponse?.data?.pan_card ??
       "",
-    id_proof:
+    id_number:
       kycData?.aadharNumber ?? basicDetailsResponse?.data?.aadhar_number ?? "",
     isIdProofVerified:
       kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
@@ -77,6 +80,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         : "",
   };
 
+  useEffect(() => {
+    if (proofIdList.data && kycData)
+      setSelectedIdProofName(
+        proofIdList.data?.find((type) => type.id === kycData.id_proof_type)
+          ?.id_type
+      );
+  }, [kycData, proofIdList?.data]);
   useEffect(() => {
     dispatch(getKycIDList());
   }, []);
@@ -487,7 +497,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   </span>
                   <span
                     className="text-decoration-underline text-primary cursor_pointer"
-                    onClick={() => setIdProofInputToggle((prev) => !prev)}
+                    onClick={() =>
+                      !kycData?.id_proof_type &&
+                      setIdProofInputToggle((prev) => !prev)
+                    }
                   >
                     Select ID Proof
                   </span>
@@ -505,7 +518,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                           e.target[e.target.selectedIndex].text
                         );
                       }}
-                      // disabled={VerifyKycStatus === "Verified" ? true : false}
                     >
                       <option value="">Select ID Proof</option>
                       {proofIdList.data?.map((item) => {
