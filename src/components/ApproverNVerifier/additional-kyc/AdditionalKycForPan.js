@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { authPanValidation } from "../../../slices/kycValidatorSlice";
+import toastConfig from "../../../utilities/toastTypes";
 
 const AdditionalKycForPan = ({ selectedDocType }) => {
   const [initialValuesForPAN, setInitialValuesForPAN] = useState({
@@ -27,7 +28,7 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
       setButtonDisable(false);
       setShowPanInfo(res?.payload);
       setIsLoading(false);
-
+      console.log("res", res)
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -35,9 +36,10 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
       ) {
         setPanStatus(res.payload.status);
       } else {
-        toast.error(res?.payload?.message);
+        toastConfig.errorToast(res?.payload);
       }
     } catch (error) {
+      toastConfig.errorToast("Something went wrong");
       setButtonDisable(false);
       setIsLoading(false);
     }

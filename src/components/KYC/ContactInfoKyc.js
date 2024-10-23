@@ -71,15 +71,13 @@ function ContactInfoKyc(props) {
     email_id: KycList?.emailId,
 
     // ID proof verification
-    // id_proof_type: KycList?.id_proof_type ?? 1,
-    id_proof_type: 1,
+    id_proof_type: KycList?.id_proof_type ?? 1,
     id_number: KycList?.aadharNumber,
     oldIdNumber: KycList?.aadharNumber,
     aadhaarOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
-    // isIdProofVerified: KycList?.aadharNumber ? 1 : "",
-    isIdProofVerified: 1,
+    isIdProofVerified: KycList?.aadharNumber ? 1 : "",
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
@@ -185,8 +183,7 @@ function ContactInfoKyc(props) {
         email_id: values.email_id,
         modified_by: loginId,
         aadhar_number: values.id_number,
-        // id_proof_type: idType,
-        id_proof_type: 1,
+        id_proof_type: idType
       })
     )
       .then((res) => {
@@ -331,12 +328,12 @@ function ContactInfoKyc(props) {
           placeholder="Enter ID Proof Number"
           onChange={(e) => {
             setFieldValue("id_number", e.target.value);
-            // setFieldValue("isIdProofVerified", "");
+            setFieldValue("isIdProofVerified", "");
           }}
           disabled={VerifyKycStatus === "Verified" ? true : false}
         />
 
-        {/* {values.oldIdNumber &&
+        {values.oldIdNumber &&
           values.id_number &&
           values.oldIdNumber === values.id_number ? (
           <span className="success input-group-append">
@@ -408,7 +405,7 @@ function ContactInfoKyc(props) {
               </a>
             )}
           </div>
-        )} */}
+        )}
       </>
     );
   };
@@ -521,20 +518,19 @@ function ContactInfoKyc(props) {
                 <label className="d-flex justify-content-between col-form-label mt-0 p-2">
                   <span>
                     ID Proof
-                    {/* ({selectedIdProofName}) */}
+                    ({selectedIdProofName})
                     <span className="text-danger"> *</span>
                   </span>
-                  {/* <span
+                  <span
                     className="text-decoration-underline text-primary cursor_pointer"
                     onClick={() => setIdProofInputToggle((prev) => !prev)}
                   >
                     Select ID Proof
-                  </span> */}
+                  </span>
                 </label>
 
                 <div className="input-group">
-                  {/* {idProofInputToggle ? ( */}
-                  {false ? (
+                  {idProofInputToggle ? (
                     <select
                       className="form-select"
                       onChange={(e) => {
@@ -567,9 +563,9 @@ function ContactInfoKyc(props) {
                 {errors?.id_number && (
                   <p className="text-danger m-0">{errors?.id_number}</p>
                 )}
-                {/* {errors?.isIdProofVerified && (
+                {errors?.isIdProofVerified && (
                   <p className="text-danger m-0">{errors?.isIdProofVerified}</p>
-                )} */}
+                )}
                 {errors?.oldIdNumber && (
                   <p className="text-danger m-0">{errors?.oldIdNumber}</p>
                 )}

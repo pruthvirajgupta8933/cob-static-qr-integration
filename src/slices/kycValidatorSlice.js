@@ -28,31 +28,28 @@ export const panValidation = createAsyncThunk(
   }
 );
 
-export const authPanValidationrr = createAsyncThunk(
-  "kyc/authPanValidationrr",
-  async (requestParam) => {
-    // console.log("check 4")
-    const response = await bankValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
 
-    return response.data;
-  }
-);
 
 export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
-  async (requestParam) => {
-    const response = await bankValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
-
-    return response.data;
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await bankValidatorAuth.post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      console.log("message", message);
+      return thunkAPI.rejectWithValue(message);
+    }
   }
+
 );
 
 export const gstValidation = createAsyncThunk(
