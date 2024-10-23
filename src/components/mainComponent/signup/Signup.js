@@ -455,7 +455,7 @@ function Signup() {
                                     </div>
 
                                     <div className="text-center my-5">
-                                        <p className={`${classes.sp_font_20} `}>Already have an account with SabPaisa?  <Link
+                                        <p className={`${classes.sp_font_18} `}>Already have an account with SabPaisa?  <Link
                                             to={`/login/${queryStringUrl}`}
                                             className="text-primary text-decoration-underline pb-2"
                                         >

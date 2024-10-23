@@ -217,7 +217,7 @@ const Login = () => {
                   <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                 </div>
                 <div className="text-center my-5">
-                  <p className={`${classes.sp_font_20}`}>
+                  <p className={`${classes.sp_font_18}`}>
                     Don’t have an account with SabPaisa?
                     <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a>
                   </p>
