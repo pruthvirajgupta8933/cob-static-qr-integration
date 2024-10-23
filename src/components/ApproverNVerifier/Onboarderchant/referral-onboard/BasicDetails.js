@@ -86,6 +86,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         proofIdList.data?.find((type) => type.id === kycData.id_proof_type)
           ?.id_type
       );
+    setIdProofInputToggle(!Boolean(kycData?.id_proof_type));
   }, [kycData, proofIdList?.data]);
   useEffect(() => {
     dispatch(getKycIDList());
@@ -139,7 +140,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     }
     if (basicDetailsResponse?.data && !kycData?.merchant_address_details)
       dispatch(
-        kycUserList({ login_id: basicDetailsResponse?.data.loginMasterId })
+        kycUserList({
+          login_id: basicDetailsResponse?.data.loginMasterId,
+        })
       );
   }, [basicDetailsResponse]);
 
@@ -333,6 +336,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
   const renderInputField = ({ values, errors, setFieldValue }) => {
     let disableClass = false;
     if (idType === "1") {
+      //{"name":"NEHA SINHA","loginMasterId":11522,"business_cat_code":"13","status":"Pending","isOnboardStart":true}
       if (values.id_number?.length < 12 || idProofLoader || errors?.id_number)
         disableClass = true;
     } else if (idType === "3") {

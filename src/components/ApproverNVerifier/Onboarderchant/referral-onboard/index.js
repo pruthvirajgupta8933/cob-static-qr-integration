@@ -89,7 +89,7 @@ const Referral = ({ type, zoneCode }) => {
                 </p>
               </div>
             </div>
-            <p>
+            <p className="text-danger">
               Important Note: A verification link has been sent to the
               registered email associated with your merchant account. Please
               verify the link to proceed to the next step.
