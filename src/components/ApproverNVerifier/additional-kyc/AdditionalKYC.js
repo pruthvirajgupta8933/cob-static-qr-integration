@@ -20,11 +20,11 @@ const AdditionalKYC = () => {
     { documentType: "UDYAM", value: "4" },
     { documentType: "FRM", value: "5" },
     { documentType: "AADHAAR VERIFICATION", value: "6" },
-    { documentType: "CIN", value: "7" },
+    // { documentType: "CIN", value: "7" },
     { documentType: "CRED REPORT VALIDATION", value: "8" },
     { documentType: "DRIVING LICENSE VALIDATION", value: "9" },
     { documentType: "VOTER CARD VALIDATION", value: "10" },
-    { documentType: "CIN VALIDATION(1)", value: "11" },
+    { documentType: "CIN VALIDATION", value: "11" },
   ];
 
   // Helper functions

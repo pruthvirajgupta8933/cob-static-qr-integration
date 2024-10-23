@@ -79,18 +79,46 @@ const ValidateCIN = ({ selectedDocType }) => {
           <h5 className="">CIN Validation Details</h5>
           <div className="row">
             {cinData &&
-              Object.keys(cinData).map((key) => (
-                <div className="col-md-6 p-2 text-uppercase" key={key}>
-                  <span className="font-weight-bold mb-1">
-                    {key.replace("_", " ")}:
-                  </span>
-                  {Array.isArray(cinData[key]) ? (
+              Object.keys(cinData).map((key) =>
+                typeof cinData[key] !== "object" ? (
+                  <div className="col-md-6 p-2 text-uppercase" key={key}>
+                    <span className="font-weight-bold mb-1">
+                      {key.replaceAll("_", " ")}:
+                    </span>
+                    {/* {Array.isArray(cinData[key]) ? (
                     <span>&nbsp; {cinData[key]?.length}</span>
-                  ) : (
+                  ) : ( */}
                     <span>&nbsp; {cinData[key].toString()}</span>
-                  )}
-                </div>
-              ))}
+                    {/* // )} */}
+                  </div>
+                ) : (
+                  <div className="col-md-12 p-2 text-uppercase" key={key}>
+                    <span className="font-weight-bold mb-1">
+                      {key.replaceAll("_", " ")}:
+                    </span>
+                    {Array.isArray(cinData[key]) ? (
+                      cinData[key].map((data) => (
+                        <div className="row border rounded p-1 m-1">
+                          {Object.keys(data).map(
+                            (subkey) =>
+                              typeof data[subkey] !== "object" && (
+                                <div className="col-md-4">
+                                  <span className="font-weight-bold mb-1">
+                                    {subkey.replace(/([a-z])([A-Z])/g, "$1 $2")}
+                                    :
+                                  </span>
+                                  <span>&nbsp; {data[subkey].toString()}</span>
+                                </div>
+                              )
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                )
+              )}
           </div>
         </div>
       )}
