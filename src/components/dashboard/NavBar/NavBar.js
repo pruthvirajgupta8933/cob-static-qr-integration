@@ -5,6 +5,8 @@ import profile from "../../../assets/images/profile.png";
 import { Link } from "react-router-dom";
 import "./navBar.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { clearKycState } from "../../../slices/kycSlice";
+import { referralOnboardSlice } from "../../../slices/approver-dashboard/referral-onboard-slice";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const NavBar = () => {
 
   const exitback = () => {
     dispatch(logout());
+    dispatch(clearKycState());
+    dispatch(referralOnboardSlice.actions.resetBasicDetails());
   };
 
   return (
@@ -36,7 +40,6 @@ const NavBar = () => {
         </div>
       </div>
 
-
       {/* Dropdown in the Nav Bar */}
       <div className="dropdown show">
         <a
@@ -48,8 +51,9 @@ const NavBar = () => {
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <i className="fa fa-user fa-2xl"
-           ariaHidden="true"
+          <i
+            className="fa fa-user fa-2xl"
+            ariaHidden="true"
             style={{ fontSize: "24px", color: "white" }}
           ></i>
           <span
