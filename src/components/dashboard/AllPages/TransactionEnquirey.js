@@ -10,6 +10,7 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { transactionEnquireyApi } from "../../../services/transaction-enquirey/transactionEnquirey.service";
+import { dateFormatBasic } from "../../../utilities/DateConvert";
 
 const TransactionEnquirey = React.memo(() => {
   const dispatch = useDispatch();
@@ -19,20 +20,29 @@ const TransactionEnquirey = React.memo(() => {
     data: {},
     printData: [],
     disable: false,
-    loadingState: false
+    loadingState: false,
   });
 
-
-  const { auth, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const { auth, merchantReferralOnboardReducer } = useSelector(
+    (state) => state
+  );
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   const roles = roleBasedAccess();
   const { user } = auth;
-  const [placeholder, setPlaceholder] = useState("Enter SabPaisa Transaction ID");
+  const [placeholder, setPlaceholder] = useState(
+    "Enter SabPaisa Transaction ID"
+  );
 
   const validationSchema = Yup.object().shape({
-    transaction_id: Yup.string().max(110, "Transaction ID length exceed").required("Required").allowOneSpace(),
-    transaction_from: Yup.string().nullable().required("Required").allowOneSpace(),
+    transaction_id: Yup.string()
+      .max(110, "Transaction ID length exceed")
+      .required("Required")
+      .allowOneSpace(),
+    transaction_from: Yup.string()
+      .nullable()
+      .required("Required")
+      .allowOneSpace(),
     clientCode: Yup.string().nullable().required("Required").allowOneSpace(),
   });
   const handleSearchByChange = (formik) => (e) => {
@@ -50,15 +60,17 @@ const TransactionEnquirey = React.memo(() => {
     }
   };
 
-
-
   useEffect(() => {
     const roleType = roles;
-    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    const type = roleType.bank
+      ? "bank"
+      : roleType.referral
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       const postObj = {
         type: type,
-        login_id: auth?.user?.loginId
+        login_id: auth?.user?.loginId,
       };
       dispatch(fetchChildDataList(postObj));
     }
@@ -67,31 +79,54 @@ const TransactionEnquirey = React.memo(() => {
   const clientMerchantDetailsList = user?.clientMerchantDetailsList ?? [];
   const fnKey = roles?.merchant ? "clientCode" : "client_code";
   const fnVal = roles?.merchant ? "clientName" : "name";
-  const clientCodeListArr = roles?.merchant ? clientMerchantDetailsList : clientCodeData;
+  const clientCodeListArr = roles?.merchant
+    ? clientMerchantDetailsList
+    : clientCodeData;
 
-  const clientCodeOption = useMemo(() =>
-    convertToFormikSelectJson(fnKey, fnVal, clientCodeListArr, {}, false, true),
+  const clientCodeOption = useMemo(
+    () =>
+      convertToFormikSelectJson(
+        fnKey,
+        fnVal,
+        clientCodeListArr,
+        {},
+        false,
+        true
+      ),
     [fnKey, fnVal, clientCodeListArr]
   );
 
-  const initialValues = useMemo(() => ({
-    clientCode: roles.merchant && clientCodeListArr.length > 0 ? clientCodeListArr[0][fnKey] : "",
-    transaction_id: "",
-    transaction_from: "1"
-  }), [roles.merchant, clientCodeListArr, fnKey]);
+  const initialValues = useMemo(
+    () => ({
+      clientCode:
+        roles.merchant && clientCodeListArr.length > 0
+          ? clientCodeListArr[0][fnKey]
+          : "",
+      transaction_id: "",
+      transaction_from: "1",
+    }),
+    [roles.merchant, clientCodeListArr, fnKey]
+  );
 
-
-  const convertDate = useCallback((dateValue) => moment(dateValue).format("DD/MM/YYYY hh:mm a"), []);
+  const convertDate = useCallback(
+    (dateValue) => moment(dateValue).format("DD/MM/YYYY hh:mm a"),
+    []
+  );
 
   const onSubmit = useCallback(async (input) => {
-    setState(prev => ({ ...prev, loadingState: true, data: {}, disable: true }));
+    setState((prev) => ({
+      ...prev,
+      loadingState: true,
+      data: {},
+      disable: true,
+    }));
 
     const spTxnId = input.transaction_from === "1" ? input.transaction_id : 0;
-    const clientTxnId = input.transaction_from === "2" ? input.transaction_id : 0;
-
+    const clientTxnId =
+      input.transaction_from === "2" ? input.transaction_id : 0;
 
     const postData = {
-      clientCode: input.clientCode
+      clientCode: input.clientCode,
     };
 
     if (input.transaction_from === "1") {
@@ -101,32 +136,32 @@ const TransactionEnquirey = React.memo(() => {
     }
 
     try {
-      const response = await transactionEnquireyApi(postData)
+      const response = await transactionEnquireyApi(postData);
       if (response?.data?.result) {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           loadingState: false,
           show: true,
           data: response?.data?.result,
-          errMessage: ""
+          errMessage: "",
         }));
       } else {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           loadingState: false,
           show: false,
-          errMessage: "Data Not Found"
+          errMessage: "Data Not Found",
         }));
       }
     } catch (e) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         loadingState: false,
         show: false,
-        errMessage: "Data Not Found"
+        errMessage: "Data Not Found",
       }));
     } finally {
-      setState(prev => ({ ...prev, disable: false }));
+      setState((prev) => ({ ...prev, disable: false }));
     }
   }, []);
 
@@ -141,15 +176,14 @@ const TransactionEnquirey = React.memo(() => {
       { key: "Bank Txn Id", value: state.data.bankTxnId },
       { key: "Payer Amount", value: state.data.amount },
       { key: "Paid Amount", value: state.data.paidAmount },
-      { key: "Transaction Date", value: convertDate(state.data.transDate) },
+      { key: "Transaction Date", value: dateFormatBasic(state.data.transDate) },
       { key: "Client Code ", value: state.data.clientCode },
       { key: "Client Txn Id", value: state.data.clientTxnId },
       { key: "Chargeback Status ", value: state.data.chargeBackStatus },
       { key: "Refund Status", value: state.data.refundStatusCode },
       { key: "Settlement Status", value: state.data.settlementStatus },
-
     ];
-    setState(prev => ({ ...prev, printData: tempArr }));
+    setState((prev) => ({ ...prev, printData: tempArr }));
   }, [state.data, convertDate]);
 
   const onClick = useCallback(async () => {
@@ -160,10 +194,13 @@ const TransactionEnquirey = React.memo(() => {
     await a.print();
   }, []);
 
-  const txnOption = useMemo(() => [
-    { key: "1", value: "Sabpaisa Transaction ID" },
-    { key: "2", value: "Client Transaction ID" }
-  ], []);
+  const txnOption = useMemo(
+    () => [
+      { key: "1", value: "Sabpaisa Transaction ID" },
+      { key: "2", value: "Client Transaction ID" },
+    ],
+    []
+  );
 
   return (
     <section className="">
@@ -207,22 +244,22 @@ const TransactionEnquirey = React.memo(() => {
                           placeholder={placeholder}
                           className="form-control"
                         />
-
-
                       </div>
-                      <div className="form-group col-md-12 col-sm-12 col-lg-3" >
+                      <div className="form-group col-md-12 col-sm-12 col-lg-3">
                         <button
                           disabled={state.disable}
                           className="btn btn-sm text-white cob-btn-primary mt-4"
                           type="submit"
                         >
                           {state.disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                            <span
+                              className="spinner-border spinner-border-sm mr-1"
+                              role="status"
+                              ariaHidden="true"
+                            ></span>
                           )}
                           View
                         </button>
-
-
                       </div>
                     </div>
                     {state.show && state.printData.length > 0 && (
@@ -230,21 +267,18 @@ const TransactionEnquirey = React.memo(() => {
                         {/* <hr></hr> */}
                         <div className="border-bottom mt-2"></div>
 
-
                         <div className="col-auto ms-auto">
                           <button
                             Value="click"
                             onClick={onClick}
                             className="btn cob-btn-primary text-white mt-4 ml-3 btn-sm"
                           >
-                            <i className="fa fa-print" ariaHidden="true"></i> Print
+                            <i className="fa fa-print" ariaHidden="true"></i>{" "}
+                            Print
                           </button>
                         </div>
-
-                      </div>)}
-
-
-
+                      </div>
+                    )}
 
                     {/* <div className="form-row mt-3">
                       <div className="form-group col-md-12 col-sm-12 col-lg-5">
@@ -282,28 +316,33 @@ const TransactionEnquirey = React.memo(() => {
                 )}
               </Formik>
               <CustomLoader loadingState={state.loadingState} />
-              {!state.loadingState && state.show && state.printData.length > 0 && (
-                <div className='mt-4 table_scrollar' style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                  <div className="table-responsive" >
-                    <table className="table ">
-                      <tbody>
-                        {state?.printData.map((item, idx) => (
-                          <tr key={idx}>
-                            <th className='table-striped background_color'>{item.key}</th>
-                            <td>{item.value}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <PrintDocument data={state.printData} />
+              {!state.loadingState &&
+                state.show &&
+                state.printData.length > 0 && (
+                  <div
+                    className="mt-4 table_scrollar"
+                    style={{ maxHeight: "400px", overflowY: "auto" }}
+                  >
+                    <div className="table-responsive">
+                      <table className="table ">
+                        <tbody>
+                          {state?.printData.map((item, idx) => (
+                            <tr key={idx}>
+                              <th className="table-striped background_color">
+                                {item.key}
+                              </th>
+                              <td>{item.value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <PrintDocument data={state.printData} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               {state.errMessage && (
                 <div className="col">
-                  <h5 className=" text-center">
-                    {state.errMessage}
-                  </h5>
+                  <h5 className=" text-center">{state.errMessage}</h5>
                 </div>
               )}
             </div>

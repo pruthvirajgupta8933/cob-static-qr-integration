@@ -1,4 +1,5 @@
 import moment from "moment";
+import { dateFormatBasic } from "./DateConvert";
 const covertDate = (yourDate) => {
   let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
   return date;
@@ -17,7 +18,6 @@ export const NotFilledKYCData = [
     sortable: true,
     width: "90px",
     cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div>,
-
   },
   {
     id: "2",
@@ -39,8 +39,6 @@ export const NotFilledKYCData = [
     ),
     width: "200px",
   },
-
-
 
   {
     id: "4",
@@ -66,7 +64,7 @@ export const NotFilledKYCData = [
     name: "Registered Date",
     selector: (row) => row.signUpDate,
     sortable: true,
-    cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.signUpDate)}</div>,
     width: "150px",
   },
   {
@@ -87,7 +85,6 @@ export const NotFilledKYCData = [
   },
 ];
 
-
 export const AllMerchnatListData = [
   {
     id: "1",
@@ -96,8 +93,6 @@ export const AllMerchnatListData = [
     sortable: true,
     width: "95px",
   },
-
-
 ];
 
 export const ChallanReportData = [
@@ -129,12 +124,10 @@ export const ChallanReportData = [
     selector: (row) => row.amount,
     cell: (row) => (
       <div className="removeWhiteSpace">
-        {new Intl.NumberFormat('en-IN').format(row?.amount)}
+        {new Intl.NumberFormat("en-IN").format(row?.amount)}
       </div>
     ),
   },
-
-
 
   {
     id: "4",
@@ -180,7 +173,7 @@ export const ChallanReportData = [
     id: "7",
     name: "Created On",
     selector: (row) => row.created_on,
-    cell: (row) => covertDate(row.created_on),
+    cell: (row) => dateFormatBasic(row.created_on),
     sortable: true,
     width: "200px",
   },
@@ -270,7 +263,7 @@ export const TransactionRowData = [
     id: "9",
     name: "Txn Completed time",
     selector: (row) => row.trans_completed_time,
-    cell: (row) => <div>{covertDate(row.trans_completed_time)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.trans_completed_time)}</div>,
     sortable: true,
     width: "120px",
   },
@@ -278,7 +271,7 @@ export const TransactionRowData = [
     id: "10",
     name: "Txn Initiated time",
     selector: (row) => row.trans_init_time,
-    cell: (row) => <div>{covertDate(row.trans_init_time)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.trans_init_time)}</div>,
     sortable: true,
     width: "120px",
   },
@@ -335,21 +328,21 @@ export const TransactionRowData = [
     id: "19",
     name: "Created On",
     selector: (row) => row.created_at,
-    cell: (row) => <div>{covertDate(row.created_at)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.created_at)}</div>,
     sortable: true,
     width: "120px",
   },
   {
     id: "20",
     name: "Updated On",
-    cell: (row) => <div>{covertDate(row.updated_at)}</div>,
-    sortable: true
+    cell: (row) => <div>{dateFormatBasic(row.updated_at)}</div>,
+    sortable: true,
   },
   {
     id: "21",
     name: "Deleted On",
-    cell: (row) => <div>{covertDate(row.deleted_at)}</div>,
-    sortable: true
+    cell: (row) => <div>{dateFormatBasic(row.deleted_at)}</div>,
+    sortable: true,
   },
 ];
 
@@ -469,7 +462,7 @@ export const LedgerRowData = [
     id: "9",
     name: "Txn Completed time",
     selector: (row) => row.trans_completed_time,
-    cell: (row) => <div>{covertDate(row.trans_completed_time)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.trans_completed_time)}</div>,
     sortable: true,
     width: "120px",
   },
@@ -477,7 +470,7 @@ export const LedgerRowData = [
     id: "10",
     name: "Txn Initiated time",
     selector: (row) => row.trans_init_time,
-    cell: (row) => <div>{covertDate(row.trans_init_time)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.trans_init_time)}</div>,
     sortable: true,
     width: "120px",
   },
@@ -534,7 +527,7 @@ export const LedgerRowData = [
     id: "19",
     name: "Created On",
     selector: (row) => row.created_at,
-    cell: (row) => <div>{covertDate(row.created_at)}</div>,
+    cell: (row) => <div>{dateFormatBasic(row.created_at)}</div>,
     sortable: true,
     width: "120px",
   },
@@ -708,37 +701,70 @@ export const ApprovedTableData = [
 export const MandateReportData = [
   { id: "1", name: "S.No", selector: (row) => row.sno },
   {
-    id: "2", name: "Mandate Registration Id", selector: (row) => row.mandateRegistrationId, sortable: true,
+    id: "2",
+    name: "Mandate Registration Id",
+    selector: (row) => row.mandateRegistrationId,
+    sortable: true,
     width: "160px",
   },
   { id: "3", name: "Client Code", selector: (row) => row.clientCode },
-  { id: "4", name: "Client Registration Id", selector: (row) => row.clientRegistrationId },
-  { id: "5", name: "Consumer Reference Number", selector: (row) => row.consumerReferenceNumber },
   {
-    id: "6", name: "Mandate Purpose", selector: (row) => row.mandatePurpose, sortable: true,
+    id: "4",
+    name: "Client Registration Id",
+    selector: (row) => row.clientRegistrationId,
+  },
+  {
+    id: "5",
+    name: "Consumer Reference Number",
+    selector: (row) => row.consumerReferenceNumber,
+  },
+  {
+    id: "6",
+    name: "Mandate Purpose",
+    selector: (row) => row.mandatePurpose,
+    sortable: true,
     width: "180px",
   },
   {
-    id: "7", name: "Payer Utility Code", selector: (row) => row.payerUtilitityCode, sortable: true,
+    id: "7",
+    name: "Payer Utility Code",
+    selector: (row) => row.payerUtilitityCode,
+    sortable: true,
     width: "180px",
   },
   { id: "8", name: "Payer Name", selector: (row) => row.payerName },
   {
-    id: "9", name: "Mandate End Date", selector: (row) => row.mandateEndDate ? row.mandateEndDate : "NA", sortable: true,
+    id: "9",
+    name: "Mandate End Date",
+    selector: (row) => (row.mandateEndDate ? row.mandateEndDate : "NA"),
+    sortable: true,
     width: "160px",
   },
-  { id: "10", name: "Mandate Max Amount", selector: (row) => row.mandateMaxAmount },
   {
-    id: "11", name: "Mandate Registration Time", selector: (row) => row.mandateRegTime, sortable: true,
+    id: "10",
+    name: "Mandate Max Amount",
+    selector: (row) => row.mandateMaxAmount,
+  },
+  {
+    id: "11",
+    name: "Mandate Registration Time",
+    selector: (row) => row.mandateRegTime,
+    sortable: true,
     width: "160px",
   },
   { id: "12", name: "Mandate Type", selector: (row) => row.mandateType },
   {
-    id: "13", name: "Merchant Id", selector: (row) => row.merchantId, sortable: true,
+    id: "13",
+    name: "Merchant Id",
+    selector: (row) => row.merchantId,
+    sortable: true,
     width: "170px",
   },
   {
-    id: "14", name: "Mandate Start Date", selector: (row) => row.mandateStartDate, sortable: true,
+    id: "14",
+    name: "Mandate Start Date",
+    selector: (row) => row.mandateStartDate,
+    sortable: true,
     width: "170px",
   },
   // { id: "15", name: "Message Id",selector:(row)=>row.messageId },
@@ -842,8 +868,16 @@ export const DebitReportData = [
   { id: "3", name: "UMRN Number", selector: (row) => row.UMRNNumber },
   { id: "4", name: "Payment Status", selector: (row) => row.paymentStatus },
   { id: "5", name: "Reason", selector: (row) => row.reason },
-  { id: "6", name: "Settelment Amount", selector: (row) => row.settelmentAmount },
-  { id: "7", name: "Settlement Status", selector: (row) => row.settlementStatus },
+  {
+    id: "6",
+    name: "Settelment Amount",
+    selector: (row) => row.settelmentAmount,
+  },
+  {
+    id: "7",
+    name: "Settlement Status",
+    selector: (row) => row.settlementStatus,
+  },
   // { id: "8", name: "Merchant Name", selector: (row) => row.merchantName },
   // { id: "9", name: "Bank Message", selector: (row) => row.bankMessage },
   // { id: "10", name: "Bank Reference Number", selector: (row) => row.bankReferenceNumber },
@@ -882,18 +916,58 @@ export const DebitReportData = [
   // { id: "43", name: "transactionAmount", selector: (row) => row.transactionAmount },
 ];
 
-
-
 // subscript wallet row column
 
 export const subscriptionWalletTableCol = [
-  { id: "1", name: "S. no.", width: "80px", cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div> },
-  { id: "1", name: "Subscription Id", width: "140px", cell: (row) => <div className="removeWhiteSpace">{row?.clientSubscribedPlanDetailsId}</div> },
-  { id: "2", name: "Application name", width: "160px", cell: (row) => <div className="removeWhiteSpace">{row?.applicationName}</div> },
-  { id: "3", name: "Plan name", width: "140px", cell: (row) => <div className="removeWhiteSpace">{row?.planName}</div> },
-  { id: "4", name: "Subscription status", width: "160px", cell: (row) => <div className="removeWhiteSpace">{row?.subscription_status}</div> },
-  { id: "4", name: "Mandate status", width: "140px", cell: (row) => <div className="removeWhiteSpace">{row?.mandateStatus}</div> },
-  { id: "4", name: "Purchase amount", cell: (row) => <div className="removeWhiteSpace">{row?.purchaseAmount}</div> }
-]
-
-
+  {
+    id: "1",
+    name: "S. no.",
+    width: "80px",
+    cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div>,
+  },
+  {
+    id: "1",
+    name: "Subscription Id",
+    width: "140px",
+    cell: (row) => (
+      <div className="removeWhiteSpace">
+        {row?.clientSubscribedPlanDetailsId}
+      </div>
+    ),
+  },
+  {
+    id: "2",
+    name: "Application name",
+    width: "160px",
+    cell: (row) => (
+      <div className="removeWhiteSpace">{row?.applicationName}</div>
+    ),
+  },
+  {
+    id: "3",
+    name: "Plan name",
+    width: "140px",
+    cell: (row) => <div className="removeWhiteSpace">{row?.planName}</div>,
+  },
+  {
+    id: "4",
+    name: "Subscription status",
+    width: "160px",
+    cell: (row) => (
+      <div className="removeWhiteSpace">{row?.subscription_status}</div>
+    ),
+  },
+  {
+    id: "4",
+    name: "Mandate status",
+    width: "140px",
+    cell: (row) => <div className="removeWhiteSpace">{row?.mandateStatus}</div>,
+  },
+  {
+    id: "4",
+    name: "Purchase amount",
+    cell: (row) => (
+      <div className="removeWhiteSpace">{row?.purchaseAmount}</div>
+    ),
+  },
+];

@@ -8,9 +8,9 @@ import { toast } from "react-toastify";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import FormikController from "../../_components/formik/FormikController";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import Yup from "../../_components/formik/Yup";
-
+import { dateFormatBasic } from "../../utilities/DateConvert";
 
 const validationSchema = Yup.object({
   start_date: Yup.date().required("Required").nullable(),
@@ -37,17 +37,17 @@ const BizzAppData = () => {
   };
 
   const [show, setShow] = useState(false);
-  const [disable, setDisable] = useState(false)
+  const [disable, setDisable] = useState(false);
   const initialValues = {
     start_date: splitDate,
     end_date: splitDate,
   };
 
   const handleSubmit = (values) => {
-    setDisable(true)
+    setDisable(true);
     const postData = {
-      start_date: moment(values.start_date).startOf('day').format('YYYY-MM-DD'),
-      end_date: moment(values.end_date).startOf('day').format('YYYY-MM-DD'),
+      start_date: moment(values.start_date).startOf("day").format("YYYY-MM-DD"),
+      end_date: moment(values.end_date).startOf("day").format("YYYY-MM-DD"),
     };
 
     let apiRes = axiosInstanceJWT
@@ -55,11 +55,11 @@ const BizzAppData = () => {
       .then((resp) => {
         setFormData(resp?.data.results);
         setShow(true);
-        setDisable(false)
+        setDisable(false);
       })
       .catch((error) => {
         apiRes = error.response;
-        setDisable(false)
+        setDisable(false);
         toast.error(apiRes?.data?.message);
       });
   };
@@ -177,7 +177,9 @@ const BizzAppData = () => {
         gst_number:
           SingleFormData?.gst_number === null ? "" : SingleFormData?.gst_number,
         created_on:
-          SingleFormData?.created_on === null ? "" : SingleFormData?.created_on,
+          SingleFormData?.created_on === null
+            ? ""
+            : dateFormatBasic(SingleFormData?.created_on),
       };
       excelArr.push(Object.values(allowDataToShow));
     });
@@ -186,11 +188,10 @@ const BizzAppData = () => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-        alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...");
       }
-      return state
-    }
-
+      return state;
+    };
 
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
@@ -220,8 +221,14 @@ const BizzAppData = () => {
                       label="From Date"
                       id="start_date"
                       name="start_date"
-                      value={formik.values.start_date ? new Date(formik.values.start_date) : null}
-                      onChange={date => formik.setFieldValue('start_date', date)}
+                      value={
+                        formik.values.start_date
+                          ? new Date(formik.values.start_date)
+                          : null
+                      }
+                      onChange={(date) =>
+                        formik.setFieldValue("start_date", date)
+                      }
                       format="dd-MM-y"
                       clearIcon={null}
                       className="form-control rounded-0 p-0"
@@ -235,8 +242,14 @@ const BizzAppData = () => {
                       label="End Date"
                       id="end_date"
                       name="end_date"
-                      value={formik.values.end_date ? new Date(formik.values.end_date) : null}
-                      onChange={date => formik.setFieldValue('end_date', date)}
+                      value={
+                        formik.values.end_date
+                          ? new Date(formik.values.end_date)
+                          : null
+                      }
+                      onChange={(date) =>
+                        formik.setFieldValue("end_date", date)
+                      }
                       format="dd-MM-y"
                       clearIcon={null}
                       className="form-control rounded-0 p-0"
@@ -252,8 +265,13 @@ const BizzAppData = () => {
                         disabled={disable}
                       >
                         {disable && (
-                          <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                        )} {/* Show spinner if disabled */}
+                          <span
+                            className="spinner-border spinner-border-sm mr-1"
+                            role="status"
+                            ariaHidden="true"
+                          ></span>
+                        )}{" "}
+                        {/* Show spinner if disabled */}
                         Submit
                       </button>
                       {FormData?.length > 0 ? (
@@ -270,14 +288,13 @@ const BizzAppData = () => {
                       )}
                     </div>
                   </div>
-
                 </div>
               </Form>
             )}
           </Formik>
-          {FormData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
-            No Data Found
-          </h5>}
+          {FormData.length === 0 && show === true && (
+            <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
+          )}
           <div className="col-md-12 mt-4">
             <div className="scroll overflow-auto">
               {show === true && FormData?.length !== 0 ? (
@@ -312,7 +329,7 @@ const BizzAppData = () => {
                   </thead>
                   <tbody>
                     {FormData?.length === 0 ||
-                      FormData?.length === undefined ? (
+                    FormData?.length === undefined ? (
                       <tr>
                         {/* <td colSpan={"8"}>
                           <h1 className="nodatafound">No data found</h1>
@@ -362,7 +379,7 @@ const BizzAppData = () => {
                           <td>{SingleFormData?.zone}</td>
                           <td>{SingleFormData?.entity_pan_card_number}</td>
                           <td>{SingleFormData?.gst_number}</td>
-                          <td>{convertDate(SingleFormData?.created_on)}</td>
+                          <td>{dateFormatBasic(SingleFormData?.created_on)}</td>
                         </tr>
                       ))
                     )}

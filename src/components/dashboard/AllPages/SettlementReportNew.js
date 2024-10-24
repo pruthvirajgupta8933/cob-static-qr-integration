@@ -434,9 +434,12 @@ const SettlementReportNew = () => {
           item.payee_amount === null
             ? ""
             : Number.parseFloat(item.payee_amount),
-        trans_date: item.trans_date === null ? "" : item.trans_date,
+        trans_date:
+          item.trans_date === null ? "" : dateFormatBasic(item.trans_date),
         trans_complete_date:
-          item.trans_complete_date === null ? "" : item.trans_complete_date,
+          item.trans_complete_date === null
+            ? ""
+            : dateFormatBasic(item.trans_complete_date),
         status: item.status === null ? "" : item.status,
         payee_first_name:
           item.payee_first_name === null ? "" : item.payee_first_name,
@@ -458,7 +461,9 @@ const SettlementReportNew = () => {
         bank_txn_id: item.bank_txn_id === null ? "" : item.bank_txn_id,
 
         settlement_date:
-          item.settlement_date === null ? "" : item.settlement_date,
+          item.settlement_date === null
+            ? ""
+            : dateFormatBasic(item.settlement_date),
         settlement_amount:
           item.settlement_amount === null
             ? ""

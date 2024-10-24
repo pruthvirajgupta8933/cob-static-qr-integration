@@ -14,21 +14,26 @@ import { convertToFormikSelectJson } from "../../../../_components/reuseable_com
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import moment from "moment";
-import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
-import { v4 as uuidv4 } from 'uuid';
+import {
+  clearTransactionHistoryDoitc,
+  transactionHistoryDoitc,
+} from "../../../../slices/merchant-slice/reportSlice";
+import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../../_components/formik/Yup";
 import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReactPaginate from "react-paginate";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
+import { dateFormatBasic } from "../../../../utilities/DateConvert";
 
 const TransactionHistoryDoitc = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const roles = roleBasedAccess();
 
-  const { auth, merchantReportSlice, merchantReferralOnboardReducer } = useSelector((state) => state);
-  const { refrerChiledList } = merchantReferralOnboardReducer
-  const clientCodeData = refrerChiledList?.resp?.results ?? []
+  const { auth, merchantReportSlice, merchantReferralOnboardReducer } =
+    useSelector((state) => state);
+  const { refrerChiledList } = merchantReferralOnboardReducer;
+  const clientCodeData = refrerChiledList?.resp?.results ?? [];
   // console.log("clientCodeData", clientCodeData)
   const { user } = auth;
 
@@ -45,7 +50,6 @@ const TransactionHistoryDoitc = () => {
   const [pageCount, setPageCount] = useState(0);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-
   // Date split
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -56,8 +60,6 @@ const TransactionHistoryDoitc = () => {
     splitDate[2] = "0" + splitDate[2];
   }
   splitDate = splitDate.join("-");
-
-
 
   // client code list
   let clientMerchantDetailsList = [];
@@ -75,10 +77,8 @@ const TransactionHistoryDoitc = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
-
-
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
 
   // formik initial values
   const initialValues = {
@@ -88,7 +88,6 @@ const TransactionHistoryDoitc = () => {
     transaction_status: "All",
     payment_mode: "All",
   };
-
 
   // formik validation
   const validationSchema = Yup.object({
@@ -101,7 +100,6 @@ const TransactionHistoryDoitc = () => {
     payment_mode: Yup.string().required("Required"),
   });
 
-
   // get payment status list
   const getPaymentStatusList = async () => {
     await axiosInstance
@@ -109,9 +107,7 @@ const TransactionHistoryDoitc = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {
-
-      });
+      .catch((err) => {});
   };
 
   // get paymode status list
@@ -119,33 +115,31 @@ const TransactionHistoryDoitc = () => {
     await axiosInstance
       .get(API_URL.PAY_MODE_LIST)
       .then((res) => {
-
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
-
 
   // fetch child client data
   const fetchData = () => {
-    const roleType = roles
-    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    const roleType = roles;
+    const type = roleType.bank
+      ? "bank"
+      : roleType.referral
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
-        type: type,  // Set the type based on roleType
-        login_id: auth?.user?.loginId
-      }
+        type: type, // Set the type based on roleType
+        login_id: auth?.user?.loginId,
+      };
       dispatch(fetchChildDataList(postObj));
     }
-
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
-
 
   // formik field opitons client code
   let isExtraDataRequired = false;
@@ -156,16 +150,17 @@ const TransactionHistoryDoitc = () => {
   }
 
   const forClientCode = true;
-  let fnKey, fnVal = ""
-  let clientCodeListArr = []
+  let fnKey,
+    fnVal = "";
+  let clientCodeListArr = [];
   if (roles?.merchant === true) {
-    fnKey = "clientCode"
-    fnVal = "clientName"
-    clientCodeListArr = clientMerchantDetailsList
+    fnKey = "clientCode";
+    fnVal = "clientName";
+    clientCodeListArr = clientMerchantDetailsList;
   } else {
-    fnKey = "client_code"
-    fnVal = "name"
-    clientCodeListArr = clientCodeData
+    fnKey = "client_code";
+    fnVal = "name";
+    clientCodeListArr = clientCodeData;
   }
   const clientCodeOption = convertToFormikSelectJson(
     fnKey,
@@ -176,7 +171,6 @@ const TransactionHistoryDoitc = () => {
     forClientCode
   );
   // console.log(clientCodeOption)
-
 
   // formik field opitons payment status
   const tempPayStatus = [{ key: "All", value: "All" }];
@@ -192,12 +186,10 @@ const TransactionHistoryDoitc = () => {
     tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
   });
 
-
   // table pagination
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
-
 
   // submit handler
   const submitHandler = (values) => {
@@ -211,7 +203,6 @@ const TransactionHistoryDoitc = () => {
         clientCodeArrLength = "";
       // console.log("clientCode", clientCode);
       if (values.clientCode === "All") {
-
         const allClientCode = [];
         clientCodeListArr?.map((item) => {
           allClientCode.push(item.client_code);
@@ -230,14 +221,12 @@ const TransactionHistoryDoitc = () => {
         paymentMode: payment_mode,
         fromDate: fromDate,
         endDate: endDate,
-        clientCount: clientCodeArrLength
-
+        clientCount: clientCodeArrLength,
       };
 
       dispatch(transactionHistoryDoitc(paramData));
     }
   };
-
 
   // data validation
   const checkValidation = (fromDate = "", toDate = "") => {
@@ -268,35 +257,19 @@ const TransactionHistoryDoitc = () => {
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(
-      _(TxnListArrUpdated)
-        .slice(0)
-        .take(pageSize)
-        .value()
-    );
+    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
   }, [merchantReportSlice]);
 
-
-
   useEffect(() => {
-    setPaginatedData(
-      _(showData)
-        .slice(0)
-        .take(pageSize)
-        .value()
-    );
+    setPaginatedData(_(showData).slice(0).take(pageSize).value());
     setPageCount(
       showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
     );
   }, [pageSize, showData]);
 
   useEffect(() => {
-
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(showData)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
+    const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -339,12 +312,6 @@ const TransactionHistoryDoitc = () => {
   const convertDate = (yourDate) => {
     return yourDate ? moment(yourDate).format("YYYY-MM-DD HH:mm:ss") : "N/A";
   };
-
-
-
-
-
-
 
   // export to excel
   const exportToExcelFn = (exportType) => {
@@ -390,21 +357,37 @@ const TransactionHistoryDoitc = () => {
       const allowDataToShow = {
         srNo: item.srNo === null ? "null" : index + 1,
         txn_id: item.txn_id === null ? "null" : item?.txn_id?.toString(),
-        client_txn_id: item.client_txn_id === null ? "null" : item.client_txn_id,
+        client_txn_id:
+          item.client_txn_id === null ? "null" : item.client_txn_id,
         challan_no: item.challan_no === null ? "null" : item.challan_no,
-        payee_amount: item.payee_amount === null ? "null" : Number.parseFloat(item.payee_amount),
-        p_convcharges: item.p_convcharges === null ? "null" : Number.parseFloat(item.p_convcharges),
-        p_ep_charges: item.p_ep_charges === null ? "null" : Number.parseFloat(item.p_ep_charges),
+        payee_amount:
+          item.payee_amount === null
+            ? "null"
+            : Number.parseFloat(item.payee_amount),
+        p_convcharges:
+          item.p_convcharges === null
+            ? "null"
+            : Number.parseFloat(item.p_convcharges),
+        p_ep_charges:
+          item.p_ep_charges === null
+            ? "null"
+            : Number.parseFloat(item.p_ep_charges),
         p_gst: item.p_gst === null ? "null" : item.p_gst,
-        total_amount: item.total_amount === null ? "null" : Number.parseFloat(item.total_amount),
-        trans_date: item.trans_date === null ? "null" : convertDate(item.trans_date),
+        total_amount:
+          item.total_amount === null
+            ? "null"
+            : Number.parseFloat(item.total_amount),
+        trans_date:
+          item.trans_date === null ? "null" : dateFormatBasic(item.trans_date),
         status: item.status === null ? "null" : item.status,
-        payee_first_name: item.payee_first_name === null ? "null" : item.payee_first_name,
+        payee_first_name:
+          item.payee_first_name === null ? "null" : item.payee_first_name,
         payee_mob: item.payee_mob === null ? "null" : item.payee_mob,
         payee_email: item.payee_email === null ? "null" : item.payee_email,
         client_code: item.client_code === null ? "null" : item.client_code,
         payment_mode: item.payment_mode === null ? "null" : item.payment_mode,
-        payee_address: item.payee_address === null ? "null" : item.payee_address,
+        payee_address:
+          item.payee_address === null ? "null" : item.payee_address,
         udf1: item.udf1 === null ? "null" : item.udf1,
         udf2: item.udf2 === null ? "null" : item.udf2,
         udf3: item.udf3 === null ? "null" : item.udf3,
@@ -420,29 +403,32 @@ const TransactionHistoryDoitc = () => {
         gr_number: item.gr_number === null ? "null" : item.gr_number,
         bank_message: item.bank_message === null ? "null" : item.bank_message,
         ifsc_code: item.ifsc_code === null ? "null" : item.ifsc_code,
-        payer_acount_number: item.payer_acount_number === null ? "null" : item.payer_acount_number,
+        payer_acount_number:
+          item.payer_acount_number === null ? "null" : item.payer_acount_number,
         bank_txn_id: item.bank_txn_id === null ? "null" : item.bank_txn_id,
       };
       excelArr.push(Object.values(allowDataToShow));
     });
 
-
-
     // Function to convert data to CSV format
     //exportType = csv/ csv-ms-excel
     function arrayToCSV(data, exportType) {
-      const csv = data.map(row => row.map(val => {
-        if (typeof val === 'number') {
-          if (val?.toString().length >= 14) {
-            return `${val.toString()};`
-          }
-          return val?.toString()
-        } else {
-          return `"${val?.toString()}"`;
-        }
-
-      })
-        .join(exportType === 'csv' ? ',' : ';')).join('\n');
+      const csv = data
+        .map((row) =>
+          row
+            .map((val) => {
+              if (typeof val === "number") {
+                if (val?.toString().length >= 14) {
+                  return `${val.toString()};`;
+                }
+                return val?.toString();
+              } else {
+                return `"${val?.toString()}"`;
+              }
+            })
+            .join(exportType === "csv" ? "," : ";")
+        )
+        .join("\n");
       return csv;
     }
 
@@ -450,21 +436,20 @@ const TransactionHistoryDoitc = () => {
     function downloadCSV(data, filename, exportType) {
       const csv = arrayToCSV(data, exportType);
       const blob = new Blob([csv], {
-        type: "text/plain;charset=utf-8;"
+        type: "text/plain;charset=utf-8;",
       });
 
-      saveAs(blob, filename)
-
+      saveAs(blob, filename);
     }
 
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-        alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...");
       }
       // dispatch(exportTxnLoadingState(state))
-      return state
-    }
+      return state;
+    };
 
     const fileName = "Transactions-Report";
     if (exportType === "xlxs") {
@@ -474,12 +459,7 @@ const TransactionHistoryDoitc = () => {
     } else if (exportType === "csv-ms-excel") {
       downloadCSV(excelArr, fileName + "-csv-xlxs.csv", exportType);
     }
-
-
   };
-
-
-
 
   const today = new Date();
   const lastThreeMonth = new Date(today);
@@ -491,7 +471,6 @@ const TransactionHistoryDoitc = () => {
   const finalDate = year + "-" + month + "-" + day;
 
   // console.log("clientCodeOption",clientCodeOption)
-
 
   return (
     <section className="">
@@ -521,7 +500,6 @@ const TransactionHistoryDoitc = () => {
                             className="form-select rounded-0"
                             options={clientCodeOption}
                           />
-
                         </div>
                       )}
 
@@ -532,8 +510,8 @@ const TransactionHistoryDoitc = () => {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                        // value={startDate}
-                        // onChange={(e)=>setStartDate(e.target.value)}
+                          // value={startDate}
+                          // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 
@@ -575,19 +553,48 @@ const TransactionHistoryDoitc = () => {
                         >
                           Search
                         </button>
-
                       </div>
                       {txnList?.length > 0 ? (
                         <>
                           <div className="form-row">
                             <div className="dropdown form-group col-md-1 ml-1">
-                              <button className="btn cob-btn-primary text-white dropdown-toggle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <button
+                                className="btn cob-btn-primary text-white dropdown-toggle btn-sm"
+                                type="button"
+                                id="dropdownMenu2"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
                                 Export
                               </button>
-                              <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv")}>CSV</button>
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv-ms-excel")}>CSV for MS-Excel</button>
-                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("xlxs")}>Excel</button>
+                              <div
+                                className="dropdown-menu bg-light p-2"
+                                aria-labelledby="dropdownMenu2"
+                              >
+                                <button
+                                  className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
+                                  type="button"
+                                  onClick={() => exportToExcelFn("csv")}
+                                >
+                                  CSV
+                                </button>
+                                <button
+                                  className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
+                                  type="button"
+                                  onClick={() =>
+                                    exportToExcelFn("csv-ms-excel")
+                                  }
+                                >
+                                  CSV for MS-Excel
+                                </button>
+                                <button
+                                  className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
+                                  type="button"
+                                  onClick={() => exportToExcelFn("xlxs")}
+                                >
+                                  Excel
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -599,7 +606,6 @@ const TransactionHistoryDoitc = () => {
                   </Form>
                 )}
               </Formik>
-
             </div>
           </section>
 
@@ -689,12 +695,20 @@ const TransactionHistoryDoitc = () => {
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>
-                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
-                            <td>{Number.parseFloat(item.p_convcharges).toFixed(2)}</td>
-                            <td>{Number.parseFloat(item.p_ep_charges).toFixed(2)}</td>
+                            <td>
+                              {Number.parseFloat(item.payee_amount).toFixed(2)}
+                            </td>
+                            <td>
+                              {Number.parseFloat(item.p_convcharges).toFixed(2)}
+                            </td>
+                            <td>
+                              {Number.parseFloat(item.p_ep_charges).toFixed(2)}
+                            </td>
                             <td>{item.p_gst}</td>
-                            <td>{Number.parseFloat(item.total_amount).toFixed(2)}</td>
-                            <td>{convertDate(item.trans_date)}</td>
+                            <td>
+                              {Number.parseFloat(item.total_amount).toFixed(2)}
+                            </td>
+                            <td>{dateFormatBasic(item.trans_date)}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_mob}</td>
@@ -727,29 +741,29 @@ const TransactionHistoryDoitc = () => {
               </div>
 
               <div>
-
                 {txnList.length > 0 ? (
                   <div className="d-flex justify-content-center mt-2">
                     <ReactPaginate
-                      previousLabel={'Previous'}
-                      nextLabel={'Next'}
-                      breakLabel={'...'}
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      breakLabel={"..."}
                       pageCount={pageCount}
                       marginPagesDisplayed={2} // using this we can set how many number we can show after ...
                       pageRangeDisplayed={5}
-                      onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                      containerClassName={'pagination justify-content-center'}
-                      activeClassName={'active'}
-                      previousLinkClassName={'page-link'}
-                      nextLinkClassName={'page-link'}
-                      disabledClassName={'disabled'}
-                      breakClassName={'page-item'}
-                      breakLinkClassName={'page-link'}
-                      pageClassName={'page-item'}
-                      pageLinkClassName={'page-link'}
+                      onPageChange={(selectedItem) =>
+                        setCurrentPage(selectedItem.selected + 1)
+                      }
+                      containerClassName={"pagination justify-content-center"}
+                      activeClassName={"active"}
+                      previousLinkClassName={"page-link"}
+                      nextLinkClassName={"page-link"}
+                      disabledClassName={"disabled"}
+                      breakClassName={"page-item"}
+                      breakLinkClassName={"page-link"}
+                      pageClassName={"page-item"}
+                      pageLinkClassName={"page-link"}
                     />
                   </div>
-
                 ) : (
                   <></>
                 )}
@@ -777,6 +791,6 @@ const TransactionHistoryDoitc = () => {
       </main>
     </section>
   );
-}
+};
 
 export default TransactionHistoryDoitc;

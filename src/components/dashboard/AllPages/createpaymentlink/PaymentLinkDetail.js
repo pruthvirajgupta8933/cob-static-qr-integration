@@ -2,39 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
-import _ from 'lodash';
+import _ from "lodash";
 import FormPaymentLink from "./FormPaymentLink";
 import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from "react-paginate";
 import FormikController from "../../../../_components/formik/FormikController";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 // import * as Yup from "yup";
 
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
+import { dateFormatBasic } from "../../../../utilities/DateConvert";
 
 const PaymentLinkDetail = () => {
-
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
-  const [paginatedata, setPaginatedData] = useState([])
+  const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
-  const [displayList, setDisplayList] = useState([])
-  const [loadingState, setLoadingState] = useState(true)
+  const [displayList, setDisplayList] = useState([]);
+  const [loadingState, setLoadingState] = useState(true);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode } = clientMerchantDetailsList[0];
-  const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
+  const [pageCount, setPageCount] = useState(
+    data ? Math.ceil(data.length / pageSize) : 0
+  );
   const [copied, setCopied] = useState(false);
-  const [show, setShow] = useState(false)
-  const [disable, setDisable] = useState(false)
-
+  const [show, setShow] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required").nullable(),
@@ -43,7 +44,6 @@ const PaymentLinkDetail = () => {
       .required("Required"),
   });
 
-
   const handleCopyToClipboard = (link) => {
     navigator.clipboard.writeText(link);
     setCopied(true);
@@ -51,7 +51,6 @@ const PaymentLinkDetail = () => {
       setCopied(false);
     }, 1000); // Reset copied state after 1.5 seconds
   };
-
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -75,37 +74,37 @@ const PaymentLinkDetail = () => {
 
   const loaduser = () => {
     // toastConfig.infoToast("Loading")
-    axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}/${splitDate}/${splitDate}`)
+    axiosInstance
+      .get(`${API_URL.GET_LINKS}${clientCode}/${splitDate}/${splitDate}`)
       .then((res) => {
         setData(res.data);
-        setShow(true)
-        setLoadingState(false)
+        setShow(true);
+        setLoadingState(false);
         setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
       })
       .catch((err) => {
-        toastConfig.errorToast("Something went wrong")
+        toastConfig.errorToast("Something went wrong");
       });
-
-  }
+  };
   useEffect(() => {
-    loaduser()
+    loaduser();
   }, []);
-
 
   const handleSubmit = (values) => {
     setDisable(true);
-    setLoadingState(true)
+    setLoadingState(true);
     setData([]);
     setDisplayList([]);
     setPaginatedData([]);
 
-    const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
-    const toDate = moment(values.toDate).format('YYYY-MM-DD');
+    const fromDate = moment(values.fromDate).format("YYYY-MM-DD");
+    const toDate = moment(values.toDate).format("YYYY-MM-DD");
     const dateRangeValid = checkValidation(fromDate, toDate);
 
     if (dateRangeValid) {
-      createPaymentLinkService.paymentLinkDetails(clientCode, fromDate, toDate)
+      createPaymentLinkService
+        .paymentLinkDetails(clientCode, fromDate, toDate)
         .then((res) => {
           if (res.data.length === 0) {
             toastConfig.errorToast("No Data Found");
@@ -117,21 +116,18 @@ const PaymentLinkDetail = () => {
             setDisplayList(res.data);
             setPaginatedData(_(res.data).slice(0).take(pageSize).value());
             setShow(true);
-
           }
           setDisable(false);
-          setLoadingState(false)
+          setLoadingState(false);
         })
         .catch((err) => {
           console.error("Error loading data:", err);
           setShow(false);
           setDisable(false);
-          setLoadingState(false)
+          setLoadingState(false);
         });
-
     }
   };
-
 
   const checkValidation = (fromDate, toDate) => {
     let flag = true;
@@ -159,50 +155,48 @@ const PaymentLinkDetail = () => {
     return flag;
   };
 
-
-
-
-
   useEffect(() => {
-
-    if (searchText !== '') {
-      setDisplayList(data.filter((item) =>
-        Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+    if (searchText !== "") {
+      setDisplayList(
+        data.filter((item) =>
+          Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(searchText.toLocaleLowerCase())
+        )
+      );
+    } else {
+      setDisplayList(data);
     }
-    else {
-      setDisplayList(data)
-    }
-  }, [searchText])
-
-
+  }, [searchText]);
 
   const getSearchTerm = (e) => {
     setSearchText(e.target.value);
-
-  }
-
-
+  };
 
   useEffect(() => {
-    setPaginatedData(_(displayList).slice(0).take(pageSize).value())
-    setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0)
+    setPaginatedData(_(displayList).slice(0).take(pageSize).value());
+    setPageCount(
+      displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0
+    );
   }, [pageSize, displayList]);
 
   useEffect(() => {
     // console.log("page chagne no")
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
+    const paginatedPost = _(displayList)
+      .slice(startIndex)
+      .take(pageSize)
+      .value();
     setPaginatedData(paginatedPost);
-
-  }, [currentPage])
+  }, [currentPage]);
 
   return (
-
     <React.Fragment>
       {/* filter area */}
       <FormPaymentLink loaduser={loaduser} />
 
-      <section className="" >
+      <section className="">
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-3">
@@ -211,7 +205,8 @@ const PaymentLinkDetail = () => {
                 className="btn cob-btn-primary btn-primary text-white btn-sm"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                data-whatever="@getbootstrap">
+                data-whatever="@getbootstrap"
+              >
                 Create Payment Link
               </button>
             </div>
@@ -234,8 +229,14 @@ const PaymentLinkDetail = () => {
                       label="From Date"
                       id="fromDate"
                       name="fromDate"
-                      value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                      onChange={date => formik.setFieldValue('fromDate', date)}
+                      value={
+                        formik.values.fromDate
+                          ? new Date(formik.values.fromDate)
+                          : null
+                      }
+                      onChange={(date) =>
+                        formik.setFieldValue("fromDate", date)
+                      }
                       format="dd-MM-y"
                       clearIcon={null}
                       className="form-control rounded-0 p-0"
@@ -249,8 +250,12 @@ const PaymentLinkDetail = () => {
                       label="End Date"
                       id="to_date"
                       name="toDate"
-                      value={formik.values.toDate ? new Date(formik.values.toDate) : null}
-                      onChange={date => formik.setFieldValue('toDate', date)}
+                      value={
+                        formik.values.toDate
+                          ? new Date(formik.values.toDate)
+                          : null
+                      }
+                      onChange={(date) => formik.setFieldValue("toDate", date)}
                       format="dd-MM-y"
                       clearIcon={null}
                       className="form-control rounded-0 p-0"
@@ -266,18 +271,20 @@ const PaymentLinkDetail = () => {
                       disabled={disable}
                     >
                       {disable && (
-                        <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                        <span
+                          className="spinner-border spinner-border-sm mr-1"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                       )}
                       Submit
                     </button>
                   </div>
-
-
                 </div>
               </Form>
             )}
           </Formik>
-          {data?.length !== 0 &&
+          {data?.length !== 0 && (
             <div className="row">
               <div className={`col-lg-3 mt-3`}>
                 {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
@@ -300,10 +307,10 @@ const PaymentLinkDetail = () => {
                   <DropDownCountPerPage datalength={data.length} />
                 </select>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </section>
-
 
       <section className="">
         <div className="container-fluid p-3 my-3">
@@ -341,11 +348,14 @@ const PaymentLinkDetail = () => {
                         <td>{user?.amount}</td>
                         <td>{user?.customer_type}</td>
                         <td>{user?.customer_email}</td>
-                        <td>{convertDate(user?.created_at)}</td>
+                        <td>{dateFormatBasic(user?.created_at)}</td>
                         <td>{user?.remarks}</td>
                         <td>{user?.customer_name}</td>
                         <td>
-                          <div id={`link_${i}`} className="d-flex align-items-center">
+                          <div
+                            id={`link_${i}`}
+                            className="d-flex align-items-center"
+                          >
                             <span
                               className="p-2 d-inline-block cursor_pointer copy_clipboard"
                               title={user?.full_link}
@@ -354,8 +364,10 @@ const PaymentLinkDetail = () => {
                             </span>
                             <span
                               className="input-group-text"
-                              style={{ cursor: 'pointer' }}
-                              onClick={() => handleCopyToClipboard(user?.full_link)}
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                handleCopyToClipboard(user?.full_link)
+                              }
                               data-tip={copied ? "Copied!" : "Copy"}
                             >
                               <i className="fa fa-copy ml-2 text-primary align-middle"></i>
@@ -369,32 +381,31 @@ const PaymentLinkDetail = () => {
               </div>
               <div className="d-flex justify-content-center mt-2">
                 <ReactPaginate
-                  previousLabel={'Previous'}
-                  nextLabel={'Next'}
-                  breakLabel={'...'}
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
                   pageCount={pageCount}
                   marginPagesDisplayed={2}
                   pageRangeDisplayed={5}
-                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                  containerClassName={'pagination justify-content-center'}
-                  activeClassName={'active'}
-                  previousLinkClassName={'page-link'}
-                  nextLinkClassName={'page-link'}
-                  disabledClassName={'disabled'}
-                  breakClassName={'page-item'}
-                  breakLinkClassName={'page-link'}
-                  pageClassName={'page-item'}
-                  pageLinkClassName={'page-link'}
+                  onPageChange={(selectedItem) =>
+                    setCurrentPage(selectedItem.selected + 1)
+                  }
+                  containerClassName={"pagination justify-content-center"}
+                  activeClassName={"active"}
+                  previousLinkClassName={"page-link"}
+                  nextLinkClassName={"page-link"}
+                  disabledClassName={"disabled"}
+                  breakClassName={"page-item"}
+                  breakLinkClassName={"page-link"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
                 />
               </div>
             </React.Fragment>
           ) : null}
         </div>
-
       </section>
     </React.Fragment>
-
-
   );
 };
 

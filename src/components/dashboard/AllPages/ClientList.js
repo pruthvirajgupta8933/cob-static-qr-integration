@@ -15,6 +15,7 @@ import { stringEnc } from "../../../utilities/encodeDecode";
 import moment from "moment";
 import { saveAs } from "file-saver";
 import Blob from "blob";
+import { dateFormatBasic } from "../../../utilities/DateConvert";
 
 function ClientList() {
   const convertDate = (yourDate) => {
@@ -104,7 +105,9 @@ function ClientList() {
       name: "Created Date",
       selector: (row) => row.createdDate,
       cell: (row) => (
-        <div className="removeWhiteSpace">{convertDate(row?.createdDate)}</div>
+        <div className="removeWhiteSpace">
+          {dateFormatBasic(row?.createdDate)}
+        </div>
       ),
       width: "180px",
     },
@@ -182,14 +185,14 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
 
     clientListExportApi({ bank_login_id: user?.loginId, type })
       .then((res) => {
         if (res.status === 200) {
           const data = res?.data;
-          console.log("data", data);
+          // console.log("data", data);
           setLoading(false);
           setDisable(false);
           const blob = new Blob([data], {
@@ -259,8 +262,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     let postObj = {
       page: currentPage,
       page_size: pageSize,

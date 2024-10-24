@@ -1,32 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import _ from 'lodash';
-import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
-import CustomLoader from '../../../../_components/loader';
-import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
-import ReactPaginate from 'react-paginate';
-import FormikController from '../../../../_components/formik/FormikController';
-import createPaymentLinkService from '../../../../services/create-payment-link/payment-link.service';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import _ from "lodash";
+import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
+import CustomLoader from "../../../../_components/loader";
+import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
+import ReactPaginate from "react-paginate";
+import FormikController from "../../../../_components/formik/FormikController";
+import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import { Formik, Form } from "formik";
-import toastConfig from '../../../../utilities/toastTypes';
-import Yup from '../../../../_components/formik/Yup';
+import toastConfig from "../../../../utilities/toastTypes";
+import Yup from "../../../../_components/formik/Yup";
+import { dateFormatBasic } from "../../../../utilities/DateConvert";
 
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
-  const [paginatedata, setPaginatedData] = useState([])
+  const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loadingState, setLoadingState] = useState(true)
+  const [loadingState, setLoadingState] = useState(true);
   const [data, setData] = useState([]);
-  const [displayList, setDisplayList] = useState([])
-  const [searchText, setSearchText] = useState('');
+  const [displayList, setDisplayList] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const { user } = useSelector((state) => state.auth);
   const clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode } = clientMerchantDetailsList[0];
-  const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
-  const [disable, setDisable] = useState(false)
-
+  const [pageCount, setPageCount] = useState(
+    data ? Math.ceil(data.length / pageSize) : 0
+  );
+  const [disable, setDisable] = useState(false);
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -38,15 +40,12 @@ const Reports = () => {
   }
   splitDate = splitDate.join("-");
 
-
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required").nullable(),
     toDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
   });
-
-
 
   const initialValues = {
     fromDate: splitDate,
@@ -60,86 +59,93 @@ const Reports = () => {
 
   useEffect(() => {
     // toastConfig.infoToast("Report Loading")
-    createPaymentLinkService.getReports(clientCode, splitDate, splitDate)
-      .then(res => {
+    createPaymentLinkService
+      .getReports(clientCode, splitDate, splitDate)
+      .then((res) => {
         // toastConfig.successToast("Report Data loaded")
         setData(res.data);
-        setDisplayList(res.data)
-        setLoadingState(false)
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+        setDisplayList(res.data);
+        setLoadingState(false);
+        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
       })
       .catch((err) => {
-        setLoadingState(false)
-        // toastConfig.errorToast("Report Data not loaded !")  
+        setLoadingState(false);
+        // toastConfig.errorToast("Report Data not loaded !")
       });
-
   }, []);
-
-
 
   const getSearchTerm = (e) => {
     setSearchText(e.target.value);
-  }
-
+  };
 
   useEffect(() => {
     if (searchText.length > 0) {
-      // setPaginatedData(data.filter((item) => 
+      // setPaginatedData(data.filter((item) =>
       // Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
-      setDisplayList(data.filter((item) =>
-        Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+      setDisplayList(
+        data.filter((item) =>
+          Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(searchText.toLocaleLowerCase())
+        )
+      );
     } else {
-      setDisplayList(data)
+      setDisplayList(data);
       // setPaginatedData(data)
     }
-  }, [searchText])
+  }, [searchText]);
 
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
-  }
+  };
 
   useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value());
-    setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0);
+    setPageCount(
+      displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0
+    );
   }, [pageSize, displayList]);
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
+    const paginatedPost = _(displayList)
+      .slice(startIndex)
+      .take(pageSize)
+      .value();
     setPaginatedData(paginatedPost);
   }, [currentPage]);
 
   const handleSubmit = (values) => {
-    setDisable(true)
-    setLoadingState(true)
+    setDisable(true);
+    setLoadingState(true);
     setData([]);
     setDisplayList([]);
     setPaginatedData([]);
 
-    const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
-    const toDate = moment(values.toDate).format('YYYY-MM-DD');
+    const fromDate = moment(values.fromDate).format("YYYY-MM-DD");
+    const toDate = moment(values.toDate).format("YYYY-MM-DD");
     const dateRangeValid = checkValidation(fromDate, toDate);
     if (dateRangeValid) {
-      createPaymentLinkService.getReports(clientCode, fromDate, toDate)
+      createPaymentLinkService
+        .getReports(clientCode, fromDate, toDate)
         .then((res) => {
           if (res?.data?.length === 0) {
-            toastConfig.errorToast("No Data Found")
+            toastConfig.errorToast("No Data Found");
           } else {
             // toastConfig.successToast("Payment Link Data Loaded");
             setData(res.data);
             setLoadingState(false);
             setDisplayList(res.data);
             setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-
           }
-          setDisable(false)
-          setLoadingState(false)
-
+          setDisable(false);
+          setLoadingState(false);
         })
         .catch((err) => {
           console.error("Error loading data:", err);
-          setDisable(false)
-          setLoadingState(false)
+          setDisable(false);
+          setLoadingState(false);
           // toastConfig.errorToast("Data not loaded");
         });
     }
@@ -165,19 +171,14 @@ const Reports = () => {
         flag = false;
         alert(`Please choose a ${monthAllowed}-month date range.`);
         setDisable(false);
-        setLoadingState(false)
+        setLoadingState(false);
       }
     }
 
     return flag;
   };
 
-
-
-
-
   return (
-
     <React.Fragment>
       {/* filter area */}
       <section className="" id="">
@@ -199,8 +200,14 @@ const Reports = () => {
                       label="From Date"
                       id="fromDate"
                       name="fromDate"
-                      value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                      onChange={date => formik.setFieldValue('fromDate', date)}
+                      value={
+                        formik.values.fromDate
+                          ? new Date(formik.values.fromDate)
+                          : null
+                      }
+                      onChange={(date) =>
+                        formik.setFieldValue("fromDate", date)
+                      }
                       format="dd-MM-y"
                       clearIcon={null}
                       className="form-control rounded-0 p-0"
@@ -214,8 +221,12 @@ const Reports = () => {
                       label="End Date"
                       id="to_date"
                       name="toDate"
-                      value={formik.values.toDate ? new Date(formik.values.toDate) : null}
-                      onChange={date => formik.setFieldValue('toDate', date)}
+                      value={
+                        formik.values.toDate
+                          ? new Date(formik.values.toDate)
+                          : null
+                      }
+                      onChange={(date) => formik.setFieldValue("toDate", date)}
                       format="dd-MM-y"
                       clearIcon={null}
                       className="form-control rounded-0 p-0"
@@ -231,33 +242,45 @@ const Reports = () => {
                       disabled={disable}
                     >
                       {disable && (
-                        <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                        <span
+                          className="spinner-border spinner-border-sm mr-1"
+                          role="status"
+                          ariaHidden="true"
+                        ></span>
                       )}
                       Submit
                     </button>
-
                   </div>
-
                 </div>
               </Form>
             )}
           </Formik>
-          {data?.length !== 0 &&
+          {data?.length !== 0 && (
             <div className="row">
               <div className="col-lg-3">
                 <label>Search</label>
-                <input className="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} />
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Search Here"
+                  value={searchText}
+                  onChange={getSearchTerm}
+                />
               </div>
 
               <div className="col-lg-3">
                 <label>Count Per Page</label>
-                <select value={pageSize} rel={pageSize} className="form-select" onChange={(e) => setPageSize(parseInt(e.target.value))} >
+                <select
+                  value={pageSize}
+                  rel={pageSize}
+                  className="form-select"
+                  onChange={(e) => setPageSize(parseInt(e.target.value))}
+                >
                   <DropDownCountPerPage datalength={data.length} />
                 </select>
               </div>
             </div>
-          }
-
+          )}
         </div>
       </section>
 
@@ -302,7 +325,11 @@ const Reports = () => {
                         <td>{report.transaction_status}</td>
                         <td>{report.client_transaction_id}</td>
                         <td>{report.link_id}</td>
-                        <td>{convertDate(report?.link_valid_date?.replace("T", " "))}</td>
+                        <td>
+                          {dateFormatBasic(
+                            report?.link_valid_date?.replace("T", " ")
+                          )}
+                        </td>
                         <td>{report.created_at}</td>
                         <td>{report.payment_collected}</td>
                         <td>{report.numeric_link_id}</td>
@@ -314,33 +341,32 @@ const Reports = () => {
 
               <div className="d-flex justify-content-center mt-2">
                 <ReactPaginate
-                  previousLabel={'Previous'}
-                  nextLabel={'Next'}
-                  breakLabel={'...'}
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
                   pageCount={pageCount}
                   marginPagesDisplayed={2}
                   pageRangeDisplayed={5}
-                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                  containerClassName={'pagination justify-content-center'}
-                  activeClassName={'active'}
-                  previousLinkClassName={'page-link'}
-                  nextLinkClassName={'page-link'}
-                  disabledClassName={'disabled'}
-                  breakClassName={'page-item'}
-                  breakLinkClassName={'page-link'}
-                  pageClassName={'page-item'}
-                  pageLinkClassName={'page-link'}
+                  onPageChange={(selectedItem) =>
+                    setCurrentPage(selectedItem.selected + 1)
+                  }
+                  containerClassName={"pagination justify-content-center"}
+                  activeClassName={"active"}
+                  previousLinkClassName={"page-link"}
+                  nextLinkClassName={"page-link"}
+                  disabledClassName={"disabled"}
+                  breakClassName={"page-item"}
+                  breakLinkClassName={"page-link"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
                 />
               </div>
             </>
           )}
         </div>
-
       </section>
     </React.Fragment>
-
-  )
-
+  );
 };
 
 export default Reports;

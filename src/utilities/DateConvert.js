@@ -5,9 +5,9 @@ const DateFormatter = (date, time = true) => {
     return null;
   }
 
-  let DateFormat = "DD/MM/YYYY";
+  let DateFormat = "YYYY-MM-DD";
   if (time) {
-    DateFormat = "DD/MM/YYYY hh:mm A";
+    DateFormat = "YYYY-MM-DD HH:MM";
   }
 
   const formattedDate = moment(date).format(DateFormat).toUpperCase();
@@ -16,7 +16,8 @@ const DateFormatter = (date, time = true) => {
 
 export const dateFormatBasic = (dateVal) => {
   //convert only this format 2024-10-10T12:36:30Z
-  if (!dateVal.includes("T")) return dateVal;
+  if (!dateVal?.includes("T")) return dateVal;
+  if (!dateVal?.includes("Z")) return DateFormatter(dateVal);
   let date;
   // console.log("dateVal", dateVal)
   if ((dateVal === null && isNaN(date)) || dateVal === "NA") {
