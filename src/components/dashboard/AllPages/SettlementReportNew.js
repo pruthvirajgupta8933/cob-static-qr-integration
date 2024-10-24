@@ -681,7 +681,7 @@ const SettlementReportNew = () => {
                 <Table
                   row={rowData}
                   data={paginatedata}
-                  dataCount={paginatedata.length}
+                  dataCount={txnList.length}
                   pageSize={pageSize}
                   currentPage={currentPage}
                   changeCurrentPage={(page) => setCurrentPage(page)}

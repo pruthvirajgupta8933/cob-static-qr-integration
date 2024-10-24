@@ -12,7 +12,9 @@ const Table = (props) => {
     scrollX: true,
     scrollY: true,
   };
-  const [pageCount, setPageCount] = useState(Math.ceil(props.dataCount / props.pageSize));
+  const [pageCount, setPageCount] = useState(
+    Math.ceil(props.dataCount / props.pageSize)
+  );
   const [currentPage, setCurrentPage] = useState(props.currentPage || 1);
 
   useEffect(() => {
@@ -37,29 +39,29 @@ const Table = (props) => {
         data={props.data}
         sortIcon={<i className="fa fa-arrow-up ml-1"></i>}
         fixedHeader={fixedHeaderFooter}
-      // pagination
-      // selectableRows
+        // pagination
+        // selectableRows
       />{" "}
       {props?.dataCount > 0 && (
-         <ReactPaginate
-         previousLabel={'Previous'}
-         nextLabel={'Next'}
-         breakLabel={'...'}
-         pageCount={pageCount}
-         marginPagesDisplayed={2}
-         pageRangeDisplayed={5}
-         onPageChange={handlePageClick}
-         containerClassName={'pagination justify-content-center'}
-         activeClassName={'active'}
-         previousLinkClassName={'page-link'}
-         nextLinkClassName={'page-link'}
-         disabledClassName={'disabled'}
-         breakClassName={'page-item'}
-         breakLinkClassName={'page-link'}
-         pageClassName={'page-item'}
-         pageLinkClassName={'page-link'}
-         forcePage={currentPage - 1}
-       />
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination justify-content-center"}
+          activeClassName={"active"}
+          previousLinkClassName={"page-link"}
+          nextLinkClassName={"page-link"}
+          disabledClassName={"disabled"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          forcePage={currentPage - 1}
+        />
       )}
     </>
   );

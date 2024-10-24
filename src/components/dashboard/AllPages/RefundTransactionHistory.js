@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
 // import * as Yup from "yup";
+import Table from "../../../_components/table_components/table/Table";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
 import {
@@ -124,6 +125,125 @@ const RefundTransactionHistory = () => {
     initialValues.clientCode = clientCodeListArr[0][fnKey];
   }
 
+  const rowData = [
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.SrNo,
+      sortable: true,
+      width: "95px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.client_code,
+      cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
+      width: "120px",
+    },
+    {
+      id: "3",
+      name: "Client Name",
+      selector: (row) => row.client_name,
+      cell: (row) => <div className="removeWhiteSpace">{row.client_name}</div>,
+      width: "120px",
+    },
+    {
+      id: "4",
+      name: "SP Transaction ID",
+      selector: (row) => row.txn_id,
+      cell: (row) => <div className="removeWhiteSpace">{row.txn_id}</div>,
+      width: "120px",
+    },
+    {
+      id: "5",
+      name: "Client Transaction ID",
+      selector: (row) => row.client_txn_id,
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row.client_txn_id}</div>
+      ),
+      width: "120px",
+    },
+    {
+      id: "6",
+      name: "Amount",
+      selector: (row) => Number.parseFloat(row.payee_amount).toFixed(2),
+      sortable: true,
+      width: "110px",
+    },
+    {
+      id: "7",
+      name: "Amount Adjusted On",
+      selector: (row) => dateFormatBasic(row.amount_adjust_on),
+      sortable: true,
+      width: "150px",
+    },
+    {
+      id: "8",
+      name: "Amount Available To Adjust",
+      selector: (row) => row.amount_available_to_adjust,
+      width: "120px",
+    },
+    {
+      id: "9",
+      name: "Bank Name",
+      selector: (row) => row.bank_name,
+      cell: (row) => <div>{row.bank_name}</div>,
+      sortable: true,
+      width: "120px",
+    },
+    {
+      id: "10",
+      name: "Money Asked From Merchant",
+      selector: (row) => row.money_asked_from_merchant,
+      cell: (row) => <div>{row.money_asked_from_merchant}</div>,
+      width: "120px",
+    },
+    {
+      id: "11",
+      name: "Payment Mode",
+      selector: (row) => row.payment_mode,
+      width: "120px",
+    },
+    {
+      id: "12",
+      name: "Refund Initiated On",
+      selector: (row) => dateFormatBasic(row.refund_initiated_on),
+      sortable: true,
+      width: "150px",
+    },
+    {
+      id: "13",
+      name: "Refund Reason",
+      selector: (row) => row.refund_reason,
+      cell: (row) => <div>{row.refund_reason}</div>,
+      width: "130px",
+    },
+    {
+      id: "14",
+      name: "Refund Process On",
+      selector: (row) => dateFormatBasic(row.refund_process_on),
+      width: "150px",
+    },
+    {
+      id: "15",
+      name: "Refund Track Id",
+      selector: (row) => row.refund_track_id,
+      cell: (row) => <div>{row.refund_track_id}</div>,
+      width: "120px",
+    },
+    {
+      id: "16",
+      name: "Refunded Amount",
+      selector: (row) => row.refunded_amount,
+      width: "110px",
+    },
+    {
+      id: "17",
+      name: "Transaction Date",
+      selector: (row) => dateFormatBasic(row.trans_date),
+      width: "150px",
+    },
+  ];
   const fetchData = () => {
     const roleType = roles;
     const type = roleType.bank
@@ -466,35 +586,29 @@ const RefundTransactionHistory = () => {
         </section>
 
         <section className="features8 cid-sg6XYTl25a flleft w-100">
-          <div className="container-fluid  p-3 my-3 ">
+          <div className="container-fluid p-0 my-3 ">
             {txnList.length > 0 ? (
-              <h4>Total Record : {txnList.length} </h4>
+              <h6>
+                <strong>Total Record</strong> :{" "}
+                <strong>{txnList.length}</strong>
+              </h6>
             ) : (
               <></>
             )}
 
             <div className="overflow-auto">
-              <table className="table table-bordered">
+              <Table
+                row={rowData}
+                data={paginatedata}
+                dataCount={txnList.length}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={(page) => setCurrentPage(page)}
+              />
+              {/* <table className="table table-bordered">
                 <thead>
                   {txnList.length > 0 ? (
                     <tr>
-                      <th> S.No</th>
-                      <th> Client Code</th>
-                      <th> Client Name</th>
-                      <th> SP Transaction ID</th>
-                      <th> Client Transaction ID</th>
-                      <th> Amount</th>
-                      <th> Amount Adjusted On</th>
-                      <th> Amount Available To Adjust</th>
-                      <th> Bank Name</th>
-                      <th> Money Asked From Merchant</th>
-                      <th> Payment Mode</th>
-                      <th> Refund Initiated On</th>
-                      <th> Refund Process On</th>
-                      <th> Refund Reason</th>
-                      <th> Refund Track Id</th>
-                      <th> Refunded Amount</th>
-                      <th> Transaction Date</th>
                     </tr>
                   ) : (
                     <></>
@@ -528,10 +642,10 @@ const RefundTransactionHistory = () => {
                       );
                     })}
                 </tbody>
-              </table>
+              </table> */}
             </div>
 
-            <div>
+            {/* <div>
               {txnList.length > 0 ? (
                 <nav aria-label="Page navigation example">
                   <ul className="pagination">
@@ -583,8 +697,8 @@ const RefundTransactionHistory = () => {
               ) : (
                 <></>
               )}
-            </div>
-            <div className="container">
+            </div> */}
+            {/* <div className="container">
               {isLoadingTxnHistory ? (
                 <div className="col-lg-12 col-md-12">
                   <div className="text-center">
@@ -602,7 +716,7 @@ const RefundTransactionHistory = () => {
               ) : (
                 <></>
               )}
-            </div>
+            </div> */}
           </div>
         </section>
       </main>
