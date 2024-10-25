@@ -118,7 +118,7 @@ const MultiUserOnboard = () => {
       if (
         merchantId &&
         kycData.onboard_type !== "Referrer (Company)" &&
-        kycData.onboardType !== "Referrer (Individual)"
+        kycData.onboard_type !== "Referrer (Individual)"
       )
         toastConfig.infoToast("Please use kyc tab to update this kyc");
     }

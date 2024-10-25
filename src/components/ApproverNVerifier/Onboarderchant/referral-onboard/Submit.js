@@ -87,7 +87,8 @@ const Submit = ({ disableForm }) => {
       dispatch(
         saveKycConsent({
           term_condition: checked,
-          login_id: basicDetailsResponse?.data?.loginMasterId,
+          login_id:
+            kycData?.loginMasterId ?? basicDetailsResponse?.data?.loginMasterId,
           submitted_by: createdBy,
         })
       ).then((res) => {
