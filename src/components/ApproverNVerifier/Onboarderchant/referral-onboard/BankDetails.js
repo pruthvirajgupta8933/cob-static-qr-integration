@@ -17,7 +17,7 @@ import {
 import { saveBankDetails } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import verifiedIcon from "../../../../assets/images/verified.png";
 
-const BankDetails = ({ setCurrentTab }) => {
+const BankDetails = ({ setCurrentTab, disableForm }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const [accountLoader, setAccountLoader] = useState(false);
@@ -85,7 +85,7 @@ const BankDetails = ({ setCurrentTab }) => {
         account_type: selectedType.find((type) => type.key == values.acType)
           ?.value,
         branch: values.branch,
-        login_id: basicDetailsResponse?.loginMasterId,
+        login_id: kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId,
         modified_by: user?.loginId,
       })
     )
@@ -195,7 +195,7 @@ const BankDetails = ({ setCurrentTab }) => {
                       text="text"
                       name="ifsc"
                       className="form-control"
-                      // disabled={isEditableInput}
+                      disabled={disableForm}
                       onChange={(e) => {
                         setFieldValue("ifsc", e.target.value.toUpperCase());
                         setFieldValue("isIfscVerified", "");
@@ -220,7 +220,7 @@ const BankDetails = ({ setCurrentTab }) => {
                       type="number"
                       name="acNumber"
                       className="form-control"
-                      // disabled={isEditableInput}
+                      disabled={disableForm}
                       onChange={(e) => {
                         setFieldValue("acNumber", e.target.value);
                         setFieldValue("isAccountNumberVerified", "");
@@ -285,6 +285,7 @@ const BankDetails = ({ setCurrentTab }) => {
                     type="text"
                     name="acHolderName"
                     className="form-control"
+                    disabled={disableForm}
                   />
                 </div>
 
@@ -298,6 +299,7 @@ const BankDetails = ({ setCurrentTab }) => {
                     control="select"
                     name="acType"
                     options={selectedType}
+                    disabled={disableForm}
                     // onChange={(e) => console.log(e.target.value)}
                     className="form-select"
                   />
@@ -314,6 +316,7 @@ const BankDetails = ({ setCurrentTab }) => {
                       control="input"
                       name="bankName"
                       className="form-control"
+                      disabled={disableForm}
                     />
                     {values?.bank_id !== "" && (
                       <span className="success input-group-append">
@@ -340,6 +343,7 @@ const BankDetails = ({ setCurrentTab }) => {
                     type="text"
                     name="branch"
                     className="form-control"
+                    disabled={disableForm}
                   />
                 </div>
               </div>
@@ -348,7 +352,7 @@ const BankDetails = ({ setCurrentTab }) => {
                   <button
                     className="cob-btn-primary btn text-white btn-sm"
                     type="submit"
-                    disabled={!isValid}
+                    disabled={!isValid || disableForm}
                   >
                     {/* // disabled={disable} > */}
                     {submitLoader && (

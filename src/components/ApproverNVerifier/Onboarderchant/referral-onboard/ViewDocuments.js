@@ -8,12 +8,14 @@ const ViewDocuments = () => {
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
   const { KycDocUpload } = useSelector((state) => state.kyc);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       kycDocumentUploadList({
-        login_id: basicDetailsResponse.data?.loginMasterId,
+        login_id:
+          kycData?.loginMasterId ?? basicDetailsResponse.data?.loginMasterId,
       })
     );
   }, []);

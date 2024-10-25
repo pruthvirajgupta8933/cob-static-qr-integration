@@ -30,7 +30,7 @@ import verifiedIcon from "../../../../assets/images/verified.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { stringEnc } from "../../../../utilities/encodeDecode";
 
-const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
+const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [panLoader, setPanLoader] = useState(false);
   const [idProofLoader, setIdProofLoader] = useState(false);
@@ -110,14 +110,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     // }
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
-    else if (
-      basicDetailsResponse?.data &&
-      !kycData?.isEmailVerified
-      // && !basicDetailsResponse?.data?.clientCodeCreated
-    ) {
-      toastConfig.successToast(
-        "Data saved successfully. Please verify the email sent"
-      );
+    else if (basicDetailsResponse?.data) {
+      if (!kycData?.isEmailVerified)
+        toastConfig.successToast(
+          "Data saved successfully. Please verify the email sent"
+        );
+      else if (edit) toastConfig.successToast("Data saved successfully");
       setSubmitLoader(false);
 
       // createClientCode();
@@ -168,15 +166,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     password: Yup.string()
       .matches(Regex.password, RegexMsg.password)
       .required("Required"),
-    // aadhaar: Yup.string()
-    //   .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-    //   .length(12, "Only 12 digits are allowed")
-    //   .required("Required"),
+    id_number: Yup.string().required("Required"),
     isIdProofVerified: Yup.boolean().required("Please verify id proof"),
     pan:
       type === "individual"
         ? Yup.string()
-            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+            .matches(Regex.panRegex, RegexMsg.panRegex)
             .length(10, "Only 10 digits are allowed")
             .required("Required")
         : null,
@@ -272,6 +267,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
       id_proof_type: idType,
     };
+    if (edit) postData.login_id = kycData?.loginMasterId;
     dispatch(saveBasicDetails(postData));
   };
 
@@ -359,7 +355,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
             setFieldValue("id_number", e.target.value);
             setFieldValue("isIdProofVerified", "");
           }}
-          disabled={!idType || kycData?.id_proof_type}
+          disabled={!idType || kycData?.id_proof_type || disableForm}
         />
 
         {values.id_number && values.isIdProofVerified ? (
@@ -378,7 +374,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
             <a
               href={() => false}
               className={`btn cob-btn-primary btn-sm ${
-                disableClass ? "disabled" : ""
+                disableClass || disableForm ? "disabled" : ""
               }`}
               onClick={() =>
                 idType === "1"
@@ -452,7 +448,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Full Name"
                   required
                   autoComplete="off"
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
 
@@ -465,7 +461,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Contact Number"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -477,7 +473,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Email ID"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -490,7 +486,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   autoComplete="off"
                   type="password"
                   required
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -667,7 +663,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                         setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
                       }}
-                      disabled={basicDetailsResponse?.data}
+                      disabled={basicDetailsResponse?.data || disableForm}
                     />
                     {values?.pan !== null &&
                     values?.pan !== "" &&
@@ -701,7 +697,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                           <a
                             href={() => false}
                             className={`btn cob-btn-primary text-white btn btn-sm ${
-                              values.pan?.length !== 10 ? "disabled" : "pe-auto"
+                              values.pan?.length !== 10 || disableForm
+                                ? "disabled"
+                                : "pe-auto"
                             }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
@@ -738,7 +736,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   )}
                 </button>
 
-                {basicDetailsResponse.data && !submitLoader && (
+                {(basicDetailsResponse.data || edit) && !submitLoader && (
                   <a
                     className="btn active-secondary btn-sm m-2"
                     onClick={() =>
@@ -746,7 +744,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         ? setCurrentTab("address")
                         : history.push(
                             `kyc?kycid=${stringEnc(
-                              basicDetailsResponse.data?.loginMasterId
+                              kycData?.loginMasterId ??
+                                basicDetailsResponse.data?.loginMasterId
                             )}`
                           )
                     }
