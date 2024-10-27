@@ -5,6 +5,7 @@ import {
   aadharNumberVerify,
 } from "../services/kyc-validator-service/kycValidator.service";
 import {
+  axiosInstanceJWT,
   bankValidatorAuth,
   cinValidatorAuth,
   kycValidatorAuth,
@@ -81,8 +82,8 @@ export const udyamRegistration = createAsyncThunk(
 export const ifscValidation = createAsyncThunk(
   "kyc/ifscValidation",
   async (requestParam) => {
-    const response = await bankValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-ifsc/`, requestParam)
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.VALIDATE_DOC_KYC}/ifsc/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -94,8 +95,8 @@ export const ifscValidation = createAsyncThunk(
 export const bankAccountVerification = createAsyncThunk(
   "kyc/bankAccountVerification",
   async (requestParam) => {
-    const response = await bankValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-account/`, requestParam)
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.VALIDATE_DOC_KYC}/account/`, requestParam)
       .catch((error) => {
         return error.response;
       });

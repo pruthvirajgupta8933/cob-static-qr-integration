@@ -1,4 +1,4 @@
-const ENV_PROD = false; // For proudction make it true, don't change in the local environment
+const ENV_PROD = true; // For proudction make it true, don't change in the local environment
 let url,
   kyc_url,
   b2b_url,
@@ -292,6 +292,7 @@ const API_LIVE = {
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
   VALIDATE_KYC: `${kyc_validate}/validator`,
+  VALIDATE_DOC_KYC: `${kyc_url}/kyc/validate`,
 
   UDYAM_REGISTRATION: `${kyc_validate}/validator`,
   CIN_DETAIL: `${kyc_validate}/validator/validate-master-data/cin-lookup/`,
