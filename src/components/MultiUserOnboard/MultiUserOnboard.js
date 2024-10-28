@@ -117,10 +117,12 @@ const MultiUserOnboard = () => {
       );
       if (
         merchantId &&
-        kycData.onboard_type !== "Referrer (Company)" &&
-        kycData.onboard_type !== "Referrer (Individual)"
-      )
+        kycData?.onboard_type &&
+        kycData.onboard_type != "Referrer (Company)" &&
+        kycData.onboard_type != "Referrer (Individual)"
+      ) {
         toastConfig.infoToast("Please use kyc tab to update this kyc");
+      }
     }
   }, [kycData]);
   useEffect(() => {
@@ -171,7 +173,7 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {basicDetailsResponse.data?.business_cat_code && (
+        {(basicDetailsResponse.data?.business_cat_code ?? merchantId) && (
           <Prompt
             message={() => {
               if (

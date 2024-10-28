@@ -93,21 +93,22 @@ const Referral = ({ type, zoneCode, edit }) => {
   return (
     <section className="container-fluid">
       <div className="row">
-        {basicDetailsResponse && (
+        {(basicDetailsResponse || edit) && (
           <>
             <div className="d-flex bg-light justify-content-between px-0 my-2">
               <div>
                 <p className="p-2 m-0">
-                  Session Start : {basicDetailsResponse?.name}
+                  Session Start : {basicDetailsResponse?.name ?? kycData?.name}
                 </p>
                 <p className="p-2 m-0">
-                  KYC Status : {basicDetailsResponse?.status}
+                  KYC Status : {basicDetailsResponse?.status ?? kycData?.status}
                 </p>
               </div>
               <div>
                 <p className="p-2 m-0">
                   Merchant Onboard Login ID :{" "}
-                  {basicDetailsResponse?.loginMasterId}
+                  {basicDetailsResponse?.loginMasterId ??
+                    kycData?.loginMasterId}
                 </p>
               </div>
             </div>
@@ -137,7 +138,7 @@ const Referral = ({ type, zoneCode, edit }) => {
                     : basicDetailsResponse?.loginMasterId ||
                       (edit && kycData?.loginMasterId)
                     ? "pe-auto"
-                    : "pe-none"
+                    : "pe-auto"
                 }`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}

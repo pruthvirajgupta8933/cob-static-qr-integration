@@ -200,8 +200,6 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
                         setFieldValue("ifsc", e.target.value.toUpperCase());
                         setFieldValue("isIfscVerified", "");
                         setFieldValue("bank_id", "");
-                        if (e.target.value.length === 11)
-                          verifyBank(e.target.value, setFieldValue);
                       }}
                     />
                   </div>
@@ -255,13 +253,14 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
                           <a
                             href={() => false}
                             className="btn cob-btn-primary text-white btn btn-sm"
-                            onClick={() =>
+                            onClick={() => {
                               verifyAccount(
                                 values.ifsc,
                                 values.acNumber,
                                 setFieldValue
-                              )
-                            }
+                              );
+                              verifyBank(values.ifsc, setFieldValue);
+                            }}
                           >
                             Verify
                           </a>

@@ -18,7 +18,8 @@ const UploadDocuments = ({ disableForm }) => {
     if (!docList?.length > 0)
       dispatch(
         documentsUpload({
-          businessType: basicDetailsResponse?.business_cat_code,
+          businessType:
+            kycData?.businessType ?? basicDetailsResponse?.business_cat_code,
           is_udyam: false,
         })
       )

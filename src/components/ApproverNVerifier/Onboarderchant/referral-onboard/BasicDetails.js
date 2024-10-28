@@ -331,15 +331,17 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
     let disableClass = false;
-    if (idType === "1") {
-      //{"name":"NEHA SINHA","loginMasterId":11522,"business_cat_code":"13","status":"Pending","isOnboardStart":true}
-      if (values.id_number?.length < 12 || idProofLoader || errors?.id_number)
-        disableClass = true;
-    } else if (idType === "3") {
-      if (values.id_number?.length < 10) disableClass = true;
-    } else if (idType === "4") {
-      if (values.id_number?.length < 14 || errors?.id_number)
-        disableClass = true;
+    if (!edit) {
+      if (idType === "1") {
+        //{"name":"NEHA SINHA","loginMasterId":11522,"business_cat_code":"13","status":"Pending","isOnboardStart":true}
+        if (values.id_number?.length < 12 || idProofLoader || errors?.id_number)
+          disableClass = true;
+      } else if (idType === "3") {
+        if (values.id_number?.length < 10) disableClass = true;
+      } else if (idType === "4") {
+        if (values.id_number?.length < 14 || errors?.id_number)
+          disableClass = true;
+      }
     }
     return (
       <>
@@ -355,7 +357,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
             setFieldValue("id_number", e.target.value);
             setFieldValue("isIdProofVerified", "");
           }}
-          disabled={!idType || kycData?.id_proof_type || disableForm}
+          disabled={
+            disableForm ||
+            (edit ? disableForm : !idType || kycData?.id_proof_type)
+          }
         />
 
         {values.id_number && values.isIdProofVerified ? (
@@ -498,7 +503,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   <span
                     className="text-decoration-underline text-primary cursor_pointer"
                     onClick={() =>
-                      !kycData?.id_proof_type &&
+                      // !kycData?.id_proof_type &&
                       setIdProofInputToggle((prev) => !prev)
                     }
                   >
@@ -512,7 +517,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                       className="form-select"
                       onChange={(e) => {
                         idProofhandler(e.target.value);
-                        setFieldValue("id_number", "");
+                        console.log(e.target.value, kycData?.id_proof_type);
+                        if (
+                          kycData?.aadharNumber &&
+                          e.target.value == kycData?.id_proof_type
+                        ) {
+                          setFieldValue("id_number", kycData.aadharNumber);
+                        } else setFieldValue("id_number", "");
                         setFieldValue("id_proof_type", e.target.value);
                         setSelectedIdProofName(
                           e.target[e.target.selectedIndex].text
