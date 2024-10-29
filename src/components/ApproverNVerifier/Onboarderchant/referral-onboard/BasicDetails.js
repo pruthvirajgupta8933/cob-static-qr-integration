@@ -60,7 +60,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     contactNumber:
       kycData?.contactNumber ?? basicDetailsResponse?.data?.mobileNumber ?? "",
     email: kycData?.emailId ?? basicDetailsResponse?.data?.email ?? "",
-    password: "",
+    password: edit ? "**********" : "",
     pan:
       kycData?.signatoryPAN ??
       kycData?.panCard ??
@@ -78,6 +78,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       basicDetailsResponse?.data?.pan_number
         ? 1
         : "",
+    panName: kycData?.nameOnPanCard ?? "",
   };
 
   useEffect(() => {
@@ -163,9 +164,16 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       .email("Invalid email")
       .required("Required")
       .nullable(),
-    password: Yup.string()
-      .matches(Regex.password, RegexMsg.password)
-      .required("Required"),
+    password: edit
+      ? Yup.string()
+          .matches(
+            /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
+            RegexMsg.password
+          )
+          .required("Required")
+      : Yup.string()
+          .matches(Regex.password, RegexMsg.password)
+          .required("Required"),
     id_number: Yup.string().required("Required"),
     isIdProofVerified: Yup.boolean().required("Please verify id proof"),
     pan:
@@ -259,7 +267,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       mobileNumber: values.contactNumber,
       created_by: createdBy,
       zone_code: zoneCode,
-      password: values.password,
       pan_card: values.pan,
       name_on_pan_card: values.panName,
       aadhar_number: values.id_number,
@@ -267,7 +274,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
       id_proof_type: idType,
     };
-    if (edit) postData.login_id = kycData?.loginMasterId;
+    if (edit) {
+      postData.login_id = kycData?.loginMasterId;
+      if (values.password !== initialValues.password)
+        postData.password = values.password;
+      else postData.password = kycData.secret_key;
+    } else postData.password = values.password;
     dispatch(saveBasicDetails(postData));
   };
 
