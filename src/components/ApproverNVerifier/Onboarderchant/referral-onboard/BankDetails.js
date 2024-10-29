@@ -122,7 +122,7 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
         setFieldValue("isIfscVerified", true);
         setFieldValue("bankName", bankRes?.payload?.bank);
       } else {
-        toast.error(bankRes?.payload?.message);
+        toast.error(bankRes?.payload?.message ?? bankRes.payload?.detail);
       }
     } catch (err) {
       toast.error(err?.payload?.bankName ?? "Error while fetching bank name");
@@ -146,25 +146,30 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
         account_number: acNumber,
         ifsc,
       })
-    ).then((res) => {
-      if (
-        res?.meta?.requestStatus === "fulfilled" &&
-        res?.payload?.status === true &&
-        res?.payload?.valid === true
-      ) {
-        const bankFirstName = res?.payload?.first_name?.trim();
-        const bankLastName = res?.payload?.last_name?.trim();
-        let fullName = `${bankFirstName} ${bankLastName}`;
+    )
+      .then((res) => {
+        if (
+          res?.meta?.requestStatus === "fulfilled" &&
+          res?.payload?.status === true &&
+          res?.payload?.valid === true
+        ) {
+          const bankFirstName = res?.payload?.first_name?.trim();
+          const bankLastName = res?.payload?.last_name?.trim();
+          let fullName = `${bankFirstName} ${bankLastName}`;
 
-        setFieldValue("acHolderName", fullName.trim());
-        setFieldValue("isAccountNumberVerified", 1);
-        toast.success(res?.payload?.message);
-        setAccountLoader(false);
-      } else {
-        toast.error(res?.payload?.message);
-        setAccountLoader(false);
-      }
-    });
+          setFieldValue("acHolderName", fullName.trim());
+          setFieldValue("isAccountNumberVerified", 1);
+          toast.success(res?.payload?.message);
+          setAccountLoader(false);
+        } else {
+          toast.error(res?.payload?.message ?? res.payload);
+          setAccountLoader(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setSubmitLoader(false);
+      });
   };
 
   return (

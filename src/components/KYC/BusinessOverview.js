@@ -88,7 +88,7 @@ function BusinessOverview(props) {
     expected_transactions: KycList?.expectedTransactions,
     form_build: "Yes",
   };
-  console.log(props);
+
   const Regexx = {
     acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
   };
@@ -490,7 +490,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={ticketOptions}
-                  // onClick={() => getExpectedTransactions(2)}
+                // onClick={() => getExpectedTransactions(2)}
                 />
               </div>
             </div>

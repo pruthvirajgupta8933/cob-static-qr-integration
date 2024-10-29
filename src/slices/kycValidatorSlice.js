@@ -3,39 +3,38 @@ import { setMessage } from "./message";
 import {
   cinDetail,
   aadharNumberVerify,
+  panVerify,
+  gstVerify,
+  udyamVerify,
+  ifscVerify,
+  accountVerify,
+  credReportVerify,
+  cinVerify,
+  voterVerify,
 } from "../services/kyc-validator-service/kycValidator.service";
-import {
-  axiosInstanceJWT,
-  bankValidatorAuth,
-  cinValidatorAuth,
-  kycValidatorAuth,
-} from "../utilities/axiosInstance";
-import API_URL from "../config";
 
 const initialState = {};
 
 //----- GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 export const panValidation = createAsyncThunk(
   "kyc/panValidation",
-  async (requestParam) => {
+  async (requestParam, thunkAPI) => {
     // console.log("check 1",requestParam)
-    const response = await bankValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+    try {
+      const response = await panVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
 );
-
-
 
 export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam, thunkAPI) => {
     try {
-      const response = await bankValidatorAuth.post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam);
+      const response = await panVerify(requestParam);
       return response.data;
     } catch (error) {
       const message =
@@ -50,97 +49,128 @@ export const authPanValidation = createAsyncThunk(
       return thunkAPI.rejectWithValue(message);
     }
   }
-
 );
 
 export const gstValidation = createAsyncThunk(
   "kyc/gstValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-gst/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await gstVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
 );
 
 export const udyamRegistration = createAsyncThunk(
-  "kyc/gstValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.UDYAM_REGISTRATION}/validate-udyam/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  "kyc/udyamValidation",
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await udyamVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
 );
 
 export const ifscValidation = createAsyncThunk(
   "kyc/ifscValidation",
-  async (requestParam) => {
-    const response = await axiosInstanceJWT
-      .post(`${API_URL.VALIDATE_DOC_KYC}/ifsc/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await ifscVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
   }
 );
 
 export const bankAccountVerification = createAsyncThunk(
   "kyc/bankAccountVerification",
-  async (requestParam) => {
-    const response = await axiosInstanceJWT
-      .post(`${API_URL.VALIDATE_DOC_KYC}/account/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await accountVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
   }
 );
 
 export const credReportValidation = createAsyncThunk(
   "kyc/credReportValidation",
   async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-cred-report/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+    try {
+      const response = await credReportVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
 );
 
 export const voterCardValidation = createAsyncThunk(
   "kyc/voterCardValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-voter-card/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await voterVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
   }
 );
 
 export const dlValidation = createAsyncThunk(
   "kyc/drivingLicenseValidation",
-  async (requestParam) => {
-    const response = await kycValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-driving-liscence/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await accountVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
   }
 );
 
@@ -168,13 +198,13 @@ export const cinLookupApi = createAsyncThunk(
 export const cinValidation = createAsyncThunk(
   "kyc/cinValidation",
   async (requestParam) => {
-    const response = await cinValidatorAuth
-      .post(`${API_URL.VALIDATE_KYC}/validate-cin/`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+    try {
+      const response = await cinVerify(requestParam);
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
 );
 
