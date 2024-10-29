@@ -174,6 +174,15 @@ const MyMerchantList = () => {
       ),
       // width: "200px",
     },
+    {
+      id: "13",
+      name: "Onboard Type",
+      selector: (row) => row.status,
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.login_id?.onboard_type}</div>
+      ),
+      // width: "200px",
+    },
 
     {
       id: "7",
@@ -245,8 +254,8 @@ const MyMerchantList = () => {
       cell: (row) => (
         <div className="d-flex">
           {roles?.viewer === true ||
-          (roles?.accountManager === true &&
-            row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+            (roles?.accountManager === true &&
+              row?.login_id?.master_client_id?.clientCode !== undefined) ? (
             <>
               <button
                 type="button"
