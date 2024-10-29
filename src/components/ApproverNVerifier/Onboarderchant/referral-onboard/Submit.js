@@ -13,7 +13,7 @@ import API_URL from "../../../../config";
 import authService from "../../../../services/auth.service";
 import toastConfig from "../../../../utilities/toastTypes";
 
-const Submit = () => {
+const Submit = ({ disableForm }) => {
   const [checked, setChecked] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const dispatch = useDispatch();
@@ -27,7 +27,10 @@ const Submit = () => {
   useEffect(() => {
     if (basicDetailsResponse?.data)
       dispatch(
-        kycUserList({ login_id: basicDetailsResponse?.data.loginMasterId })
+        kycUserList({
+          login_id:
+            kycData?.loginMasterId ?? basicDetailsResponse?.data.loginMasterId,
+        })
       );
   }, []);
   const createClientCode = async () => {
@@ -84,7 +87,8 @@ const Submit = () => {
       dispatch(
         saveKycConsent({
           term_condition: checked,
-          login_id: basicDetailsResponse?.data?.loginMasterId,
+          login_id:
+            kycData?.loginMasterId ?? basicDetailsResponse?.data?.loginMasterId,
           submitted_by: createdBy,
         })
       ).then((res) => {
@@ -122,6 +126,7 @@ const Submit = () => {
               name="term_condition"
               className="mr-2 mt-1"
               onChange={() => setChecked(!checked)}
+              disabled={disableForm}
             />
             <span>
               I have submitted the details to the best of my knowledge.
@@ -133,7 +138,7 @@ const Submit = () => {
         <div className="col-12">
           <button
             className="btn btn-sm float-lg-center cob-btn-primary text-white"
-            disabled={!checked || submitLoader}
+            disabled={!checked || submitLoader || disableForm}
             onClick={handleSubmit}
           >
             Submit

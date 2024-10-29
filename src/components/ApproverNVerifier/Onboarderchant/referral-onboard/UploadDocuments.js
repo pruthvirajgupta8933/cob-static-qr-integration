@@ -5,11 +5,12 @@ import { toast } from "react-toastify";
 import toastConfig from "../../../../utilities/toastTypes";
 import { documentsUpload, merchantInfo } from "../../../../slices/kycSlice";
 
-const UploadDocuments = () => {
+const UploadDocuments = ({ disableForm }) => {
   const { user } = useSelector((state) => state.auth);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
   const docList = useSelector((state) => state.kyc.documentsUpload);
   const [docTypeList, setDocTypeList] = useState(docList ?? []);
   const dispatch = useDispatch();
@@ -17,7 +18,8 @@ const UploadDocuments = () => {
     if (!docList?.length > 0)
       dispatch(
         documentsUpload({
-          businessType: basicDetailsResponse?.business_cat_code,
+          businessType:
+            kycData?.businessType ?? basicDetailsResponse?.business_cat_code,
           is_udyam: false,
         })
       )
@@ -40,13 +42,16 @@ const UploadDocuments = () => {
     setFieldValue(`${doc_id}_loading`, true);
     const bodyFormData = new FormData();
     bodyFormData.append("files", file);
-    bodyFormData.append("login_id", basicDetailsResponse?.loginMasterId);
+    bodyFormData.append(
+      "login_id",
+      kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId
+    );
     bodyFormData.append("modified_by", user?.loginId);
     bodyFormData.append("type", doc_id);
 
-    const kycData = { bodyFormData, doc_id };
+    const data = { bodyFormData, doc_id };
 
-    dispatch(merchantInfo(kycData))
+    dispatch(merchantInfo(data))
       .then((res) => {
         if (res?.payload?.status) {
           setFieldValue(`${doc_id}_uploaded`, 1);
@@ -106,7 +111,8 @@ const UploadDocuments = () => {
                           disabled={
                             values[`${doc.id}_loading`] ||
                             !values.files?.[index] ||
-                            values[`${doc.id}_uploaded`]
+                            values[`${doc.id}_uploaded`] ||
+                            disableForm
                           }
                           onClick={() => {
                             handleUpload(
