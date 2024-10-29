@@ -10,7 +10,7 @@ import AddressDetails from "./AddressDetails";
 import ReferralId from "./ReferralId";
 import Submit from "./Submit";
 
-const Referral = ({ type, zoneCode }) => {
+const Referral = ({ type, zoneCode, edit }) => {
   let tabs = [];
   if (type === "individual") {
     tabs = [
@@ -37,6 +37,7 @@ const Referral = ({ type, zoneCode }) => {
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
   const handleTabClick = (tabId) => setCurrentTab(tabId);
 
   const renderTabContent = () => {
@@ -48,16 +49,33 @@ const Referral = ({ type, zoneCode }) => {
             setCurrentTab={setCurrentTab}
             type={type}
             zoneCode={zoneCode}
+            edit={edit}
+            disableForm={["Verified", "Approved"].includes(kycData.status)}
           />
         );
       case "address":
-        return <AddressDetails setCurrentTab={setCurrentTab} />;
+        return (
+          <AddressDetails
+            setCurrentTab={setCurrentTab}
+            disableForm={["Verified", "Approved"].includes(kycData.status)}
+          />
+        );
       case "referral_id":
         return <ReferralId setCurrentTab={setCurrentTab} />;
       case "bank":
-        return <BankDetails setCurrentTab={setCurrentTab} />;
+        return (
+          <BankDetails
+            setCurrentTab={setCurrentTab}
+            disableForm={["Verified", "Approved"].includes(kycData.status)}
+          />
+        );
       case "upload_doc":
-        return <UploadDocuments setCurrentTab={setCurrentTab} />;
+        return (
+          <UploadDocuments
+            setCurrentTab={setCurrentTab}
+            disableForm={["Verified", "Approved"].includes(kycData.status)}
+          />
+        );
       case "view_doc":
         return <ViewDocuments setCurrentTab={setCurrentTab} />;
       case "biz_overview":
@@ -65,35 +83,42 @@ const Referral = ({ type, zoneCode }) => {
       case "biz_details":
         return <BusinessDetails setCurrentTab={setCurrentTab} />;
       default:
-        return <Submit />;
+        return (
+          <Submit
+            disableForm={["Verified", "Approved"].includes(kycData.status)}
+          />
+        );
     }
   };
   return (
     <section className="container-fluid">
       <div className="row">
-        {basicDetailsResponse && (
+        {(basicDetailsResponse || edit) && (
           <>
             <div className="d-flex bg-light justify-content-between px-0 my-2">
               <div>
                 <p className="p-2 m-0">
-                  Session Start : {basicDetailsResponse?.name}
+                  Session Start : {basicDetailsResponse?.name ?? kycData?.name}
                 </p>
                 <p className="p-2 m-0">
-                  KYC Status : {basicDetailsResponse?.status}
+                  KYC Status : {basicDetailsResponse?.status ?? kycData?.status}
                 </p>
               </div>
               <div>
                 <p className="p-2 m-0">
                   Merchant Onboard Login ID :{" "}
-                  {basicDetailsResponse?.loginMasterId}
+                  {basicDetailsResponse?.loginMasterId ??
+                    kycData?.loginMasterId}
                 </p>
               </div>
             </div>
-            <p className="text-danger">
-              Important Note: A verification link has been sent to the
-              registered email associated with your merchant account. Please
-              verify the link to proceed to the next step.
-            </p>
+            {!edit && (
+              <p className="text-danger">
+                Important Note: A verification link has been sent to the
+                registered email associated with your merchant account. Please
+                verify the link to proceed to the next step.
+              </p>
+            )}
           </>
         )}
         <div className="col-2 bg-light p-1">
@@ -110,9 +135,10 @@ const Referral = ({ type, zoneCode }) => {
                 } ${
                   tab.id === "basic"
                     ? "pe-auto"
-                    : basicDetailsResponse?.loginMasterId
+                    : basicDetailsResponse?.loginMasterId ||
+                      (edit && kycData?.loginMasterId)
                     ? "pe-auto"
-                    : "pe-none"
+                    : "pe-auto"
                 }`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import { Prompt } from "react-router-dom";
+import { Prompt, useLocation } from "react-router-dom";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import {
   fetchParentTypeData,
   getAllZoneName,
 } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import { clearKycState } from "../../slices/kycSlice";
+import { clearKycState, kycUserList } from "../../slices/kycSlice";
 // import * as Yup from 'yup';
 
 import BankMerchantOnboard from "../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
@@ -18,6 +18,8 @@ import classes from "./multi-user-onboard.module.css";
 import Yup from "../../_components/formik/Yup";
 import Referral from "../ApproverNVerifier/Onboarderchant/referral-onboard";
 import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
+import { stringDec } from "../../utilities/encodeDecode";
+import toastConfig from "../../utilities/toastTypes";
 
 const MultiUserOnboard = () => {
   const [refferalList, setRefferalList] = useState([]);
@@ -31,20 +33,50 @@ const MultiUserOnboard = () => {
   // const [showSecondDropdown, setShowSecondDropdown] = useState(false);
   const [showBankForm, setShowBankForm] = useState(false);
 
+  const kycData = useSelector((state) => state.kyc?.kycUserList);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
 
+  const param = new URLSearchParams(useLocation().search);
+  const merchantId = param.get("merchantId")
+    ? stringDec(param.get("merchantId"))
+    : null;
   const dispatch = useDispatch();
+
+  const selectOnboardType = [
+    {
+      key: "normal_merchant",
+      value: "Direct Merchant",
+      displayValue: "Direct Merchant",
+    },
+    {
+      key: "individual_referral",
+      value: "Referrer (Individual)",
+      displayValue: "Referral (Individual)",
+    },
+    {
+      key: "company_referral",
+      value: "Referrer (Company)",
+      displayValue: "Referral (Company)",
+    },
+    {
+      key: "referrer",
+      value: "Referral Merchant ",
+      displayValue: "Referral Merchant",
+    },
+    { key: "bank", value: "Bank Merchant", displayValue: "Bank Merchant " },
+  ];
   const initialValues = {
-    zone: "",
-    onboardType: "",
+    zone: kycData?.zone_code ?? "",
+    onboardType:
+      selectOnboardType.find((type) => type.value === kycData?.onboard_type)
+        ?.key ?? "",
     parentType: "",
     addMerchant: "",
   };
-
   const validationSchema = Yup.object().shape({
     zone: Yup.string().when("onboardType", {
       is: (onboardType) => !onboardType,
@@ -72,15 +104,31 @@ const MultiUserOnboard = () => {
     setSelectedChildName(selectedName);
   };
 
-  const selectOnboardType = [
-    { key: "", value: "Select" },
-    { key: "normal_merchant", value: "Direct Merchant" },
-    { key: "individual_referral", value: "Referral (Individual)" },
-    { key: "company_referral", value: "Referral (Company)" },
-    { key: "referrer", value: "Referral Merchant " },
-    { key: "bank", value: "Bank Merchant" },
-  ];
-
+  useEffect(() => {
+    if (kycData) {
+      setSelectedvalue(kycData?.zone_code);
+      setSelectedName(
+        refferalList?.find((i) => i.key === kycData.zone_code)?.value
+      );
+      setOnboardTypeName(
+        initialValues.onboardType ??
+          selectOnboardType.find((type) => type.value === kycData?.onboard_type)
+            ?.key
+      );
+      if (
+        merchantId &&
+        kycData?.onboard_type &&
+        kycData.onboard_type != "Referrer (Company)" &&
+        kycData.onboard_type != "Referrer (Individual)"
+      ) {
+        toastConfig.infoToast("Please use kyc tab to update this kyc");
+      }
+    }
+  }, [kycData]);
+  useEffect(() => {
+    if (merchantId)
+      dispatch(kycUserList({ login_id: merchantId, password_required: true }));
+  }, [merchantId]);
   useEffect(() => {
     dispatch(getAllZoneName()).then((res) => {
       let data = convertToFormikSelectJson(
@@ -126,7 +174,7 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {basicDetailsResponse.data?.business_cat_code && (
+        {(basicDetailsResponse.data?.business_cat_code ?? merchantId) && (
           <Prompt
             message={() => {
               if (
@@ -146,6 +194,7 @@ const MultiUserOnboard = () => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
+            enableReinitialize
           >
             {(formik) => (
               <Form className="row mt-5">
@@ -176,7 +225,11 @@ const MultiUserOnboard = () => {
                       control="select"
                       label="Onboard Type"
                       name="onboardType"
-                      options={selectedValue ? selectOnboardType : []} //for dependent first dropdown
+                      options={convertToFormikSelectJson(
+                        "key",
+                        "displayValue",
+                        selectOnboardType
+                      )} //for dependent first dropdown
                       className="form-select"
                       onChange={(e) => {
                         setOnboardTypeName(e.target.value);
@@ -258,12 +311,20 @@ const MultiUserOnboard = () => {
           )}
           {isEnable("individual_referral") && (
             <div className="card py-2 px-2 mt-5">
-              <Referral type="individual" zoneCode={selectedValue} />
+              <Referral
+                type="individual"
+                zoneCode={selectedValue}
+                edit={Boolean(merchantId)}
+              />
             </div>
           )}
           {isEnable("company_referral") && (
             <div className="card py-2 px-2 mt-5">
-              <Referral type="company" zoneCode={selectedValue} />
+              <Referral
+                type="company"
+                zoneCode={selectedValue}
+                edit={Boolean(merchantId)}
+              />
             </div>
           )}
           {isEnable("referrer") && showForm && (
