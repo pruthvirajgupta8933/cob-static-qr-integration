@@ -211,12 +211,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         );
         setPanLoader(false);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload?.message ?? res?.payload);
         setPanLoader(false);
       }
     } catch (error) {
       setFieldValue("isPanVerified", false);
       setPanLoader(false);
+      toast.error(error);
     }
   };
 
@@ -236,6 +237,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
+          error?.response?.data?.detail ??
           "Something went wrong, Please try again"
       );
       setIdProofLoader(false);
@@ -253,6 +255,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       ) {
         setIdProofLoader(false);
         setFieldVal("isIdProofVerified", 1);
+      } else {
+        toast.error(res?.payload?.message ?? res.payload?.detail);
+        setIdProofLoader(false);
       }
     } catch (error) {
       toast.error(res?.payload?.message);
@@ -298,7 +303,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       !res.payload?.valid
     ) {
       toastConfig.errorToast(
-        res?.payload?.message || "Something went wrong. Please try again"
+        res?.payload?.message ||
+          res?.payload?.detail ||
+          "Something went wrong. Please try again"
       );
     } else if (res.payload?.status && res.payload?.valid) {
       setFieldValue("isIdProofVerified", 1);

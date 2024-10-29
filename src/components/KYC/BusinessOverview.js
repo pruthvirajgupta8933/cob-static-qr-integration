@@ -88,7 +88,7 @@ function BusinessOverview(props) {
     expected_transactions: KycList?.expectedTransactions,
     form_build: "Yes",
   };
-  console.log(props);
+
   const Regexx = {
     acceptAlphabet: /^[a-zA-Z,.\s]+$/, // Allow alphabet characters, commas, dots, and spaces
   };
