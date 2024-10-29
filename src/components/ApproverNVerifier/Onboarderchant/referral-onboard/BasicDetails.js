@@ -30,7 +30,7 @@ import verifiedIcon from "../../../../assets/images/verified.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { stringEnc } from "../../../../utilities/encodeDecode";
 
-const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
+const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [panLoader, setPanLoader] = useState(false);
   const [idProofLoader, setIdProofLoader] = useState(false);
@@ -60,7 +60,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     contactNumber:
       kycData?.contactNumber ?? basicDetailsResponse?.data?.mobileNumber ?? "",
     email: kycData?.emailId ?? basicDetailsResponse?.data?.email ?? "",
-    password: "",
+    password: edit ? "**********" : "",
     pan:
       kycData?.signatoryPAN ??
       kycData?.panCard ??
@@ -78,6 +78,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       basicDetailsResponse?.data?.pan_number
         ? 1
         : "",
+    panName: kycData?.nameOnPanCard ?? "",
   };
 
   useEffect(() => {
@@ -110,14 +111,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     // }
 
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
-    else if (
-      basicDetailsResponse?.data &&
-      !kycData?.isEmailVerified
-      // && !basicDetailsResponse?.data?.clientCodeCreated
-    ) {
-      toastConfig.successToast(
-        "Data saved successfully. Please verify the email sent"
-      );
+    else if (basicDetailsResponse?.data) {
+      if (!kycData?.isEmailVerified)
+        toastConfig.successToast(
+          "Data saved successfully. Please verify the email sent"
+        );
+      else if (edit) toastConfig.successToast("Data saved successfully");
       setSubmitLoader(false);
 
       // createClientCode();
@@ -165,18 +164,22 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       .email("Invalid email")
       .required("Required")
       .nullable(),
-    password: Yup.string()
-      .matches(Regex.password, RegexMsg.password)
-      .required("Required"),
-    // aadhaar: Yup.string()
-    //   .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-    //   .length(12, "Only 12 digits are allowed")
-    //   .required("Required"),
+    password: edit
+      ? Yup.string()
+          .matches(
+            /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
+            RegexMsg.password
+          )
+          .required("Required")
+      : Yup.string()
+          .matches(Regex.password, RegexMsg.password)
+          .required("Required"),
+    id_number: Yup.string().required("Required"),
     isIdProofVerified: Yup.boolean().required("Please verify id proof"),
     pan:
       type === "individual"
         ? Yup.string()
-            .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+            .matches(Regex.panRegex, RegexMsg.panRegex)
             .length(10, "Only 10 digits are allowed")
             .required("Required")
         : null,
@@ -208,12 +211,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         );
         setPanLoader(false);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload?.message ?? res?.payload);
         setPanLoader(false);
       }
     } catch (error) {
       setFieldValue("isPanVerified", false);
       setPanLoader(false);
+      toast.error(error);
     }
   };
 
@@ -233,6 +237,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
+          error?.response?.data?.detail ??
           "Something went wrong, Please try again"
       );
       setIdProofLoader(false);
@@ -250,6 +255,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       ) {
         setIdProofLoader(false);
         setFieldVal("isIdProofVerified", 1);
+      } else {
+        toast.error(res?.payload?.message ?? res.payload?.detail);
+        setIdProofLoader(false);
       }
     } catch (error) {
       toast.error(res?.payload?.message);
@@ -264,7 +272,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       mobileNumber: values.contactNumber,
       created_by: createdBy,
       zone_code: zoneCode,
-      password: values.password,
       pan_card: values.pan,
       name_on_pan_card: values.panName,
       aadhar_number: values.id_number,
@@ -272,6 +279,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
       id_proof_type: idType,
     };
+    if (edit) {
+      postData.login_id = kycData?.loginMasterId;
+      if (values.password !== initialValues.password)
+        postData.password = values.password;
+      else postData.password = kycData.secret_key;
+    } else postData.password = values.password;
     dispatch(saveBasicDetails(postData));
   };
 
@@ -290,7 +303,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
       !res.payload?.valid
     ) {
       toastConfig.errorToast(
-        res?.payload?.message || "Something went wrong. Please try again"
+        res?.payload?.message ||
+          res?.payload?.detail ||
+          "Something went wrong. Please try again"
       );
     } else if (res.payload?.status && res.payload?.valid) {
       setFieldValue("isIdProofVerified", 1);
@@ -335,15 +350,17 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
     let disableClass = false;
-    if (idType === "1") {
-      //{"name":"NEHA SINHA","loginMasterId":11522,"business_cat_code":"13","status":"Pending","isOnboardStart":true}
-      if (values.id_number?.length < 12 || idProofLoader || errors?.id_number)
-        disableClass = true;
-    } else if (idType === "3") {
-      if (values.id_number?.length < 10) disableClass = true;
-    } else if (idType === "4") {
-      if (values.id_number?.length < 14 || errors?.id_number)
-        disableClass = true;
+    if (!edit) {
+      if (idType === "1") {
+        //{"name":"NEHA SINHA","loginMasterId":11522,"business_cat_code":"13","status":"Pending","isOnboardStart":true}
+        if (values.id_number?.length < 12 || idProofLoader || errors?.id_number)
+          disableClass = true;
+      } else if (idType === "3") {
+        if (values.id_number?.length < 10) disableClass = true;
+      } else if (idType === "4") {
+        if (values.id_number?.length < 14 || errors?.id_number)
+          disableClass = true;
+      }
     }
     return (
       <>
@@ -359,7 +376,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
             setFieldValue("id_number", e.target.value);
             setFieldValue("isIdProofVerified", "");
           }}
-          disabled={!idType || kycData?.id_proof_type}
+          disabled={
+            disableForm ||
+            (edit ? disableForm : !idType || kycData?.id_proof_type)
+          }
         />
 
         {values.id_number && values.isIdProofVerified ? (
@@ -378,7 +398,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
             <a
               href={() => false}
               className={`btn cob-btn-primary btn-sm ${
-                disableClass ? "disabled" : ""
+                disableClass || disableForm ? "disabled" : ""
               }`}
               onClick={() =>
                 idType === "1"
@@ -452,7 +472,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Full Name"
                   required
                   autoComplete="off"
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
 
@@ -465,7 +485,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Contact Number"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -477,7 +497,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   label="Email ID"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -490,7 +510,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   autoComplete="off"
                   type="password"
                   required
-                  disabled={basicDetailsResponse?.data}
+                  disabled={basicDetailsResponse?.data || disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -502,7 +522,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   <span
                     className="text-decoration-underline text-primary cursor_pointer"
                     onClick={() =>
-                      !kycData?.id_proof_type &&
+                      // !kycData?.id_proof_type &&
                       setIdProofInputToggle((prev) => !prev)
                     }
                   >
@@ -516,7 +536,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                       className="form-select"
                       onChange={(e) => {
                         idProofhandler(e.target.value);
-                        setFieldValue("id_number", "");
+                        console.log(e.target.value, kycData?.id_proof_type);
+                        if (
+                          kycData?.aadharNumber &&
+                          e.target.value == kycData?.id_proof_type
+                        ) {
+                          setFieldValue("id_number", kycData.aadharNumber);
+                        } else setFieldValue("id_number", "");
                         setFieldValue("id_proof_type", e.target.value);
                         setSelectedIdProofName(
                           e.target[e.target.selectedIndex].text
@@ -667,7 +693,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                         setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
                       }}
-                      disabled={basicDetailsResponse?.data}
+                      disabled={basicDetailsResponse?.data || disableForm}
                     />
                     {values?.pan !== null &&
                     values?.pan !== "" &&
@@ -701,7 +727,9 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                           <a
                             href={() => false}
                             className={`btn cob-btn-primary text-white btn btn-sm ${
-                              values.pan?.length !== 10 ? "disabled" : "pe-auto"
+                              values.pan?.length !== 10 || disableForm
+                                ? "disabled"
+                                : "pe-auto"
                             }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
@@ -738,7 +766,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                   )}
                 </button>
 
-                {basicDetailsResponse.data && !submitLoader && (
+                {(basicDetailsResponse.data || edit) && !submitLoader && (
                   <a
                     className="btn active-secondary btn-sm m-2"
                     onClick={() =>
@@ -746,7 +774,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode }) => {
                         ? setCurrentTab("address")
                         : history.push(
                             `kyc?kycid=${stringEnc(
-                              basicDetailsResponse.data?.loginMasterId
+                              kycData?.loginMasterId ??
+                                basicDetailsResponse.data?.loginMasterId
                             )}`
                           )
                     }

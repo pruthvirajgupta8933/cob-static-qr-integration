@@ -25,7 +25,6 @@ function BusinessOverview(props) {
   const setTitle = props.title;
   const merchantloginMasterId = props.merchantloginMasterId;
 
-
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
@@ -95,7 +94,7 @@ function BusinessOverview(props) {
   };
 
   const RegexMssg = {
-    acceptAlphabet: 'Please enter valid characters.',
+    acceptAlphabet: "Please enter valid characters.",
   };
 
   const validationSchema = Yup.object().shape(
@@ -104,41 +103,43 @@ function BusinessOverview(props) {
       business_category: Yup.string()
         .required("Select Business Category")
         .nullable(),
-      platform_id: Yup.string()
-        .required("Select the platform")
-        .nullable(),
+      platform_id: Yup.string().required("Select the platform").nullable(),
       billing_label: Yup.string()
         .allowOneSpace()
-        .min(60, 'Please enter more than 60 character')
-        .max(400, 'Please do not enter more than 400 characters')
+        .min(60, "Please enter more than 60 character")
+        .max(400, "Please do not enter more than 400 characters")
         .matches(Regexx.acceptAlphabet, RegexMssg.acceptAlphabet)
-        .required('Required')
+        .required("Required")
         .nullable(),
 
-      website_app_url: Yup.string().allowOneSpace().when(["seletcted_website_app_url"], {
-        is: "Yes",
-        then: Yup.string()
-          .matches(
-            Regex.urlFormate, RegexMsg.urlFormate
-          )
-          .test('is-url', 'Please enter a valid website URL', (value) => {
-            if (!value) return true; // Allow empty values
-            try {
-              new URL(value);
-              return true;
-            } catch (error) {
-              return false;
-            }
-          })
-          .required('Website App Url is required')
-          .nullable(),
-        otherwise: Yup.string().notRequired().nullable(),
-      }),
-      expected_transactions: Yup.string().trim().required("Required").nullable(),
+      website_app_url: Yup.string()
+        .allowOneSpace()
+        .when(["seletcted_website_app_url"], {
+          is: "Yes",
+          then: Yup.string()
+            .matches(Regex.urlFormate, RegexMsg.urlFormate)
+            .test("is-url", "Please enter a valid website URL", (value) => {
+              if (!value) return true; // Allow empty values
+              try {
+                new URL(value);
+                return true;
+              } catch (error) {
+                return false;
+              }
+            })
+            .required("Website App Url is required")
+            .nullable(),
+          otherwise: Yup.string().notRequired().nullable(),
+        }),
+      expected_transactions: Yup.string()
+        .trim()
+        .required("Required")
+        .nullable(),
       avg_ticket_size: Yup.string()
         .trim()
 
-        .required("Required").nullable(),
+        .required("Required")
+        .nullable(),
       // .nullable(),
     },
     [["seletcted_website_app_url"]]
@@ -155,7 +156,8 @@ function BusinessOverview(props) {
           resp.payload
         );
         setData(data);
-      }).catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
 
     // busniessCategory
     dispatch(busiCategory())
@@ -185,38 +187,30 @@ function BusinessOverview(props) {
     // get slab data
     getExpectedTransactions("1");
     getExpectedTransactions("2");
-
   }, []);
 
-
-
-
-
   const onSubmit = (values) => {
-
     let expectedTxn = values.expected_transactions.split("-");
     let numbers = {};
     let maxValueTxn = 0;
 
     if (expectedTxn?.length === 1) {
       if (values.expected_transactions.includes("500000")) {
-        maxValueTxn = 500000
+        maxValueTxn = 500000;
       }
     } else {
-      numbers = expectedTxn.map(part => parseInt(part));
+      numbers = expectedTxn.map((part) => parseInt(part));
       maxValueTxn = Math.max(...numbers);
     }
     const ticketSize = values.avg_ticket_size.split("-");
-    const avgTicket = ticketSize.map(part => parseInt(part))
+    const avgTicket = ticketSize.map((part) => parseInt(part));
     const maxTicketSize = Math.max(...avgTicket);
     const avgCount = maxValueTxn * maxTicketSize;
 
     if (
-      window.confirm(
-        `Are you sure for the Expected Transaction : ${avgCount}`
-      )
+      window.confirm(`Are you sure for the Expected Transaction : ${avgCount}`)
     ) {
-      setIsDisabled(true)
+      setIsDisabled(true);
       dispatch(
         saveBusinessInfo({
           business_type: values.business_type,
@@ -234,7 +228,8 @@ function BusinessOverview(props) {
           ticket_size: values.ticket_size,
           modified_by: loginId,
           login_id: merchantloginMasterId,
-          is_website_url: values.seletcted_website_app_url === "Yes" ? "True" : "False",
+          is_website_url:
+            values.seletcted_website_app_url === "Yes" ? "True" : "False",
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
@@ -251,7 +246,6 @@ function BusinessOverview(props) {
         }
       });
     }
-
   };
 
   // let converter = require('number-to-words');
@@ -320,14 +314,12 @@ function BusinessOverview(props) {
     avgTicketAmount
   );
 
-
-
-
   const tooltipData = {
-    "expected_transaction_yr": "Expected transaction/year refers to the estimated number of transactions that are anticipated to occur within a specific time frame, typically a year",
-    "avg_ticket_amount": "Average ticket amount refers to the average value or amount spent per transaction or customer."
-  }
-
+    expected_transaction_yr:
+      "Expected transaction/year refers to the estimated number of transactions that are anticipated to occur within a specific time frame, typically a year",
+    avg_ticket_amount:
+      "Average ticket amount refers to the average value or amount spent per transaction or customer.",
+  };
 
   return (
     <div className="col-lg-12 p-0">
@@ -458,14 +450,14 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={platform}
-
                 />
               </div>
 
-
-
               <div className="col-sm-12 col-md-12 col-lg-4">
-                <label className="col-form-label p-2 mt-0" data-tip={tooltipData.expected_transaction_yr}>
+                <label
+                  className="col-form-label p-2 mt-0"
+                  data-tip={tooltipData.expected_transaction_yr}
+                >
                   Expected Trans./Year
                   <span className="text-danger">*</span>
                 </label>
@@ -478,12 +470,14 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={slabOptions}
-
                 />
               </div>
 
               <div className="col-sm-12 col-md-12 col-lg-4">
-                <label className="col-form-label p-2 mt-0" data-tip={tooltipData.avg_ticket_amount}>
+                <label
+                  className="col-form-label p-2 mt-0"
+                  data-tip={tooltipData.avg_ticket_amount}
+                >
                   Avg Ticket Amount<span className="text-danger">*</span>
                 </label>
 
@@ -499,8 +493,6 @@ function BusinessOverview(props) {
                 // onClick={() => getExpectedTransactions(2)}
                 />
               </div>
-
-
             </div>
 
             <div className="row">
@@ -513,12 +505,18 @@ function BusinessOverview(props) {
                     type="submit"
                     disabled={disabled}
                   >
-                    {disabled && <>
-                      <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
-                        <span className="sr-only">Loading...</span>
-                      </span>
-                    </>}
+                    {disabled && (
+                      <>
+                        <span className="mr-2">
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            ariaHidden="true"
+                          />
+                          <span className="sr-only">Loading...</span>
+                        </span>
+                      </>
+                    )}
                     {buttonText}
                   </button>
                 )}

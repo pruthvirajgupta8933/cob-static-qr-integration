@@ -16,7 +16,7 @@ import {
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
 
-const AddressDetails = ({ setCurrentTab }) => {
+const AddressDetails = ({ setCurrentTab, disableForm }) => {
   const [stateData, setStateData] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
   const [showNext, setShowNext] = useState(false);
@@ -61,7 +61,7 @@ const AddressDetails = ({ setCurrentTab }) => {
   const onSubmit = async (values) => {
     setSubmitLoader(true);
     const postData = {
-      login_id: basicDetailsResponse?.loginMasterId,
+      login_id: kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId,
       address: values.operational_address,
       city: values.city,
       state: values.state,
@@ -105,7 +105,7 @@ const AddressDetails = ({ setCurrentTab }) => {
                   type="text"
                   name="operational_address"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={disableForm}
                   // readOnly={readOnly}
                 />
               </div>
@@ -118,7 +118,7 @@ const AddressDetails = ({ setCurrentTab }) => {
                   type="text"
                   name="city"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={disableForm}
                   // readOnly={readOnly}
                 />
               </div>
@@ -133,7 +133,7 @@ const AddressDetails = ({ setCurrentTab }) => {
                   name="state"
                   options={stateData}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={disableForm}
                   // readOnly={readOnly}
                 />
               </div>
@@ -147,7 +147,7 @@ const AddressDetails = ({ setCurrentTab }) => {
                   type="number"
                   name="pin_code"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={disableForm}
                   // readOnly={readOnly}
                 />
               </div>
@@ -157,6 +157,7 @@ const AddressDetails = ({ setCurrentTab }) => {
                 <button
                   type="submit"
                   className="btn cob-btn-primary btn-sm m-2"
+                  disabled={disableForm}
                 >
                   {submitLoader ? (
                     <>
