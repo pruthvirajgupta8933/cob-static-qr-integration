@@ -501,6 +501,10 @@ const SettlementReportNew = () => {
 
       excelArr.push(Object.values(allowDataToShow));
     });
+    excelArr.push([
+      "Total Settlement Amount",
+      txnList.reduce((sum, item) => item.settlement_amount + sum, 0),
+    ]);
 
     const fileName = "Settlement-Report";
 
