@@ -29,19 +29,15 @@ const ValidateDrivingLicense = () => {
         })
       );
       setButtonDisable(false);
-      setDlData(res?.payload);
       setIsLoading(false);
-
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        !res.payload.status &&
-        !res.payload.valid
-      ) {
-        toast.error(res?.payload?.message);
+      if (res.meta.requestStatus === "fulfilled") setDlData(res?.payload);
+      if (!res.payload.status && !res.payload.valid) {
+        toast.error(res?.payload?.message || res.payload);
       }
     } catch (error) {
       setButtonDisable(false);
       setIsLoading(false);
+      toast.error(res?.payload?.detail);
     }
   };
 
