@@ -58,14 +58,14 @@ export const cinVerify = (paramData) => {
 
 export const voterVerify = (paramData) => {
   return axiosInstanceJWT.post(
-    `${API_URL.VALIDATE_KYC}/validate-voter-card/`,
+    `${API_URL.VALIDATE_DOC_KYC}/validate-voter-card/`,
     paramData
   );
 };
 
 export const dlVerify = (paramData) => {
   return axiosInstanceJWT.post(
-    `${API_URL.VALIDATE_KYC}/validate-driving-liscence/`,
+    `${API_URL.VALIDATE_DOC_KYC}/validate-driving-liscence/`,
     paramData
   );
 };

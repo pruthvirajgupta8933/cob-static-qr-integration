@@ -20,15 +20,10 @@ const ValidateVoterCard = () => {
     try {
       res = await dispatch(voterCardValidation({ voter: voterId }));
       setButtonDisable(false);
-      setVoterData(res?.payload);
       setIsLoading(false);
-
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        !res.payload.status &&
-        !res.payload.valid
-      ) {
-        toast.error(res?.payload?.message);
+      if (res.meta.requestStatus === "fulfilled") setVoterData(res?.payload);
+      if (!res.payload.status && !res.payload.valid) {
+        toast.error(res?.payload?.message || res.payload);
       }
     } catch (error) {
       setButtonDisable(false);

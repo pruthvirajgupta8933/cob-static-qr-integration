@@ -11,6 +11,7 @@ import {
   credReportVerify,
   cinVerify,
   voterVerify,
+  dlVerify,
 } from "../services/kyc-validator-service/kycValidator.service";
 
 const initialState = {};
@@ -157,7 +158,7 @@ export const dlValidation = createAsyncThunk(
   "kyc/drivingLicenseValidation",
   async (requestParam, thunkAPI) => {
     try {
-      const response = await accountVerify(requestParam);
+      const response = await dlVerify(requestParam);
 
       return response.data;
     } catch (error) {
