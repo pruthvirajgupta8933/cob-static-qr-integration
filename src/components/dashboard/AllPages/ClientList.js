@@ -185,8 +185,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
 
     clientListExportApi({ bank_login_id: user?.loginId, type })
       .then((res) => {
@@ -254,7 +254,7 @@ function ClientList() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage, pageSize]);
 
   const fetchData = () => {
     // Determine the type based on the result of roleBasedAccess()
@@ -262,8 +262,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     let postObj = {
       page: currentPage,
       page_size: pageSize,
@@ -354,10 +354,8 @@ function ClientList() {
 
               {!loadingState && data?.length !== 0 && (
                 <>
-                  <div className="col-lg-12 mt-5 mb-2 d-flex justify-content-between">
-                    <div>
-                      <h6>Number of Record: {dataCount}</h6>
-                    </div>
+                  <div className="col-lg-12 mt-5 mb-2 pl-0 d-flex justify-content-between">
+                    <h6>Totol Record: {dataCount}</h6>
                   </div>
                   <Table
                     row={RefrerChiledList}
