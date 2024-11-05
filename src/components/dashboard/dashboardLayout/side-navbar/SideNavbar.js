@@ -107,6 +107,24 @@ function SideNavbar() {
                           </li>
                         )
                     )}
+                    {roleBasedShowTab?.approver && (
+                      <li className="nav-item ml-1" role="menuitem">
+                        <Link
+                          to={`${url}/manual-subscription`}
+                          className={`nav-link ${
+                            sideNavClasses.sidebar_menu
+                          }  ${
+                            selectedMenu ===
+                            "manual-subscription".split("/").pop()
+                              ? sideNavClasses.selected_memu
+                              : ""
+                          }`}
+                        >
+                          <i className="fa fa-credit-card-alt"></i>&nbsp; Manual
+                          Subscription
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </React.Fragment>
               )

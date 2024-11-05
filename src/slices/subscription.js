@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
-import subscriptionService from "../services/subscription";
+import subscriptionService from "../services/manualSubscription";
 
 // const user = JSON.parse(localStorage.getItem("user"));
-
-
 
 export const subscriptionplan = createAsyncThunk(
   "subscription/subscriptionplan",
@@ -44,9 +42,106 @@ export const subscriptionPlanDetail = createAsyncThunk(
   }
 );
 
-
-
-const initialState = { subscriptionServiceResponse: {}, subscriptionPackageResponse: {}, isLoading: false }
+export const getSubscriptionPlans = createAsyncThunk(
+  "subscription/getManualSubscriptions",
+  async (object = {}, thunkAPI) => {
+    try {
+      const data = await subscriptionService.getSubscriptions();
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const getSubscriptionPlanById = createAsyncThunk(
+  "subscription/getManualSubscriptionById",
+  async (requestParam, thunkAPI) => {
+    try {
+      const data = await subscriptionService.getSubscriptionById(
+        requestParam.id
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const createSubscriptionPlan = createAsyncThunk(
+  "subscription/createManualSubscriptions",
+  async (requestParam, thunkAPI) => {
+    try {
+      const res = await subscriptionService.createSubscription(requestParam);
+      return res.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const updateSubscriptionPlan = createAsyncThunk(
+  "subscription/updateManualSubscriptions",
+  async (requestParam, thunkAPI) => {
+    try {
+      const data = await subscriptionService.updateSubscription(requestParam);
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const deleteSubscriptionPlan = createAsyncThunk(
+  "subscription/deleteManualSubscription",
+  async (requestParam, thunkAPI) => {
+    try {
+      const data = await subscriptionService.deleteSubscription(
+        requestParam.id
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+const initialState = {
+  subscriptionServiceResponse: {},
+  subscriptionPackageResponse: {},
+  isLoading: false,
+  manualSubscriptions: null,
+};
 const subscriptionSlice = createSlice({
   name: "subscription",
   initialState,
@@ -61,7 +156,16 @@ const subscriptionSlice = createSlice({
     [subscriptionplan.rejected]: (state, action) => {
       state.isLoading = false;
     },
+    [getSubscriptionPlans.pending]: (state, action) => {
+      state.manualSubscriptions = { loading: true };
+    },
+    [getSubscriptionPlans.fulfilled]: (state, action) => {
+      state.manualSubscriptions = action.payload.data;
+    },
+    [getSubscriptionPlans.rejected]: (state, action) => {
+      state.manualSubscriptions = { error: true };
+    },
   },
 });
 
-export default subscriptionSlice;
+export const { reducer: reducerSubscription } = subscriptionSlice;
