@@ -55,6 +55,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     !Boolean(kycData?.id_proof_type)
   );
 
+  const [showPassword, setShowPassword] = useState(false);
   const initialValues = {
     name: kycData?.name ?? basicDetailsResponse?.data?.name ?? "",
     contactNumber:
@@ -501,17 +502,34 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                 />
               </div>
               <div className="col-md-6">
-                <FormikController
-                  control="input"
-                  name="password"
-                  className="form-control"
-                  placeholder="Enter Password"
-                  label="Create Password"
-                  autoComplete="off"
-                  type="password"
-                  required
-                  disabled={basicDetailsResponse?.data || disableForm}
-                />
+                <label className="d-flex justify-content-between col-form-label">
+                  Create Password
+                </label>
+                <div className="input-group">
+                  <Field
+                    control="input"
+                    name="password"
+                    className="form-control"
+                    placeholder="Enter Password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    disabled={basicDetailsResponse?.data || disableForm}
+                  />
+                  <span
+                    className="input-group-text"
+                    onClick={() => setShowPassword(!showPassword)}
+                    id="basic-addon2"
+                  >
+                    {showPassword ? (
+                      <i className="fa fa-eye" ariaHidden="true"></i>
+                    ) : (
+                      <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                    )}
+                  </span>
+                </div>
+                <ErrorMessage name="password">
+                  {(msg) => <p className="text-danger">{msg}</p>}
+                </ErrorMessage>
               </div>
               <div className="col-md-6">
                 <label className="d-flex justify-content-between col-form-label">

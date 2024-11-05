@@ -17,7 +17,7 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import Yup from "../../../_components/formik/Yup";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
@@ -27,12 +27,14 @@ const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
-  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector((state) => state);
+  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
+    (state) => state
+  );
   const { user } = auth;
   const { isLoadingTxnHistory } = dashboard;
 
-  const { refrerChiledList } = merchantReferralOnboardReducer
-  const clientCodeData = refrerChiledList?.resp?.results ?? []
+  const { refrerChiledList } = merchantReferralOnboardReducer;
+  const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
@@ -56,7 +58,6 @@ const ChargeBackTxnHistory = () => {
   }
   splitDate = splitDate.join("-");
 
-
   // let clientMerchantDetailsList = [];
   // if (
   //   user &&
@@ -69,8 +70,6 @@ const ChargeBackTxnHistory = () => {
   //   clientMerchantDetailsList = user?.clientMerchantDetailsList;
   // }
 
-
-
   const validationSchema = Yup.object({
     clientCode: Yup.string().required("Required"),
     fromDate: Yup.date().required("Required"),
@@ -80,22 +79,23 @@ const ChargeBackTxnHistory = () => {
   });
 
   const fetchData = () => {
-    const roleType = roles
-    const type = roleType.bank ? "bank" : roleType.referral ? "referrer" : "default";
+    const roleType = roles;
+    const type = roleType.bank
+      ? "bank"
+      : roleType.referral
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
-        type: type,  // Set the type based on roleType
-        login_id: auth?.user?.loginId
-      }
+        type: type, // Set the type based on roleType
+        login_id: auth?.user?.loginId,
+      };
       dispatch(fetchChildDataList(postObj));
     }
-
   };
   useEffect(() => {
     fetchData();
   }, []);
-
-
 
   let clientMerchantDetailsList = [];
   if (
@@ -112,11 +112,10 @@ const ChargeBackTxnHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
 
   const clientCode = clientcode_rolebased;
-
 
   let isExtraDataRequired = false;
   let extraDataObj = {};
@@ -127,16 +126,17 @@ const ChargeBackTxnHistory = () => {
 
   const forClientCode = true;
 
-  let fnKey, fnVal = ""
-  let clientCodeListArr = []
+  let fnKey,
+    fnVal = "";
+  let clientCodeListArr = [];
   if (roles?.merchant === true) {
-    fnKey = "clientCode"
-    fnVal = "clientName"
-    clientCodeListArr = clientMerchantDetailsList
+    fnKey = "clientCode";
+    fnVal = "clientName";
+    clientCodeListArr = clientMerchantDetailsList;
   } else {
-    fnKey = "client_code"
-    fnVal = "name"
-    clientCodeListArr = clientCodeData
+    fnKey = "client_code";
+    fnVal = "name";
+    clientCodeListArr = clientCodeData;
   }
   const clientCodeOption = convertToFormikSelectJson(
     fnKey,
@@ -147,20 +147,19 @@ const ChargeBackTxnHistory = () => {
     forClientCode
   );
 
-
-
   const initialValues = {
-    clientCode: roles.merchant ? (clientMerchantDetailsList && clientMerchantDetailsList.length > 0 ? clientMerchantDetailsList[0].clientCode : "") : "",
+    clientCode: roles.merchant
+      ? clientMerchantDetailsList && clientMerchantDetailsList.length > 0
+        ? clientMerchantDetailsList[0].clientCode
+        : ""
+      : "",
     fromDate: splitDate,
     endDate: splitDate,
     noOfClient: "1",
     rpttype: "0",
   };
 
-
   useEffect(() => {
-
-
     setTimeout(() => {
       if (
         showData.length < 1 &&
@@ -178,8 +177,8 @@ const ChargeBackTxnHistory = () => {
   };
 
   const onSubmitHandler = (values) => {
-
-    let strClientCode, clientCodeArrLength = "";
+    let strClientCode,
+      clientCodeArrLength = "";
     if (values.clientCode === "All") {
       const allClientCode = [];
       clientCodeListArr?.map((item) => {
@@ -194,31 +193,29 @@ const ChargeBackTxnHistory = () => {
 
     const paramData = {
       clientCode: strClientCode,
-      fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
-      endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
+      fromDate: moment(values.fromDate).startOf("day").format("YYYY-MM-DD"),
+      endDate: moment(values.endDate).startOf("day").format("YYYY-MM-DD"),
       noOfClient: clientCodeArrLength,
       rpttype: values.rpttype,
-    }
+    };
 
-    setIsDisable(true)
-    isButtonClicked(true)
+    setIsDisable(true);
+    isButtonClicked(true);
     dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
-        setIsDisable(false)
+        setIsDisable(false);
       }
       if (ApiStatus === "fulfilled") {
-        setIsDisable(false)
+        setIsDisable(false);
       }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
-
-        setIsDisable(false)
+        setIsDisable(false);
       }
     });
   };
-
 
   useEffect(() => {
     // Remove initiated from transaction history response
@@ -226,24 +223,12 @@ const ChargeBackTxnHistory = () => {
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(
-      _(TxnListArrUpdated)
-        .slice(0)
-        .take(pageSize)
-        .value()
-    );
+    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
-
-
   useEffect(() => {
-    setPaginatedData(
-      _(showData)
-        .slice(0)
-        .take(pageSize)
-        .value()
-    );
+    setPaginatedData(_(showData).slice(0).take(pageSize).value());
     setPageCount(
       showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
     );
@@ -251,10 +236,7 @@ const ChargeBackTxnHistory = () => {
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(showData)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
+    const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -285,50 +267,71 @@ const ChargeBackTxnHistory = () => {
 
   const exportToExcelFn = () => {
     const excelHeaderRow = [
-      'S. No.',
-      'arn',
-      'bank_cb_fee',
-      'cb_credit_date_txn_reject',
-      'charge_back_amount',
-      'charge_back_credit_date_to_merchant',
-      'charge_back_date',
-      'charge_back_debit_amount',
-      'charge_back_remarks',
-      'charge_back_status',
-      'client_code',
-      'client_name',
-      'client_txn_id',
-      'merchant_cb_status',
-      'payee_amount',
-      'payment_mode',
-      'prearb_date',
-      'status',
-      'txn_id'
+      "S. No.",
+      "ARN",
+      "Bank cb fee",
+      "cb credit date txn reject",
+      "Chargeback amount",
+      "Chargeback credit_date_to_merchant",
+      "Chargeback date",
+      "Chargeback debit_amount",
+      "Chargeback remarks",
+      "Chargeback status",
+      "Clientcode",
+      "Client name",
+      "Client txn id",
+      "Merchant cb status",
+      "Payee_amount",
+      "Payment mode",
+      "prearb date",
+      "Status",
+      "Txn_id",
     ];
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
       const allowDataToShow = {
-        'srNo': item.srNo === null ? "" : index + 1,
-        'arn': item.arn === null ? "" : item.arn,
-        'bank_cb_fee': item.bank_cb_fee === null ? "" : item.bank_cb_fee,
-        'cb_credit_date_txn_reject': item.cb_credit_date_txn_reject === null ? "" : item.cb_credit_date_txn_reject,
-        'charge_back_amount': item.charge_back_amount === null ? "" : Number.parseFloat(item.charge_back_amount),
-        'charge_back_credit_date_to_merchant': item.charge_back_credit_date_to_merchant === null ? "" : dateFormatBasic(item.charge_back_credit_date_to_merchant),
-        'charge_back_date': item.charge_back_date === null ? "" : dateFormatBasic(item.charge_back_date),
-        'charge_back_debit_amount': item.charge_back_debit_amount === null ? "" : item.charge_back_debit_amount,
-        'charge_back_remarks': item.charge_back_remarks === null ? "" : item.charge_back_remarks,
-        'charge_back_status': item.charge_back_status === null ? "" : item.charge_back_status,
-        'client_code': item.client_code === null ? "" : item.client_code,
-        'client_name': item.client_name === null ? "" : item.client_name,
-        'client_txn_id': item.client_txn_id === null ? "" : item.client_txn_id,
-        'merchant_cb_status': item.merchant_cb_status === null ? "" : item.merchant_cb_status,
-        'payee_amount': item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
-        'payment_mode': item.payment_mode === null ? "" : item.payment_mode,
-        'prearb_date': item.prearb_date === null ? "" : dateFormatBasic(item.prearb_date),
-        'status': item.status === null ? "" : item.status,
-        'txn_id': item.txn_id === null ? "" : item.txn_id
-
+        srNo: item.srNo === null ? "" : index + 1,
+        arn: item.arn === null ? "" : item.arn,
+        bank_cb_fee: item.bank_cb_fee === null ? "" : item.bank_cb_fee,
+        cb_credit_date_txn_reject:
+          item.cb_credit_date_txn_reject === null
+            ? ""
+            : item.cb_credit_date_txn_reject,
+        charge_back_amount:
+          item.charge_back_amount === null
+            ? ""
+            : Number.parseFloat(item.charge_back_amount),
+        charge_back_credit_date_to_merchant:
+          item.charge_back_credit_date_to_merchant === null
+            ? ""
+            : dateFormatBasic(item.charge_back_credit_date_to_merchant),
+        charge_back_date:
+          item.charge_back_date === null
+            ? ""
+            : dateFormatBasic(item.charge_back_date),
+        charge_back_debit_amount:
+          item.charge_back_debit_amount === null
+            ? ""
+            : item.charge_back_debit_amount,
+        charge_back_remarks:
+          item.charge_back_remarks === null ? "" : item.charge_back_remarks,
+        charge_back_status:
+          item.charge_back_status === null ? "" : item.charge_back_status,
+        client_code: item.client_code === null ? "" : item.client_code,
+        client_name: item.client_name === null ? "" : item.client_name,
+        client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
+        merchant_cb_status:
+          item.merchant_cb_status === null ? "" : item.merchant_cb_status,
+        payee_amount:
+          item.payee_amount === null
+            ? ""
+            : Number.parseFloat(item.payee_amount),
+        payment_mode: item.payment_mode === null ? "" : item.payment_mode,
+        prearb_date:
+          item.prearb_date === null ? "" : dateFormatBasic(item.prearb_date),
+        status: item.status === null ? "" : item.status,
+        txn_id: item.txn_id === null ? "" : item.txn_id,
       };
 
       excelArr.push(Object.values(allowDataToShow));
@@ -338,23 +341,19 @@ const ChargeBackTxnHistory = () => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-        alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...");
       }
-      return state
-    }
+      return state;
+    };
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
-
-
 
   return (
     <section className="">
       <main className="">
         <div className="">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="">
-            Chargeback Transaction History
-          </h5>
+          <h5 className="">Chargeback Transaction History</h5>
           {/* </div> */}
           <section className="">
             <div className="container-fluid p-0">
@@ -382,15 +381,20 @@ const ChargeBackTxnHistory = () => {
                           label="From Date"
                           id="fromDate"
                           name="fromDate"
-                          value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                          onChange={date => formik.setFieldValue('fromDate', date)}
+                          value={
+                            formik.values.fromDate
+                              ? new Date(formik.values.fromDate)
+                              : null
+                          }
+                          onChange={(date) =>
+                            formik.setFieldValue("fromDate", date)
+                          }
                           format="dd-MM-y"
                           clearIcon={null}
                           className="form-control rounded-0 p-0"
                           required={true}
                           errorMsg={formik.errors["fromDate"]}
                         />
-
                       </div>
 
                       <div className="form-group col-lg-3">
@@ -399,15 +403,20 @@ const ChargeBackTxnHistory = () => {
                           label="End Date"
                           id="endDate"
                           name="endDate"
-                          value={formik.values.endDate ? new Date(formik.values.endDate) : null}
-                          onChange={date => formik.setFieldValue('endDate', date)}
+                          value={
+                            formik.values.endDate
+                              ? new Date(formik.values.endDate)
+                              : null
+                          }
+                          onChange={(date) =>
+                            formik.setFieldValue("endDate", date)
+                          }
                           format="dd-MM-y"
                           clearIcon={null}
                           className="form-control rounded-0 p-0"
                           required={true}
                           errorMsg={formik.errors["endDate"]}
                         />
-
                       </div>
                     </div>
                     <div className="form-row">
@@ -418,8 +427,13 @@ const ChargeBackTxnHistory = () => {
                           type="submit"
                         >
                           {disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                          )} {/* Show spinner if disabled */}
+                            <span
+                              className="spinner-border spinner-border-sm mr-1"
+                              role="status"
+                              ariaHidden="true"
+                            ></span>
+                          )}{" "}
+                          {/* Show spinner if disabled */}
                           Search
                         </button>
                       </div>
@@ -522,14 +536,24 @@ const ChargeBackTxnHistory = () => {
                             <td>{item.client_name}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
-                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
+                            <td>
+                              {Number.parseFloat(item.payee_amount).toFixed(2)}
+                            </td>
                             <td>{item.arn}</td>
                             <td>{item.bank_cb_fee}</td>
                             <td>{item.cb_credit_date_txn_reject}</td>
                             <td>{item.charge_back_amount}</td>
-                            <td>{dateFormatBasic(item.charge_back_credit_date_to_merchant)}</td>
+                            <td>
+                              {dateFormatBasic(
+                                item.charge_back_credit_date_to_merchant
+                              )}
+                            </td>
                             <td>{dateFormatBasic(item.charge_back_date)}</td>
-                            <td>{Number.parseFloat(item.charge_back_debit_amount).toFixed(2)}</td>
+                            <td>
+                              {Number.parseFloat(
+                                item.charge_back_debit_amount
+                              ).toFixed(2)}
+                            </td>
                             <td>{item.charge_back_remarks}</td>
                             <td>{item.charge_back_status}</td>
                             <td>{item.merchant_cb_status}</td>
@@ -544,7 +568,6 @@ const ChargeBackTxnHistory = () => {
               </div>
 
               <div>
-
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -570,12 +593,13 @@ const ChargeBackTxnHistory = () => {
                                 : "page-item"
                             }
                           >
-
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}
+                              onClick={() => pagination(page)}
                             >
-                              <p onClick={() => pagination(page)}>{page}</p>
+                              {" "}
+                              {page}
                             </a>
                           </li>
                         ))}
@@ -611,7 +635,9 @@ const ChargeBackTxnHistory = () => {
                   </div>
                 ) : buttonClicked && dataFound && txnList?.length === 0 ? (
                   <div>
-                    <h5 className="d-flex justify-content-center align-items-center">Data Not Found</h5>
+                    <h5 className="d-flex justify-content-center align-items-center">
+                      Data Not Found
+                    </h5>
                   </div>
                 ) : (
                   <></>
@@ -623,6 +649,6 @@ const ChargeBackTxnHistory = () => {
       </main>
     </section>
   );
-}
+};
 
 export default ChargeBackTxnHistory;

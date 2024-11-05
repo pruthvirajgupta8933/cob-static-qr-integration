@@ -171,7 +171,9 @@ function TransactionSummery() {
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    const fileName = "Txn-Summary-Report";
+    const fileName = `Txn-Summary-Report ${fromDate
+      .toString()
+      ?.substring(4, 15)}-${toDate.toString()?.substring(4, 15)}`;
 
     let handleExportLoading = (state) => {
       // console.log(state)
@@ -260,10 +262,11 @@ function TransactionSummery() {
               )}{" "}
               <div className="">
                 {showData.length !== 0 && (
-                  <p className="m-0">
-                    Total Successful Transactions: {totalSuccessTxn} | Total
-                    Amount {`(INR)`}: {totalAmt.toFixed()}{" "}
-                  </p>
+                  <h6 className="m-0">
+                    <strong>Total Successful Transactions</strong>:{" "}
+                    {totalSuccessTxn} |<strong>Total Amount {`(INR)`}</strong>:{" "}
+                    {totalAmt.toFixed()}
+                  </h6>
                 )}
               </div>
               <div>
@@ -292,7 +295,10 @@ function TransactionSummery() {
                             <td>{item.client_name}</td>
                             <td>{item.client_code}</td>
                             <td>{item.no_of_transaction}</td>
-                            <td>Rs {item.payeeamount}</td>
+                            <td>
+                              Rs{" "}
+                              {Number.parseFloat(item.payeeamount).toFixed(2)}
+                            </td>
                           </tr>
                         );
                       })}

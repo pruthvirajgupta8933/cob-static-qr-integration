@@ -360,18 +360,18 @@ const SettlementReportNew = () => {
 
   const exportToExcelFn = () => {
     const excelHeaderRow = [
-      "SRNO",
-      "TXN ID",
-      "CLIENT TXN ID",
+      "SR NO",
+      "TRANSACTION ID",
+      "CLIENT TRANSACTION ID",
       "CHALLAN NO",
       // 'PG PAY MODE',
       "PAYEE AMOUNT",
-      "TRANS DATE",
-      "TRANS COMPLETE DATE",
+      "TRANSACTION DATE",
+      "TRANSACTION COMPLETE DATE",
       "STATUS",
       "PAYEE FIRST NAME",
-      "PAYEE LST NAME",
-      "PAYEE MOB",
+      "PAYEE LAST NAME",
+      "PAYEE MOBILE",
       "PAYEE EMAIL",
       "CLIENT CODE",
       "PAYMENT MODE",
@@ -501,10 +501,13 @@ const SettlementReportNew = () => {
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    excelArr.push([
-      "Total Settlement Amount",
-      txnList.reduce((sum, item) => item.settlement_amount + sum, 0),
-    ]);
+    const totalRow = ["Total Settlement Amount"];
+    totalRow[23] = txnList.reduce(
+      (sum, item) => item.settlement_amount + sum,
+      0
+    );
+    excelArr.push([]);
+    excelArr.push(totalRow);
 
     const fileName = "Settlement-Report";
 
