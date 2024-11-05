@@ -215,7 +215,7 @@ function Home() {
       {/* Dashboard Update  */}
       {roles?.merchant && (
         <div className="row mt-3">
-          <div className="col-lg-7 col-sm-12 col-md-12 bg-white">
+          <div className="col-lg-7 col-sm-12 col-md-12 bg-white shadow rounded">
             {/* chart */}
             <ChartContainer
               chartTitle="Transaction"
