@@ -1,5 +1,5 @@
 import React from 'react'
-import { kycValidatorAuth } from '../../../../utilities/axiosInstance'
+import { axiosInstanceJWT, kycValidatorAuth } from '../../../../utilities/axiosInstance'
 import toastConfig from '../../../../utilities/toastTypes'
 import API_URL from '../../../../config'
 
@@ -18,7 +18,7 @@ function AadharVerify() {
         setIsLoading(true)
         setDisable(true)
         try {
-            const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNumber })
+            const resp = await axiosInstanceJWT.post(API_URL.Aadhar_number, { "aadhar_number": aadharNumber })
             setAadharOtpResp(resp.data)
             setIsLoading(false)
             toastConfig.successToast(resp.data.message)
@@ -32,7 +32,7 @@ function AadharVerify() {
     const aadharOtpVerification = async () => {
         setAdharOtpDisable(true)
         try {
-            const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": otpDigit })
+            const resp = await axiosInstanceJWT.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": otpDigit })
             setAadharJsonResponse(JSON.stringify(resp.data))
             setOtpVerified(true)
             setAdharOtpDisable(false)

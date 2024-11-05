@@ -22,7 +22,7 @@ import "./kyc-style.css";
 import OtpInput from "react-otp-input";
 import classes from "./kycForm.module.css"
 import CustomModal from "../../_components/custom_modal";
-import { kycValidatorAuth } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT, kycValidatorAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
 import API_URL from "../../config";
 // import Timer from "../../utilities/TimerComponent";
@@ -325,7 +325,7 @@ function ContactInfo(props) {
     try {
 
 
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
+      const resp = await axiosInstanceJWT.post(API_URL.Aadhar_number, { "aadhar_number": aadharNuber })
       if (resp.data.status) {
         setAadharOtpResp(resp.data)
         setAadharNumberVerifyToggle(true)
@@ -345,7 +345,7 @@ function ContactInfo(props) {
   const aadharOtpVerification = async () => {
     setAadharVerificationLoader(true)
     try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadhaarOTP })
+      const resp = await axiosInstanceJWT.post(API_URL.Aadhar_otp_verify, { "referenceId": aadharOtpResp?.referenceId, "otp": aadhaarOTP })
       // console.log(resp)
       setAadharOtp("")
       if (resp.data?.valid && resp.data?.status) {
