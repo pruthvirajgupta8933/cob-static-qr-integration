@@ -4,8 +4,7 @@ import {
   txnChartDataSlice,
   clearSuccessTxnsummary,
 } from "../../../slices/dashboardSlice";
-import { useRouteMatch, Redirect, Link } from "react-router-dom";
-import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
+import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { GetKycTabsStatus, kycUserList } from "../../../slices/kycSlice";
@@ -16,7 +15,6 @@ import PaymentAlertBox from "./Product Catalogue/PaymentAlertBox";
 
 import moment from "moment";
 import ChartContainer from "../../chart/ChartContainer";
-import HomeContent from "./HomeContent";
 import HomeProduct from "./HomeProduct";
 import HomeOpenModal from "./HomeOpenModal";
 import KycStatusUpdateMessage from "./KycStatusUpdateMesssage";
@@ -39,7 +37,6 @@ function Home() {
   const { txnChartData } = dashboard;
 
   const { SubscribedPlanData } = productCatalogueSlice;
-  // console.log("SubscribedPlanData", SubscribedPlanData)
 
   const unPaidProduct = useMemo(() => {
     return SubscribedPlanData?.filter(
@@ -50,7 +47,6 @@ function Home() {
   }, [SubscribedPlanData]);
 
   useEffect(() => {
-    // console.log("user",user?.clientMerchantDetailsList[0]?.clientCode)
     if (roles.merchant) {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
       dispatch(kycUserList({ login_id: user?.loginId }));
@@ -87,11 +83,10 @@ function Home() {
 
   if (roles.merchant) {
     const updatedDate = graphDate(txnChartData || []);
-
     updatedDate?.map((item) => {
-      labels.push(moment(item?.txnDate).format("MMMM Do"));
-      values.push(parseInt(item?.txnNo));
-      extraValues.push(parseInt(item?.tsr));
+      labels.push(moment(item?.txn_date).format("MMMM Do"));
+      values.push(parseInt(item?.txn_no));
+      extraValues.push(parseInt(item?.TSR));
     });
   }
 
@@ -101,7 +96,6 @@ function Home() {
     extraValues,
   };
 
-  // console.log("unPaidProduct", unPaidProduct)
   function getLocation() {
     setLocationLoader(true);
     if (navigator.geolocation) {
