@@ -20,7 +20,7 @@ export const graphDate = (data) => {
         if (data.length === 0) return data;
 
         // Get the month and year from the first date
-        const firstDate = new Date(data[0].txnDate);
+        const firstDate = new Date(data[0].txn_date);
         const year = firstDate.getFullYear();
         const month = firstDate.getMonth();
 
@@ -28,22 +28,22 @@ export const graphDate = (data) => {
         const allDates = getDatesInMonth(year, month).map(date => formatDate(date));
 
         // Convert existing data to a map for quick lookup
-        const existingDatesMap = new Map(data.map(item => [item.txnDate, item]));
+        const existingDatesMap = new Map(data.map(item => [item.txn_date, item]));
 
         // Add missing dates to the map
         allDates.forEach((date, i) => {
             if (!existingDatesMap.has(date)) {
                 existingDatesMap.set(date, {
-                    txnDate: date,
-                    txnNo: "0", // or any default value
-                    tsr: "0.00", // or any default value
+                    txn_date: date,
+                    txn_no: "0", // or any default value
+                    TSR: "0.00", // or any default value
                     id: i + 1 // you might want to adjust the id assignment logic
                 });
             }
         });
 
         // Convert the map back to an array and sort by date
-        const result = Array.from(existingDatesMap.values()).sort((a, b) => new Date(a.txnDate) - new Date(b.txnDate));
+        const result = Array.from(existingDatesMap.values()).sort((a, b) => new Date(a.txn_date) - new Date(b.txn_date));
 
         return result;
     }
