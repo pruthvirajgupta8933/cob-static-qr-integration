@@ -28,6 +28,7 @@ const BarChart = ({ data, chartTitle, extraParamName, xAxisTitle, yAxisTitle }) 
                             pointRadius: 4,
                             pointHoverRadius: 6,
                             tension: 0.4,
+                            borderRadius: 5
                         },
                     ],
                 },

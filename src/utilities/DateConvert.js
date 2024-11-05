@@ -7,7 +7,7 @@ const DateFormatter = (date, time = true) => {
 
   let DateFormat = "YYYY-MM-DD";
   if (time) {
-    DateFormat = "YYYY-MM-DD HH:MM";
+    DateFormat = "YYYY-MM-DD HH:mm:ss";
   }
 
   const formattedDate = moment(date).format(DateFormat).toUpperCase();
