@@ -291,13 +291,14 @@ const API_LIVE = {
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
-  VALIDATE_KYC: `${kyc_validate}/validator`,
-  VALIDATE_DOC_KYC: `${kyc_url}/kyc/validate`,
+  VALIDATE_DOC_KYC: `${kyc_url}/kyc/validator`,
+  // VALIDATE_KYC: `${kyc_url}/kyc/validator`,
 
-  UDYAM_REGISTRATION: `${kyc_validate}/validator`,
-  CIN_DETAIL: `${kyc_validate}/validator/validate-master-data/cin-lookup/`,
-  Aadhar_number: `${kyc_validate}/validator/validate-aadhar/send-otp/`,
-  Aadhar_otp_verify: `${kyc_validate}/validator/validate-aadhar/verify-otp/`,
+
+  UDYAM_REGISTRATION: `${kyc_url}/kyc/validator`,
+  CIN_DETAIL: `${kyc_url}/kyc/validator/validate-master-data/cin-lookup/`,
+  Aadhar_number: `${kyc_url}/kyc/validator/validate-aadhar/send-otp/`,
+  Aadhar_otp_verify: `${kyc_url}/kyc/validator/validate-aadhar/verify-otp/`,
 
   // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,

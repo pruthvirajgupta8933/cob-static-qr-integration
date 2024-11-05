@@ -5,55 +5,55 @@ import {
 import API_URL from "../../config";
 
 export const cinDetail = (paramData) => {
-  return kycValidatorAuth.post(API_URL.CIN_DETAIL, paramData);
+  return axiosInstanceJWT.post(API_URL.CIN_DETAIL, paramData);
 };
 
 export const aadharNumberVerify = (paramData) => {
-  return kycValidatorAuth.post(
-    `${API_URL.VALIDATE_DOC_KYC}/aadhar-send-otp/`,
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-aadhar/send-otp/`,
     paramData
   );
 };
 
 export const aadharOtpVerify = (paramData) => {
-  return kycValidatorAuth.post(
-    `${API_URL.VALIDATE_DOC_KYC}/aadhar-verify-otp`,
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-aadhar/verify-otp/`,
     paramData
   );
 };
 
 export const panVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/pan/`, paramData);
+  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-pan/`, paramData);
 };
 
 export const gstVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/gst/`, paramData);
+  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-gst/`, paramData);
 };
 
 export const udyamVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/udyam/`, paramData);
+  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-udyam/`, paramData);
 };
 
 export const ifscVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/ifsc/`, paramData);
+  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-ifsc/`, paramData);
 };
 
 export const accountVerify = (paramData) => {
   return axiosInstanceJWT.post(
-    `${API_URL.VALIDATE_DOC_KYC}/account/`,
+    `${API_URL.VALIDATE_DOC_KYC}/validate-account/`,
     paramData
   );
 };
 
 export const credReportVerify = (paramData) => {
   return axiosInstanceJWT.post(
-    `${API_URL.VALIDATE_DOC_KYC}/cred-report/`,
+    `${API_URL.VALIDATE_DOC_KYC}/validate-cred-report/`,
     paramData
   );
 };
 
 export const cinVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/cin/`, paramData);
+  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/cin-lookup/`, paramData);
 };
 
 export const voterVerify = (paramData) => {
