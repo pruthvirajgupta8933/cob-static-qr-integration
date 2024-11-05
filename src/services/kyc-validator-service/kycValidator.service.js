@@ -53,7 +53,7 @@ export const credReportVerify = (paramData) => {
 };
 
 export const cinVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/cin-lookup/`, paramData);
+  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-master-data/cin-lookup/`, paramData);
 };
 
 export const voterVerify = (paramData) => {
