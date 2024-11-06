@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import CustomModal from "../../../_components/custom_modal";
 import TimerComponent from "../../../utilities/TimerComponent";
 import toastConfig from "../../../utilities/toastTypes";
-import { kycValidatorAuth } from "../../../utilities/axiosInstance";
+import {
+  axiosInstanceJWT,
+  kycValidatorAuth,
+} from "../../../utilities/axiosInstance";
 import API_URL from "../../../config";
 import { ErrorMessage, Field } from "formik";
 
@@ -22,7 +25,7 @@ const AadhaarVerficationModal = ({
   const aadharOtpVerification = async () => {
     setIsLoading(true);
     try {
-      const resp = await kycValidatorAuth.post(API_URL.Aadhar_otp_verify, {
+      const resp = await axiosInstanceJWT.post(API_URL.Aadhar_otp_verify, {
         referenceId: aadharOtpResponse?.referenceId || values.otp_ref_id,
         otp: values.aadhaarOtpDigit,
       });
