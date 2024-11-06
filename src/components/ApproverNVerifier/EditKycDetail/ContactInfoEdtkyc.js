@@ -1,5 +1,5 @@
-import React, {  useState } from "react";
-import { Formik, Field, Form} from "formik";
+import React, { useState } from "react";
+import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../../_components/formik/FormikController";
 import "./kyc-style.css";
@@ -7,33 +7,33 @@ import OtpInput from "react-otp-input";
 import { updateContactInfoEditDetails } from "../../../slices/editKycSlice";
 import { kycUserList } from "../../../slices/kycSlice";
 import { toast } from "react-toastify";
-import { Regex,RegexMsg } from "../../../_components/formik/ValidationRegex";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import Yup from "../../../_components/formik/Yup";
 
 
 
 
 function ContactInfoEdtkyc(props) {
-  const setTitle=props.title
-  const setTab=props.tab
- 
-  const selectedId=props.selectedId
-  const { auth,kyc} = useSelector((state) => state);
- const { user } = auth;
+  const setTitle = props.title
+  const setTab = props.tab
+
+  const selectedId = props.selectedId
+  const { auth, kyc } = useSelector((state) => state);
+  const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
-  const isContactNumberVerified=KycList?.isContactNumberVerified
-    const isEmailVerified=KycList?.isEmailVerified
-     const dispatch=useDispatch()
-     const [disable,setIsDisable]=useState(false)
+  const isContactNumberVerified = KycList?.isContactNumberVerified
+  const isEmailVerified = KycList?.isEmailVerified
+  const dispatch = useDispatch()
+  const [disable, setIsDisable] = useState(false)
 
   const initialValues = {
     name: KycList?.name,
     contact_number: KycList?.contactNumber,
     email_id: KycList?.emailId,
-  aadhar_number: KycList?.aadharNumber,
-    
-    
+    aadhar_number: KycList?.aadharNumber,
+
+
   };
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -62,14 +62,14 @@ function ContactInfoEdtkyc(props) {
       .allowOneSpace()
       .email("Invalid email")
       .nullable(),
-   
+
     aadhar_number: Yup.string()
       .allowOneSpace()
       .max(18, "Exceeds the limit")
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+      // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      // .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
       .nullable(),
-   
+
   });
 
   const handleSubmitContact = (values) => {
@@ -77,17 +77,17 @@ function ContactInfoEdtkyc(props) {
     const emptyFields = ['name', 'contact_number', 'email_id', 'aadhar_number'].some(
       (field) => !values[field]
     );
-  
+
     if (emptyFields) {
       const confirmSubmit = window.confirm(
         "Some fields are empty. Are you sure you want to proceed?"
       );
-  
+
       if (!confirmSubmit) {
         return; // Exit the function if the user cancels
       }
     }
-  
+
     setIsDisable(true);
     dispatch(
       updateContactInfoEditDetails({
@@ -117,10 +117,10 @@ function ContactInfoEdtkyc(props) {
       }
     });
   };
-  
 
 
- const tooltipData = {
+
+  const tooltipData = {
     "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
     "contact_phone": "We will reach out to this phone for any account related issues."
   }
@@ -129,7 +129,7 @@ function ContactInfoEdtkyc(props) {
     <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
-         validationSchema={validationSchema}
+        validationSchema={validationSchema}
         onSubmit={handleSubmitContact}
         enableReinitialize={true}
       >
@@ -151,7 +151,7 @@ function ContactInfoEdtkyc(props) {
                   type="text"
                   name="name"
                   className="form-control"
-                  
+
                 />
               </div>
 
@@ -181,22 +181,22 @@ function ContactInfoEdtkyc(props) {
                       setFieldValue("contact_number", e.target.value)
                       // setFieldValue("isContactNumberVerified", 0)
                     }}
-                    
+
                   />
-                  
+
 
                 </div>
                 <span className="mb-1">
-                 
-                 <p className={isContactNumberVerified === 1 ? "text-success" : "text-danger"}>
-                   {isContactNumberVerified === 1 ? "Verified" : "Not Verified"}
-                 </p>
-               
-             </span>
+
+                  <p className={isContactNumberVerified === 1 ? "text-success" : "text-danger"}>
+                    {isContactNumberVerified === 1 ? "Verified" : "Not Verified"}
+                  </p>
+
+                </span>
 
 
-               
-                
+
+
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
@@ -207,20 +207,20 @@ function ContactInfoEdtkyc(props) {
                     type="text"
                     name="email_id"
                     className="form-control"
-                    
-                   
-                     />
-                 
+
+
+                  />
+
                 </div>
                 <span className="mb-1">
-                 
-                 <p className={isEmailVerified === 1 ? "text-success" : "text-danger"}>
-                   {isEmailVerified === 1 ? "Verified" : "Not Verified"}
-                 </p>
-               
-             </span>
 
-               
+                  <p className={isEmailVerified === 1 ? "text-success" : "text-danger"}>
+                    {isEmailVerified === 1 ? "Verified" : "Not Verified"}
+                  </p>
+
+                </span>
+
+
               </div>
             </div>
 
@@ -229,25 +229,25 @@ function ContactInfoEdtkyc(props) {
                 {/* {VerifyKycStatus === KYC_STATUS_VERIFIED ? (
                   <></>
                 ) : ( */}
-                  <button
-                     disabled={disable}
-                    type="submit"
-                    className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
-                  >
-                    {disable &&
-                      <span className="mr-2">
-                        <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
-                        <span className="sr-only">Loading...</span>
-                      </span>
-                    }
-                    {"Save and Next"}
-                  </button>
+                <button
+                  disabled={disable}
+                  type="submit"
+                  className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
+                >
+                  {disable &&
+                    <span className="mr-2">
+                      <span className="spinner-border spinner-border-sm" role="status" ariaHidden="true" />
+                      <span className="sr-only">Loading...</span>
+                    </span>
+                  }
+                  {"Save and Next"}
+                </button>
                 {/* )} */}
               </div>
             </div>
 
 
-            
+
           </Form>
         )}
       </Formik>
