@@ -121,8 +121,8 @@ function ContactInfo(props) {
     aadhar_number: Yup.string()
       .allowOneSpace()
       .max(18, "Exceeds the limit")
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+      // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      // .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
       .required("Required")
       .nullable(),
     isContactNumberVerified: Yup.string().required("Please verify the contact number").nullable()
