@@ -18,7 +18,6 @@ const ValidateCIN = ({ selectedDocType }) => {
     let res;
     try {
       res = await dispatch(cinValidation({ cin_number: cin }));
-      setCinData(res?.payload);
       setIsLoading(false);
 
       if (
@@ -26,9 +25,12 @@ const ValidateCIN = ({ selectedDocType }) => {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
+        setCinData(res?.payload);
         setCinStatus(res.payload.status);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(
+          res?.payload?.message ?? res?.payload?.data?.detail ?? res?.payload
+        );
       }
     } catch (error) {
       setIsLoading(false);

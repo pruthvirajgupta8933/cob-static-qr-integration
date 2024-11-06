@@ -31,7 +31,6 @@ const UdyamRegistrationList = ({ selectedDocType }) => {
       );
 
       setIsLoading(false);
-      setUdyamRegistrationData(res?.payload);
 
       if (
         res.meta.requestStatus === "fulfilled" &&
@@ -39,8 +38,11 @@ const UdyamRegistrationList = ({ selectedDocType }) => {
         res.payload.valid === true
       ) {
         setUdyamRegstatus(res.payload.status);
+        setUdyamRegistrationData(res?.payload);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(
+          res?.payload?.message ?? res?.payload?.data?.detail ?? res?.payload
+        );
       }
     } catch (error) {
       setIsLoading(false);
