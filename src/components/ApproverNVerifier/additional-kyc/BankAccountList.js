@@ -30,7 +30,6 @@ const BankAccountList = ({ selectedDocType }) => {
       );
 
       setButtonDisable(false);
-      setBankAccount(res?.payload);
 
       if (
         res?.meta?.requestStatus === "fulfilled" &&
@@ -39,8 +38,11 @@ const BankAccountList = ({ selectedDocType }) => {
       ) {
         setBankStatus(res?.payload?.status);
         setIsLoading(false);
+        setBankAccount(res?.payload);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(
+          res?.payload?.message ?? res?.payload?.data?.detail ?? res?.payload
+        );
         setIsLoading(false);
       }
     } catch (error) {
@@ -85,27 +87,25 @@ const BankAccountList = ({ selectedDocType }) => {
                     </div>
                   </div>
 
-                        <div className="form-group">
-                            <button
-                                type="submit"
-                                className="btn cob-btn-primary text-white btn-sm"
-                                disabled={buttonDisable}
-                            >
-                                {isLoading ? (
-                                    <span
-                                        className="spinner-border spinner-border-sm"
-                                        role="status"
-                                        ariaHidden="true"
-                                    ></span>
-                                ) : (
-                                    "Verify"
-                                )}
-                            </button>
-                        </div>
-                    </Form>
-
-
-                </Formik>
+                  <div className="form-group">
+                    <button
+                      type="submit"
+                      className="btn cob-btn-primary text-white btn-sm"
+                      disabled={buttonDisable}
+                    >
+                      {isLoading ? (
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          ariaHidden="true"
+                        ></span>
+                      ) : (
+                        "Verify"
+                      )}
+                    </button>
+                  </div>
+                </Form>
+              </Formik>
             )}
 
             {bankStatus && selectedDocType === "3" && (

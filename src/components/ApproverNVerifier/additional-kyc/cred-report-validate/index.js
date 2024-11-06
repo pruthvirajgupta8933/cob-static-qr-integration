@@ -23,7 +23,6 @@ const ValidateCredReport = ({ selectedDocType }) => {
     try {
       res = await dispatch(credReportValidation({ txn_id: txn.id }));
       setButtonDisable(false);
-      setCredReporData(res?.payload);
       setIsLoading(false);
 
       if (
@@ -32,8 +31,11 @@ const ValidateCredReport = ({ selectedDocType }) => {
         res.payload.valid === true
       ) {
         setCredStatus(res.payload.status);
+        setCredReporData(res?.payload);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(
+          res?.payload?.message ?? res?.payload?.data?.detail ?? res?.payload
+        );
       }
     } catch (error) {
       setButtonDisable(false);
