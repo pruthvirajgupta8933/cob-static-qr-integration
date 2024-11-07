@@ -68,8 +68,8 @@ const SettlementReportNew = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -501,7 +501,8 @@ const SettlementReportNew = () => {
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    const totalRow = ["Total Settlement Amount"];
+    const totalRow = [];
+    totalRow[22] = "Total Settlement Amount"
     totalRow[23] = txnList.reduce(
       (sum, item) => item.settlement_amount + sum,
       0
