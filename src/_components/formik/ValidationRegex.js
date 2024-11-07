@@ -4,7 +4,7 @@ export const Regex = {
   acceptAlphaWithComma: /^[a-zA-Z,.\s]+$/,
   acceptNumber:
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-  acceptAlphaNumeric: /^[a-zA-Z0-9\s]+$/,
+  acceptAlphaNumeric: /^[a-zA-Z0-9\s*]+$/, // alphanumeric with *
   alphaBetwithhyphon: /[a-zA-Z._^%$#!~@,-]+/,
   digit: /^[0-9]+$/,
   address: /^[a-zA-Z0-9\s,.'-]{3,}$/,
