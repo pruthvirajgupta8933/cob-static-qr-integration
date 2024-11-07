@@ -47,12 +47,13 @@ function KycForm() {
   const { loginId } = user;
   const roles = roleBasedAccess();
 
-  let merchantloginMasterId = loginId;
+  let merchantloginMasterId = "";
   if (roles.referral || roles.accountManager) {
     merchantloginMasterId = stringDec(kycid);
   } else if (roles.merchant) {
     merchantloginMasterId = loginId;
   }
+
   merchantloginMasterId = parseInt(merchantloginMasterId);
 
   const { KycTabStatusStore } = kyc;
@@ -190,15 +191,13 @@ function KycForm() {
                 >
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0 ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 1
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      } ${tab === 1
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.general_info_status
-                          )
+                          KycTabStatusStore?.general_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     role="tab"
                     onClick={() => {
@@ -212,15 +211,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0 ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 2
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      } ${tab === 2
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.business_info_status
-                          )
+                          KycTabStatusStore?.business_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       SetTab(2);
@@ -233,15 +230,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0 ${
-                      classes.kyc_tab_link
-                    }  ${
-                      tab === 3
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      }  ${tab === 3
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.merchant_info_status
-                          )
+                          KycTabStatusStore?.merchant_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       SetTab(3);
@@ -255,15 +250,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0  ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 4
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      } ${tab === 4
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.settlement_info_status
-                          )
+                          KycTabStatusStore?.settlement_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       SetTab(4);
@@ -277,15 +270,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0  ${
-                      classes.kyc_tab_link
-                    }  ${
-                      tab === 5
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      }  ${tab === 5
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.document_status
-                          )
+                          KycTabStatusStore?.document_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       SetTab(5);
@@ -298,13 +289,11 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0  ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 6
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      } ${tab === 6
                         ? kycTabColorClassByStatus(KycTabStatusStore?.status)
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       SetTab(6);
