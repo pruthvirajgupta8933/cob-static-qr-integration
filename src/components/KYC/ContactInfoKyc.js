@@ -131,7 +131,7 @@ function ContactInfoKyc(props) {
         .nullable(),
       otherwise: Yup.string(),
     }),
-
+    // ************2110
     id_number: Yup.string()
       // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .when("id_proof_type", {
@@ -145,7 +145,7 @@ function ContactInfoKyc(props) {
           is: (value) => value === 4, // For id_proof_type = 4
           then: Yup.string()
             .min(14, "Minimum 14 digits are required")
-            .max(14, "Maximum 14 digits are required")
+            // .max(14, "Maximum 14 digits are required")
             .required("Required")
             .nullable(),
           otherwise: Yup.string().when("id_proof_type", {
