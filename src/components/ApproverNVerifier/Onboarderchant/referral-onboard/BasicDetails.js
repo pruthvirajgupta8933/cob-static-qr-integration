@@ -286,7 +286,16 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         postData.password = values.password;
       else postData.password = kycData.secret_key;
     } else postData.password = values.password;
-    dispatch(saveBasicDetails(postData));
+
+    dispatch(saveBasicDetails(postData)).then(() => {
+      dispatch(
+        kycUserList({
+          login_id: kycData?.loginMasterId,
+          password_required: true
+        })
+      );
+    })
+
   };
 
   const handleDlVerification = async ({ values, setFieldValue }) => {
@@ -461,6 +470,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         enableReinitialize={true}
       >
         {({ values, errors, setFieldValue, isValid }) => (
+
           <Form autoComplete="off">
             <div className="row g-3">
               <div className="col-md-6">
@@ -553,7 +563,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                       className="form-select"
                       onChange={(e) => {
                         idProofhandler(e.target.value);
-                        console.log(e.target.value, kycData?.id_proof_type);
+
                         if (
                           kycData?.aadharNumber &&
                           e.target.value == kycData?.id_proof_type
@@ -581,119 +591,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                     renderInputField({ values, errors, setFieldValue })
                   )}
                 </div>
-                {/* <label className="col-form-label mb-2 lh-sm">
-                  Aadhaar<span style={{ color: "red" }}>*</span>
-                </label>
-                <div className="input-group">
-                  <Field
-                    type="text"
-                    name="aadhaar"
-                    className="form-control"
-                    onChange={(e) => {
-                      setFieldValue("isAadhaarVerified", "");
-                      setFieldValue("aadhaar", e.target.value); // Set the uppercase value to form state
-                    }}
-                    disabled={basicDetailsResponse?.data}
-                  />
-                  {values?.aadhaar !== null &&
-                  values?.aadhaar !== "" &&
-                  values?.aadhaar !== undefined &&
-                  // !errors.hasOwnProperty("pan_card") &&
-                  // !errors.hasOwnProperty("is_pan_verified") &&
-
-                  values?.isAadhaarVerified !== "" ? (
-                    <span className="success input-group-append">
-                      <img
-                        src={verifiedIcon}
-                        alt=""
-                        title=""
-                        width={"20px"}
-                        height={"20px"}
-                        className="btn-outline-secondary"
-                      />
-                    </span>
-                  ) : (
-                    <span className="input-group-append d-none">
-                      {otpLoader ? (
-                        <div className="bg-primary text-white w-100 p-2">
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            ariaHidden="true"
-                          />
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      ) : (
-                        <a
-                          href={() => false}
-                          className={`btn cob-btn-primary text-white btn btn-sm ${
-                            values.aadhaar?.length !== 12
-                              ? "disabled"
-                              : "pe-auto"
-                          }`}
-                          onClick={() =>
-                            sendAadharOtp({ values, setFieldValue })
-                          }
-                        >
-                          Send OTP
-                        </a>
-                      )}
-                    </span>
-                  )}
-                </div>
-                {otpBox && (
-                  <CustomModal
-                    modalBody={() => (
-                      <>
-                        <label>
-                          Please Enter OTP sent to your phone number
-                        </label>
-                        <div className="input-group w-40">
-                          <Field
-                            type="number"
-                            name="aadhar-otp"
-                            className="form-control"
-                            onChange={(e) => {
-                              setFieldValue("isAadhaarVerified", "");
-                              setFieldValue("aadhar_otp", e.target.value); // Set the uppercase value to form state
-                            }}
-                          />
-                          <span className="input-group-append">
-                            {aadhaarLoader ? (
-                              <div className="bg-primary text-white w-100 p-2">
-                                <span
-                                  className="spinner-border spinner-border-sm"
-                                  role="status"
-                                  ariaHidden="true"
-                                />
-                                <span className="sr-only">Loading...</span>
-                              </div>
-                            ) : (
-                              <a
-                                href={() => false}
-                                className={`btn cob-btn-primary text-white btn btn-sm ${
-                                  !values.aadhar_otp ||
-                                  values.aadhar_otp.length < 6
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  verifyAadhar({ values, setFieldValue })
-                                }
-                              >
-                                Verify
-                              </a>
-                            )}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                    modalSize={"md"}
-                    modalToggle={otpBox}
-                    headerTitle={"Aadhaar Verification"}
-                    fnSetModalToggle={() => showOtpBox(false)}
-                  />
-                )} */}
               </div>
               {type === "individual" && (
                 <div className="col-md-6">
@@ -744,8 +641,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                           <a
                             href={() => false}
                             className={`btn cob-btn-primary text-white btn btn-sm ${values.pan?.length !== 10 || disableForm
-                                ? "disabled"
-                                : "pe-auto"
+                              ? "disabled"
+                              : "pe-auto"
                               }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
@@ -761,11 +658,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
             </div>
             <div className="row">
               <div className="col-6">
+
                 <button
                   type="submit"
                   className="btn cob-btn-primary btn-sm m-2"
                   disabled={
-                    !isValid || basicDetailsResponse?.data?.loginMasterId
+                    !isValid && basicDetailsResponse?.data?.loginMasterId
                   }
                 >
                   {submitLoader ? (

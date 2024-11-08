@@ -98,6 +98,8 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
           setShowNext(true);
+          dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId, password_required: true }));
+
         }
       })
       .catch((err) => {
@@ -230,9 +232,9 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
                       }}
                     />
                     {values?.acNumber !== null &&
-                    values?.acNumber !== "" &&
-                    values?.acNumber !== undefined &&
-                    values?.isAccountNumberVerified !== "" ? (
+                      values?.acNumber !== "" &&
+                      values?.acNumber !== undefined &&
+                      values?.isAccountNumberVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
