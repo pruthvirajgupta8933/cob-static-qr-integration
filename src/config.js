@@ -258,6 +258,7 @@ const API_LIVE = {
   SUBSCRIBED_DETAILS: `${url}/merchant/get-subscribed-details`,
 
   SUBSCRIPTIONS: `${url}/subscription`,
+  GET_SUBSCRIPTIONS: `${url}/get-subscription`,
 
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
