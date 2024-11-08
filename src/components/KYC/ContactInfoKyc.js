@@ -207,8 +207,8 @@ function ContactInfoKyc(props) {
           setTitle("BUSINESS OVERVIEW");
           setIsDisable(false);
           toast.success(res.payload?.message);
-          dispatch(kycUserList({ login_id: loginId }));
-          dispatch(GetKycTabsStatus({ login_id: loginId }));
+          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+          dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
         } else {
           toast.error(res.payload);
           toast.error(res.payload?.message);
