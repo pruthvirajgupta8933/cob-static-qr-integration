@@ -28,30 +28,28 @@ function SideNavbar() {
   return (
     <nav
       id="sidebarMenu"
-      className={`col-md-3 col-lg-2 d-md-block sidebar collapse bg-white text-black font-size-14 ${
-        sideNavClasses.sidebar_cob
-      } ${headerMenuToggle ? "show" : ""}`}
+      className={`col-md-3 col-lg-2 d-md-block sidebar collapse bg-white text-black font-size-14 ${sideNavClasses.sidebar_cob
+        } ${headerMenuToggle ? "show" : ""}`}
     >
       {menuListReducer?.isLoading ? (
         <div className="position-sticky pt-3 pl-3">
           {(roleBasedShowTab?.merchant === true ||
             roleBasedShowTab?.bank === true ||
             roleBasedShowTab?.b2b === true) && (
-            <ul className="nav flex-column">
-              <li className="nav-item ml-1">
-                <Link
-                  to={url}
-                  className={`nav-link ${sideNavClasses.sidebar_menu}  ${
-                    selectedMenu === "dashboard"
-                      ? sideNavClasses.selected_memu
-                      : ""
-                  }`}
-                >
-                  <i className="fa fa-home"></i>&nbsp;Dashboard
-                </Link>
-              </li>
-            </ul>
-          )}
+              <ul className="nav flex-column">
+                <li className="nav-item ml-1">
+                  <Link
+                    to={url}
+                    className={`nav-link ${sideNavClasses.sidebar_menu}  ${selectedMenu === "dashboard"
+                        ? sideNavClasses.selected_memu
+                        : ""
+                      }`}
+                  >
+                    <i className="fa fa-home"></i>&nbsp;Dashboard
+                  </Link>
+                </li>
+              </ul>
+            )}
 
           {/* render menu from API */}
           {menuListReducer?.enableMenu?.map(
@@ -65,9 +63,8 @@ function SideNavbar() {
                       <span className="font-size-14 ">{menu.app_name}</span>
                       <div className="link-secondary">
                         <i
-                          className={`fa ${
-                            index !== 0 ? "fa-plus" : "fa-minus"
-                          }`}
+                          className={`fa ${index !== 0 ? "fa-plus" : "fa-minus"
+                            }`}
                           id={`icon_${menu?.app_code}`}
                         ></i>
                       </div>
@@ -76,11 +73,9 @@ function SideNavbar() {
 
                   <ul
                     id={`menulist_${menu.app_code}`}
-                    className={`${
-                      index !== 0 && "hide-menu-nav"
-                    } nav flex-column mb-2 ml-2 ${
-                      sideNavClasses.submenu_border
-                    }`}
+                    className={`${index !== 0 && "hide-menu-nav"
+                      } nav flex-column mb-2 ml-2 ${sideNavClasses.submenu_border
+                      }`}
                     role="menu"
                   >
                     {menu.submenu?.map(
@@ -93,13 +88,11 @@ function SideNavbar() {
                           >
                             <Link
                               to={`${url}/${submenu.url}`}
-                              className={`nav-link ${
-                                sideNavClasses.sidebar_menu
-                              }  ${
-                                selectedMenu === submenu.url.split("/").pop()
+                              className={`nav-link ${sideNavClasses.sidebar_menu
+                                }  ${selectedMenu === submenu.url.split("/").pop()
                                   ? sideNavClasses.selected_memu
                                   : ""
-                              }`}
+                                }`}
                             >
                               <i className={submenu.sub_menu_icon}></i>&nbsp;
                               {submenu.submenu_name}
@@ -130,11 +123,10 @@ function SideNavbar() {
             <li className="nav-item ml-1" role="menuitem">
               <Link
                 to={`${url}/info-bulletin`}
-                className={`nav-link ${sideNavClasses.nav_link} ${
-                  selectedMenu === "info-bulletin"
+                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "info-bulletin"
                     ? sideNavClasses.selected_memu
                     : ""
-                }`}
+                  }`}
               >
                 <i className="fa fa-info-circle"></i>&nbsp;Information Bulletin
               </Link>
@@ -147,11 +139,10 @@ function SideNavbar() {
               <li className="nav-item ml-1" role="menuitem">
                 <Link
                   to={`${url}/settlement-report`}
-                  className={`nav-link ${sideNavClasses.nav_link} ${
-                    selectedMenu === "settlement-report"
+                  className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settlement-report"
                       ? sideNavClasses.selected_memu
                       : ""
-                  }`}
+                    }`}
                 >
                   <i className="fa fa-bank mr-1"></i>
                   Settlement Report (Files)
@@ -164,9 +155,8 @@ function SideNavbar() {
             <li className="nav-item ml-1" role="menuitem">
               <Link
                 to={`${url}/faq`}
-                className={`nav-link ${sideNavClasses.nav_link} ${
-                  selectedMenu === "faq" ? sideNavClasses.selected_memu : ""
-                }`}
+                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "faq" ? sideNavClasses.selected_memu : ""
+                  }`}
               >
                 <i className="fa fa-question-circle mr-1" ariaHidden="true"></i>
                 FAQ/Help
