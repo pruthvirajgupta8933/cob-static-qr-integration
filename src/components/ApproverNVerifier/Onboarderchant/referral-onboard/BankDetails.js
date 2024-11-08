@@ -98,7 +98,7 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
           setShowNext(true);
-          dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId, password_required: true }));
+          dispatch(kycUserList({ login_id: kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId, password_required: true }));
 
         }
       })
