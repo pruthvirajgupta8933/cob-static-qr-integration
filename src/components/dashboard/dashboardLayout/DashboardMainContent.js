@@ -99,6 +99,7 @@ import MerchantDetailList from "../../bank/MerchantDetailList";
 import MerchantSummary from "../../bank/MerchantSummary";
 import InformationBulletin from "../../InfoBulletin";
 import ManualSubscription from "../../ManualSubscription";
+import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -730,24 +731,28 @@ function DashboardMainContent() {
               />
 
               {roles?.approver && (
-                <>
-                  <Route
-                    exact
-                    path={`${path}/ratemapping/:loginid`}
-                    Component={ManualRateMapping}
-                  >
-                    <ManualRateMapping />
-                  </Route>
-
-                  <Route
-                    exact
-                    path={`${path}/manual-subscription`}
-                    Component={ManualSubscription}
-                  >
-                    <ManualSubscription />
-                  </Route>
-                </>
+                <Route
+                  exact
+                  path={`${path}/ratemapping/:loginid`}
+                  Component={ManualRateMapping}
+                >
+                  <ManualRateMapping />
+                </Route>
               )}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/manual-subscription`}
+                Component={ManualSubscription}
+                roleList={{ approver: true }}
+              />
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription-balance`}
+                Component={SubscriptionBalance}
+                roleList={{ approver: true }}
+              />
+
 
               <AuthorizedRoute
                 exact
