@@ -77,8 +77,8 @@ const TransactionHistoryDoitc = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   // formik initial values
   const initialValues = {
@@ -107,7 +107,7 @@ const TransactionHistoryDoitc = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   // get paymode status list
@@ -117,7 +117,7 @@ const TransactionHistoryDoitc = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   // fetch child client data
@@ -126,8 +126,8 @@ const TransactionHistoryDoitc = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -363,20 +363,20 @@ const TransactionHistoryDoitc = () => {
         payee_amount:
           item.payee_amount === null
             ? "null"
-            : Number.parseFloat(item.payee_amount),
+            : Number.parseFloat(item.payee_amount).toFixed(2),
         p_convcharges:
           item.p_convcharges === null
             ? "null"
-            : Number.parseFloat(item.p_convcharges),
+            : Number.parseFloat(item.p_convcharges).toFixed(2),
         p_ep_charges:
           item.p_ep_charges === null
             ? "null"
-            : Number.parseFloat(item.p_ep_charges),
+            : Number.parseFloat(item.p_ep_charges).toFixed(2),
         p_gst: item.p_gst === null ? "null" : item.p_gst,
         total_amount:
           item.total_amount === null
             ? "null"
-            : Number.parseFloat(item.total_amount),
+            : Number.parseFloat(item.total_amount).toFixed(2),
         trans_date:
           item.trans_date === null ? "null" : dateFormatBasic(item.trans_date),
         status: item.status === null ? "null" : item.status,
@@ -510,8 +510,8 @@ const TransactionHistoryDoitc = () => {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                          // value={startDate}
-                          // onChange={(e)=>setStartDate(e.target.value)}
+                        // value={startDate}
+                        // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 
