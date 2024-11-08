@@ -75,6 +75,7 @@ const API_LIVE = {
   GET_ALL_BANK_NAME: `${url}/mid/bank/`,
   MID_CREATE_API: `${url}/mid/create/`,
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
+  SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
 
