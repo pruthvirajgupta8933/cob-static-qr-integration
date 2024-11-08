@@ -152,7 +152,7 @@ const ManualSubscription = () => {
           >
             Create New Subscription
           </button>
-          <div className="scroll overflow-auto">
+          {/* <div className="scroll overflow-auto">
             {subscriptionPlans?.count > 0 ? (
               <h6>Total Count : {subscriptionPlans.count}</h6>
             ) : (
@@ -173,7 +173,7 @@ const ManualSubscription = () => {
                 changeCurrentPage={changeCurrentPage}
               />
             )}
-          </div>
+          </div> */}
           <CustomLoader loadingState={subscriptionPlans?.loading} />
         </div>
         {openModal && (

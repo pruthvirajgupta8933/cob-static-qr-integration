@@ -31,20 +31,20 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       setCliencodeList(resp?.data?.result);
     });
   }, []);
-  useEffect(() => {
-    // dispatch();
-    console.log(data);
-    dispatch(getSubscriptionPlanById({ id: 3 })).then((resp) => {
-      if (resp?.meta?.requestStatus === "fulfilled") {
-        toastConfig.successToast("Data Saved");
-        setIsDisable(false);
-        setSubscriptionData(resp.payload?.data);
-      } else {
-        toastConfig.errorToast(resp?.payload ?? "Something went wrong");
-        setIsDisable(false);
-      }
-    });
-  }, [data]);
+  // useEffect(() => {
+  //   // dispatch();
+  //   console.log(data);
+  //   dispatch(getSubscriptionPlanById({ id: 3 })).then((resp) => {
+  //     if (resp?.meta?.requestStatus === "fulfilled") {
+  //       toastConfig.successToast("Data Saved");
+  //       setIsDisable(false);
+  //       setSubscriptionData(resp.payload?.data);
+  //     } else {
+  //       toastConfig.errorToast(resp?.payload ?? "Something went wrong");
+  //       setIsDisable(false);
+  //     }
+  //   });
+  // }, [data]);
   const options = [
     { value: "", label: "Select Client Code" },
     ...clientCodeList.map((data) => ({
@@ -115,8 +115,10 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       const resp = await dispatch(createSubscriptionPlan(postData));
       if (resp?.meta?.requestStatus === "fulfilled") {
         toastConfig.successToast("Data Saved");
+        window.location.reload()
         setIsDisable(false);
         setOpenModal(false);
+
       } else {
         toastConfig.errorToast(resp?.payload ?? "Something went wrong");
         setIsDisable(false);
@@ -150,7 +152,8 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
                     className="modal-title bolding text-black"
                     id="exampleModalLongTitle"
                   >
-                    {data ? "Create" : "Edit"} Subscription
+                    {/* {data ? "Create" : "Edit"} Subscription */}
+                    Create Subscription
                   </h5>
 
                   <button
