@@ -14,10 +14,12 @@ const updateSubscription = (id, requestParam) =>
     requestParam
   );
 
-export default {
+const manualSubscriptionService = {
   getSubscriptions,
   getSubscriptionById,
   createSubscription,
   deleteSubscription,
   updateSubscription,
 };
+
+export default manualSubscriptionService
