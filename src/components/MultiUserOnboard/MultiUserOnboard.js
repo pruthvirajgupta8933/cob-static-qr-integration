@@ -112,8 +112,8 @@ const MultiUserOnboard = () => {
       );
       setOnboardTypeName(
         initialValues.onboardType ??
-          selectOnboardType.find((type) => type.value === kycData?.onboard_type)
-            ?.key
+        selectOnboardType.find((type) => type.value === kycData?.onboard_type)
+          ?.key
       );
       if (
         merchantId &&
@@ -121,7 +121,7 @@ const MultiUserOnboard = () => {
         kycData.onboard_type != "Referrer (Company)" &&
         kycData.onboard_type != "Referrer (Individual)"
       ) {
-        toastConfig.infoToast("Please use kyc tab to update this kyc");
+        toastConfig.infoToast("Please log in using your merchant credentials and complete the KYC process at your earliest convenience.");
       }
     }
   }, [kycData]);
@@ -242,14 +242,14 @@ const MultiUserOnboard = () => {
                   </div>
                 )}
                 {onboardTypeName === "referrer" ||
-                onboardTypeName === "bank" ? (
+                  onboardTypeName === "bank" ? (
                   <div className="form-group col-md-3">
                     <label className="form-label">
                       {onboardTypeName === "referrer"
                         ? "Select Referral"
                         : onboardTypeName === "bank"
-                        ? "Select Bank"
-                        : null}
+                          ? "Select Bank"
+                          : null}
                     </label>
                     <select
                       className="form-select"
@@ -262,8 +262,8 @@ const MultiUserOnboard = () => {
                         {onboardTypeName === "referrer"
                           ? "Select"
                           : onboardTypeName === "bank"
-                          ? "Select"
-                          : ""}
+                            ? "Select"
+                            : ""}
                       </option>
                       {childList?.map((data) => (
                         <option value={data?.loginMasterId} key={data?.value}>
@@ -283,19 +283,16 @@ const MultiUserOnboard = () => {
           <div className="text-primary mb-3 d-flex">
             {selectedValue && (
               <React.Fragment>
-                <p className={classes.cb_nav}>{`${
-                  selectedName ? selectedName : ""
-                }`}</p>
-                {onboardTypeName !== "Select" && onboardTypeName && (
-                  <p className={classes.cb_nav}>{`${
-                    onboardTypeName === "Select"
-                      ? ""
-                      : ` ${
-                          selectOnboardType.find(
-                            (option) => option.key === onboardTypeName
-                          )?.value
-                        }`
+                <p className={classes.cb_nav}>{`${selectedName ? selectedName : ""
                   }`}</p>
+                {onboardTypeName !== "Select" && onboardTypeName && (
+                  <p className={classes.cb_nav}>{`${onboardTypeName === "Select"
+                      ? ""
+                      : ` ${selectOnboardType.find(
+                        (option) => option.key === onboardTypeName
+                      )?.value
+                      }`
+                    }`}</p>
                 )}
                 {selectedUserType && (
                   <p className={classes.cb_nav}>{selectedChildName}</p>
@@ -332,7 +329,7 @@ const MultiUserOnboard = () => {
               <ReferralOnboardForm
                 zoneCode={selectedValue}
                 referralChild={true}
-                fetchData={() => {}}
+                fetchData={() => { }}
                 referrerLoginId={selectedUserType}
                 marginTopCss={false}
               />
