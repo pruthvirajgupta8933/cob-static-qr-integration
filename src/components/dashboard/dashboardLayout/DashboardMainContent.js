@@ -98,6 +98,7 @@ import CreateMandateApiResponse from "../../../subscription_components/CreateMan
 import MerchantDetailList from "../../bank/MerchantDetailList";
 import MerchantSummary from "../../bank/MerchantSummary";
 import InformationBulletin from "../../InfoBulletin";
+import ManualSubscription from "../../ManualSubscription";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -546,7 +547,6 @@ function DashboardMainContent() {
                                     <PgResponse />
                                 </Route> */}
 
-
               <Route
                 exact
                 path={`${path}/sabpaisa-pg/:subscribeId/:applicationid`}
@@ -730,13 +730,23 @@ function DashboardMainContent() {
               />
 
               {roles?.approver && (
-                <Route
-                  exact
-                  path={`${path}/ratemapping/:loginid`}
-                  Component={ManualRateMapping}
-                >
-                  <ManualRateMapping />
-                </Route>
+                <>
+                  <Route
+                    exact
+                    path={`${path}/ratemapping/:loginid`}
+                    Component={ManualRateMapping}
+                  >
+                    <ManualRateMapping />
+                  </Route>
+
+                  <Route
+                    exact
+                    path={`${path}/manual-subscription`}
+                    Component={ManualSubscription}
+                  >
+                    <ManualSubscription />
+                  </Route>
+                </>
               )}
 
               <AuthorizedRoute
