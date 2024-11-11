@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import subscriptionService from "../services/manualSubscription";
-
 // const user = JSON.parse(localStorage.getItem("user"));
 
 export const subscriptionplan = createAsyncThunk(
@@ -80,6 +79,27 @@ export const getSubscriptionPlanById = createAsyncThunk(
     }
   }
 );
+
+export const getSubscriptionPlanByClientCode = createAsyncThunk(
+  "subscription/getManualSubscriptionByClientCode",
+  async (requestParam, thunkAPI) => {
+    try {
+      const data = await subscriptionService.getSubscriptionByClientCode(
+        requestParam.clientCode
+      );
+      return data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
 export const createSubscriptionPlan = createAsyncThunk(
   "subscription/createManualSubscriptions",
   async (requestParam, thunkAPI) => {
@@ -141,6 +161,7 @@ const initialState = {
   subscriptionPackageResponse: {},
   isLoading: false,
   manualSubscriptions: null,
+  merchantSubscriptionList: []
 };
 const subscriptionSlice = createSlice({
   name: "subscription",
@@ -165,6 +186,17 @@ const subscriptionSlice = createSlice({
     [getSubscriptionPlans.rejected]: (state, action) => {
       state.manualSubscriptions = { error: true };
     },
+
+    [getSubscriptionPlanByClientCode.pending]: (state) => {
+      state.merchantSubscriptionList = []
+    },
+    [getSubscriptionPlanByClientCode.fulfilled]: (state, action) => {
+
+      state.merchantSubscriptionList = action.payload.data
+    },
+    [getSubscriptionPlanByClientCode.rejected]: (state) => {
+      state.merchantSubscriptionList = []
+    }
   },
 });
 
