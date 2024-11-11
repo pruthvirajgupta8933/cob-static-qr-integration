@@ -151,7 +151,6 @@ function SubscriptionBalance() {
                 </div>
                 <div className="container p-0">
                     <div className="scroll overflow-auto">
-
                         {!loading && (
                             <>
                                 {balData?.length > 0 && <h6>Total Balance : INR {parseFloat(balData[0]?.updated_subscription_amount).toFixed(2)}</h6>}
@@ -161,7 +160,6 @@ function SubscriptionBalance() {
 
                                 />
                             </>
-
                         )}
                     </div>
                     <CustomLoader loadingState={loading} />

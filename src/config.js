@@ -114,6 +114,7 @@ const API_LIVE = {
 
   /* Settlement Report */
   SettlementReport: report_api_url + "/transactions/GetSettledTxnHistory/",
+  SettlementSummaryReport: report_api_url + "/transactions/SettledGroupedView/",
   ChargeBankTxnHistory:
     report_api_url + "/transactions/GetChargebackTxnHistory/",
   RefundTxnHistory: report_api_url + "/transactions/GetRefundTxnHistory/",
@@ -258,6 +259,7 @@ const API_LIVE = {
   SUBSCRIBED_DETAILS: `${url}/merchant/get-subscribed-details`,
 
   SUBSCRIPTIONS: `${url}/subscription`,
+  GET_SUBSCRIPTIONS: `${url}/get-subscription`,
 
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
@@ -296,7 +298,6 @@ const API_LIVE = {
   // KYC VALIDATE URL
   VALIDATE_DOC_KYC: `${kyc_url}/kyc/validator`,
   // VALIDATE_KYC: `${kyc_url}/kyc/validator`,
-
 
   // UDYAM_REGISTRATION: `${kyc_url}/kyc/validator`,
   CIN_DETAIL: `${kyc_url}/kyc/validator/validate-master-data/cin-lookup/`,

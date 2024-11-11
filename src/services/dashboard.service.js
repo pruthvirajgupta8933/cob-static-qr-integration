@@ -68,6 +68,9 @@ const dowlonadTransactionHistory = (postData) => {
 const settlementReport = (paramData) => {
   return axiosInstanceJWT.post(API_URL.SettlementReport, paramData);
 };
+const settlementGrpReport = (paramData) => {
+  return axiosInstanceJWT.post(API_URL.SettlementSummaryReport, paramData);
+};
 
 const refundTransactionHistory = (paramData) => {
   return axiosInstanceJWT.post(API_URL.RefundTxnHistory, paramData);
@@ -82,6 +85,7 @@ export const Dashboardservice = {
   subscriptionPlanDetail,
   fetchTransactionHistory,
   settlementReport,
+  settlementGrpReport,
   refundTransactionHistory,
   chargebackTxnHistory,
   getTxnDataForGraph,
