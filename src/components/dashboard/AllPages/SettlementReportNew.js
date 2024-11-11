@@ -713,29 +713,33 @@ const SettlementReportNew = () => {
                         </button>
                       </div>
                       {txnList?.length > 0 ? (
-                        <div className="form-group col-md-1 ml-1">
-                          <button
-                            className="btn cob-btn-primary text-white btn-sm"
-                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                            type="button"
-                            onClick={() => exportToExcelFn()}
-                          >
-                            Export{" "}
-                          </button>
-                        </div>
+                        <>
+                          <div className="form-group col-md-1 ml-1">
+                            <button
+                              className="btn cob-btn-primary text-white btn-sm"
+                              style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              type="button"
+                              onClick={() => exportToExcelFn()}
+                            >
+                              Export{" "}
+                            </button>
+                          </div>
+                          <div className="form-group col-md-1 ml-1">
+                            <button
+                              className="btn cob-btn-primary text-white btn-sm"
+                              style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              type="button"
+                              onClick={() =>
+                                getTransactionSummary(formik.values)
+                              }
+                            >
+                              Transactions Summary
+                            </button>
+                          </div>
+                        </>
                       ) : (
                         <></>
                       )}
-                      <div className="form-group col-md-1 ml-1">
-                        <button
-                          className="btn cob-btn-primary text-white btn-sm"
-                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                          type="button"
-                          onClick={() => getTransactionSummary(formik.values)}
-                        >
-                          Transactions Summary
-                        </button>
-                      </div>
                     </div>
                   </Form>
                 )}
@@ -937,7 +941,7 @@ const SettlementReportNew = () => {
               modalBody={modalBody}
               headerTitle={
                 <>
-                  <span className="mr-5">Transaction Summary</span>
+                  Transaction Summary
                   <button
                     className="btn cob-btn-primary text-white btn-sm ml-5"
                     style={{ backgroundColor: "rgb(1, 86, 179)" }}
