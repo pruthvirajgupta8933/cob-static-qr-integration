@@ -262,11 +262,10 @@ function TransactionSummery() {
               )}{" "}
               <div className="">
                 {showData.length !== 0 && (
-                  <h6 className="m-0">
-                    <strong>Total Successful Transactions</strong>:{" "}
-                    {totalSuccessTxn} |<strong>Total Amount {`(INR)`}</strong>:{" "}
-                    {totalAmt.toFixed()}
-                  </h6>
+                  <h5 className="my-4">
+                    Total Successful Transactions: {totalSuccessTxn} | Total
+                    Amount {`(INR)`}: {totalAmt.toFixed()}
+                  </h5>
                 )}
               </div>
               <div>
