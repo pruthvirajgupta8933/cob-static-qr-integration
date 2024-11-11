@@ -81,7 +81,7 @@ export const getSubscriptionPlanById = createAsyncThunk(
 );
 
 export const getSubscriptionPlanByClientCode = createAsyncThunk(
-  "subscription/getManualSubscriptionByClientCode",
+  "subscription/getSubscriptionPlanByClientCode",
   async (requestParam, thunkAPI) => {
     try {
       const data = await subscriptionService.getSubscriptionByClientCode(
@@ -181,13 +181,13 @@ const subscriptionSlice = createSlice({
       state.isLoading = false;
     },
     [getSubscriptionPlanByClientCode.pending]: (state) => {
-      state.manualSubscriptions = { loading: true };
+      state.merchantSubscriptionList = { loading: true };
     },
     [getSubscriptionPlanByClientCode.fulfilled]: (state, action) => {
-      state.manualSubscriptions = action.payload.data;
+      state.merchantSubscriptionList = action.payload.data;
     },
     [getSubscriptionPlanByClientCode.rejected]: (state) => {
-      state.manualSubscriptions = { error: true };
+      state.merchantSubscriptionList = { error: true };
     },
   },
 });
