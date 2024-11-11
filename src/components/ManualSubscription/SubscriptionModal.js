@@ -17,6 +17,7 @@ import {
 } from "../../slices/subscription";
 import { useDispatch } from "react-redux";
 import DateFormatter from "../../utilities/DateConvert";
+import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
 
 const SubscriptionModal = ({ data, setOpenModal }) => {
   const [subscriptionData, setSubscriptionData] = useState(data);
@@ -26,9 +27,8 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   const [disable, setIsDisable] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
-    getMidClientCode().then((resp) => {
-      // console.log(resp)
-      setCliencodeList(resp?.data?.result);
+    dispatch(getAllCLientCodeSlice()).then((resp) => {
+      setCliencodeList(resp?.payload?.result);
     });
   }, []);
   // useEffect(() => {
@@ -49,7 +49,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     { value: "", label: "Select Client Code" },
     ...clientCodeList.map((data) => ({
       value: data.clientCode,
-      label: `${data.clientCode} - ${data.clientName}`,
+      label: `${data.clientCode} - ${data.name}`,
       loginMasterId: data.loginMasterId,
     })),
   ];
@@ -72,7 +72,12 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   const initialValues = {
     app_id: subscriptionData?.applicationId ?? "",
     app_name: subscriptionData?.applicationName ?? "",
-    react_select: subscriptionData?.clientCode ?? "",
+    react_select: subscriptionData?.clientCode
+      ? {
+          value: subscriptionData.clientCode,
+          label: `${subscriptionData.clientCode} - ${subscriptionData.clientName}`,
+        }
+      : "",
     client_txn_id: subscriptionData?.clientTxnId ?? "",
     bank_ref: subscriptionData?.bankRef ?? "",
     payment_mode: subscriptionData?.paymentMode ?? "",
@@ -115,10 +120,8 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       const resp = await dispatch(createSubscriptionPlan(postData));
       if (resp?.meta?.requestStatus === "fulfilled") {
         toastConfig.successToast("Data Saved");
-        window.location.reload()
         setIsDisable(false);
         setOpenModal(false);
-
       } else {
         toastConfig.errorToast(resp?.payload ?? "Something went wrong");
         setIsDisable(false);
@@ -152,8 +155,8 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
                     className="modal-title bolding text-black"
                     id="exampleModalLongTitle"
                   >
-                    {/* {data ? "Create" : "Edit"} Subscription */}
-                    Create Subscription
+                    {data ? "Edit" : "Create"} Subscription
+                    {/* Create Subscription */}
                   </h5>
 
                   <button
