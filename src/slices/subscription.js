@@ -120,9 +120,12 @@ export const createSubscriptionPlan = createAsyncThunk(
 );
 export const updateSubscriptionPlan = createAsyncThunk(
   "subscription/updateManualSubscriptions",
-  async (requestParam, thunkAPI) => {
+  async (id, requestParam, thunkAPI) => {
     try {
-      const data = await subscriptionService.updateSubscription(requestParam);
+      const data = await subscriptionService.updateSubscription(
+        id,
+        requestParam
+      );
       return data;
     } catch (error) {
       const message =
@@ -161,7 +164,7 @@ const initialState = {
   subscriptionPackageResponse: {},
   isLoading: false,
   manualSubscriptions: null,
-  merchantSubscriptionList: []
+  merchantSubscriptionList: [],
 };
 const subscriptionSlice = createSlice({
   name: "subscription",
@@ -177,26 +180,15 @@ const subscriptionSlice = createSlice({
     [subscriptionplan.rejected]: (state, action) => {
       state.isLoading = false;
     },
-    [getSubscriptionPlans.pending]: (state, action) => {
+    [getSubscriptionPlanByClientCode.pending]: (state) => {
       state.manualSubscriptions = { loading: true };
     },
-    [getSubscriptionPlans.fulfilled]: (state, action) => {
+    [getSubscriptionPlanByClientCode.fulfilled]: (state, action) => {
       state.manualSubscriptions = action.payload.data;
     },
-    [getSubscriptionPlans.rejected]: (state, action) => {
+    [getSubscriptionPlanByClientCode.rejected]: (state) => {
       state.manualSubscriptions = { error: true };
     },
-
-    [getSubscriptionPlanByClientCode.pending]: (state) => {
-      state.merchantSubscriptionList = []
-    },
-    [getSubscriptionPlanByClientCode.fulfilled]: (state, action) => {
-
-      state.merchantSubscriptionList = action.payload.data
-    },
-    [getSubscriptionPlanByClientCode.rejected]: (state) => {
-      state.merchantSubscriptionList = []
-    }
   },
 });
 
