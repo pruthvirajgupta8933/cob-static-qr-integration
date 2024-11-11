@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import {
   clearSettlementReport,
   fetchSettlementReportSlice,
+  fetchSettlementSummary,
 } from "../../../slices/dashboardSlice";
 import Notification from "../../../_components/reuseable_components/Notification";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
@@ -21,6 +22,7 @@ import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantR
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
+import CustomModal from "../../../_components/custom_modal";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 
 const SettlementReportNew = () => {
@@ -37,12 +39,13 @@ const SettlementReportNew = () => {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
   const { user } = auth;
-  const { isLoadingTxnHistory } = dashboard;
+  const { isLoadingTxnHistory, settlementSummaryReport } = dashboard;
   const { refrerChiledList } = merchantReferralOnboardReducer;
   // console.log("refrerChiledList", refrerChiledList)
   const roles = roleBasedAccess();
@@ -68,8 +71,8 @@ const SettlementReportNew = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -502,7 +505,7 @@ const SettlementReportNew = () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     const totalRow = [];
-    totalRow[22] = "Total Settlement Amount"
+    totalRow[22] = "Total Settlement Amount";
     totalRow[23] = txnList.reduce(
       (sum, item) => item.settlement_amount + sum,
       0
@@ -526,6 +529,98 @@ const SettlementReportNew = () => {
     return prevVal + parseFloat(currVal.settlement_amount, 2);
   }, 0);
 
+  const getTransactionSummary = (values) => {
+    setShowModal(!showModal);
+    let strClientCode;
+    if (values.clientCode === "All") {
+      const allClientCode = clientCodeListArr?.map((item) => item.client_code);
+      strClientCode = allClientCode.join().toString();
+    } else {
+      strClientCode = values.clientCode;
+    }
+    dispatch(
+      fetchSettlementSummary({
+        clientCode: strClientCode,
+        fromDate: moment(values.fromDate).startOf("day").format("YYYY-MM-DD"),
+        endDate: moment(values.endDate).startOf("day").format("YYYY-MM-DD"),
+        paymentStatus: "ALL",
+        paymentMode: "ALL",
+        page: 0,
+        length: 0,
+      })
+    );
+  };
+
+  const exportSummaryToExcel = () => {
+    const excelHeaderRow = [
+      "SR NO",
+      "CLIENT CODE",
+      "CLIENT NAME",
+      "SETTLEMENT AMOUNT",
+      "SETTLEMENT DATE",
+      "SETTLEMENT BY",
+      "TRANSACTION COUNT",
+    ];
+    const excelArr = [excelHeaderRow];
+    // eslint-disable-next-line array-callback-return
+    settlementSummaryReport.data?.map((item, index) => {
+      const allowDataToShow = {
+        srNo: item.srNo === null ? "" : index + 1,
+        client_code: item.client_code === null ? "" : item.client_code,
+        client_name: item.client_name === null ? "" : item.client_name,
+        settlement_amount:
+          item.settlement_amount === null ? "" : item.settlement_amount,
+        // 'pg_pay_mode': item.pg_pay_mode === null ? "" : item.pg_pay_mode,
+        settlement_date:
+          item.settlement_date === null
+            ? ""
+            : dateFormatBasic(item.settlement_date),
+        settlement_by: item.settlement_by === null ? "" : item.settlement_by,
+        txn_count: item.txn_count === null ? "" : item.txn_count,
+      };
+
+      excelArr.push(Object.values(allowDataToShow));
+    });
+    const fileName = "Settlement-Txn-Summary-Report";
+    console.log(fileName);
+
+    let handleExportLoading = (state) => {
+      // console.log(state)
+      if (state) {
+        alert("Exporting Excel File, Please wait...");
+      }
+      return state;
+    };
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+  };
+  const modalBody = () => {
+    return (
+      <>
+        <table className="table table-bordered">
+          <thead>
+            <th>S.R. No.</th>
+            <th>Client Code</th>
+            <th>Client Name</th>
+            <th>Settlement Amount</th>
+            <th>Settlement Date</th>
+            <th>Settlement By</th>
+            <th>Transaction Count</th>
+          </thead>
+          {settlementSummaryReport.data?.map((item) => (
+            <tr>
+              <td>{item.SrNo}</td>
+              <td>{item.client_code}</td>
+              <td>{item.client_name}</td>
+              <td>{item.settlement_amount}</td>
+              <td>{dateFormatBasic(item.settlement_date)}</td>
+              <td>{item.settlement_by}</td>
+              <td>{item.txn_count}</td>
+            </tr>
+          ))}
+        </table>
+      </>
+    );
+  };
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -631,6 +726,16 @@ const SettlementReportNew = () => {
                       ) : (
                         <></>
                       )}
+                      <div className="form-group col-md-1 ml-1">
+                        <button
+                          className="btn cob-btn-primary text-white btn-sm"
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                          type="button"
+                          onClick={() => getTransactionSummary(formik.values)}
+                        >
+                          Transactions Summary
+                        </button>
+                      </div>
                     </div>
                   </Form>
                 )}
@@ -827,6 +932,26 @@ const SettlementReportNew = () => {
               </div> */}
             </div>
           </section>
+          {showModal && (
+            <CustomModal
+              modalBody={modalBody}
+              headerTitle={
+                <>
+                  <span className="mr-5">Transaction Summary</span>
+                  <button
+                    className="btn cob-btn-primary text-white btn-sm ml-5"
+                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                    type="button"
+                    onClick={exportSummaryToExcel}
+                  >
+                    Export
+                  </button>
+                </>
+              }
+              modalToggle={showModal}
+              fnSetModalToggle={setShowModal}
+            />
+          )}
         </div>
       </main>
     </section>
