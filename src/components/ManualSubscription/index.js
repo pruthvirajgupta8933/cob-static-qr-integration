@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Table from "../../_components/table_components/table/Table";
+import ReactSelect, { createFilter } from "react-select";
 import CustomLoader from "../../_components/loader";
 import {
   deleteSubscriptionPlan,
   getSubscriptionPlans,
 } from "../../slices/subscription";
+import { getMidClientCode } from "../../services/generate-mid/generate-mid.service";
 import DateFormatter from "../../utilities/DateConvert";
 import SubscriptionModal from "./SubscriptionModal";
 import toastConfig from "../../utilities/toastTypes";
@@ -17,10 +18,18 @@ const ManualSubscription = () => {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
+  const [clientCodeList, setCliencodeList] = useState([]);
+  const [selectedClientId, setSelectedClientId] = useState(null);
   const [modalDisplayData, setModalDisplayData] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getSubscriptionPlans());
+  }, []);
+  useEffect(() => {
+    getMidClientCode().then((resp) => {
+      // console.log(resp)
+      setCliencodeList(resp?.data?.result);
+    });
   }, []);
 
   const changeCurrentPage = (page) => {
@@ -134,6 +143,19 @@ const ManualSubscription = () => {
       width: "140px",
     },
   ];
+  const options = [
+    // { value: "we", label: "Select Client Code" },
+    ...clientCodeList.map((data) => ({
+      value: data.merchantId,
+      label: `${data.clientCode} - ${data.clientName}`,
+    })),
+  ];
+
+  const handleSelectChange = (selectedOption) => {
+    setSelectedClientId(selectedOption ? selectedOption.value : null);
+  };
+  console.log(options);
+
   return (
     <section className="">
       <main className="">
@@ -152,6 +174,18 @@ const ManualSubscription = () => {
           >
             Create New Subscription
           </button>
+          <ReactSelect
+            className="zindexforDropdown"
+            onChange={handleSelectChange}
+            value={
+              selectedClientId
+                ? { value: selectedClientId, label: selectedClientId }
+                : null
+            }
+            options={options}
+            placeholder="Select Client Code"
+            filterOption={createFilter({ ignoreAccents: false })}
+          />
           {/* <div className="scroll overflow-auto">
             {subscriptionPlans?.count > 0 ? (
               <h6>Total Count : {subscriptionPlans.count}</h6>
