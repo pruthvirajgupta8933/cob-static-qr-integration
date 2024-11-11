@@ -46,8 +46,9 @@ function MerchantSubscriptionBalance() {
 
         {
             id: "3",
-            name: "Charges",
-            selector: (row) => parseFloat(row.charges).toFixed(2),
+            name: "Amount",
+            selector: (row) => <div className={`${row?.amount_type?.toLowerCase() === "credit" ? "text-success" : "text-danger"}`}>{parseFloat(row.charges).toFixed(2)}</div>,
+
         },
 
 
