@@ -71,8 +71,8 @@ const SettlementReportNew = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -603,7 +603,7 @@ const SettlementReportNew = () => {
             <th>Client Name</th>
             <th>Settlement Amount</th>
             <th>Settlement Date</th>
-            <th>Settlement By</th>
+            <th>Batch</th>
             <th>Transaction Count</th>
           </thead>
           {settlementSummaryReport.data?.map((item) => (
@@ -733,7 +733,7 @@ const SettlementReportNew = () => {
                                 getTransactionSummary(formik.values)
                               }
                             >
-                              Transactions Summary
+                              Settlement Summary
                             </button>
                           </div>
                         </>
@@ -941,7 +941,7 @@ const SettlementReportNew = () => {
               modalBody={modalBody}
               headerTitle={
                 <>
-                  Transaction Summary
+                  Settlement Summary
                   <button
                     className="btn cob-btn-primary text-white btn-sm ml-5"
                     style={{ backgroundColor: "rgb(1, 86, 179)" }}
