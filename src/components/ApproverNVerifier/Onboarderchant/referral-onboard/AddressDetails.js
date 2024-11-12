@@ -16,7 +16,7 @@ import {
   RegexMsg,
 } from "../../../../_components/formik/ValidationRegex";
 
-const AddressDetails = ({ setCurrentTab, disableForm }) => {
+const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
   const [stateData, setStateData] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
   const [showNext, setShowNext] = useState(false);
@@ -58,6 +58,10 @@ const AddressDetails = ({ setCurrentTab, disableForm }) => {
     if (basicDetailsResponse?.data)
       dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
   }, []);
+
+  useEffect(() => {
+    if (!kycData?.isEmailVerified) setInfoModal(true);
+  }, []);
   const onSubmit = async (values) => {
     setSubmitLoader(true);
     const postData = {
@@ -70,8 +74,13 @@ const AddressDetails = ({ setCurrentTab, disableForm }) => {
     try {
       const res = await dispatch(saveAddressDetails(postData));
       res?.data?.status && toastConfig.successToast("Data Saved");
-      res?.data?.status && dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId, password_required: true }));;
-
+      res?.data?.status &&
+        dispatch(
+          kycUserList({
+            login_id: basicDetailsResponse?.loginMasterId,
+            password_required: true,
+          })
+        );
 
       res?.error &&
         toastConfig.errorToast(res.error.message ?? "Some error occurred");
@@ -109,7 +118,7 @@ const AddressDetails = ({ setCurrentTab, disableForm }) => {
                   name="operational_address"
                   className="form-control"
                   disabled={disableForm}
-                // readOnly={readOnly}
+                  // readOnly={readOnly}
                 />
               </div>
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -122,7 +131,7 @@ const AddressDetails = ({ setCurrentTab, disableForm }) => {
                   name="city"
                   className="form-control"
                   disabled={disableForm}
-                // readOnly={readOnly}
+                  // readOnly={readOnly}
                 />
               </div>
             </div>
@@ -137,7 +146,7 @@ const AddressDetails = ({ setCurrentTab, disableForm }) => {
                   options={stateData}
                   className="form-select"
                   disabled={disableForm}
-                // readOnly={readOnly}
+                  // readOnly={readOnly}
                 />
               </div>
 
@@ -151,7 +160,7 @@ const AddressDetails = ({ setCurrentTab, disableForm }) => {
                   name="pin_code"
                   className="form-control"
                   disabled={disableForm}
-                // readOnly={readOnly}
+                  // readOnly={readOnly}
                 />
               </div>
             </div>

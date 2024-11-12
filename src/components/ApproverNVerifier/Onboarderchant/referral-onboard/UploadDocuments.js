@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import toastConfig from "../../../../utilities/toastTypes";
 import { documentsUpload, merchantInfo } from "../../../../slices/kycSlice";
 
-const UploadDocuments = ({ disableForm }) => {
+const UploadDocuments = ({ disableForm, setInfoModal }) => {
   const { user } = useSelector((state) => state.auth);
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
@@ -32,6 +32,10 @@ const UploadDocuments = ({ disableForm }) => {
           );
         });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!kycData?.isEmailVerified) setInfoModal(true);
+  }, []);
 
   const initialValues = {
     docType: "",
