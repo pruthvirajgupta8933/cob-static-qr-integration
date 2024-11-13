@@ -4,7 +4,6 @@ import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form, Field } from "formik";
 import Yup from "../../_components/formik/Yup";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
-import { getMidClientCode } from "../../services/generate-mid/generate-mid.service";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 // import { createUpdater } from "../custom-hooks/updateGetValue";
@@ -133,7 +132,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   };
   return (
     <div
-      className="modal fade mymodals abhishek"
+      className="modal fade mymodals"
       id="exampleModalCenter"
       tabindex="-1"
       role="dialog"

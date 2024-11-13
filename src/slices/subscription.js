@@ -163,8 +163,8 @@ const initialState = {
   subscriptionServiceResponse: {},
   subscriptionPackageResponse: {},
   isLoading: false,
-  manualSubscriptions: null,
-  merchantSubscriptionList: [],
+  manualSubscriptions: [],
+  // merchantSubscriptionList: [],
 };
 const subscriptionSlice = createSlice({
   name: "subscription",
@@ -181,13 +181,13 @@ const subscriptionSlice = createSlice({
       state.isLoading = false;
     },
     [getSubscriptionPlanByClientCode.pending]: (state) => {
-      state.merchantSubscriptionList = { loading: true };
+      state.manualSubscriptions = { loading: true };
     },
     [getSubscriptionPlanByClientCode.fulfilled]: (state, action) => {
-      state.merchantSubscriptionList = action.payload.data;
+      state.manualSubscriptions = action.payload.data;
     },
     [getSubscriptionPlanByClientCode.rejected]: (state) => {
-      state.merchantSubscriptionList = { error: true };
+      state.manualSubscriptions = { error: true };
     },
   },
 });
