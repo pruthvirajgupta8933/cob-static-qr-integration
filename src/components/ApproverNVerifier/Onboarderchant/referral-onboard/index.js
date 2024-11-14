@@ -144,7 +144,7 @@ const Referral = ({ type, zoneCode, edit }) => {
                     : basicDetailsResponse?.loginMasterId ||
                       (edit && kycData?.loginMasterId)
                     ? "pe-auto"
-                    : "pe-auto"
+                    : "pe-none"
                 }`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}

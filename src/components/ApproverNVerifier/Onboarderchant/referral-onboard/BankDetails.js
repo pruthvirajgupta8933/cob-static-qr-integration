@@ -53,7 +53,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
   }, []);
 
   useEffect(() => {
-    if (!kycData?.isEmailVerified) setInfoModal(true);
+    if (basicDetailsResponse && !kycData?.isEmailVerified) setInfoModal(true);
   }, []);
 
   const validationSchema = Yup.object().shape({

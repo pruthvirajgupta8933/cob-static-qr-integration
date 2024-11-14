@@ -55,12 +55,12 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
         setStateData(data);
       })
       .catch((err) => console.log(err));
-    if (basicDetailsResponse?.data)
+    if (basicDetailsResponse)
       dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
   }, []);
 
   useEffect(() => {
-    if (!kycData?.isEmailVerified) setInfoModal(true);
+    if (basicDetailsResponse && !kycData?.isEmailVerified) setInfoModal(true);
   }, []);
   const onSubmit = async (values) => {
     setSubmitLoader(true);
