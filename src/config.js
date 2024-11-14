@@ -171,6 +171,9 @@ const API_LIVE = {
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
   getAllClientCode: `${kyc_url}/kyc/get-all-client-code`, //get APi
 
+  getClientCodeByRole: `${kyc_url}/kyc/get-client-code-by-role`,
+  saveSubMerchant: `${url}/sub-merchant/create/`,
+
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
   UPLOAD_MERCHANT_AADHAAR: `${kyc_url}/kyc/upload-merchant-document/aadhar-upload/`, //post APi

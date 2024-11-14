@@ -11,9 +11,7 @@ import {
 } from "../../../../_components/formik/ValidationRegex";
 import AadhaarVerficationModal from "../../../KYC/OtpVerificationKYC/AadhaarVerficationModal";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
-import { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
-import authService from "../../../../services/auth.service";
 import { kycUserList, getKycIDList } from "../../../../slices/kycSlice";
 import {
   saveBasicDetails,
@@ -24,7 +22,6 @@ import {
   dlValidation,
   voterCardValidation,
 } from "../../../../slices/kycValidatorSlice";
-import { kycValidatorAuth } from "../../../../utilities/axiosInstance";
 import toastConfig from "../../../../utilities/toastTypes";
 import verifiedIcon from "../../../../assets/images/verified.png";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -75,8 +72,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         : "",
     isPanVerified:
       kycData?.signatoryPAN ||
-        kycData?.panCard ||
-        basicDetailsResponse?.data?.pan_number
+      kycData?.panCard ||
+      basicDetailsResponse?.data?.pan_number
         ? 1
         : "",
     panName: kycData?.nameOnPanCard ?? "",
@@ -167,22 +164,22 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       .nullable(),
     password: edit
       ? Yup.string()
-        .matches(
-          /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
-          RegexMsg.password
-        )
-        .required("Required")
+          .matches(
+            /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
+            RegexMsg.password
+          )
+          .required("Required")
       : Yup.string()
-        .matches(Regex.password, RegexMsg.password)
-        .required("Required"),
+          .matches(Regex.password, RegexMsg.password)
+          .required("Required"),
     id_number: Yup.string().required("Required"),
     isIdProofVerified: Yup.boolean().required("Please verify id proof"),
     pan:
       type === "individual"
         ? Yup.string()
-          .matches(Regex.panRegex, RegexMsg.panRegex)
-          .length(10, "Only 10 digits are allowed")
-          .required("Required")
+            .matches(Regex.panRegex, RegexMsg.panRegex)
+            .length(10, "Only 10 digits are allowed")
+            .required("Required")
         : null,
     isPanVerified:
       type === "individual"
@@ -238,8 +235,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     } catch (error) {
       toastConfig.errorToast(
         error?.response?.data?.message ??
-        error?.response?.data?.detail ??
-        "Something went wrong, Please try again"
+          error?.response?.data?.detail ??
+          "Something went wrong, Please try again"
       );
       setIdProofLoader(false);
     }
@@ -291,11 +288,10 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       dispatch(
         kycUserList({
           login_id: kycData?.loginMasterId,
-          password_required: true
+          password_required: true,
         })
       );
-    })
-
+    });
   };
 
   const handleDlVerification = async ({ values, setFieldValue }) => {
@@ -314,8 +310,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     ) {
       toastConfig.errorToast(
         res?.payload?.message ||
-        res?.payload?.detail ||
-        "Something went wrong. Please try again"
+          res?.payload?.detail ||
+          "Something went wrong. Please try again"
       );
     } else if (res.payload?.status && res.payload?.valid) {
       setFieldValue("isIdProofVerified", 1);
@@ -407,18 +403,19 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
           <div className="input-group-append">
             <a
               href={() => false}
-              className={`btn cob-btn-primary btn-sm ${disableClass || disableForm ? "disabled" : ""
-                }`}
+              className={`btn cob-btn-primary btn-sm ${
+                disableClass || disableForm ? "disabled" : ""
+              }`}
               onClick={() =>
                 idType === "1"
                   ? sendAadharOtp({ values, setFieldValue })
                   : idType === "3"
-                    ? voterVerificationHandler(values.id_number, setFieldValue)
-                    : idType === "4"
-                      ? setDlDobToggle(true)
-                      : {}
+                  ? voterVerificationHandler(values.id_number, setFieldValue)
+                  : idType === "4"
+                  ? setDlDobToggle(true)
+                  : {}
               }
-            // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+              // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
             >
               {idProofLoader ? (
                 <span className="spinner-border spinner-border-sm">
@@ -470,7 +467,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         enableReinitialize={true}
       >
         {({ values, errors, setFieldValue, isValid }) => (
-
           <Form autoComplete="off">
             <div className="row g-3">
               <div className="col-md-6">
@@ -610,12 +606,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                       disabled={basicDetailsResponse?.data || disableForm}
                     />
                     {values?.pan !== null &&
-                      values?.pan !== "" &&
-                      values?.pan !== undefined &&
-                      // !errors.hasOwnProperty("pan_card") &&
-                      // !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.pan !== "" &&
+                    values?.pan !== undefined &&
+                    // !errors.hasOwnProperty("pan_card") &&
+                    // !errors.hasOwnProperty("is_pan_verified") &&
 
-                      values?.isPanVerified !== "" ? (
+                    values?.isPanVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
@@ -640,10 +636,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                         ) : (
                           <a
                             href={() => false}
-                            className={`btn cob-btn-primary text-white btn btn-sm ${values.pan?.length !== 10 || disableForm
-                              ? "disabled"
-                              : "pe-auto"
-                              }`}
+                            className={`btn cob-btn-primary text-white btn btn-sm ${
+                              values.pan?.length !== 10 || disableForm
+                                ? "disabled"
+                                : "pe-auto"
+                            }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
                             Verify
@@ -658,7 +655,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
             </div>
             <div className="row">
               <div className="col-6">
-
                 <button
                   type="submit"
                   className="btn cob-btn-primary btn-sm m-2"
@@ -687,11 +683,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                       type === "individual"
                         ? setCurrentTab("address")
                         : history.push(
-                          `kyc?kycid=${stringEnc(
-                            kycData?.loginMasterId ??
-                            basicDetailsResponse.data?.loginMasterId
-                          )}`
-                        )
+                            `kyc?kycid=${stringEnc(
+                              kycData?.loginMasterId ??
+                                basicDetailsResponse.data?.loginMasterId
+                            )}`
+                          )
                     }
                   >
                     Next

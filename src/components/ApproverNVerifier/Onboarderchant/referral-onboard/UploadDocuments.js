@@ -34,7 +34,7 @@ const UploadDocuments = ({ disableForm, setInfoModal }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!kycData?.isEmailVerified) setInfoModal(true);
+    if (basicDetailsResponse && !kycData?.isEmailVerified) setInfoModal(true);
   }, []);
 
   const initialValues = {

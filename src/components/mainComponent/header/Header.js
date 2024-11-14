@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom/cjs/react-router-dom'
 function Header({ display_bg_color }) {
   return (
     <nav className={`navbar navbar-expand-md ${classes.position_sticky} ${display_bg_color && classes.navbar_bg_color}`}>
-      <div className={`container-fluid`}>
+      <div className={`container-fluid p-0`}>
         <div className={`navbar-brand ${classes.logo_container}`} >
           <Link to={'/'}>
             <img src={sabpaisalogo} className={`my-2 ${classes.cob_logo}`} alt="Sabpaisa" />
