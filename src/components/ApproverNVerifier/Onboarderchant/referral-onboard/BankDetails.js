@@ -17,7 +17,7 @@ import {
 import { saveBankDetails } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import verifiedIcon from "../../../../assets/images/verified.png";
 
-const BankDetails = ({ setCurrentTab, disableForm }) => {
+const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const [accountLoader, setAccountLoader] = useState(false);
@@ -51,6 +51,11 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
     if (basicDetailsResponse)
       dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
   }, []);
+
+  useEffect(() => {
+    if (!kycData?.isEmailVerified) setInfoModal(true);
+  }, []);
+
   const validationSchema = Yup.object().shape({
     acHolderName: Yup.string().allowOneSpace().required("Required").nullable(),
     ifsc: Yup.string()
@@ -98,8 +103,13 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
           setShowNext(true);
-          dispatch(kycUserList({ login_id: kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId, password_required: true }));
-
+          dispatch(
+            kycUserList({
+              login_id:
+                kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId,
+              password_required: true,
+            })
+          );
         }
       })
       .catch((err) => {
@@ -232,9 +242,9 @@ const BankDetails = ({ setCurrentTab, disableForm }) => {
                       }}
                     />
                     {values?.acNumber !== null &&
-                      values?.acNumber !== "" &&
-                      values?.acNumber !== undefined &&
-                      values?.isAccountNumberVerified !== "" ? (
+                    values?.acNumber !== "" &&
+                    values?.acNumber !== undefined &&
+                    values?.isAccountNumberVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}

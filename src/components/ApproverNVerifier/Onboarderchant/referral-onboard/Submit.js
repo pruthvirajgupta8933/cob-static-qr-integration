@@ -13,7 +13,7 @@ import API_URL from "../../../../config";
 import authService from "../../../../services/auth.service";
 import toastConfig from "../../../../utilities/toastTypes";
 
-const Submit = ({ disableForm }) => {
+const Submit = ({ disableForm, setInfoModal }) => {
   const [checked, setChecked] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const dispatch = useDispatch();
@@ -33,6 +33,10 @@ const Submit = ({ disableForm }) => {
         })
       );
   }, []);
+  useEffect(() => {
+    if (!kycData?.isEmailVerified) setInfoModal(true);
+  }, []);
+
   const createClientCode = async () => {
     const clientFullName = basicDetailsResponse?.data?.name ?? kycData?.name;
     const clientMobileNo =

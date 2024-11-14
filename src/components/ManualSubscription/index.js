@@ -227,13 +227,13 @@ const ManualSubscription = () => {
               )}
           </div>
           <CustomLoader loadingState={subscriptionPlans?.loading} />
+          {openModal && (
+            <SubscriptionModal
+              setOpenModal={setOpenModal}
+              data={modalDisplayData}
+            />
+          )}
         </div>
-        {openModal && (
-          <SubscriptionModal
-            setOpenModal={setOpenModal}
-            data={modalDisplayData}
-          />
-        )}
       </main>
     </section>
   );

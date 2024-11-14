@@ -32,12 +32,13 @@ const Referral = ({ type, zoneCode, edit }) => {
       // { id: "view_doc", name: "View Document" },
     ];
   }
-  const [currentTab, setCurrentTab] = useState("basic");
 
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
   const kycData = useSelector((state) => state.kyc?.kycUserList);
+  const [currentTab, setCurrentTab] = useState("basic");
+  const [infoModal, setInfoModal] = useState();
   const handleTabClick = (tabId) => setCurrentTab(tabId);
 
   const renderTabContent = () => {
@@ -51,6 +52,7 @@ const Referral = ({ type, zoneCode, edit }) => {
             zoneCode={zoneCode}
             edit={edit}
             disableForm={["Verified", "Approved"].includes(kycData.status)}
+            setInfoModal={setInfoModal}
           />
         );
       case "address":
@@ -58,6 +60,7 @@ const Referral = ({ type, zoneCode, edit }) => {
           <AddressDetails
             setCurrentTab={setCurrentTab}
             disableForm={["Verified", "Approved"].includes(kycData.status)}
+            setInfoModal={setInfoModal}
           />
         );
       case "referral_id":
@@ -67,6 +70,7 @@ const Referral = ({ type, zoneCode, edit }) => {
           <BankDetails
             setCurrentTab={setCurrentTab}
             disableForm={["Verified", "Approved"].includes(kycData.status)}
+            setInfoModal={setInfoModal}
           />
         );
       case "upload_doc":
@@ -74,6 +78,7 @@ const Referral = ({ type, zoneCode, edit }) => {
           <UploadDocuments
             setCurrentTab={setCurrentTab}
             disableForm={["Verified", "Approved"].includes(kycData.status)}
+            setInfoModal={setInfoModal}
           />
         );
       case "view_doc":
@@ -85,6 +90,7 @@ const Referral = ({ type, zoneCode, edit }) => {
       default:
         return (
           <Submit
+            setInfoModal={setInfoModal}
             disableForm={["Verified", "Approved"].includes(kycData.status)}
           />
         );
@@ -156,6 +162,36 @@ const Referral = ({ type, zoneCode, edit }) => {
         <div className="col-8">
           <div className="tab-content" id="v-pills-tabContent">
             {renderTabContent()}
+          </div>
+        </div>
+        <div
+          className={
+            "modal fade mymodals" + (infoModal ? " show d-block" : " d-none")
+          }
+          role="dialog"
+        >
+          <div className="modal-dialog modal-dialog-centered " role="document">
+            <div className="modal-content">
+              <div className="modal-header border-0 py-0">
+                <h5 className="text-danger pt-2">Important Note !</h5>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInfoModal(!infoModal);
+                  }}
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body fs-6">
+                A verification link has been sent to the registered email
+                associated with your merchant account. Please verify the link to
+                proceed to the next step.
+              </div>
+            </div>
           </div>
         </div>
       </div>

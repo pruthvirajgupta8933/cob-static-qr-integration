@@ -34,46 +34,51 @@ const Profile = () => {
 
 
   useEffect(() => {
+    const postData = {
+      clientId: clientId
+    }
+    dispatch(merchantSubscribedPlanData(postData))
 
-    dispatch(getSubscriptionPlanByClientCode({ clientCode: clientCode }))
-  }, [clientCode])
 
-
-
-  // const balanceCalculate = (purchaseAmount, commission) => {
-  //   let cmsin = commission ?? 0
-  //   const total = parseFloat(purchaseAmount) - parseFloat(cmsin)
-  //   return isNaN(total) ? 0.00 : total.toFixed(2)
-  // }
+    // dispatch(getSubscriptionPlanByClientCode({ clientCode: clientCode }))
+  }, [clientId])
 
 
 
-  // useEffect(() => {
-  //   let dataWallet = []
-  //   merchantSubscriptionList?.result?.map((data, i) => (
+  const balanceCalculate = (purchaseAmount, commission) => {
+    let cmsin = commission ?? 0
+    const total = parseFloat(purchaseAmount) - parseFloat(cmsin)
+    return isNaN(total) ? 0.00 : total.toFixed(2)
+  }
 
-  //     dataWallet.push(<div className="col-lg-4 mx-3 my-1" key={uuidv4()}>
-  //       <div className="card" style={{ width: '18rem' }}>
-  //         <div className="card-body">
-  //           <h5 className="card-title">{data.applicationName}</h5>
-  //           <p className="card-subtitle mb-2 text-body-secondary">Plan : {data.planName}</p>
-  //           <hr />
 
-  //           {isNull(data?.mandateStatus) && data?.mandateStatus?.toLowerCase() !== "success" &&
-  //             data?.plan_code === "005" && <p className="text-danger"> Payment is pending </p>}
 
-  //           {data?.mandateStatus === "SUCCESS" && data?.plan_code === "005" && (
-  //             <> <p className="card-text">Subscribed Date : {moment(data.mandateStartTime).format('DD/MM/YYYY')} </p>
-  //               <p className="card-text">Purchased Amount : {data.purchaseAmount} INR</p>
-  //               <p className="card-text">Commission : {data.commission ?? 0} INR</p>
-  //               <p className="card-text">Wallet Balance : {balanceCalculate(data.purchaseAmount, data.commission)} INR</p></>)}
-  //         </div>
-  //       </div>
-  //     </div>)
+  useEffect(() => {
+    let dataWallet = []
+    merchantSubscriptionList?.result?.map((data, i) => (
 
-  //   ))
-  //   setWalletDisplayData(dataWallet)
-  // }, [SubscribedPlanData])
+      dataWallet.push(<div className="col-lg-4 mx-3 my-1" key={uuidv4()}>
+        <div className="card" style={{ width: '18rem' }}>
+          <div className="card-body">
+            <h5 className="card-title">{data.applicationName}</h5>
+            <p className="card-subtitle mb-2 text-body-secondary">Plan : {data.planName}</p>
+            <hr />
+
+            {isNull(data?.mandateStatus) && data?.mandateStatus?.toLowerCase() !== "success" &&
+              data?.plan_code === "005" && <p className="text-danger"> Payment is pending </p>}
+
+            {data?.mandateStatus === "SUCCESS" && data?.plan_code === "005" && (
+              <> <p className="card-text">Subscribed Date : {moment(data.mandateStartTime).format('DD/MM/YYYY')} </p>
+                <p className="card-text">Purchased Amount : {data.purchaseAmount} INR</p>
+                <p className="card-text">Commission : {data.commission ?? 0} INR</p>
+                <p className="card-text">Wallet Balance : {balanceCalculate(data.purchaseAmount, data.commission)} INR</p></>)}
+          </div>
+        </div>
+      </div>)
+
+    ))
+    setWalletDisplayData(dataWallet)
+  }, [SubscribedPlanData])
 
 
 
@@ -101,17 +106,18 @@ const Profile = () => {
               </div>
             )} */}
 
+
             {/* Display plan tab only if merchant role and wallet display data is available */}
-            {roles.merchant && (
+            {roles.merchant && SubscribedPlanData?.length > 0 && (
               <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 2 && 'active-secondary'}`} onClick={() => handleTabClick(2)} id="v-pills-link2-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">
                 Subscribed  Plan
               </a>
             )}
-            {roles.merchant && (
+            {/* {roles.merchant && (
               <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 3 && 'active-secondary'}`} onClick={() => handleTabClick(3)} id="v-pills-link2-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">
                 Wallet Balance
               </a>
-            )}
+            )} */}
           </div>
 
           {/* Tab navs */}
@@ -120,8 +126,8 @@ const Profile = () => {
           {/* Tab content */}
           <div className="tab-content" id="v-pills-tabContent">
             {currentTab === 1 && <UserDetails />}
-            {currentTab === 2 && <WalletDetail />}
-            {currentTab === 3 && <MerchantSubscriptionBalance />}
+            {currentTab === 2 && <WalletDetail isLoading={isLoading} walletDisplayData={SubscribedPlanData} walletCommission={walletCommission} />}
+            {/* {currentTab === 3 && <MerchantSubscriptionBalance />} */}
           </div>
           {/* Tab content */}
         </div>
