@@ -34,7 +34,8 @@ const Submit = ({ disableForm, setInfoModal }) => {
       );
   }, []);
   useEffect(() => {
-    if (!kycData?.isEmailVerified) setInfoModal(true);
+    if (basicDetailsResponse?.data && !kycData?.isEmailVerified)
+      setInfoModal(true);
   }, []);
 
   const createClientCode = async () => {

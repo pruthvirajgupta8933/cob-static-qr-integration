@@ -2,16 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import approverDashboardService from "../../services/approver-dashboard/approverDashboard.service.js";
 import { setMessage } from "../message";
 
-
 const InitialState = {
   businessCategoryType: [],
   generalFormData: {
-    isFinalSubmit: false
+    isFinalSubmit: false,
   },
-  clientCodeList: []
-
-}
-
+  clientCodeList: [],
+  clientCodeByRole: {},
+};
 
 export const businessCategoryType = createAsyncThunk(
   "approverDashbaordSlice/businessCategoryType",
@@ -34,7 +32,6 @@ export const businessCategoryType = createAsyncThunk(
   }
 );
 
-
 export const getAllCLientCodeSlice = createAsyncThunk(
   "approverDashbaordSlice/getAllCLientCodeSlice",
   async (object = {}, thunkAPI) => {
@@ -56,6 +53,29 @@ export const getAllCLientCodeSlice = createAsyncThunk(
   }
 );
 
+export const getCLientCodeByRoleSlice = createAsyncThunk(
+  "approverDashbaordSlice/getCLientCodeByRoleSlice",
+  async (object = {}, thunkAPI) => {
+    try {
+      const response = await approverDashboardService.getClientCodeByRole(
+        object?.role
+      );
+      console.log(response);
+
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
 
 const approverDashboardSlice = createSlice({
   name: "approverDashboard",
@@ -63,40 +83,47 @@ const approverDashboardSlice = createSlice({
   reducers: {
     generalFormData: (state, action) => {
       //  console.log(action.payload)
-      state.generalFormData = action.payload
-    }
+      state.generalFormData = action.payload;
+    },
   },
-  extraReducers: (builder)=>{
+  extraReducers: (builder) => {
     builder
- .addCase(businessCategoryType.pending,(state)=>{
-      state.businessCategoryType = []
-    })
+      .addCase(businessCategoryType.pending, (state) => {
+        state.businessCategoryType = [];
+      })
 
-    .addCase(businessCategoryType.fulfilled,(state,action)=>{
-      state.businessCategoryType = action.payload.result
-    })
-    .addCase(businessCategoryType.rejected,(state,action)=>{
-      state.businessCategoryType = []
+      .addCase(businessCategoryType.fulfilled, (state, action) => {
+        state.businessCategoryType = action.payload.result;
+      })
+      .addCase(businessCategoryType.rejected, (state, action) => {
+        state.businessCategoryType = [];
+      })
 
-    })
-    
-    .addCase(getAllCLientCodeSlice.pending,(state)=>{
-      state.clientCodeList = []
-    })
-    .addCase(getAllCLientCodeSlice.fulfilled,(state,action)=>{
-      state.clientCodeList = action.payload.result
-    })
-    .addCase(getAllCLientCodeSlice.rejected,(state,action)=>{
-      state.clientCodeList = []
-    })
+      .addCase(getAllCLientCodeSlice.pending, (state) => {
+        state.clientCodeList = [];
+      })
+      .addCase(getAllCLientCodeSlice.fulfilled, (state, action) => {
+        state.clientCodeList = action.payload.result;
+      })
+      .addCase(getAllCLientCodeSlice.rejected, (state, action) => {
+        state.clientCodeList = [];
+      })
 
-   
-  }
-
+      .addCase(getCLientCodeByRoleSlice.pending, (state, action) => {
+        state.clientCodeByRole = { [action.meta.arg?.role]: [] };
+      })
+      .addCase(getCLientCodeByRoleSlice.fulfilled, (state, action) => {
+        state.clientCodeByRole = {
+          [action.meta.arg?.role]: action.payload.result,
+        };
+      })
+      .addCase(getCLientCodeByRoleSlice.rejected, (state, action) => {
+        state.clientCodeByRole = { [action.meta.arg?.role]: { error: true } };
+      });
+  },
 });
 
-
-export const { generalFormData } = approverDashboardSlice.actions
+export const { generalFormData } = approverDashboardSlice.actions;
 
 const { reducer } = approverDashboardSlice;
 export default reducer;
