@@ -12,6 +12,7 @@ import {
   clearTransactionHistory,
   exportTxnHistory,
   exportTxnLoadingState,
+  fetchTransactionHistoryDetailSlice,
   fetchTransactionHistorySlice,
 } from "../../../../slices/dashboardSlice";
 import API_URL from "../../../../config";
@@ -35,6 +36,7 @@ import TransactionRefund from "./TransactionRefund";
 import ExportTransactionHistory from "./ExportTransactionHistory";
 import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
+import toastConfig from "../../../../utilities/toastTypes";
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -527,7 +529,15 @@ const TransactionHistory = () => {
 
   // handle transaction detail modal and display the selected record
   const transactionDetailModalHandler = (transactionData) => {
-    setSelectedTransaction(transactionData);
+    dispatch(
+      fetchTransactionHistoryDetailSlice({
+        txn_id: transactionData.txn_id,
+      })
+    )
+      .then((res) => setSelectedTransaction(res?.payload))
+      .catch((e) =>
+        toastConfig.errorToast("Error occured while fetching details")
+      );
     setTransactionDetailModal(true);
   };
 

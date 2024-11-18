@@ -71,7 +71,7 @@ const MultiUserOnboard = () => {
     { key: "bank", value: "Bank Merchant", displayValue: "Bank Merchant " },
     {
       key: "sub_merchant",
-      value: "Sub-Merchant",
+      value: "Sub Merchant",
       displayValue: "Sub-Merchant ",
     },
   ];
@@ -124,6 +124,7 @@ const MultiUserOnboard = () => {
       if (
         merchantId &&
         kycData?.onboard_type &&
+        kycData.onboard_type != "Sub Merchant" &&
         kycData.onboard_type != "Referrer (Company)" &&
         kycData.onboard_type != "Referrer (Individual)"
       ) {
@@ -362,7 +363,7 @@ const MultiUserOnboard = () => {
           )}
           {onboardTypeName === "sub_merchant" && (
             <div className="card py-2 px-2 mt-5">
-              <SubMerchant />
+              <SubMerchant edit={Boolean(merchantId)} />
             </div>
           )}
         </div>

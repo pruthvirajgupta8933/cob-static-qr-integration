@@ -24,6 +24,7 @@ import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import CustomModal from "../../../_components/custom_modal";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
+import CustomLoader from "../../../_components/loader";
 
 const SettlementReportNew = () => {
   const dispatch = useDispatch();
@@ -71,8 +72,8 @@ const SettlementReportNew = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -594,8 +595,23 @@ const SettlementReportNew = () => {
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
   const modalBody = () => {
+    if (settlementSummaryReport?.loading)
+      return <CustomLoader loadingState={settlementSummaryReport?.loading} />;
+    else if (settlementSummaryReport?.data?.length === 0)
+      return <h6>Data not found</h6>;
     return (
       <>
+        <h6>
+          <span>
+            <strong>Total Record</strong> :&nbsp;
+            {settlementSummaryReport.data?.length} |
+            <strong> Total Settlement Amount</strong> :&nbsp;
+            {settlementSummaryReport.data?.reduce(
+              (amt, data) => (amt += data.settlement_amount),
+              0
+            )}
+          </span>
+        </h6>
         <table className="table table-bordered">
           <thead>
             <th>S.R. No.</th>
@@ -603,7 +619,7 @@ const SettlementReportNew = () => {
             <th>Client Name</th>
             <th>Settlement Amount</th>
             <th>Settlement Date</th>
-            <th>Batch</th>
+            <th>Settlement By</th>
             <th>Transaction Count</th>
           </thead>
           {settlementSummaryReport.data?.map((item) => (
@@ -942,14 +958,16 @@ const SettlementReportNew = () => {
               headerTitle={
                 <>
                   Settlement Summary
-                  <button
-                    className="btn cob-btn-primary text-white btn-sm ml-5"
-                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                    type="button"
-                    onClick={exportSummaryToExcel}
-                  >
-                    Export
-                  </button>
+                  {settlementSummaryReport?.data?.length > 0 && (
+                    <button
+                      className="btn cob-btn-primary text-white btn-sm ml-5"
+                      style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                      type="button"
+                      onClick={exportSummaryToExcel}
+                    >
+                      Export
+                    </button>
+                  )}
                 </>
               }
               modalToggle={showModal}

@@ -9,6 +9,7 @@ const InitialState = {
   },
   clientCodeList: [],
   clientCodeByRole: {},
+  subMerchantList: {},
 };
 
 export const businessCategoryType = createAsyncThunk(
@@ -60,7 +61,6 @@ export const getCLientCodeByRoleSlice = createAsyncThunk(
       const response = await approverDashboardService.getClientCodeByRole(
         object?.role
       );
-      console.log(response);
 
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
@@ -77,6 +77,28 @@ export const getCLientCodeByRoleSlice = createAsyncThunk(
   }
 );
 
+export const createSubMerchant = createAsyncThunk(
+  "merchantReferralOnboardSlice/subMerchant/save",
+  async (requestParam) => {
+    const response = await approverDashboardService
+      .saveSubMerchant(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
+export const fetchSubMerchant = createAsyncThunk(
+  "merchantReferralOnboardSlice/subMerchant/edit",
+  async (requestParam) => {
+    const response = await approverDashboardService
+      .getSubMerchants(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
 const approverDashboardSlice = createSlice({
   name: "approverDashboard",
   initialState: InitialState,
@@ -119,6 +141,19 @@ const approverDashboardSlice = createSlice({
       })
       .addCase(getCLientCodeByRoleSlice.rejected, (state, action) => {
         state.clientCodeByRole = { [action.meta.arg?.role]: { error: true } };
+      })
+      .addCase(fetchSubMerchant.pending, (state, action) => {
+        state.subMerchantList = { [action.meta.arg?.login_id]: [] };
+      })
+      .addCase(fetchSubMerchant.fulfilled, (state, action) => {
+        state.subMerchantList = {
+          [action.meta.arg?.login_id]: action.payload,
+        };
+      })
+      .addCase(fetchSubMerchant.rejected, (state, action) => {
+        state.subMerchantList = {
+          [action.meta.arg?.login_id]: { error: true },
+        };
       });
   },
 });

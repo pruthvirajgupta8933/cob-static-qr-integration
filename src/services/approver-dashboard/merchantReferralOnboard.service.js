@@ -20,9 +20,6 @@ export const fetchBankList = () => {
   return axiosInstanceJWT.get(`${API_URL.GET_ALL_BANK_NAMES}`);
 };
 
-export const saveSubMerchant = (obj) =>
-  axiosInstanceJWT.post(API_URL.saveSubMerchant, obj);
-
 export const saveBusinessDetails = (obj) => {
   return axiosInstanceJWT.post(API_URL.saveBusinesDetails, obj);
 };
