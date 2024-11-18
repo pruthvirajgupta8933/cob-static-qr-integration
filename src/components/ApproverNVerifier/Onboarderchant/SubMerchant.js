@@ -1,23 +1,30 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactSelect, { createFilter } from "react-select";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { stringEnc } from "../../../utilities/encodeDecode";
 import Yup from "../../../_components/formik/Yup";
-import { getCLientCodeByRoleSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
+import {
+  getCLientCodeByRoleSlice,
+  fetchSubMerchant,
+} from "../../../slices/approver-dashboard/approverDashboardSlice";
 import OnboardMerchant from "./OnboardMerchant";
+import CustomLoader from "../../../_components/loader";
 
-const SubMerchant = () => {
+const SubMerchant = ({ edit }) => {
   const [clientLoginId, setClientLoginId] = useState();
+  const history = useHistory();
 
-  const clientCodeList =
-    useSelector(
-      (state) => state.approverDashboard?.clientCodeByRole?.["Merchant"]
-    ) || [];
+  const { clientCodeByRole, subMerchantList } = useSelector(
+    (state) => state.approverDashboard
+  );
+  const merchantClientCodeList = clientCodeByRole?.["Merchant"] || [];
   const dispatch = useDispatch();
   useEffect(() => dispatch(getCLientCodeByRoleSlice({ role: "Merchant" })), []);
 
   const options = [
     { value: "", label: "Select Client Code" },
-    ...clientCodeList?.map((data) => ({
+    ...merchantClientCodeList?.map((data) => ({
       value: data.loginMasterId,
       label: `${data.clientCode} - ${data.name}`,
     })),
@@ -54,6 +61,59 @@ const SubMerchant = () => {
   });
   const handleSelectChange = async (selectedOption) => {
     setClientLoginId(selectedOption ? selectedOption.value : null);
+    if (edit) dispatch(fetchSubMerchant({ login_id: selectedOption.value }));
+  };
+  const renderSubMerchants = () => {
+    if (subMerchantList?.[clientLoginId]?.length === 0)
+      return <CustomLoader loadingState />;
+    if (
+      subMerchantList?.[clientLoginId]?.status_code === 404 ||
+      subMerchantList?.[clientLoginId]?.message === "Data Not Found"
+    )
+      return (
+        <h5>{subMerchantList?.[clientLoginId]?.detail ?? "Data Not Found"}</h5>
+      );
+    if (subMerchantList[clientLoginId]?.sub_merchants?.length > 0)
+      return (
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Username</th>
+              <th>Mobile No.</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subMerchantList[clientLoginId]?.sub_merchants?.map(
+              (subMerchant) => (
+                <tr key={subMerchant.loginMasterId}>
+                  <td>{subMerchant.name}</td>
+                  <td>{subMerchant.email}</td>
+                  <td>{subMerchant.username}</td>
+                  <td>{subMerchant.mobileNumber}</td>
+                  <td>{subMerchant.status}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn cob-btn-primary btn-primary text-white btn-sm"
+                      onClick={(e) =>
+                        history.push(
+                          `kyc?kycid=${stringEnc(subMerchant?.loginMasterId)}`
+                        )
+                      }
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      );
   };
   return (
     <>
@@ -67,11 +127,15 @@ const SubMerchant = () => {
         placeholder="Select Client Code"
         filterOption={createFilter({ ignoreAccents: false })}
       />
-      <OnboardMerchant
-        heading={false}
-        clientLoginId={clientLoginId}
-        validator={validator}
-      />
+      {edit ? (
+        renderSubMerchants()
+      ) : (
+        <OnboardMerchant
+          heading={false}
+          clientLoginId={clientLoginId}
+          validator={validator}
+        />
+      )}
     </>
   );
 };

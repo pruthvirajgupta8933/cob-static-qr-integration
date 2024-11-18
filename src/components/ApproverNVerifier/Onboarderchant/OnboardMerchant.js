@@ -14,7 +14,7 @@ import {
 } from "../../../utilities/axiosInstance";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
-import { createSubMerchant } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { createSubMerchant } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import toastConfig from "../../../utilities/toastTypes";
 
 const phoneRegExp =

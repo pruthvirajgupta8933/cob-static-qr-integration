@@ -173,6 +173,7 @@ const API_LIVE = {
 
   getClientCodeByRole: `${kyc_url}/kyc/get-client-code-by-role`,
   saveSubMerchant: `${url}/sub-merchant/create/`,
+  getSubMerchants: `${url}/sub-merchant/get/`,
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
