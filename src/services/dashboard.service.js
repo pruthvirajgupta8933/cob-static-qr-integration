@@ -55,7 +55,12 @@ const subscriptionPlanDetail = () => {
 const fetchTransactionHistory = (paramData) => {
   // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
   // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
-  return axiosInstanceJWT.post(API_URL.GetMerchantTxnHistory, paramData);
+  return axiosInstanceJWT.post(API_URL.merchantTxnHistoryBit, paramData);
+};
+const fetchTransactionHistoryDetail = (paramData) => {
+  // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
+  // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
+  return axiosInstanceJWT.post(API_URL.merchantTxnHistoryWhole, paramData);
 };
 
 const dowlonadTransactionHistory = (postData) => {
@@ -84,6 +89,7 @@ export const Dashboardservice = {
   subscriptionplan,
   subscriptionPlanDetail,
   fetchTransactionHistory,
+  fetchTransactionHistoryDetail,
   settlementReport,
   settlementGrpReport,
   refundTransactionHistory,

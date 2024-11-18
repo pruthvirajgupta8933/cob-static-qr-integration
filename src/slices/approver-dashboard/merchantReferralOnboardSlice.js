@@ -6,7 +6,6 @@ import {
   updateBasicDetails,
   fetchPerentTypeMerchantData,
   getAllZoneCode,
-  saveSubMerchant,
 } from "../../services/approver-dashboard/merchantReferralOnboard.service";
 
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
@@ -155,16 +154,6 @@ export const resetFormState = createAsyncThunk(
   "merchantReferralOnboardSlice/bank/resetFormState",
   async () => {
     return true;
-  }
-);
-
-export const createSubMerchant = createAsyncThunk(
-  "merchantReferralOnboardSlice/subMerchant/save",
-  async (requestParam) => {
-    const response = await saveSubMerchant(requestParam).catch((error) => {
-      return error.response;
-    });
-    return response.data;
   }
 );
 

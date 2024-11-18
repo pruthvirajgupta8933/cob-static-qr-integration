@@ -17,6 +17,12 @@ const getPlatformById = (pid) => {
   });
 };
 
+export const getSubMerchants = (obj) =>
+  axiosInstanceJWT.post(API_URL.getSubMerchants, obj);
+
+export const saveSubMerchant = (obj) =>
+  axiosInstanceJWT.post(API_URL.saveSubMerchant, obj);
+
 const approveKyc = (requestParam) => {
   return axiosInstanceJWT.post(`${API_URL.APPROVE_KYC}`, requestParam);
 };
@@ -27,6 +33,8 @@ const approverDashboardService = {
   getAllClientCode,
   getPlatformById,
   approveKyc,
+  saveSubMerchant,
+  getSubMerchants,
 };
 
 export default approverDashboardService;
