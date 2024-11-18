@@ -157,7 +157,6 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
     )
       .unwrap()
       .then((res) => {
-        console.log(res);
         if (res?.status === true) {
           toastConfig.successToast(res?.message ?? "Data Saved");
           history.push(
@@ -184,7 +183,7 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
         limit: 1,
         transition: Zoom,
       });
-      setTimeout(function () {}, 3000);
+      setTimeout(function () { }, 3000);
     }
 
     if (isUserRegistered === false) {
@@ -439,9 +438,9 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                 defaultValue="Create Account"
                 disabled={
                   btnDisable ||
-                  (zoneCode
-                    ? !(formik.isValid && formik.dirty)
-                    : !clientLoginId)
+                    (zoneCode
+                      ? !(formik.isValid && formik.dirty)
+                      : !clientLoginId)
                     ? true
                     : false
                 }

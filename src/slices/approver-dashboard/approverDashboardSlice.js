@@ -61,7 +61,6 @@ export const getCLientCodeByRoleSlice = createAsyncThunk(
       const response = await approverDashboardService.getClientCodeByRole(
         object?.role
       );
-      console.log(response);
 
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
