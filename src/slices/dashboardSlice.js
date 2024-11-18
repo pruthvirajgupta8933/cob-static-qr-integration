@@ -133,7 +133,26 @@ export const fetchTransactionHistorySlice = createAsyncThunk(
     }
   }
 );
-
+export const fetchTransactionHistoryDetailSlice = createAsyncThunk(
+  "dashbaord/transactionHistoryDetail",
+  async (data, thunkAPI) => {
+    try {
+      const response = await Dashboardservice.fetchTransactionHistoryDetail(
+        data
+      );
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
 ////////////////////////////////////////////
 
 //////////////////////////////////////
