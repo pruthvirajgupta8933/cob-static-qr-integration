@@ -141,8 +141,6 @@ export const fetchTransactionHistorySlice = createAsyncThunk(
 export const fetchSettlementSummary = createAsyncThunk(
   "dashbaord/fetchSettlementSummary",
   async (data, thunkAPI) => {
-    console.log(data);
-
     try {
       const response = await Dashboardservice.settlementGrpReport(data);
       return response.data;
