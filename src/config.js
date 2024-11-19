@@ -51,6 +51,7 @@ const API_LIVE = {
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
+  RECAPTCHA_VERIFY: `${url}/auth-service/auth/captcha-verify`,
   ////////////////////////////////////---------------------------business_cat_code api
 
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
