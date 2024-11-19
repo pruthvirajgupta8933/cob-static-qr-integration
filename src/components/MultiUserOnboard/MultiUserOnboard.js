@@ -213,6 +213,7 @@ const MultiUserOnboard = () => {
                     control="select"
                     label="Onboard Type"
                     name="onboardType"
+                    disabled={Boolean(merchantId)}
                     options={convertToFormikSelectJson(
                       "key",
                       "displayValue",
@@ -242,6 +243,7 @@ const MultiUserOnboard = () => {
                         name="zone"
                         options={refferalList}
                         className="form-select"
+                        disabled={Boolean(merchantId)}
                         onChange={(e) => {
                           setSelectedvalue(e.target.value);
                           setShowForm(false);
@@ -269,6 +271,7 @@ const MultiUserOnboard = () => {
                         handleChange(e);
                       }}
                       value={selectedUserType}
+                      disabled={Boolean(merchantId)}
                     >
                       <option value="">
                         {onboardTypeName === "referrer"
