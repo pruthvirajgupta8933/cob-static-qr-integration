@@ -51,6 +51,10 @@ const checkClintCode = (object) => {
   return axiosInstanceJWT.post(API_URL.AUTH_CHECK_CLIENT_CODE, object)
 };
 
+const captchaVerify = (object) => {
+  return axiosInstanceJWT.post(API_URL.RECAPTCHA_VERIFY, object)
+};
+
 
 // const updateClientProfile = (object, clientId) => {
 //   return axiosInstanceJWT.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
@@ -123,6 +127,7 @@ const authService = {
   // fetchNbBankList,
   // fetchDcBankList,
   // verifyIfcsCode,
+  captchaVerify,
   changePassword,
   getEmailToSendOTP,
   verifyOtpOnForgotPwd,
