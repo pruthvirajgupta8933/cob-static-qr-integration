@@ -13,10 +13,13 @@ import Header from "../header/Header";
 import classes from "./login.module.css";
 import toastConfig from "../../../utilities/toastTypes";
 import useMediaQuery from "../../../custom-hooks/useMediaQuery";
+import ReCAPTCHA from "react-google-recaptcha";
+import authService from "../../../services/auth.service";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
   userPassword: "",
+  reCaptcha: ""
 };
 
 const validationSchema = Yup.object().shape({
@@ -26,6 +29,7 @@ const validationSchema = Yup.object().shape({
   userPassword: Yup.string()
     .required("Please enter Password")
     .allowOneSpace(),
+  reCaptcha: Yup.string().required('Required').nullable()
 });
 
 
@@ -54,6 +58,21 @@ const Login = () => {
   useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
+
+  const handleCaptchaChange = async (token, formik) => {
+    const { setFieldValue } = formik
+
+    const postCaptcha = {
+      "g-recaptcha-response": token
+    }
+
+    authService.captchaVerify(postCaptcha).then(resp => {
+      setFieldValue("reCaptcha", token)
+    }).catch(error => {
+      console.log(error)
+    })
+
+  };
 
   const handleLogin = (formValue) => {
     const { clientUserId, userPassword } = formValue;
@@ -177,28 +196,42 @@ const Login = () => {
                           {(msg) => <div className="text-danger">{msg}</div>}
                         </ErrorMessage>
                       </div>
-                      <label htmlFor="userPassword" className="form-label font-weight-bold font-size-16">
-                        Password <span className="text-danger">*</span>
-                      </label>
-                      <div className="m-0 input-group">
-                        <Field
-                          className="form-control border-right-0"
-                          maxLength={255}
-                          id="userPassword"
-                          placeholder="Enter your password"
-                          type={showPassword ? "text" : "password"}
-                          name="userPassword"
-                          autoComplete="new-password"
-                        />
-                        <div className="input-group-append">
-                          <span className="input-group-text border-left-0 bg-transparent" onClick={handleClickShowPassword}>
-                            {showPassword ? <i className="fa fa-eye"></i> : <i className="fa fa-eye-slash"></i>}
-                          </span>
+
+                      <div className="mb-3">
+                        <label htmlFor="userPassword" className="form-label font-weight-bold font-size-16">
+                          Password <span className="text-danger">*</span>
+                        </label>
+                        <div className="m-0 input-group">
+                          <Field
+                            className="form-control border-right-0"
+                            maxLength={255}
+                            id="userPassword"
+                            placeholder="Enter your password"
+                            type={showPassword ? "text" : "password"}
+                            name="userPassword"
+                            autoComplete="new-password"
+                          />
+                          <div className="input-group-append">
+                            <span className="input-group-text border-left-0 bg-transparent" onClick={handleClickShowPassword}>
+                              {showPassword ? <i className="fa fa-eye"></i> : <i className="fa fa-eye-slash"></i>}
+                            </span>
+                          </div>
                         </div>
+                        <ErrorMessage name="userPassword">
+                          {(msg) => <div className="text-danger">{msg}</div>}
+                        </ErrorMessage>
                       </div>
-                      <ErrorMessage name="userPassword">
-                        {(msg) => <div className="text-danger">{msg}</div>}
-                      </ErrorMessage>
+
+                      <div className="mb-3">
+                        <ReCAPTCHA
+                          sitekey="6Le8XYMqAAAAANwufmddI2_Q42TdWhDiAlcpem4g"
+                          onChange={(token) => handleCaptchaChange(token, formik)}
+                        />
+                        <ErrorMessage name="reCaptcha">
+                          {(msg) => <p className="text-danger">{msg}</p>}
+                        </ErrorMessage>
+                      </div>
+
                       <div className="form-text p-2 my-3 text-right font-size-14">
                         <Link to={`/forget/${window.location.search}`} className="text-decoration-underline">
                           Forgot Password?
