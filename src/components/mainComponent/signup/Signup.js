@@ -4,8 +4,8 @@ import Yup from "../../../_components/formik/Yup";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, register, udpateRegistrationStatus } from "../../../slices/auth";
 import { useHistory, Link } from "react-router-dom";
-import API_URL from "../../../config";
-import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
+// import API_URL from "../../../config";
+// import { axiosInstanceAuth, axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import AfterSignUp from "../../../components/social-login/AfterSignup";
 // import classes from "./signup.module.css"
 import classes from "../login/login.module.css"
@@ -18,6 +18,9 @@ import toastConfig from "../../../utilities/toastTypes";
 import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import arrow_one from "../../../assets/images/arrow_one.png"
 import arrow_two from "../../../assets/images/arrow_two.png"
+import ReCAPTCHA from "react-google-recaptcha";
+import authService from "../../../services/auth.service";
+
 
 const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -29,6 +32,7 @@ const initialValues = {
     passwordd: "",
     business_cat_code: "38",
     terms_and_condition: false,
+    reCaptcha: ""
 }
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -54,7 +58,9 @@ const FORM_VALIDATION = Yup.object().shape({
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
         ),
-    terms_and_condition: Yup.boolean().oneOf([true], 'Please accept the terms & conditions and privacy policy to proceed further')
+    terms_and_condition: Yup.boolean().oneOf([true], 'Please accept the terms & conditions and privacy policy to proceed further'),
+    reCaptcha: Yup.string().required("Required").nullable()
+
 });
 
 
@@ -66,12 +72,29 @@ function Signup() {
     const authData = auth;
     const { isUserRegistered } = authData;
     const [btnDisable, setBtnDisable] = useState(false);
-    const [businessCode, setBusinessCode] = useState([]);
+    // const [businessCode, setBusinessCode] = useState([]);
     const [queryString, setQueryString] = useState({});
     // const [passwordType, setPasswordType] = useState({
     //     confirmpassword: "",
     //     showPasswords: false,
     // });
+
+    // const [captchaToken, setCaptchaToken] = useState(null);
+
+    const handleCaptchaChange = async (token, formik) => {
+        const { setFieldValue } = formik
+
+        const postCaptcha = {
+            "g-recaptcha-response": token
+        }
+
+        authService.captchaVerify(postCaptcha).then(resp => {
+            setFieldValue("reCaptcha", token)
+        }).catch(error => {
+            console.log(error)
+        })
+
+    };
 
     const [valuesIn, setValuesIn] = useState({
         password: "",
@@ -98,18 +121,6 @@ function Signup() {
 
 
     useEffect(() => {
-        axiosInstanceJWT
-            .get(API_URL.Business_Category_CODE)
-            .then((resp) => {
-                const data = resp?.data;
-                const sortAlpha = data?.sort((a, b) =>
-                    a.category_name
-                        .toLowerCase()
-                        .localeCompare(b.category_name.toLowerCase())
-                );
-                setBusinessCode(sortAlpha);
-            })
-            .catch((err) => console.log(err));
 
         const search = window.location.search;
         const params = new URLSearchParams(search);
@@ -132,9 +143,16 @@ function Signup() {
     }, []);
 
     const handleRegistration = (formData, { resetForm }) => {
+
         let businessType = 1;
-        let { fullname, mobilenumber, emaill, passwordd, business_cat_code } =
+        let { fullname, mobilenumber, emaill, passwordd, business_cat_code, reCaptcha } =
             formData;
+
+        if (!reCaptcha) {
+            alert("Please complete the CAPTCHA");
+            return;
+        }
+
         setBtnDisable(true);
 
         dispatch(
@@ -423,6 +441,14 @@ function Signup() {
                                                     </div>
 
                                                 </div>
+                                                <ReCAPTCHA
+                                                    sitekey="6Le8XYMqAAAAANwufmddI2_Q42TdWhDiAlcpem4g"
+                                                    onChange={(token) => handleCaptchaChange(token, formik)}
+                                                />
+                                                <ErrorMessage name="reCaptcha">
+                                                    {(msg) => (<p className="text-danger">{msg}</p>)}
+                                                </ErrorMessage>
+
                                                 <div className={`form-row ${classes.form_row_cob}`}>
                                                     <div className="form-group col-lg-12">
 
