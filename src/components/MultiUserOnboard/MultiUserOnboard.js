@@ -321,12 +321,12 @@ const MultiUserOnboard = () => {
             )}
           </div>
 
-          {isEnable("normal_merchant") && (
+          {onboardTypeName === "normal_merchant" && (
             <div className="card py-2 px-2 mt-5">
               <OnboardMerchant zoneCode={selectedValue} heading={false} />
             </div>
           )}
-          {isEnable("individual_referral") && (
+          {onboardTypeName === "individual_referral" && (
             <div className="card py-2 px-2 mt-5">
               <Referral
                 type="individual"
@@ -335,7 +335,7 @@ const MultiUserOnboard = () => {
               />
             </div>
           )}
-          {isEnable("company_referral") && (
+          {onboardTypeName === "company_referral" && (
             <div className="card py-2 px-2 mt-5">
               <Referral
                 type="company"
@@ -344,7 +344,7 @@ const MultiUserOnboard = () => {
               />
             </div>
           )}
-          {isEnable("referrer") && showForm && (
+          {onboardTypeName === "referrer" && showForm && (
             <div className="card py-2 px-2 mt-5">
               <ReferralOnboardForm
                 zoneCode={selectedValue}
@@ -355,7 +355,7 @@ const MultiUserOnboard = () => {
               />
             </div>
           )}
-          {isEnable("bank") && showBankForm && (
+          {onboardTypeName === "bank" && showBankForm && (
             <div className="card py-2 px-2 mt-5">
               <BankMerchantOnboard
                 zoneCode={selectedValue}
