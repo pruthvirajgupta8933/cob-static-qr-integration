@@ -22,6 +22,8 @@ import {
 import AgreementDocModal from "./Onboarderchant/AgreementDocModal";
 import toastConfig from "../../utilities/toastTypes";
 import { stringEnc } from "../../utilities/encodeDecode";
+import SubMerchant from "./Onboarderchant/SubMerchant";
+import CustomModal from "../../_components/custom_modal";
 
 const MyMerchantList = () => {
   const roles = roleBasedAccess();
@@ -36,6 +38,7 @@ const MyMerchantList = () => {
   const [onboardType, setOnboardType] = useState("");
   const [kycSearchStatus, setKycSearchStatus] = useState("All");
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
+  const [openSubMerchantModal, setOpenSubMerchantModal] = useState(false);
 
   let history = useHistory();
   const dispatch = useDispatch();
@@ -254,8 +257,8 @@ const MyMerchantList = () => {
       cell: (row) => (
         <div className="d-flex">
           {roles?.viewer === true ||
-            (roles?.accountManager === true &&
-              row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+          (roles?.accountManager === true &&
+            row?.login_id?.master_client_id?.clientCode !== undefined) ? (
             <>
               <button
                 type="button"
@@ -277,6 +280,10 @@ const MyMerchantList = () => {
                   if (["Verified", "Approved"].includes(row.status))
                     toastConfig.infoToast(
                       "You're not allowed to edit as it has been " + row.status
+                    );
+                  else if (row.login_id?.onboard_type === "Sub Merchant")
+                    history.push(
+                      `kyc?kycid=${stringEnc(row?.login_id?.loginMasterId)}`
                     );
                   else
                     history.push(
@@ -330,6 +337,15 @@ const MyMerchantList = () => {
           />
         )}
 
+        {openSubMerchantModal && (
+          <CustomModal
+            modalBody={() => <SubMerchant edit />}
+            headerTitle={"Edit Sub-Merchant"}
+            modalToggle={openSubMerchantModal}
+            fnSetModalToggle={setOpenSubMerchantModal}
+          />
+        )}
+
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <SearchFilter
             kycSearch={kycSearch}
@@ -340,7 +356,6 @@ const MyMerchantList = () => {
           />
         </div>
 
-        {/* {console.log(kycStatus)} */}
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Select KYC Status</label>
           <select
@@ -367,6 +382,19 @@ const MyMerchantList = () => {
             changePageSize={changePageSize}
             changeCurrentPage={changeCurrentPage}
           />
+        </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <button
+            type="button"
+            className="approve text-white cob-btn-primary mx-1 mt-4 btn-sm"
+            data-toggle="modal"
+            onClick={() => {
+              setOpenSubMerchantModal(true);
+            }}
+            data-target="#exampleModal"
+          >
+            Edit Sub-Merchant
+          </button>
         </div>
       </div>
 
