@@ -105,7 +105,7 @@ const SubMerchant = ({ edit }) => {
                         )
                       }
                     >
-                      Edit
+                      Edit KYC
                     </button>
                   </td>
                 </tr>
