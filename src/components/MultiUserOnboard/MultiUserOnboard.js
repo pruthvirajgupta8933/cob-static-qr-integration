@@ -176,7 +176,10 @@ const MultiUserOnboard = () => {
     }
   }, [onboardTypeName]);
 
-  const isEnable = (label) => onboardTypeName === label && selectedValue; //condition for showing component
+  const isEnable = (label) =>
+    merchantId
+      ? onboardTypeName === label
+      : onboardTypeName === label && selectedValue; //condition for showing component
 
   return (
     <section>
@@ -321,12 +324,12 @@ const MultiUserOnboard = () => {
             )}
           </div>
 
-          {onboardTypeName === "normal_merchant" && (
+          {isEnable("normal_merchant") && (
             <div className="card py-2 px-2 mt-5">
               <OnboardMerchant zoneCode={selectedValue} heading={false} />
             </div>
           )}
-          {onboardTypeName === "individual_referral" && (
+          {isEnable("individual_referral") && (
             <div className="card py-2 px-2 mt-5">
               <Referral
                 type="individual"
@@ -335,7 +338,7 @@ const MultiUserOnboard = () => {
               />
             </div>
           )}
-          {onboardTypeName === "company_referral" && (
+          {isEnable("company_referral") && (
             <div className="card py-2 px-2 mt-5">
               <Referral
                 type="company"
@@ -344,7 +347,7 @@ const MultiUserOnboard = () => {
               />
             </div>
           )}
-          {onboardTypeName === "referrer" && showForm && (
+          {isEnable("referrer") && showForm && (
             <div className="card py-2 px-2 mt-5">
               <ReferralOnboardForm
                 zoneCode={selectedValue}
@@ -355,7 +358,7 @@ const MultiUserOnboard = () => {
               />
             </div>
           )}
-          {onboardTypeName === "bank" && showBankForm && (
+          {isEnable("bank") && showBankForm && (
             <div className="card py-2 px-2 mt-5">
               <BankMerchantOnboard
                 zoneCode={selectedValue}
