@@ -503,12 +503,12 @@ function BusinessDetailEdtKyc(props) {
 
     // Dispatch the action to update the merchant information
     dispatch(updateMerchantInfo(postData)).then((res) => {
-      console.log("res", res);
+      // console.log("res", res);
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true
       ) {
-        console.log("in if");
+        // console.log("in if");
         toast.success(res?.payload?.message);
         setTab(4);
         setTitle("BANK DETAILS");
@@ -516,7 +516,7 @@ function BusinessDetailEdtKyc(props) {
         dispatch(GetKycTabsStatus({ login_id: selectedId }));
         setIsDisable(false);
       } else {
-        console.log("in else");
+        // console.log("in else");
         toast.error(res?.payload);
         setIsDisable(false);
       }

@@ -90,12 +90,12 @@ const SubMerchant = ({ edit }) => {
             {subMerchantList[clientLoginId]?.sub_merchants?.map(
               (subMerchant) => (
                 <tr key={subMerchant.loginMasterId}>
-                  <td>{subMerchant.name}</td>
-                  <td>{subMerchant.email}</td>
-                  <td>{subMerchant.username}</td>
-                  <td>{subMerchant.mobileNumber}</td>
-                  <td>{subMerchant.status}</td>
-                  <td>
+                  <td className="align-middle">{subMerchant.name}</td>
+                  <td className="align-middle">{subMerchant.email}</td>
+                  <td className="align-middle">{subMerchant.username}</td>
+                  <td className="align-middle">{subMerchant.mobileNumber}</td>
+                  <td className="align-middle">{subMerchant.status}</td>
+                  <td className="align-middle">
                     <button
                       type="button"
                       className="btn cob-btn-primary btn-primary text-white btn-sm"
