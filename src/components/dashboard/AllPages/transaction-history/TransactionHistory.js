@@ -37,6 +37,7 @@ import ExportTransactionHistory from "./ExportTransactionHistory";
 import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import toastConfig from "../../../../utilities/toastTypes";
+import { Dashboardservice } from "../../../../services/dashboard.service";
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const TransactionHistory = () => {
   const [downloadData, setDownloadData] = useState({});
   const [transactionDetailModal, setTransactionDetailModal] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});
+  const [filterState, setFilterState] = useState([]);
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -274,7 +276,7 @@ const TransactionHistory = () => {
       };
 
       // console.log(paramData,"this is paramdata value")
-
+      setFilterState(paramData)
       dispatch(fetchTransactionHistorySlice(paramData)).then((res) => {
         setDisable(false);
       });
@@ -386,144 +388,156 @@ const TransactionHistory = () => {
     return state;
   };
 
-  const exportToExcelFn = () => {
-    const excelHeaderRow = [
-      // "S.No",
-      "Trans ID",
-      "Client Trans ID",
-      "Challan Number / VAN",
-      "Amount",
-      "Transaction Date",
-      "Transaction Complete Date",
-      "Payment Status",
-      "Payee First Name",
-      "Payee Last Name",
-      "Payee Mob number",
-      "Payee Email",
-      "Client Code",
-      "Payment Mode",
-      "Payee Address",
-      "Encrypted PAN",
-      "Udf1",
-      "Udf2",
-      "Udf3",
-      "Udf4",
-      "Udf5",
-      "Udf6",
-      "Udf7",
-      "Udf8",
-      "Udf9",
-      "Udf10",
-      "Udf11",
-      "Udf12",
-      "Udf13",
-      "Udf14",
-      "Udf15",
-      "Udf16",
-      "Udf17",
-      "Udf18",
-      "Udf19",
-      "Udf20",
-      "Gr.No",
-      "Bank Response",
-      "IFSC Code",
-      "Payer Account No",
-      "Bank Txn Id",
-    ];
+  const exportToExcelFn = async () => {
+    try {
+      const resp = await Dashboardservice.exportTransactionReport(filterState)
+      const reportData = resp.data
 
-    const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
-    txnList.forEach((item, index) => {
-      const {
-        // srNo = index + 1,
-        txn_id = "",
-        client_txn_id = "",
-        challan_no = "",
-        payee_amount = "",
-        trans_date = "",
-        trans_complete_date = "",
-        status = "",
-        payee_first_name = "",
-        payee_lst_name = "",
-        payee_mob = "",
-        payee_email = "",
-        client_code = "",
-        payment_mode = "",
-        payee_address = "",
-        encrypted_pan = "",
-        udf1 = "",
-        udf2 = "",
-        udf3 = "",
-        udf4 = "",
-        udf5 = "",
-        udf6 = "",
-        udf7 = "",
-        udf8 = "",
-        udf9 = "",
-        udf10 = "",
-        udf11 = "",
-        udf12 = "",
-        udf13 = "",
-        udf14 = "",
-        udf15 = "",
-        udf16 = "",
-        udf17 = "",
-        udf18 = "",
-        udf19 = "",
-        udf20 = "",
-        gr_number = "",
-        bank_message = "",
-        ifsc_code = "",
-        payer_acount_number = "",
-        bank_txn_id = "",
-      } = item;
+      const excelHeaderRow = [
+        // "S.No",
+        "Trans ID",
+        "Client Trans ID",
+        "Challan Number / VAN",
+        "Amount",
+        "Transaction Date",
+        "Transaction Complete Date",
+        "Payment Status",
+        "Payee First Name",
+        "Payee Last Name",
+        "Payee Mob number",
+        "Payee Email",
+        "Client Code",
+        "Payment Mode",
+        "Payee Address",
+        "Encrypted PAN",
+        "Udf1",
+        "Udf2",
+        "Udf3",
+        "Udf4",
+        "Udf5",
+        "Udf6",
+        "Udf7",
+        "Udf8",
+        "Udf9",
+        "Udf10",
+        "Udf11",
+        "Udf12",
+        "Udf13",
+        "Udf14",
+        "Udf15",
+        "Udf16",
+        "Udf17",
+        "Udf18",
+        "Udf19",
+        "Udf20",
+        "Gr.No",
+        "Bank Response",
+        "IFSC Code",
+        "Payer Account No",
+        "Bank Txn Id",
+      ];
 
-      excelArr.push([
-        // srNo,
-        txn_id,
-        client_txn_id,
-        challan_no,
-        payee_amount ? Number.parseFloat(payee_amount) : "",
-        dateFormatBasic(trans_date),
-        dateFormatBasic(trans_complete_date),
-        status,
-        payee_first_name,
-        payee_lst_name,
-        payee_mob,
-        payee_email,
-        client_code,
-        payment_mode,
-        payee_address,
-        encrypted_pan,
-        udf1,
-        udf2,
-        udf3,
-        udf4,
-        udf5,
-        udf6,
-        udf7,
-        udf8,
-        udf9,
-        udf10,
-        udf11,
-        udf12,
-        udf13,
-        udf14,
-        udf15,
-        udf16,
-        udf17,
-        udf18,
-        udf19,
-        udf20,
-        gr_number,
-        bank_message,
-        ifsc_code,
-        payer_acount_number,
-        bank_txn_id,
-      ]);
-    });
+      const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
+      reportData.forEach((item, index) => {
+        const {
+          // srNo = index + 1,
+          txn_id = "",
+          client_txn_id = "",
+          challan_no = "",
+          payee_amount = "",
+          trans_date = "",
+          trans_complete_date = "",
+          status = "",
+          payee_first_name = "",
+          payee_lst_name = "",
+          payee_mob = "",
+          payee_email = "",
+          client_code = "",
+          payment_mode = "",
+          payee_address = "",
+          encrypted_pan = "",
+          udf1 = "",
+          udf2 = "",
+          udf3 = "",
+          udf4 = "",
+          udf5 = "",
+          udf6 = "",
+          udf7 = "",
+          udf8 = "",
+          udf9 = "",
+          udf10 = "",
+          udf11 = "",
+          udf12 = "",
+          udf13 = "",
+          udf14 = "",
+          udf15 = "",
+          udf16 = "",
+          udf17 = "",
+          udf18 = "",
+          udf19 = "",
+          udf20 = "",
+          gr_number = "",
+          bank_message = "",
+          ifsc_code = "",
+          payer_acount_number = "",
+          bank_txn_id = "",
+        } = item;
 
-    const fileName = "Transactions-Report";
-    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+        excelArr.push([
+          // srNo,
+          txn_id,
+          client_txn_id,
+          challan_no,
+          payee_amount ? Number.parseFloat(payee_amount) : "",
+          dateFormatBasic(trans_date),
+          dateFormatBasic(trans_complete_date),
+          status,
+          payee_first_name,
+          payee_lst_name,
+          payee_mob,
+          payee_email,
+          client_code,
+          payment_mode,
+          payee_address,
+          encrypted_pan,
+          udf1,
+          udf2,
+          udf3,
+          udf4,
+          udf5,
+          udf6,
+          udf7,
+          udf8,
+          udf9,
+          udf10,
+          udf11,
+          udf12,
+          udf13,
+          udf14,
+          udf15,
+          udf16,
+          udf17,
+          udf18,
+          udf19,
+          udf20,
+          gr_number,
+          bank_message,
+          ifsc_code,
+          payer_acount_number,
+          bank_txn_id,
+        ]);
+      });
+
+      const fileName = "Transactions-Report";
+      exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+
+    }
+    catch (error) {
+      toastConfig.errorToast("Error: Export transaction report")
+    }
+
+
+
   };
 
   // handle transaction detail modal and display the selected record
