@@ -77,7 +77,7 @@ const UploadDocuments = ({ disableForm, setInfoModal }) => {
       {({ values, setFieldValue, resetForm }) => (
         <Form>
           <div className="mt-4">
-            <div className="" style={{ maxHeight: "250px" }}>
+            <div className="overflow-auto" style={{ maxHeight: "250px" }}>
               {docTypeList.map(
                 (doc, index) =>
                   Boolean(doc.status) && (
