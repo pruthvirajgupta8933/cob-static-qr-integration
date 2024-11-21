@@ -28,7 +28,7 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
       setButtonDisable(false);
       setShowPanInfo(res?.payload);
       setIsLoading(false);
-      console.log("res", res)
+      // console.log("res", res)
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&

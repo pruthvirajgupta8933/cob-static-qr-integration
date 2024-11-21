@@ -3,36 +3,33 @@ import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import Yup from "../../../_components/formik/Yup";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
-import { createFilter } from 'react-select';
+import { createFilter } from "react-select";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import assignAccountMangerService from "../../../services/assign-account-manager/assign-account-manager.service";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../../_components/formik/FormikController";
 import toastConfig from "../../../utilities/toastTypes";
-import { assignAccountMangerApi, assignManagerDetails } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
-import classes from "./assign-accountManger.module.css"
+import {
+  assignAccountMangerApi,
+  assignManagerDetails,
+} from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import classes from "./assign-accountManger.module.css";
 const AssigneAccountManger = () => {
-  const [clientCodeList, setCliencodeList] = useState([])
+  const [clientCodeList, setCliencodeList] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(null);
-  const [assignedAccountManger, setAssignedAccountManger] = useState("")
+  const [assignedAccountManger, setAssignedAccountManger] = useState("");
   const [assignDetails, setAssignDetails] = useState([]);
-  const [disable, setDisable] = useState(false)
-  const dispatch = useDispatch()
+  const [disable, setDisable] = useState(false);
+  const dispatch = useDispatch();
   let initialValues = {
     react_select: "",
-    login_master: ""
-
+    login_master: "",
   };
 
-
   const validationSchema = Yup.object().shape({
-    login_master: Yup.string()
-      .required("Required"),
+    login_master: Yup.string().required("Required"),
     react_select: Yup.object().required("Required").nullable(),
-
   });
-
-  
 
   const handleChange = (selectedOption) => {
     const clientId = selectedOption ? selectedOption.value : null;
@@ -40,13 +37,13 @@ const AssigneAccountManger = () => {
 
     if (clientId) {
       const postData = {
-        "client_code": clientId
+        client_code: clientId,
       };
 
       dispatch(assignAccountMangerApi(postData))
         .then((res) => {
-          console.log("res", res)
-          setAssignedAccountManger(res?.payload?.result)
+          // console.log("res", res)
+          setAssignedAccountManger(res?.payload?.result);
         })
         .catch((err) => {
           console.error("Error:", err);
@@ -56,55 +53,54 @@ const AssigneAccountManger = () => {
 
   useEffect(() => {
     const postData = {
-      "role_id": "101"
-    }
+      role_id: "101",
+    };
     dispatch(assignManagerDetails(postData))
-      .then(response => {
-
+      .then((response) => {
         const data = convertToFormikSelectJson(
           "login_master_id",
           "name",
 
           response?.payload?.result
-        )
+        );
         setAssignDetails(data);
       })
-      .catch(error => {
-        console.error('Error fetching merchant data:', error);
+      .catch((error) => {
+        console.error("Error fetching merchant data:", error);
       });
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setCliencodeList(resp?.payload?.result)
-    })
-  }, [])
-
-  
+      setCliencodeList(resp?.payload?.result);
+    });
+  }, []);
 
   const onSubmit = (values) => {
     setDisable(true);
-  
+
     const postData = {
-      "client_code": values?.react_select?.value,
-      "login_master_id": values.login_master
+      client_code: values?.react_select?.value,
+      login_master_id: values.login_master,
     };
-  
+
     if (postData) {
       if (!window.confirm("Are you sure to assign a new account manager?")) {
-        setDisable(false); 
-        return; 
+        setDisable(false);
+        return;
       }
-  
-      assignAccountMangerService.assignClient(postData)
+
+      assignAccountMangerService
+        .assignClient(postData)
         .then((res) => {
           if (res?.data?.status === true) {
             toastConfig.successToast(res?.data?.message);
-            dispatch(assignAccountMangerApi({ "client_code": selectedClientId }))
-              .then((res) => {
-                setAssignedAccountManger(res?.payload?.result);
-                setDisable(false);
-              });
+            dispatch(
+              assignAccountMangerApi({ client_code: selectedClientId })
+            ).then((res) => {
+              setAssignedAccountManger(res?.payload?.result);
+              setDisable(false);
+            });
           } else {
             toastConfig.errorToast(res?.data?.message);
             setDisable(false);
@@ -115,14 +111,14 @@ useEffect(() => {
         });
     }
   };
-  
+
   const options = [
-    { value: '', label: 'Select Client Code' },
+    { value: "", label: "Select Client Code" },
     ...clientCodeList.map((data) => ({
       value: data.clientCode,
-      label: `${data.clientCode} - ${data.name}`
-    }))
-  ]
+      label: `${data.clientCode} - ${data.name}`,
+    })),
+  ];
   return (
     <section className="">
       <main className="">
@@ -140,18 +136,30 @@ useEffect(() => {
                 <Form className="row mt-5">
                   <div className="row">
                     <div className="col-lg-3">
-                       <CustomReactSelect
+                      <CustomReactSelect
                         name="react_select"
                         options={options}
                         placeholder="Select Client Code"
                         filterOption={createFilter({ ignoreAccents: false })}
                         label="Client Code"
                         onChange={handleChange}
-
                       />
-                      <div className="text-primary mb-3 mt-5 d-flex">{selectedClientId &&<h6  className={``}>Current Account Manager</h6>}</div>
-                      {selectedClientId && <h6 className="mt-3">Name: {assignedAccountManger?.name || "NA"}</h6>}
-                      {selectedClientId && <h6 className=""> Email: {assignedAccountManger?.email || "NA"}</h6>}
+                      <div className="text-primary mb-3 mt-5 d-flex">
+                        {selectedClientId && (
+                          <h6 className={``}>Current Account Manager</h6>
+                        )}
+                      </div>
+                      {selectedClientId && (
+                        <h6 className="mt-3">
+                          Name: {assignedAccountManger?.name || "NA"}
+                        </h6>
+                      )}
+                      {selectedClientId && (
+                        <h6 className="">
+                          {" "}
+                          Email: {assignedAccountManger?.email || "NA"}
+                        </h6>
+                      )}
                     </div>
                     <div className="col-lg-3">
                       <FormikController
@@ -169,7 +177,11 @@ useEffect(() => {
                         disabled={disable}
                       >
                         {disable && (
-                          <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                          <span
+                            className="spinner-border spinner-border-sm mr-1"
+                            role="status"
+                            ariaHidden="true"
+                          ></span>
                         )}
                         Assign
                       </button>
@@ -180,11 +192,10 @@ useEffect(() => {
             </Formik>
           </div>
         </div>
-        <div>
-        </div>
+        <div></div>
       </main>
     </section>
-  )
-}
+  );
+};
 
-export default AssigneAccountManger
+export default AssigneAccountManger;

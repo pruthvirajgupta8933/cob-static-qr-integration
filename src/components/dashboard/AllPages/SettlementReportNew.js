@@ -583,7 +583,7 @@ const SettlementReportNew = () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Settlement-Txn-Summary-Report";
-    console.log(fileName);
+    // console.log(fileName);
 
     let handleExportLoading = (state) => {
       // console.log(state)

@@ -183,7 +183,7 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
         limit: 1,
         transition: Zoom,
       });
-      setTimeout(function () { }, 3000);
+      setTimeout(function () {}, 3000);
     }
 
     if (isUserRegistered === false) {
@@ -393,41 +393,46 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
               }
             </div>
 
-            <div className="col-md-6">
-              <label htmlFor="user-cpw" className="form-label font-weight-bold">
-                Confirm Password
-                {zoneCode && <span style={{ color: "red" }}>*</span>}
-              </label>
-              <div className="input-group">
-                <Field
-                  className="form-control"
-                  maxLength={255}
-                  id="user-cpw"
-                  placeholder="Re-enter the password"
-                  type={valuesIn.showPassword ? "text" : "password"}
-                  name="confirmpasswordd"
-                  size={50}
-                />
-
-                <span
-                  className="input-group-text"
-                  onClick={handleClickShowPassword}
-                  id="basic-addon2"
+            {zoneCode && (
+              <div className="col-md-6">
+                <label
+                  htmlFor="user-cpw"
+                  className="form-label font-weight-bold"
                 >
-                  {valuesIn.showPassword ? (
-                    <i className="fa fa-eye" ariaHidden="true"></i>
-                  ) : (
-                    <i className="fa fa-eye-slash" ariaHidden="true"></i>
-                  )}
-                </span>
-              </div>
+                  Confirm Password
+                  {zoneCode && <span style={{ color: "red" }}>*</span>}
+                </label>
+                <div className="input-group">
+                  <Field
+                    className="form-control"
+                    maxLength={255}
+                    id="user-cpw"
+                    placeholder="Re-enter the password"
+                    type={valuesIn.showPassword ? "text" : "password"}
+                    name="confirmpasswordd"
+                    size={50}
+                  />
 
-              {
-                <ErrorMessage name="confirmpasswordd">
-                  {(msg) => <p className="text-danger">{msg}</p>}
-                </ErrorMessage>
-              }
-            </div>
+                  <span
+                    className="input-group-text"
+                    onClick={handleClickShowPassword}
+                    id="basic-addon2"
+                  >
+                    {valuesIn.showPassword ? (
+                      <i className="fa fa-eye" ariaHidden="true"></i>
+                    ) : (
+                      <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                    )}
+                  </span>
+                </div>
+
+                {
+                  <ErrorMessage name="confirmpasswordd">
+                    {(msg) => <p className="text-danger">{msg}</p>}
+                  </ErrorMessage>
+                }
+              </div>
+            )}
 
             <div className="col-md-9">
               <button
@@ -438,9 +443,9 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                 defaultValue="Create Account"
                 disabled={
                   btnDisable ||
-                    (zoneCode
-                      ? !(formik.isValid && formik.dirty)
-                      : !clientLoginId)
+                  (zoneCode
+                    ? !(formik.isValid && formik.dirty)
+                    : !clientLoginId)
                     ? true
                     : false
                 }
