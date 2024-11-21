@@ -20,7 +20,10 @@ const ViewDocuments = () => {
     );
   }, []);
   return (
-    <div className="table-responsive">
+    <div
+      className="table-responsive overflow-auto"
+      style={{ maxHeight: "250px" }}
+    >
       {docViewer && (
         <DocViewerComponent
           modalToggle={docViewer}

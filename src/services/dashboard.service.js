@@ -63,6 +63,12 @@ const fetchTransactionHistoryDetail = (paramData) => {
   return axiosInstanceJWT.post(API_URL.merchantTxnHistoryWhole, paramData);
 };
 
+const exportTransactionReport = (paramData) => {
+  // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
+  // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
+  return axiosInstanceJWT.post(API_URL.GetMerchantTxnHistory, paramData);
+};
+
 const dowlonadTransactionHistory = (postData) => {
   return axiosInstanceJWT.post(API_URL.DownloadTxnHistory, postData, {
     responseType: "arraybuffer",
@@ -88,6 +94,7 @@ export const Dashboardservice = {
   successTxnSummary,
   subscriptionplan,
   subscriptionPlanDetail,
+  exportTransactionReport,
   fetchTransactionHistory,
   fetchTransactionHistoryDetail,
   settlementReport,
