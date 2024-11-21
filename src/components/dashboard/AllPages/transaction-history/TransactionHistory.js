@@ -785,6 +785,8 @@ const TransactionHistory = () => {
                       <th> Transaction Complete Date</th>
                       <th> Payment Status</th>
                       <th> Payer First Name</th>
+                      <th> Payer Mob. Number</th>
+                      <th> Payer Email</th>
                       <th> Payment Mode</th>
                     </tr>
                   ) : (
@@ -839,11 +841,12 @@ const TransactionHistory = () => {
                           >
                             {item.status}
                           </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.payee_first_name}
-                          </td>
+
+
+                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_first_name}</td>
+                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_mob}</td>
+                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_email}</td>
+
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
                           >
