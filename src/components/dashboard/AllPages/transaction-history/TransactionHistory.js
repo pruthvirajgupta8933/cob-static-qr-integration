@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
@@ -10,7 +10,7 @@ import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
   clearTransactionHistory,
-  exportTxnHistory,
+  // exportTxnHistory,
   exportTxnLoadingState,
   fetchTransactionHistoryDetailSlice,
   fetchTransactionHistorySlice,
@@ -73,6 +73,19 @@ const TransactionHistory = () => {
   const [transactionDetailModal, setTransactionDetailModal] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});
   const [filterState, setFilterState] = useState([]);
+  const [duration, setDuration] = useState("today");
+  const [exportReportLoader, setExportReportLoader] = useState(false);
+
+  const durations = [
+    { key: "today", value: "Today" },
+    { key: "yesterday", value: "Yesterday" },
+    { key: "last7Days", value: "Last 7 days" },
+    { key: "currentMonth", value: "Current Month" },
+    { key: "lastMonth", value: "Last Month" },
+    { key: "last3Month", value: "Last 90 days" },
+    { key: "last6Month", value: "Last 180 days" },
+    { key: "custom", value: "Custom Date" },
+  ];
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -240,7 +253,59 @@ const TransactionHistory = () => {
 
   const submitHandler = (values) => {
     setDownloadData(values);
-
+    const currDate = new Date();
+    const getLastMonthDays = (month) => {
+      let days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      if (currDate.getFullYear() % 4 === 0) {
+        if (
+          currDate.getFullYear() % 100 === 0 &&
+          currDate.getFullYear() % 400 !== 0
+        )
+          days[1] = 28;
+        else days[1] = 29;
+      }
+      return days[month];
+    };
+    switch (duration) {
+      case "today": {
+        values.fromDate = currDate;
+        break;
+      }
+      case "yesterday": {
+        values.fromDate = currDate.setDate(currDate.getDate() - 1);
+        values.endDate = new Date().setDate(new Date().getDate() - 1);
+        break;
+      }
+      case "last7Days": {
+        values.fromDate = currDate.setDate(currDate.getDate() - 6);
+        break;
+      }
+      case "currentMonth": {
+        values.fromDate = currDate.setDate(1);
+        break;
+      }
+      case "lastMonth": {
+        values.fromDate = new Date(
+          currDate.getFullYear(),
+          currDate.getMonth() - 1,
+          1
+        );
+        values.endDate = new Date(
+          currDate.getFullYear(),
+          currDate.getMonth() - 1,
+          getLastMonthDays(currDate.getMonth() - 1)
+        );
+        break;
+      }
+      case "last3Month": {
+        values.fromDate = currDate.setDate(currDate.getDate() - 89);
+        break;
+      }
+      case "last6Month": {
+        values.fromDate = currDate.setDate(currDate.getDate() - 179);
+        break;
+      }
+    }
     setRefundModal(false);
     setRadioInputVal({});
 
@@ -276,7 +341,7 @@ const TransactionHistory = () => {
       };
 
       // console.log(paramData,"this is paramdata value")
-      setFilterState(paramData)
+      setFilterState(paramData);
       dispatch(fetchTransactionHistorySlice(paramData)).then((res) => {
         setDisable(false);
       });
@@ -295,17 +360,16 @@ const TransactionHistory = () => {
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      let allowedTxnViewDays = 31;
-      let monthAllowed = 1;
+      let allowedTxnViewDays = 180;
 
-      if (user?.roleId === 3) {
-        allowedTxnViewDays = 92;
-        monthAllowed = 3;
-      }
+      // if (user?.roleId === 3) {
+      //   allowedTxnViewDays = 92;
+      //   monthAllowed = 3;
+      // }
 
       if (diffDays < 0 || diffDays > allowedTxnViewDays) {
         flag = false;
-        alert(`Please choose a ${monthAllowed}-month date range.`);
+        alert(`Please choose a maximum duration of 180 days.`);
         setDisable(false);
       }
     }
@@ -390,8 +454,9 @@ const TransactionHistory = () => {
 
   const exportToExcelFn = async () => {
     try {
-      const resp = await Dashboardservice.exportTransactionReport(filterState)
-      const reportData = resp.data
+      setExportReportLoader(true)
+      const resp = await Dashboardservice.exportTransactionReport(filterState);
+      const reportData = resp.data;
 
       const excelHeaderRow = [
         // "S.No",
@@ -530,14 +595,11 @@ const TransactionHistory = () => {
 
       const fileName = "Transactions-Report";
       exportToSpreadsheet(excelArr, fileName, handleExportLoading);
-
+      setExportReportLoader(false)
+    } catch (error) {
+      setExportReportLoader(false)
+      toastConfig.errorToast("Error: Export transaction report");
     }
-    catch (error) {
-      toastConfig.errorToast("Error: Export transaction report")
-    }
-
-
-
   };
 
   // handle transaction detail modal and display the selected record
@@ -552,6 +614,13 @@ const TransactionHistory = () => {
         toastConfig.errorToast("Error occured while fetching details")
       );
     setTransactionDetailModal(true);
+  };
+
+  const handleDurationChange = ({ value, setFieldValue }) => {
+    setDuration(value);
+    setFieldValue("duration", value);
+    setFieldValue("fromDate", new Date());
+    setFieldValue("endDate", new Date());
   };
 
   return (
@@ -595,47 +664,63 @@ const TransactionHistory = () => {
                         />
                       </div>
                     )}
-
-                    <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
-                      <label htmlFor="dateRange" className="form-label">
-                        Start Date - End Date
-                      </label>
-                      <div
-                        className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
-                      >
-                        <DatePicker
-                          id="dateRange"
-                          selectsRange={true}
-                          startDate={startDate}
-                          endDate={endDate}
-                          onChange={(update) => {
-                            const [start, end] = update;
-                            setStartDate(start);
-                            setEndDate(end);
-                            formik.setFieldValue("fromDate", start);
-                            formik.setFieldValue("endDate", end);
-                          }}
-                          dateFormat="dd-MM-yyyy"
-                          placeholderText="Select Date Range"
-                          className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
-                          showPopperArrow={false}
-                          popperClassName={classes.custom_datepicker_popper}
-                        />
+                    <div className="form-group col-md-3 col-lg-2 col-sm-12">
+                      <FormikController
+                        control="select"
+                        label="Select Duration"
+                        name="duration"
+                        className="form-select rounded-0"
+                        options={durations}
+                        onChange={(e) =>
+                          handleDurationChange({
+                            value: e.target.value,
+                            setFieldValue: formik.setFieldValue,
+                          })
+                        }
+                      />
+                    </div>
+                    {duration === "custom" && (
+                      <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
+                        <label htmlFor="dateRange" className="form-label">
+                          Start Date - End Date
+                        </label>
                         <div
-                          className="input-group-append"
-                          onClick={() => {
-                            document.getElementById("dateRange").click();
-                          }}
+                          className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
                         >
-                          <span
-                            className={`input-group-text ${classes.calendar_input_border}`}
+                          <DatePicker
+                            id="dateRange"
+                            selectsRange={true}
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(update) => {
+                              const [start, end] = update;
+                              setStartDate(start);
+                              setEndDate(end);
+                              formik.setFieldValue("fromDate", start);
+                              formik.setFieldValue("endDate", end);
+                            }}
+                            dateFormat="dd-MM-yyyy"
+                            placeholderText="Select Date Range"
+                            className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+                            showPopperArrow={false}
+                            popperClassName={classes.custom_datepicker_popper}
+                          />
+                          <div
+                            className="input-group-append"
+                            onClick={() => {
+                              document.getElementById("dateRange").click();
+                            }}
                           >
-                            {" "}
-                            <FaCalendarAlt />
-                          </span>
+                            <span
+                              className={`input-group-text ${classes.calendar_input_border}`}
+                            >
+                              {" "}
+                              <FaCalendarAlt />
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
                     <div className="form-group col-md-3 col-lg-2 col-sm-12">
                       <FormikController
@@ -693,8 +778,9 @@ const TransactionHistory = () => {
                           type="button"
                           className="btn btn-sm text-white cob-btn-primary"
                           onClick={() => exportToExcelFn()}
+                          disabled={exportReportLoader}
                         >
-                          <i className="fa fa-download"></i> Export
+                          <i className="fa fa-download"></i>{exportReportLoader ? " Loading..." : " Export"}
                         </button>
                       </div>
                     )}
