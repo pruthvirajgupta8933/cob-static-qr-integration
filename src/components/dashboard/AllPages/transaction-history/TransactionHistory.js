@@ -81,8 +81,8 @@ const TransactionHistory = () => {
     { key: "last7Days", value: "Last 7 days" },
     { key: "currentMonth", value: "Current Month" },
     { key: "lastMonth", value: "Last Month" },
-    { key: "last3Month", value: "Last 3 Month" },
-    { key: "last6Month", value: "Last 6 Month" },
+    { key: "last3Month", value: "Last 90 days" },
+    { key: "last6Month", value: "Last 180 days" },
     { key: "custom", value: "Custom Date" },
   ];
 
@@ -272,10 +272,11 @@ const TransactionHistory = () => {
       }
       case "yesterday": {
         values.fromDate = currDate.setDate(currDate.getDate() - 1);
+        values.endDate = new Date().setDate(new Date().getDate() - 1);
         break;
       }
       case "last7Days": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 7);
+        values.fromDate = currDate.setDate(currDate.getDate() - 6);
         break;
       }
       case "currentMonth": {
@@ -293,13 +294,14 @@ const TransactionHistory = () => {
           currDate.getMonth() - 1,
           getLastMonthDays(currDate.getMonth() - 1)
         );
+        break;
       }
       case "last3Month": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 90);
+        values.fromDate = currDate.setDate(currDate.getDate() - 89);
         break;
       }
       case "last6Month": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 180);
+        values.fromDate = currDate.setDate(currDate.getDate() - 179);
         break;
       }
     }
