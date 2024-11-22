@@ -96,31 +96,6 @@ const TransactionHistory = () => {
   }
   splitDate = splitDate.join("-");
 
-  const convertDate = (dateVal) => {
-    //convert only this format 2024-10-10T12:36:30Z
-
-    let date;
-    if (dateVal === null && isNaN(date)) {
-      date = "N/A";
-    } else {
-      // Extract date components
-      const sdate = new Date(dateVal);
-      const day = String(sdate?.getUTCDate()).padStart(2, "0");
-      const month = String(sdate?.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
-      const year = sdate?.getUTCFullYear();
-
-      // Extract time components
-      const hours = String(sdate?.getUTCHours()).padStart(2, "0");
-      const minutes = String(sdate?.getUTCMinutes()).padStart(2, "0");
-      const seconds = String(sdate?.getUTCSeconds()).padStart(2, "0");
-
-      // Format the date and time
-      date = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
-    }
-
-    return date;
-  };
-
   const fetchData = () => {
     const roleType = roles;
     const type = roleType.bank
@@ -172,11 +147,9 @@ const TransactionHistory = () => {
   };
 
   const validationSchema = Yup.object({
-    fromDate: Yup.date().required("Required"),
-    clientCode: Yup.string().required("Client code not found").nullable(),
-    endDate: Yup.date()
-      .min(Yup.ref("fromDate"), "End date can't be before Start date")
-      .required("Required"),
+    // fromDate: Yup.date().required("Required"), //not needed since we already provide values from code
+    clientCode: Yup.string().required("Client code not found"),
+    endDate: Yup.date().required("Required"),
     transaction_status: Yup.string().required("Required"),
     payment_mode: Yup.string().required("Required"),
   });
@@ -266,10 +239,6 @@ const TransactionHistory = () => {
       return days[month];
     };
     switch (duration) {
-      case "today": {
-        values.fromDate = currDate;
-        break;
-      }
       case "yesterday": {
         values.fromDate = currDate.setDate(currDate.getDate() - 1);
         values.endDate = new Date().setDate(new Date().getDate() - 1);
@@ -304,6 +273,10 @@ const TransactionHistory = () => {
         values.fromDate = currDate.setDate(currDate.getDate() - 179);
         break;
       }
+      case "today":
+      case "custom":
+      case "default":
+        break;
     }
     setRefundModal(false);
     setRadioInputVal({});
@@ -743,6 +716,9 @@ const TransactionHistory = () => {
                       <button
                         className="btn btn-sm cob-btn-primary text-white"
                         type="submit"
+                        onClick={() =>
+                          console.log(formik.values, formik.isValid)
+                        }
                         disabled={disable}
                       >
                         {disable && (
