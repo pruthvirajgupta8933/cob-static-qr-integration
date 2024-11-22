@@ -720,9 +720,6 @@ const TransactionHistory = () => {
                       <button
                         className="btn btn-sm cob-btn-primary text-white"
                         type="submit"
-                        onClick={() =>
-                          console.log(formik.values, formik.isValid)
-                        }
                         disabled={disable}
                       >
                         {disable && (
