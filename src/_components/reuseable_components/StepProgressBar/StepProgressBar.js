@@ -4,7 +4,7 @@ import "./stepProgressBar.css";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
 import "react-step-progress/dist/index.css";
-import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from "../../../utilities/enums";
+import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../../utilities/enums";
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -53,7 +53,7 @@ function StepProgressBar(props) {
 
     let percent = 0;
     if (status) {
-      if (status?.toLocaleLowerCase() === KYC_STATUS_PENDING.toLocaleLowerCase() || status?.toLocaleLowerCase() === KYC_STATUS_NOT_FILLED.toLocaleLowerCase()) {
+      if (status?.toLocaleLowerCase() === KYC_STATUS_PENDING.toLocaleLowerCase() || status?.toLocaleLowerCase() === KYC_STATUS_NOT_FILLED.toLocaleLowerCase() || status?.toLocaleLowerCase() === KYC_STATUS_REJECTED.toLocaleLowerCase()) {
         percent = 1
       } else if (status?.toLocaleLowerCase() === KYC_STATUS_PROCESSING.toLocaleLowerCase()) {
         percent = 33.3;
@@ -94,7 +94,6 @@ function StepProgressBar(props) {
   }, [status]);
 
 
-  // console.log(kycStatusData[0])
   const steps = kycStatusData[0]?.steps?.map((s, index) => {
     return (
       <Step transition="scale" key={uuidv4()}>
@@ -107,7 +106,6 @@ function StepProgressBar(props) {
               alignItems: "center",
             }}
           >
-
             <div style={{ marginTop: 0, position: "absolute" }}>
               <StepComplete data={s} progressPercentage={percentage} />
             </div>
@@ -121,7 +119,6 @@ function StepProgressBar(props) {
     );
   });
 
-  //   console.log(steps)
 
   return (
     <div className="mb-5">
@@ -137,12 +134,62 @@ function StepProgressBar(props) {
           <ProgressBar
             percent={percentage}
             height={4}
-            filledBackground="#286ECD"
-            unfilledBackground="#286ECD"
+          // filledBackground="green"
+          // unfilledBackground="#286ECD"
           >
             {steps}
 
           </ProgressBar>
+          {/* <ProgressBar
+            filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+            percent={75}
+          >
+            <Step transition="scale">
+              {({ accomplished, index }) => (
+                <div
+                  className={`transitionStep ${accomplished ? "accomplished" : null}`}
+                >
+                  🌑
+                </div>
+              )}
+            </Step>
+            <Step transition="scale">
+              {({ accomplished, index }) => (
+                <div
+                  className={`transitionStep ${accomplished ? "accomplished" : null}`}
+                >
+                  🌒
+                </div>
+              )}
+            </Step>
+            <Step transition="scale">
+              {({ accomplished, index }) => (
+                <div
+                  className={`transitionStep ${accomplished ? "accomplished" : null}`}
+                >
+                  🌓
+                </div>
+              )}
+            </Step>
+            <Step transition="scale">
+              {({ accomplished, index }) => (
+                <div
+                  className={`transitionStep ${accomplished ? "accomplished" : null}`}
+                >
+                  🌔
+                </div>
+              )}
+            </Step>
+            <Step transition="scale">
+              {({ accomplished, index }) => (
+                <div
+                  className={`transitionStep ${accomplished ? "accomplished" : null}`}
+                >
+                  🌕
+                </div>
+              )}
+            </Step>
+          </ProgressBar> */}
         </div>
 
       </div>
