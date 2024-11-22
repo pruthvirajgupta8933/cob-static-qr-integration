@@ -359,8 +359,7 @@ const TransactionHistory = () => {
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      let allowedTxnViewDays = 183;
-      let monthAllowed = 6;
+      let allowedTxnViewDays = 180;
 
       // if (user?.roleId === 3) {
       //   allowedTxnViewDays = 92;
@@ -369,7 +368,7 @@ const TransactionHistory = () => {
 
       if (diffDays < 0 || diffDays > allowedTxnViewDays) {
         flag = false;
-        alert(`Please choose a ${monthAllowed}-month date range.`);
+        alert(`Please choose a maximum duration of 180 days.`);
         setDisable(false);
       }
     }
