@@ -81,6 +81,7 @@ function ContactInfoKyc(props) {
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
+    isEmailVerified: KycList?.isEmailVerified ?? null,
     contact_number: KycList?.contactNumber,
     oldContactNumber: KycList?.contactNumber,
     contactOtpDigit: "",
@@ -120,6 +121,9 @@ function ContactInfoKyc(props) {
       .nullable(),
     isContactNumberVerified: Yup.string()
       .required("Please verify the contact number")
+      .nullable(),
+    isEmailVerified: Yup.string()
+      .required("Email is not verified")
       .nullable(),
     contactOtpDigit: Yup.string().when("isContactOtpSend", {
       is: true,
@@ -267,7 +271,7 @@ function ContactInfoKyc(props) {
         setAadhaarVerificationLoader(false);
         toastConfig.errorToast(
           err?.response?.data?.message ??
-            "Something went wrong, Please try again"
+          "Something went wrong, Please try again"
         );
       });
   };
@@ -344,9 +348,9 @@ function ContactInfoKyc(props) {
         />
 
         {values.oldIdNumber &&
-        values.id_number &&
-        values.isIdProofVerified &&
-        values.oldIdNumber === values.id_number ? (
+          values.id_number &&
+          values.isIdProofVerified &&
+          values.oldIdNumber === values.id_number ? (
           <span className="success input-group-append">
             <img
               src={gotVerified}
@@ -362,17 +366,16 @@ function ContactInfoKyc(props) {
             {idType === "1" && (
               <a
                 href={() => false}
-                className={`btn cob-btn-primary btn-sm ${
-                  values.id_number?.length < 12 ||
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 12 ||
                   aadhaarVerificationLoader ||
                   errors?.id_number
-                    ? "disabled"
-                    : ""
-                }`}
+                  ? "disabled"
+                  : ""
+                  }`}
                 onClick={() => {
                   aadhaarVerificationHandler(values.id_number, setFieldValue);
                 }}
-                // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+              // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
               >
                 {aadhaarVerificationLoader ? (
                   <span className="spinner-border spinner-border-sm">
@@ -386,13 +389,12 @@ function ContactInfoKyc(props) {
             {idType === "3" && (
               <a
                 href={() => false}
-                className={`btn cob-btn-primary btn-sm ${
-                  values.id_number?.length < 10 ? "disabled" : ""
-                }`}
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 10 ? "disabled" : ""
+                  }`}
                 onClick={() => {
                   voterVerificationHandler(values.id_number, setFieldValue);
                 }}
-                // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
+              // disabled={errors.hasOwnProperty("aadhar_number") ? true : false}
               >
                 {otpLoader ? (
                   <span className="spinner-border spinner-border-sm">
@@ -406,11 +408,10 @@ function ContactInfoKyc(props) {
             {idType === "4" && (
               <a
                 href={() => false}
-                className={`btn cob-btn-primary btn-sm ${
-                  values.id_number?.length < 14 || errors?.id_number
-                    ? "disabled"
-                    : ""
-                }`}
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
+                  ? "disabled"
+                  : ""
+                  }`}
                 onClick={() => {
                   setDlDobToggle(true);
                 }}
@@ -631,9 +632,9 @@ function ContactInfoKyc(props) {
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
                   {KycList?.contactNumber !== null &&
-                  values?.isContactNumberVerified === 1 &&
-                  !errors.hasOwnProperty("contact_number") &&
-                  !errors.hasOwnProperty("oldContactNumber") ? (
+                    values?.isContactNumberVerified === 1 &&
+                    !errors.hasOwnProperty("contact_number") &&
+                    !errors.hasOwnProperty("oldContactNumber") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -648,9 +649,8 @@ function ContactInfoKyc(props) {
                     <div className="input-group-append">
                       <a
                         href={() => false}
-                        className={`btn cob-btn-primary btn-sm text-white ${
-                          isLoading ? "disabled" : ""
-                        }`}
+                        className={`btn cob-btn-primary btn-sm text-white ${isLoading ? "disabled" : ""
+                          }`}
                         onClick={() => {
                           if (!errors.contact_number) {
                             inputFieldValidation(
@@ -730,6 +730,10 @@ function ContactInfoKyc(props) {
                       </span>
                     )}
                 </div>
+
+                <ErrorMessage name="isEmailVerified">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
               </div>
             </div>
 

@@ -68,7 +68,6 @@ const kycDocumentUploadList = (requestParam) => {
 }
 
 const merchantInfo = (requestParam) => {
-    console.log("requestParam", requestParam)
     const url = requestParam.docType === "1"
         ? API_URL.UPLOAD_MERCHANT_AADHAAR
         : API_URL.upload_Single_Doc;

@@ -11,7 +11,7 @@ const setup = async (store) => {
       if (token) {
         config.headers["Authorization"] = 'Bearer ' + token;
       } else {
-        console.log("Token expired")
+        // console.log("Token expired")
       }
       return config;
     },
