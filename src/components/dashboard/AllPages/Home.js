@@ -196,7 +196,7 @@ function Home() {
           </div>
         )}
 
-      <div className="row">
+      <div className="row row card shadow pt-2">
         {/* hide when login by bank and if businees category b2b */}
         {roles?.bank === true || roles?.b2b === true ? (
           <></>
