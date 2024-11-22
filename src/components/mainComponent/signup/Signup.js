@@ -444,6 +444,7 @@ function Signup() {
                                                 <ReCAPTCHA
                                                     sitekey="6Le8XYMqAAAAANwufmddI2_Q42TdWhDiAlcpem4g"
                                                     onChange={(token) => handleCaptchaChange(token, formik)}
+                                                    onExpired={() => { formik.setFieldValue("reCaptcha", null) }}
                                                 />
                                                 <ErrorMessage name="reCaptcha">
                                                     {(msg) => (<p className="text-danger">{msg}</p>)}

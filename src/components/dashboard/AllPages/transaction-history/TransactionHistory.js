@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
@@ -10,7 +10,7 @@ import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
   clearTransactionHistory,
-  exportTxnHistory,
+  // exportTxnHistory,
   exportTxnLoadingState,
   fetchTransactionHistoryDetailSlice,
   fetchTransactionHistorySlice,
@@ -74,6 +74,7 @@ const TransactionHistory = () => {
   const [selectedTransaction, setSelectedTransaction] = useState({});
   const [filterState, setFilterState] = useState([]);
   const [duration, setDuration] = useState("today");
+  const [exportReportLoader, setExportReportLoader] = useState(false);
 
   const durations = [
     { key: "today", value: "Today" },
@@ -101,8 +102,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -130,8 +131,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -160,7 +161,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const paymodeList = async () => {
@@ -169,7 +170,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   let isExtraDataRequired = false;
@@ -426,6 +427,7 @@ const TransactionHistory = () => {
 
   const exportToExcelFn = async () => {
     try {
+      setExportReportLoader(true)
       const resp = await Dashboardservice.exportTransactionReport(filterState);
       const reportData = resp.data;
 
@@ -566,7 +568,9 @@ const TransactionHistory = () => {
 
       const fileName = "Transactions-Report";
       exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+      setExportReportLoader(false)
     } catch (error) {
+      setExportReportLoader(false)
       toastConfig.errorToast("Error: Export transaction report");
     }
   };
@@ -750,8 +754,9 @@ const TransactionHistory = () => {
                           type="button"
                           className="btn btn-sm text-white cob-btn-primary"
                           onClick={() => exportToExcelFn()}
+                          disabled={exportReportLoader}
                         >
-                          <i className="fa fa-download"></i> Export
+                          <i className="fa fa-download"></i>{exportReportLoader ? " Loading..." : " Export"}
                         </button>
                       </div>
                     )}
@@ -800,9 +805,9 @@ const TransactionHistory = () => {
                         onClick={() => refundModalHandler()}
                         disabled={
                           radioInputVal?.status?.toLocaleLowerCase() !==
-                            "success" &&
+                          "success" &&
                           radioInputVal?.status?.toLocaleLowerCase() !==
-                            "settled"
+                          "settled"
                         }
                       >
                         Refund
@@ -842,6 +847,8 @@ const TransactionHistory = () => {
                       <th> Transaction Complete Date</th>
                       <th> Payment Status</th>
                       <th> Payer First Name</th>
+                      <th> Payer Mob. Number</th>
+                      <th> Payer Email</th>
                       <th> Payment Mode</th>
                     </tr>
                   ) : (
@@ -856,15 +863,15 @@ const TransactionHistory = () => {
                           <td className="text-center">
                             {(item?.status?.toLocaleLowerCase() === "success" ||
                               item?.status?.toLocaleLowerCase() ===
-                                "settled") && (
-                              <input
-                                name="refund_request"
-                                value={item.txn_id}
-                                type="radio"
-                                onClick={(e) => setRadioInputVal(item)}
-                                checked={item.txn_id === radioInputVal?.txn_id}
-                              />
-                            )}
+                              "settled") && (
+                                <input
+                                  name="refund_request"
+                                  value={item.txn_id}
+                                  type="radio"
+                                  onClick={(e) => setRadioInputVal(item)}
+                                  checked={item.txn_id === radioInputVal?.txn_id}
+                                />
+                              )}
                           </td>
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
@@ -896,11 +903,12 @@ const TransactionHistory = () => {
                           >
                             {item.status}
                           </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.payee_first_name}
-                          </td>
+
+
+                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_first_name}</td>
+                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_mob}</td>
+                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_email}</td>
+
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
                           >
