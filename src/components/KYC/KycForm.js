@@ -31,6 +31,7 @@ import {
 import ContactInfoKyc from "./ContactInfoKyc";
 import { stringDec } from "../../utilities/encodeDecode";
 import { isNull, isUndefined } from "lodash";
+import toastConfig from "../../utilities/toastTypes";
 
 function KycForm() {
   const dispatch = useDispatch();
@@ -228,8 +229,16 @@ function KycForm() {
                     }`}
                     type="button"
                     onClick={() => {
-                      SetTab(2);
-                      setTitle("BUSINESS OVERVIEW");
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(2);
+                        setTitle("BUSINESS OVERVIEW");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
                     }}
                   >
                     {kycStatusIcon(KycTabStatusStore?.business_info_status)}
@@ -249,8 +258,16 @@ function KycForm() {
                     }`}
                     type="button"
                     onClick={() => {
-                      SetTab(3);
-                      setTitle("BUSINESS DETAILS");
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(3);
+                        setTitle("BUSINESS DETAILS");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
                     }}
                   >
                     {" "}
@@ -271,8 +288,16 @@ function KycForm() {
                     }`}
                     type="button"
                     onClick={() => {
-                      SetTab(4);
-                      setTitle("BANK DETAILS");
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(4);
+                        setTitle("BANK DETAILS");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
                     }}
                   >
                     {" "}
@@ -293,8 +318,16 @@ function KycForm() {
                     }`}
                     type="button"
                     onClick={() => {
-                      SetTab(5);
-                      setTitle("DOCUMENTS UPLOAD");
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(5);
+                        setTitle("DOCUMENTS UPLOAD");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
                     }}
                   >
                     {kycStatusIcon(KycTabStatusStore?.document_status)}
@@ -312,8 +345,16 @@ function KycForm() {
                     }`}
                     type="button"
                     onClick={() => {
-                      SetTab(6);
-                      setTitle("SUBMIT KYC");
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(6);
+                        setTitle("SUBMIT KYC");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
                     }}
                   >
                     {/* warning icon required/  */}
