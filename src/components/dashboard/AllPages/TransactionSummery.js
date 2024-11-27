@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import classes from "./allpage.module.css";
 import toastConfig from "../../../utilities/toastTypes";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
+import ReportLayout from "../../../_components/report_component/ReportLayout";
 
 function TransactionSummery() {
   const dispatch = useDispatch();
@@ -184,82 +185,130 @@ function TransactionSummery() {
     };
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
+
+  const form = (
+    <div className="row">
+      <div className={`form-group col-md-3 ${dttype === "6" && "mt-4"}`}>
+        <select
+          className="form-select"
+          value={dttype}
+          onChange={(e) => setDttype(e.currentTarget.value)}
+        >
+          <option defaultValue="selected" value="1">
+            Today
+          </option>
+          <option value="2">Yesterday</option>
+          <option value="3">Last 7 Days</option>
+          <option value="4">Current Month</option>
+          <option value="5">Last Month</option>
+          <option value="6">Custom</option>
+        </select>
+      </div>
+      {dttype === "6" && (
+        <div className="col-md-3">
+          <label htmlFor="dateRange" className="form-label">
+            Start Date - End Date
+          </label>
+          <div
+            className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
+          >
+            <DatePicker
+              id="dateRange"
+              selectsRange={true}
+              startDate={fromDate}
+              endDate={toDate}
+              onChange={(update) => {
+                const [start, end] = update;
+                setFromDate(start);
+                setToDate(end);
+              }}
+              dateFormat="dd-MM-yyyy"
+              maxDate={currentDate}
+              placeholderText="Select Date Range"
+              className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+              showPopperArrow={false}
+              popperClassName={classes.custom_datepicker_popper}
+            />
+          </div>
+        </div>
+      )}
+      <div className={`col-lg-3 ${dttype === "6" && "mt-4"}`}>
+        {/* <label>Search</label> */}
+        <input
+          type="text"
+          className="form-control "
+          onChange={(e) => {
+            handleChange(e.currentTarget.value);
+          }}
+          placeholder="Search from here"
+        />
+      </div>
+      {txnList.length > 0 ? (
+        <div className={`col-md-3 ${dttype === "6" && "mt-4"}`}>
+          <button
+            className="btn cob-btn-primary text-white btn-sm"
+            style={{ backgroundColor: "rgb(1, 86, 179)" }}
+            type="button"
+            onClick={() => exportToExcelFn()}
+          >
+            Export
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+  const rowData = [
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row, index) => row.SrNo || index + 1,
+      sortable: true,
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.client_code,
+      cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
+    },
+    {
+      id: "3",
+      name: "Client Name",
+      selector: (row) => row.client_name,
+      cell: (row) => <div className="removeWhiteSpace">{row.client_name}</div>,
+    },
+    {
+      id: "4",
+      name: "Transactions",
+      selector: (row) => row.no_of_transaction,
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row.no_of_transaction}</div>
+      ),
+    },
+    {
+      id: "5",
+      name: "Amount",
+      cell: (row) => (
+        <div>Rs {Number.parseFloat(row.payeeamount).toFixed(2)}</div>
+      ),
+      sortable: true,
+    },
+  ];
   return (
     <section className="">
       <main>
-        <h5 className="">Transaction Summary</h5>
-        <section className="">
-          <div className="container-fluid p-0">
-            <div className="row mt-4">
-              <div className="form-group col-md-3 mt-4">
-                <select
-                  className="form-select"
-                  value={dttype}
-                  onChange={(e) => setDttype(e.currentTarget.value)}
-                >
-                  <option defaultValue="selected" value="1">
-                    Today
-                  </option>
-                  <option value="2">Yesterday</option>
-                  <option value="3">Last 7 Days</option>
-                  <option value="4">Current Month</option>
-                  <option value="5">Last Month</option>
-                  <option value="6">Custom</option>
-                </select>
-              </div>
-              {dttype === "6" && (
-                <div className="col-md-3">
-                  <label htmlFor="dateRange" className="form-label">
-                    Start Date - End Date
-                  </label>
-                  <div
-                    className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
-                  >
-                    <DatePicker
-                      id="dateRange"
-                      selectsRange={true}
-                      startDate={fromDate}
-                      endDate={toDate}
-                      onChange={(update) => {
-                        const [start, end] = update;
-                        setFromDate(start);
-                        setToDate(end);
-                      }}
-                      dateFormat="dd-MM-yyyy"
-                      maxDate={currentDate}
-                      placeholderText="Select Date Range"
-                      className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
-                      showPopperArrow={false}
-                      popperClassName={classes.custom_datepicker_popper}
-                    />
-                  </div>
-                </div>
-              )}
-              <div className="col-lg-3 mt-4">
-                {/* <label>Search</label> */}
-                <input
-                  type="text"
-                  className="form-control "
-                  onChange={(e) => {
-                    handleChange(e.currentTarget.value);
-                  }}
-                  placeholder="Search from here"
-                />
-              </div>
-              {txnList.length > 0 ? (
-                <div className="col-md-3 mt-4">
-                  <button
-                    className="btn cob-btn-primary text-white btn-sm"
-                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                    type="button"
-                    onClick={() => exportToExcelFn()}
-                  >
-                    Export
-                  </button>
-                </div>
-              ) : (
-                <></>
-              )}{" "}
+        <ReportLayout
+          type="txnSummary"
+          title="Transaction Summary"
+          data={showData}
+          rowData={rowData}
+          form={form}
+        />
+        {/* <section className="">
+          <div className="container-fluid p-0"> */}
+        {/* <div className="row mt-4">
+              {" "}
               <div className="">
                 {showData.length !== 0 && (
                   <h5 className="my-4">
@@ -303,19 +352,19 @@ function TransactionSummery() {
                       })}
                   </tbody>
                 </table>
-              </div>
-              {showData.length <= 0 && isLoading === false && (
+              </div> */}
+        {/* {showData.length <= 0 && isLoading === false && (
                 <div className="text-center p-4 m-4">
                   <h6>
                     I can't find the result for you with the given search, I'm
                     sorry, could you try it once again.
                   </h6>
                 </div>
-              )}
-              {isLoading ? <ProgressBar /> : <></>}
-            </div>
+              )} */}
+        {isLoading ? <ProgressBar /> : <></>}
+        {/* </div>
           </div>
-        </section>
+        </section> */}
       </main>
     </section>
   );

@@ -25,6 +25,7 @@ import Yup from "../../../_components/formik/Yup";
 import CustomModal from "../../../_components/custom_modal";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 import CustomLoader from "../../../_components/loader";
+import ReportLayout from "../../../_components/report_component/ReportLayout";
 
 const SettlementReportNew = () => {
   const dispatch = useDispatch();
@@ -637,6 +638,111 @@ const SettlementReportNew = () => {
       </>
     );
   };
+  const form = (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmitHandler}
+    >
+      {(formik) => (
+        <Form>
+          <div className="form-row">
+            <div className="form-group col-lg-3">
+              <FormikController
+                control="select"
+                label="Client Code"
+                name="clientCode"
+                className="form-select rounded-0 mt-0"
+                options={clientCodeOption}
+              />
+            </div>
+            <div className="form-group col-lg-3">
+              <FormikController
+                control="date"
+                label="From Date"
+                id="fromDate"
+                name="fromDate"
+                value={
+                  formik.values.fromDate
+                    ? new Date(formik.values.fromDate)
+                    : null
+                }
+                onChange={(date) => formik.setFieldValue("fromDate", date)}
+                format="dd-MM-y"
+                clearIcon={null}
+                className="form-control rounded-0 p-0"
+                required={true}
+                errorMsg={formik.errors["fromDate"]}
+              />
+            </div>
+            <div className="form-group col-lg-3">
+              <FormikController
+                control="date"
+                label="End Date"
+                id="endDate"
+                name="endDate"
+                value={
+                  formik.values.endDate ? new Date(formik.values.endDate) : null
+                }
+                onChange={(date) => formik.setFieldValue("endDate", date)}
+                format="dd-MM-y"
+                clearIcon={null}
+                className="form-control rounded-0 p-0"
+                required={true}
+                errorMsg={formik.errors["endDate"]}
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group col-md-1 mr-2">
+              <button
+                disabled={disable}
+                className="btn cob-btn-primary text-white btn-sm"
+                type="submit"
+              >
+                {disable && (
+                  <span
+                    className="spinner-border spinner-border-sm mr-1"
+                    role="status"
+                    ariaHidden="true"
+                  ></span>
+                )}{" "}
+                {/* Show spinner if disabled */}
+                Search{" "}
+              </button>
+            </div>
+            {txnList?.length > 0 ? (
+              <>
+                <div className="form-group col-md-1 ml-1">
+                  <button
+                    className="btn cob-btn-primary text-white btn-sm"
+                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                    type="button"
+                    onClick={() => exportToExcelFn()}
+                  >
+                    Export{" "}
+                  </button>
+                </div>
+                <div className="form-group col-md-1 ml-1">
+                  <button
+                    className="btn cob-btn-primary text-white btn-sm"
+                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                    type="button"
+                    onClick={() => getTransactionSummary(formik.values)}
+                  >
+                    Settlement Summary
+                  </button>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -645,313 +751,13 @@ const SettlementReportNew = () => {
 
       <main>
         <div>
-          <h5>Settlement Report</h5>
-
-          <section>
-            <div className="container-fluid p-0 mt-4">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmitHandler}
-              >
-                {(formik) => (
-                  <Form>
-                    <div className="form-row">
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="select"
-                          label="Client Code"
-                          name="clientCode"
-                          className="form-select rounded-0 mt-0"
-                          options={clientCodeOption}
-                        />
-                      </div>
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="date"
-                          label="From Date"
-                          id="fromDate"
-                          name="fromDate"
-                          value={
-                            formik.values.fromDate
-                              ? new Date(formik.values.fromDate)
-                              : null
-                          }
-                          onChange={(date) =>
-                            formik.setFieldValue("fromDate", date)
-                          }
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["fromDate"]}
-                        />
-                      </div>
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="date"
-                          label="End Date"
-                          id="endDate"
-                          name="endDate"
-                          value={
-                            formik.values.endDate
-                              ? new Date(formik.values.endDate)
-                              : null
-                          }
-                          onChange={(date) =>
-                            formik.setFieldValue("endDate", date)
-                          }
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["endDate"]}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-row">
-                      <div className="form-group col-md-1 mr-2">
-                        <button
-                          disabled={disable}
-                          className="btn cob-btn-primary text-white btn-sm"
-                          type="submit"
-                        >
-                          {disable && (
-                            <span
-                              className="spinner-border spinner-border-sm mr-1"
-                              role="status"
-                              ariaHidden="true"
-                            ></span>
-                          )}{" "}
-                          {/* Show spinner if disabled */}
-                          Search{" "}
-                        </button>
-                      </div>
-                      {txnList?.length > 0 ? (
-                        <>
-                          <div className="form-group col-md-1 ml-1">
-                            <button
-                              className="btn cob-btn-primary text-white btn-sm"
-                              style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              type="button"
-                              onClick={() => exportToExcelFn()}
-                            >
-                              Export{" "}
-                            </button>
-                          </div>
-                          <div className="form-group col-md-1 ml-1">
-                            <button
-                              className="btn cob-btn-primary text-white btn-sm"
-                              style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              type="button"
-                              onClick={() =>
-                                getTransactionSummary(formik.values)
-                              }
-                            >
-                              Settlement Summary
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-              <hr className="hr" />
-              {txnList?.length > 0 ? (
-                <div className="form-row">
-                  <div className="form-group col-md-3">
-                    <label>Search</label>
-                    <input
-                      type="text"
-                      label="Search"
-                      name="search"
-                      placeholder="Search Here"
-                      className="form-control rounded-0"
-                      onChange={(e) => {
-                        SetSearchText(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-3">
-                    <label>Count Per Page</label>
-                    <select
-                      value={pageSize}
-                      rel={pageSize}
-                      className="form-select"
-                      onChange={(e) => setPageSize(parseInt(e.target.value))}
-                    >
-                      <DropDownCountPerPage datalength={txnList.length} />
-                    </select>
-                  </div>
-                </div>
-              ) : (
-                <> </>
-              )}
-            </div>
-          </section>
-
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
-            <div className="container-fluid p-0 my-3 ">
-              {txnList.length > 0 ? (
-                <h6>
-                  {" "}
-                  <span>
-                    {" "}
-                    <strong>Total Record</strong> : {txnList.length} |{" "}
-                    <strong>Settlement Amount</strong> :{" "}
-                    {settlementAmount.toFixed(2)}
-                  </span>{" "}
-                </h6>
-              ) : (
-                <></>
-              )}
-
-              <div className="overflow-auto">
-                <Table
-                  row={rowData}
-                  data={paginatedata}
-                  dataCount={txnList.length}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={(page) => setCurrentPage(page)}
-                />
-                {/* <table className="table table-bordered">
-                  <thead>
-                    {txnList.length > 0 ? (
-                      <tr>
-                        <th> S.No</th>
-                        <th> Client Code</th>
-                        <th> Client Name</th>
-                        <th> SP Transaction ID</th> */}
-                {/* <th> GR Number</th> */}
-                {/* <th> Client Transaction ID</th>
-                        <th> Amount</th>
-                        <th> Settlement Amount</th>
-                        <th> Transaction Date</th>
-                        <th> Transaction Complete Date</th>
-                        <th> Settlement Date</th>
-                        <th> Settlement Bank Ref</th>
-                        <th> Settlement UTR</th>
-                        <th> Settlement Remarks</th> */}
-                {/* <th> Settlement By </th> */}
-                {/* </tr>
-                    ) : (
-                      <></>
-                    )}
-                  </thead>
-                  <tbody>
-                    {txnList.length > 0 &&
-                      paginatedata.map((item, i) => {
-                        return (
-                          <tr key={uuidv4()}>
-                            <td>{i + 1}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.client_name}</td>
-                            <td>{item.txn_id}</td> */}
-                {/* <td>{item?.gr_number}</td> */}
-                {/* <td>{item.client_txn_id}</td>
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
-                            <td>
-                              {Number.parseFloat(
-                                item.settlement_amount
-                              ).toFixed(2)}
-                            </td>
-                            <td>{convertDate(item.trans_date)}</td>
-                            <td>{convertDate(item.trans_complete_date)}</td>
-                            <td>{convertDate(item.settlement_date)}</td>
-                            <td>{item.settlement_bank_ref}</td>
-                            <td>{item.settlement_utr}</td>
-                            <td>{item.settlement_remarks}</td> */}
-                {/* <td>{item.settlement_by}</td> */}
-                {/* </tr>
-                        );
-                      })}
-                  </tbody>
-                </table> */}
-              </div>
-
-              {/* <div>
-                {txnList.length > 0 ? (
-                  <nav aria-label="Page navigation example">
-                    <ul className="pagination">
-                      <a
-                        className="page-link"
-                        onClick={(prev) =>
-                          setCurrentPage((prev) =>
-                            prev === 1 ? prev : prev - 1
-                          )
-                        }
-                        href={() => false}
-                      >
-                        Previous
-                      </a>
-                      {pages
-                        .slice(currentPage - 1, currentPage + 6)
-                        .map((page, i) => (
-                          <li
-                            key={uuidv4()}
-                            className={
-                              page === currentPage
-                                ? " page-item active"
-                                : "page-item"
-                            }
-                          >
-                            <a
-                              className={`page-link data_${i}`}
-                              href={() => false}
-                            >
-                              <p onClick={() => pagination(page)}>{page}</p>
-                            </a>
-                          </li>
-                        ))}
-                      {pages.length !== currentPage ? (
-                        <a
-                          className="page-link"
-                          onClick={(nex) => {
-                            setCurrentPage((nex) =>
-                              nex === pages.length > 9 ? nex : nex + 1
-                            );
-                          }}
-                          href={() => false}
-                        >
-                          Next
-                        </a>
-                      ) : (
-                        <></>
-                      )}
-                    </ul>
-                  </nav>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="container">
-                {isLoadingTxnHistory ? (
-                  <div className="col-lg-12 col-md-12">
-                    <div className="text-center">
-                      <div className="spinner-border" role="status">
-                        <span className="sr-only">Loading...</span>
-                      </div>
-                    </div>
-                  </div>
-                ) : buttonClicked && txnList.length === 0 ? (
-                  <div>
-                    <h5 className="d-flex justify-content-center align-items-center">
-                      Data Not Found
-                    </h5>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div> */}
-            </div>
-          </section>
+          <ReportLayout
+            type="settlement"
+            title="Settlement Report"
+            data={txnList}
+            rowData={rowData}
+            form={form}
+          />
           {showModal && (
             <CustomModal
               modalBody={modalBody}
