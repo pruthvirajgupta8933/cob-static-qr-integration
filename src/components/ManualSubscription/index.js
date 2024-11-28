@@ -11,7 +11,7 @@ import {
 } from "../../slices/subscription";
 import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
 import DateFormatter from "../../utilities/DateConvert";
-import toastConfig from "../../utilities/toastTypes";
+import CustomModal from "../../_components/custom_modal";
 
 const ManualSubscription = () => {
   const subscriptionPlans = useSelector(
@@ -182,8 +182,6 @@ const ManualSubscription = () => {
                   setOpenModal(true);
                 }}
                 className="approve cob-btn-primary btn-sm text-white"
-                data-toggle="modal"
-                data-target="#exampleModalCenter"
               >
                 Create New Subscription
               </button>
@@ -227,13 +225,22 @@ const ManualSubscription = () => {
               )}
           </div>
           <CustomLoader loadingState={subscriptionPlans?.loading} />
+          {openModal && (
+            <CustomModal
+              modalBody={() => (
+                <SubscriptionModal
+                  data={modalDisplayData}
+                  setOpenModal={setOpenModal}
+                />
+              )}
+              headerTitle={`${
+                modalDisplayData ? "Edit" : "Create"
+              } Subscription`}
+              modalToggle={openModal}
+              fnSetModalToggle={setOpenModal}
+            />
+          )}
         </div>
-        {openModal && (
-          <SubscriptionModal
-            setOpenModal={setOpenModal}
-            data={modalDisplayData}
-          />
-        )}
       </main>
     </section>
   );

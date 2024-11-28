@@ -97,7 +97,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     mandate_frequency: subscriptionData?.mandateFrequency ?? "Yearly",
     plan_id: subscriptionData?.planId ?? "1",
     plan_name: subscriptionData?.planName ?? "Subscription",
-    amount: subscriptionData?.purchaseAmount ?? "10000",
+    amount: subscriptionData?.purchaseAmount ?? 10000,
     subscription_status: subscriptionData?.subscription_status ?? "Subscribed",
   };
   const handleSelectChange = async (selectedOption) => {
@@ -142,243 +142,197 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     }
   };
   return (
-    <div
-      className="modal fade mymodals"
-      id="exampleModalCenter"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      ariaHidden="true"
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+      enableReinitialize={true}
     >
-      <div className="modal-dialog modal-dialog-centered" role="document">
-        <div className="modal-content">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-            enableReinitialize={true}
-          >
-            {(formik) => (
-              <>
-                <div className="modal-header">
-                  <h5
-                    className="modal-title bolding text-black"
-                    id="exampleModalLongTitle"
-                  >
-                    {data ? "Edit" : "Create"} Subscription
-                    {/* Create Subscription */}
-                  </h5>
+      {(formik) => (
+        <Form>
+          <div className="container-fluid">
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <label htmlFor="app_id">Application Id</label>
+                <FormikController
+                  control="input"
+                  type="number"
+                  name="app_id"
+                  className="form-control"
+                  placeholder="10"
+                  disabled={subscriptionData}
+                />
+              </div>
+              <div className="col-lg-6">
+                <label htmlFor="app_name">Application Name</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="app_name"
+                  className="form-control"
+                  disabled={subscriptionData}
+                />
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <CustomReactSelect
+                  name="react_select"
+                  options={options}
+                  placeholder="Select Client Code"
+                  filterOption={createFilter({
+                    ignoreAccents: false,
+                  })}
+                  label="Client Code"
+                  onChange={handleSelectChange}
+                />
+              </div>
+              <div className="col-lg-6">
+                <label htmlFor="client_txn_id">Client Transaction ID</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="client_txn_id"
+                  className="form-control pb-2"
+                  placeholder="73c59bce-4479-40c3-9309-4e0d95a08867"
+                />
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <label htmlFor="bank_ref">Bank Reference</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="bank_ref"
+                  className="form-control"
+                />
+              </div>
 
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                    onClick={() => {
-                      setOpenModal(false);
-                    }}
-                  >
-                    <span ariaHidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <Form>
-                    <div className="container-fluid">
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <label htmlFor="app_id">Application Id</label>
-                          <FormikController
-                            control="input"
-                            type="number"
-                            name="app_id"
-                            className="form-control"
-                            placeholder="10"
-                            disabled={subscriptionData}
-                          />
-                        </div>
-                        <div className="col-lg-6">
-                          <label htmlFor="app_name">Application Name</label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="app_name"
-                            className="form-control"
-                            disabled={subscriptionData}
-                          />
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <CustomReactSelect
-                            name="react_select"
-                            options={options}
-                            placeholder="Select Client Code"
-                            filterOption={createFilter({
-                              ignoreAccents: false,
-                            })}
-                            label="Client Code"
-                            onChange={handleSelectChange}
-                          />
-                        </div>
-                        <div className="col-lg-6">
-                          <label htmlFor="client_txn_id">
-                            Client Transaction ID
-                          </label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="client_txn_id"
-                            className="form-control pb-2"
-                            placeholder="73c59bce-4479-40c3-9309-4e0d95a08867"
-                          />
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <label htmlFor="bank_ref">Bank Reference</label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="bank_ref"
-                            className="form-control"
-                          />
-                        </div>
+              <div className="col-lg-6">
+                <label htmlFor="payment_mode">Payment Mode</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="payment_mode"
+                  className="form-control"
+                  placeholder="netbanking"
+                />
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <label htmlFor="mandate_start">Mandate Start Date</label>
+                <FormikController
+                  control="input"
+                  type="datetime-local"
+                  name="mandate_start"
+                  className="form-control"
+                />
+              </div>
 
-                        <div className="col-lg-6">
-                          <label htmlFor="payment_mode">Payment Mode</label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="payment_mode"
-                            className="form-control"
-                            placeholder="netbanking"
-                          />
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <label htmlFor="mandate_start">
-                            Mandate Start Date
-                          </label>
-                          <FormikController
-                            control="input"
-                            type="datetime-local"
-                            name="mandate_start"
-                            className="form-control"
-                          />
-                        </div>
+              <div className="col-lg-6">
+                <label htmlFor="mandate_end">Mandate End Date</label>
+                <FormikController
+                  control="input"
+                  type="datetime-local"
+                  name="mandate_end"
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <label htmlFor="mandate_status">Mandate Status</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="mandate_status"
+                  className="form-control"
+                />
+              </div>
 
-                        <div className="col-lg-6">
-                          <label htmlFor="mandate_end">Mandate End Date</label>
-                          <FormikController
-                            control="input"
-                            type="datetime-local"
-                            name="mandate_end"
-                            className="form-control"
-                          />
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <label htmlFor="mandate_status">Mandate Status</label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="mandate_status"
-                            className="form-control"
-                          />
-                        </div>
+              <div className="col-lg-6">
+                <label htmlFor="mandate_frequency">Mandate Frequency</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="mandate_frequency"
+                  className="form-control"
+                  placeholder="high"
+                />
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <label htmlFor="plan_id">Plan ID</label>
+                <FormikController
+                  control="input"
+                  type="number"
+                  name="plan_id"
+                  className="form-control"
+                />
+              </div>
 
-                        <div className="col-lg-6">
-                          <label htmlFor="mandate_frequency">
-                            Mandate Frequency
-                          </label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="mandate_frequency"
-                            className="form-control"
-                            placeholder="high"
-                          />
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <label htmlFor="plan_id">Plan ID</label>
-                          <FormikController
-                            control="input"
-                            type="number"
-                            name="plan_id"
-                            className="form-control"
-                          />
-                        </div>
+              <div className="col-lg-6">
+                <label htmlFor="plan_name">Plan Name</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="plan_name"
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-lg-6">
+                <label htmlFor="amount">Purchase Amount</label>
+                <FormikController
+                  control="input"
+                  type="number"
+                  name="amount"
+                  className="form-control"
+                />
+              </div>
 
-                        <div className="col-lg-6">
-                          <label htmlFor="plan_name">Plan Name</label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="plan_name"
-                            className="form-control"
-                          />
-                        </div>
-                      </div>
-                      <div className="row mt-3">
-                        <div className="col-lg-6">
-                          <label htmlFor="amount">Purchase Amount</label>
-                          <FormikController
-                            control="input"
-                            type="number"
-                            name="amount"
-                            className="form-control"
-                          />
-                        </div>
+              <div className="col-lg-6">
+                <label htmlFor="subscription_status">Subscription Status</label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="subscription_status"
+                  className="form-control"
+                  placeholder="Subscribed"
+                />
+              </div>
+            </div>
 
-                        <div className="col-lg-6">
-                          <label htmlFor="subscription_status">
-                            Subscription Status
-                          </label>
-                          <FormikController
-                            control="input"
-                            type="text"
-                            name="subscription_status"
-                            className="form-control"
-                            placeholder="Subscribed"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                          <button
-                            disabled={disable}
-                            type="submit"
-                            className="float-lg-right cob-btn-primary text-white btn btn-sm"
-                          >
-                            {disable && (
-                              <span className="mr-2">
-                                <span
-                                  className="spinner-border spinner-border-sm"
-                                  role="status"
-                                  ariaHidden="true"
-                                />
-                                <span className="sr-only">Loading...</span>
-                              </span>
-                            )}
-                            Save
-                          </button>
-                          {/* )} */}
-                        </div>
-                      </div>
-                    </div>
-                  </Form>
-                </div>
-              </>
-            )}
-          </Formik>
-        </div>
-      </div>
-    </div>
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
+                <button
+                  disabled={disable}
+                  type="submit"
+                  className="float-lg-right cob-btn-primary text-white btn btn-sm"
+                >
+                  {disable && (
+                    <span className="mr-2">
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        ariaHidden="true"
+                      />
+                      <span className="sr-only">Loading...</span>
+                    </span>
+                  )}
+                  Save
+                </button>
+                {/* )} */}
+              </div>
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
