@@ -562,6 +562,7 @@ const SettlementReportNew = () => {
       "SETTLEMENT BY",
       "TRANSACTION COUNT",
     ];
+    if (user?.loginId === 31706) excelHeaderRow.push("UDF13");
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     settlementSummaryReport.data?.map((item, index) => {
@@ -579,7 +580,7 @@ const SettlementReportNew = () => {
         settlement_by: item.settlement_by === null ? "" : item.settlement_by,
         txn_count: item.txn_count === null ? "" : item.txn_count,
       };
-
+      if (user?.loginId === 31706) allowDataToShow.udf13 = item.udf13;
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Settlement-Txn-Summary-Report";
@@ -621,6 +622,7 @@ const SettlementReportNew = () => {
             <th>Settlement Date</th>
             <th>Settlement By</th>
             <th>Transaction Count</th>
+            {user?.loginId === 31706 && <th>UDF13</th>}
           </thead>
           {settlementSummaryReport.data?.map((item) => (
             <tr>
@@ -631,6 +633,7 @@ const SettlementReportNew = () => {
               <td>{dateFormatBasic(item.settlement_date)}</td>
               <td>{item.settlement_by}</td>
               <td>{item.txn_count}</td>
+              {user?.loginId === 31706 && <td>{item.udf13}</td>}
             </tr>
           ))}
         </table>
