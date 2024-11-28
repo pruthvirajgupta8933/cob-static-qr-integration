@@ -68,9 +68,18 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     amount: Yup.string().required("Required").nullable(),
     subscription_status: Yup.string().required("Required").allowOneSpace(),
   });
+
+  const startDate = new Date();
+  startDate.setMinutes(
+    new Date().getMinutes() - new Date().getTimezoneOffset()
+  );
+  const endDate = new Date();
+  endDate.setFullYear(startDate.getFullYear() + 1);
+  endDate.setMinutes(new Date().getMinutes() - new Date().getTimezoneOffset());
+
   const initialValues = {
-    app_id: subscriptionData?.applicationId ?? "",
-    app_name: subscriptionData?.applicationName ?? "",
+    app_id: subscriptionData?.applicationId ?? "10",
+    app_name: subscriptionData?.applicationName ?? "Payment Gateway",
     react_select: subscriptionData?.clientCode
       ? {
           value: subscriptionData.clientCode,
@@ -79,15 +88,17 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       : "",
     client_txn_id: subscriptionData?.clientTxnId ?? "",
     bank_ref: subscriptionData?.bankRef ?? "",
-    payment_mode: subscriptionData?.paymentMode ?? "",
-    mandate_start: subscriptionData?.mandateStartTime ?? "",
-    mandate_end: subscriptionData?.mandateEndTime ?? "",
-    mandate_status: subscriptionData?.mandateStatus ?? "",
-    mandate_frequency: subscriptionData?.mandateFrequency ?? "",
-    plan_id: subscriptionData?.planId ?? "",
-    plan_name: subscriptionData?.planName ?? "",
-    amount: subscriptionData?.purchaseAmount ?? "",
-    subscription_status: subscriptionData?.subscription_status ?? "",
+    payment_mode: subscriptionData?.paymentMode ?? "UPI",
+    mandate_start:
+      subscriptionData?.mandateStartTime ?? startDate.toJSON().slice(0, 19),
+    mandate_end:
+      subscriptionData?.mandateEndTime ?? endDate.toJSON().slice(0, 19),
+    mandate_status: subscriptionData?.mandateStatus ?? "SUCCESS",
+    mandate_frequency: subscriptionData?.mandateFrequency ?? "Yearly",
+    plan_id: subscriptionData?.planId ?? "1",
+    plan_name: subscriptionData?.planName ?? "Subscription",
+    amount: subscriptionData?.purchaseAmount ?? "10000",
+    subscription_status: subscriptionData?.subscription_status ?? "Subscribed",
   };
   const handleSelectChange = async (selectedOption) => {
     setSelectedClientLoginId(selectedOption ? selectedOption.value : null);
