@@ -50,7 +50,7 @@ function KycForm() {
   const roles = roleBasedAccess();
 
   let merchantloginMasterId = "";
-  if (roles.referral || roles.accountManager) {
+  if (roles.referral || roles.accountManager || roles.viewer) {
     merchantloginMasterId = stringDec(kycid);
   } else if (roles.merchant) {
     merchantloginMasterId = loginId;
@@ -80,7 +80,7 @@ function KycForm() {
 
   const redirect = () => {
     if (
-      roles.accountManager &&
+      (roles.accountManager || roles.viewer) &&
       (isNull(basicDetailsResponse.data?.business_cat_code) ||
         isUndefined(basicDetailsResponse.data?.business_cat_code))
     ) {
@@ -196,15 +196,13 @@ function KycForm() {
                 >
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0 ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 1
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      } ${tab === 1
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.general_info_status
-                          )
+                          KycTabStatusStore?.general_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     role="tab"
                     onClick={() => {
@@ -218,15 +216,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0 ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 2
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      } ${tab === 2
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.business_info_status
-                          )
+                          KycTabStatusStore?.business_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       if (
@@ -247,15 +243,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0 ${
-                      classes.kyc_tab_link
-                    }  ${
-                      tab === 3
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      }  ${tab === 3
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.merchant_info_status
-                          )
+                          KycTabStatusStore?.merchant_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       if (
@@ -277,15 +271,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0  ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 4
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      } ${tab === 4
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.settlement_info_status
-                          )
+                          KycTabStatusStore?.settlement_info_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       if (
@@ -307,15 +299,13 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0  ${
-                      classes.kyc_tab_link
-                    }  ${
-                      tab === 5
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      }  ${tab === 5
                         ? kycTabColorClassByStatus(
-                            KycTabStatusStore?.document_status
-                          )
+                          KycTabStatusStore?.document_status
+                        )
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       if (
@@ -336,13 +326,11 @@ function KycForm() {
 
                   <a
                     href={false}
-                    className={`nav-link kyc-menu-font rounded-0  ${
-                      classes.kyc_tab_link
-                    } ${
-                      tab === 6
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      } ${tab === 6
                         ? kycTabColorClassByStatus(KycTabStatusStore?.status)
                         : "inactive"
-                    }`}
+                      }`}
                     type="button"
                     onClick={() => {
                       if (

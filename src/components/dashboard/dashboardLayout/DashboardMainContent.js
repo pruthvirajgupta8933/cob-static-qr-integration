@@ -465,6 +465,7 @@ function DashboardMainContent() {
                   merchant: true,
                   referral: true,
                   accountManager: true,
+                  viewer: true
                 }}
               >
                 <KycForm />
