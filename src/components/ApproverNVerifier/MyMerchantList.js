@@ -223,7 +223,7 @@ const MyMerchantList = () => {
       width: "110px",
       cell: (row) => (
         <div>
-          {roles?.accountManager === true ? (
+          {(roles?.accountManager || roles.viewer) && (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -244,8 +244,6 @@ const MyMerchantList = () => {
             >
               Upload
             </button>
-          ) : (
-            <></>
           )}
         </div>
       ),
@@ -257,8 +255,8 @@ const MyMerchantList = () => {
       cell: (row) => (
         <div className="d-flex">
           {roles?.viewer === true ||
-          (roles?.accountManager === true &&
-            row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+            (roles?.accountManager === true &&
+              row?.login_id?.master_client_id?.clientCode !== undefined) ? (
             <>
               <button
                 type="button"
