@@ -235,7 +235,7 @@ const Login = () => {
 
                       <div className="form-text p-2 my-3 text-right font-size-14">
                         <Link to={`/forget/${window.location.search}`} className="text-decoration-underline">
-                          Forgot Password?
+                          Reset Password?
                         </Link>
                       </div>
                       <div className="d-flex">

@@ -255,8 +255,8 @@ const MyMerchantList = () => {
       cell: (row) => (
         <div className="d-flex">
           {roles?.viewer === true ||
-            (roles?.accountManager === true &&
-              row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+          (roles?.accountManager === true &&
+            row?.login_id?.master_client_id?.clientCode !== undefined) ? (
             <>
               <button
                 type="button"
@@ -279,16 +279,21 @@ const MyMerchantList = () => {
                     toastConfig.infoToast(
                       "You're not allowed to edit as it has been " + row.status
                     );
-                  else if (row.login_id?.onboard_type === "Sub Merchant" || row.login_id?.onboard_type === "Offline Merchant" || row.login_id?.onboard_type === "Referrer Child")
+                  else if (
+                    row.login_id?.onboard_type === "Sub Merchant" ||
+                    row.login_id?.onboard_type === "Offline Merchant" ||
+                    row.login_id?.onboard_type === "Referrer Child"
+                  )
                     history.push(
-                      `kyc?kycid=${stringEnc(row?.login_id?.loginMasterId)}&redirectUrl=${history.location.pathname}`
+                      `kyc?kycid=${stringEnc(
+                        row?.login_id?.loginMasterId
+                      )}&redirectUrl=${history.location.pathname}`
                     );
-                  else if (row.login_id?.onboard_type === "Bank Child") {
-                    toastConfig.infoToast("Please log in to the parent bank account and update the KYC details.");
-                  }
                   else
                     history.push(
-                      `/dashboard/multi-user-onboard?merchantId=${stringEnc(row?.login_id?.loginMasterId)}&redirectUrl=${history.location.pathname}`
+                      `/dashboard/multi-user-onboard?merchantId=${stringEnc(
+                        row?.login_id?.loginMasterId
+                      )}&redirectUrl=${history.location.pathname}`
                     );
                 }}
                 data-target="#exampleModal"
