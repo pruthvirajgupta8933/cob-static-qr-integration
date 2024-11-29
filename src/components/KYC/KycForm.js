@@ -38,6 +38,7 @@ function KycForm() {
 
   const search = useLocation().search;
   const kycid = new URLSearchParams(search).get("kycid");
+  const redirectUrl = new URLSearchParams(search).get("redirectUrl");
   const [tab, SetTab] = useState(1);
   const [title, setTitle] = useState("CONTACT INFO");
   const [kycPopUp, setKycPopUp] = useState(true);
@@ -92,9 +93,10 @@ function KycForm() {
         dispatch(referralOnboardSlice.actions.resetBasicDetails());
         dispatch(clearKycState());
         setKycPopUp(false);
+        history.push(redirectUrl ? redirectUrl : "/dashboard");
         return true; // Allow navigation
       } else return false;
-    } else history.push("/dashboard");
+    } else history.push(redirectUrl ? redirectUrl : "/dashboard");
   };
 
   const kycStatusIcon = (
