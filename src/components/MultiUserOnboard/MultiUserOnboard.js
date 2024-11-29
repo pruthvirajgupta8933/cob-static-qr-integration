@@ -79,7 +79,9 @@ const MultiUserOnboard = () => {
     zone: kycData?.zone_code ?? "",
     onboardType:
       selectOnboardType.find((type) => type.value === kycData?.onboard_type)
-        ?.key ?? "",
+        ?.key ?? kycData?.onboard_type === "Bank Child"
+        ? "bank"
+        : "",
     parentType: "",
     addMerchant: "",
   };
@@ -126,14 +128,23 @@ const MultiUserOnboard = () => {
         kycData?.onboard_type &&
         kycData.onboard_type != "Sub Merchant" &&
         kycData.onboard_type != "Referrer (Company)" &&
-        kycData.onboard_type != "Referrer (Individual)"
+        kycData.onboard_type != "Referrer (Individual)" &&
+        kycData.onboard_type != "Bank Child"
       ) {
         toastConfig.infoToast(
           "Please log in using your merchant credentials and complete the KYC process at your earliest convenience."
         );
       }
+      if (childList?.length > 0) {
+        setSelectedUserType(
+          childList.find((child) => child.name === kycData?.bankName)
+            ?.loginMasterId
+        );
+        setShowBankForm(true);
+        setSelectedChildName(kycData?.bankName);
+      }
     }
-  }, [kycData]);
+  }, [kycData, childList]);
 
   useEffect(() => {
     if (merchantId)
@@ -364,6 +375,7 @@ const MultiUserOnboard = () => {
                 zoneCode={selectedValue}
                 referrerLoginId={selectedUserType}
                 heading={false}
+                edit={Boolean(merchantId)}
               />
             </div>
           )}

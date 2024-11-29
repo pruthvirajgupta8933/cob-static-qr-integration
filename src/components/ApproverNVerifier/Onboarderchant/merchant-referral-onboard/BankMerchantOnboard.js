@@ -1,55 +1,66 @@
-import React, { useState } from 'react'
-import classes from "../../approver.module.css"
-import OperationKycModalForOnboard from './operation-kyc/OperationKycModalForOnboard';
+import React, { useState } from "react";
+import classes from "../../approver.module.css";
+import OperationKycModalForOnboard from "./operation-kyc/OperationKycModalForOnboard";
 
+function BankMerchantOnboard({ zoneCode, referrerLoginId, heading, edit }) {
+  const [currentTab, setCurrentTab] = useState(1);
+  const handleTabClick = (currenTab) => {
+    setCurrentTab(currenTab);
+  };
 
-function BankMerchantOnboard({ zoneCode, referrerLoginId, heading }) {
-    const [currentTab, setCurrentTab] = useState(1)
-    const handleTabClick = (currenTab) => {
-        setCurrentTab(currenTab)
-    };
-
-
-    return (
-        <section>
-            <main >
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-6">
-                            <h5>
-                                {heading === false ? "" : <h5 className=""> Bank Merchant Onboard</h5>}
-                            </h5>
-                        </div>
-                    </div>
-                    {heading === false ? <></> :
-                        <section>
-                            <div className="row mt-5">
-
-                                <div className="col-lg-12 mb-4">
-                                    <ul className="nav nav-tabs approv">
-                                        <li className="nav-item ">
-                                            <a
-                                                href={() => false}
-                                                className={`nav-link ${currentTab === 1 && 'active-tab'} ${classes.cursor_pointer}`}
-                                                onClick={() => handleTabClick(1)}
-                                            >
-                                                Add Bank Merchant
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
-                    }
-                    <section>
-                        <div className="row">
-                            {currentTab === 1 && <OperationKycModalForOnboard zoneCode={zoneCode} bankLoginId={referrerLoginId} />}
-                        </div>
-                    </section>
+  return (
+    <section>
+      <main>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-6">
+              <h5>
+                {heading === false ? (
+                  ""
+                ) : (
+                  <h5 className=""> Bank Merchant Onboard</h5>
+                )}
+              </h5>
+            </div>
+          </div>
+          {heading === false ? (
+            <></>
+          ) : (
+            <section>
+              <div className="row mt-5">
+                <div className="col-lg-12 mb-4">
+                  <ul className="nav nav-tabs approv">
+                    <li className="nav-item ">
+                      <a
+                        href={() => false}
+                        className={`nav-link ${
+                          currentTab === 1 && "active-tab"
+                        } ${classes.cursor_pointer}`}
+                        onClick={() => handleTabClick(1)}
+                      >
+                        Add Bank Merchant
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-            </main>
-        </section>
-        // </ThemeContext.Provider>
-    )
+              </div>
+            </section>
+          )}
+          <section>
+            <div className="row">
+              {currentTab === 1 && (
+                <OperationKycModalForOnboard
+                  zoneCode={zoneCode}
+                  bankLoginId={referrerLoginId}
+                  editKyc={edit}
+                />
+              )}
+            </div>
+          </section>
+        </div>
+      </main>
+    </section>
+    // </ThemeContext.Provider>
+  );
 }
-export default BankMerchantOnboard
+export default BankMerchantOnboard;
