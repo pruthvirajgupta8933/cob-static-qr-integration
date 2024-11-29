@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
@@ -27,6 +27,8 @@ function SubmitKyc(props) {
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const search = useLocation().search;
+  const redirectUrl = new URLSearchParams(search).get("redirectUrl");
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
@@ -98,7 +100,7 @@ function SubmitKyc(props) {
       setIsDisable(false);
       toastConfig.errorToast(
         error?.message?.details ||
-          "An error occurred while creating the Client Code. Please try again."
+        "An error occurred while creating the Client Code. Please try again."
       );
       return false;
     }
@@ -130,7 +132,7 @@ function SubmitKyc(props) {
               dispatch(referralOnboardSlice.actions.resetBasicDetails());
               setIsDisable(false);
               dispatch(UpdateModalStatus(true));
-              history.push("/dashboard");
+              history.push(redirectUrl ? redirectUrl : "/dashboard");
             } else {
               toast.error(res?.payload?.detail);
               setIsDisable(false);
@@ -167,7 +169,7 @@ function SubmitKyc(props) {
                       disabled={
                         kyc_status.toLowerCase() ===
                           KYC_STATUS_VERIFIED.toLowerCase() ||
-                        kyc_status.toLowerCase() ===
+                          kyc_status.toLowerCase() ===
                           KYC_STATUS_APPROVED.toLowerCase()
                           ? true
                           : false
@@ -227,7 +229,7 @@ function SubmitKyc(props) {
                 <div className="col-12">
                   {kyc_status.toLowerCase() ===
                     KYC_STATUS_VERIFIED.toLowerCase() ||
-                  kyc_status.toLowerCase() ===
+                    kyc_status.toLowerCase() ===
                     KYC_STATUS_APPROVED.toLowerCase() ? (
                     <></>
                   ) : (

@@ -285,12 +285,13 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     } else postData.password = values.password;
 
     dispatch(saveBasicDetails(postData)).then(() => {
-      dispatch(
-        kycUserList({
-          login_id: kycData?.loginMasterId,
-          password_required: true,
-        })
-      );
+      if (basicDetailsResponse?.data)
+        dispatch(
+          kycUserList({
+            login_id: kycData?.loginMasterId,
+            password_required: true,
+          })
+        );
     });
   };
 
