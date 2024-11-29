@@ -64,7 +64,7 @@ const AadhaarVerficationModal = ({
         </div>
         <div className=" justify-content-center d-flex-inline d-flex">
           <Field
-            type="text"
+            type="number"
             className="form-control otp-input-kyc"
             name="aadhaarOtpDigit"
             maxLength={6}
