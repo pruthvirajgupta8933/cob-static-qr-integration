@@ -222,12 +222,14 @@ function OperationKycModalForOnboard({
             <BankDetailsOps
               setCurrentTab={setCurrentTab}
               isEditableInput={isEditableInput}
+              editKyc={editKyc}
             />
           )}
           {currentTab === 3 && (
             <BusinessDetailsOps
               setCurrentTab={setCurrentTab}
               isEditableInput={isEditableInput}
+              editKyc={editKyc}
             />
           )}
           {currentTab === 4 && (

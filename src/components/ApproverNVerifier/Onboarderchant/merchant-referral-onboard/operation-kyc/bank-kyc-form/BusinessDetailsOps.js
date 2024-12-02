@@ -24,7 +24,7 @@ import {
   RegexMsg,
 } from "../../../../../../_components/formik/ValidationRegex";
 
-function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
+function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const dispatch = useDispatch();
   const [submitLoader, setSubmitLoader] = useState(false);
   const [BusinessOverview, setBusinessOverview] = useState([]);
@@ -40,25 +40,55 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
   const { businessDetails } = merchantReferralOnboardReducer;
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
-  const { merchantKycData } = kyc;
+  const { merchantKycData, kycUserList: kycData } = kyc;
 
   const initialValues = {
-    pan_card: merchantKycData?.panCard ?? "",
-    is_pan_verified: merchantKycData?.signatoryPAN ?? "",
-    website: merchantKycData?.website_app_url ?? "",
-    name_on_pancard: merchantKycData?.nameOnPanCard ?? "",
-    platform_id: merchantKycData?.platformId ?? "",
-    avg_ticket_size: merchantKycData?.avg_ticket_size ?? "",
-    expected_transactions: merchantKycData?.expectedTransactions ?? "",
-    signatory_pan: merchantKycData?.signatoryPAN,
-    prevSignatoryPan: merchantKycData?.signatoryPAN,
-    isSignatoryPanVerified: merchantKycData?.signatoryPAN?.length > 9 && 1,
-    address: merchantKycData?.merchant_address_details?.address,
-    city: merchantKycData?.merchant_address_details?.city,
-    state_id: merchantKycData?.merchant_address_details?.state,
-    pin_code: merchantKycData?.merchant_address_details?.pin_code,
-    billing_label: merchantKycData?.billingLabel ?? "",
-    company_name: merchantKycData?.companyName ?? "",
+    pan_card: editKyc ? kycData?.panCard : merchantKycData?.panCard ?? "",
+    is_pan_verified: editKyc
+      ? kycData?.signatoryPAN
+      : merchantKycData?.signatoryPAN ?? "",
+    website: editKyc
+      ? kycData?.website_app_url
+      : merchantKycData?.website_app_url ?? "",
+    name_on_pancard: editKyc
+      ? kycData?.nameOnPanCard
+      : merchantKycData?.nameOnPanCard ?? "",
+    platform_id: editKyc
+      ? kycData?.platformId
+      : merchantKycData?.platformId ?? "",
+    avg_ticket_size: editKyc
+      ? kycData?.avg_ticket_size
+      : merchantKycData?.avg_ticket_size ?? "",
+    expected_transactions: editKyc
+      ? kycData?.expectedTransactions
+      : merchantKycData?.expectedTransactions ?? "",
+    signatory_pan: editKyc
+      ? kycData?.signatoryPAN
+      : merchantKycData?.signatoryPAN,
+    prevSignatoryPan: editKyc
+      ? kycData?.signatoryPAN
+      : merchantKycData?.signatoryPAN,
+    isSignatoryPanVerified: editKyc
+      ? kycData?.signatoryPAN?.length > 9 && 1
+      : merchantKycData?.signatoryPAN?.length > 9 && 1,
+    address: editKyc
+      ? kycData?.merchant_address_details?.address
+      : merchantKycData?.merchant_address_details?.address,
+    city: editKyc
+      ? kycData?.merchant_address_details?.city
+      : merchantKycData?.merchant_address_details?.city,
+    state_id: editKyc
+      ? kycData?.merchant_address_details?.state
+      : merchantKycData?.merchant_address_details?.state,
+    pin_code: editKyc
+      ? kycData?.merchant_address_details?.pin_code
+      : merchantKycData?.merchant_address_details?.pin_code,
+    billing_label: editKyc
+      ? kycData?.billingLabel
+      : merchantKycData?.billingLabel ?? "",
+    company_name: editKyc
+      ? kycData?.companyName
+      : merchantKycData?.companyName ?? "",
   };
 
   const tooltipData = {
@@ -301,7 +331,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => { }
+    setFieldValue = () => {}
   ) => {
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -374,11 +404,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                   />
 
                   {values?.pan_card !== null &&
-                    values?.pan_card !== "" &&
-                    values?.pan_card !== undefined &&
-                    !errors.hasOwnProperty("pan_card") &&
-                    !errors.hasOwnProperty("is_pan_verified") &&
-                    values?.is_pan_verified !== "" ? (
+                  values?.pan_card !== "" &&
+                  values?.pan_card !== undefined &&
+                  !errors.hasOwnProperty("pan_card") &&
+                  !errors.hasOwnProperty("is_pan_verified") &&
+                  values?.is_pan_verified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -466,9 +496,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     }}
                   />
                   {values?.signatory_pan &&
-                    values?.isSignatoryPanVerified &&
-                    !errors.hasOwnProperty("signatory_pan") &&
-                    !errors.hasOwnProperty("prevSignatoryPan") ? (
+                  values?.isSignatoryPanVerified &&
+                  !errors.hasOwnProperty("signatory_pan") &&
+                  !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
