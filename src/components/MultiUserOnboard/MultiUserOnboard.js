@@ -113,7 +113,7 @@ const MultiUserOnboard = () => {
   };
 
   useEffect(() => {
-    if (kycData) {
+    if (kycData?.onboard_type) {
       setSelectedvalue(kycData?.zone_code);
       setSelectedName(
         refferalList?.find((i) => i.key === kycData.zone_code)?.value
