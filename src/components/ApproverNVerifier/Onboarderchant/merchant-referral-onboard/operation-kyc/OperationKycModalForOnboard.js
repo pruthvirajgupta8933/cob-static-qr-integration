@@ -81,7 +81,7 @@ function OperationKycModalForOnboard({
     };
   }, [cmid, edit]);
 
-  const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart;
+  const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart || editKyc;
 
   const kycStatusArr = [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED]
     .toString()
@@ -242,6 +242,7 @@ function OperationKycModalForOnboard({
             <SubmitKyc
               setCurrentTab={setCurrentTab}
               isEditableInput={isEditableInput}
+              editKyc={editKyc}
             />
           )}
         </div>
