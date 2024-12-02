@@ -16,12 +16,12 @@ import authService from "../../../../../../services/auth.service";
 import Yup from "../../../../../../_components/formik/Yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-function SubmitKyc({ setCurrentTab, isEditableInput }) {
+function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
   const dispatch = useDispatch();
   const { auth, kyc, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
-  const { merchantKycData } = kyc;
+  const { merchantKycData, kycUserList: kycData } = kyc;
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
 
@@ -43,7 +43,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
   });
 
   useEffect(() => {
-    if (merchantLoginId === "") {
+    if (merchantLoginId === "" && !editKyc) {
       setCurrentTab(1);
     } else {
       dispatch(
@@ -57,7 +57,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
 
   const onSubmit = async (value) => {
     setIsDisable(true);
-    if (merchantKycData?.clientCode === null) {
+    if (merchantKycData?.clientCode === null && !editKyc) {
       const clientFullName = merchantKycData?.name;
       const clientMobileNo = merchantKycData?.contactNumber;
       const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
@@ -99,7 +99,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
     dispatch(
       saveKycConsent({
         term_condition: value.term_condition,
-        login_id: merchantLoginId,
+        login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
         submitted_by: loginId,
       })
     ).then((res) => {
@@ -110,7 +110,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput }) {
         toast.success(res?.payload?.message);
         setIsDisable(false);
 
-        backToFirstScreen();
+        setTimeout(() => backToFirstScreen(), 1000);
       } else {
         toast.error(res?.payload?.detail);
         setIsDisable(false);

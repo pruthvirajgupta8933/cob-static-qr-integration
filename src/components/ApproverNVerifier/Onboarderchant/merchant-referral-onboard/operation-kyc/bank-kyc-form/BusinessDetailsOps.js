@@ -7,6 +7,7 @@ import { businessDetailsSlice } from "../../../../../../slices/approver-dashboar
 import {
   kycDetailsByMerchantLoginId,
   platformType,
+  kycUserList,
 } from "../../../../../../slices/kycSlice";
 import {
   panValidation,
@@ -228,7 +229,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       billing_label: value.billing_label,
       company_name: value.company_name,
       merchant_address: merchantAddressDetails,
-      login_id: merchantLoginId,
+      login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
       updated_by: auth?.user?.loginId,
       platform_id: value.platform_id,
       avg_ticket_size: value.avg_ticket_size,
@@ -246,6 +247,14 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
 
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
+          if (editKyc) {
+            dispatch(
+              kycUserList({
+                login_id: kycData?.loginMasterId,
+                password_required: true,
+              })
+            );
+          }
           dispatch(
             kycDetailsByMerchantLoginId({
               login_id: merchantLoginId,
