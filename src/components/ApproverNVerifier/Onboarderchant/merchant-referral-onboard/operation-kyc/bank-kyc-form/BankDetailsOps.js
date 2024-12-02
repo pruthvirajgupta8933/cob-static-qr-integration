@@ -13,6 +13,7 @@ import verifiedIcon from "../../../../../../assets/images/verified.png";
 import {
   getBankId,
   kycDetailsByMerchantLoginId,
+  kycUserList,
 } from "../../../../../../slices/kycSlice";
 import {
   bankAccountVerification,
@@ -116,7 +117,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
         bank_id: values.bank_id,
         account_type: selectedAccType,
         branch: values.branch,
-        login_id: merchantLoginId,
+        login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
         modified_by: auth?.user?.loginId,
       })
     )
@@ -129,6 +130,14 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
 
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
+          if (editKyc) {
+            dispatch(
+              kycUserList({
+                login_id: kycData?.loginMasterId,
+                password_required: true,
+              })
+            );
+          }
           dispatch(
             kycDetailsByMerchantLoginId({
               login_id: merchantLoginId,
