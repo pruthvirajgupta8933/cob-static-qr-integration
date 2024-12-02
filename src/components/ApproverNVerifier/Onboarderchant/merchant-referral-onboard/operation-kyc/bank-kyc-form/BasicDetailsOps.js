@@ -16,6 +16,7 @@ import {
   busiCategory,
   businessType,
   kycDetailsByMerchantLoginId,
+  kycUserList,
 } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
@@ -166,7 +167,6 @@ function BasicDetailsOps({
           }
 
           if (resp?.payload?.status === true) {
-            // console.log(resp)
             dispatch(
               kycDetailsByMerchantLoginId({
                 login_id: resp?.payload?.merchant_data?.loginMasterId,
@@ -193,12 +193,21 @@ function BasicDetailsOps({
           }
 
           if (resp?.payload?.status === true) {
-            dispatch(
-              kycDetailsByMerchantLoginId({
-                login_id: merchantOnboardingProcess.merchantLoginId,
-                password_required: true,
-              })
-            );
+            if (editKyc)
+              dispatch(
+                kycUserList({
+                  login_id: resp?.payload?.merchant_data?.loginMasterId,
+                })
+              );
+            else
+              dispatch(
+                kycDetailsByMerchantLoginId({
+                  login_id:
+                    merchantOnboardingProcess.merchantLoginId ??
+                    kycData?.loginMasterId,
+                  password_required: true,
+                })
+              );
             toastConfig.successToast(resp?.payload?.message);
           }
         })

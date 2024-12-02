@@ -22,7 +22,7 @@ import { saveBankDetails } from "../../../../../../slices/approver-dashboard/mer
 import { fetchBankList } from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 import toastConfig from "../../../../../../utilities/toastTypes";
 
-function BankDetailsOps({ setCurrentTab, isEditableInput }) {
+function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const [loading, setLoading] = useState(false);
   const [submitLoader, setSubmitLoader] = useState(false);
   const [disable, setDisable] = useState(false);
@@ -34,25 +34,41 @@ function BankDetailsOps({ setCurrentTab, isEditableInput }) {
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
   const { bankDetails } = merchantReferralOnboardReducer;
-  const { merchantKycData } = kyc;
+  const { merchantKycData, kycUserList: kycData } = kyc;
 
   const initialValues = {
-    account_holder_name:
-      merchantKycData?.merchant_account_details?.account_holder_name ?? "",
-    account_number:
-      merchantKycData?.merchant_account_details?.account_number ?? "",
-    ifsc_code: merchantKycData?.merchant_account_details?.ifsc_code ?? "",
-    bank_id: merchantKycData?.merchant_account_details?.bankId ?? "",
-    account_type:
-      merchantKycData?.merchant_account_details?.accountType
-        ?.toString()
-        .toLowerCase() === "saving"
+    account_holder_name: editKyc
+      ? kycData?.merchant_account_details?.account_holder_name
+      : merchantKycData?.merchant_account_details?.account_holder_name ?? "",
+    account_number: editKyc
+      ? kycData?.merchant_account_details?.account_number
+      : merchantKycData?.merchant_account_details?.account_number ?? "",
+    ifsc_code: editKyc
+      ? kycData?.merchant_account_details?.ifsc_code
+      : merchantKycData?.merchant_account_details?.ifsc_code ?? "",
+    bank_id: editKyc
+      ? kycData?.merchant_account_details?.bankId
+      : merchantKycData?.merchant_account_details?.bankId ?? "",
+    account_type: editKyc
+      ? kycData?.merchant_account_details?.accountType
+          ?.toString()
+          .toLowerCase() === "saving"
         ? "2"
-        : "1",
-    branch: merchantKycData?.merchant_account_details?.branch ?? "",
-    isAccountNumberVerified:
-      merchantKycData?.merchant_account_details?.account_number ?? "",
-    isIfscVerified: merchantKycData?.merchant_account_details?.ifsc_code ?? "",
+        : "1"
+      : merchantKycData?.merchant_account_details?.accountType
+          ?.toString()
+          .toLowerCase() === "saving"
+      ? "2"
+      : "1",
+    branch: editKyc
+      ? kycData?.merchant_account_details?.branch
+      : merchantKycData?.merchant_account_details?.branch ?? "",
+    isAccountNumberVerified: editKyc
+      ? kycData?.merchant_account_details?.account_number
+      : merchantKycData?.merchant_account_details?.account_number ?? "",
+    isIfscVerified: editKyc
+      ? kycData?.merchant_account_details?.ifsc_code
+      : merchantKycData?.merchant_account_details?.ifsc_code ?? "",
   };
 
   const validationSchema = Yup.object().shape({
