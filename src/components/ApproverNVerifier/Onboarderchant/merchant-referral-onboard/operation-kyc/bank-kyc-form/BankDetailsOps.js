@@ -236,7 +236,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       } else {
         setLoading(false);
         setFieldValue("isAccountNumberVerified", "");
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload ?? res?.payload?.message);
       }
     });
   };
