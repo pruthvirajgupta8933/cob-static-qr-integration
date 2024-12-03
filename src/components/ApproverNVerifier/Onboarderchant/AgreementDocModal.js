@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 // import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import { forSavingDocument, forGettingDocumentList, removeDocumentSlice } from "../../../slices/merchantZoneMappingSlice";
+import {
+  forSavingDocument,
+  forGettingDocumentList,
+  removeDocumentSlice,
+} from "../../../slices/merchantZoneMappingSlice";
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
 // import downloadIcon from "../../../assets/images/download-icon.svg";
 // import _ from "lodash";
 import CustomModal from "../../../_components/custom_modal";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
 
@@ -19,10 +23,9 @@ const AgreementDocModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
-  const [btnDisable, setBtnDisable] = useState(false)
-  const [docPreviewToggle, setDocPreviewToggle] = useState(false)
-  const [selectViewDoc, setSelectedViewDoc] = useState("#")
-
+  const [btnDisable, setBtnDisable] = useState(false);
+  const [docPreviewToggle, setDocPreviewToggle] = useState(false);
+  const [selectViewDoc, setSelectedViewDoc] = useState("#");
 
   const initialValues = {
     comments: "",
@@ -31,26 +34,25 @@ const AgreementDocModal = (props) => {
   const { user } = useSelector((state) => state?.auth);
   const { loginId } = user;
 
-
   // 1)GET API
   const dispatch = useDispatch();
   const commentUpdate = () => {
     dispatch(
       forGettingDocumentList({
-        login_id: props?.documentData?.loginMasterId
+        login_id: props?.documentData?.loginMasterId,
       })
-    ).then((resp) => {
-      setCommentsList(resp.payload);
-    }).catch((err) => {
-      console.error(err);
-    });
+    )
+      .then((resp) => {
+        setCommentsList(resp.payload);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
-
 
   useEffect(() => {
     commentUpdate();
   }, [props]);
-
 
   const aRef = useRef(null);
 
@@ -68,12 +70,10 @@ const AgreementDocModal = (props) => {
       .nullable(),
   });
 
-
   const handleSubmit = async (values) => {
-
-    setBtnDisable(true)
+    setBtnDisable(true);
     let formData = new FormData();
-    formData.append("type", "22")
+    formData.append("type", "22");
     formData.append("approver_id", loginId);
     formData.append("login_id", props?.documentData?.loginMasterId);
     formData.append("modified_by", loginId);
@@ -81,27 +81,25 @@ const AgreementDocModal = (props) => {
     formData.append("comment", values.comments);
 
     // 2)SAVE API
-    dispatch(forSavingDocument(formData)
-    )
+    dispatch(forSavingDocument(formData))
       .then((resp) => {
         if (resp?.payload?.status) {
           toast.success(resp?.payload?.message);
           commentUpdate();
           resetUploadFile();
-          setBtnDisable(false)
+          setBtnDisable(false);
         } else {
           toast.error(resp?.payload?.message);
           resetUploadFile();
           commentUpdate();
-          setBtnDisable(false)
+          setBtnDisable(false);
         }
       })
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
-        setBtnDisable(false)
+        setBtnDisable(false);
       });
   };
-
 
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
@@ -136,7 +134,6 @@ const AgreementDocModal = (props) => {
   //   }
   // }
 
-
   const removeDocument = (id) => {
     const rejectDetails = {
       document_id: id,
@@ -149,9 +146,8 @@ const AgreementDocModal = (props) => {
         }, 1300);
         if (resp?.payload?.status) {
           commentUpdate();
-          toast.success(resp?.payload?.message)
-        }
-        else {
+          toast.success(resp?.payload?.message);
+        } else {
           toast.error(resp?.payload?.message);
         }
       })
@@ -159,7 +155,6 @@ const AgreementDocModal = (props) => {
         toast.error("Try Again Network Error");
       });
   };
-
 
   const getKycDocList = (role) => {
     dispatch(
@@ -172,27 +167,35 @@ const AgreementDocModal = (props) => {
   // document modal
   const docModalToggle = (docData) => {
     // console.log(docData)
-    setDocPreviewToggle(true)
-    setSelectedViewDoc(docData)
-  }
+    setDocPreviewToggle(true);
+    setSelectedViewDoc(docData);
+  };
 
   const modalBody = () => {
     return (
       <div className="container-fluid">
-        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.file_path, documentName: "Agreement" }} />}
+        {docPreviewToggle && (
+          <DocViewerComponent
+            modalToggle={docPreviewToggle}
+            fnSetModalToggle={setDocPreviewToggle}
+            selectViewDoc={{
+              documentUrl: selectViewDoc?.file_path,
+              documentName: "Agreement",
+            }}
+          />
+        )}
         <div className="row">
           <div className="d-flex justify-content-between">
             <p>
-              <span className="fw-bold">Merchant Name : </span> {props?.documentData?.clientName}
+              <span className="fw-bold">Merchant Name : </span>{" "}
+              {props?.documentData?.clientName}
             </p>
             <p>
               <span className="fw-bold"> Client Code : </span>
               {props?.documentData?.clientCode}
             </p>
           </div>
-
         </div>
-
 
         <div className="row">
           <Formik
@@ -206,7 +209,48 @@ const AgreementDocModal = (props) => {
           >
             <Form>
               <div className="form-row">
-                <div className="col-md-6">
+                {attachCommentFile["name"] && (
+                  <p className="text-default m-0">
+                    <i className="fa fa-paperclip" />{" "}
+                    {attachCommentFile["name"]}
+                  </p>
+                )}
+                <div className="input-group ">
+                  <Field
+                    control="input"
+                    name="comments"
+                    className="form-control p-2"
+                    placeholder="Enter Comments"
+                  />
+                  <div>
+                    <label
+                      for="file-upload"
+                      className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
+                      style={{ height: "39px" }}
+                    >
+                      <i className="fa fa-paperclip"></i>
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="d-none"
+                      onChange={(e) => handleUploadAttachments(e)}
+                      ref={aRef}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="submit-btn approve text-white btn-sm cob-btn-primary"
+                  >
+                    Submit
+                  </button>
+                </div>
+                <ErrorMessage name="comments">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
+                {/* <div className="col-md-6">
                   <FormikController
                     control="textArea"
                     name="comments"
@@ -252,7 +296,7 @@ const AgreementDocModal = (props) => {
                       )}
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </Form>
           </Formik>
@@ -262,12 +306,8 @@ const AgreementDocModal = (props) => {
         <div className="row">
           <div className="container">
             <div className="row">
-              <div
-                className="col-lg-5"
-              >
-                <h6 className="font-weight-bold">
-                  View Documents
-                </h6>
+              <div className="col-lg-5">
+                <h6 className="font-weight-bold">Document</h6>
               </div>
             </div>
             <div className="row">
@@ -278,48 +318,60 @@ const AgreementDocModal = (props) => {
                       <th>Remark</th>
                       <th>Uploaded Date</th>
                       <th>View Attachments</th>
-                      <th>Remove</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {(commentsList?.length === undefined ||
                       commentsList?.length === 0) && (
-                        <tr>
-                          <td colSpan="3">
-                            <h6 className="font-weight-bold text-center">
-                              No Data found
-                            </h6>
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td colSpan="4">
+                          <h6 className="font-weight-bold text-center">
+                            No Data found
+                          </h6>
+                        </td>
+                      </tr>
+                    )}
 
                     {(commentsList?.length !== undefined ||
                       commentsList?.length > 0) &&
-                      Array.isArray(commentsList)
+                    Array.isArray(commentsList)
                       ? commentsList?.map((remark, i) => (
-                        <tr key={uuidv4()}>
-                          <td style={{ overflowWrap: "anywhere" }}>{remark?.comment}</td>
-                          <td>
-                            {dateManipulate(remark?.comment_on)}
-                          </td>
-                          <td>
-                            <p className="text-decoration-underline text-primary cursor_pointer" onClick={() => docModalToggle(remark)}>View Document</p>
-                          </td>
-                          <td>
-                            <button
-                              aria-label="button"
-                              type="button"
-                              onClick={() => {
-                                if (window.confirm("Are you sure you want to delete it?")) {
-                                  removeDocument(remark?.document_id);
-                                }
-                              }}
-                            >
-                              <i className="fa fa-trash-o" ariaHidden="true"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
+                          <tr key={uuidv4()}>
+                            <td style={{ overflowWrap: "anywhere" }}>
+                              {remark?.comment}
+                            </td>
+                            <td>{dateManipulate(remark?.comment_on)}</td>
+                            <td>
+                              <p
+                                className="text-decoration-underline text-primary cursor_pointer"
+                                onClick={() => docModalToggle(remark)}
+                              >
+                                View Document
+                              </p>
+                            </td>
+                            <td>
+                              <button
+                                aria-label="button"
+                                type="button"
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure you want to delete it?"
+                                    )
+                                  ) {
+                                    removeDocument(remark?.document_id);
+                                  }
+                                }}
+                              >
+                                <i
+                                  className="fa fa-trash-o"
+                                  ariaHidden="true"
+                                ></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
                       : []}
                   </tbody>
                 </table>
@@ -328,13 +380,12 @@ const AgreementDocModal = (props) => {
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const modalFooter = () => {
     return (
       <>
-
         <button
           type="button"
           className="btn btn-secondary text-white"
@@ -346,23 +397,20 @@ const AgreementDocModal = (props) => {
         >
           Close
         </button>
-
-
       </>
-    )
-  }
-
-
-
-
-
-
+    );
+  };
 
   return (
     <>
-      <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
+      <CustomModal
+        modalBody={modalBody}
+        headerTitle={"Upload Agreement"}
+        modalFooter={modalFooter}
+        modalToggle={props?.isModalOpen}
+        fnSetModalToggle={props?.setModalState}
+      />
     </>
-
   );
 };
 
