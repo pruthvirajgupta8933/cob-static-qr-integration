@@ -122,8 +122,8 @@ function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
     dispatch(resetFormState());
     dispatch(clearKycDetailsByMerchantLoginId());
     // setCurrentTab(1)
-
-    history.push("my-merchant");
+    if (user.roleName === "Bank") history.push("client-list");
+    else history.push("my-merchant");
   };
   const history = useHistory();
   return (
