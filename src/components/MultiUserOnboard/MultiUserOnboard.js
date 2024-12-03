@@ -78,10 +78,10 @@ const MultiUserOnboard = () => {
   const initialValues = {
     zone: kycData?.zone_code ?? "",
     onboardType:
-      selectOnboardType.find((type) => type.value === kycData?.onboard_type)
-        ?.key ?? kycData?.onboard_type === "Bank Child"
+      kycData?.onboard_type === "Bank Child"
         ? "bank"
-        : "",
+        : selectOnboardType.find((type) => type.value === kycData?.onboard_type)
+            ?.key ?? "",
     parentType: "",
     addMerchant: "",
   };
@@ -123,6 +123,7 @@ const MultiUserOnboard = () => {
           selectOnboardType.find((type) => type.value === kycData?.onboard_type)
             ?.key
       );
+
       if (
         merchantId &&
         kycData?.onboard_type &&
@@ -198,7 +199,8 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {(basicDetailsResponse.data?.business_cat_code ?? merchantId) && (
+        {(basicDetailsResponse.data?.business_cat_code ??
+          Boolean(merchantId)) && (
           <Prompt
             message={() => {
               if (
