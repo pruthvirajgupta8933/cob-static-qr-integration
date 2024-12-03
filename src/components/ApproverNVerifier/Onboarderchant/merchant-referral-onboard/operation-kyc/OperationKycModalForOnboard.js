@@ -236,6 +236,7 @@ function OperationKycModalForOnboard({
             <DocumentCenter
               setCurrentTab={setCurrentTab}
               isEditableInput={isEditableInput}
+              editKyc={editKyc}
             />
           )}
           {currentTab === 5 && (
