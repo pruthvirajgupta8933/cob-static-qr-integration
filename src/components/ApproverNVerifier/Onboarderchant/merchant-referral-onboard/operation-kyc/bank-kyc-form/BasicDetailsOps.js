@@ -40,23 +40,18 @@ function BasicDetailsOps({
   const { merchantKycData, kycUserList: kycData } = kyc;
   const { merchantBasicDetails, merchantOnboardingProcess } =
     merchantReferralOnboardReducer;
-  const loginIdFromState =
-    merchantOnboardingProcess?.merchantLoginId !== "" ? true : false;
+  const loginIdFromState = merchantOnboardingProcess?.merchantLoginId !== "";
 
   const initialValues = {
-    fullName: editKyc ? kycData?.name : merchantKycData?.name ?? "",
-    mobileNumber: editKyc
-      ? kycData?.contactNumber
-      : merchantKycData?.contactNumber ?? "",
-    email_id: editKyc ? kycData?.emailId : merchantKycData?.emailId ?? "",
-    business_category: editKyc
-      ? kycData?.businessCategory
-      : merchantKycData?.businessCategory ?? "",
-    business_type: editKyc
-      ? kycData?.businessType
-      : merchantKycData?.businessType ?? "",
+    fullName: kycData?.name ?? merchantKycData?.name ?? "",
+    mobileNumber:
+      kycData?.contactNumber ?? merchantKycData?.contactNumber ?? "",
+    email_id: kycData?.emailId ?? merchantKycData?.emailId ?? "",
+    business_category:
+      kycData?.businessCategory ?? merchantKycData?.businessCategory ?? "",
+    business_type: kycData?.businessType ?? merchantKycData?.businessType ?? "",
     password: editKyc ? "********" : merchantBasicDetails?.resp?.password ?? "",
-    username: editKyc ? kycData?.username : merchantKycData?.username ?? "",
+    username: kycData?.username ?? merchantKycData?.username ?? "",
     isEditTable: loginIdFromState,
     zone_code: "",
     bank_login_id: "",
@@ -86,22 +81,22 @@ function BasicDetailsOps({
 
     password: editKyc
       ? Yup.string()
-        .matches(
-          /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
-          RegexMsg.password
-        )
-        .required("Required")
+          .matches(
+            /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
+            RegexMsg.password
+          )
+          .required("Required")
       : Yup.string()
-        .allowOneSpace()
-        .when("isEditTable", {
-          is: true,
-          then: Yup.string(),
+          .allowOneSpace()
+          .when("isEditTable", {
+            is: true,
+            then: Yup.string(),
 
-          otherwise: (Yup) =>
-            Yup.matches(Regex.password, RegexMsg.password).required(
-              "Required"
-            ),
-        }),
+            otherwise: (Yup) =>
+              Yup.matches(Regex.password, RegexMsg.password).required(
+                "Required"
+              ),
+          }),
     username: Yup.string()
       .allowOneSpace()
       .required("Required")
@@ -124,9 +119,8 @@ function BasicDetailsOps({
       username,
     } = value;
     const updateReqBody = {
-      login_id: editKyc
-        ? kycData?.loginMasterId
-        : merchantOnboardingProcess?.merchantLoginId,
+      login_id:
+        kycData?.loginMasterId ?? merchantOnboardingProcess?.merchantLoginId,
       name: fullName,
       email: email_id,
       mobileNumber: mobileNumber,
@@ -169,9 +163,8 @@ function BasicDetailsOps({
 
           if (resp?.payload?.status === true) {
             dispatch(
-              kycDetailsByMerchantLoginId({
+              kycUserList({
                 login_id: resp?.payload?.merchant_data?.loginMasterId,
-                password_required: true,
               })
             );
             toastConfig.successToast(resp?.payload?.message);
@@ -194,21 +187,20 @@ function BasicDetailsOps({
           }
 
           if (resp?.payload?.status === true) {
-            if (editKyc)
-              dispatch(
-                kycUserList({
-                  login_id: resp?.payload?.merchant_data?.loginMasterId,
-                })
-              );
-            else
-              dispatch(
-                kycDetailsByMerchantLoginId({
-                  login_id:
-                    merchantOnboardingProcess.merchantLoginId ??
-                    kycData?.loginMasterId,
-                  password_required: true,
-                })
-              );
+            dispatch(
+              kycUserList({
+                login_id: resp?.payload?.merchant_data?.loginMasterId,
+              })
+            );
+            // else
+            //   dispatch(
+            //     kycDetailsByMerchantLoginId({
+            //       login_id:
+            //         merchantOnboardingProcess.merchantLoginId ??
+            //         kycData?.loginMasterId,
+            //       password_required: true,
+            //     })
+            //   );
             toastConfig.successToast(resp?.payload?.message);
           }
         })
@@ -389,7 +381,8 @@ function BasicDetailsOps({
                   </button>
                 )}
 
-                {(merchantKycData?.isContactNumberVerified === 1 || kycData?.isContactNumberVerified === 1) && (
+                {(merchantKycData?.isContactNumberVerified === 1 ||
+                  kycData?.isContactNumberVerified === 1) && (
                   <a
                     className="btn active-secondary btn-sm m-2"
                     onClick={() => setCurrentTab(2)}

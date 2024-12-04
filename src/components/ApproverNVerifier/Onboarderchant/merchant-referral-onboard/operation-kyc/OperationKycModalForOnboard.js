@@ -9,6 +9,7 @@ import { Prompt } from "react-router-dom";
 import {
   clearKycDetailsByMerchantLoginId,
   kycDetailsByMerchantLoginId,
+  kycUserList,
 } from "../../../../../slices/kycSlice";
 import {
   resetStateMfo,
@@ -19,6 +20,7 @@ import {
   KYC_STATUS_VERIFIED,
 } from "../../../../../utilities/enums";
 import classes from "./OperationKycModalForOnboard.module.css";
+import { stringDec } from "../../../../../utilities/encodeDecode";
 
 function OperationKycModalForOnboard({
   zoneCode,
@@ -33,8 +35,7 @@ function OperationKycModalForOnboard({
   const { merchantOnboardingProcess } = merchantReferralOnboardReducer;
 
   const searchParams = new URLSearchParams(document.location.search);
-  const cmid = searchParams.get("cmid");
-  const edit = searchParams.get("edit");
+  const merchantId = searchParams.get("merchantId");
 
   const handleTabClick = (currenTabVal) => {
     if (isOnboardStartM) {
@@ -53,18 +54,23 @@ function OperationKycModalForOnboard({
     e.returnValue = "";
   };
   useEffect(() => {
+    if (merchantOnboardingProcess?.merchantLoginId && !kycData?.loginMasterId)
+      dispatch(
+        kycUserList({
+          login_id: merchantOnboardingProcess?.merchantLoginId,
+          password_required: true,
+        })
+      );
+  }, []);
+  useEffect(() => {
     let merchantLoginId = "";
-    if (edit && cmid !== "") {
-      merchantLoginId = cmid;
-    } else {
-      merchantLoginId = merchantOnboardingProcess?.merchantLoginId;
-    }
+    if (merchantId && merchantId !== "")
+      merchantLoginId = stringDec(merchantId);
 
-    // console.log("merchantLoginId", merchantLoginId)
     if (merchantLoginId !== "") {
       // console.log("hell2")
       dispatch(
-        kycDetailsByMerchantLoginId({
+        kycUserList({
           login_id: merchantLoginId,
           password_required: true,
         })
@@ -79,7 +85,7 @@ function OperationKycModalForOnboard({
       dispatch(resetStateMfo());
       dispatch(clearKycDetailsByMerchantLoginId());
     };
-  }, [cmid, edit]);
+  }, [merchantId]);
 
   const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart || editKyc;
 
@@ -93,7 +99,15 @@ function OperationKycModalForOnboard({
   );
   return (
     <div className="row">
-      <Prompt message={() => "Are you sure you want to leave this page?"} />
+      <Prompt
+        message={() => {
+          if (window.confirm("Are you sure you want to leave this page?")) {
+            dispatch(resetStateMfo());
+            dispatch(clearKycDetailsByMerchantLoginId());
+            return true;
+          } else return false;
+        }}
+      />
       {(editKyc || merchantOnboardingProcess?.isOnboardStart) && (
         <>
           <div className="bg-light text-danger px-0">
