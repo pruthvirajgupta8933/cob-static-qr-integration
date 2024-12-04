@@ -15,6 +15,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
+import AuthOtpVerify from "./AuthOtpVerify";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -40,6 +41,7 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [openOtpModal, setOpenOtpModal] = useState(false);
 
   const isDesktop = useMediaQuery("(min-width: 993px)");
   const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 992px)");
@@ -69,10 +71,12 @@ const Login = () => {
     authService.captchaVerify(postCaptcha).then(resp => {
       setFieldValue("reCaptcha", token)
     }).catch(error => {
-      console.log(error)
+      toastConfig.errorToast("Error with google login. Please try after sometime.")
     })
 
   };
+
+
 
   const handleLogin = (formValue) => {
     const { clientUserId, userPassword } = formValue;
@@ -80,15 +84,11 @@ const Login = () => {
     setLoading(true);
     dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
       .then((res) => {
-        if (res?.payload?.user) {
-          const { loginStatus, loginMessage } = res.payload.user;
-          if (loginStatus === "Activate" && loginMessage === "success") {
-            history.replace("/dashboard");
-          } else {
-            toastConfig.errorToast(loginMessage || "Rejected");
-          }
+        if (res?.payload?.user?.status) {
+          setOpenOtpModal(true)
         } else {
-          toastConfig.errorToast(res?.payload || "Rejected");
+          setOpenOtpModal(false)
+          toastConfig.errorToast(res?.payload || "Something went wrong.")
         }
         setLoading(false);
       });
@@ -103,21 +103,20 @@ const Login = () => {
       const username = response?.profileObj?.email;
       dispatch(login({ username, is_social: true }))
         .then((res) => {
-          if (res?.payload?.user) {
-            const { loginStatus, loginMessage } = res.payload.user;
-            if (loginStatus === "Activate" && loginMessage === "success") {
-              history.replace("/dashboard");
-            } else {
-              toastConfig.errorToast(loginMessage || "Rejected");
-            }
+          if (res?.payload?.user?.status) {
+            setOpenOtpModal(true)
           } else {
-            toastConfig.errorToast(res?.payload?.detail || "Rejected");
+            setOpenOtpModal(false)
+            toastConfig.errorToast(res?.payload || "Something went wrong.")
           }
           setLoading(false);
         })
         .catch((err) => console.log("err", err));
     }
   };
+
+
+
 
   return (
     <div className={`container-fluid p-0`}>
@@ -169,7 +168,7 @@ const Login = () => {
             </div>
             <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
               <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
-              <div className={`col ${classes.form_container}`}>
+              {openOtpModal ? <AuthOtpVerify updateOtpModal={setOpenOtpModal} /> : <div className={`col ${classes.form_container}`}>
                 <h5 className={`text-center text_primary_color heading ${classes.heading}`}>Login</h5>
                 <h6 className={`text-center mb-4 sub_heading ${classes.sub_heading}`}>Login to your merchant account</h6>
                 <Formik
@@ -256,7 +255,8 @@ const Login = () => {
                     <a className="text-primary text-decoration-underline" href={`https://sabpaisa.in/pricing/`}> Sign Up</a>
                   </p>
                 </div>
-              </div>
+              </div>}
+
               <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
             </div>
             <div className="row align-items-end flex-grow-1">
