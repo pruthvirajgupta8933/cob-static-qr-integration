@@ -24,12 +24,14 @@ if (ENV_PROD) {
   widget_script =
     "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
-  // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
+
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
 } else {
-  url = "https://stgcobapi.sabpaisa.in";
-  kyc_url = "https://stgcobkyc.sabpaisa.in";
+  // url = "https://stgcobapi.sabpaisa.in";
+  // kyc_url = "https://stgcobkyc.sabpaisa.in";
+  url = "http://192.168.2.44:8000";
+  kyc_url = "http://192.168.2.44:8001";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
@@ -51,6 +53,7 @@ const API_LIVE = {
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
+  AUTH_LOGIN_VERIFY: `${url}/auth-service/auth/login-verify`,
   RECAPTCHA_VERIFY: `${url}/auth-service/auth/captcha-verify`,
   ////////////////////////////////////---------------------------business_cat_code api
 

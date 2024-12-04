@@ -166,7 +166,7 @@ function Signup() {
                 isDirect: true,
                 created_by: null,
                 plan_details: queryString,
-                is_social: true
+                is_social: false
             })
         )
             .unwrap()
