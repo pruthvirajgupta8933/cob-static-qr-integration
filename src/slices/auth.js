@@ -29,6 +29,7 @@ const auth = {
       response_code: "",
     },
   },
+  auth_verification: {},
   user: user,
   isLoggedIn: null,
   currentUser: {},
@@ -86,6 +87,24 @@ export const login = createAsyncThunk(
   async ({ username, password, is_social }, thunkAPI) => {
     try {
       const data = await AuthService.login(username, password, is_social);
+      return { user: data?.data };
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      return thunkAPI.rejectWithValue(message);              // here we pass message for error
+    }
+  }
+);
+
+export const loginVerify = createAsyncThunk(
+  "auth/login-verify",
+  async ({ otp, verification_token }, thunkAPI) => {
+    try {
+      const data = await AuthService.loginOtpVerify(otp, verification_token);
       data && TokenService.setUser(data?.data)
       data && TokenService.setUserData(data?.data)
       data && TokenService.setCategory()
@@ -98,7 +117,6 @@ export const login = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString() || error.request.toString();
-      // thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);              // here we pass message for error
     }
   }
@@ -178,49 +196,6 @@ export const createClientProfile = createAsyncThunk(
       const response = await AuthService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
 
-      // const userLocalData = JSON.parse(localStorage?.getItem("user"));
-      // const allData = Object.assign(userLocalData, response.data);
-      // // first time need to assign all request data into temp data
-      // const clientMerchantDetailsListObj = {
-      //   "clientId": null,
-      //   "lookupState": null,
-      //   "address": null,
-      //   "clientAuthenticationType": null,
-      //   "clientCode": null,
-      //   "clientContact": null,
-      //   "clientEmail": null,
-      //   "clientImagePath": null,
-      //   "clientLink": null,
-      //   "clientLogoPath": null,
-      //   "clientName": null,
-      //   "failedUrl": null,
-      //   "landingPage": null,
-      //   "service": null,
-      //   "successUrl": null,
-      //   "createdDate": null,
-      //   "modifiedDate": null,
-      //   "modifiedBy": null,
-      //   "status": null,
-      //   "reason": null,
-      //   "merchantId": null,
-      //   "requestId": null,
-      //   "clientType": null,
-      //   "parentClientId": null,
-      //   "businessType": null,
-      //   "pocAccountManager": null,
-      //   "business_cat_code": null
-      // };
-
-      // console.log("allData", allData)
-      // const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
-      // const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
-      // allData.clientMerchantDetailsList = clientMerchantDetailsList;
-
-      // console.log("allData-updated", allData)
-      // console.log(localStorage.setItem("user"))
-      // localStorage.setItem("user", JSON.stringify(allData))
-      // console.log("Profile update after :", JSON.stringify(allData))
-      // localStorage.setItem("categoryId", 1)
       return response?.data;
     } catch (error) {
       const message =
@@ -405,6 +380,16 @@ const authSlice = createSlice({
         state.sendEmail = action.payload.data;
       })
       .addCase(login.fulfilled, (state, action) => {
+        state.auth_verification = action.payload?.user
+
+      })
+      .addCase(login.pending, (state) => {
+        state.auth_verification = {}
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.auth_verification = {}
+      })
+      .addCase(loginVerify.fulfilled, (state, action) => {
         let loggedInStatus = false;
         let isValidData = '';
         const loginState = action.payload?.user?.loginStatus;
@@ -422,18 +407,19 @@ const authSlice = createSlice({
         localStorage.setItem("categoryId", 1)
         state.isValidUser = isValidData;
       })
-      .addCase(login.pending, (state) => {
+      .addCase(loginVerify.pending, (state) => {
         state.isLoggedIn = null;
         // state.userAlreadyLoggedIn = false;
         state.isValidUser = '';
         state.user = null;
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(loginVerify.rejected, (state, action) => {
         state.isLoggedIn = false;
         state.userAlreadyLoggedIn = false;
         state.isValidUser = '';
         state.user = null;
       })
+
       .addCase(logout.fulfilled, (state, action) => {
         state.isLoggedIn = null;
         state.userAlreadyLoggedIn = false;
@@ -453,12 +439,12 @@ const authSlice = createSlice({
       })
       .addCase(getEmailToSendOtpSlice.fulfilled, (state, action) => {
         state.forgotPassword.otpResponse = action.payload;
-        
-         const username = action.payload.username;
-        
+
+        const username = action.payload.username;
+
         const status = action.payload.status;
         state.forgotPassword.sendUserName.username = username;
-       
+
         state.forgotPassword.sendUserName.isValid = status ? true : false;
       })
       .addCase(getEmailToSendOtpSlice.rejected, (state, action) => {
@@ -468,111 +454,6 @@ const authSlice = createSlice({
       .addCase(checkPermissionSlice.fulfilled, (state, action) => {
         state.payLinkPermission = action.payload
       })
-
-
-    // [checkClientCodeSlice.fulfilled]: (state, action) => {
-    //   state.avalabilityOfClientCode = action.payload
-    // },
-    // [register.pending]: (state, action) => {
-    //   state.isLoggedIn = null
-    //   state.isUserRegistered = null;
-    // },
-    // [register.fulfilled]: (state, action) => {
-    //   state.isLoggedIn = null
-    //   state.isUserRegistered = true;
-    // },
-    // [register.rejected]: (state, action) => {
-    //   state.isLoggedIn = null
-    //   state.isUserRegistered = false;
-    // },
-    // [udpateRegistrationStatus.fulfilled]: (state, action) => {
-    //   state.isLoggedIn = null
-    //   state.isUserRegistered = null;
-    // },
-
-    // [successTxnSummary.fulfilled]: (state, action) => {
-    //   state.successTxnsumry = action.payload;
-    // },
-    // [successTxnSummary.rejected]: (state, action) => {
-    //   //code 
-    // },
-    // [sendEmail.fulfilled]: (state, action) => {
-    //   state.sendEmail = action.payload.data;
-    // },
-    // [sendEmail.rejected]: (state, action) => {
-    //   //code 
-    // },
-    // [login.fulfilled]: (state, action) => {
-    //   // console.log("action",action)
-
-    //   let loggedInStatus = false;
-    //   let isValidData = '';
-    //   const loginState = action.payload?.user?.loginStatus;
-    //   loggedInStatus = false;
-    //   if (loginState === "Activate") {
-    //     loggedInStatus = true;
-    //     isValidData = 'Yes';
-    //     state.userAlreadyLoggedIn = true;
-    //   } else {
-    //     loggedInStatus = false;
-    //     isValidData = 'No';
-    //   }
-    //   state.isLoggedIn = loggedInStatus;
-    //   state.user = action.payload.user;
-    //   localStorage.setItem("user", JSON.stringify(state.user))
-    //   localStorage.setItem("categoryId", 1)
-    //   state.isValidUser = isValidData;
-    // },
-    // [login.pending]: (state) => {
-    //   state.isLoggedIn = null;
-    //   // state.userAlreadyLoggedIn = false;
-    //   state.isValidUser = '';
-    //   state.user = null;
-    // },
-    // [login.rejected]: (state, action) => {
-    //   state.isLoggedIn = false;
-    //   state.userAlreadyLoggedIn = false;
-    //   state.isValidUser = '';
-    //   state.user = null;
-    // },
-    // [logout.fulfilled]: (state, action) => {
-    //   state.isLoggedIn = null;
-    //   state.userAlreadyLoggedIn = false;
-    //   state.isValidUser = '';
-    //   state.user = null;
-    //   state = {};
-    // },
-
-    // [createClientProfile.fulfilled]: (state, action) => {
-    //   // state.createClientProfile = action.payload
-    //   // state.user = action.payload
-    // },
-    // [changePasswordSlice.fulfilled]: (state, action) => {
-    //   state.passwordChange = true;
-    // },
-    // [changePasswordSlice.pending]: (state) => {
-    //   state.passwordChange = null;
-    // },
-    // [changePasswordSlice.rejected]: (state) => {
-    //   state.passwordChange = false;
-    // },
-
-    // [getEmailToSendOtpSlice.fulfilled]: (state, action) => {
-    //   state.forgotPassword.otpResponse = action.payload;
-    //   const username = action.payload.username;
-    //   const status = action.payload.status;
-    //   state.forgotPassword.sendUserName.username = username;
-    //   state.forgotPassword.sendUserName.isValid = status ? true : false;
-    // },
-    // [getEmailToSendOtpSlice.pending]: (state) => {
-    // },
-    // [getEmailToSendOtpSlice.rejected]: (state, action) => {
-    //   state.forgotPassword.sendUserName.isValid = false;
-    // },
-
-    // [checkPermissionSlice.fulfilled]: (state, action) => {
-    //   state.payLinkPermission = action.payload
-    // }
   },
 });
 
