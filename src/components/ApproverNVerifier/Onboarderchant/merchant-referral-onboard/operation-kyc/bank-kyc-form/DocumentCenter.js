@@ -29,7 +29,7 @@ function DocumentCenter({ setCurrentTab, isEditableInput, editKyc }) {
   const handleUpload = async (formData) => {
     formData.append("login_id", kycData?.loginMasterId ?? merchantLoginId);
     formData.append("modified_by", auth?.user?.loginId);
-    const response = await saveDocumentDetails(formData);
+    await saveDocumentDetails(formData);
     fetchDocList(merchantLoginId);
   };
   return (

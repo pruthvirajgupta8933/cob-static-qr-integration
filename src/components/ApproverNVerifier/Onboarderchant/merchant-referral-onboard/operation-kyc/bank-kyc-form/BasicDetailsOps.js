@@ -15,7 +15,6 @@ import {
 import {
   busiCategory,
   businessType,
-  kycDetailsByMerchantLoginId,
   kycUserList,
 } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
@@ -81,22 +80,22 @@ function BasicDetailsOps({
 
     password: editKyc
       ? Yup.string()
-          .matches(
-            /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
-            RegexMsg.password
-          )
-          .required("Required")
+        .matches(
+          /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
+          RegexMsg.password
+        )
+        .required("Required")
       : Yup.string()
-          .allowOneSpace()
-          .when("isEditTable", {
-            is: true,
-            then: Yup.string(),
+        .allowOneSpace()
+        .when("isEditTable", {
+          is: true,
+          then: Yup.string(),
 
-            otherwise: (Yup) =>
-              Yup.matches(Regex.password, RegexMsg.password).required(
-                "Required"
-              ),
-          }),
+          otherwise: (Yup) =>
+            Yup.matches(Regex.password, RegexMsg.password).required(
+              "Required"
+            ),
+        }),
     username: Yup.string()
       .allowOneSpace()
       .required("Required")
@@ -155,10 +154,8 @@ function BasicDetailsOps({
         .then((resp) => {
           setSubmitLoader(false);
           setDisable(false);
-          // console.log(resp?.payload?.merchant_data?.loginMasterId)
           if (resp?.error?.message) {
-            toastConfig.errorToast(resp?.error?.message);
-            toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase());
+            toastConfig.errorToast(resp?.error?.message || resp?.payload?.toString());
           }
 
           if (resp?.payload?.status === true) {
@@ -192,15 +189,6 @@ function BasicDetailsOps({
                 login_id: resp?.payload?.merchant_data?.loginMasterId,
               })
             );
-            // else
-            //   dispatch(
-            //     kycDetailsByMerchantLoginId({
-            //       login_id:
-            //         merchantOnboardingProcess.merchantLoginId ??
-            //         kycData?.loginMasterId,
-            //       password_required: true,
-            //     })
-            //   );
             toastConfig.successToast(resp?.payload?.message);
           }
         })
@@ -383,13 +371,13 @@ function BasicDetailsOps({
 
                 {(merchantKycData?.isContactNumberVerified === 1 ||
                   kycData?.isContactNumberVerified === 1) && (
-                  <a
-                    className="btn active-secondary btn-sm m-2"
-                    onClick={() => setCurrentTab(2)}
-                  >
-                    Next
-                  </a>
-                )}
+                    <a
+                      className="btn active-secondary btn-sm m-2"
+                      onClick={() => setCurrentTab(2)}
+                    >
+                      Next
+                    </a>
+                  )}
               </div>
             </div>
           </Form>

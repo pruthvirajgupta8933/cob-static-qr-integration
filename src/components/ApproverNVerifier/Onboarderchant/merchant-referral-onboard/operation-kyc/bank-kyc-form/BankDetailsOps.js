@@ -12,7 +12,6 @@ import { convertToFormikSelectJson } from "../../../../../../_components/reuseab
 import verifiedIcon from "../../../../../../assets/images/verified.png";
 import {
   getBankId,
-  kycDetailsByMerchantLoginId,
   kycUserList,
 } from "../../../../../../slices/kycSlice";
 import {
@@ -58,9 +57,9 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       kycData?.merchant_account_details?.accountType
         ?.toString()
         .toLowerCase() === "saving" ||
-      merchantKycData?.merchant_account_details?.accountType
-        ?.toString()
-        .toLowerCase() === "saving"
+        merchantKycData?.merchant_account_details?.accountType
+          ?.toString()
+          .toLowerCase() === "saving"
         ? "2"
         : "1",
     branch:
@@ -111,8 +110,8 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       values.account_type?.toString() === "1"
         ? "Current"
         : values.account_type?.toString() === "2"
-        ? "Saving"
-        : "";
+          ? "Saving"
+          : "";
 
     dispatch(
       saveBankDetails({
@@ -142,13 +141,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
               password_required: true,
             })
           );
-          // }
-          // dispatch(
-          //   kycDetailsByMerchantLoginId({
-          //     login_id: merchantLoginId,
-          //     password_required: true,
-          //   })
-          // );
         }
       })
       .catch((err) => {
@@ -300,7 +292,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
           setFieldError,
           setFieldValue,
           setFieldTouched,
-          handleChange,
         }) => (
           <Form>
             <div className="row">

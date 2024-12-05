@@ -5,7 +5,6 @@ import { isNull } from "lodash";
 import { toast } from "react-toastify";
 import { businessDetailsSlice } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import {
-  kycDetailsByMerchantLoginId,
   platformType,
   kycUserList,
 } from "../../../../../../slices/kycSlice";
@@ -32,7 +31,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const [avgTicketAmount, setAvgTicketAmount] = useState([]);
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
-  const [signatoryPanName, setSignatoryPanName] = useState("");
+  // const [signatoryPanName, setSignatoryPanName] = useState("");
   const [platform, setPlatform] = useState([]);
   const [disable, setDisable] = useState(false);
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
@@ -240,13 +239,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
               password_required: true,
             })
           );
-          // }
-          // dispatch(
-          //   kycDetailsByMerchantLoginId({
-          //     login_id: merchantLoginId,
-          //     password_required: true,
-          //   })
-          // );
+
         }
       })
       .catch((err) => toastConfig.errorToast("Something went wrong!"));
@@ -326,7 +319,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -399,11 +392,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                   />
 
                   {values?.pan_card !== null &&
-                  values?.pan_card !== "" &&
-                  values?.pan_card !== undefined &&
-                  !errors.hasOwnProperty("pan_card") &&
-                  !errors.hasOwnProperty("is_pan_verified") &&
-                  values?.is_pan_verified !== "" ? (
+                    values?.pan_card !== "" &&
+                    values?.pan_card !== undefined &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.is_pan_verified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -447,12 +440,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                     {errors?.is_pan_verified}
                   </p>
                 )}
-                {/* {values?.company_name
-                                    && (
-                                        <p className="text-success mb-0">
-                                            {values?.company_name}
-                                        </p>
-                                    )} */}
               </div>
 
               <div className="col-md-6">
@@ -491,9 +478,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                     }}
                   />
                   {values?.signatory_pan &&
-                  values?.isSignatoryPanVerified &&
-                  !errors.hasOwnProperty("signatory_pan") &&
-                  !errors.hasOwnProperty("prevSignatoryPan") ? (
+                    values?.isSignatoryPanVerified &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
