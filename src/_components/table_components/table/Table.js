@@ -49,7 +49,7 @@ const Table = (props) => {
           breakLabel={"..."}
           pageCount={pageCount}
           marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
           onPageChange={handlePageClick}
           containerClassName={"pagination justify-content-center"}
           activeClassName={"active"}
