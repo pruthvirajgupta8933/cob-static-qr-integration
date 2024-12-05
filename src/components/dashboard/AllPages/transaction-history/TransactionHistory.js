@@ -102,8 +102,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -131,8 +131,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -161,7 +161,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const paymodeList = async () => {
@@ -170,7 +170,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   let isExtraDataRequired = false;
@@ -477,7 +477,7 @@ const TransactionHistory = () => {
       ];
 
       const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
-      console.log(reportData)
+
       reportData.forEach((item, index) => {
         const {
           // srNo = index + 1,
@@ -795,9 +795,9 @@ const TransactionHistory = () => {
                         onClick={() => refundModalHandler()}
                         disabled={
                           radioInputVal?.status?.toLocaleLowerCase() !==
-                            "success" &&
+                          "success" &&
                           radioInputVal?.status?.toLocaleLowerCase() !==
-                            "settled"
+                          "settled"
                         }
                       >
                         Refund
@@ -854,15 +854,15 @@ const TransactionHistory = () => {
                           <td className="text-center">
                             {(item?.status?.toLocaleLowerCase() === "success" ||
                               item?.status?.toLocaleLowerCase() ===
-                                "settled") && (
-                              <input
-                                name="refund_request"
-                                value={item.txn_id}
-                                type="radio"
-                                onClick={(e) => setRadioInputVal(item)}
-                                checked={item.txn_id === radioInputVal?.txn_id}
-                              />
-                            )}
+                              "settled") && (
+                                <input
+                                  name="refund_request"
+                                  value={item.txn_id}
+                                  type="radio"
+                                  onClick={(e) => setRadioInputVal(item)}
+                                  checked={item.txn_id === radioInputVal?.txn_id}
+                                />
+                              )}
                           </td>
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
