@@ -42,6 +42,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [openOtpModal, setOpenOtpModal] = useState(false);
+  const [inputValue, setInputValue] = useState({})
 
   const isDesktop = useMediaQuery("(min-width: 993px)");
   const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 992px)");
@@ -79,12 +80,14 @@ const Login = () => {
 
 
   const handleLogin = (formValue) => {
+
     const { clientUserId, userPassword } = formValue;
 
     setLoading(true);
     dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
       .then((res) => {
         if (res?.payload?.user?.status) {
+          setInputValue(formValue)
           setOpenOtpModal(true)
         } else {
           setOpenOtpModal(false)
@@ -168,7 +171,7 @@ const Login = () => {
             </div>
             <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
               <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
-              {openOtpModal ? <AuthOtpVerify updateOtpModal={setOpenOtpModal} /> : <div className={`col ${classes.form_container}`}>
+              {openOtpModal ? <AuthOtpVerify updateOtpModal={setOpenOtpModal} inputValue={inputValue} /> : <div className={`col ${classes.form_container}`}>
                 <h5 className={`text-center text_primary_color heading ${classes.heading}`}>Login</h5>
                 <h6 className={`text-center mb-4 sub_heading ${classes.sub_heading}`}>Login to your merchant account</h6>
                 <Formik
