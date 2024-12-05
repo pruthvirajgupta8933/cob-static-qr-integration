@@ -427,7 +427,7 @@ const TransactionHistory = () => {
 
   const exportToExcelFn = async () => {
     try {
-      setExportReportLoader(true)
+      setExportReportLoader(true);
       const resp = await Dashboardservice.exportTransactionReport(filterState);
       const reportData = resp.data;
 
@@ -437,6 +437,7 @@ const TransactionHistory = () => {
         "Client Trans ID",
         "Challan Number / VAN",
         "Amount",
+        "Currency Type",
         "Transaction Date",
         "Transaction Complete Date",
         "Payment Status",
@@ -476,6 +477,7 @@ const TransactionHistory = () => {
       ];
 
       const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
+
       reportData.forEach((item, index) => {
         const {
           // srNo = index + 1,
@@ -483,6 +485,7 @@ const TransactionHistory = () => {
           client_txn_id = "",
           challan_no = "",
           payee_amount = "",
+          amount_type = "",
           trans_date = "",
           trans_complete_date = "",
           status = "",
@@ -527,6 +530,7 @@ const TransactionHistory = () => {
           client_txn_id,
           challan_no,
           payee_amount ? Number.parseFloat(payee_amount) : "",
+          amount_type,
           dateFormatBasic(trans_date),
           dateFormatBasic(trans_complete_date),
           status,
@@ -568,9 +572,9 @@ const TransactionHistory = () => {
 
       const fileName = "Transactions-Report";
       exportToSpreadsheet(excelArr, fileName, handleExportLoading);
-      setExportReportLoader(false)
+      setExportReportLoader(false);
     } catch (error) {
-      setExportReportLoader(false)
+      setExportReportLoader(false);
       toastConfig.errorToast("Error: Export transaction report");
     }
   };
@@ -735,25 +739,14 @@ const TransactionHistory = () => {
 
                     {txnList?.length > 0 && (
                       <div className="form-group col-md-2 col-lg-1">
-                        {/* {roles.merchant && (
-                                                    <button
-                                                        type="button"
-                                                        className="approve cob-btn-primary"
-                                                        data-toggle="modal"
-                                                        data-target="#exampleModalCenter"
-                                                        onClick={() => setOpenModal(true)}
-                                                    >
-                                                        <i className="fa fa-download"></i> Export
-                                                    </button>
-                                                )} */}
-
                         <button
                           type="button"
                           className="btn btn-sm text-white cob-btn-primary"
                           onClick={() => exportToExcelFn()}
                           disabled={exportReportLoader}
                         >
-                          <i className="fa fa-download"></i>{exportReportLoader ? " Loading..." : " Export"}
+                          <i className="fa fa-download"></i>
+                          {exportReportLoader ? " Loading..." : " Export"}
                         </button>
                       </div>
                     )}
@@ -840,6 +833,7 @@ const TransactionHistory = () => {
                       <th> Transaction ID</th>
                       <th> Client Transaction ID</th>
                       <th> Amount</th>
+                      <th> Currency Type</th>
                       <th> Transaction Date</th>
                       <th> Transaction Complete Date</th>
                       <th> Payment Status</th>
@@ -885,6 +879,7 @@ const TransactionHistory = () => {
                           >
                             {Number.parseFloat(item.payee_amount).toFixed(2)}
                           </td>
+                          <td>{item.amount_type}</td>
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
                           >
@@ -901,10 +896,24 @@ const TransactionHistory = () => {
                             {item.status}
                           </td>
 
-
-                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_first_name}</td>
-                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_mob}</td>
-                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_email}</td>
+                          <td
+                            onClick={() => transactionDetailModalHandler(item)}
+                          >
+                            {" "}
+                            {item.payee_first_name}
+                          </td>
+                          <td
+                            onClick={() => transactionDetailModalHandler(item)}
+                          >
+                            {" "}
+                            {item.payee_mob}
+                          </td>
+                          <td
+                            onClick={() => transactionDetailModalHandler(item)}
+                          >
+                            {" "}
+                            {item.payee_email}
+                          </td>
 
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
@@ -927,7 +936,7 @@ const TransactionHistory = () => {
                     breakLabel={"..."}
                     pageCount={pageCount}
                     marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                    pageRangeDisplayed={5}
+                    pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
                     onPageChange={(selectedItem) => {
                       setCurrentPage(selectedItem.selected + 1);
                       setRadioInputVal({});

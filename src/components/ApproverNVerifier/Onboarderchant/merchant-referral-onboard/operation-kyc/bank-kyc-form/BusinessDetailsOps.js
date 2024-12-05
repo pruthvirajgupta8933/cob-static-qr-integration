@@ -5,7 +5,6 @@ import { isNull } from "lodash";
 import { toast } from "react-toastify";
 import { businessDetailsSlice } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import {
-  kycDetailsByMerchantLoginId,
   platformType,
   kycUserList,
 } from "../../../../../../slices/kycSlice";
@@ -32,7 +31,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const [avgTicketAmount, setAvgTicketAmount] = useState([]);
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
-  const [signatoryPanName, setSignatoryPanName] = useState("");
+  // const [signatoryPanName, setSignatoryPanName] = useState("");
   const [platform, setPlatform] = useState([]);
   const [disable, setDisable] = useState(false);
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
@@ -44,52 +43,38 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const { merchantKycData, kycUserList: kycData } = kyc;
 
   const initialValues = {
-    pan_card: editKyc ? kycData?.panCard : merchantKycData?.panCard ?? "",
-    is_pan_verified: editKyc
-      ? kycData?.signatoryPAN
-      : merchantKycData?.signatoryPAN ?? "",
-    website: editKyc
-      ? kycData?.website_app_url
-      : merchantKycData?.website_app_url ?? "",
-    name_on_pancard: editKyc
-      ? kycData?.nameOnPanCard
-      : merchantKycData?.nameOnPanCard ?? "",
-    platform_id: editKyc
-      ? kycData?.platformId
-      : merchantKycData?.platformId ?? "",
-    avg_ticket_size: editKyc
-      ? kycData?.avg_ticket_size
-      : merchantKycData?.avg_ticket_size ?? "",
-    expected_transactions: editKyc
-      ? kycData?.expectedTransactions
-      : merchantKycData?.expectedTransactions ?? "",
-    signatory_pan: editKyc
-      ? kycData?.signatoryPAN
-      : merchantKycData?.signatoryPAN,
-    prevSignatoryPan: editKyc
-      ? kycData?.signatoryPAN
-      : merchantKycData?.signatoryPAN,
-    isSignatoryPanVerified: editKyc
-      ? kycData?.signatoryPAN?.length > 9 && 1
-      : merchantKycData?.signatoryPAN?.length > 9 && 1,
-    address: editKyc
-      ? kycData?.merchant_address_details?.address
-      : merchantKycData?.merchant_address_details?.address,
-    city: editKyc
-      ? kycData?.merchant_address_details?.city
-      : merchantKycData?.merchant_address_details?.city,
-    state_id: editKyc
-      ? kycData?.merchant_address_details?.state
-      : merchantKycData?.merchant_address_details?.state,
-    pin_code: editKyc
-      ? kycData?.merchant_address_details?.pin_code
-      : merchantKycData?.merchant_address_details?.pin_code,
-    billing_label: editKyc
-      ? kycData?.billingLabel
-      : merchantKycData?.billingLabel ?? "",
-    company_name: editKyc
-      ? kycData?.companyName
-      : merchantKycData?.companyName ?? "",
+    pan_card: kycData?.panCard ?? merchantKycData?.panCard ?? "",
+    is_pan_verified:
+      kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN ?? "",
+    website: kycData?.website_app_url ?? merchantKycData?.website_app_url ?? "",
+    name_on_pancard:
+      kycData?.nameOnPanCard ?? merchantKycData?.nameOnPanCard ?? "",
+    platform_id: kycData?.platformId ?? merchantKycData?.platformId ?? "",
+    avg_ticket_size:
+      kycData?.avg_ticket_size ?? merchantKycData?.avg_ticket_size ?? "",
+    expected_transactions:
+      kycData?.expectedTransactions ??
+      merchantKycData?.expectedTransactions ??
+      "",
+    signatory_pan: kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN,
+    prevSignatoryPan: kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN,
+    isSignatoryPanVerified:
+      (kycData?.signatoryPAN?.length > 9 && 1) ||
+      (merchantKycData?.signatoryPAN?.length > 9 && 1),
+    address:
+      kycData?.merchant_address_details?.address ??
+      merchantKycData?.merchant_address_details?.address,
+    city:
+      kycData?.merchant_address_details?.city ??
+      merchantKycData?.merchant_address_details?.city,
+    state_id:
+      kycData?.merchant_address_details?.state ??
+      merchantKycData?.merchant_address_details?.state,
+    pin_code:
+      kycData?.merchant_address_details?.pin_code ??
+      merchantKycData?.merchant_address_details?.pin_code,
+    billing_label: kycData?.billingLabel ?? merchantKycData?.billingLabel ?? "",
+    company_name: kycData?.companyName ?? merchantKycData?.companyName ?? "",
   };
 
   const tooltipData = {
@@ -229,7 +214,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       billing_label: value.billing_label,
       company_name: value.company_name,
       merchant_address: merchantAddressDetails,
-      login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
+      login_id: kycData?.loginMasterId ?? merchantLoginId,
       updated_by: auth?.user?.loginId,
       platform_id: value.platform_id,
       avg_ticket_size: value.avg_ticket_size,
@@ -247,20 +232,14 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
 
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
-          if (editKyc) {
-            dispatch(
-              kycUserList({
-                login_id: kycData?.loginMasterId,
-                password_required: true,
-              })
-            );
-          }
+          // if (editKyc) {
           dispatch(
-            kycDetailsByMerchantLoginId({
-              login_id: merchantLoginId,
+            kycUserList({
+              login_id: kycData?.loginMasterId,
               password_required: true,
             })
           );
+
         }
       })
       .catch((err) => toastConfig.errorToast("Something went wrong!"));
@@ -340,7 +319,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -413,11 +392,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                   />
 
                   {values?.pan_card !== null &&
-                  values?.pan_card !== "" &&
-                  values?.pan_card !== undefined &&
-                  !errors.hasOwnProperty("pan_card") &&
-                  !errors.hasOwnProperty("is_pan_verified") &&
-                  values?.is_pan_verified !== "" ? (
+                    values?.pan_card !== "" &&
+                    values?.pan_card !== undefined &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.is_pan_verified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -461,12 +440,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                     {errors?.is_pan_verified}
                   </p>
                 )}
-                {/* {values?.company_name
-                                    && (
-                                        <p className="text-success mb-0">
-                                            {values?.company_name}
-                                        </p>
-                                    )} */}
               </div>
 
               <div className="col-md-6">
@@ -505,9 +478,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                     }}
                   />
                   {values?.signatory_pan &&
-                  values?.isSignatoryPanVerified &&
-                  !errors.hasOwnProperty("signatory_pan") &&
-                  !errors.hasOwnProperty("prevSignatoryPan") ? (
+                    values?.isSignatoryPanVerified &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}

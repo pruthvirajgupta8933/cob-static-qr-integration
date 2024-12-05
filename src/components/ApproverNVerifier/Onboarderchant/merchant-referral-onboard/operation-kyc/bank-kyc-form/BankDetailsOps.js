@@ -12,7 +12,6 @@ import { convertToFormikSelectJson } from "../../../../../../_components/reuseab
 import verifiedIcon from "../../../../../../assets/images/verified.png";
 import {
   getBankId,
-  kycDetailsByMerchantLoginId,
   kycUserList,
 } from "../../../../../../slices/kycSlice";
 import {
@@ -38,38 +37,43 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const { merchantKycData, kycUserList: kycData } = kyc;
 
   const initialValues = {
-    account_holder_name: editKyc
-      ? kycData?.merchant_account_details?.account_holder_name
-      : merchantKycData?.merchant_account_details?.account_holder_name ?? "",
-    account_number: editKyc
-      ? kycData?.merchant_account_details?.account_number
-      : merchantKycData?.merchant_account_details?.account_number ?? "",
-    ifsc_code: editKyc
-      ? kycData?.merchant_account_details?.ifsc_code
-      : merchantKycData?.merchant_account_details?.ifsc_code ?? "",
-    bank_id: editKyc
-      ? kycData?.merchant_account_details?.bankId
-      : merchantKycData?.merchant_account_details?.bankId ?? "",
-    account_type: editKyc
-      ? kycData?.merchant_account_details?.accountType
+    account_holder_name:
+      kycData?.merchant_account_details?.account_holder_name ??
+      merchantKycData?.merchant_account_details?.account_holder_name ??
+      "",
+    account_number:
+      kycData?.merchant_account_details?.account_number ??
+      merchantKycData?.merchant_account_details?.account_number ??
+      "",
+    ifsc_code:
+      kycData?.merchant_account_details?.ifsc_code ??
+      merchantKycData?.merchant_account_details?.ifsc_code ??
+      "",
+    bank_id:
+      kycData?.merchant_account_details?.bankId ??
+      merchantKycData?.merchant_account_details?.bankId ??
+      "",
+    account_type:
+      kycData?.merchant_account_details?.accountType
+        ?.toString()
+        .toLowerCase() === "saving" ||
+        merchantKycData?.merchant_account_details?.accountType
           ?.toString()
           .toLowerCase() === "saving"
         ? "2"
-        : "1"
-      : merchantKycData?.merchant_account_details?.accountType
-          ?.toString()
-          .toLowerCase() === "saving"
-      ? "2"
-      : "1",
-    branch: editKyc
-      ? kycData?.merchant_account_details?.branch
-      : merchantKycData?.merchant_account_details?.branch ?? "",
-    isAccountNumberVerified: editKyc
-      ? kycData?.merchant_account_details?.account_number
-      : merchantKycData?.merchant_account_details?.account_number ?? "",
-    isIfscVerified: editKyc
-      ? kycData?.merchant_account_details?.ifsc_code
-      : merchantKycData?.merchant_account_details?.ifsc_code ?? "",
+        : "1",
+    branch:
+      kycData?.merchant_account_details?.branch ??
+      merchantKycData?.merchant_account_details?.branch ??
+      "",
+    isAccountNumberVerified:
+      kycData?.merchant_account_details?.account_number ??
+      merchantKycData?.merchant_account_details?.account_number ??
+      "",
+    isIfscVerified:
+      kycData?.merchant_account_details?.ifsc_code ??
+      merchantKycData?.merchant_account_details?.ifsc_code ??
+      "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -106,8 +110,8 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       values.account_type?.toString() === "1"
         ? "Current"
         : values.account_type?.toString() === "2"
-        ? "Saving"
-        : "";
+          ? "Saving"
+          : "";
 
     dispatch(
       saveBankDetails({
@@ -117,7 +121,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
         bank_id: values.bank_id,
         account_type: selectedAccType,
         branch: values.branch,
-        login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
+        login_id: kycData?.loginMasterId ?? merchantLoginId,
         modified_by: auth?.user?.loginId,
       })
     )
@@ -130,17 +134,10 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
 
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
-          if (editKyc) {
-            dispatch(
-              kycUserList({
-                login_id: kycData?.loginMasterId,
-                password_required: true,
-              })
-            );
-          }
+          // if (editKyc) {
           dispatch(
-            kycDetailsByMerchantLoginId({
-              login_id: merchantLoginId,
+            kycUserList({
+              login_id: kycData?.loginMasterId,
               password_required: true,
             })
           );
@@ -295,7 +292,6 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
           setFieldError,
           setFieldValue,
           setFieldTouched,
-          handleChange,
         }) => (
           <Form>
             <div className="row">
