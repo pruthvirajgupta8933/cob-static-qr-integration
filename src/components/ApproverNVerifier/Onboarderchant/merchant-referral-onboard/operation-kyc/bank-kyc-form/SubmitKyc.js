@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 import {
   clearKycDetailsByMerchantLoginId,
-  kycDetailsByMerchantLoginId,
   saveKycConsent,
 } from "../../../../../../slices/kycSlice";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
@@ -42,18 +41,6 @@ function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
     ),
   });
 
-  useEffect(() => {
-    if (merchantLoginId === "" && !editKyc) {
-      setCurrentTab(1);
-    } else {
-      dispatch(
-        kycDetailsByMerchantLoginId({
-          login_id: merchantLoginId,
-          password_required: true,
-        })
-      );
-    }
-  }, [merchantLoginId]);
 
   const onSubmit = async (value) => {
     setIsDisable(true);
@@ -99,7 +86,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
     dispatch(
       saveKycConsent({
         term_condition: value.term_condition,
-        login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
+        login_id: kycData?.loginMasterId ?? merchantLoginId,
         submitted_by: loginId,
       })
     ).then((res) => {
