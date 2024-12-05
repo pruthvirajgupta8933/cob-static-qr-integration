@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Prompt } from "react-router-dom";
 import {
   clearKycDetailsByMerchantLoginId,
+  clearKycState,
   kycDetailsByMerchantLoginId,
   kycUserList,
 } from "../../../../../slices/kycSlice";
@@ -79,10 +80,13 @@ function OperationKycModalForOnboard({
           updateOnboardingStatus({ merchantLoginId, isOnboardStart: true })
         );
       });
+    } else {
+      setCurrentTab(1);
     }
 
     return () => {
       dispatch(resetStateMfo());
+      dispatch(clearKycState());
       dispatch(clearKycDetailsByMerchantLoginId());
     };
   }, [merchantId]);

@@ -142,12 +142,12 @@ const MultiUserOnboard = () => {
         );
       }
       if (childList?.length > 0) {
-        setSelectedUserType(
-          childList.find((child) => child.name === kycData?.bankName)
-            ?.loginMasterId
+        const bank = childList.find(
+          (child) => child?.loginMasterId == kycData?.parentClientId
         );
+        setSelectedUserType(bank?.loginMasterId);
         setShowBankForm(true);
-        setSelectedChildName(kycData?.bankName);
+        setSelectedChildName(bank?.name);
       }
     }
   }, [kycData, childList]);
