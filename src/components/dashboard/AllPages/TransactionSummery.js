@@ -223,7 +223,6 @@ function TransactionSummery() {
                       endDate={toDate}
                       onChange={(update) => {
                         const [start, end] = update;
-                        console.log("start", start)
                         setFromDate(start);
                         setToDate(end);
                       }}
