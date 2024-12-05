@@ -6,8 +6,10 @@ import Yup from '../../../_components/formik/Yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginVerify } from '../../../slices/auth';
 import toastConfig from '../../../utilities/toastTypes';
+import { login } from '../../../slices/auth';
+import TimerComponent from '../../../utilities/TimerComponent';
 
-function AuthOtpVerify({ updateOtpModal }) {
+function AuthOtpVerify({ updateOtpModal, inputValue }) {
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
     const { auth_verification } = useSelector((state) => state.auth);
@@ -43,32 +45,19 @@ function AuthOtpVerify({ updateOtpModal }) {
     }
 
 
-    // const handleLoginOld = (formValue) => {
-    //     const { clientUserId, userPassword } = formValue;
+    const resendOtp = () => {
+        const { clientUserId, userPassword } = inputValue;
+        dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
+            .then((res) => {
+                if (res?.payload?.user?.status) {
 
-    //     setLoading(true);
-    //     dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
-    //       .then((res) => {
-    //         if (res?.payload?.user?.status) {
-    //           setVerificationToken(res?.payload?.user?.verification_token)
-    //           setOpenOtpModal(true)
-    //         } else {
-    //           setOpenOtpModal(false)
-    //           toastConfig.errorToast(res?.payload || "Something went wrong.")
-    //         }
-    //         // if (res?.payload?.user) {
-    //         //   const { loginStatus, loginMessage } = res.payload.user;
-    //         //   if (loginStatus === "Activate" && loginMessage === "success") {
-    //         //     history.replace("/dashboard");
-    //         //   } else {
-    //         //     toastConfig.errorToast(loginMessage || "Rejected");
-    //         //   }
-    //         // } else {
-    //         //   toastConfig.errorToast(res?.payload || "Rejected");
-    //         // }
-    //         setLoading(false);
-    //       });
-    //   };
+                } else {
+
+                    toastConfig.errorToast(res?.payload || "Something went wrong.")
+                }
+
+            });
+    };
 
 
 
@@ -97,15 +86,26 @@ function AuthOtpVerify({ updateOtpModal }) {
                             </ErrorMessage>
                         </div>
 
-                        <div className="form-text p-2 my-3 text-right font-size-14">
+                    {/* <div className="form-text p-2 my-3 text-right font-size-14">
                             <Link to={`/forget/${window.location.search}`} className="text-decoration-underline">
                                 Resend OTP
                             </Link>
-                        </div>
-                        <div className="d-flex">
+                        </div> */}
+
+                    {/* <div className="d-flex">
                             <button type="submit" className="btn cob-btn-primary w-100 mb-2" disabled={loading}>
                                 {loading && <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>}Verify
                             </button>
+                        </div> */}
+                    <div className="d-flex justify-content-between">
+
+                        <TimerComponent resend={resendOtp} />
+
+                        <button type="submit" className="btn cob-btn-primary btn-sm" disabled={loading}>
+                            {loading && <span className="spinner-grow spinner-grow-sm text-light"></span>}
+                            Verify
+                        </button>
+
                         </div>
                     </Form>
                 )}
