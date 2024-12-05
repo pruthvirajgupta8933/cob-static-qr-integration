@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import "./FileUploader.css"; // Import the CSS file for styling
-import { saveDocumentDetails } from "../../../services/approver-dashboard/merchantReferralOnboard.service";
 import { useDropzone } from "react-dropzone";
-import { kycDocumentUploadList } from "../../../slices/kycSlice";
 import toastConfig from "../../../utilities/toastTypes";
 // import { v4 as uuidv4 } from 'uuid';
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
 
-const FileUploader = ({ setCurrentTab, isEditableInput, editKyc }) => {
+const FileUploader = ({
+  setCurrentTab,
+  isEditableInput,
+  docList,
+  handleUpload,
+}) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
   const [documentUploadResponse, setDocumentUploadResponse] = useState({});
@@ -16,27 +18,6 @@ const FileUploader = ({ setCurrentTab, isEditableInput, editKyc }) => {
   const [selectViewDoc, setSelectedViewDoc] = useState("#");
 
   // console.log("documentUploadResponse",documentUploadResponse)
-
-  const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
-    (state) => state
-  );
-  const merchantLoginId =
-    merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
-
-  const dispatch = useDispatch();
-  const { KycDocUpload, kycUserList: kycData } = kyc;
-
-  const fetchDocList = () => {
-    dispatch(
-      kycDocumentUploadList({
-        login_id: editKyc ? kycData?.loginMasterId : merchantLoginId,
-      })
-    );
-  };
-
-  useEffect(() => {
-    fetchDocList(editKyc ? kycData?.loginMasterId : merchantLoginId);
-  }, []);
 
   // console.log(KycDocUpload)
 
@@ -53,18 +34,10 @@ const FileUploader = ({ setCurrentTab, isEditableInput, editKyc }) => {
     uploadedFiles.forEach((file) => {
       formData.append("files", file);
     });
-
-    formData.append(
-      "login_id",
-      editKyc ? kycData?.loginMasterId : merchantLoginId
-    );
-    formData.append("modified_by", auth?.user?.loginId);
     try {
-      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint for uploading files
-      const response = await saveDocumentDetails(formData);
+      const response = await handleUpload(formData);
       // console.log(response, "this is rcomplete response")
       setDocumentUploadResponse(response?.data?.status);
-      fetchDocList(merchantLoginId);
       if (response.data.status === true) {
         // Display success toast for a successful response
         toastConfig.successToast(response.data.message);
@@ -156,11 +129,11 @@ const FileUploader = ({ setCurrentTab, isEditableInput, editKyc }) => {
           )}
         </div>
       )}
-      {KycDocUpload?.length > 0 && (
+      {docList?.length > 0 && (
         <div className="row p-2">
           <h6>Uploaded Document</h6>
           <ul>
-            {KycDocUpload?.map((d, i) => (
+            {docList?.map((d, i) => (
               // <li key={uuidv4()}>
               //     <a href={d.filePath} target="_blank" rel="noreferrer">
               //         View Document - {d.name}</a></li>

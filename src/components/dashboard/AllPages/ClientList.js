@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import CustomModal from "../../../_components/custom_modal";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReferralOnboardForm from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
@@ -57,6 +58,7 @@ function ClientList() {
   const { auth } = useSelector((state) => state);
   const { user } = auth;
 
+  let history = useHistory();
   const dispatch = useDispatch();
 
   const RefrerChiledList = [
@@ -168,7 +170,9 @@ function ClientList() {
         <div>
           <Link
             className="approve text-white cob-btn-primary btn-sm"
-            to={`bank-onboarding/?cmid=${row?.loginMasterId}&edit=true`}
+            to={`bank-onboarding/?merchantId=${stringEnc(
+              row?.loginMasterId
+            )}&redirectUrl=${history.location.pathname}`}
           >
             Edit Details
           </Link>
@@ -185,8 +189,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
 
     clientListExportApi({ bank_login_id: user?.loginId, type })
       .then((res) => {
@@ -262,8 +266,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     let postObj = {
       page: currentPage,
       page_size: pageSize,

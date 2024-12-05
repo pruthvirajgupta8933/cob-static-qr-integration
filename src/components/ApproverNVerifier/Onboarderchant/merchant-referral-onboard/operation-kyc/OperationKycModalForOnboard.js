@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Prompt } from "react-router-dom";
 import {
   clearKycDetailsByMerchantLoginId,
-  kycDetailsByMerchantLoginId,
+  clearKycState,
+  kycUserList,
 } from "../../../../../slices/kycSlice";
 import {
   resetStateMfo,
@@ -19,11 +20,11 @@ import {
   KYC_STATUS_VERIFIED,
 } from "../../../../../utilities/enums";
 import classes from "./OperationKycModalForOnboard.module.css";
+import { stringDec } from "../../../../../utilities/encodeDecode";
 
 function OperationKycModalForOnboard({
   zoneCode,
   bankLoginId,
-  heading,
   editKyc,
 }) {
   const dispatch = useDispatch();
@@ -33,8 +34,7 @@ function OperationKycModalForOnboard({
   const { merchantOnboardingProcess } = merchantReferralOnboardReducer;
 
   const searchParams = new URLSearchParams(document.location.search);
-  const cmid = searchParams.get("cmid");
-  const edit = searchParams.get("edit");
+  const merchantId = searchParams.get("merchantId");
 
   const handleTabClick = (currenTabVal) => {
     if (isOnboardStartM) {
@@ -52,19 +52,28 @@ function OperationKycModalForOnboard({
     e.preventDefault();
     e.returnValue = "";
   };
+
+
+  useEffect(() => {
+    if (merchantOnboardingProcess?.merchantLoginId && !kycData?.loginMasterId)
+      dispatch(
+        kycUserList({
+          login_id: merchantOnboardingProcess?.merchantLoginId,
+          password_required: true,
+        })
+      );
+  }, []);
+
+
   useEffect(() => {
     let merchantLoginId = "";
-    if (edit && cmid !== "") {
-      merchantLoginId = cmid;
-    } else {
-      merchantLoginId = merchantOnboardingProcess?.merchantLoginId;
-    }
+    if (merchantId && merchantId !== "")
+      merchantLoginId = stringDec(merchantId);
 
-    // console.log("merchantLoginId", merchantLoginId)
     if (merchantLoginId !== "") {
       // console.log("hell2")
       dispatch(
-        kycDetailsByMerchantLoginId({
+        kycUserList({
           login_id: merchantLoginId,
           password_required: true,
         })
@@ -73,13 +82,16 @@ function OperationKycModalForOnboard({
           updateOnboardingStatus({ merchantLoginId, isOnboardStart: true })
         );
       });
+    } else {
+      setCurrentTab(1);
     }
 
     return () => {
       dispatch(resetStateMfo());
+      dispatch(clearKycState());
       dispatch(clearKycDetailsByMerchantLoginId());
     };
-  }, [cmid, edit]);
+  }, [merchantId]);
 
   const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart || editKyc;
 
@@ -93,7 +105,15 @@ function OperationKycModalForOnboard({
   );
   return (
     <div className="row">
-      <Prompt message={() => "Are you sure you want to leave this page?"} />
+      <Prompt
+        message={() => {
+          if (window.confirm("Are you sure you want to leave this page?")) {
+            dispatch(resetStateMfo());
+            dispatch(clearKycDetailsByMerchantLoginId());
+            return true;
+          } else return false;
+        }}
+      />
       {(editKyc || merchantOnboardingProcess?.isOnboardStart) && (
         <>
           <div className="bg-light text-danger px-0">
@@ -133,9 +153,8 @@ function OperationKycModalForOnboard({
           aria-orientation="vertical"
         >
           <a
-            className={`nav-link cursor_pointer px-2 ${
-              currentTab === 1 && "active-secondary"
-            }  `}
+            className={`nav-link cursor_pointer px-2 ${currentTab === 1 && "active-secondary"
+              }  `}
             onClick={() => handleTabClick(1)}
             id="v-pills-link1-tab"
             data-mdb-toggle="pill"
@@ -147,9 +166,8 @@ function OperationKycModalForOnboard({
             Basic Details
           </a>
           <a
-            className={`nav-link cursor_pointer px-2 ${
-              currentTab === 2 && "active-secondary"
-            }  ${!isOnboardStartM && classes.not_allowed}`}
+            className={`nav-link cursor_pointer px-2 ${currentTab === 2 && "active-secondary"
+              }  ${!isOnboardStartM && classes.not_allowed}`}
             onClick={() => handleTabClick(2)}
             id="v-pills-link2-tab"
             data-mdb-toggle="pill"
@@ -161,9 +179,8 @@ function OperationKycModalForOnboard({
             Bank Details
           </a>
           <a
-            className={`nav-link cursor_pointer px-2 ${
-              currentTab === 3 && "active-secondary"
-            } ${!isOnboardStartM && classes.not_allowed}`}
+            className={`nav-link cursor_pointer px-2 ${currentTab === 3 && "active-secondary"
+              } ${!isOnboardStartM && classes.not_allowed}`}
             onClick={() => handleTabClick(3)}
             id="v-pills-link3-tab"
             data-mdb-toggle="pill"
@@ -175,9 +192,8 @@ function OperationKycModalForOnboard({
             Business Details
           </a>
           <a
-            className={`nav-link cursor_pointer px-2 ${
-              currentTab === 4 && "active-secondary"
-            } ${!isOnboardStartM && classes.not_allowed}`}
+            className={`nav-link cursor_pointer px-2 ${currentTab === 4 && "active-secondary"
+              } ${!isOnboardStartM && classes.not_allowed}`}
             onClick={() => handleTabClick(4)}
             id="v-pills-link4-tab"
             data-mdb-toggle="pill"
@@ -189,9 +205,8 @@ function OperationKycModalForOnboard({
             Document Center
           </a>
           <a
-            className={`nav-link cursor_pointer px-2 ${
-              currentTab === 5 && "active-secondary"
-            } ${!isOnboardStartM && classes.not_allowed}`}
+            className={`nav-link cursor_pointer px-2 ${currentTab === 5 && "active-secondary"
+              } ${!isOnboardStartM && classes.not_allowed}`}
             onClick={() => handleTabClick(5)}
             id="v-pills-link4-tab"
             data-mdb-toggle="pill"

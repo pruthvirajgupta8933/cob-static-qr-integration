@@ -15,7 +15,6 @@ import {
 import {
   busiCategory,
   businessType,
-  kycDetailsByMerchantLoginId,
   kycUserList,
 } from "../../../../../../slices/kycSlice";
 import toastConfig from "../../../../../../utilities/toastTypes";
@@ -40,23 +39,18 @@ function BasicDetailsOps({
   const { merchantKycData, kycUserList: kycData } = kyc;
   const { merchantBasicDetails, merchantOnboardingProcess } =
     merchantReferralOnboardReducer;
-  const loginIdFromState =
-    merchantOnboardingProcess?.merchantLoginId !== "" ? true : false;
+  const loginIdFromState = merchantOnboardingProcess?.merchantLoginId !== "";
 
   const initialValues = {
-    fullName: editKyc ? kycData?.name : merchantKycData?.name ?? "",
-    mobileNumber: editKyc
-      ? kycData?.contactNumber
-      : merchantKycData?.contactNumber ?? "",
-    email_id: editKyc ? kycData?.emailId : merchantKycData?.emailId ?? "",
-    business_category: editKyc
-      ? kycData?.businessCategory
-      : merchantKycData?.businessCategory ?? "",
-    business_type: editKyc
-      ? kycData?.businessType
-      : merchantKycData?.businessType ?? "",
+    fullName: kycData?.name ?? merchantKycData?.name ?? "",
+    mobileNumber:
+      kycData?.contactNumber ?? merchantKycData?.contactNumber ?? "",
+    email_id: kycData?.emailId ?? merchantKycData?.emailId ?? "",
+    business_category:
+      kycData?.businessCategory ?? merchantKycData?.businessCategory ?? "",
+    business_type: kycData?.businessType ?? merchantKycData?.businessType ?? "",
     password: editKyc ? "********" : merchantBasicDetails?.resp?.password ?? "",
-    username: editKyc ? kycData?.username : merchantKycData?.username ?? "",
+    username: kycData?.username ?? merchantKycData?.username ?? "",
     isEditTable: loginIdFromState,
     zone_code: "",
     bank_login_id: "",
@@ -124,9 +118,8 @@ function BasicDetailsOps({
       username,
     } = value;
     const updateReqBody = {
-      login_id: editKyc
-        ? kycData?.loginMasterId
-        : merchantOnboardingProcess?.merchantLoginId,
+      login_id:
+        kycData?.loginMasterId ?? merchantOnboardingProcess?.merchantLoginId,
       name: fullName,
       email: email_id,
       mobileNumber: mobileNumber,
@@ -161,17 +154,14 @@ function BasicDetailsOps({
         .then((resp) => {
           setSubmitLoader(false);
           setDisable(false);
-          // console.log(resp?.payload?.merchant_data?.loginMasterId)
           if (resp?.error?.message) {
-            toastConfig.errorToast(resp?.error?.message);
-            toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase());
+            toastConfig.errorToast(resp?.error?.message || resp?.payload?.toString());
           }
 
           if (resp?.payload?.status === true) {
             dispatch(
-              kycDetailsByMerchantLoginId({
+              kycUserList({
                 login_id: resp?.payload?.merchant_data?.loginMasterId,
-                password_required: true,
               })
             );
             toastConfig.successToast(resp?.payload?.message);
@@ -194,21 +184,11 @@ function BasicDetailsOps({
           }
 
           if (resp?.payload?.status === true) {
-            if (editKyc)
-              dispatch(
-                kycUserList({
-                  login_id: resp?.payload?.merchant_data?.loginMasterId,
-                })
-              );
-            else
-              dispatch(
-                kycDetailsByMerchantLoginId({
-                  login_id:
-                    merchantOnboardingProcess.merchantLoginId ??
-                    kycData?.loginMasterId,
-                  password_required: true,
-                })
-              );
+            dispatch(
+              kycUserList({
+                login_id: resp?.payload?.merchant_data?.loginMasterId,
+              })
+            );
             toastConfig.successToast(resp?.payload?.message);
           }
         })
@@ -389,14 +369,15 @@ function BasicDetailsOps({
                   </button>
                 )}
 
-                {(merchantKycData?.isContactNumberVerified === 1 || kycData?.isContactNumberVerified === 1) && (
-                  <a
-                    className="btn active-secondary btn-sm m-2"
-                    onClick={() => setCurrentTab(2)}
-                  >
-                    Next
-                  </a>
-                )}
+                {(merchantKycData?.isContactNumberVerified === 1 ||
+                  kycData?.isContactNumberVerified === 1) && (
+                    <a
+                      className="btn active-secondary btn-sm m-2"
+                      onClick={() => setCurrentTab(2)}
+                    >
+                      Next
+                    </a>
+                  )}
               </div>
             </div>
           </Form>

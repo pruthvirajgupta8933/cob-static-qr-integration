@@ -38,6 +38,11 @@ const MultiUserOnboard = () => {
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
+  const bankMerchantLoginId = useSelector(
+    (state) =>
+      state.merchantReferralOnboardReducer?.merchantOnboardingProcess
+        ?.merchantLoginId
+  );
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
 
@@ -113,7 +118,7 @@ const MultiUserOnboard = () => {
   };
 
   useEffect(() => {
-    if (kycData?.onboard_type) {
+    if (kycData?.onboard_type || bankMerchantLoginId) {
       setSelectedvalue(kycData?.zone_code);
       setSelectedName(
         refferalList?.find((i) => i.key === kycData.zone_code)?.value
@@ -137,12 +142,12 @@ const MultiUserOnboard = () => {
         );
       }
       if (childList?.length > 0) {
-        setSelectedUserType(
-          childList.find((child) => child.name === kycData?.bankName)
-            ?.loginMasterId
+        const bank = childList.find(
+          (child) => child?.loginMasterId == kycData?.parentClientId
         );
+        setSelectedUserType(bank?.loginMasterId);
         setShowBankForm(true);
-        setSelectedChildName(kycData?.bankName);
+        setSelectedChildName(bank?.name);
       }
     }
   }, [kycData, childList]);
