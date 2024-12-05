@@ -102,8 +102,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -131,8 +131,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -161,7 +161,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   const paymodeList = async () => {
@@ -170,7 +170,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   let isExtraDataRequired = false;
@@ -427,7 +427,7 @@ const TransactionHistory = () => {
 
   const exportToExcelFn = async () => {
     try {
-      setExportReportLoader(true)
+      setExportReportLoader(true);
       const resp = await Dashboardservice.exportTransactionReport(filterState);
       const reportData = resp.data;
 
@@ -568,9 +568,9 @@ const TransactionHistory = () => {
 
       const fileName = "Transactions-Report";
       exportToSpreadsheet(excelArr, fileName, handleExportLoading);
-      setExportReportLoader(false)
+      setExportReportLoader(false);
     } catch (error) {
-      setExportReportLoader(false)
+      setExportReportLoader(false);
       toastConfig.errorToast("Error: Export transaction report");
     }
   };
@@ -753,7 +753,8 @@ const TransactionHistory = () => {
                           onClick={() => exportToExcelFn()}
                           disabled={exportReportLoader}
                         >
-                          <i className="fa fa-download"></i>{exportReportLoader ? " Loading..." : " Export"}
+                          <i className="fa fa-download"></i>
+                          {exportReportLoader ? " Loading..." : " Export"}
                         </button>
                       </div>
                     )}
@@ -802,9 +803,9 @@ const TransactionHistory = () => {
                         onClick={() => refundModalHandler()}
                         disabled={
                           radioInputVal?.status?.toLocaleLowerCase() !==
-                          "success" &&
+                            "success" &&
                           radioInputVal?.status?.toLocaleLowerCase() !==
-                          "settled"
+                            "settled"
                         }
                       >
                         Refund
@@ -860,15 +861,15 @@ const TransactionHistory = () => {
                           <td className="text-center">
                             {(item?.status?.toLocaleLowerCase() === "success" ||
                               item?.status?.toLocaleLowerCase() ===
-                              "settled") && (
-                                <input
-                                  name="refund_request"
-                                  value={item.txn_id}
-                                  type="radio"
-                                  onClick={(e) => setRadioInputVal(item)}
-                                  checked={item.txn_id === radioInputVal?.txn_id}
-                                />
-                              )}
+                                "settled") && (
+                              <input
+                                name="refund_request"
+                                value={item.txn_id}
+                                type="radio"
+                                onClick={(e) => setRadioInputVal(item)}
+                                checked={item.txn_id === radioInputVal?.txn_id}
+                              />
+                            )}
                           </td>
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
@@ -901,10 +902,24 @@ const TransactionHistory = () => {
                             {item.status}
                           </td>
 
-
-                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_first_name}</td>
-                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_mob}</td>
-                          <td onClick={() => transactionDetailModalHandler(item)}> {item.payee_email}</td>
+                          <td
+                            onClick={() => transactionDetailModalHandler(item)}
+                          >
+                            {" "}
+                            {item.payee_first_name}
+                          </td>
+                          <td
+                            onClick={() => transactionDetailModalHandler(item)}
+                          >
+                            {" "}
+                            {item.payee_mob}
+                          </td>
+                          <td
+                            onClick={() => transactionDetailModalHandler(item)}
+                          >
+                            {" "}
+                            {item.payee_email}
+                          </td>
 
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
@@ -927,7 +942,7 @@ const TransactionHistory = () => {
                     breakLabel={"..."}
                     pageCount={pageCount}
                     marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                    pageRangeDisplayed={5}
+                    pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
                     onPageChange={(selectedItem) => {
                       setCurrentPage(selectedItem.selected + 1);
                       setRadioInputVal({});
