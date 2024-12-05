@@ -12,13 +12,15 @@ import { v4 as uuidv4 } from "uuid";
 import classes from "./allpage.module.css";
 import toastConfig from "../../../utilities/toastTypes";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
+import DateFormatter from "../../../utilities/DateConvert";
+import moment from "moment";
 
 function TransactionSummery() {
   const dispatch = useDispatch();
   // const { path } = useRouteMatch();
   const userRole = roleBasedAccess();
 
-  let currentDate = new Date().toJSON().slice(0, 10);
+  let currentDate = new Date().toLocaleDateString();
 
   const [dttype, setDttype] = useState("1");
   const [search, SetSearch] = useState("");
@@ -59,16 +61,14 @@ function TransactionSummery() {
   useEffect(() => {
     // console.log("user", user)
     const objParam = {
-      fromdate: fromDate,
-      todate: toDate,
+      fromdate: moment(fromDate).format("YYYY-MM-DD"),
+      todate: moment(toDate).format("YYYY-MM-DD"),
       dttype,
       clientcodelst: strClientCode,
       clientNo: clientCodeArrLength,
     };
-    let DefaulttxnList = [];
+
     if (dttype !== "6")
-      // SetTxnList(DefaulttxnList);
-      // SetShowData(DefaulttxnList);
       dispatch(successTxnSummary(objParam));
   }, [dttype]);
 
@@ -86,8 +86,8 @@ function TransactionSummery() {
     const type = userRole.bank
       ? "bank"
       : userRole.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -116,13 +116,13 @@ function TransactionSummery() {
   useEffect(() => {
     search !== ""
       ? SetShowData(
-          txnList.filter((txnItme) =>
-            Object.values(txnItme)
-              .join(" ")
-              .toLowerCase()
-              .includes(search.toLocaleLowerCase())
-          )
+        txnList.filter((txnItme) =>
+          Object.values(txnItme)
+            .join(" ")
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase())
         )
+      )
       : SetShowData(txnList);
   }, [search]);
 
@@ -132,12 +132,13 @@ function TransactionSummery() {
         toastConfig.errorToast("Maximum 31 days allowed");
       else {
         const objParam = {
-          fromdate: fromDate,
-          todate: toDate,
+          fromdate: moment(fromDate).format("YYYY-MM-DD"),
+          todate: moment(toDate).format("YYYY-MM-DD"),
           dttype,
           clientcodelst: strClientCode,
           clientNo: clientCodeArrLength,
         };
+
         dispatch(successTxnSummary(objParam));
       }
     }
@@ -222,6 +223,7 @@ function TransactionSummery() {
                       endDate={toDate}
                       onChange={(update) => {
                         const [start, end] = update;
+                        console.log("start", start)
                         setFromDate(start);
                         setToDate(end);
                       }}
