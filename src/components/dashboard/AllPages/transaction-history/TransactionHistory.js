@@ -437,6 +437,7 @@ const TransactionHistory = () => {
         "Client Trans ID",
         "Challan Number / VAN",
         "Amount",
+        "Currency Type",
         "Transaction Date",
         "Transaction Complete Date",
         "Payment Status",
@@ -476,6 +477,7 @@ const TransactionHistory = () => {
       ];
 
       const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
+      console.log(reportData)
       reportData.forEach((item, index) => {
         const {
           // srNo = index + 1,
@@ -483,6 +485,7 @@ const TransactionHistory = () => {
           client_txn_id = "",
           challan_no = "",
           payee_amount = "",
+          amount_type = "",
           trans_date = "",
           trans_complete_date = "",
           status = "",
@@ -527,6 +530,7 @@ const TransactionHistory = () => {
           client_txn_id,
           challan_no,
           payee_amount ? Number.parseFloat(payee_amount) : "",
+          amount_type,
           dateFormatBasic(trans_date),
           dateFormatBasic(trans_complete_date),
           status,
@@ -735,18 +739,6 @@ const TransactionHistory = () => {
 
                     {txnList?.length > 0 && (
                       <div className="form-group col-md-2 col-lg-1">
-                        {/* {roles.merchant && (
-                                                    <button
-                                                        type="button"
-                                                        className="approve cob-btn-primary"
-                                                        data-toggle="modal"
-                                                        data-target="#exampleModalCenter"
-                                                        onClick={() => setOpenModal(true)}
-                                                    >
-                                                        <i className="fa fa-download"></i> Export
-                                                    </button>
-                                                )} */}
-
                         <button
                           type="button"
                           className="btn btn-sm text-white cob-btn-primary"
@@ -840,6 +832,7 @@ const TransactionHistory = () => {
                       <th> Transaction ID</th>
                       <th> Client Transaction ID</th>
                       <th> Amount</th>
+                      <th> Currency Type</th>
                       <th> Transaction Date</th>
                       <th> Transaction Complete Date</th>
                       <th> Payment Status</th>
@@ -885,6 +878,7 @@ const TransactionHistory = () => {
                           >
                             {Number.parseFloat(item.payee_amount).toFixed(2)}
                           </td>
+                          <td>{item.amount_type}</td>
                           <td
                             onClick={() => transactionDetailModalHandler(item)}
                           >

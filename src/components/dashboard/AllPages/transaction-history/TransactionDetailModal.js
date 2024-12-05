@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classes from "./transaction.module.css";
-import moment from "moment";
+// import moment from "moment";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import CustomLoader from "../../../../_components/loader";
 
@@ -12,30 +12,6 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
     };
   }, []);
 
-  const convertDate = (dateVal) => {
-    //convert only this format 2024-10-10T12:36:30Z
-
-    let date;
-    if (dateVal === null && isNaN(date)) {
-      date = "N/A";
-    } else {
-      // Extract date components
-      const sdate = new Date(dateVal);
-      const day = String(sdate?.getUTCDate()).padStart(2, "0");
-      const month = String(sdate?.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
-      const year = sdate?.getUTCFullYear();
-
-      // Extract time components
-      const hours = String(sdate?.getUTCHours()).padStart(2, "0");
-      const minutes = String(sdate?.getUTCMinutes()).padStart(2, "0");
-      const seconds = String(sdate?.getUTCSeconds()).padStart(2, "0");
-
-      // Format the date and time
-      date = `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
-    }
-
-    return date;
-  };
 
   return (
     <div
@@ -75,13 +51,19 @@ function TransactionDetailModal({ fnSetModalToggle, transactionData }) {
                       <tr>
                         <th>Client Transaction ID</th>
                         <td>{transactionData.client_txn_id}</td>
+
+
                         <th>Amount</th>
                         <td>
+
                           {Number.parseFloat(
                             transactionData.payee_amount
                           ).toFixed(2)}
+                          <span className="ms-1">  {transactionData.amount_type}</span>
+
                         </td>
                       </tr>
+
                       <tr>
                         <th>Transaction Date</th>
                         <td>{dateFormatBasic(transactionData.trans_date)}</td>
