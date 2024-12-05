@@ -2,7 +2,7 @@ const ENV_PROD = false; // For proudction make it true, don't change in the loca
 let url,
   kyc_url,
   b2b_url,
-  kyc_validate,
+  // kyc_validate,
   payout_url,
   webSocketUrl,
   widget_url,
@@ -15,7 +15,7 @@ let url,
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
-  kyc_validate = " https://kycvalidator.sabpaisa.in";
+  // kyc_validate = " https://kycvalidator.sabpaisa.in";
   payout_url = "https://payout.sabpaisa.in";
   b2b_url = "https://b2becollect.sabpaisa.in";
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
@@ -24,13 +24,15 @@ if (ENV_PROD) {
   widget_script =
     "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
-  // refund_url = "https://gateway.sabpaisa.in/sabpaisa"
+
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
-  kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
+  // url = "http://192.168.2.44:8000";
+  // kyc_url = "http://192.168.2.44:8001";
+  // kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
   widget_url = "https://stage-widget.sabpaisa.in";
@@ -44,13 +46,14 @@ if (ENV_PROD) {
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
-const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
+// const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
 const API_LIVE = {
   BASE_URL_COB: url,
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
+  AUTH_LOGIN_VERIFY: `${url}/auth-service/auth/login-verify`,
   RECAPTCHA_VERIFY: `${url}/auth-service/auth/captcha-verify`,
   ////////////////////////////////////---------------------------business_cat_code api
 
@@ -308,7 +311,7 @@ const API_LIVE = {
 
   // UDYAM_REGISTRATION: `${kyc_url}/kyc/validator`,
 
-  CIN_DETAIL: `${kyc_url}/kyc/validate/cin/`,
+  CIN_DETAIL: `${kyc_url}/kyc/validator/cin/`,
   Aadhar_number: `${kyc_url}/kyc/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_url}/kyc/validator/validate-aadhar/verify-otp/`,
 

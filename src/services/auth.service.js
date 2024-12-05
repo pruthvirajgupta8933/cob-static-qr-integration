@@ -35,6 +35,14 @@ const login = async (username, password, is_social) => {
   })
 };
 
+const loginOtpVerify = async (otp, verification_token) => {
+
+  return axiosInstanceAuth.post(API_URL.AUTH_LOGIN_VERIFY, {
+    otp,
+    verification_token
+  })
+};
+
 const logout = () => {
   clearLocalStore()
 
@@ -54,30 +62,6 @@ const checkClintCode = (object) => {
 const captchaVerify = (object) => {
   return axiosInstanceJWT.post(API_URL.RECAPTCHA_VERIFY, object)
 };
-
-
-// const updateClientProfile = (object, clientId) => {
-//   return axiosInstanceJWT.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
-// }
-
-
-// const verifyClientCode = (clientCode) => {
-//   return axiosInstanceJWT.get(BASE_URL + "/verifyClientCode/" + clientCode);
-// }
-
-
-// const verifyIfcsCode = (ifsc_code) => {
-//   return axiosInstance.get("https://ifsc.razorpay.com/" + ifsc_code);
-// }
-
-// const fetchNbBankList = () => {
-//   return axiosInstance.get(BANK_LIST_URL + "nb");
-// }
-
-// const fetchDcBankList = () => {
-//   return axiosInstance.get(BANK_LIST_URL + "dc");
-// }
-
 
 const changePassword = (object) => {
   // console.log("profileservice",object)
@@ -118,15 +102,10 @@ const emailVerification = async (loginId) => {
 const authService = {
   register,
   login,
+  loginOtpVerify,
   logout,
   emailVerification,
-  // sendEmail,
   createClintCode,
-  // updateClientProfile,
-  // verifyClientCode,
-  // fetchNbBankList,
-  // fetchDcBankList,
-  // verifyIfcsCode,
   captchaVerify,
   changePassword,
   getEmailToSendOTP,
