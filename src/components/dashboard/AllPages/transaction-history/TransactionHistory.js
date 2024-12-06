@@ -103,8 +103,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -132,8 +132,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -162,7 +162,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const paymodeList = async () => {
@@ -171,7 +171,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   let isExtraDataRequired = false;
@@ -789,7 +789,7 @@ const TransactionHistory = () => {
       name: "Transaction ID",
       selector: (row) => row.txn_id,
       cell: (row) => <div className="removeWhiteSpace">{row.txn_id}</div>,
-      width: "120px",
+      width: "130px",
     },
     {
       id: "3",
@@ -798,13 +798,19 @@ const TransactionHistory = () => {
       cell: (row) => (
         <div className="removeWhiteSpace">{row.client_txn_id}</div>
       ),
-      width: "120px",
+      width: "130px",
     },
     {
       id: "4",
       name: "Amount",
       selector: (row) => Number.parseFloat(row.payee_amount).toFixed(2),
       sortable: true,
+      width: "120px",
+    },
+    {
+      id: "122",
+      name: "Currency Type",
+      selector: (row) => row.amount_type,
       width: "120px",
     },
     {
