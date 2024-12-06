@@ -22,6 +22,7 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
+import ReportLayout from "../../../_components/report_component/ReportLayout";
 
 const RefundTransactionHistory = () => {
   const dispatch = useDispatch();
@@ -452,160 +453,128 @@ const RefundTransactionHistory = () => {
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
+  const form = (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmitHandler}
+    >
+      {(formik) => (
+        <Form>
+          <div className="form-row mt-4">
+            <div className="form-group col-md-3">
+              <FormikController
+                control="select"
+                label="Client Code"
+                name="clientCode"
+                className="form-select rounded-0 mt-0"
+                options={clientCodeOption}
+              />
+            </div>
+
+            <div className="form-group col-md-3">
+              <FormikController
+                control="date"
+                label="From Date"
+                id="fromDate"
+                name="fromDate"
+                value={
+                  formik.values.fromDate
+                    ? new Date(formik.values.fromDate)
+                    : null
+                }
+                onChange={(date) => formik.setFieldValue("fromDate", date)}
+                format="dd-MM-y"
+                clearIcon={null}
+                className="form-control rounded-0 p-0"
+                required={true}
+                errorMsg={formik.errors["fromDate"]}
+              />
+            </div>
+
+            <div className="form-group col-md-3">
+              <FormikController
+                control="date"
+                label="End Date"
+                id="endDate"
+                name="endDate"
+                value={
+                  formik.values.endDate ? new Date(formik.values.endDate) : null
+                }
+                onChange={(date) => formik.setFieldValue("endDate", date)}
+                format="dd-MM-y"
+                clearIcon={null}
+                className="form-control rounded-0 p-0"
+                required={true}
+                errorMsg={formik.errors["endDate"]}
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group col-lg-1">
+              <button
+                disabled={disable}
+                className="btn cob-btn-primary text-white btn-sm"
+                type="submit"
+              >
+                {" "}
+                {loading ? "Loading..." : "Search"}{" "}
+              </button>
+            </div>
+
+            {txnList?.length > 0 && (
+              <div className="form-group col-lg-1">
+                <button
+                  className="btn btn-sm text-white cob-btn-primary"
+                  type=""
+                  onClick={() => {
+                    exportToExcelFn();
+                  }}
+                >
+                  <i className="fa fa-download"></i> Export
+                </button>
+              </div>
+            )}
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
   return (
     <section className="ant-layout">
       <main>
-        <h5>Refund Transaction History</h5>
+        <ReportLayout
+          type="refundHistory"
+          title="Refund Transaction History"
+          form={form}
+          rowData={rowData}
+          data={txnList}
+          showSearch
+          showCountPerPage
+        />
 
-        <section>
-          <div className="container-fluid p-0">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmitHandler}
-            >
-              {(formik) => (
-                <Form>
-                  <div className="form-row mt-4">
-                    <div className="form-group col-md-3">
-                      <FormikController
-                        control="select"
-                        label="Client Code"
-                        name="clientCode"
-                        className="form-select rounded-0 mt-0"
-                        options={clientCodeOption}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3">
-                      <FormikController
-                        control="date"
-                        label="From Date"
-                        id="fromDate"
-                        name="fromDate"
-                        value={
-                          formik.values.fromDate
-                            ? new Date(formik.values.fromDate)
-                            : null
-                        }
-                        onChange={(date) =>
-                          formik.setFieldValue("fromDate", date)
-                        }
-                        format="dd-MM-y"
-                        clearIcon={null}
-                        className="form-control rounded-0 p-0"
-                        required={true}
-                        errorMsg={formik.errors["fromDate"]}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3">
-                      <FormikController
-                        control="date"
-                        label="End Date"
-                        id="endDate"
-                        name="endDate"
-                        value={
-                          formik.values.endDate
-                            ? new Date(formik.values.endDate)
-                            : null
-                        }
-                        onChange={(date) =>
-                          formik.setFieldValue("endDate", date)
-                        }
-                        format="dd-MM-y"
-                        clearIcon={null}
-                        className="form-control rounded-0 p-0"
-                        required={true}
-                        errorMsg={formik.errors["endDate"]}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group col-lg-1">
-                      <button
-                        disabled={disable}
-                        className="btn cob-btn-primary text-white btn-sm"
-                        type="submit"
-                      >
-                        {" "}
-                        {loading ? "Loading..." : "Search"}{" "}
-                      </button>
-                    </div>
-
-                    {txnList?.length > 0 && (
-                      <div className="form-group col-lg-1">
-                        <button
-                          className="btn btn-sm text-white cob-btn-primary"
-                          type=""
-                          onClick={() => {
-                            exportToExcelFn();
-                          }}
-                        >
-                          <i className="fa fa-download"></i> Export
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </Form>
-              )}
-            </Formik>
-            <hr className="hr" />
-            {txnList?.length > 0 ? (
-              <div className="form-row">
-                <div className="form-group col-md-3">
-                  <label>Search</label>
-                  <input
-                    type="text"
-                    label="Search"
-                    name="search"
-                    placeholder="Search Here"
-                    className="form-control rounded-0"
-                    onChange={(e) => {
-                      SetSearchText(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="form-group col-md-3">
-                  <label>Count Per Page</label>
-                  <select
-                    value={pageSize}
-                    rel={pageSize}
-                    className="form-select"
-                    onChange={(e) => setPageSize(parseInt(e.target.value))}
-                  >
-                    <DropDownCountPerPage datalength={txnList.length} />
-                  </select>
-                </div>
-              </div>
-            ) : (
-              <> </>
-            )}
-          </div>
-        </section>
-
-        <section className="features8 cid-sg6XYTl25a flleft w-100">
-          <div className="container-fluid p-0 my-3 ">
-            {txnList.length > 0 ? (
+        {/* <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <div className="container-fluid p-0 my-3 "> */}
+        {/* {txnList.length > 0 ? (
               <h6>
                 <strong>Total Record</strong> :{" "}
                 <strong>{txnList.length}</strong>
               </h6>
             ) : (
               <></>
-            )}
+            )} */}
 
-            <div className="overflow-auto">
-              <Table
+        {/* <div className="overflow-auto"> */}
+        {/* <Table
                 row={rowData}
                 data={paginatedata}
                 dataCount={txnList.length}
                 pageSize={pageSize}
                 currentPage={currentPage}
                 changeCurrentPage={(page) => setCurrentPage(page)}
-              />
-              {/* <table className="table table-bordered">
+              /> */}
+        {/* <table className="table table-bordered">
                 <thead>
                   {txnList.length > 0 ? (
                     <tr>
@@ -643,9 +612,9 @@ const RefundTransactionHistory = () => {
                     })}
                 </tbody>
               </table> */}
-            </div>
+        {/* </div> */}
 
-            {/* <div>
+        {/* <div>
               {txnList.length > 0 ? (
                 <nav aria-label="Page navigation example">
                   <ul className="pagination">
@@ -698,7 +667,7 @@ const RefundTransactionHistory = () => {
                 <></>
               )}
             </div> */}
-            {/* <div className="container">
+        {/* <div className="container">
               {isLoadingTxnHistory ? (
                 <div className="col-lg-12 col-md-12">
                   <div className="text-center">
@@ -717,8 +686,8 @@ const RefundTransactionHistory = () => {
                 <></>
               )}
             </div> */}
-          </div>
-        </section>
+        {/* </div>
+        </section> */}
       </main>
     </section>
   );
