@@ -883,6 +883,8 @@ const TransactionHistory = () => {
           rowData={rowData}
           form={form}
           onRowClick={transactionDetailModalHandler}
+          showSearch
+          showCountPerPage
         />
         <ExportTransactionHistory
           openModal={openModal}
