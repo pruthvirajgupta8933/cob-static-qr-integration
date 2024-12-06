@@ -166,25 +166,29 @@ const MyMerchantList = () => {
       cell: (row) => (
         <div className="removeWhiteSpace"> {row?.login_id?.mobileNumber}</div>
       ),
-      // width: "200px",
+
     },
     {
       id: "6",
       name: "Account Status",
-      selector: (row) => row.status,
+      selector: (row) => row?.login_id?.status,
       cell: (row) => (
         <div className="removeWhiteSpace">{row?.login_id?.status}</div>
       ),
-      // width: "200px",
+    },
+    {
+      id: "55",
+      name: "KYC Status",
+      selector: (row) => row.status
     },
     {
       id: "13",
       name: "Onboard Type",
-      selector: (row) => row.status,
+      selector: (row) => row?.login_id?.onboard_type,
       cell: (row) => (
         <div className="removeWhiteSpace">{row?.login_id?.onboard_type}</div>
       ),
-      // width: "200px",
+
     },
 
     {
@@ -223,10 +227,10 @@ const MyMerchantList = () => {
       width: "110px",
       cell: (row) => (
         <div>
-          {(roles?.accountManager || roles.viewer) && (
+          {[roles?.viewer, roles?.accountManager].includes(true) && ["Approved"].includes(row.status) && (
             <button
               type="button"
-              className="approve text-white  cob-btn-primary  btn-sm "
+              className="approve text-white cob-btn-primary btn-sm "
               data-toggle="modal"
               onClick={() => {
                 setCommentId({
@@ -254,9 +258,8 @@ const MyMerchantList = () => {
       width: "170px",
       cell: (row) => (
         <div className="d-flex">
-          {roles?.viewer === true ||
-          (roles?.accountManager === true &&
-            row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+          {[roles?.viewer, roles?.accountManager].includes(true) &&
+            (row?.login_id?.master_client_id?.clientCode) ? (
             <>
               <button
                 type="button"
@@ -302,7 +305,7 @@ const MyMerchantList = () => {
               </button>
             </>
           ) : (
-            <></>
+            <p className="mx-auto">Client code not found. Please log in with your merchant credentials to retrieve the client code.</p>
           )}
         </div>
       ),
