@@ -9,6 +9,9 @@ const ReportLayout = ({
   form,
   data,
   rowData,
+  dataSummary,
+  showSearch,
+  showCountPerPage,
   transactionDetailModalHandler,
 }) => {
   const [searchText, SetSearchText] = useState("");
@@ -63,32 +66,36 @@ const ReportLayout = ({
         <div className="container-fluid p-0 mt-4">
           {form}
           <hr className="hr" />
-          {data?.length > 0 && type !== "txnSummary" && (
+          {data?.length > 0 && (
             <div className="form-row">
-              <div className="form-group col-md-3">
-                <label>Search</label>
-                <input
-                  type="text"
-                  label="Search"
-                  name="search"
-                  placeholder="Search Here"
-                  className="form-control rounded-0"
-                  onChange={(e) => {
-                    SetSearchText(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="form-group col-md-3">
-                <label>Count Per Page</label>
-                <select
-                  value={pageSize}
-                  rel={pageSize}
-                  className="form-select"
-                  onChange={(e) => setPageSize(parseInt(e.target.value))}
-                >
-                  <DropDownCountPerPage datalength={data.length} />
-                </select>
-              </div>
+              {showSearch && (
+                <div className="form-group col-md-3">
+                  <label>Search</label>
+                  <input
+                    type="text"
+                    label="Search"
+                    name="search"
+                    placeholder="Search Here"
+                    className="form-control rounded-0"
+                    onChange={(e) => {
+                      SetSearchText(e.target.value);
+                    }}
+                  />
+                </div>
+              )}
+              {showCountPerPage && (
+                <div className="form-group col-md-3">
+                  <label>Count Per Page</label>
+                  <select
+                    value={pageSize}
+                    rel={pageSize}
+                    className="form-select"
+                    onChange={(e) => setPageSize(parseInt(e.target.value))}
+                  >
+                    <DropDownCountPerPage datalength={data.length} />
+                  </select>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -98,28 +105,12 @@ const ReportLayout = ({
           {data?.length > 0 && (
             <h6>
               <strong>Total Record</strong> : {data.length}
-              {type === "settlement" && (
-                <>
-                  {" "}
-                  | <strong>Settlement Amount</strong> :{" "}
-                  {data
-                    ?.reduce((prevVal, currVal) => {
-                      return prevVal + parseFloat(currVal.settlement_amount, 2);
-                    }, 0)
-                    .toFixed(2)}
-                </>
-              )}
-              {type === "txnSummary" && (
-                <>
-                  {" "}
-                  | <strong>Total Amount (INR)</strong> :{" "}
-                  {data
-                    ?.reduce((prevVal, currVal) => {
-                      return prevVal + parseFloat(currVal.payeeamount, 2);
-                    }, 0)
-                    .toFixed(2)}
-                </>
-              )}
+              {dataSummary?.map((summary) => (
+                <span className="px-2">
+                  |<strong className="px-1">{summary.name} : </strong>
+                  <span>{summary.value}</span>
+                </span>
+              ))}
             </h6>
           )}
           <div className="overflow-auto">

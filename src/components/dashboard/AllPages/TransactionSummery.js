@@ -304,6 +304,16 @@ function TransactionSummery() {
           data={showData}
           rowData={rowData}
           form={form}
+          dataSummary={[
+            {
+              name: "Total Amount (INR)",
+              value: showData
+                ?.reduce((prevVal, currVal) => {
+                  return prevVal + parseFloat(currVal.payeeamount, 2);
+                }, 0)
+                .toFixed(2),
+            },
+          ]}
         />
         {/* <section className="">
           <div className="container-fluid p-0"> */}

@@ -550,6 +550,8 @@ const RefundTransactionHistory = () => {
           form={form}
           rowData={rowData}
           data={txnList}
+          showSearch
+          showCountPerPage
         />
 
         {/* <section className="features8 cid-sg6XYTl25a flleft w-100">

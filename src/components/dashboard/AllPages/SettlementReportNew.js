@@ -607,11 +607,10 @@ const SettlementReportNew = () => {
           <span>
             <strong>Total Record</strong> :&nbsp;
             {settlementSummaryReport.data?.length} |
-            <strong> Total Settlement Amount</strong> :&nbsp;
-            {settlementSummaryReport.data?.reduce(
-              (amt, data) => (amt += data.settlement_amount),
-              0
-            )}
+            <strong> Total Settlement Amount (INR)</strong> :&nbsp;
+            {settlementSummaryReport.data
+              ?.reduce((amt, data) => (amt += data.settlement_amount), 0)
+              .toFixed(2)}
           </span>
         </h6>
         <table className="table table-bordered">
@@ -760,6 +759,18 @@ const SettlementReportNew = () => {
             data={txnList}
             rowData={rowData}
             form={form}
+            dataSummary={[
+              {
+                name: "Settlement Amount (INR)",
+                value: txnList
+                  ?.reduce((prevVal, currVal) => {
+                    return prevVal + parseFloat(currVal.settlement_amount, 2);
+                  }, 0)
+                  .toFixed(2),
+              },
+            ]}
+            showSearch
+            showCountPerPage
           />
           {showModal && (
             <CustomModal
