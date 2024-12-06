@@ -11,14 +11,13 @@ import {
   businessType,
   busiCategory,
   platformType,
-  // collectionFrequency,
-  // collectionType,
   saveBusinessInfo,
   kycUserList,
   GetKycTabsStatus,
+  kycUserListForMerchant,
 } from "../../slices/kycSlice";
 import kycOperationService from "../../services/kycOperation.service";
-// import { includes } from "lodash";
+
 
 function BusinessOverview(props) {
   const setTab = props.tab;
@@ -237,7 +236,13 @@ function BusinessOverview(props) {
           toast.success(res.payload.message);
           setTab(3);
           setTitle("BUSINESS DETAILS");
-          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+
+          if (props?.role?.merchant) {
+            dispatch(kycUserListForMerchant());
+          } else {
+            dispatch(kycUserList({ login_id: merchantloginMasterId }));
+          }
+
           dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
           setIsDisabled(false);
         } else {

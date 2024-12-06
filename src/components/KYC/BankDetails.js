@@ -12,6 +12,7 @@ import {
   getBankId,
   kycUserList,
   GetKycTabsStatus,
+  kycUserListForMerchant,
 } from "../../slices/kycSlice";
 import {
   ifscValidation,
@@ -236,7 +237,11 @@ function BankDetails(props) {
         setTab(5);
         setIsDisable(false);
         setTitle("DOCUMENTS UPLOAD");
-        dispatch(kycUserList({ login_id: merchantloginMasterId }));
+        if (props?.role?.merchant) {
+          dispatch(kycUserListForMerchant());
+        } else {
+          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+        }
         dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
       } else {
         toast.error(res?.payload?.detail);

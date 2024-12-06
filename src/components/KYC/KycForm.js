@@ -15,6 +15,7 @@ import {
   kycDocumentUploadList,
   GetKycTabsStatus,
   clearKycState,
+  kycUserListForMerchant,
 } from "../../slices/kycSlice";
 import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -67,17 +68,17 @@ function KycForm() {
 
   //------------- Kyc  User List ------------//
   useEffect(() => {
-    dispatch(kycUserList({ login_id: merchantloginMasterId }));
+    if (roles.merchant) {
+      dispatch(kycUserListForMerchant());
+    } else {
+      dispatch(kycUserList({ login_id: merchantloginMasterId }));
+    }
+
+    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }));
+    dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
+
   }, [merchantloginMasterId]);
   //-----------Kyc Document Upload List ------//
-  useEffect(() => {
-    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }));
-  }, [merchantloginMasterId]);
-  //--------------------------------------//
-  //API Integrated For Verification Of All Tabs ------------//
-  useEffect(() => {
-    dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
-  }, [merchantloginMasterId]);
 
   const redirect = () => {
     if (

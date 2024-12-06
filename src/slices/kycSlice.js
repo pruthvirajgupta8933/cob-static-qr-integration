@@ -410,6 +410,20 @@ export const kycUserList = createAsyncThunk(
 );
 
 
+export const kycUserListForMerchant = createAsyncThunk(
+  "kyc/kycUserListForMerchant",
+  async () => {
+    const response = await axiosInstanceJWT
+      .get(`${API_URL.getMerchantInfo}`)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+
 //------------------------------------------------------------------------------------------
 
 //--------------------For KYC DOCUMENT UPLOAD DATA STRAIGHT FROM THIS API -------------------
@@ -1111,6 +1125,20 @@ export const kycSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+
+      // state update for the merchant roles 
+      .addCase(kycUserListForMerchant.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(kycUserListForMerchant.fulfilled, (state, action) => {
+        state.kycUserList = action.payload;
+      })
+      .addCase(kycUserListForMerchant.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+
+
       .addCase(kycForApproved.pending, (state) => {
         state.status = "pending";
         state.isLoadingForApproved = true;

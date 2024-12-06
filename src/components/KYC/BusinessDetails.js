@@ -12,6 +12,7 @@ import {
   saveMerchantInfo,
   kycUserList,
   GetKycTabsStatus,
+  kycUserListForMerchant,
 } from "../../slices/kycSlice";
 import {
   panValidation,
@@ -58,9 +59,8 @@ function BusinessDetails(props) {
       ? ""
       : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  let businessAuthName = `${
-    busiAuthFirstName !== undefined ? busiAuthFirstName : ""
-  } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
+  let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
+    } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
   const trimFullName = (strOne, strTwo) => {
     let fullStr = isNull(strOne) ? "" : strOne;
@@ -321,31 +321,7 @@ function BusinessDetails(props) {
     });
   };
 
-  // const udyamValidation = (values, key, setFieldValue) => {
-  //   setIsloader(true)
-  //   setUdyamData("")
 
-  //   udyamValidate({ "reg_number": values }).then(
-  //     resp => {
-  //       if (resp?.data?.valid === true) {
-
-  //         setFieldValue(key, values)
-  //         setFieldValue("prevUdyamNumber", values)
-  //         setUdyamResponseData(resp?.data)
-  //         setIsloader(false)
-
-  //         toastConfig.successToast(resp?.data?.message)
-  //         setUdyamData({ entity: resp?.data?.entity, valid: resp?.data?.valid })
-  //       } else {
-  //         setUdyamResponseData({})
-  //         setIsloader(false)
-  //         toastConfig.errorToast("Detail is not valid");
-  //       }
-  //     }).catch(err =>
-  //       toastConfig.errorToast(err.response?.data?.detail)
-
-  //       )
-  // }
   const udyamValidation = (values, key, setFieldValue, setIsloader) => {
     setIsloader(true);
     setUdyamData("");
@@ -409,7 +385,7 @@ function BusinessDetails(props) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
@@ -482,7 +458,13 @@ function BusinessDetails(props) {
         toast.success(res?.payload?.message);
         setTab(4);
         setTitle("BANK DETAILS");
-        dispatch(kycUserList({ login_id: merchantloginMasterId }));
+
+        if (props?.role?.merchant) {
+          dispatch(kycUserListForMerchant());
+        } else {
+          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+        }
+
         dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
 
         setIsDisable(false);
@@ -606,10 +588,10 @@ function BusinessDetails(props) {
                       />
 
                       {values?.gst_number !== null &&
-                      values?.gst_number !== undefined &&
-                      values?.gst_number !== "" &&
-                      !errors.hasOwnProperty("gst_number") &&
-                      !errors.hasOwnProperty("prevGstNumber") ? (
+                        values?.gst_number !== undefined &&
+                        values?.gst_number !== "" &&
+                        !errors.hasOwnProperty("gst_number") &&
+                        !errors.hasOwnProperty("prevGstNumber") ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -695,10 +677,10 @@ function BusinessDetails(props) {
                         />
 
                         {values?.udyam_number !== null &&
-                        values?.udyam_number !== "" &&
-                        values?.udyam_number !== undefined &&
-                        !errors.hasOwnProperty("udyam_number") &&
-                        !errors.hasOwnProperty("prevUdyamNumber") ? (
+                          values?.udyam_number !== "" &&
+                          values?.udyam_number !== undefined &&
+                          !errors.hasOwnProperty("udyam_number") &&
+                          !errors.hasOwnProperty("prevUdyamNumber") ? (
                           <span className="success input-group-append">
                             <img
                               src={gotVerified}
@@ -776,12 +758,12 @@ function BusinessDetails(props) {
                   />
 
                   {values?.pan_card !== null &&
-                  values?.isPanVerified !== "" &&
-                  values?.pan_card !== "" &&
-                  values?.pan_card !== undefined &&
-                  !errors.hasOwnProperty("pan_card") &&
-                  !errors.hasOwnProperty("prev_pan_card") &&
-                  values?.pan_card === values?.prev_pan_card ? (
+                    values?.isPanVerified !== "" &&
+                    values?.pan_card !== "" &&
+                    values?.pan_card !== undefined &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("prev_pan_card") &&
+                    values?.pan_card === values?.prev_pan_card ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -860,9 +842,9 @@ function BusinessDetails(props) {
                     }}
                   />
                   {values?.signatory_pan &&
-                  values?.isSignatoryPanVerified &&
-                  !errors.hasOwnProperty("signatory_pan") &&
-                  !errors.hasOwnProperty("prevSignatoryPan") ? (
+                    values?.isSignatoryPanVerified &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
