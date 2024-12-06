@@ -38,6 +38,11 @@ const MultiUserOnboard = () => {
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse
   );
+  const bankMerchantLoginId = useSelector(
+    (state) =>
+      state.merchantReferralOnboardReducer?.merchantOnboardingProcess
+        ?.merchantLoginId
+  );
   const { user } = useSelector((state) => state.auth);
   const loginId = user?.loginId;
 
@@ -78,8 +83,10 @@ const MultiUserOnboard = () => {
   const initialValues = {
     zone: kycData?.zone_code ?? "",
     onboardType:
-      selectOnboardType.find((type) => type.value === kycData?.onboard_type)
-        ?.key ?? "",
+      kycData?.onboard_type === "Bank Child"
+        ? "bank"
+        : selectOnboardType.find((type) => type.value === kycData?.onboard_type)
+            ?.key ?? "",
     parentType: "",
     addMerchant: "",
   };
@@ -111,7 +118,7 @@ const MultiUserOnboard = () => {
   };
 
   useEffect(() => {
-    if (kycData) {
+    if (kycData?.onboard_type || bankMerchantLoginId) {
       setSelectedvalue(kycData?.zone_code);
       setSelectedName(
         refferalList?.find((i) => i.key === kycData.zone_code)?.value
@@ -121,19 +128,29 @@ const MultiUserOnboard = () => {
           selectOnboardType.find((type) => type.value === kycData?.onboard_type)
             ?.key
       );
+
       if (
         merchantId &&
         kycData?.onboard_type &&
         kycData.onboard_type != "Sub Merchant" &&
         kycData.onboard_type != "Referrer (Company)" &&
-        kycData.onboard_type != "Referrer (Individual)"
+        kycData.onboard_type != "Referrer (Individual)" &&
+        kycData.onboard_type != "Bank Child"
       ) {
         toastConfig.infoToast(
           "Please log in using your merchant credentials and complete the KYC process at your earliest convenience."
         );
       }
+      if (childList?.length > 0) {
+        const bank = childList.find(
+          (child) => child?.loginMasterId == kycData?.parentClientId
+        );
+        setSelectedUserType(bank?.loginMasterId);
+        setShowBankForm(true);
+        setSelectedChildName(bank?.name);
+      }
     }
-  }, [kycData]);
+  }, [kycData, childList]);
 
   useEffect(() => {
     if (merchantId)
@@ -187,7 +204,8 @@ const MultiUserOnboard = () => {
         <div className="">
           <h5 className="">Clientegration</h5>
         </div>
-        {(basicDetailsResponse.data?.business_cat_code ?? merchantId) && (
+        {(basicDetailsResponse.data?.business_cat_code ??
+          Boolean(merchantId)) && (
           <Prompt
             message={() => {
               if (
@@ -364,6 +382,7 @@ const MultiUserOnboard = () => {
                 zoneCode={selectedValue}
                 referrerLoginId={selectedUserType}
                 heading={false}
+                edit={Boolean(merchantId)}
               />
             </div>
           )}

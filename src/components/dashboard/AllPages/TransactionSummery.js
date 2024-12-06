@@ -13,13 +13,15 @@ import classes from "./allpage.module.css";
 import toastConfig from "../../../utilities/toastTypes";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
+import DateFormatter from "../../../utilities/DateConvert";
+import moment from "moment";
 
 function TransactionSummery() {
   const dispatch = useDispatch();
   // const { path } = useRouteMatch();
   const userRole = roleBasedAccess();
 
-  let currentDate = new Date().toJSON().slice(0, 10);
+  let currentDate = new Date().toLocaleDateString();
 
   const [dttype, setDttype] = useState("1");
   const [search, SetSearch] = useState("");
@@ -60,17 +62,14 @@ function TransactionSummery() {
   useEffect(() => {
     // console.log("user", user)
     const objParam = {
-      fromdate: fromDate,
-      todate: toDate,
+      fromdate: moment(fromDate).format("YYYY-MM-DD"),
+      todate: moment(toDate).format("YYYY-MM-DD"),
       dttype,
       clientcodelst: strClientCode,
       clientNo: clientCodeArrLength,
     };
-    let DefaulttxnList = [];
-    if (dttype !== "6")
-      // SetTxnList(DefaulttxnList);
-      // SetShowData(DefaulttxnList);
-      dispatch(successTxnSummary(objParam));
+
+    if (dttype !== "6") dispatch(successTxnSummary(objParam));
   }, [dttype]);
 
   //make client code array
@@ -133,12 +132,13 @@ function TransactionSummery() {
         toastConfig.errorToast("Maximum 31 days allowed");
       else {
         const objParam = {
-          fromdate: fromDate,
-          todate: toDate,
+          fromdate: moment(fromDate).format("YYYY-MM-DD"),
+          todate: moment(toDate).format("YYYY-MM-DD"),
           dttype,
           clientcodelst: strClientCode,
           clientNo: clientCodeArrLength,
         };
+
         dispatch(successTxnSummary(objParam));
       }
     }

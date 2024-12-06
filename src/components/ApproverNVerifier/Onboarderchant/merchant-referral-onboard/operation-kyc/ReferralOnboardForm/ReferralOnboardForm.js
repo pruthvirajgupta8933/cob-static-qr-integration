@@ -370,19 +370,19 @@ function ReferralOnboardForm({
     // setRegisterWithGstState(false)
   };
 
-  useEffect(() => {
-    dispatch(businessOverviewState())
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "stateId",
-          "stateName",
-          resp.payload
-        );
-        setBusinessOverview(data);
-      })
-      .catch((err) => console.log(err));
-    // console.log("useEffect call")
-  }, []);
+  // useEffect(() => {
+  //   dispatch(businessOverviewState())
+  //     .then((resp) => {
+  //       const data = convertToFormikSelectJson(
+  //         "stateId",
+  //         "stateName",
+  //         resp.payload
+  //       );
+  //       setBusinessOverview(data);
+  //     })
+  //     .catch((err) => console.log(err));
+  //   // console.log("useEffect call")
+  // }, []);
 
   const authValidation = (values, key, setFieldValue) => {
     setLoadingForSignatory(true);
@@ -420,7 +420,7 @@ function ReferralOnboardForm({
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
@@ -554,12 +554,12 @@ function ReferralOnboardForm({
                       />
 
                       {values?.pan_card !== null &&
-                      values?.isPanVerified !== "" &&
-                      values?.pan_card !== "" &&
-                      values?.pan_card !== undefined &&
-                      !errors.hasOwnProperty("pan_card") &&
-                      !errors.hasOwnProperty("prev_pan_card") &&
-                      values?.pan_card === values?.prev_pan_card ? (
+                        values?.isPanVerified !== "" &&
+                        values?.pan_card !== "" &&
+                        values?.pan_card !== undefined &&
+                        !errors.hasOwnProperty("pan_card") &&
+                        !errors.hasOwnProperty("prev_pan_card") &&
+                        values?.pan_card === values?.prev_pan_card ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -636,9 +636,9 @@ function ReferralOnboardForm({
                         }}
                       />
                       {values?.signatory_pan &&
-                      values?.isSignatoryPanVerified &&
-                      !errors.hasOwnProperty("signatory_pan") &&
-                      !errors.hasOwnProperty("prevSignatoryPan") ? (
+                        values?.isSignatoryPanVerified &&
+                        !errors.hasOwnProperty("signatory_pan") &&
+                        !errors.hasOwnProperty("prevSignatoryPan") ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -711,7 +711,7 @@ function ReferralOnboardForm({
                       name="company_name"
                       placeholder="Company Name"
                       className="form-control"
-                      // label="Comany Name"
+                    // label="Comany Name"
                     />
                   </div>
                   <div className="col-lg-4">

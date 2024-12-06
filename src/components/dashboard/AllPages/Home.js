@@ -198,7 +198,7 @@ function Home() {
 
       <div className="row row card shadow pt-2">
         {/* hide when login by bank and if businees category b2b */}
-        {roles?.bank === true || roles?.b2b === true ? (
+        {(roles?.bank === true || roles?.b2b === true || roles?.referral) ? (
           <></>
         ) : (
           <StepProgressBar status={KycTabStatusStore?.status} />
@@ -246,7 +246,7 @@ function Home() {
         </div>
       )}
 
-      {roles?.bank && (
+      {(roles?.bank || roles?.referral) && (
         <div className="row">
           <h5>Dashboard</h5>
           <div className="col-lg-4">

@@ -9,12 +9,12 @@ import Yup from '../../../../_components/formik/Yup';
 import { saveAs } from 'file-saver';
 import moment from "moment";
 import toastConfig from '../../../../utilities/toastTypes';
-import downloadTransactionHistory from "../../../../services/dashboard.service"
+// import downloadTransactionHistory from "../../../../services/dashboard.service"
 
 const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, checkValidation, clientCodeListArr }) => {
-    
+
     const [disable, setDisable] = useState(false);
-  
+
 
     const initialValues = {
         password: ""
@@ -59,7 +59,7 @@ const ExportTransactionHistory = ({ openModal, setOpenModal, downloadData, check
                     profile_password: values.password,
                 })
             ).then((res) => {
-                
+
                 if (res.meta.requestStatus === "fulfilled") {
                     const blob = new Blob([res.payload], {
                         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

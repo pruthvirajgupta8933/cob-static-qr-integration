@@ -438,6 +438,7 @@ const TransactionHistory = () => {
         "Client Trans ID",
         "Challan Number / VAN",
         "Amount",
+        "Currency Type",
         "Transaction Date",
         "Transaction Complete Date",
         "Payment Status",
@@ -477,6 +478,7 @@ const TransactionHistory = () => {
       ];
 
       const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
+
       reportData.forEach((item, index) => {
         const {
           // srNo = index + 1,
@@ -484,6 +486,7 @@ const TransactionHistory = () => {
           client_txn_id = "",
           challan_no = "",
           payee_amount = "",
+          amount_type = "",
           trans_date = "",
           trans_complete_date = "",
           status = "",
@@ -528,6 +531,7 @@ const TransactionHistory = () => {
           client_txn_id,
           challan_no,
           payee_amount ? Number.parseFloat(payee_amount) : "",
+          amount_type,
           dateFormatBasic(trans_date),
           dateFormatBasic(trans_complete_date),
           status,
@@ -880,202 +884,6 @@ const TransactionHistory = () => {
           form={form}
           transactionDetailModalHandler={transactionDetailModalHandler}
         />
-        {/* <h5 className="">Transaction History</h5>
-        <section>
-          <div className="container-fluid p-0"></div>
-        </section>
-
-        <section className="">
-          <div className="container-fluid p-0">
-            {txnList.length > 0 ? (
-              <>
-                <div className="d-flex">
-                  <div className="form-group col-md-4 col-lg-3 col-sm-12 mt-2 pl-0">
-                    <label>Search Transaction ID</label>
-                    <input
-                      className="form-control"
-                      onChange={getSearchTerm}
-                      type="text"
-                      placeholder="Search Here"
-                    />
-                  </div>
-
-                  <div className="form-group col-md-4 col-lg-3 col-sm-12  mt-2">
-                    <label>Count Per Page</label>
-                    <select
-                      value={pageSize}
-                      rel={pageSize}
-                      className="form-select"
-                      onChange={(e) => {
-                        setPageSize(parseInt(e.target.value));
-                        setCurrentPage(1);
-                      }}
-                    >
-                      <DropDownCountPerPage datalength={txnList.length} />
-                    </select>
-                  </div>
-
-                  {/* do not remove the comment code */}
-        {/* </div>
-                <h6>Total Record : {txnList.length} </h6>
-              </>
-            ) : (
-              <></>
-            )}
-
-            <div className="overflow-auto">
-              
-              <table className="table table-bordered table-hover">
-                <thead>
-                  {txnList.length > 0 ? (
-                    <tr>
-                      <th>
-                        {" "}
-                        {radioInputVal?.status ? (
-                          <p
-                            className="text-primary m-0 user_info"
-                            onClick={() => setRadioInputVal({})}
-                          >
-                            {" "}
-                            Unselect{" "}
-                          </p>
-                        ) : (
-                          "Select"
-                        )}
-                      </th>
-                      <th> Transaction ID</th>
-                      <th> Client Transaction ID</th>
-                      <th> Amount</th>
-                      <th> Transaction Date</th>
-                      <th> Transaction Complete Date</th>
-                      <th> Payment Status</th>
-                      <th> Payer First Name</th>
-                      <th> Payer Mob. Number</th>
-                      <th> Payer Email</th>
-                      <th> Payment Mode</th>
-                    </tr>
-                  ) : (
-                    <></>
-                  )}
-                </thead>
-                <tbody>
-                  {txnList.length > 0 &&
-                    paginatedata.map((item, i) => {
-                      return (
-                        <tr key={uuidv4()} className="cursor_pointer">
-                          <td className="text-center"></td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.txn_id}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.client_txn_id}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {dateFormatBasic(item.trans_date)}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {dateFormatBasic(item.trans_complete_date)}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.status}
-                          </td>
-
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {" "}
-                            {item.payee_first_name}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {" "}
-                            {item.payee_mob}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {" "}
-                            {item.payee_email}
-                          </td>
-
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.payment_mode}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-
-            <div>
-              {txnList.length > 0 ? (
-                <div className="d-flex justify-content-center mt-2">
-                  <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"..."}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                    pageRangeDisplayed={5}
-                    onPageChange={(selectedItem) => {
-                      setCurrentPage(selectedItem.selected + 1);
-                      setRadioInputVal({});
-                    }}
-                    containerClassName={"pagination justify-content-center"}
-                    activeClassName={"active"}
-                    previousLinkClassName={"page-link"}
-                    nextLinkClassName={"page-link"}
-                    disabledClassName={"disabled"}
-                    breakClassName={"page-item"}
-                    breakLinkClassName={"page-link"}
-                    pageClassName={"page-item"}
-                    pageLinkClassName={"page-link"}
-                  />
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="container">
-              {isLoadingTxnHistory ? (
-                <div className="col-lg-12 col-md-12">
-                  <div className="text-center">
-                    <div className="spinner-border" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  </div>
-                </div>
-              ) : buttonClicked === true && txnList.length === 0 ? (
-                <div>
-                  <h5 className="d-flex justify-content-center align-items-center">
-                    Data Not Found
-                  </h5>
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          </div> */}
-        {/* </section> */}
         <ExportTransactionHistory
           openModal={openModal}
           setOpenModal={setOpenModal}

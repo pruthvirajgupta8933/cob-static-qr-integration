@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 // import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
@@ -135,14 +135,13 @@ const CommentModal = (props) => {
     return (
       <div className="container-fluid">
         {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.file_path, documentName: selectViewDoc?.file_name }} />}
-
         <div>
-          <h6>
+          <p className="m-auto">
             Merchant Name: {props?.commentData?.clientName}
-          </h6>
-          <h6>
+          </p>
+          <p className="m-auto">
             Client Code: {props?.commentData?.clientCode}
-          </h6>
+          </p>
 
         </div>
 
@@ -157,38 +156,38 @@ const CommentModal = (props) => {
             enableReinitialize={true}
           >
             <Form>
-              <div className="form-row">
-                <div className="col">
-                  <FormikController
-                    control="textArea"
+              <div className="form-row mt-4">
+                {attachCommentFile['name'] && <p className="text-default m-0"><i className="fa fa-paperclip" /> {attachCommentFile['name']}</p>}
+                <div className="input-group ">
+                  <Field
+                    control="input"
                     name="comments"
-                    className="form-control"
-                  />
-                </div>
+                    className="form-control p-2"
+                    placeholder="Enter Comments"
 
-                <div className="col">
-                  <label for="file-upload" className="custom-file-upload">
-                    <i className="fa fa-cloud-upload"></i> Upload File
-                  </label>
-                  <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
-                  <div className="mt-2 ml-3">
-                    <button
-                      type="submit"
-                      className="submit-btn approve text-white btn-sm cob-btn-primary"
-                    >
-                      Submit
-                    </button>
+                  />
+                  <div>
+                    <label for="file-upload" className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle" style={{ height: "39px" }}>
+                      <i className="fa fa-paperclip"></i>
+                    </label>
+                    <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
                   </div>
+
+                  <button
+                    type="submit"
+                    className="submit-btn approve text-white btn-sm cob-btn-primary"
+                  >
+                    Submit
+                  </button>
                 </div>
+                <ErrorMessage name="comments">{msg => <p className="text-danger m-0">{msg}</p>}</ErrorMessage>
               </div>
 
 
-              <div className="row g-3">
+              <div className="row g-3 mt-4">
 
-                <div className="col hoz-scroll-">
-                  <h6 className="">
-                    Previous Comments
-                  </h6>
+                <div className="col hoz-scroll">
+                  {/* <h6>Previous Comments</h6> */}
                   <table className="table table-bordered">
                     <thead>
                       <tr>
@@ -203,7 +202,7 @@ const CommentModal = (props) => {
                       {(commentsList?.length === undefined ||
                         commentsList?.length === 0) && (
                           <tr>
-                            <td colSpan="3">
+                            <td colSpan="5">
                               <h6 className="text-center">
                                 No Data found
                               </h6>
@@ -233,23 +232,6 @@ const CommentModal = (props) => {
                               {commentData?.file_path !== null &&
                                 isUrlValid(commentData?.file_path) &&
                                 fileTypeCheck(commentData?.file_path) && (
-                                  // <a
-                                  //   href={commentData?.file_path}
-                                  //   target={"_blank"}
-                                  //   download
-                                  //   rel="noreferrer"
-                                  // >
-                                  //   <img
-                                  //     src={downloadIcon}
-                                  //     style={{
-                                  //       height: "20px",
-                                  //       width: "20px",
-                                  //       margin: "auto",
-                                  //     }}
-                                  //     alt=""
-                                  //   />
-                                  // </a>
-
                                   <p
                                     className="text-primary cursor_pointer text-decoration-underline"
                                     rel="noreferrer"

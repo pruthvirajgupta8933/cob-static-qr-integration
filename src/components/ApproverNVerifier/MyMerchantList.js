@@ -223,7 +223,7 @@ const MyMerchantList = () => {
       width: "110px",
       cell: (row) => (
         <div>
-          {roles?.accountManager === true ? (
+          {(roles?.accountManager || roles.viewer) && (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -244,8 +244,6 @@ const MyMerchantList = () => {
             >
               Upload
             </button>
-          ) : (
-            <></>
           )}
         </div>
       ),
@@ -281,15 +279,21 @@ const MyMerchantList = () => {
                     toastConfig.infoToast(
                       "You're not allowed to edit as it has been " + row.status
                     );
-                  else if (row.login_id?.onboard_type === "Sub Merchant")
+                  else if (
+                    row.login_id?.onboard_type === "Sub Merchant" ||
+                    row.login_id?.onboard_type === "Offline Merchant" ||
+                    row.login_id?.onboard_type === "Referrer Child"
+                  )
                     history.push(
-                      `kyc?kycid=${stringEnc(row?.login_id?.loginMasterId)}`
+                      `kyc?kycid=${stringEnc(
+                        row?.login_id?.loginMasterId
+                      )}&redirectUrl=${history.location.pathname}`
                     );
                   else
                     history.push(
                       `/dashboard/multi-user-onboard?merchantId=${stringEnc(
                         row?.login_id?.loginMasterId
-                      )}`
+                      )}&redirectUrl=${history.location.pathname}`
                     );
                 }}
                 data-target="#exampleModal"

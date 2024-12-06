@@ -5,8 +5,8 @@ import { isNull } from "lodash";
 import { toast } from "react-toastify";
 import { businessDetailsSlice } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import {
-  kycDetailsByMerchantLoginId,
   platformType,
+  kycUserList,
 } from "../../../../../../slices/kycSlice";
 import {
   panValidation,
@@ -24,14 +24,14 @@ import {
   RegexMsg,
 } from "../../../../../../_components/formik/ValidationRegex";
 
-function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
+function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const dispatch = useDispatch();
   const [submitLoader, setSubmitLoader] = useState(false);
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [avgTicketAmount, setAvgTicketAmount] = useState([]);
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
-  const [signatoryPanName, setSignatoryPanName] = useState("");
+  // const [signatoryPanName, setSignatoryPanName] = useState("");
   const [platform, setPlatform] = useState([]);
   const [disable, setDisable] = useState(false);
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
@@ -40,25 +40,41 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
   const { businessDetails } = merchantReferralOnboardReducer;
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
-  const { merchantKycData } = kyc;
+  const { merchantKycData, kycUserList: kycData } = kyc;
 
   const initialValues = {
-    pan_card: merchantKycData?.panCard ?? "",
-    is_pan_verified: merchantKycData?.signatoryPAN ?? "",
-    website: merchantKycData?.website_app_url ?? "",
-    name_on_pancard: merchantKycData?.nameOnPanCard ?? "",
-    platform_id: merchantKycData?.platformId ?? "",
-    avg_ticket_size: merchantKycData?.avg_ticket_size ?? "",
-    expected_transactions: merchantKycData?.expectedTransactions ?? "",
-    signatory_pan: merchantKycData?.signatoryPAN,
-    prevSignatoryPan: merchantKycData?.signatoryPAN,
-    isSignatoryPanVerified: merchantKycData?.signatoryPAN?.length > 9 && 1,
-    address: merchantKycData?.merchant_address_details?.address,
-    city: merchantKycData?.merchant_address_details?.city,
-    state_id: merchantKycData?.merchant_address_details?.state,
-    pin_code: merchantKycData?.merchant_address_details?.pin_code,
-    billing_label: merchantKycData?.billingLabel ?? "",
-    company_name: merchantKycData?.companyName ?? "",
+    pan_card: kycData?.panCard ?? merchantKycData?.panCard ?? "",
+    is_pan_verified:
+      kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN ?? "",
+    website: kycData?.website_app_url ?? merchantKycData?.website_app_url ?? "",
+    name_on_pancard:
+      kycData?.nameOnPanCard ?? merchantKycData?.nameOnPanCard ?? "",
+    platform_id: kycData?.platformId ?? merchantKycData?.platformId ?? "",
+    avg_ticket_size:
+      kycData?.avg_ticket_size ?? merchantKycData?.avg_ticket_size ?? "",
+    expected_transactions:
+      kycData?.expectedTransactions ??
+      merchantKycData?.expectedTransactions ??
+      "",
+    signatory_pan: kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN,
+    prevSignatoryPan: kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN,
+    isSignatoryPanVerified:
+      (kycData?.signatoryPAN?.length > 9 && 1) ||
+      (merchantKycData?.signatoryPAN?.length > 9 && 1),
+    address:
+      kycData?.merchant_address_details?.address ??
+      merchantKycData?.merchant_address_details?.address,
+    city:
+      kycData?.merchant_address_details?.city ??
+      merchantKycData?.merchant_address_details?.city,
+    state_id:
+      kycData?.merchant_address_details?.state ??
+      merchantKycData?.merchant_address_details?.state,
+    pin_code:
+      kycData?.merchant_address_details?.pin_code ??
+      merchantKycData?.merchant_address_details?.pin_code,
+    billing_label: kycData?.billingLabel ?? merchantKycData?.billingLabel ?? "",
+    company_name: kycData?.companyName ?? merchantKycData?.companyName ?? "",
   };
 
   const tooltipData = {
@@ -198,7 +214,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
       billing_label: value.billing_label,
       company_name: value.company_name,
       merchant_address: merchantAddressDetails,
-      login_id: merchantLoginId,
+      login_id: kycData?.loginMasterId ?? merchantLoginId,
       updated_by: auth?.user?.loginId,
       platform_id: value.platform_id,
       avg_ticket_size: value.avg_ticket_size,
@@ -216,12 +232,14 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
 
         if (resp?.payload?.status === true) {
           toastConfig.successToast(resp?.payload?.message);
+          // if (editKyc) {
           dispatch(
-            kycDetailsByMerchantLoginId({
-              login_id: merchantLoginId,
+            kycUserList({
+              login_id: kycData?.loginMasterId,
               password_required: true,
             })
           );
+
         }
       })
       .catch((err) => toastConfig.errorToast("Something went wrong!"));
@@ -422,12 +440,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                     {errors?.is_pan_verified}
                   </p>
                 )}
-                {/* {values?.company_name
-                                    && (
-                                        <p className="text-success mb-0">
-                                            {values?.company_name}
-                                        </p>
-                                    )} */}
               </div>
 
               <div className="col-md-6">
