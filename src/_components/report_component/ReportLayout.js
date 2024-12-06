@@ -12,7 +12,7 @@ const ReportLayout = ({
   dataSummary,
   showSearch,
   showCountPerPage,
-  transactionDetailModalHandler,
+  onRowClick,
 }) => {
   const [searchText, SetSearchText] = useState("");
   const [pageSize, setPageSize] = useState(10);
@@ -122,8 +122,7 @@ const ReportLayout = ({
               currentPage={currentPage}
               changeCurrentPage={(page) => setCurrentPage(page)}
               onRowClick={(row) =>
-                typeof transactionDetailModalHandler === "function" &&
-                transactionDetailModalHandler(row)
+                typeof onRowClick === "function" && onRowClick(row)
               }
             />
           </div>

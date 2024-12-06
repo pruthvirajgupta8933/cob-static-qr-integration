@@ -412,8 +412,8 @@ const TransactionHistory = () => {
   lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
   lastThreeMonth.toLocaleDateString("en-IN");
 
-  const refundModalHandler = () => {
-    // console.log("radioInputVal", radioInputVal)
+  const refundModalHandler = (e) => {
+    e.preventDefault();
     setRefundModal(true);
   };
 
@@ -744,7 +744,7 @@ const TransactionHistory = () => {
             <div className="form-group col-md-6 d-flex justify-content-end">
               <button
                 className="btn cob-btn-primary btn-sm"
-                onClick={() => refundModalHandler()}
+                onClick={refundModalHandler}
                 disabled={
                   radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
                   radioInputVal?.status?.toLocaleLowerCase() !== "settled"
@@ -882,7 +882,7 @@ const TransactionHistory = () => {
           data={txnList}
           rowData={rowData}
           form={form}
-          transactionDetailModalHandler={transactionDetailModalHandler}
+          onRowClick={transactionDetailModalHandler}
         />
         <ExportTransactionHistory
           openModal={openModal}
