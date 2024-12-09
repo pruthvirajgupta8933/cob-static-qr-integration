@@ -47,7 +47,7 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
     },
     {
       id: "6",
-      name: "Mandate Start Date",
+      name: "Payment Date",
       selector: (row) => DateFormatter(row.mandateStartTime, false),
     },
   ];
