@@ -17,14 +17,14 @@ import CountPerPageFilter from "../_components/table_components/filters/CountPer
 import CustomLoader from "../_components/loader";
 import Yup from "../_components/formik/Yup";
 
-
-
 const MandateReport = () => {
   const dispatch = useDispatch();
 
   const rowData = MandateReportData;
 
-  const loadingState = useSelector((state) => state.Reports.isLoadingMandateHistory);
+  const loadingState = useSelector(
+    (state) => state.Reports.isLoadingMandateHistory
+  );
 
   const [mandateData, setMandateData] = useState([]);
   const [frequencyList, setFrequencyList] = useState([]);
@@ -35,7 +35,7 @@ const MandateReport = () => {
   const [showData, setShowData] = useState(false);
   const [saveData, setSaveData] = useState();
   const [disable, setDisable] = useState(false);
-  const [mandateReport, setMandateReport] = useState()
+  const [mandateReport, setMandateReport] = useState();
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
   const [searchText, setSearchText] = useState("");
 
@@ -51,9 +51,9 @@ const MandateReport = () => {
 
   // To get m_id
   const { user } = useSelector((state) => state.auth);
-  const subscription_merchant_id = user?.subscription_details?.subscription_merchant_id
+  const subscription_merchant_id =
+    user?.subscription_details?.subscription_merchant_id;
   const [todayDate, setTodayDate] = useState(splitDate);
-
 
   // Hardcoded value for Registration status dropdown
   const options1 = [
@@ -63,7 +63,6 @@ const MandateReport = () => {
     { key: "PROCESSED", value: "PROCESSED" },
   ];
 
-
   const initialValues = {
     status: "ALL",
     mandatecategorycode: "ALL",
@@ -71,8 +70,6 @@ const MandateReport = () => {
     fromDate: todayDate,
     endDate: todayDate,
   };
-
-
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
@@ -84,12 +81,10 @@ const MandateReport = () => {
     pfrequency: Yup.string().required("Required"),
   });
 
-
-
   const tempFrequency = [{ key: "All", value: "All" }];
-  frequencyList.map((item) => (
+  frequencyList.map((item) =>
     tempFrequency.push({ key: item.description, value: item.description })
-  ));
+  );
 
   // 1.b)For frequency API
   const getfrequencyList = async () => {
@@ -98,16 +93,13 @@ const MandateReport = () => {
       .then((res) => {
         setFrequencyList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
-
-
   const tempMandateCategory = [{ key: "All", value: "All" }];
-  mandateCategoryList.map((item) => (
+  mandateCategoryList.map((item) =>
     tempMandateCategory.push({ key: item.code, value: item.description })
-  ));
-
+  );
 
   const getMandateCategoryList = async () => {
     await axiosInstance
@@ -115,10 +107,8 @@ const MandateReport = () => {
       .then((res) => {
         setMandateCategoryList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
-
-
 
   useEffect(() => {
     dispatch(
@@ -143,16 +133,13 @@ const MandateReport = () => {
         setMandateReport(data);
       })
 
-      .catch((err) => { });
+      .catch((err) => {});
   }, [currentPage, pageSize]);
-
-
 
   useEffect(() => {
     getMandateCategoryList();
     getfrequencyList();
   }, []);
-
 
   useEffect(() => {
     if (searchText.length > 0) {
@@ -168,8 +155,6 @@ const MandateReport = () => {
       setMandateData(mandateReport);
     }
   }, [searchText]);
-
-
 
   const exportToExcelFn = () => {
     const excelHeaderRow = [
@@ -352,10 +337,10 @@ const MandateReport = () => {
     let handleExportLoading = (state) => {
       // console.log(state)
       if (state) {
-        alert("Exporting Excel File, Please wait...")
+        alert("Exporting Excel File, Please wait...");
       }
-      return state
-    }
+      return state;
+    };
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
@@ -392,18 +377,11 @@ const MandateReport = () => {
     setPageSize(pageSize);
   };
 
-
-
   const submitHandler = (values) => {
     setDisable(true);
 
-    const {
-      fromDate,
-      endDate,
-      pfrequency,
-      status,
-      mandatecategorycode
-    } = values;
+    const { fromDate, endDate, pfrequency, status, mandatecategorycode } =
+      values;
     const dateRangeValid = checkValidation(fromDate, endDate);
 
     if (dateRangeValid) {
@@ -422,9 +400,6 @@ const MandateReport = () => {
 
       setSaveData(values);
 
-
-
-
       dispatch(fetchFilterForAllMandatesReportsSlice(paramData))
         .then((resp) => {
           const data = resp?.payload?.records;
@@ -440,23 +415,18 @@ const MandateReport = () => {
           toastConfig.errorToast(err);
           setDisable(false);
         });
-
     }
-  }
+  };
 
   return (
     <section className="ant-layout">
-      <div>
-
-      </div>
+      <div></div>
 
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
-
           <h5 className="ml-4">Registered Mandate Reports</h5>
 
-
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="    flleft w-100">
             <div className="container-fluid">
               <Formik
                 initialValues={initialValues}
@@ -529,42 +499,44 @@ const MandateReport = () => {
                         </button>
                       </div>
 
-                      {showData === true ? mandateData?.length === 0 ? "" : (
-                        <div className="container-fluid flleft">
-                          <div className="row">
-                            <div className="form-group col-md-3 mt-2 ml-3 mt-4">
-                              <label>Search</label>
-                              <input
-                                className="form-control"
-                                onChange={debitReportSearch}
-                                type="text"
-                                placeholder="Search Here"
-                              />
-                            </div>
+                      {showData === true ? (
+                        mandateData?.length === 0 ? (
+                          ""
+                        ) : (
+                          <div className="container-fluid flleft">
+                            <div className="row">
+                              <div className="form-group col-md-3 mt-2 ml-3 mt-4">
+                                <label>Search</label>
+                                <input
+                                  className="form-control"
+                                  onChange={debitReportSearch}
+                                  type="text"
+                                  placeholder="Search Here"
+                                />
+                              </div>
 
-                            <div className="form-group col-md-3 mt-4">
-                              <CountPerPageFilter
-                                pageSize={pageSize}
-                                dataCount={dataCount}
-                                changePageSize={changePageSize}
-                              />
-                            </div>
+                              <div className="form-group col-md-3 mt-4">
+                                <CountPerPageFilter
+                                  pageSize={pageSize}
+                                  dataCount={dataCount}
+                                  changePageSize={changePageSize}
+                                />
+                              </div>
 
-                            <div className="form-group col-md-3 mt-5 ">
-                              <button
-                                className="btn btn-sm text-white"
-                                type="button"
-                                disabled={isexcelDataLoaded}
-                                onClick={() => exportToExcelFn()}
-                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              >
-                                Export
-                              </button>
+                              <div className="form-group col-md-3 mt-5 ">
+                                <button
+                                  className="btn btn-sm text-white"
+                                  type="button"
+                                  disabled={isexcelDataLoaded}
+                                  onClick={() => exportToExcelFn()}
+                                  style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                                >
+                                  Export
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-
-
+                        )
                       ) : (
                         <></>
                       )}
@@ -575,18 +547,15 @@ const MandateReport = () => {
             </div>
           </section>
 
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="    flleft w-100">
             <div className="container-fluid  p-3 my-3 ">
               {/* To search specific data and count total number of records */}
 
-
               {showData === true ? (
-
-
                 <div className="col-md-12 col-md-offset-4">
-
-                  <p className="font-weight-bold">Total Records: {mandateData?.length}</p>
-
+                  <p className="font-weight-bold">
+                    Total Records: {mandateData?.length}
+                  </p>
 
                   <div className="scroll overflow-auto">
                     <Table
@@ -596,30 +565,23 @@ const MandateReport = () => {
                       pageSize={pageSize}
                       currentPage={currentPage}
                       changeCurrentPage={changeCurrentPage}
-
                     />
                   </div>
-
 
                   <CustomLoader loadingState={loadingState} />
                   {/* {data?.length == 0 && !loadingState && (
               <h2 className="text-center font-weight-bold">No Data Found</h2>
             )} */}
-
                 </div>
-
-
               ) : (
                 <></>
               )}
-
-
             </div>
           </section>
         </div>
       </main>
     </section>
-  )
-}
+  );
+};
 
-export default MandateReport
+export default MandateReport;

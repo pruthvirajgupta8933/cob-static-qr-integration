@@ -769,7 +769,7 @@ const TransactionHistory = () => {
           Unselect
         </p>
       ) : (
-        <p>Select</p>
+        <span className="font-weight-bold m-0 user_info">Select</span>
       ),
       cell: (row) =>
         (row?.status?.toLocaleLowerCase() === "success" ||

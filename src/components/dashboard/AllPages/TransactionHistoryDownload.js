@@ -414,7 +414,7 @@ function TransactionHistoryDownload() {
               Transactions History Download
             </h5>
           </div>
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="flleft w-100">
             <div className="container-fluid">
               <Formik
                 initialValues={initialValues}
@@ -612,7 +612,7 @@ function TransactionHistoryDownload() {
             </div>
           </section>
 
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="flleft w-100">
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
                 <h4>Total Record : {txnList.length} </h4>
