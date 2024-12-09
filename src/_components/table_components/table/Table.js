@@ -39,6 +39,7 @@ const Table = (props) => {
         data={props.data}
         sortIcon={<i className="fa fa-arrow-up ml-1"></i>}
         fixedHeader={fixedHeaderFooter}
+        onRowClicked={props.onRowClick}
         // pagination
         // selectableRows
       />{" "}

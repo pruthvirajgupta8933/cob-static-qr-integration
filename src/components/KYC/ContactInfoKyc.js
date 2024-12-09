@@ -10,6 +10,7 @@ import {
   kycUserList,
   GetKycTabsStatus,
   getKycIDList,
+  kycUserListForMerchant,
   // otpVerificationForContactForPhone,
 } from "../../slices/kycSlice";
 
@@ -41,6 +42,7 @@ function ContactInfoKyc(props) {
 
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
+
   // const KycVerificationToken = useSelector((state) => state.kyc.OtpResponse.verification_token);
 
   const { user } = auth;
@@ -209,7 +211,13 @@ function ContactInfoKyc(props) {
           setTitle("BUSINESS OVERVIEW");
           setIsDisable(false);
           toast.success(res.payload?.message);
-          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+
+          if (props?.role?.merchant) {
+            dispatch(kycUserListForMerchant());
+          } else {
+            dispatch(kycUserList({ login_id: merchantloginMasterId }));
+          }
+
           dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
         } else {
           toast.error(res.payload);
