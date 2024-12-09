@@ -22,6 +22,7 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import Yup from "../../../_components/formik/Yup";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
+import ReportLayout from "../../../_components/report_component/ReportLayout";
 
 const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
@@ -348,113 +349,254 @@ const ChargeBackTxnHistory = () => {
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
+  const form = (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmitHandler}
+    >
+      {(formik) => (
+        <Form>
+          <div className="form-row mt-4">
+            <div className="form-group col-lg-3">
+              <FormikController
+                control="select"
+                label="Client Code"
+                name="clientCode"
+                className="form-select rounded-0 mt-0"
+                options={clientCodeOption}
+              />
+            </div>
+
+            <div className="form-group col-lg-3">
+              <FormikController
+                control="date"
+                label="From Date"
+                id="fromDate"
+                name="fromDate"
+                value={
+                  formik.values.fromDate
+                    ? new Date(formik.values.fromDate)
+                    : null
+                }
+                onChange={(date) => formik.setFieldValue("fromDate", date)}
+                format="dd-MM-y"
+                clearIcon={null}
+                className="form-control rounded-0 p-0"
+                required={true}
+                errorMsg={formik.errors["fromDate"]}
+              />
+            </div>
+
+            <div className="form-group col-lg-3">
+              <FormikController
+                control="date"
+                label="End Date"
+                id="endDate"
+                name="endDate"
+                value={
+                  formik.values.endDate ? new Date(formik.values.endDate) : null
+                }
+                onChange={(date) => formik.setFieldValue("endDate", date)}
+                format="dd-MM-y"
+                clearIcon={null}
+                className="form-control rounded-0 p-0"
+                required={true}
+                errorMsg={formik.errors["endDate"]}
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-1">
+              <button
+                disabled={disable}
+                className="btn btn-sm cob-btn-primary  text-white"
+                type="submit"
+              >
+                {disable && (
+                  <span
+                    className="spinner-border spinner-border-sm mr-1"
+                    role="status"
+                    ariaHidden="true"
+                  ></span>
+                )}{" "}
+                {/* Show spinner if disabled */}
+                Search
+              </button>
+            </div>
+            {txnList?.length > 0 ? (
+              <div className="form-group col-md-1">
+                <button
+                  className="btn btn-sm text-white  cob-btn-primary "
+                  style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                  type="button"
+                  onClick={() => exportToExcelFn()}
+                >
+                  Export{" "}
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+
+  const rowData = [
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.SrNo,
+      sortable: true,
+      width: "95px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.client_code,
+      cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
+      width: "120px",
+    },
+    {
+      id: "3",
+      name: "Client Name",
+      selector: (row) => row.client_name,
+      cell: (row) => <div className="removeWhiteSpace">{row.client_name}</div>,
+      width: "120px",
+    },
+    {
+      id: "4",
+      name: "SP Transaction ID",
+      selector: (row) => row.txn_id,
+      cell: (row) => <div className="removeWhiteSpace">{row.txn_id}</div>,
+      width: "120px",
+    },
+    {
+      id: "5",
+      name: "Client Transaction ID",
+      selector: (row) => row.client_txn_id,
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row.client_txn_id}</div>
+      ),
+      width: "120px",
+    },
+    {
+      id: "6",
+      name: "Amount",
+      selector: (row) => Number.parseFloat(row.payee_amount).toFixed(2),
+      sortable: true,
+      width: "120px",
+    },
+    {
+      id: "7",
+      name: "ARN",
+      selector: (row) => row.arn,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "8",
+      name: "Bank CB Fee",
+      selector: (row) => row.bank_cb_fee,
+      sortable: true,
+      width: "135px",
+    },
+    {
+      id: "9",
+      name: "CB Credit Date Txn Reject",
+      selector: (row) => row.cb_credit_date_txn_reject,
+      sortable: true,
+      width: "135px",
+    },
+    {
+      id: "10",
+      name: "Charge Back Amount",
+      selector: (row) => row.charge_back_amount,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "11",
+      name: "Charge Back Credit Date To Merchant",
+      selector: (row) => {
+        dateFormatBasic(row.charge_back_credit_date_to_merchant);
+      },
+      width: "130px",
+    },
+    {
+      id: "12",
+      name: "Charge Back Date",
+      selector: (row) => {
+        dateFormatBasic(row.charge_back_date);
+      },
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "13",
+      name: "Charge Back Debit Amount",
+      selector: (row) => row.charge_back_debit_amount,
+      width: "130px",
+    },
+    {
+      id: "14",
+      name: "Charge Back Remarks",
+      selector: (row) => row.charge_back_remarks,
+      width: "130px",
+    },
+    {
+      id: "15",
+      name: "Charge Back Status",
+      selector: (row) => row.charge_back_status,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "16",
+      name: "Merchant CB Status",
+      selector: (row) => row.merchant_cb_status,
+      width: "130px",
+    },
+    {
+      id: "17",
+      name: "Payment Mode",
+      selector: (row) => row.payment_mode,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "18",
+      name: "PreARB Date",
+      selector: (row) => dateFormatBasic(row.prearb_date),
+      width: "130px",
+    },
+    {
+      id: "19",
+      name: "Status",
+      selector: (row) => row.status,
+      width: "130px",
+    },
+  ];
+
   return (
     <section className="">
       <main className="">
         <div className="">
+          <ReportLayout
+            type="cbHistory"
+            title="Chargeback Transaction History"
+            data={txnList}
+            rowData={rowData}
+            form={form}
+          />
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="">Chargeback Transaction History</h5>
+          {/* <h5 className="">Chargeback Transaction History</h5> */}
           {/* </div> */}
-          <section className="">
+          {/* <section className="">
             <div className="container-fluid p-0">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmitHandler}
-              >
-                {(formik) => (
-                  <Form>
-                    <div className="form-row mt-4">
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="select"
-                          label="Client Code"
-                          name="clientCode"
-                          className="form-select rounded-0 mt-0"
-                          options={clientCodeOption}
-                        />
-                      </div>
-
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="date"
-                          label="From Date"
-                          id="fromDate"
-                          name="fromDate"
-                          value={
-                            formik.values.fromDate
-                              ? new Date(formik.values.fromDate)
-                              : null
-                          }
-                          onChange={(date) =>
-                            formik.setFieldValue("fromDate", date)
-                          }
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["fromDate"]}
-                        />
-                      </div>
-
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="date"
-                          label="End Date"
-                          id="endDate"
-                          name="endDate"
-                          value={
-                            formik.values.endDate
-                              ? new Date(formik.values.endDate)
-                              : null
-                          }
-                          onChange={(date) =>
-                            formik.setFieldValue("endDate", date)
-                          }
-                          format="dd-MM-y"
-                          clearIcon={null}
-                          className="form-control rounded-0 p-0"
-                          required={true}
-                          errorMsg={formik.errors["endDate"]}
-                        />
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-1">
-                        <button
-                          disabled={disable}
-                          className="btn btn-sm cob-btn-primary  text-white"
-                          type="submit"
-                        >
-                          {disable && (
-                            <span
-                              className="spinner-border spinner-border-sm mr-1"
-                              role="status"
-                              ariaHidden="true"
-                            ></span>
-                          )}{" "}
-                          {/* Show spinner if disabled */}
-                          Search
-                        </button>
-                      </div>
-                      {txnList?.length > 0 ? (
-                        <div className="form-group col-md-1">
-                          <button
-                            className="btn btn-sm text-white  cob-btn-primary "
-                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                            type="button"
-                            onClick={() => exportToExcelFn()}
-                          >
-                            Export{" "}
-                          </button>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+              
               <hr className="hr" />
               {txnList?.length > 0 ? (
                 <div className="form-row">
@@ -487,17 +629,17 @@ const ChargeBackTxnHistory = () => {
                 <> </>
               )}
             </div>
-          </section>
+          </section> */}
 
           <section className="">
             <div className="container-fluid p-3 my-3 ">
-              {txnList.length > 0 ? (
+              {/* {txnList.length > 0 ? (
                 <h6>Total Record : {txnList.length} </h6>
               ) : (
                 <></>
-              )}
+              )} */}
 
-              <div className="overflow-auto">
+              {/* <div className="overflow-auto">
                 <table className="table table-bordered">
                   <thead>
                     {txnList.length > 0 ? (
@@ -623,9 +765,9 @@ const ChargeBackTxnHistory = () => {
                 ) : (
                   <></>
                 )}
-              </div>
+              </div> */}
               <div className="container">
-                {isLoadingTxnHistory ? (
+                {isLoadingTxnHistory && (
                   <div className="col-lg-12 col-md-12">
                     <div className="text-center">
                       <div className="spinner-border" role="status">
@@ -633,14 +775,6 @@ const ChargeBackTxnHistory = () => {
                       </div>
                     </div>
                   </div>
-                ) : buttonClicked && dataFound && txnList?.length === 0 ? (
-                  <div>
-                    <h5 className="d-flex justify-content-center align-items-center">
-                      Data Not Found
-                    </h5>
-                  </div>
-                ) : (
-                  <></>
                 )}
               </div>
             </div>

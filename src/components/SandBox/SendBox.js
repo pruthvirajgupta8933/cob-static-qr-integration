@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycUserList } from "../../slices/kycSlice";
+import { kycUserList, kycUserListForMerchant } from "../../slices/kycSlice";
 import SandboxCollapse from "./SandboxCollapse";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { sandBoxService } from "../../services/sandbox/sandbox.service";
@@ -17,8 +17,11 @@ function Sandbox() {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    dispatch(kycUserList({ login_id: user?.loginId }));
+    if (roles?.merchant) {
+      dispatch(kycUserListForMerchant());
+    }
   }, [user, dispatch]);
 
   const clientCodeOfMerchant = user?.clientMerchantDetailsList?.[0]?.clientCode;

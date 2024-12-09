@@ -248,6 +248,7 @@ const API_LIVE = {
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
   /*KYC USER LIST */
   Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
+  getMerchantInfo: `${kyc_url}/kyc/get-merchant-info/`,
   // PAN API FOR DISPLAY DATA
 
   GET_MERCHANT_PAN: `${kyc_url}/kyc/get-merchants-by-pan/`,

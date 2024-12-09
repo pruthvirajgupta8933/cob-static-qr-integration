@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import Yup from "../../../../_components/formik/Yup";
-
+import ReportLayout from "../../../../_components/report_component/ReportLayout";
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
@@ -38,6 +38,7 @@ import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import toastConfig from "../../../../utilities/toastTypes";
 import { Dashboardservice } from "../../../../services/dashboard.service";
+import Table from "../../../../_components/table_components/table/Table";
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -102,8 +103,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -131,8 +132,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -161,7 +162,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   const paymodeList = async () => {
@@ -170,7 +171,7 @@ const TransactionHistory = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   let isExtraDataRequired = false;
@@ -411,8 +412,8 @@ const TransactionHistory = () => {
   lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
   lastThreeMonth.toLocaleDateString("en-IN");
 
-  const refundModalHandler = () => {
-    // console.log("radioInputVal", radioInputVal)
+  const refundModalHandler = (e) => {
+    e.preventDefault();
     setRefundModal(true);
   };
 
@@ -599,7 +600,265 @@ const TransactionHistory = () => {
     setFieldValue("fromDate", new Date());
     setFieldValue("endDate", new Date());
   };
+  const form = (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={submitHandler}
+    >
+      {(formik) => (
+        <Form>
+          <div className="form-row mt-4">
+            {(roles?.bank || roles?.referral) && (
+              <div className="form-group col-md-4 col-lg-2 col-sm-12">
+                <FormikController
+                  control="select"
+                  label="Client Code"
+                  name="clientCode"
+                  className="form-select rounded-0"
+                  options={clientCodeOption}
+                />
+              </div>
+            )}
+            <div className="form-group col-md-3 col-lg-2 col-sm-12">
+              <FormikController
+                control="select"
+                label="Select Duration"
+                name="duration"
+                className="form-select rounded-0"
+                options={durations}
+                onChange={(e) =>
+                  handleDurationChange({
+                    value: e.target.value,
+                    setFieldValue: formik.setFieldValue,
+                  })
+                }
+              />
+            </div>
+            {duration === "custom" && (
+              <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
+                <label htmlFor="dateRange" className="form-label">
+                  Start Date - End Date
+                </label>
+                <div
+                  className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
+                >
+                  <DatePicker
+                    id="dateRange"
+                    selectsRange={true}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={(update) => {
+                      const [start, end] = update;
+                      setStartDate(start);
+                      setEndDate(end);
+                      formik.setFieldValue("fromDate", start);
+                      formik.setFieldValue("endDate", end);
+                    }}
+                    dateFormat="dd-MM-yyyy"
+                    placeholderText="Select Date Range"
+                    className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+                    showPopperArrow={false}
+                    popperClassName={classes.custom_datepicker_popper}
+                  />
+                  <div
+                    className="input-group-append"
+                    onClick={() => {
+                      document.getElementById("dateRange").click();
+                    }}
+                  >
+                    <span
+                      className={`input-group-text ${classes.calendar_input_border}`}
+                    >
+                      {" "}
+                      <FaCalendarAlt />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
 
+            <div className="form-group col-md-3 col-lg-2 col-sm-12">
+              <FormikController
+                control="select"
+                label="Transactions Status"
+                name="transaction_status"
+                className="form-select rounded-0 mt-0"
+                options={tempPayStatus}
+              />
+            </div>
+
+            <div className="form-group col-md-3 col-lg-2 col-sm-12">
+              <FormikController
+                control="select"
+                label="Payment Mode"
+                name="payment_mode"
+                className="form-select rounded-0 mt-0"
+                options={tempPaymode}
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group col-md-2 col-lg-1 ">
+              <button
+                className="btn btn-sm cob-btn-primary text-white"
+                type="submit"
+                disabled={disable}
+              >
+                {disable && (
+                  <span
+                    className="spinner-border spinner-border-sm mr-1"
+                    role="status"
+                    ariaHidden="true"
+                  ></span>
+                )}
+                Search
+              </button>
+            </div>
+
+            {txnList?.length > 0 && (
+              <div className="form-group col-md-2 col-lg-1">
+                {/* {roles.merchant && (
+                                        <button
+                                            type="button"
+                                            className="approve cob-btn-primary"
+                                            data-toggle="modal"
+                                            data-target="#exampleModalCenter"
+                                            onClick={() => setOpenModal(true)}
+                                        >
+                                            <i className="fa fa-download"></i> Export
+                                        </button>
+                                    )} */}
+
+                <button
+                  type="button"
+                  className="btn btn-sm text-white cob-btn-primary"
+                  onClick={() => exportToExcelFn()}
+                  disabled={exportReportLoader}
+                >
+                  <i className="fa fa-download"></i>
+                  {exportReportLoader ? " Loading..." : " Export"}
+                </button>
+              </div>
+            )}
+            <div className="form-group col-md-6 d-flex justify-content-end">
+              <button
+                className="btn cob-btn-primary btn-sm"
+                onClick={refundModalHandler}
+                disabled={
+                  radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
+                  radioInputVal?.status?.toLocaleLowerCase() !== "settled"
+                }
+              >
+                Refund
+              </button>
+            </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+  const rowData = [
+    {
+      id: "1",
+      name: radioInputVal?.status ? (
+        <p
+          className="text-primary m-0 user_info"
+          onClick={() => setRadioInputVal({})}
+        >
+          Unselect
+        </p>
+      ) : (
+        <p>Select</p>
+      ),
+      cell: (row) =>
+        (row?.status?.toLocaleLowerCase() === "success" ||
+          row?.status?.toLocaleLowerCase() === "settled") && (
+          <input
+            name="refund_request"
+            value={row.txn_id}
+            type="radio"
+            onClick={(e) => setRadioInputVal(row)}
+            checked={row.txn_id === radioInputVal?.txn_id}
+          />
+        ),
+      width: "95px",
+    },
+    {
+      id: "2",
+      name: "Transaction ID",
+      selector: (row) => row.txn_id,
+      width: "130px",
+    },
+    {
+      id: "3",
+      name: "Client Transaction ID",
+      selector: (row) => row.client_txn_id,
+      width: "130px",
+    },
+    {
+      id: "4",
+      name: "Amount",
+      selector: (row) => Number.parseFloat(row.payee_amount).toFixed(2),
+      sortable: true,
+      width: "120px",
+    },
+    {
+      id: "122",
+      name: "Currency Type",
+      selector: (row) => row.amount_type,
+      width: "120px",
+    },
+    {
+      id: "5",
+      name: "Payment Status",
+      selector: (row) => row.status,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "6",
+      name: "Transaction Date",
+      selector: (row) => row.trans_date,
+      cell: (row) => <div>{dateFormatBasic(row.trans_date)}</div>,
+      sortable: true,
+      width: "135px",
+    },
+    {
+      id: "7",
+      name: "Transaction Complete Date",
+      selector: (row) => row.trans_complete_date,
+      cell: (row) => <div>{dateFormatBasic(row.trans_complete_date)}</div>,
+      sortable: true,
+      width: "135px",
+    },
+    {
+      id: "8",
+      name: "Payer First Name",
+      selector: (row) => row.payee_first_name,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "9",
+      name: "Payer Mob. Number",
+      selector: (row) => row.payee_mob,
+      width: "130px",
+    },
+    {
+      id: "10",
+      name: "Payer Email",
+      selector: (row) => row.payee_email,
+      sortable: true,
+      width: "130px",
+    },
+    {
+      id: "11",
+      name: "Payment Mode",
+      selector: (row) => row.payment_mode,
+      width: "130px",
+    },
+  ];
   return (
     <section className="">
       <div className="profileBarStatus">
@@ -619,364 +878,16 @@ const TransactionHistory = () => {
         )}
       </div>
       <main>
-        <h5 className="">Transaction History</h5>
-        <section>
-          <div className="container-fluid p-0">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={submitHandler}
-            >
-              {(formik) => (
-                <Form>
-                  <div className="form-row mt-4">
-                    {(roles?.bank || roles?.referral) && (
-                      <div className="form-group col-md-4 col-lg-2 col-sm-12">
-                        <FormikController
-                          control="select"
-                          label="Client Code"
-                          name="clientCode"
-                          className="form-select rounded-0"
-                          options={clientCodeOption}
-                        />
-                      </div>
-                    )}
-                    <div className="form-group col-md-3 col-lg-2 col-sm-12">
-                      <FormikController
-                        control="select"
-                        label="Select Duration"
-                        name="duration"
-                        className="form-select rounded-0"
-                        options={durations}
-                        onChange={(e) =>
-                          handleDurationChange({
-                            value: e.target.value,
-                            setFieldValue: formik.setFieldValue,
-                          })
-                        }
-                      />
-                    </div>
-                    {duration === "custom" && (
-                      <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
-                        <label htmlFor="dateRange" className="form-label">
-                          Start Date - End Date
-                        </label>
-                        <div
-                          className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
-                        >
-                          <DatePicker
-                            id="dateRange"
-                            selectsRange={true}
-                            startDate={startDate}
-                            endDate={endDate}
-                            onChange={(update) => {
-                              const [start, end] = update;
-                              setStartDate(start);
-                              setEndDate(end);
-                              formik.setFieldValue("fromDate", start);
-                              formik.setFieldValue("endDate", end);
-                            }}
-                            dateFormat="dd-MM-yyyy"
-                            placeholderText="Select Date Range"
-                            className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
-                            showPopperArrow={false}
-                            popperClassName={classes.custom_datepicker_popper}
-                          />
-                          <div
-                            className="input-group-append"
-                            onClick={() => {
-                              document.getElementById("dateRange").click();
-                            }}
-                          >
-                            <span
-                              className={`input-group-text ${classes.calendar_input_border}`}
-                            >
-                              {" "}
-                              <FaCalendarAlt />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="form-group col-md-3 col-lg-2 col-sm-12">
-                      <FormikController
-                        control="select"
-                        label="Transactions Status"
-                        name="transaction_status"
-                        className="form-select rounded-0 mt-0"
-                        options={tempPayStatus}
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3 col-lg-2 col-sm-12">
-                      <FormikController
-                        control="select"
-                        label="Payment Mode"
-                        name="payment_mode"
-                        className="form-select rounded-0 mt-0"
-                        options={tempPaymode}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-group col-md-2 col-lg-1 ">
-                      <button
-                        className="btn btn-sm cob-btn-primary text-white"
-                        type="submit"
-                        disabled={disable}
-                      >
-                        {disable && (
-                          <span
-                            className="spinner-border spinner-border-sm mr-1"
-                            role="status"
-                            ariaHidden="true"
-                          ></span>
-                        )}
-                        Search
-                      </button>
-                    </div>
-
-                    {txnList?.length > 0 && (
-                      <div className="form-group col-md-2 col-lg-1">
-                        <button
-                          type="button"
-                          className="btn btn-sm text-white cob-btn-primary"
-                          onClick={() => exportToExcelFn()}
-                          disabled={exportReportLoader}
-                        >
-                          <i className="fa fa-download"></i>
-                          {exportReportLoader ? " Loading..." : " Export"}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </section>
-
-        <section className="">
-          <div className="container-fluid p-0">
-            {txnList.length > 0 ? (
-              <>
-                <div className="d-flex">
-                  <div className="form-group col-md-4 col-lg-3 col-sm-12 mt-2 pl-0">
-                    <label>Search Transaction ID</label>
-                    <input
-                      className="form-control"
-                      onChange={getSearchTerm}
-                      type="text"
-                      placeholder="Search Here"
-                    />
-                  </div>
-
-                  <div className="form-group col-md-4 col-lg-3 col-sm-12  mt-2">
-                    <label>Count Per Page</label>
-                    <select
-                      value={pageSize}
-                      rel={pageSize}
-                      className="form-select"
-                      onChange={(e) => {
-                        setPageSize(parseInt(e.target.value));
-                        setCurrentPage(1);
-                      }}
-                    >
-                      <DropDownCountPerPage datalength={txnList.length} />
-                    </select>
-                  </div>
-
-                  {/* do not remove the comment code */}
-                  <div className="form-group col-md-6  mt-2 d-flex justify-content-end">
-                    <div>
-                      <button
-                        className="btn cob-btn-primary btn-sm mt-4"
-                        onClick={() => refundModalHandler()}
-                        disabled={
-                          radioInputVal?.status?.toLocaleLowerCase() !==
-                          "success" &&
-                          radioInputVal?.status?.toLocaleLowerCase() !==
-                          "settled"
-                        }
-                      >
-                        Refund
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <h6>Total Record : {txnList.length} </h6>
-              </>
-            ) : (
-              <></>
-            )}
-
-            <div className="overflow-auto">
-              <table className="table table-bordered table-hover">
-                <thead>
-                  {txnList.length > 0 ? (
-                    <tr>
-                      <th>
-                        {" "}
-                        {radioInputVal?.status ? (
-                          <p
-                            className="text-primary m-0 user_info"
-                            onClick={() => setRadioInputVal({})}
-                          >
-                            {" "}
-                            Unselect{" "}
-                          </p>
-                        ) : (
-                          "Select"
-                        )}
-                      </th>
-                      <th> Transaction ID</th>
-                      <th> Client Transaction ID</th>
-                      <th> Amount</th>
-                      <th> Currency Type</th>
-                      <th> Transaction Date</th>
-                      <th> Transaction Complete Date</th>
-                      <th> Payment Status</th>
-                      <th> Payer First Name</th>
-                      <th> Payer Mob. Number</th>
-                      <th> Payer Email</th>
-                      <th> Payment Mode</th>
-                    </tr>
-                  ) : (
-                    <></>
-                  )}
-                </thead>
-                <tbody>
-                  {txnList.length > 0 &&
-                    paginatedata.map((item, i) => {
-                      return (
-                        <tr key={uuidv4()} className="cursor_pointer">
-                          <td className="text-center">
-                            {(item?.status?.toLocaleLowerCase() === "success" ||
-                              item?.status?.toLocaleLowerCase() ===
-                              "settled") && (
-                                <input
-                                  name="refund_request"
-                                  value={item.txn_id}
-                                  type="radio"
-                                  onClick={(e) => setRadioInputVal(item)}
-                                  checked={item.txn_id === radioInputVal?.txn_id}
-                                />
-                              )}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.txn_id}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.client_txn_id}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {Number.parseFloat(item.payee_amount).toFixed(2)}
-                          </td>
-                          <td>{item.amount_type}</td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {dateFormatBasic(item.trans_date)}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {dateFormatBasic(item.trans_complete_date)}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.status}
-                          </td>
-
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {" "}
-                            {item.payee_first_name}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {" "}
-                            {item.payee_mob}
-                          </td>
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {" "}
-                            {item.payee_email}
-                          </td>
-
-                          <td
-                            onClick={() => transactionDetailModalHandler(item)}
-                          >
-                            {item.payment_mode}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-
-            <div>
-              {txnList.length > 0 ? (
-                <div className="d-flex justify-content-center mt-2">
-                  <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    breakLabel={"..."}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                    pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
-                    onPageChange={(selectedItem) => {
-                      setCurrentPage(selectedItem.selected + 1);
-                      setRadioInputVal({});
-                    }}
-                    containerClassName={"pagination justify-content-center"}
-                    activeClassName={"active"}
-                    previousLinkClassName={"page-link"}
-                    nextLinkClassName={"page-link"}
-                    disabledClassName={"disabled"}
-                    breakClassName={"page-item"}
-                    breakLinkClassName={"page-link"}
-                    pageClassName={"page-item"}
-                    pageLinkClassName={"page-link"}
-                  />
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="container">
-              {isLoadingTxnHistory ? (
-                <div className="col-lg-12 col-md-12">
-                  <div className="text-center">
-                    <div className="spinner-border" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  </div>
-                </div>
-              ) : buttonClicked === true && txnList.length === 0 ? (
-                <div>
-                  <h5 className="d-flex justify-content-center align-items-center">
-                    Data Not Found
-                  </h5>
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          </div>
-        </section>
+        <ReportLayout
+          type="transaction_history"
+          title="Transaction History"
+          data={txnList}
+          rowData={rowData}
+          form={form}
+          onRowClick={transactionDetailModalHandler}
+          showSearch
+          showCountPerPage
+        />
         <ExportTransactionHistory
           openModal={openModal}
           setOpenModal={setOpenModal}

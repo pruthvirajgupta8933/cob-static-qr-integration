@@ -7,7 +7,7 @@ import {
 import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { GetKycTabsStatus, kycUserList } from "../../../slices/kycSlice";
+import { GetKycTabsStatus, kycUserList, kycUserListForMerchant } from "../../../slices/kycSlice";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { isNull } from "lodash";
@@ -49,7 +49,7 @@ function Home() {
   useEffect(() => {
     if (roles.merchant) {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
-      dispatch(kycUserList({ login_id: user?.loginId }));
+      dispatch(kycUserListForMerchant());
 
       // graph data
       const clientCode = user?.clientMerchantDetailsList[0]?.clientCode;
