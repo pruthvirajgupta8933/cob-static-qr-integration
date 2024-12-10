@@ -698,7 +698,7 @@ const TransactionHistory = () => {
               />
             </div>
           </div>
-          <div className="form-row">
+          <div className="row">
             <div className="form-group col-md-2 col-lg-1 ">
               <button
                 className="btn btn-sm cob-btn-primary text-white"
@@ -741,7 +741,7 @@ const TransactionHistory = () => {
                 </button>
               </div>
             )}
-            <div className="form-group col-md-6 d-flex justify-content-end">
+            <div className="form-group col-md-10 d-flex justify-content-end">
               <button
                 className="btn cob-btn-primary btn-sm"
                 onClick={refundModalHandler}
