@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isNull } from "lodash";
 import { toast } from "react-toastify";
 import { businessDetailsSlice } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import {
-  platformType,
-  kycUserList,
-} from "../../../../../../slices/kycSlice";
+import { platformType, kycUserList } from "../../../../../../slices/kycSlice";
 import {
   panValidation,
   authPanValidation,
@@ -100,6 +97,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
     expected_transactions: Yup.string().trim().required("Required").nullable(),
     avg_ticket_size: Yup.string().trim().required("Required").nullable(),
     signatory_pan: Yup.string()
+      .length(10, "PAN should be exactly 10 characters long")
       .allowOneSpace()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       // .required("Required")
@@ -118,7 +116,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       .nullable(),
     address: Yup.string().required("Required").nullable(),
     city: Yup.string().required("Required").nullable(),
-    pin_code: Yup.string().required("Required").nullable(),
+    pin_code: Yup.string()
+      .required("Required")
+      .length(6, "Invalid Pin Code")
+      .nullable(),
     company_name: Yup.string().required("Required").nullable(),
     state_id: Yup.string().required("Required").nullable(),
     billing_label: Yup.string()
@@ -239,7 +240,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
               password_required: true,
             })
           );
-
         }
       })
       .catch((err) => toastConfig.errorToast("Something went wrong!"));
@@ -319,7 +319,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => { }
+    setFieldValue = () => {}
   ) => {
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -392,11 +392,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                   />
 
                   {values?.pan_card !== null &&
-                    values?.pan_card !== "" &&
-                    values?.pan_card !== undefined &&
-                    !errors.hasOwnProperty("pan_card") &&
-                    !errors.hasOwnProperty("is_pan_verified") &&
-                    values?.is_pan_verified !== "" ? (
+                  values?.pan_card !== "" &&
+                  values?.pan_card !== undefined &&
+                  !errors.hasOwnProperty("pan_card") &&
+                  !errors.hasOwnProperty("is_pan_verified") &&
+                  values?.is_pan_verified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -478,9 +478,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                     }}
                   />
                   {values?.signatory_pan &&
-                    values?.isSignatoryPanVerified &&
-                    !errors.hasOwnProperty("signatory_pan") &&
-                    !errors.hasOwnProperty("prevSignatoryPan") ? (
+                  values?.isSignatoryPanVerified &&
+                  !errors.hasOwnProperty("signatory_pan") &&
+                  !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -593,10 +593,10 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                 <FormikController
                   control="input"
                   disabled={isEditableInput}
-                  type="text"
+                  type="number"
                   name="pin_code"
                   className="form-control fs-12"
-                  placeholder="Enter State"
+                  placeholder="Enter Pin Code"
                 />
               </div>
 

@@ -77,8 +77,8 @@ const TransactionHistoryDoitc = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
 
   // formik initial values
   const initialValues = {
@@ -107,7 +107,7 @@ const TransactionHistoryDoitc = () => {
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   // get paymode status list
@@ -117,7 +117,7 @@ const TransactionHistoryDoitc = () => {
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   // fetch child client data
@@ -126,8 +126,8 @@ const TransactionHistoryDoitc = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -510,8 +510,8 @@ const TransactionHistoryDoitc = () => {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                        // value={startDate}
-                        // onChange={(e)=>setStartDate(e.target.value)}
+                          // value={startDate}
+                          // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 
@@ -609,7 +609,7 @@ const TransactionHistoryDoitc = () => {
             </div>
           </section>
 
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="flleft w-100">
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
                 <>

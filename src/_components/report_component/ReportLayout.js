@@ -100,7 +100,7 @@ const ReportLayout = ({
           )}
         </div>
       </section>
-      <section className="features8 cid-sg6XYTl25a flleft w-100">
+      <section className="flleft w-100">
         <div className="container-fluid p-0 my-3 ">
           {data?.length > 0 && (
             <h6>

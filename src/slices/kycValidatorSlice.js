@@ -12,6 +12,7 @@ import {
   cinVerify,
   voterVerify,
   dlVerify,
+  advancePanVerify,
 } from "../services/kyc-validator-service/kycValidator.service";
 
 const initialState = {};
@@ -52,6 +53,18 @@ export const authPanValidation = createAsyncThunk(
   }
 );
 
+export const advancePanValidation = createAsyncThunk(
+  "kyc/advancePanValidation",
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await advancePanVerify(requestParam);
+
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
+  }
+);
 export const gstValidation = createAsyncThunk(
   "kyc/gstValidation",
   async (requestParam, thunkAPI) => {

@@ -10,7 +10,25 @@ function hasWhiteSpace(s) {
     return /\s/g.test(s);
 }
 
-export const generateWord = (name, mobile, retry = 7) => {
+function getPermutations(str) {
+    if (str.length === 1) return [str];
+
+    const permutations = [];
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        const remaining = str.slice(0, i) + str.slice(i + 1);
+        if (permutations?.length < 50) {
+            const subPermutations = getPermutations(remaining);
+            for (const perm of subPermutations) {
+                permutations.push(char + perm);
+            }
+        }
+
+    }
+    return permutations;
+}
+
+export const generateWord = (name, mobile, retry = 1) => {
     let newSuggestedClientCode = []
     const fullName = name.replace(/[^a-zA-Z0-9]/g, '');
     const splitName = fullName.split(" ")
@@ -35,7 +53,10 @@ export const generateWord = (name, mobile, retry = 7) => {
                 wordChar += getChar(mobile, i, 0, 2)
             }
         }
-        !hasWhiteSpace(wordChar) && newSuggestedClientCode.push(wordChar.toUpperCase())
+        // console.log("!hasWhiteSpace(wordChar)", !hasWhiteSpace(wordChar))
+        if (!hasWhiteSpace(wordChar)) {
+            newSuggestedClientCode = getPermutations(wordChar.toUpperCase())
+        }
         wordChar = ""
     }
     return newSuggestedClientCode
