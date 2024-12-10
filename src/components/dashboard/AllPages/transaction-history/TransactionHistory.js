@@ -16,7 +16,6 @@ import {
   fetchTransactionHistorySlice,
 } from "../../../../slices/dashboardSlice";
 import API_URL from "../../../../config";
-import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
@@ -25,8 +24,6 @@ import Notification from "../../../../_components/reuseable_components/Notificat
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
 import moment from "moment";
 
-import { v4 as uuidv4 } from "uuid";
-import ReactPaginate from "react-paginate";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -38,7 +35,6 @@ import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import toastConfig from "../../../../utilities/toastTypes";
 import { Dashboardservice } from "../../../../services/dashboard.service";
-import Table from "../../../../_components/table_components/table/Table";
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -698,8 +694,8 @@ const TransactionHistory = () => {
               />
             </div>
           </div>
-          <div className="row">
-            <div className="form-group col-md-2 col-lg-1 ">
+          <div className="row d-flex justify-content-between">
+            <div className="form-group col-md-6 col-lg-6">
               <button
                 className="btn btn-sm cob-btn-primary text-white"
                 type="submit"
@@ -714,34 +710,19 @@ const TransactionHistory = () => {
                 )}
                 Search
               </button>
-            </div>
-
-            {txnList?.length > 0 && (
-              <div className="form-group col-md-2 col-lg-1">
-                {/* {roles.merchant && (
-                                        <button
-                                            type="button"
-                                            className="approve cob-btn-primary"
-                                            data-toggle="modal"
-                                            data-target="#exampleModalCenter"
-                                            onClick={() => setOpenModal(true)}
-                                        >
-                                            <i className="fa fa-download"></i> Export
-                                        </button>
-                                    )} */}
-
+              {txnList?.length > 0 && (
                 <button
                   type="button"
-                  className="btn btn-sm text-white cob-btn-primary"
+                  className="btn btn-sm text-white cob-btn-primary mx-2"
                   onClick={() => exportToExcelFn()}
                   disabled={exportReportLoader}
                 >
                   <i className="fa fa-download"></i>
                   {exportReportLoader ? " Loading..." : " Export"}
                 </button>
-              </div>
-            )}
-            <div className="form-group col-md-10 d-flex justify-content-end">
+              )}
+            </div>
+            <div className="form-group col-md-1 col-lg-1">
               <button
                 className="btn cob-btn-primary btn-sm"
                 onClick={refundModalHandler}
