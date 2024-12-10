@@ -91,23 +91,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     dispatch(getKycIDList());
   }, []);
   useEffect(() => {
-    // const data = {
-    //   loginId: 11477,
-    //   clientName: "test ri",
-    //   clientCode:
-    //     Math.random().toString(36).slice(-6).toUpperCase() || "TEST98",
-    // };
-    // await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
-    // try {
-    //   (async () =>
-    //     await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data))();
-    // } catch (error) {
-    //   // console.log("console is here")
-    //   setSubmitLoader(false);
-    //   // toast.error('An error occurred while creating the Client Code. Please try again.');
-    //   return;
-    // }
-
     if (basicDetailsResponse?.loading) setSubmitLoader(true);
     else if (basicDetailsResponse?.data) {
       if (!kycData?.isEmailVerified)
@@ -116,19 +99,6 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         );
       else if (edit) toastConfig.successToast("Data saved successfully");
       setSubmitLoader(false);
-
-      // createClientCode();
-      // axiosInstanceAuth
-      //   .put(
-      //     `${API_URL.EMAIL_VERIFY}${basicDetailsResponse.data?.loginMasterId}`
-      //   )
-      //   .then((response) => {
-      //     response.data && createClientCode();
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //     toastConfig.errorToast("Email Verification not done");
-      //   });
     } else if (basicDetailsResponse?.error) {
       toastConfig.errorToast(
         basicDetailsResponse?.message ?? "Error saving data! Please try again"
@@ -479,7 +449,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   label="Full Name"
                   required
                   autoComplete="off"
-                  disabled={basicDetailsResponse?.data || disableForm}
+                  disabled={disableForm}
                 />
               </div>
 
@@ -492,7 +462,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   label="Contact Number"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data || disableForm}
+                  disabled={disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -504,7 +474,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   label="Email ID"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data || disableForm}
+                  disabled={disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -604,7 +574,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                         const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                         setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
                       }}
-                      disabled={basicDetailsResponse?.data || disableForm}
+                      disabled={disableForm}
                     />
                     {values?.pan !== null &&
                     values?.pan !== "" &&

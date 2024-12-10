@@ -40,7 +40,10 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .nullable(),
     state: Yup.string().required("Please select state").nullable(),
-    pin_code: Yup.string().required("Required").nullable(),
+    pin_code: Yup.string()
+      .required("Required")
+      .length(6, "Invalid Pin Code")
+      .nullable(),
   });
   const dispatch = useDispatch();
 

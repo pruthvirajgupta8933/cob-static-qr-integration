@@ -23,19 +23,38 @@ export const aadharOtpVerify = (paramData) => {
 };
 
 export const panVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-pan/`, paramData);
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-pan/`,
+    paramData
+  );
+};
+
+export const advancePanVerify = (paramData) => {
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-pan-advance/`,
+    paramData
+  );
 };
 
 export const gstVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-gst/`, paramData);
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-gst/`,
+    paramData
+  );
 };
 
 export const udyamVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-udyam/`, paramData);
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-udyam/`,
+    paramData
+  );
 };
 
 export const ifscVerify = (paramData) => {
-  return axiosInstanceJWT.post(`${API_URL.VALIDATE_DOC_KYC}/validate-ifsc/`, paramData);
+  return axiosInstanceJWT.post(
+    `${API_URL.VALIDATE_DOC_KYC}/validate-ifsc/`,
+    paramData
+  );
 };
 
 export const accountVerify = (paramData) => {
