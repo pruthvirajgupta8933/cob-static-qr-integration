@@ -449,7 +449,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   label="Full Name"
                   required
                   autoComplete="off"
-                  disabled={basicDetailsResponse?.data || disableForm}
+                  disabled={disableForm}
                 />
               </div>
 
@@ -462,7 +462,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   label="Contact Number"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data || disableForm}
+                  disabled={disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -474,7 +474,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                   label="Email ID"
                   autoComplete="nope"
                   required
-                  disabled={basicDetailsResponse?.data || disableForm}
+                  disabled={disableForm}
                 />
               </div>
               <div className="col-md-6">
@@ -574,7 +574,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                         const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                         setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
                       }}
-                      disabled={basicDetailsResponse?.data || disableForm}
+                      disabled={disableForm}
                     />
                     {values?.pan !== null &&
                     values?.pan !== "" &&
