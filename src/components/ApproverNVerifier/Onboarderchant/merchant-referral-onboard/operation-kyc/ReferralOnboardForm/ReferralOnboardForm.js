@@ -19,6 +19,7 @@ import { businessOverviewState } from "../../../../../../slices/kycSlice";
 import {
   panValidation,
   authPanValidation,
+  advancePanValidation,
 } from "../../../../../../slices/kycValidatorSlice";
 import gotVerified from "../../../../../../assets/images/verified.png";
 
@@ -222,6 +223,7 @@ function ReferralOnboardForm({
       signatory_pan,
       pin_code,
       company_name,
+      pan_dob_or_doi,
     } = value;
     // alert(3)
     setSubmitLoader(true);
@@ -254,6 +256,7 @@ function ReferralOnboardForm({
           created_by: auth?.user?.loginId,
           zone_code: zoneCode,
           pan_card: pan_card,
+          pan_dob_or_doi,
           signatory_pan: signatory_pan,
           name_on_pancard: value.name_on_pancard,
           company_name,
@@ -336,7 +339,7 @@ function ReferralOnboardForm({
     setIsLoading(true);
 
     dispatch(
-      panValidation({
+      advancePanValidation({
         pan_number: values,
       })
     )
@@ -351,7 +354,7 @@ function ReferralOnboardForm({
             res?.payload?.last_name
           );
           setFieldValue(key, fullNameByPan);
-
+          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           setFieldValue("pan_card", values);
           setFieldValue("prev_pan_card", values);
           setFieldValue("isPanVerified", 1);
@@ -420,7 +423,7 @@ function ReferralOnboardForm({
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => { }
+    setFieldValue = () => {}
   ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
@@ -554,12 +557,12 @@ function ReferralOnboardForm({
                       />
 
                       {values?.pan_card !== null &&
-                        values?.isPanVerified !== "" &&
-                        values?.pan_card !== "" &&
-                        values?.pan_card !== undefined &&
-                        !errors.hasOwnProperty("pan_card") &&
-                        !errors.hasOwnProperty("prev_pan_card") &&
-                        values?.pan_card === values?.prev_pan_card ? (
+                      values?.isPanVerified !== "" &&
+                      values?.pan_card !== "" &&
+                      values?.pan_card !== undefined &&
+                      !errors.hasOwnProperty("pan_card") &&
+                      !errors.hasOwnProperty("prev_pan_card") &&
+                      values?.pan_card === values?.prev_pan_card ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -636,9 +639,9 @@ function ReferralOnboardForm({
                         }}
                       />
                       {values?.signatory_pan &&
-                        values?.isSignatoryPanVerified &&
-                        !errors.hasOwnProperty("signatory_pan") &&
-                        !errors.hasOwnProperty("prevSignatoryPan") ? (
+                      values?.isSignatoryPanVerified &&
+                      !errors.hasOwnProperty("signatory_pan") &&
+                      !errors.hasOwnProperty("prevSignatoryPan") ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -711,7 +714,7 @@ function ReferralOnboardForm({
                       name="company_name"
                       placeholder="Company Name"
                       className="form-control"
-                    // label="Comany Name"
+                      // label="Comany Name"
                     />
                   </div>
                   <div className="col-lg-4">

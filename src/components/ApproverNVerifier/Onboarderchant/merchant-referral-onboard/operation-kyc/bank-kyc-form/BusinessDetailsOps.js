@@ -8,6 +8,7 @@ import { platformType, kycUserList } from "../../../../../../slices/kycSlice";
 import {
   panValidation,
   authPanValidation,
+  advancePanValidation,
 } from "../../../../../../slices/kycValidatorSlice";
 import { businessOverviewState } from "../../../../../../slices/kycSlice";
 import verifiedIcon from "../../../../../../assets/images/verified.png";
@@ -211,6 +212,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       website_app_url: value.website,
       is_website_url: "True",
       pan_card: value.pan_card,
+      pan_dob_or_doi: value.pan_dob_or_doi,
       signatory_pan: value.signatory_pan,
       billing_label: value.billing_label,
       company_name: value.company_name,
@@ -282,7 +284,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
 
   const panValidate = (values, key, setFieldValue) => {
     dispatch(
-      panValidation({
+      advancePanValidation({
         pan_number: values,
       })
     )
@@ -300,11 +302,12 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
           setFieldValue(key, fullNameByPan);
           setFieldValue("pan_card", values);
           setFieldValue("is_pan_verified", 1);
+          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           toast.success(res?.payload?.message);
         } else {
           setFieldValue(key, "");
           setFieldValue("is_pan_verified", "");
-          toast.error(res?.payload?.message);
+          toast.error(res?.payload?.message ?? res?.payload.data?.message);
         }
       })
       .catch((err) => {

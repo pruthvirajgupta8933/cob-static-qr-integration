@@ -18,6 +18,7 @@ import {
   panValidation,
   authPanValidation,
   gstValidation,
+  advancePanValidation,
 } from "../../slices/kycValidatorSlice";
 import gotVerified from "../../assets/images/verified.png";
 import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.service";
@@ -59,8 +60,9 @@ function BusinessDetails(props) {
       ? ""
       : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
-    } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
+  let businessAuthName = `${
+    busiAuthFirstName !== undefined ? busiAuthFirstName : ""
+  } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
   const trimFullName = (strOne, strTwo) => {
     let fullStr = isNull(strOne) ? "" : strOne;
@@ -250,7 +252,7 @@ function BusinessDetails(props) {
     setIsLoading(true);
 
     dispatch(
-      panValidation({
+      advancePanValidation({
         pan_number: values,
       })
     )
@@ -265,7 +267,7 @@ function BusinessDetails(props) {
             res?.payload?.last_name
           );
           setFieldValue(key, fullNameByPan);
-
+          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           setFieldValue("pan_card", values);
           setFieldValue("prev_pan_card", values);
           setFieldValue("isPanVerified", 1);
@@ -274,7 +276,7 @@ function BusinessDetails(props) {
         } else {
           setFieldValue(key, "");
           setIsLoading(false);
-          toast.error(res?.payload?.message);
+          toast.error(res?.payload?.message ?? res?.payload.data?.message);
         }
       })
       .catch((err) => {
@@ -320,7 +322,6 @@ function BusinessDetails(props) {
       }
     });
   };
-
 
   const udyamValidation = (values, key, setFieldValue, setIsloader) => {
     setIsloader(true);
@@ -385,7 +386,7 @@ function BusinessDetails(props) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => { }
+    setFieldValue = () => {}
   ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
@@ -434,7 +435,7 @@ function BusinessDetails(props) {
 
       pan_card: values.pan_card,
       signatory_pan: values.signatory_pan,
-
+      pan_dob_or_doi: values.pan_dob_or_doi,
       name_on_pancard: values.name_on_pancard,
       pin_code: values.pin_code,
       city_id: values.city_id,
@@ -588,10 +589,10 @@ function BusinessDetails(props) {
                       />
 
                       {values?.gst_number !== null &&
-                        values?.gst_number !== undefined &&
-                        values?.gst_number !== "" &&
-                        !errors.hasOwnProperty("gst_number") &&
-                        !errors.hasOwnProperty("prevGstNumber") ? (
+                      values?.gst_number !== undefined &&
+                      values?.gst_number !== "" &&
+                      !errors.hasOwnProperty("gst_number") &&
+                      !errors.hasOwnProperty("prevGstNumber") ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -677,10 +678,10 @@ function BusinessDetails(props) {
                         />
 
                         {values?.udyam_number !== null &&
-                          values?.udyam_number !== "" &&
-                          values?.udyam_number !== undefined &&
-                          !errors.hasOwnProperty("udyam_number") &&
-                          !errors.hasOwnProperty("prevUdyamNumber") ? (
+                        values?.udyam_number !== "" &&
+                        values?.udyam_number !== undefined &&
+                        !errors.hasOwnProperty("udyam_number") &&
+                        !errors.hasOwnProperty("prevUdyamNumber") ? (
                           <span className="success input-group-append">
                             <img
                               src={gotVerified}
@@ -758,12 +759,12 @@ function BusinessDetails(props) {
                   />
 
                   {values?.pan_card !== null &&
-                    values?.isPanVerified !== "" &&
-                    values?.pan_card !== "" &&
-                    values?.pan_card !== undefined &&
-                    !errors.hasOwnProperty("pan_card") &&
-                    !errors.hasOwnProperty("prev_pan_card") &&
-                    values?.pan_card === values?.prev_pan_card ? (
+                  values?.isPanVerified !== "" &&
+                  values?.pan_card !== "" &&
+                  values?.pan_card !== undefined &&
+                  !errors.hasOwnProperty("pan_card") &&
+                  !errors.hasOwnProperty("prev_pan_card") &&
+                  values?.pan_card === values?.prev_pan_card ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -842,9 +843,9 @@ function BusinessDetails(props) {
                     }}
                   />
                   {values?.signatory_pan &&
-                    values?.isSignatoryPanVerified &&
-                    !errors.hasOwnProperty("signatory_pan") &&
-                    !errors.hasOwnProperty("prevSignatoryPan") ? (
+                  values?.isSignatoryPanVerified &&
+                  !errors.hasOwnProperty("signatory_pan") &&
+                  !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}

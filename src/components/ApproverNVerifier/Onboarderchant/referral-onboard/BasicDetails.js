@@ -18,6 +18,7 @@ import {
   referralOnboardSlice,
 } from "../../../../slices/approver-dashboard/referral-onboard-slice";
 import {
+  advancePanValidation,
   authPanValidation,
   dlValidation,
   voterCardValidation,
@@ -166,7 +167,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
     if (pan?.length !== 10) return;
     setPanLoader(true);
     try {
-      const res = await dispatch(authPanValidation({ pan_number: pan }));
+      const res = await dispatch(advancePanValidation({ pan_number: pan }));
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -177,9 +178,12 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
           "panName",
           `${res.payload.first_name} ${res.payload.last_name}`
         );
+        setFieldValue("pan_dob_or_doi", res?.payload?.dob);
         setPanLoader(false);
       } else {
-        toast.error(res?.payload?.message ?? res?.payload);
+        toast.error(
+          res?.payload ?? res?.payload?.message ?? res?.payload?.data?.message
+        );
         setPanLoader(false);
       }
     } catch (error) {

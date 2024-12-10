@@ -10,6 +10,7 @@ import {
   panValidation,
   authPanValidation,
   gstValidation,
+  advancePanValidation,
 } from "../../../slices/kycValidatorSlice";
 import {
   businessOverviewState,
@@ -254,7 +255,7 @@ function BusinessDetailEdtKyc(props) {
     setIsLoading(true);
 
     dispatch(
-      panValidation({
+      advancePanValidation({
         pan_number: values,
       })
     )
@@ -269,7 +270,7 @@ function BusinessDetailEdtKyc(props) {
             res?.payload?.last_name
           );
           setFieldValue(key, fullNameByPan);
-
+          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           setFieldValue("pan_card", values);
           setFieldValue("prev_pan_card", values);
           setFieldValue("isPanVerified", 1);
@@ -278,7 +279,7 @@ function BusinessDetailEdtKyc(props) {
         } else {
           setFieldValue(key, "");
           setIsLoading(false);
-          toast.error(res?.payload?.message);
+          toast.error(res?.payload?.message ?? res.payload.data?.message);
         }
       })
       .catch((err) => {
@@ -490,6 +491,7 @@ function BusinessDetailEdtKyc(props) {
       registerd_with_gst: JSON.parse(values.registerd_with_gst),
       gst_number: values.gst_number,
       pan_card: values.pan_card,
+      pan_dob_or_doi: values.pan_dob_or_doi,
       signatory_pan: values.signatory_pan,
       name_on_pancard: values.name_on_pancard,
       pin_code: values.pin_code,
