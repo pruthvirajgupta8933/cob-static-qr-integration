@@ -107,7 +107,9 @@ const AdvancePanValidate = ({ selectedDocType }) => {
             </div>
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">Aadhaar Linked : </span>
-              <span>{panInfo?.aadhaar_linked?.toString()}</span>
+              <span className="text-capitalize">
+                {panInfo?.aadhaar_linked?.toString()}
+              </span>
             </div>
           </div>
           <div className="row">
@@ -117,7 +119,21 @@ const AdvancePanValidate = ({ selectedDocType }) => {
             </div>
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">Valid : </span>
-              <span>{panInfo?.valid?.toString()}</span>
+              <span className="text-capitalize">
+                {panInfo?.valid?.toString()}
+              </span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6 p-2">
+              <span className="font-weight-bold mb-1">Message : </span>
+              <span>{panInfo?.message}</span>
+            </div>
+            <div className="col-md-6 p-2">
+              <span className="font-weight-bold mb-1">Status : </span>
+              <span className="text-capitalize">
+                {panInfo?.status?.toString()}
+              </span>
             </div>
           </div>
         </div>
