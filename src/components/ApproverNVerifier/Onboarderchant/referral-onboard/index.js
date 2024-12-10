@@ -4,10 +4,7 @@ import BasicDetails from "./BasicDetails";
 import BankDetails from "./BankDetails";
 import UploadDocuments from "./UploadDocuments";
 import ViewDocuments from "./ViewDocuments";
-import BusinessOverview from "./BusinessOverview";
-import BusinessDetails from "./BusinessDetails";
 import AddressDetails from "./AddressDetails";
-import ReferralId from "./ReferralId";
 import Submit from "./Submit";
 
 const Referral = ({ type, zoneCode, edit }) => {
@@ -16,21 +13,13 @@ const Referral = ({ type, zoneCode, edit }) => {
     tabs = [
       { id: "basic", name: "Basic Details" },
       { id: "address", name: "Address Details" },
-      // { id: "referral_id", name: "Referral ID" },
       { id: "bank", name: "Bank Details" },
       { id: "upload_doc", name: "Upload Document" },
       { id: "view_doc", name: "View Document" },
       { id: "submit", name: "Submit" },
     ];
   } else if (type === "company") {
-    tabs = [
-      { id: "basic", name: "Basic Details" },
-      // { id: "biz_overview", name: "Business Overview" },
-      // { id: "biz_details", name: "Business Details" },
-      // { id: "bank", name: "Bank Details" },
-      // { id: "upload_doc", name: "Upload Document" },
-      // { id: "view_doc", name: "View Document" },
-    ];
+    tabs = [{ id: "basic", name: "Basic Details" }];
   }
 
   const basicDetailsResponse = useSelector(
@@ -42,7 +31,6 @@ const Referral = ({ type, zoneCode, edit }) => {
   const handleTabClick = (tabId) => setCurrentTab(tabId);
 
   const renderTabContent = () => {
-    // console.log(basicDetailsResponse);
     switch (currentTab) {
       case "basic":
         return (
@@ -63,8 +51,6 @@ const Referral = ({ type, zoneCode, edit }) => {
             setInfoModal={setInfoModal}
           />
         );
-      case "referral_id":
-        return <ReferralId setCurrentTab={setCurrentTab} />;
       case "bank":
         return (
           <BankDetails
@@ -83,10 +69,6 @@ const Referral = ({ type, zoneCode, edit }) => {
         );
       case "view_doc":
         return <ViewDocuments setCurrentTab={setCurrentTab} />;
-      case "biz_overview":
-        return <BusinessOverview setCurrentTab={setCurrentTab} />;
-      case "biz_details":
-        return <BusinessDetails setCurrentTab={setCurrentTab} />;
       default:
         return (
           <Submit
@@ -106,9 +88,7 @@ const Referral = ({ type, zoneCode, edit }) => {
                 <p className="p-2 m-0">
                   Session Start : {basicDetailsResponse?.name ?? kycData?.name}
                 </p>
-                <p className="p-2 m-0">
-                  KYC Status : {basicDetailsResponse?.status ?? kycData?.status}
-                </p>
+                <p className="p-2 m-0">KYC Status : {kycData?.status}</p>
               </div>
               <div>
                 <p className="p-2 m-0">
