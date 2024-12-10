@@ -178,6 +178,12 @@ const MyMerchantList = () => {
       // width: "200px",
     },
     {
+      id: "7",
+      name: "KYC Status",
+      selector: (row) => row.status,
+      cell: (row) => <div className="removeWhiteSpace">{row?.status}</div>,
+    },
+    {
       id: "13",
       name: "Onboard Type",
       selector: (row) => row.status,
