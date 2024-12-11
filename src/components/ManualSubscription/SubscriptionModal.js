@@ -96,7 +96,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       bankRef: values.bank_ref,
       clientCode: values.client.label?.split(" - ")?.[0],
       clientId: merchantData?.data?.clientId,
-      clientName: values.react_select.label?.split(" - ")?.[1],
+      clientName: values.client.label?.split(" - ")?.[1],
       clientTxnId: values.client_txn_id,
       mandateStartTime: DateFormatter(values.mandate_start).props?.children,
       mandateEndTime: DateFormatter(values.mandate_end).props?.children,
