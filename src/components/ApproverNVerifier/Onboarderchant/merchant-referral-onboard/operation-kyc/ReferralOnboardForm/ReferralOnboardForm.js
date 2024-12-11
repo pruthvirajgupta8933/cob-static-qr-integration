@@ -391,7 +391,7 @@ function ReferralOnboardForm({
     setLoadingForSignatory(true);
     // console.log("auth", "auth pan")
     dispatch(
-      authPanValidation({
+      advancePanValidation({
         pan_number: values,
       })
     ).then((res) => {
@@ -407,7 +407,7 @@ function ReferralOnboardForm({
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-
+        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);

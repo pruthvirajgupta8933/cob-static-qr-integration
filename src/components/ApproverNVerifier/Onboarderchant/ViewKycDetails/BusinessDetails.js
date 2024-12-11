@@ -91,7 +91,7 @@ const BusinessDetails = (props) => {
       };
 
       await dispatch(getMerchantpanData(panDetails));
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const toggleCollapse = (index) => {
@@ -114,8 +114,9 @@ const BusinessDetails = (props) => {
         ? "Verified"
         : "Not Verified",
       gridClasses: "col-sm-12 col-md-6 col-lg-6",
-      inputClasses: `form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"
-        }`,
+      inputClasses: `form-control ${
+        selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"
+      }`,
     },
     {
       label: "Business PAN",
@@ -123,7 +124,13 @@ const BusinessDetails = (props) => {
       verificationMessage: selectedUserData?.panCard
         ? "Verified"
         : "Not Verified",
-      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      gridClasses: "col-sm-12 col-md-6 col-lg-3",
+      inputClasses: "form-control",
+    },
+    {
+      label: "PAN DOB/DOI",
+      value: selectedUserData?.pan_dob_or_doi,
+      gridClasses: "col-sm-12 col-md-6 col-lg-3",
       inputClasses: "form-control",
     },
     {

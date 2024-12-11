@@ -212,7 +212,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       website_app_url: value.website,
       is_website_url: "True",
       pan_card: value.pan_card,
-      pan_dob_or_doi: value.pan_dob_or_doi,
+      pan_dob_or_doi: value.pan_dob_or_doi ?? value.signatory_pan_dob_or_doi,
       signatory_pan: value.signatory_pan,
       billing_label: value.billing_label,
       company_name: value.company_name,
@@ -255,7 +255,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const authValidation = (values, key, setFieldValue) => {
     setLoadingForSignatory(true);
     dispatch(
-      authPanValidation({
+      advancePanValidation({
         pan_number: values,
       })
     ).then((res) => {
@@ -272,7 +272,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-
+        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);

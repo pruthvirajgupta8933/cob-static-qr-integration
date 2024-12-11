@@ -246,6 +246,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       zone_code: zoneCode,
       pan_card: values.pan,
       name_on_pan_card: values.panName,
+      pan_dob_or_doi: values.pan_dob_or_doi,
       aadhar_number: values.id_number,
       onboard_type:
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
