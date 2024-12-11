@@ -1,13 +1,14 @@
-import ReactSelect, { createFilter } from "react-select";
+import { createFilter } from "react-select";
 import React, { useState, useEffect } from "react";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form, Field } from "formik";
 import Yup from "../../_components/formik/Yup";
+import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 // import { createUpdater } from "../custom-hooks/updateGetValue";
 
-import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { createSubscriptionPlan } from "../../slices/subscription";
 import { useDispatch } from "react-redux";
 import DateFormatter from "../../utilities/DateConvert";
@@ -16,8 +17,6 @@ import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverD
 const SubscriptionModal = ({ data, setOpenModal }) => {
   const [subscriptionData, setSubscriptionData] = useState(data);
   const [clientCodeList, setCliencodeList] = useState([]);
-  const [selectedClientLoginId, setSelectedClientLoginId] = useState(null);
-  const [clientId, setClientId] = useState();
   const [disable, setIsDisable] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -61,7 +60,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   const initialValues = {
     app_id: subscriptionData?.applicationId ?? "10",
     app_name: subscriptionData?.applicationName ?? "Payment Gateway",
-    react_select: subscriptionData?.clientCode
+    client: subscriptionData?.clientCode
       ? {
           value: subscriptionData.clientCode,
           label: `${subscriptionData.clientCode} - ${subscriptionData.clientName}`,
@@ -81,20 +80,22 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     amount: subscriptionData?.purchaseAmount ?? 10000,
     subscription_status: subscriptionData?.subscription_status ?? "Subscribed",
   };
-  const handleSelectChange = async (selectedOption) => {
-    setSelectedClientLoginId(selectedOption ? selectedOption.value : null);
-    const merchantData = await axiosInstanceJWT.post(API_URL.Kyc_User_List, {
-      login_id: selectedOption.loginMasterId,
-    });
-    setClientId(merchantData?.data?.clientId);
-  };
+
   const handleSubmit = async (values) => {
+    let merchantData;
+    try {
+      merchantData = await axiosInstanceJWT.post(API_URL.Kyc_User_List, {
+        login_id: values.client?.loginMasterId,
+      });
+    } catch (e) {
+      toastConfig.errorToast("Couldn't fetch selected client data");
+    }
     const postData = {
       applicationId: values.app_id,
       applicationName: values.app_name,
       bankRef: values.bank_ref,
-      clientCode: values.react_select.label?.split(" - ")?.[0],
-      clientId: clientId,
+      clientCode: values.client.label?.split(" - ")?.[0],
+      clientId: merchantData?.data?.clientId,
       clientName: values.react_select.label?.split(" - ")?.[1],
       clientTxnId: values.client_txn_id,
       mandateStartTime: DateFormatter(values.mandate_start).props?.children,
@@ -157,7 +158,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
             </div>
             <div className="row mt-3">
               <div className="col-lg-6">
-                <ReactSelect
+                <CustomReactSelect
                   name="react_select"
                   options={options}
                   placeholder="Select Client Code"
@@ -165,7 +166,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
                     ignoreAccents: false,
                   })}
                   label="Client Code"
-                  onChange={handleSelectChange}
+                  // onChange={handleSelectChange}
                 />
               </div>
               <div className="col-lg-6">
