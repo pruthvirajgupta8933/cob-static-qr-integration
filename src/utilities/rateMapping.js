@@ -4,7 +4,7 @@ import API_URL from "../config";
 import { axiosInstance, axiosInstanceJWT } from "./axiosInstance";
 
 export const rateMappingFn = (loginId, parentClientCode) => {
-   
+
     let loader = true
 
     // const initialValue = {
@@ -56,7 +56,7 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                 const bankName = merchantData?.bankName
                 const rr_amount = merchantData?.rolling_reserve
                 const business_cat_type = merchantData?.business_category_type ?? ""
-                const refer_by = merchantData?.refer_by ?? ""
+                const merchant_parent_id = merchantData?.merchant_parent_id ?? ""
 
                 //  Check the client code
                 console.log("Run4- check is client code mapped", clientCode)
@@ -93,7 +93,7 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                         subscriptionstatus: "Subscribed",
                         businessType: 2,
                         businessctgcode: business_cat_type,
-                        referralcode: refer_by,
+                        referralcode: merchant_parent_id,
                         mesaagebypassflag: '1',
                         forcesuccessflag: '1'
                     };
