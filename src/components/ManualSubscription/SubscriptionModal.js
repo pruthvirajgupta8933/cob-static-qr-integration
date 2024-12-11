@@ -9,11 +9,7 @@ import toastConfig from "../../utilities/toastTypes";
 // import { createUpdater } from "../custom-hooks/updateGetValue";
 
 import { axiosInstance, axiosInstanceJWT } from "../../utilities/axiosInstance";
-import {
-  createSubscriptionPlan,
-  getSubscriptionPlanById,
-  updateSubscriptionPlan,
-} from "../../slices/subscription";
+import { createSubscriptionPlan } from "../../slices/subscription";
 import { useDispatch } from "react-redux";
 import DateFormatter from "../../utilities/DateConvert";
 import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
@@ -21,8 +17,6 @@ import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverD
 const SubscriptionModal = ({ data, setOpenModal }) => {
   const [subscriptionData, setSubscriptionData] = useState(data);
   const [clientCodeList, setCliencodeList] = useState([]);
-  const [selectedClientLoginId, setSelectedClientLoginId] = useState(null);
-  const [clientId, setClientId] = useState();
   const [disable, setIsDisable] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,20 +24,6 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       setCliencodeList(resp?.payload?.result);
     });
   }, []);
-  // useEffect(() => {
-  //   // dispatch();
-  //   console.log(data);
-  //   dispatch(getSubscriptionPlanById({ id: 3 })).then((resp) => {
-  //     if (resp?.meta?.requestStatus === "fulfilled") {
-  //       toastConfig.successToast("Data Saved");
-  //       setIsDisable(false);
-  //       setSubscriptionData(resp.payload?.data);
-  //     } else {
-  //       toastConfig.errorToast(resp?.payload ?? "Something went wrong");
-  //       setIsDisable(false);
-  //     }
-  //   });
-  // }, [data]);
   const options = [
     { value: "", label: "Select Client Code" },
     ...clientCodeList.map((data) => ({
@@ -55,7 +35,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   const validationSchema = Yup.object().shape({
     app_id: Yup.string().required("Required").allowOneSpace(),
     app_name: Yup.string().required("Required").allowOneSpace(),
-    react_select: Yup.object().required("Required").nullable(),
+    client: Yup.object().required("Required").nullable(),
     client_txn_id: Yup.string().required("Required").allowOneSpace(),
     bank_ref: Yup.string().required("Required").allowOneSpace(),
     payment_mode: Yup.string().required("Required").allowOneSpace(),
@@ -80,7 +60,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   const initialValues = {
     app_id: subscriptionData?.applicationId ?? "10",
     app_name: subscriptionData?.applicationName ?? "Payment Gateway",
-    react_select: subscriptionData?.clientCode
+    client: subscriptionData?.clientCode
       ? {
           value: subscriptionData.clientCode,
           label: `${subscriptionData.clientCode} - ${subscriptionData.clientName}`,
@@ -100,20 +80,22 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     amount: subscriptionData?.purchaseAmount ?? 10000,
     subscription_status: subscriptionData?.subscription_status ?? "Subscribed",
   };
-  const handleSelectChange = async (selectedOption) => {
-    setSelectedClientLoginId(selectedOption ? selectedOption.value : null);
-    const merchantData = await axiosInstanceJWT.post(API_URL.Kyc_User_List, {
-      login_id: selectedOption.loginMasterId,
-    });
-    setClientId(merchantData?.data?.clientId);
-  };
+
   const handleSubmit = async (values) => {
+    let merchantData;
+    try {
+      merchantData = await axiosInstanceJWT.post(API_URL.Kyc_User_List, {
+        login_id: values.client?.loginMasterId,
+      });
+    } catch (e) {
+      toastConfig.errorToast("Couldn't fetch selected client data");
+    }
     const postData = {
       applicationId: values.app_id,
       applicationName: values.app_name,
       bankRef: values.bank_ref,
-      clientCode: values.react_select.label?.split(" - ")?.[0],
-      clientId: clientId,
+      clientCode: values.client.label?.split(" - ")?.[0],
+      clientId: merchantData?.data?.clientId,
       clientName: values.react_select.label?.split(" - ")?.[1],
       clientTxnId: values.client_txn_id,
       mandateStartTime: DateFormatter(values.mandate_start).props?.children,
@@ -177,14 +159,14 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
             <div className="row mt-3">
               <div className="col-lg-6">
                 <CustomReactSelect
-                  name="react_select"
+                  name="client"
                   options={options}
                   placeholder="Select Client Code"
                   filterOption={createFilter({
                     ignoreAccents: false,
                   })}
                   label="Client Code"
-                  onChange={handleSelectChange}
+                  // onChange={handleSelectChange}
                 />
               </div>
               <div className="col-lg-6">
