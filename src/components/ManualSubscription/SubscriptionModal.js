@@ -35,7 +35,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
   const validationSchema = Yup.object().shape({
     app_id: Yup.string().required("Required").allowOneSpace(),
     app_name: Yup.string().required("Required").allowOneSpace(),
-    react_select: Yup.object().required("Required").nullable(),
+    client: Yup.object().required("Required").nullable(),
     client_txn_id: Yup.string().required("Required").allowOneSpace(),
     bank_ref: Yup.string().required("Required").allowOneSpace(),
     payment_mode: Yup.string().required("Required").allowOneSpace(),
@@ -159,7 +159,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
             <div className="row mt-3">
               <div className="col-lg-6">
                 <CustomReactSelect
-                  name="react_select"
+                  name="client"
                   options={options}
                   placeholder="Select Client Code"
                   filterOption={createFilter({
