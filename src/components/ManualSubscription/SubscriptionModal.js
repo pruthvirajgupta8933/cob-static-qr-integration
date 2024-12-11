@@ -1,19 +1,14 @@
-import { createFilter } from "react-select";
+import ReactSelect, { createFilter } from "react-select";
 import React, { useState, useEffect } from "react";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form, Field } from "formik";
 import Yup from "../../_components/formik/Yup";
-import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
 // import { createUpdater } from "../custom-hooks/updateGetValue";
 
-import { axiosInstance, axiosInstanceJWT } from "../../utilities/axiosInstance";
-import {
-  createSubscriptionPlan,
-  getSubscriptionPlanById,
-  updateSubscriptionPlan,
-} from "../../slices/subscription";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { createSubscriptionPlan } from "../../slices/subscription";
 import { useDispatch } from "react-redux";
 import DateFormatter from "../../utilities/DateConvert";
 import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
@@ -30,20 +25,6 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
       setCliencodeList(resp?.payload?.result);
     });
   }, []);
-  // useEffect(() => {
-  //   // dispatch();
-  //   console.log(data);
-  //   dispatch(getSubscriptionPlanById({ id: 3 })).then((resp) => {
-  //     if (resp?.meta?.requestStatus === "fulfilled") {
-  //       toastConfig.successToast("Data Saved");
-  //       setIsDisable(false);
-  //       setSubscriptionData(resp.payload?.data);
-  //     } else {
-  //       toastConfig.errorToast(resp?.payload ?? "Something went wrong");
-  //       setIsDisable(false);
-  //     }
-  //   });
-  // }, [data]);
   const options = [
     { value: "", label: "Select Client Code" },
     ...clientCodeList.map((data) => ({
@@ -176,7 +157,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
             </div>
             <div className="row mt-3">
               <div className="col-lg-6">
-                <CustomReactSelect
+                <ReactSelect
                   name="react_select"
                   options={options}
                   placeholder="Select Client Code"
