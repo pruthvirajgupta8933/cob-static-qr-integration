@@ -308,6 +308,13 @@ function BusinessDetails(props) {
         setFieldValue("pan_card", res?.payload?.pan);
         setFieldValue("prev_pan_card", res?.payload?.pan);
         setFieldValue("isPanVerified", 1);
+        advancePanValidation({ pan_number: res?.payload?.pan })
+          .then((res) => {
+            if (res.payload?.dob)
+              setFieldValue("pan_dob_or_doi", res.payload?.dob);
+            else toastConfig.warningToast("Please verify PAN as well");
+          })
+          .catch((err) => toastConfig.errorToast(err.message));
 
         setFieldValue("registerd_with_gst", true);
         setFieldValue("registerd_with_udyam", false);
