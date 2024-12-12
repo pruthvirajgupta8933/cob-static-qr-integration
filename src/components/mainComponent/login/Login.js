@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory, Link } from "react-router-dom";
 import Yup from "../../../_components/formik/Yup";
-import { login, logout } from "../../../slices/auth";
+import { login, loginVerify, logout } from "../../../slices/auth";
 import { clearMessage } from "../../../slices/message";
 import sbbnner from "../../../assets/images/login-banner.svg";
 import arrow_one from "../../../assets/images/arrow_one.png";
@@ -86,12 +86,36 @@ const Login = () => {
     setLoading(true);
     dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
       .then((res) => {
-        if (res?.payload?.user?.status) {
-          setInputValue(formValue)
+        if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
           setOpenOtpModal(true)
         } else {
-          setOpenOtpModal(false)
-          toastConfig.errorToast(res?.payload || "Something went wrong.")
+          // if MFA false
+          if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled === false) {
+
+            setLoading(true);
+            dispatch(loginVerify({ otp: "", verification_token: res?.payload?.user?.verification_token }))
+              .then((res) => {
+                if (res?.payload?.user) {
+                  const { loginStatus, loginMessage } = res.payload.user;
+                  if (loginStatus === "Activate" && loginMessage === "success") {
+                    setLoading(false);
+                    history.replace("/dashboard");
+                  } else {
+                    setLoading(false);
+                    toastConfig.errorToast(loginMessage || "Rejected");
+                  }
+                } else {
+                  setLoading(false);
+                  toastConfig.errorToast(res?.payload || "Rejected");
+                }
+                setLoading(false);
+              });
+
+          } else {
+            setOpenOtpModal(false)
+            setLoading(false);
+            toastConfig.errorToast(res?.payload || "Something went wrong.")
+          }
         }
         setLoading(false);
       });
@@ -106,11 +130,32 @@ const Login = () => {
       const username = response?.profileObj?.email;
       dispatch(login({ username, is_social: true }))
         .then((res) => {
-          if (res?.payload?.user?.status) {
+          if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
             setOpenOtpModal(true)
           } else {
-            setOpenOtpModal(false)
-            toastConfig.errorToast(res?.payload || "Something went wrong.")
+            // if MFA false
+            if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled === false) {
+
+              setLoading(true);
+              dispatch(loginVerify({ otp: "", verification_token: res?.payload?.user?.verification_token }))
+                .then((res) => {
+                  if (res?.payload?.user) {
+                    const { loginStatus, loginMessage } = res.payload.user;
+                    if (loginStatus === "Activate" && loginMessage === "success") {
+                      history.replace("/dashboard");
+                    } else {
+                      toastConfig.errorToast(loginMessage || "Rejected");
+                    }
+                  } else {
+                    toastConfig.errorToast(res?.payload || "Rejected");
+                  }
+                  setLoading(false);
+                });
+
+            } else {
+              setOpenOtpModal(false)
+              toastConfig.errorToast(res?.payload || "Something went wrong.")
+            }
           }
           setLoading(false);
         })
@@ -171,7 +216,10 @@ const Login = () => {
             </div>
             <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
               <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
+
               {openOtpModal ? <AuthOtpVerify updateOtpModal={setOpenOtpModal} inputValue={inputValue} /> : <div className={`col ${classes.form_container}`}>
+
+
                 <h5 className={`text-center text_primary_color heading ${classes.heading}`}>Login</h5>
                 <h6 className={`text-center mb-4 sub_heading ${classes.sub_heading}`}>Login to your merchant account</h6>
                 <Formik
