@@ -22,6 +22,7 @@ function AuthOtpVerify({ updateOtpModal, inputValue }) {
         otp: Yup.string().required("Please enter OTP").max(6, "OTP must be 6 digits").min(6, "OTP must be 6 digits")
     });
 
+
     const handleLogin = (formValue) => {
         setLoading(true);
         dispatch(loginVerify({ otp: formValue?.otp, verification_token: auth_verification?.verification_token }))
@@ -48,15 +49,6 @@ function AuthOtpVerify({ updateOtpModal, inputValue }) {
     const resendOtp = () => {
         const { clientUserId, userPassword } = inputValue;
         dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
-            .then((res) => {
-                if (res?.payload?.user?.status) {
-
-                } else {
-
-                    toastConfig.errorToast(res?.payload || "Something went wrong.")
-                }
-
-            });
     };
 
 
@@ -85,26 +77,12 @@ function AuthOtpVerify({ updateOtpModal, inputValue }) {
                                 {(msg) => <div className="text-danger">{msg}</div>}
                             </ErrorMessage>
                         </div>
-
-                    {/* <div className="form-text p-2 my-3 text-right font-size-14">
-                            <Link to={`/forget/${window.location.search}`} className="text-decoration-underline">
-                                Resend OTP
-                            </Link>
-                        </div> */}
-
-                    {/* <div className="d-flex">
-                            <button type="submit" className="btn cob-btn-primary w-100 mb-2" disabled={loading}>
-                                {loading && <span className="spinner-grow spinner-grow-sm text-light mr-1"></span>}Verify
+                        <div className="d-flex justify-content-between">
+                            <TimerComponent resend={resendOtp} />
+                            <button type="submit" className="btn cob-btn-primary btn-sm" disabled={loading}>
+                                {loading && <span className="spinner-grow spinner-grow-sm text-light"></span>}
+                                Verify
                             </button>
-                        </div> */}
-                    <div className="d-flex justify-content-between">
-
-                        <TimerComponent resend={resendOtp} />
-
-                        <button type="submit" className="btn cob-btn-primary btn-sm" disabled={loading}>
-                            {loading && <span className="spinner-grow spinner-grow-sm text-light"></span>}
-                            Verify
-                        </button>
 
                         </div>
                     </Form>
