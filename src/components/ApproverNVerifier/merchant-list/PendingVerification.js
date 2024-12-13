@@ -17,7 +17,6 @@ function PendingVerification({ commonRows }) {
   const [pageSize, setPageSize] = useState(100);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [data, setData] = useState([]);
   const [newRegistrationData, setNewRegistrationData] = useState([]);
   const [kycIdClick, setKycIdClick] = useState([]);

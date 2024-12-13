@@ -16,7 +16,6 @@ const RejectedKYC = ({ commonRows }) => {
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("");
 
   const rejectedKycList = useSelector((state) => state.kyc.rejectedKycList);

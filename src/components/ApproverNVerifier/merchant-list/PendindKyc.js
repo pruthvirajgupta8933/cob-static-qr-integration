@@ -8,18 +8,12 @@ import CommentModal from "../Onboarderchant/CommentModal";
 import ListLayout from "./ListLayout";
 
 const PendindKyc = ({ commonRows }) => {
-  const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
 
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(100);
   const [isOpenModal, setIsModalOpen] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [onboardType, setOnboardType] = useState("");
 
   const pendindKycList = useSelector((state) => state.kyc.pendingKycuserList);
 
