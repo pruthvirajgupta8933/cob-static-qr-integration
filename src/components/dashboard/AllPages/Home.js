@@ -7,7 +7,11 @@ import {
 import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { GetKycTabsStatus, kycUserList, kycUserListForMerchant } from "../../../slices/kycSlice";
+import {
+  GetKycTabsStatus,
+  kycUserList,
+  kycUserListForMerchant,
+} from "../../../slices/kycSlice";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { isNull } from "lodash";
@@ -21,6 +25,7 @@ import KycStatusUpdateMessage from "./KycStatusUpdateMesssage";
 import menulistService from "../../../services/cob-dashboard/menulist.service";
 import toastConfig from "../../../utilities/toastTypes";
 import { graphDate } from "../../../utilities/graphDate";
+import PasswordExpiry from "../../../_components/reuseable_components/PasswordExpiry";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -196,15 +201,15 @@ function Home() {
           </div>
         )}
 
-      <div className="row row card shadow pt-2">
-        {/* hide when login by bank and if businees category b2b */}
-        {(roles?.bank === true || roles?.b2b === true || roles?.referral) ? (
-          <></>
-        ) : (
+      {/* hide when login by bank and if businees category b2b */}
+      {roles?.bank === true || roles?.b2b === true || roles?.referral ? (
+        <></>
+      ) : (
+        <div className="row row card shadow pt-2">
           <StepProgressBar status={KycTabStatusStore?.status} />
-        )}
-      </div>
-
+        </div>
+      )}
+      <PasswordExpiry />
       <hr />
       {/* Dashboard Update  */}
       {roles?.merchant && (
