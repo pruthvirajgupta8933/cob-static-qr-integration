@@ -527,7 +527,7 @@ function ContactInfoKyc(props) {
                   className="col-form-label mt-0 p-2"
                   data-tip={tooltipData.contact_person_name}
                 >
-                  Contact Person Name<span className="text-danger">-- *</span>
+                  Contact Person Name<span className="text-danger">*</span>
                 </label>
                 <Field
                   type="text"
