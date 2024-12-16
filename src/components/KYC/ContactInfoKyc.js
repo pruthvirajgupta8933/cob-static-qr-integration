@@ -522,7 +522,6 @@ function ContactInfoKyc(props) {
         {({ values, errors, isValid, setFieldError, setFieldValue }) => (
           <Form>
             <div className="row">
-              {console.log("errors", errors)}
               <div className="col-lg-6 col-sm-12 col-md-12">
                 <label
                   className="col-form-label mt-0 p-2"
