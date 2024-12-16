@@ -522,12 +522,13 @@ function ContactInfoKyc(props) {
         {({ values, errors, isValid, setFieldError, setFieldValue }) => (
           <Form>
             <div className="row">
+              {console.log("errors", errors)}
               <div className="col-lg-6 col-sm-12 col-md-12">
                 <label
                   className="col-form-label mt-0 p-2"
                   data-tip={tooltipData.contact_person_name}
                 >
-                  Contact Person Name<span className="text-danger"> *</span>
+                  Contact Person Name<span className="text-danger">-- *</span>
                 </label>
                 <Field
                   type="text"
@@ -535,6 +536,10 @@ function ContactInfoKyc(props) {
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
+                <ErrorMessage name="name">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
               </div>
 
               <div className="col-lg-6 col-sm-12 col-md-12">
