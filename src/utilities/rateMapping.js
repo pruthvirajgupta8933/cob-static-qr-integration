@@ -50,11 +50,13 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                 const emailId = merchantData?.emailId
                 const name = merchantData?.name
                 const secret_key = merchantData?.secret_key
-                const isDirect = merchantData?.isDirect
+                // const isDirect = merchantData?.isDirect
                 const address = merchantData?.merchant_address_details?.address
                 const stateId = merchantData?.stateId
                 const bankName = merchantData?.bankName
-                const rr_amount = merchantData?.rolling_reserve
+                const zone_code = merchantData?.zone_code ?? 'IS001'
+                const created_by_email = merchantData?.created_by_email ?? "NA"
+                // const rr_amount = merchantData?.rolling_reserve
                 const business_cat_type = merchantData?.business_category_type ?? ""
                 const merchant_parent_id = merchantData?.merchant_parent_id ?? ""
 
@@ -99,15 +101,23 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                     };
                     console.log("Run6- Call api with the Post Data for the rate mapping", inputData)
                     // step 3 - Post date for the ratemapping
-                    const result4 = await callAPI(API_URL.RATE_MAPPING_GenerateClientFormForCob, "post", false, inputData)
+                    await callAPI(API_URL.RATE_MAPPING_GenerateClientFormForCob, "post", false, inputData)
 
                     console.log("Run7-  // parent client code / new client code / login id", inputData)
                     //2 - rate map clone   // parent client code / new client code / login id
-                    const result5 = await callAPI(`${API_URL.RATE_MAPPING_CLONE}/${parentClientCode}/${clientCode}/${merchantLoginId}`, "get", false)
+                    await callAPI(`${API_URL.RATE_MAPPING_CLONE}/${parentClientCode}/${clientCode}/${merchantLoginId}`, "get", false)
 
-                    console.log("Run8- updating the apiVersion", api_version)
+
                     //  console.log("step 7 -  updating the apiVersion ", apiVersion)
-                    const result6 = await callAPI(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/apiversion/${api_version}/${merchantLoginId}`, "get", false)
+
+                    // https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/{clientcode}/zoneloginsetup/{X:Y:Z}/0
+                    // X: version - api_version
+                    // Y: zone - 
+                    // Z: email(created by )
+
+                    console.log("Run8- updating the apiVersion", `${api_version}:${zone_code}:${created_by_email}`)
+
+                    await callAPI(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/zoneloginsetup/${api_version}:${zone_code}:${created_by_email}/0`, "get", false)
                     loader = false
                     // console.log(rateMappingState.updateValue({loader:false,isError:false}))
 
