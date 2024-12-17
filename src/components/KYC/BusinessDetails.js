@@ -295,7 +295,7 @@ function BusinessDetails(props) {
         fy: "2018-19",
       })
     ).then((res) => {
-      console.log("res", res)
+
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
