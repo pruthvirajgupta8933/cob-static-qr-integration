@@ -295,6 +295,7 @@ function BusinessDetails(props) {
         fy: "2018-19",
       })
     ).then((res) => {
+      console.log("res", res)
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -324,7 +325,8 @@ function BusinessDetails(props) {
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "");
-        toast.error(res?.payload?.message);
+        console.log("res?.payload?.message", res?.payload?.data.message)
+        toast.error(res?.payload?.data?.message);
         setLoadingForGst(false);
       }
     });
@@ -365,6 +367,7 @@ function BusinessDetails(props) {
         pan_number: values,
       })
     ).then((res) => {
+
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -380,7 +383,8 @@ function BusinessDetails(props) {
         setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
         toast.success(res.payload.message);
       } else {
-        toast.error(res?.payload?.message);
+
+        toast.error(res?.payload?.data?.message);
         setLoadingForSignatory(false);
         // setIsLoading(false)
       }
