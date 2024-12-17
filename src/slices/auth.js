@@ -84,15 +84,15 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ username, password, is_social }, thunkAPI) => {
+  async ({ query }, thunkAPI) => {
     try {
-      const data = await AuthService.login(username, password, is_social);
+      const data = await AuthService.login({ query });
       return { user: data?.data };
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
+          error.response.data.detail) ||
         error.message ||
         error.toString() || error.request.toString();
       return thunkAPI.rejectWithValue(message);              // here we pass message for error
