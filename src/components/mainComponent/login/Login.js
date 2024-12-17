@@ -16,6 +16,8 @@ import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
+import { Encrypt } from "../../../utilities/aes";
+import keyConfig from "../../../key.config";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -84,7 +86,11 @@ const Login = () => {
     const { clientUserId, userPassword } = formValue;
 
     setLoading(true);
-    dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
+    const encQuery = {
+      query: Encrypt(JSON.stringify({ clientUserId: clientUserId, userPassword: userPassword, is_social: false }), keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV)
+    }
+
+    dispatch(login(encQuery))
       .then((res) => {
         if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
           setOpenOtpModal(true)
@@ -128,7 +134,10 @@ const Login = () => {
   const enableSocialLogin = (flag, response) => {
     if (flag) {
       const username = response?.profileObj?.email;
-      dispatch(login({ username, is_social: true }))
+      const encQuery = {
+        query: Encrypt(JSON.stringify({ clientUserId: username, is_social: true }), keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV)
+      }
+      dispatch(login(encQuery))
         .then((res) => {
           if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
             setOpenOtpModal(true)
