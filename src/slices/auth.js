@@ -93,6 +93,7 @@ export const login = createAsyncThunk(
         (error.response &&
           error.response.data &&
           error.response.data.detail) ||
+        error.response.data.message ||
         error.message ||
         error.toString() || error.request.toString();
       return thunkAPI.rejectWithValue(message);              // here we pass message for error
