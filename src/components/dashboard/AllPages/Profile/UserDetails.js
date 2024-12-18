@@ -59,16 +59,16 @@ function UserDetails() {
                                 </div>
                             </div>
                         </form>
-                        {roleBasedShowTab.merchant ?
-                            <div className="col-lg-3 text-right p-0 float-right">
-                                {/* <label><strong>Change Password</strong></label> -<br/> */}
-                                <Link to={`/dashboard/change-password`}>
-                                    <button type="button" className="form-control btn  cob-btn-primary text-white" >
-                                        Change Password
-                                    </button>
-                                </Link>
-                            </div>
-                            : <></>}
+
+                        <div className="col-lg-3 text-right p-0 float-right">
+                            {/* <label><strong>Change Password</strong></label> -<br/> */}
+                            <Link to={`/dashboard/change-password`}>
+                                <button type="button" className="form-control btn  cob-btn-primary text-white" >
+                                    Change Password
+                                </button>
+                            </Link>
+                        </div>
+
                     </div>
                 </div>
             </div>
