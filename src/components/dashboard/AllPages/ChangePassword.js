@@ -218,7 +218,7 @@ function ChangePassword() {
                           </button>
                         </div>
                         <div className="col-lg-4 mb-3">
-                          <Link to={`${path}/profile`} className="btn btn-light ml-3 btn-sm border-1">
+                          <Link to={`/dashboard/profile`} className="btn btn-light ml-3 btn-sm border-1">
                             Cancel
                           </Link>
                         </div>
