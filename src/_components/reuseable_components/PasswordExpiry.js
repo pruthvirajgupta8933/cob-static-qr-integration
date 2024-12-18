@@ -1,57 +1,32 @@
-import { useState } from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom";
 import { useSelector } from "react-redux";
+import CustomNotification from "./CustomNotification";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const PasswordExpiry = () => {
   const { user } = useSelector((state) => state.auth);
+  const history = useHistory()
   const pswUpdatedDuration =
-    (new Date() - new Date(user.password_updated_at)) / (24 * 3600 * 1000);
+    (new Date() - new Date(user?.password_updated_at)) / (24 * 3600 * 1000);
 
-  const [isModalOpen, setModalOpen] = useState(pswUpdatedDuration > 80);
+  let remainingDay = 90 - Math.round(pswUpdatedDuration);
+  if (remainingDay < 1) {
+    remainingDay = 'today'
+  } else {
+    remainingDay = `today or within the next ${remainingDay} days`
+  }
 
+
+  const displayMessage = `Your password is set to expire soon. Please update it ${remainingDay} to maintain uninterrupted access.`
+  const ctaName = "Change Password"
+
+  const ctaHandler = () => {
+    history.push("/dashboard/change-password");
+  }
   return (
-    <div
-      className={`modal fade mymodals ${
-        isModalOpen ? "show d-block" : "d-none"
-      }`}
-    >
-      <div className="modal-dialog modal-dialog-centered " role="document">
-        <div className="modal-content py-3">
-          <div className="modal-header border-0 py-0">
-            <h6 className="text-primary">
-              <i class="fa fa-hourglass-half px-2"></i>Important information
-            </h6>
-            <button
-              type="button"
-              onClick={() => {
-                setModalOpen(!isModalOpen);
-              }}
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span>&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            <div className="row">
-              <div className="col-9 text-align-end">
-                Your Password will expire in{" "}
-                {90 - Math.round(pswUpdatedDuration)} days. Please reset as soon
-                as possible.
-              </div>
-              <div className="col-3 text-align-end">
-                <Link to={`/reset/${window.location.search}`}>
-                  <button className="btn-xs cob-btn-primary border-0 p-2">
-                    Reset Now
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      {pswUpdatedDuration > 80 ? <CustomNotification message={displayMessage} ctaName={ctaName} ctaHandler={ctaHandler} /> : <></>}
+    </>
+
   );
 };
 

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import API_URL from "../../config";
 import Yup from "../../_components/formik/Yup";
-import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
 
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
@@ -33,14 +33,11 @@ const ResetPassword = (props) => {
     confirmpassword: "",
   };
   const resetSubmit = async (values) => {
-    // console.log(values, "here is the response");
-    const res = await axiosInstanceJWT
-      .put(API_URL.AUTH_CHANGE_PASSWORD, {
-        email: "textbhuvi@gmail.com",
-        // verification_token:verification_token,
-        password: values.password,
-        newpassword: values.newpassword,
-      })
+    console.log(values)
+    await axiosInstanceAuth.put(API_URL.AUTH_CHANGE_PASSWORD, {
+      password: values.password,
+      newpassword: values.newpassword,
+    })
       .then((res) => {
         // console.log(res);
         // if (res.status === 200) {
@@ -51,7 +48,7 @@ const ResetPassword = (props) => {
         console.error("There was an error!", error);
       });
 
-    props.props("a4");
+    // props?.props("a4");
     // console.log("You clicked submit.");
   };
 
@@ -159,7 +156,7 @@ const ResetPassword = (props) => {
                       <button
                         type="submit"
                         className="btn  cob-btn-primary "
-                        // onClick={() => props.props("a4")}
+                      // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>

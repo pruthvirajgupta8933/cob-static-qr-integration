@@ -34,9 +34,9 @@ const Signup = React.lazy(() =>
 const ForgetPassword = React.lazy(() =>
   import("./components/forgetpassword/ForgetPassword")
 );
-const ResetPassword = React.lazy(() =>
-  import("./components/forgetpassword/ResetPassword")
-);
+// const ResetPassword = React.lazy(() =>
+//   import("./components/forgetpassword/ResetPassword")
+// );
 
 function AllRoutes() {
   const fallbackMsg = (
@@ -78,11 +78,11 @@ function AllRoutes() {
           <ForgetPassword />
         </Suspense>
       </Route>
-      <Route path="/reset">
+      {/* <Route path="/reset">
         <Suspense fallback={fallbackMsg}>
           <ResetPassword />
         </Suspense>
-      </Route>
+      </Route> */}
       <Route exact path="/emailverification/:loginId">
         <Suspense fallback={fallbackMsg}>
           <EmailVerification />

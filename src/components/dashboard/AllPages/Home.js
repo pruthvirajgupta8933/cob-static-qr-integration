@@ -168,6 +168,7 @@ function Home() {
 
   return (
     <section>
+      {/* TODO: refactor it */}
       {/* KYC container start from here */}
       {/* {console.log("kyc.kycUserList?.latitude", kyc?.kycUserList?.latitude)} */}
       {kyc?.kycUserList?.latitude === null &&
@@ -201,6 +202,8 @@ function Home() {
           </div>
         )}
 
+      {/* password expire notification component */}
+      <PasswordExpiry />
       {/* hide when login by bank and if businees category b2b */}
       {roles?.bank === true || roles?.b2b === true || roles?.referral ? (
         <></>
@@ -209,7 +212,7 @@ function Home() {
           <StepProgressBar status={KycTabStatusStore?.status} />
         </div>
       )}
-      <PasswordExpiry />
+
       <hr />
       {/* Dashboard Update  */}
       {roles?.merchant && (
