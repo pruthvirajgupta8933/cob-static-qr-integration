@@ -5,19 +5,22 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import API_URL from "../../config";
 import Yup from "../../_components/formik/Yup";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
 
   const validationSchema = Yup.object().shape({
     password: Yup.string().allowOneSpace().required(" Old Password Required"),
-    newpassword: Yup.string().allowOneSpace()
+    newpassword: Yup.string()
+      .allowOneSpace()
       .required("Password Required")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-    confirmpassword: Yup.string().allowOneSpace()
+    confirmpassword: Yup.string()
+      .allowOneSpace()
       .oneOf([Yup.ref("newpassword"), null], "Passwords must match")
       .required("Confirm Password Required"),
   });
@@ -31,7 +34,7 @@ const ResetPassword = (props) => {
   };
   const resetSubmit = async (values) => {
     // console.log(values, "here is the response");
-    const res = await axios
+    const res = await axiosInstanceJWT
       .put(API_URL.AUTH_CHANGE_PASSWORD, {
         email: "textbhuvi@gmail.com",
         // verification_token:verification_token,
@@ -156,7 +159,7 @@ const ResetPassword = (props) => {
                       <button
                         type="submit"
                         className="btn  cob-btn-primary "
-                      // onClick={() => props.props("a4")}
+                        // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>
