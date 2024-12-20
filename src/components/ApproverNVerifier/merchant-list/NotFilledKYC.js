@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../../slices/kycSlice";
 import { NotFilledKYCData } from "../../../utilities/tableData";
-import MerchantList from "./ListLayout";
+import ListLayout from "./ListLayout";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
@@ -57,7 +57,7 @@ const NotFilledKYC = () => {
 
   return (
     <div className="container-fluid flleft">
-      <MerchantList
+      <ListLayout
         loadingState={loadingState}
         searchData={notFilledData}
         dataCount={dataCount}

@@ -132,7 +132,7 @@ const ListLayout = ({
           {!loadingState && (
             <MerchnatListExportToxl
               URL={`export-excel/?search=${merchantStatus}&isDirect=${onboardType}`}
-              filename={"Not-Filled-KYC"}
+              filename={merchantStatus}
             />
           )}
         </div>
