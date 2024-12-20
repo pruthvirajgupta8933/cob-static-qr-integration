@@ -48,11 +48,12 @@ export const saveMerchantBasicDetails = createAsyncThunk(
   "merchantReferralOnboardSlice/bank/saveMerchantBasicDetails",
   async (requestParam, thunkAPI) => {
     const response = await saveBasicDetails(requestParam).catch((error) => {
-      return error.response;
+      // let errorResponse = error?.response?.data;
+      return error?.response?.data
     });
 
     if (response.status !== 200) {
-      return thunkAPI.rejectWithValue(response.data.detail);
+      return thunkAPI.rejectWithValue(response);
     } else {
       return response.data;
     }

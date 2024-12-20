@@ -154,10 +154,9 @@ function BasicDetailsOps({
         .then((resp) => {
           setSubmitLoader(false);
           setDisable(false);
-          if (resp?.error?.message) {
-            toastConfig.errorToast(resp?.error?.message || resp?.payload?.toString());
+          if (resp?.payload?.status_code) {
+            toastConfig.errorToast(resp?.payload?.detail || resp?.payload?.message);
           }
-
           if (resp?.payload?.status === true) {
             dispatch(
               kycUserList({
