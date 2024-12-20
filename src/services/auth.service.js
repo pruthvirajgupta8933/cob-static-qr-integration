@@ -26,12 +26,9 @@ const register = ({ fullname, mobileNumber, email, business_cat_code, password, 
 };
 
 
-const login = async (username, password, is_social) => {
-
+const login = async (obj) => {
   return axiosInstanceAuth.post(API_URL.AUTH_LOGIN, {
-    clientUserId: username,
-    userPassword: password,
-    is_social: is_social
+    ...obj
   })
 };
 

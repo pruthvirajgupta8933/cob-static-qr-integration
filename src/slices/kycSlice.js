@@ -956,9 +956,9 @@ export const kycSlice = createSlice({
     clearKycState: (state) => {
       state.kycUserList = {};
     },
-    clearKycDetailsByMerchantLoginId: (state) => {
-      state.merchantKycData = {};
-    },
+    // clearKycDetailsByMerchantLoginId: (state) => {
+    //   state.merchantKycData = {};
+    // },
 
     saveDropDownAndFinalArray: (state, action) => {
       // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
@@ -1328,6 +1328,6 @@ export const {
   saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc,
-  clearKycDetailsByMerchantLoginId,
+  // clearKycDetailsByMerchantLoginId,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

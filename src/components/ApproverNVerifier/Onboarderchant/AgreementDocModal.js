@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 // import * as Yup from "yup";
-import FormikController from "../../../_components/formik/FormikController";
+// import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingDocument,
   forGettingDocumentList,
@@ -18,6 +18,7 @@ import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
+import { dateFormatBasic } from "../../../utilities/DateConvert";
 
 const AgreementDocModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
@@ -324,54 +325,54 @@ const AgreementDocModal = (props) => {
                   <tbody>
                     {(commentsList?.length === undefined ||
                       commentsList?.length === 0) && (
-                      <tr>
-                        <td colSpan="4">
-                          <h6 className="font-weight-bold text-center">
-                            No Data found
-                          </h6>
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td colSpan="4">
+                            <h6 className="font-weight-bold text-center">
+                              No Data found
+                            </h6>
+                          </td>
+                        </tr>
+                      )}
 
                     {(commentsList?.length !== undefined ||
                       commentsList?.length > 0) &&
-                    Array.isArray(commentsList)
+                      Array.isArray(commentsList)
                       ? commentsList?.map((remark, i) => (
-                          <tr key={uuidv4()}>
-                            <td style={{ overflowWrap: "anywhere" }}>
-                              {remark?.comment}
-                            </td>
-                            <td>{dateManipulate(remark?.comment_on)}</td>
-                            <td>
-                              <p
-                                className="text-decoration-underline text-primary cursor_pointer"
-                                onClick={() => docModalToggle(remark)}
-                              >
-                                View Document
-                              </p>
-                            </td>
-                            <td>
-                              <button
-                                aria-label="button"
-                                type="button"
-                                onClick={() => {
-                                  if (
-                                    window.confirm(
-                                      "Are you sure you want to delete it?"
-                                    )
-                                  ) {
-                                    removeDocument(remark?.document_id);
-                                  }
-                                }}
-                              >
-                                <i
-                                  className="fa fa-trash-o"
-                                  ariaHidden="true"
-                                ></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))
+                        <tr key={uuidv4()}>
+                          <td style={{ overflowWrap: "anywhere" }}>
+                            {remark?.comment}
+                          </td>
+                          <td>{dateFormatBasic(remark?.created_date)}</td>
+                          <td>
+                            <p
+                              className="text-decoration-underline text-primary cursor_pointer"
+                              onClick={() => docModalToggle(remark)}
+                            >
+                              View Document
+                            </p>
+                          </td>
+                          <td>
+                            <button
+                              aria-label="button"
+                              type="button"
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Are you sure you want to delete it?"
+                                  )
+                                ) {
+                                  removeDocument(remark?.document_id);
+                                }
+                              }}
+                            >
+                              <i
+                                className="fa fa-trash-o"
+                                ariaHidden="true"
+                              ></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
                       : []}
                   </tbody>
                 </table>

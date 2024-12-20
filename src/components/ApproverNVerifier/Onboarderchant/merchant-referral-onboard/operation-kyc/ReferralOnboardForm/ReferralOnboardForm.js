@@ -19,6 +19,7 @@ import { businessOverviewState } from "../../../../../../slices/kycSlice";
 import {
   panValidation,
   authPanValidation,
+  advancePanValidation,
 } from "../../../../../../slices/kycValidatorSlice";
 import gotVerified from "../../../../../../assets/images/verified.png";
 
@@ -38,39 +39,10 @@ function ReferralOnboardForm({
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
     (state) => state
   );
-  const { merchantKycData } = kyc;
+  const { kycUserList: kycData } = kyc;
   const { merchantBasicDetails } = merchantReferralOnboardReducer;
 
-  const generateRandomPassword = () => {
-    const upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const lowerChars = "abcdefghijklmnopqrstuvwxyz";
-    const numberChars = "0123456789";
-    const specialChars = "@";
-    const passwordLength = 8;
-    let password = "";
-    password += upperChars.charAt(
-      Math.floor(Math.random() * upperChars.length)
-    ); // For uppercase letter
-    password += lowerChars.charAt(
-      Math.floor(Math.random() * lowerChars.length)
-    ); // For lowercase letter
-    password += numberChars.charAt(
-      Math.floor(Math.random() * numberChars.length)
-    ); // For exactly one number
-    password += specialChars.charAt(
-      Math.floor(Math.random() * specialChars.length)
-    ); // Ensure exactly one special character
-    for (let i = password.length; i < passwordLength; i++) {
-      const randomChars = upperChars + lowerChars + numberChars + specialChars;
-      const randomIndex = Math.floor(Math.random() * randomChars.length);
-      password += randomChars.charAt(randomIndex);
-    }
-    password = password
-      .split("")
-      .sort(() => Math.random() - 0.5)
-      .join("");
-    return password;
-  };
+
 
   const trimFullName = (strOne, strTwo) => {
     let fullStr = isNull(strOne) ? "" : strOne;
@@ -222,6 +194,7 @@ function ReferralOnboardForm({
       signatory_pan,
       pin_code,
       company_name,
+      pan_dob_or_doi,
     } = value;
     // alert(3)
     setSubmitLoader(true);
@@ -254,6 +227,7 @@ function ReferralOnboardForm({
           created_by: auth?.user?.loginId,
           zone_code: zoneCode,
           pan_card: pan_card,
+          pan_dob_or_doi,
           signatory_pan: signatory_pan,
           name_on_pancard: value.name_on_pancard,
           company_name,
@@ -279,8 +253,8 @@ function ReferralOnboardForm({
       resetForm();
 
       if (
-        merchantKycData?.clientCode === null ||
-        merchantKycData?.clientCode === undefined
+        kycData?.clientCode === null ||
+        kycData?.clientCode === undefined
       ) {
         // console.log("1.4")
         const clientFullName = fullName;
@@ -301,7 +275,7 @@ function ReferralOnboardForm({
 
         const data = {
           loginId: refLoginId,
-          clientName: merchantKycData?.name,
+          clientName: kycData?.name,
           clientCode: newClientCode,
         };
         // console.log(3)
@@ -336,7 +310,7 @@ function ReferralOnboardForm({
     setIsLoading(true);
 
     dispatch(
-      panValidation({
+      advancePanValidation({
         pan_number: values,
       })
     )
@@ -351,7 +325,7 @@ function ReferralOnboardForm({
             res?.payload?.last_name
           );
           setFieldValue(key, fullNameByPan);
-
+          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           setFieldValue("pan_card", values);
           setFieldValue("prev_pan_card", values);
           setFieldValue("isPanVerified", 1);
@@ -388,7 +362,7 @@ function ReferralOnboardForm({
     setLoadingForSignatory(true);
     // console.log("auth", "auth pan")
     dispatch(
-      authPanValidation({
+      advancePanValidation({
         pan_number: values,
       })
     ).then((res) => {
@@ -404,7 +378,7 @@ function ReferralOnboardForm({
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-
+        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);

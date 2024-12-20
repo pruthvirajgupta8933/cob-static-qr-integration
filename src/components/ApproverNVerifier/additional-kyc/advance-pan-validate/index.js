@@ -92,15 +92,13 @@ const AdvancePanValidate = ({ selectedDocType }) => {
           <h5 className="">PAN Details</h5>
           <div className="row">
             <div className="col-md-6 p-2">
-              <span className="font-weight-bold mb-1">First Name : </span>
-              <span>{panInfo?.first_name}</span>
+              <span className="font-weight-bold mb-1">Name : </span>
+              <span>
+                {panInfo?.first_name?.toString().trim() +
+                  " " +
+                  panInfo?.last_name}
+              </span>
             </div>
-            <div className="col-md-6 p-2">
-              <span className="font-weight-bold mb-1">Last Name : </span>
-              <span>{panInfo?.last_name}</span>
-            </div>
-          </div>
-          <div className="row">
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">DOB : </span>
               <span>{panInfo?.dob}</span>
@@ -111,8 +109,6 @@ const AdvancePanValidate = ({ selectedDocType }) => {
                 {panInfo?.aadhaar_linked?.toString()}
               </span>
             </div>
-          </div>
-          <div className="row">
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">PAN Category : </span>
               <span>{panInfo?.pan_category}</span>
@@ -123,8 +119,6 @@ const AdvancePanValidate = ({ selectedDocType }) => {
                 {panInfo?.valid?.toString()}
               </span>
             </div>
-          </div>
-          <div className="row">
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">Message : </span>
               <span>{panInfo?.message}</span>

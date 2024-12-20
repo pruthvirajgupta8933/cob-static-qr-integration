@@ -292,14 +292,12 @@ function DashboardMainContent() {
               >
                 <InternalDashboard />
               </AuthorizedRoute>
-              <AuthorizedRoute
+              <Route
                 exact
                 path={`${path}/change-password`}
-                Component={ChangePassword}
-                roleList={{ merchant: true }}
               >
                 <ChangePassword />
-              </AuthorizedRoute>
+              </Route>
 
               <AuthorizedRoute
                 exact

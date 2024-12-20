@@ -7,9 +7,8 @@ import FormikController from "../../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { updateMerchantInfo } from "../../../slices/editKycSlice";
 import {
-  panValidation,
-  authPanValidation,
   gstValidation,
+  advancePanValidation,
 } from "../../../slices/kycValidatorSlice";
 import {
   businessOverviewState,
@@ -254,7 +253,7 @@ function BusinessDetailEdtKyc(props) {
     setIsLoading(true);
 
     dispatch(
-      panValidation({
+      advancePanValidation({
         pan_number: values,
       })
     )
@@ -269,7 +268,7 @@ function BusinessDetailEdtKyc(props) {
             res?.payload?.last_name
           );
           setFieldValue(key, fullNameByPan);
-
+          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           setFieldValue("pan_card", values);
           setFieldValue("prev_pan_card", values);
           setFieldValue("isPanVerified", 1);
@@ -278,7 +277,7 @@ function BusinessDetailEdtKyc(props) {
         } else {
           setFieldValue(key, "");
           setIsLoading(false);
-          toast.error(res?.payload?.message);
+          toast.error(res?.payload?.message ?? res.payload.data?.message);
         }
       })
       .catch((err) => {
@@ -310,7 +309,13 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("pan_card", res?.payload?.pan);
         setFieldValue("prev_pan_card", res?.payload?.pan);
         setFieldValue("isPanVerified", 1);
-
+        advancePanValidation({ pan_number: res?.payload?.pan })
+          .then((res) => {
+            if (res.payload?.dob)
+              setFieldValue("pan_dob_or_doi", res.payload?.dob);
+            else toastConfig.warningToast("Please verify PAN as well");
+          })
+          .catch((err) => toastConfig.errorToast(err.message));
         setFieldValue("registerd_with_gst", true);
         setFieldValue("registerd_with_udyam", false);
         setFieldValue("udyam_number", "");
@@ -381,7 +386,7 @@ function BusinessDetailEdtKyc(props) {
     setLoadingForSignatory(true);
     // console.log("auth", "auth pan")
     dispatch(
-      authPanValidation({
+      advancePanValidation({
         pan_number: values,
       })
     ).then((res) => {
@@ -397,7 +402,7 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-
+        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);
@@ -490,6 +495,7 @@ function BusinessDetailEdtKyc(props) {
       registerd_with_gst: JSON.parse(values.registerd_with_gst),
       gst_number: values.gst_number,
       pan_card: values.pan_card,
+      pan_dob_or_doi: values.pan_dob_or_doi ?? values.signatory_pan_dob_or_doi,
       signatory_pan: values.signatory_pan,
       name_on_pancard: values.name_on_pancard,
       pin_code: values.pin_code,
