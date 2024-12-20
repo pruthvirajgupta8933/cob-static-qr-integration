@@ -81,7 +81,6 @@ const MultiUserOnboard = () => {
     },
   ];
 
-  console.log("kycData", kycData)
   const initialValues = {
     zone: kycData?.zone_code ?? "",
     onboardType:
@@ -323,16 +322,16 @@ const MultiUserOnboard = () => {
               <React.Fragment>
                 {onboardTypeName !== "Select" && onboardTypeName && (
                   <p className={classes.cb_nav}>{`${onboardTypeName === "Select"
-                      ? ""
-                      : ` ${selectOnboardType.find(
-                        (option) => option.key === onboardTypeName
-                      )?.value
-                      }`
+                    ? ""
+                    : ` ${selectOnboardType.find(
+                      (option) => option.key === onboardTypeName
+                    )?.value
+                    }`
                     }`}</p>
                 )}
                 <p className={classes.cb_nav}>{`${selectedName
-                    ? refferalList.find((i) => i.key === selectedValue)?.value
-                    : ""
+                  ? refferalList.find((i) => i.key === selectedValue)?.value
+                  : ""
                   }`}</p>
                 {selectedUserType && (
                   <p className={classes.cb_nav}>{selectedChildName}</p>
