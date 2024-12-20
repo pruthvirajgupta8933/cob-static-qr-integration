@@ -326,7 +326,6 @@ function BusinessDetails(props) {
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "");
-        console.log("res?.payload?.message", res?.payload?.data.message)
         toast.error(res?.payload?.data?.message);
         setLoadingForGst(false);
       }
@@ -539,8 +538,6 @@ function BusinessDetails(props) {
         }) => (
           <Form>
             <div className="row">
-              {console.log("values", values)}
-              {console.log("errors", errors)}
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="input-group">
                   <lable>Do you have a GST number?</lable>
