@@ -39,39 +39,10 @@ function ReferralOnboardForm({
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
     (state) => state
   );
-  const { merchantKycData } = kyc;
+  const { kycUserList: kycData } = kyc;
   const { merchantBasicDetails } = merchantReferralOnboardReducer;
 
-  const generateRandomPassword = () => {
-    const upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const lowerChars = "abcdefghijklmnopqrstuvwxyz";
-    const numberChars = "0123456789";
-    const specialChars = "@";
-    const passwordLength = 8;
-    let password = "";
-    password += upperChars.charAt(
-      Math.floor(Math.random() * upperChars.length)
-    ); // For uppercase letter
-    password += lowerChars.charAt(
-      Math.floor(Math.random() * lowerChars.length)
-    ); // For lowercase letter
-    password += numberChars.charAt(
-      Math.floor(Math.random() * numberChars.length)
-    ); // For exactly one number
-    password += specialChars.charAt(
-      Math.floor(Math.random() * specialChars.length)
-    ); // Ensure exactly one special character
-    for (let i = password.length; i < passwordLength; i++) {
-      const randomChars = upperChars + lowerChars + numberChars + specialChars;
-      const randomIndex = Math.floor(Math.random() * randomChars.length);
-      password += randomChars.charAt(randomIndex);
-    }
-    password = password
-      .split("")
-      .sort(() => Math.random() - 0.5)
-      .join("");
-    return password;
-  };
+
 
   const trimFullName = (strOne, strTwo) => {
     let fullStr = isNull(strOne) ? "" : strOne;
@@ -282,8 +253,8 @@ function ReferralOnboardForm({
       resetForm();
 
       if (
-        merchantKycData?.clientCode === null ||
-        merchantKycData?.clientCode === undefined
+        kycData?.clientCode === null ||
+        kycData?.clientCode === undefined
       ) {
         // console.log("1.4")
         const clientFullName = fullName;
@@ -304,7 +275,7 @@ function ReferralOnboardForm({
 
         const data = {
           loginId: refLoginId,
-          clientName: merchantKycData?.name,
+          clientName: kycData?.name,
           clientCode: newClientCode,
         };
         // console.log(3)
@@ -423,7 +394,7 @@ function ReferralOnboardForm({
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
@@ -557,12 +528,12 @@ function ReferralOnboardForm({
                       />
 
                       {values?.pan_card !== null &&
-                      values?.isPanVerified !== "" &&
-                      values?.pan_card !== "" &&
-                      values?.pan_card !== undefined &&
-                      !errors.hasOwnProperty("pan_card") &&
-                      !errors.hasOwnProperty("prev_pan_card") &&
-                      values?.pan_card === values?.prev_pan_card ? (
+                        values?.isPanVerified !== "" &&
+                        values?.pan_card !== "" &&
+                        values?.pan_card !== undefined &&
+                        !errors.hasOwnProperty("pan_card") &&
+                        !errors.hasOwnProperty("prev_pan_card") &&
+                        values?.pan_card === values?.prev_pan_card ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -639,9 +610,9 @@ function ReferralOnboardForm({
                         }}
                       />
                       {values?.signatory_pan &&
-                      values?.isSignatoryPanVerified &&
-                      !errors.hasOwnProperty("signatory_pan") &&
-                      !errors.hasOwnProperty("prevSignatoryPan") ? (
+                        values?.isSignatoryPanVerified &&
+                        !errors.hasOwnProperty("signatory_pan") &&
+                        !errors.hasOwnProperty("prevSignatoryPan") ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -714,7 +685,7 @@ function ReferralOnboardForm({
                       name="company_name"
                       placeholder="Company Name"
                       className="form-control"
-                      // label="Comany Name"
+                    // label="Comany Name"
                     />
                   </div>
                   <div className="col-lg-4">

@@ -36,21 +36,21 @@ function BasicDetailsOps({
     (state) => state
   );
 
-  const { merchantKycData, kycUserList: kycData } = kyc;
+  const { kycUserList: kycData } = kyc;
   const { merchantBasicDetails, merchantOnboardingProcess } =
     merchantReferralOnboardReducer;
   const loginIdFromState = merchantOnboardingProcess?.merchantLoginId !== "";
 
   const initialValues = {
-    fullName: kycData?.name ?? merchantKycData?.name ?? "",
+    fullName: kycData?.name ?? "",
     mobileNumber:
-      kycData?.contactNumber ?? merchantKycData?.contactNumber ?? "",
-    email_id: kycData?.emailId ?? merchantKycData?.emailId ?? "",
+      kycData?.contactNumber ?? "",
+    email_id: kycData?.emailId ?? "",
     business_category:
-      kycData?.businessCategory ?? merchantKycData?.businessCategory ?? "",
-    business_type: kycData?.businessType ?? merchantKycData?.businessType ?? "",
+      kycData?.businessCategory ?? "",
+    business_type: kycData?.businessType ?? "",
     password: editKyc ? "********" : merchantBasicDetails?.resp?.password ?? "",
-    username: kycData?.username ?? merchantKycData?.username ?? "",
+    username: kycData?.username ?? "",
     isEditTable: loginIdFromState,
     zone_code: "",
     bank_login_id: "",
@@ -126,7 +126,7 @@ function BasicDetailsOps({
       business_category: business_category,
       business_type: business_type,
       updated_by: auth?.user?.loginId,
-      password: merchantKycData?.secret_key ?? kycData?.secret_key,
+      password: kycData?.secret_key,
       zone_code: zoneCode,
     };
 
@@ -369,15 +369,14 @@ function BasicDetailsOps({
                   </button>
                 )}
 
-                {(merchantKycData?.isContactNumberVerified === 1 ||
-                  kycData?.isContactNumberVerified === 1) && (
-                    <a
-                      className="btn active-secondary btn-sm m-2"
-                      onClick={() => setCurrentTab(2)}
-                    >
-                      Next
-                    </a>
-                  )}
+                {(kycData?.isContactNumberVerified === 1) && (
+                  <a
+                    className="btn active-secondary btn-sm m-2"
+                    onClick={() => setCurrentTab(2)}
+                  >
+                    Next
+                  </a>
+                )}
               </div>
             </div>
           </Form>

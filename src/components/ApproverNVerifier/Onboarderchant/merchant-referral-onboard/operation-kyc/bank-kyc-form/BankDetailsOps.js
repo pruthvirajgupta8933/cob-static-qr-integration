@@ -34,46 +34,29 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
   const { bankDetails } = merchantReferralOnboardReducer;
-  const { merchantKycData, kycUserList: kycData } = kyc;
+  const { kycUserList: kycData } = kyc;
 
   const initialValues = {
     account_holder_name:
-      kycData?.merchant_account_details?.account_holder_name ??
-      merchantKycData?.merchant_account_details?.account_holder_name ??
-      "",
+      kycData?.merchant_account_details?.account_holder_name ?? "",
     account_number:
-      kycData?.merchant_account_details?.account_number ??
-      merchantKycData?.merchant_account_details?.account_number ??
-      "",
+      kycData?.merchant_account_details?.account_number ?? "",
     ifsc_code:
-      kycData?.merchant_account_details?.ifsc_code ??
-      merchantKycData?.merchant_account_details?.ifsc_code ??
-      "",
+      kycData?.merchant_account_details?.ifsc_code ?? "",
     bank_id:
-      kycData?.merchant_account_details?.bankId ??
-      merchantKycData?.merchant_account_details?.bankId ??
-      "",
+      kycData?.merchant_account_details?.bankId ?? "",
     account_type:
       kycData?.merchant_account_details?.accountType
         ?.toString()
-        .toLowerCase() === "saving" ||
-        merchantKycData?.merchant_account_details?.accountType
-          ?.toString()
-          .toLowerCase() === "saving"
+        .toLowerCase() === "saving"
         ? "2"
         : "1",
     branch:
-      kycData?.merchant_account_details?.branch ??
-      merchantKycData?.merchant_account_details?.branch ??
-      "",
+      kycData?.merchant_account_details?.branch ?? "",
     isAccountNumberVerified:
-      kycData?.merchant_account_details?.account_number ??
-      merchantKycData?.merchant_account_details?.account_number ??
-      "",
+      kycData?.merchant_account_details?.account_number ?? "",
     isIfscVerified:
-      kycData?.merchant_account_details?.ifsc_code ??
-      merchantKycData?.merchant_account_details?.ifsc_code ??
-      "",
+      kycData?.merchant_account_details?.ifsc_code ?? "",
   };
 
   const validationSchema = Yup.object().shape({

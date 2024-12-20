@@ -8,6 +8,7 @@ import headerClasses from "./dashboard-header.module.css";
 import sabpaisalogoWhite from "../../../../assets/images/sabpaisalogoWhite.png";
 import { dashboardHeaderMenuToggle } from "../../../../slices/theme/themeSlice";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { clearKycDetailsByMerchantLoginId, clearKycState } from "../../../../slices/kycSlice";
 
 function DashboardHeader() {
   const dispatch = useDispatch();
@@ -22,7 +23,11 @@ function DashboardHeader() {
   const location = useLocation();
 
   const exitback = () => {
+
+    dispatch(clearKycState());
+    // dispatch(clearKycDetailsByMerchantLoginId());
     dispatch(logout());
+
   };
 
   const toggleHandler = (value) => {

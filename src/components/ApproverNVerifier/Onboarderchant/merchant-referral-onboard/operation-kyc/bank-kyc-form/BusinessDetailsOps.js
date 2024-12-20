@@ -38,41 +38,28 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const { businessDetails } = merchantReferralOnboardReducer;
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
-  const { merchantKycData, kycUserList: kycData } = kyc;
+  const { kycUserList: kycData } = kyc;
 
   const initialValues = {
-    pan_card: kycData?.panCard ?? merchantKycData?.panCard ?? "",
+    pan_card: kycData?.panCard ?? "",
     is_pan_verified:
-      kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN ?? "",
-    website: kycData?.website_app_url ?? merchantKycData?.website_app_url ?? "",
+      kycData?.signatoryPAN ?? "",
+    website: kycData?.website_app_url ?? "",
     name_on_pancard:
-      kycData?.nameOnPanCard ?? merchantKycData?.nameOnPanCard ?? "",
-    platform_id: kycData?.platformId ?? merchantKycData?.platformId ?? "",
+      kycData?.nameOnPanCard ?? "",
+    platform_id: kycData?.platformId ?? "",
     avg_ticket_size:
-      kycData?.avg_ticket_size ?? merchantKycData?.avg_ticket_size ?? "",
-    expected_transactions:
-      kycData?.expectedTransactions ??
-      merchantKycData?.expectedTransactions ??
-      "",
-    signatory_pan: kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN,
-    prevSignatoryPan: kycData?.signatoryPAN ?? merchantKycData?.signatoryPAN,
-    isSignatoryPanVerified:
-      (kycData?.signatoryPAN?.length > 9 && 1) ||
-      (merchantKycData?.signatoryPAN?.length > 9 && 1),
-    address:
-      kycData?.merchant_address_details?.address ??
-      merchantKycData?.merchant_address_details?.address,
-    city:
-      kycData?.merchant_address_details?.city ??
-      merchantKycData?.merchant_address_details?.city,
-    state_id:
-      kycData?.merchant_address_details?.state ??
-      merchantKycData?.merchant_address_details?.state,
-    pin_code:
-      kycData?.merchant_address_details?.pin_code ??
-      merchantKycData?.merchant_address_details?.pin_code,
-    billing_label: kycData?.billingLabel ?? merchantKycData?.billingLabel ?? "",
-    company_name: kycData?.companyName ?? merchantKycData?.companyName ?? "",
+      kycData?.avg_ticket_size ?? "",
+    expected_transactions: kycData?.expectedTransactions ?? "",
+    signatory_pan: kycData?.signatoryPAN ?? "",
+    prevSignatoryPan: kycData?.signatoryPAN ?? "",
+    isSignatoryPanVerified: kycData?.signatoryPAN?.length > 9 && 1,
+    address: kycData?.merchant_address_details?.address ?? "",
+    city: kycData?.merchant_address_details?.city ?? "",
+    state_id: kycData?.merchant_address_details?.state ?? "",
+    pin_code: kycData?.merchant_address_details?.pin_code ?? "",
+    billing_label: kycData?.billingLabel ?? "",
+    company_name: kycData?.companyName ?? ""
   };
 
   const tooltipData = {
@@ -322,7 +309,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     const hasErr = err.hasOwnProperty(key);
     const fieldVal = val[key];
@@ -395,11 +382,11 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                   />
 
                   {values?.pan_card !== null &&
-                  values?.pan_card !== "" &&
-                  values?.pan_card !== undefined &&
-                  !errors.hasOwnProperty("pan_card") &&
-                  !errors.hasOwnProperty("is_pan_verified") &&
-                  values?.is_pan_verified !== "" ? (
+                    values?.pan_card !== "" &&
+                    values?.pan_card !== undefined &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("is_pan_verified") &&
+                    values?.is_pan_verified !== "" ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}
@@ -481,9 +468,9 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
                     }}
                   />
                   {values?.signatory_pan &&
-                  values?.isSignatoryPanVerified &&
-                  !errors.hasOwnProperty("signatory_pan") &&
-                  !errors.hasOwnProperty("prevSignatoryPan") ? (
+                    values?.isSignatoryPanVerified &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={verifiedIcon}

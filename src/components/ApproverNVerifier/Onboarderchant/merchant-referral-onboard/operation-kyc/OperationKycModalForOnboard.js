@@ -7,7 +7,7 @@ import SubmitKyc from "./bank-kyc-form/SubmitKyc";
 import { useDispatch, useSelector } from "react-redux";
 import { Prompt } from "react-router-dom";
 import {
-  clearKycDetailsByMerchantLoginId,
+  // clearKycDetailsByMerchantLoginId,
   clearKycState,
   kycUserList,
 } from "../../../../../slices/kycSlice";
@@ -30,7 +30,7 @@ function OperationKycModalForOnboard({
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState(1);
   const { merchantReferralOnboardReducer, kyc } = useSelector((state) => state);
-  const { merchantKycData, kycUserList: kycData } = kyc;
+  const { kycUserList: kycData } = kyc;
   const { merchantOnboardingProcess } = merchantReferralOnboardReducer;
 
   const searchParams = new URLSearchParams(document.location.search);
@@ -89,7 +89,7 @@ function OperationKycModalForOnboard({
     return () => {
       dispatch(resetStateMfo());
       dispatch(clearKycState());
-      dispatch(clearKycDetailsByMerchantLoginId());
+      // dispatch(clearKycDetailsByMerchantLoginId());
     };
   }, [merchantId]);
 
@@ -101,7 +101,7 @@ function OperationKycModalForOnboard({
     .split(",");
 
   const isEditableInput = kycStatusArr.includes(
-    merchantKycData?.status?.toString().toLowerCase()
+    kycData?.status?.toString().toLowerCase()
   );
   return (
     <div className="row">
@@ -109,7 +109,8 @@ function OperationKycModalForOnboard({
         message={() => {
           if (window.confirm("Are you sure you want to leave this page?")) {
             dispatch(resetStateMfo());
-            dispatch(clearKycDetailsByMerchantLoginId());
+            dispatch(clearKycState());
+            // dispatch(clearKycDetailsByMerchantLoginId());
             return true;
           } else return false;
         }}
@@ -127,10 +128,10 @@ function OperationKycModalForOnboard({
           <div className="d-flex bg-light justify-content-between px-0 my-2">
             <div>
               <p className="p-2 m-0">
-                Session Start : {merchantKycData?.name ?? kycData?.name}
+                Session Start : {kycData?.name ?? kycData?.name}
               </p>
               <p className="p-2 m-0">
-                KYC Status : {merchantKycData?.status ?? kycData?.status}
+                KYC Status : {kycData?.status ?? kycData?.status}
               </p>
             </div>
             <div>
