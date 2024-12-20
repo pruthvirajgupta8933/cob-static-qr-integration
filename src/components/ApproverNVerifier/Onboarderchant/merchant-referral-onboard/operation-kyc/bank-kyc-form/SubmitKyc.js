@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 import {
-  clearKycDetailsByMerchantLoginId,
+  // clearKycDetailsByMerchantLoginId,
+  clearKycState,
   saveKycConsent,
 } from "../../../../../../slices/kycSlice";
 import { generateWord } from "../../../../../../utilities/generateClientCode";
@@ -15,18 +16,18 @@ import authService from "../../../../../../services/auth.service";
 import Yup from "../../../../../../_components/formik/Yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
+function SubmitKyc({ isEditableInput, editKyc }) {
   const dispatch = useDispatch();
   const { auth, kyc, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
-  const { merchantKycData, kycUserList: kycData } = kyc;
+  const { kycUserList: kycData } = kyc;
   const merchantLoginId =
     merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
 
   const { user } = auth;
   const { loginId } = user;
-  const merchant_consent = merchantKycData?.merchant_consent?.term_condition;
+  const merchant_consent = kycData?.merchant_consent?.term_condition;
 
   const [disable, setIsDisable] = useState(false);
 
@@ -43,10 +44,9 @@ function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
 
 
   const onSubmit = async (value) => {
-    setIsDisable(true);
-    if (merchantKycData?.clientCode === null && !editKyc) {
-      const clientFullName = merchantKycData?.name;
-      const clientMobileNo = merchantKycData?.contactNumber;
+    if ((kycData?.clientCode === null || kycData?.clientCode === undefined) && !editKyc) {
+      const clientFullName = kycData?.name;
+      const clientMobileNo = kycData?.contactNumber;
       const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
       // check client code is existing
@@ -67,18 +67,18 @@ function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
 
       // update new client code in db
       const data = {
-        loginId: merchantKycData?.loginMasterId,
-        clientName: merchantKycData?.name,
+        loginId: kycData?.loginMasterId,
+        clientName: kycData?.name,
         clientCode: newClientCode,
       };
       // await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
       try {
         await axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, data);
       } catch (error) {
-        // console.log("console is here")
-        // console.error('Error creating client:', error);
         setIsDisable(false);
-        // toast.error('An error occurred while creating the Client Code. Please try again.');
+        toast.error(`An error occurred while creating the Client Code. Please connect with the support team.
+          ${error.response.data?.message ?? error.response.data?.detail}
+          `);
         return;
       }
     }
@@ -107,7 +107,7 @@ function SubmitKyc({ setCurrentTab, isEditableInput, editKyc }) {
   const backToFirstScreen = () => {
     localStorage.removeItem("onboardingStatusByAdmin");
     dispatch(resetFormState());
-    dispatch(clearKycDetailsByMerchantLoginId());
+    dispatch(clearKycState());
     // setCurrentTab(1)
     if (user.roleName === "Bank") history.push("/dashboard/client-list");
     else history.push("my-merchant");

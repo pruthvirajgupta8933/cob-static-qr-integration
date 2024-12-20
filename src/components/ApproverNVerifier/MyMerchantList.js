@@ -260,56 +260,57 @@ const MyMerchantList = () => {
       width: "170px",
       cell: (row) => (
         <div className="d-flex">
-          {roles?.viewer === true ||
-          (roles?.accountManager === true &&
-            row?.login_id?.master_client_id?.clientCode !== undefined) ? (
-            <>
-              <button
-                type="button"
-                className="approve text-white  cob-btn-primary mr-1  btn-sm"
-                data-toggle="modal"
-                onClick={() => {
-                  setCommentId(row?.login_id?.master_client_id);
-                  setOpenCommentModal(true);
-                }}
-                data-target="#exampleModal"
-              >
-                Comments
-              </button>
-              <button
-                type="button"
-                className="approve text-white cob-btn-primary btn-sm"
-                data-toggle="modal"
-                onClick={() => {
-                  if (["Verified", "Approved"].includes(row.status))
-                    toastConfig.infoToast(
-                      "You're not allowed to edit as it has been " + row.status
-                    );
-                  else if (
-                    row.login_id?.onboard_type === "Sub Merchant" ||
-                    row.login_id?.onboard_type === "Offline Merchant" ||
-                    row.login_id?.onboard_type === "Referrer Child"
-                  )
-                    history.push(
-                      `kyc?kycid=${stringEnc(
-                        row?.login_id?.loginMasterId
-                      )}&redirectUrl=${history.location.pathname}`
-                    );
-                  else
-                    history.push(
-                      `/dashboard/multi-user-onboard?merchantId=${stringEnc(
-                        row?.login_id?.loginMasterId
-                      )}&redirectUrl=${history.location.pathname}`
-                    );
-                }}
-                data-target="#exampleModal"
-              >
-                Edit KYC
-              </button>
-            </>
-          ) : (
-            <></>
-          )}
+          {
+            roles?.viewer === true ||
+              (roles?.accountManager === true &&
+                row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+              <>
+                <button
+                  type="button"
+                  className="approve text-white  cob-btn-primary mr-1  btn-sm"
+                  data-toggle="modal"
+                  onClick={() => {
+                    setCommentId(row?.login_id?.master_client_id);
+                    setOpenCommentModal(true);
+                  }}
+                  data-target="#exampleModal"
+                >
+                  Comments
+                </button>
+                <button
+                  type="button"
+                  className="approve text-white cob-btn-primary btn-sm"
+                  data-toggle="modal"
+                  onClick={() => {
+                    if (["Verified", "Approved"].includes(row.status))
+                      toastConfig.infoToast(
+                        "You're not allowed to edit as it has been " + row.status
+                      );
+                    else if (
+                      row.login_id?.onboard_type === "Sub Merchant" ||
+                      row.login_id?.onboard_type === "Offline Merchant" ||
+                      row.login_id?.onboard_type === "Referrer Child"
+                    )
+                      history.push(
+                        `kyc?kycid=${stringEnc(
+                          row?.login_id?.loginMasterId
+                        )}&redirectUrl=${history.location.pathname}`
+                      );
+                    else
+                      history.push(
+                        `/dashboard/multi-user-onboard?merchantId=${stringEnc(
+                          row?.login_id?.loginMasterId
+                        )}&redirectUrl=${history.location.pathname}`
+                      );
+                  }}
+                  data-target="#exampleModal"
+                >
+                  Edit KYC
+                </button>
+              </>
+            ) : (
+              <></>
+            )}
         </div>
       ),
     },
