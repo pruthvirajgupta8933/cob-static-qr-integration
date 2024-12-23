@@ -26,7 +26,7 @@ import KycForm from "../../KYC/KycForm";
 // import Test from "../../Otherpages/Test";
 import SettlementReportNew from "../AllPages/SettlementReportNew";
 import TransactionHistoryDownload from "../AllPages/TransactionHistoryDownload";
-import Approver from "../../ApproverNVerifier/Approver";
+import Approver from "../../ApproverNVerifier/merchant-list/Approver";
 import ThanksPage from "../../Otherpages/ThanksPage";
 import ChangePassword from "../AllPages/ChangePassword";
 import Products from "../AllPages/Product Catalogue/Products";
@@ -463,7 +463,7 @@ function DashboardMainContent() {
                   merchant: true,
                   referral: true,
                   accountManager: true,
-                  viewer: true
+                  viewer: true,
                 }}
               >
                 <KycForm />
@@ -751,7 +751,6 @@ function DashboardMainContent() {
                 Component={SubscriptionBalance}
                 roleList={{ approver: true }}
               />
-
 
               <AuthorizedRoute
                 exact

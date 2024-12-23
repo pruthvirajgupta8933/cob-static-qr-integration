@@ -115,7 +115,8 @@ function BusinessDetails(props) {
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
-    pan_dob_or_doi: KycList?.pan_dob_or_doi ?? ""
+    pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
+    signatory_pan_dob_or_doi: KycList?.pan_dob_or_doi ?? ""
   };
 
   // console.log("isPanVerified", isPanVerified)
@@ -230,6 +231,7 @@ function BusinessDetails(props) {
       registerd_with_gst: Yup.boolean().required("Required").nullable(),
       registerd_with_udyam: Yup.boolean().required("Required").nullable(),
       pan_dob_or_doi: Yup.string().nullable(),
+      signatory_pan_dob_or_doi: Yup.string().nullable()
     },
 
     [["registerd_with_gst", "registerd_with_udyam"]]
