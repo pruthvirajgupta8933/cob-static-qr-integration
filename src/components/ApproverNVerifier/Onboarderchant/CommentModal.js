@@ -215,7 +215,6 @@ const CommentModal = (props) => {
                         Array.isArray(commentsList)
                         ? commentsList?.map((commentData, i) => (
                           <tr key={uuidv4()}>
-                            {console.log(commentData)}
                             <td>
                               {commentData?.comment_by_user_name.toUpperCase()}
                             </td>
