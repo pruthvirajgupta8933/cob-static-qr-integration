@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import PendingVerification from "./PendingVerification";
 import VerifiedMerchant from "./VerifiedMerchant";
 import ApprovedMerchant from "./ApprovedMerchant";
@@ -145,13 +144,16 @@ const Approver = () => {
     }
   }, [loggedUser]);
 
+
+  const fetchAllClientCode = useCallback(() => dispatch(getAllCLientCodeSlice()), [loggedUser])
+
   useEffect(() => {
-    dispatch(getAllCLientCodeSlice());
+    fetchAllClientCode()
   }, []);
 
-  // const redirect = () => {
-  //   history.push("/dashboard/onboard-merchant");
-  // };
+
+
+
 
   const handleTabClick = (currenTab) => {
     dispatch(merchantTab(currenTab));
@@ -174,11 +176,10 @@ const Approver = () => {
                   <li className="nav-item ">
                     <a
                       href={() => false}
-                      className={`nav-link  ${
-                        currenTab === 1
-                          ? `${classes.active_tab} active`
-                          : "inactive"
-                      } ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 1
+                        ? `${classes.active_tab} active`
+                        : "inactive"
+                        } ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(1)}
                     >
                       Not Filled KYC
@@ -187,11 +188,10 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${
-                        currenTab === 2
-                          ? `${classes.active_tab} active`
-                          : "inactive"
-                      } ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 2
+                        ? `${classes.active_tab} active`
+                        : "inactive"
+                        } ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(2)}
                     >
                       Pending KYC
@@ -200,11 +200,10 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${
-                        currenTab === 3
-                          ? `${classes.active_tab} active`
-                          : "inactive"
-                      } ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 3
+                        ? `${classes.active_tab} active`
+                        : "inactive"
+                        } ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(3)}
                     >
                       Pending Verification
@@ -213,11 +212,10 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${
-                        currenTab === 4
-                          ? `${classes.active_tab} active`
-                          : "inactive"
-                      } ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 4
+                        ? `${classes.active_tab} active`
+                        : "inactive"
+                        } ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(4)}
                     >
                       Pending Approval
@@ -226,11 +224,10 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${
-                        currenTab === 5
-                          ? `${classes.active_tab} active`
-                          : "inactive"
-                      } ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 5
+                        ? `${classes.active_tab} active`
+                        : "inactive"
+                        } ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(5)}
                     >
                       Approved
@@ -239,9 +236,8 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={`nav-link  ${
-                        currenTab === 6 ? classes.active_tab : "inactive"
-                      } ${classes.cursor_pointer}`}
+                      className={`nav-link  ${currenTab === 6 ? classes.active_tab : "inactive"
+                        } ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(6)}
                     >
                       Rejected

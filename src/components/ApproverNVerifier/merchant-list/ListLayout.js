@@ -6,6 +6,7 @@ import SkeletonTable from "../../../_components/table_components/table/skeleton-
 import SearchFilter from "../../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage";
+// import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 const ListLayout = ({
   loadingState,
   data,
@@ -54,6 +55,10 @@ const ListLayout = ({
         .includes(searchText?.toLocaleLowerCase())
     );
   }, [data, searchText]);
+
+
+
+
   const fetchData = useCallback(
     (startingSerialNumber) => {
       dispatch(
@@ -72,10 +77,15 @@ const ListLayout = ({
   useEffect(() => {
     if (typeof fetchDataCb === "function") fetchData();
   }, [fetchData]);
+
+
+
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
+
+
 
   //function for change page size
   const changePageSize = (pageSize) => {
@@ -153,7 +163,7 @@ const ListLayout = ({
         </div>
 
         {loadingState && <SkeletonTable />}
-        {data?.length == 0 && !loadingState && (
+        {data?.length === 0 && !loadingState && (
           <h6 className="text-center">No data Found</h6>
         )}
       </div>
