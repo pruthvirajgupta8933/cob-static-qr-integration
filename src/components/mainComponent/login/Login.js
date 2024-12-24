@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
     .required("Please enter username")
     .allowOneSpace(),
   userPassword: Yup.string()
-    .required("Please enter Password")
+    .required("Please enter password")
     .allowOneSpace(),
   reCaptcha: Yup.string().required('Required').nullable()
 });
@@ -78,6 +78,9 @@ const Login = () => {
     })
 
   };
+
+
+
 
 
 
@@ -281,6 +284,9 @@ const Login = () => {
                         </ErrorMessage>
                       </div>
 
+
+
+
                       <div className="mb-3">
                         <ReCAPTCHA
                           sitekey="6Le8XYMqAAAAANwufmddI2_Q42TdWhDiAlcpem4g"
@@ -291,6 +297,8 @@ const Login = () => {
                           {(msg) => <p className="text-danger">{msg}</p>}
                         </ErrorMessage>
                       </div>
+
+
 
                       <div className="form-text p-2 my-3 text-right font-size-14">
                         <Link to={`/forget/${window.location.search}`} className="text-decoration-underline">

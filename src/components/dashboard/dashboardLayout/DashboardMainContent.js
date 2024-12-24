@@ -706,7 +706,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/generatemid`}
                 Component={GenerateMid}
-                roleList={{ approver: true }}
+                roleList={{ approver: true, verifier: true }}
               >
                 <GenerateMid />
               </AuthorizedRoute>

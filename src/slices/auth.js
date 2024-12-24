@@ -3,6 +3,7 @@ import { setMessage } from "./message";
 import { axiosInstance } from "../utilities/axiosInstance";
 import AuthService from "../services/auth.service";
 import TokenService from "../services/token.service";
+import { getErrorMessage } from "../utilities/errorUtils";
 // import { socketConnection } from "../services/notification-service/notification.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -70,12 +71,13 @@ export const register = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -89,13 +91,16 @@ export const login = createAsyncThunk(
       const data = await AuthService.login({ query });
       return { user: data?.data };
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.detail) ||
-        error.response.data.message ||
-        error.message ||
-        error.toString() || error.request.toString();
+
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.detail) ||
+      //   error.response.data.message ||
+      //   error.message ||
+      //   error.toString() || error.request.toString();
+
+      const message = getErrorMessage(error)
       return thunkAPI.rejectWithValue(message);              // here we pass message for error
     }
   }
@@ -112,12 +117,13 @@ export const loginVerify = createAsyncThunk(
 
       return { user: data?.data };
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString() || error.request.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString() || error.request.toString();
+      const message = getErrorMessage(error)
       return thunkAPI.rejectWithValue(message);              // here we pass message for error
     }
   }
@@ -131,12 +137,13 @@ export const sendEmail = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -175,12 +182,13 @@ export const successTxnSummary = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -199,12 +207,13 @@ export const createClientProfile = createAsyncThunk(
 
       return response?.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -254,12 +263,13 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
       response.data.username = data.username
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -278,12 +288,13 @@ export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
