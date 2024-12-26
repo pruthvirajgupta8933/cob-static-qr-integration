@@ -175,7 +175,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
   }, []);
 
   const handleSubmit = (value) => {
-    console.log("values", value)
+
     setSubmitLoader(true);
     setDisable(true);
 
