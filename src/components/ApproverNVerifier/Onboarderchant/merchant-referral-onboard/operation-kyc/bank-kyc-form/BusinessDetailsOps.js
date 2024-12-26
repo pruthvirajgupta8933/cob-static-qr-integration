@@ -6,8 +6,6 @@ import { toast } from "react-toastify";
 import { businessDetailsSlice } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { platformType, kycUserList } from "../../../../../../slices/kycSlice";
 import {
-  panValidation,
-  authPanValidation,
   advancePanValidation,
 } from "../../../../../../slices/kycValidatorSlice";
 import { businessOverviewState } from "../../../../../../slices/kycSlice";
@@ -29,7 +27,6 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   const [avgTicketAmount, setAvgTicketAmount] = useState([]);
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
-  // const [signatoryPanName, setSignatoryPanName] = useState("");
   const [platform, setPlatform] = useState([]);
   const [disable, setDisable] = useState(false);
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
@@ -59,7 +56,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
     state_id: kycData?.merchant_address_details?.state ?? "",
     pin_code: kycData?.merchant_address_details?.pin_code ?? "",
     billing_label: kycData?.billingLabel ?? "",
-    company_name: kycData?.companyName ?? ""
+    company_name: kycData?.companyName ?? "",
+    authorized_person_dob: kycData?.authorized_person_dob ?? "",
   };
 
   const tooltipData = {
@@ -177,6 +175,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
   }, []);
 
   const handleSubmit = (value) => {
+    console.log("values", value)
     setSubmitLoader(true);
     setDisable(true);
 
@@ -199,7 +198,8 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       website_app_url: value.website,
       is_website_url: "True",
       pan_card: value.pan_card,
-      pan_dob_or_doi: value.pan_dob_or_doi ?? value.signatory_pan_dob_or_doi,
+      pan_dob_or_doi: value.pan_dob_or_doi,
+      authorized_person_dob: value.authorized_person_dob,
       signatory_pan: value.signatory_pan,
       billing_label: value.billing_label,
       company_name: value.company_name,
@@ -252,19 +252,19 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
         res.payload.valid === true
       ) {
         const authName = res.payload.first_name + " " + res.payload?.last_name;
-        // setSignatoryPanName(authName)
+
 
         setFieldValue(key, values);
         setLoadingForSignatory(false);
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("authorized_person_dob", res?.payload?.dob);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);
         setLoadingForSignatory(false);
-        // setIsLoading(false)
+
       }
     });
   };
@@ -285,7 +285,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
             res?.payload?.first_name,
             res?.payload?.last_name
           );
-          // console.log(key, fullNameByPan)
+
           setFieldValue(key, fullNameByPan);
           setFieldValue("pan_card", values);
           setFieldValue("is_pan_verified", 1);
@@ -300,7 +300,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       .catch((err) => {
         console.log("err", err);
       });
-    // setRegisterWithGstState(false)
+
   };
 
   const checkInputIsValid = async (
@@ -328,8 +328,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       panValidate(val[key], "company_name", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
-      // auth signatory pan
-      // console.log("dfdfdf")
+
       authValidation(
         val[key],
         "name_on_pancard",

@@ -15,8 +15,7 @@ import {
   kycUserListForMerchant,
 } from "../../slices/kycSlice";
 import {
-  panValidation,
-  authPanValidation,
+
   gstValidation,
   advancePanValidation,
 } from "../../slices/kycValidatorSlice";
@@ -38,6 +37,7 @@ function BusinessDetails(props) {
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
   const KycList = kyc?.kycUserList;
+
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
 
@@ -116,12 +116,12 @@ function BusinessDetails(props) {
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
     pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
-    signatory_pan_dob_or_doi: KycList?.pan_dob_or_doi ?? ""
+
+    authorized_person_dob: KycList?.authorized_person_dob ?? ""
+
   };
 
-  // console.log("isPanVerified", isPanVerified)
 
-  // console.log("initialValues-----reupdate", initialValues)
   const validationSchema = Yup.object().shape(
     {
       company_name: Yup.string()
@@ -231,7 +231,8 @@ function BusinessDetails(props) {
       registerd_with_gst: Yup.boolean().required("Required").nullable(),
       registerd_with_udyam: Yup.boolean().required("Required").nullable(),
       pan_dob_or_doi: Yup.string().nullable(),
-      signatory_pan_dob_or_doi: Yup.string().nullable()
+      authorized_person_dob: Yup.string().nullable(),
+
     },
 
     [["registerd_with_gst", "registerd_with_udyam"]]
@@ -248,7 +249,7 @@ function BusinessDetails(props) {
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
-    // console.log("useEffect call")
+
   }, []);
 
   const panValidate = (values, key, setFieldValue) => {
@@ -286,7 +287,7 @@ function BusinessDetails(props) {
         console.log("err", err);
       });
     setIsLoading(false);
-    // setRegisterWithGstState(false)
+
   };
 
   const gstinValidate = (values, key, setFieldValue) => {
@@ -363,12 +364,13 @@ function BusinessDetails(props) {
 
   const authValidation = (values, key, setFieldValue) => {
     setLoadingForSignatory(true);
-    // console.log("auth", "auth pan")
+
     dispatch(
       advancePanValidation({
         pan_number: values,
       })
     ).then((res) => {
+
 
       if (
         res.meta.requestStatus === "fulfilled" &&
@@ -382,7 +384,8 @@ function BusinessDetails(props) {
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("authorized_person_dob", res?.payload?.dob)
+
         toast.success(res.payload.message);
       } else {
 
@@ -440,6 +443,7 @@ function BusinessDetails(props) {
   };
 
   const onSubmit = (values) => {
+
     setIsDisable(true);
     const postData = {
       company_name: values.company_name,
@@ -448,7 +452,8 @@ function BusinessDetails(props) {
 
       pan_card: values.pan_card,
       signatory_pan: values.signatory_pan,
-      pan_dob_or_doi: values.pan_dob_or_doi ?? values.signatory_pan_dob_or_doi,
+      pan_dob_or_doi: values.pan_dob_or_doi,
+      authorized_person_dob: values?.authorized_person_dob,
       name_on_pancard: values.name_on_pancard,
       pin_code: values.pin_code,
       city_id: values.city_id,
@@ -582,7 +587,7 @@ function BusinessDetails(props) {
               </div>
 
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b pb-3">
-                {/* {console.log("{JSON.parse(values?.registerd_with_gst)",JSON.parse(values?.registerd_with_gst))} */}
+
                 {JSON.parse(values?.registerd_with_gst) === true && (
                   <React.Fragment>
                     <label className="col-form-label pt-0 p-2 ">
@@ -747,9 +752,7 @@ function BusinessDetails(props) {
 
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
-                {/* <label className="col-form-label mt-0 p-2">
-                  Business PAN <span className="text-danger">*</span>
-                </label> */}
+
                 <label className="col-form-label p-2">
                   Business PAN<span className="text-danger">*</span>
                 </label>
