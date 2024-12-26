@@ -100,6 +100,7 @@ import MerchantSummary from "../../bank/MerchantSummary";
 import InformationBulletin from "../../InfoBulletin";
 import ManualSubscription from "../../ManualSubscription";
 import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
+import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -783,6 +784,17 @@ function DashboardMainContent() {
               >
                 <MyMerchantList />
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/chiled-merchant-list`}
+                Component={ChiledMerchantList}
+                roleList={{ approver: true }}
+              >
+                <ChiledMerchantList />
+              </AuthorizedRoute>
+
+
 
               <AuthorizedRoute
                 exact
