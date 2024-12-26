@@ -20,7 +20,7 @@ import {
   RegexMsg,
 } from "../../../../../../_components/formik/ValidationRegex";
 
-function BusinessDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
+function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
   const dispatch = useDispatch();
   const [submitLoader, setSubmitLoader] = useState(false);
   const [BusinessOverview, setBusinessOverview] = useState([]);
