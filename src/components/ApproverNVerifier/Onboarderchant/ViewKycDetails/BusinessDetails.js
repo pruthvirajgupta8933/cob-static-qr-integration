@@ -15,6 +15,7 @@ import CustomLoader from "../../../../_components/loader";
 
 const BusinessDetails = (props) => {
   const { KycTabStatus, selectedUserData } = props;
+  console.log("selectedUserData", selectedUserData)
   const { classifications, nic_codes: nicCodes } =
     selectedUserData?.udyam_data || {};
 
@@ -128,7 +129,7 @@ const BusinessDetails = (props) => {
       inputClasses: "form-control",
     },
     {
-      label: "PAN DOB/DOI",
+      label: "Business PAN DOB/DOI",
       value: selectedUserData?.pan_dob_or_doi,
       gridClasses: "col-sm-12 col-md-6 col-lg-3",
       inputClasses: "form-control",
@@ -139,9 +140,19 @@ const BusinessDetails = (props) => {
       verificationMessage: selectedUserData?.signatoryPAN
         ? "Verified"
         : "Not Verified",
-      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      gridClasses: "col-sm-12 col-md-6 col-lg-3",
       inputClasses: "form-control",
     },
+
+    {
+      label: "Auth Signatory  DOB/DOI",
+      value: selectedUserData?.authorized_person_dob,
+
+      gridClasses: "col-sm-12 col-md-6 col-lg-3",
+      inputClasses: "form-control",
+    },
+
+
     {
       label: "Business Name",
       value: selectedUserData?.companyName ? selectedUserData.companyName : "",
