@@ -75,7 +75,7 @@ function SabpaisaPaymentGateway(props) {
         payerEmail={payerEmail}
         payerMobile={payerMobile}
         payerAddress={payerAddress}
-        amount={amount}
+        amount={1}
         amountType={amountType}
         udf12={udf12}
         udf13={udf13}

@@ -66,7 +66,7 @@ function SelectProductPlan(props) {
                 // console.log(resp?.data?.data[0])
                 // setSelectedPlan(resp?.data?.data[0])
                 setButtonLoader(false)
-                history.push(`${path}/sabpaisa-pg/${resp?.data?.data[0].clientSubscribedPlanDetailsId}/${appId}`)
+                history.push(`${path}/sabpaisa-pg/${resp?.data?.data[0].clientSubscribedPlanDetailsId}/${appId}/charge`)
                 // return <Redirect to={} />;
             }).catch(err => setButtonLoader(false))
     }
