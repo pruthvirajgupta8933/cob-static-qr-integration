@@ -550,7 +550,7 @@ function DashboardMainContent() {
 
               <Route
                 exact
-                path={`${path}/sabpaisa-pg/:subscribeId/:applicationid`}
+                path={`${path}/sabpaisa-pg/:subscribeId/:applicationid/:chargeflag`}
                 Component={SpPg}
               >
                 <SpPg />

@@ -38,7 +38,7 @@ function SpPg() {
 
     const { auth, productCatalogueSlice } = useSelector((state) => state);
     const { SubscribedPlanData } = productCatalogueSlice
-    const { subscribeId, applicationid } = useParams();
+    const { subscribeId, applicationid, chargeflag } = useParams();
 
     const clientId = auth?.user?.clientMerchantDetailsList[0]?.clientId
 
@@ -80,10 +80,19 @@ function SpPg() {
             axiosInstanceJWT
                 .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
                 .then((resp) => {
-                    // console.log("resp", resp)
-                    const unPaidProduct = resp?.data?.data?.filter((d) => (
-                        (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
-                        (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+
+                    let unPaidProduct = []
+                    if (chargeflag === 'recharge') {
+                        // console.log("resp", resp)
+                        unPaidProduct = resp?.data?.data?.filter((d) => ((d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+                    } else {
+
+                        unPaidProduct = resp?.data?.data?.filter((d) => ((
+                            isNull(d?.mandateStatus) || d?.mandateStatus === "pending")
+                            && (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+                    }
+                    console.log("unPaidProduct", unPaidProduct)
+
                     if (unPaidProduct?.length > 0) {
                         setSelectedPlanCode(unPaidProduct[0]?.plan_code)
                         setSelectedPlan(unPaidProduct)
@@ -92,8 +101,8 @@ function SpPg() {
                         // console.log("postBody", postBody)
                         // dispatch(productPlanData(postBody))
                     } else {
-                        history.replace("/dashboard")
-                        // console.log("redirect to dashboard")
+                        // history.replace("/dashboard")
+                        console.log("redirect to dashboard 1")
                     }
                     // console.log(resp?.data?.data[0])
                     // setSelectedPlan(resp?.data?.data[0])
@@ -123,7 +132,8 @@ function SpPg() {
     const getClientTxnId = async (planFilterData, userData) => {
 
         if (planFilterData?.length <= 0 && planFilterData?.[0]?.actual_price === "") {
-            history.replace("/dashboard")
+            // history.replace("/dashboard")
+            console.log('redirect to dashboard 2')
         }
 
         const postBody = {
