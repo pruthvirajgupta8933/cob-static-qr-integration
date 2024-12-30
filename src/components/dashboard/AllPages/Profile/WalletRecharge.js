@@ -1,14 +1,14 @@
-import { isNull } from 'lodash';
+// import { isNull } from 'lodash';
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux';
-import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function WalletRecharge() {
     const { productCatalogueSlice } = useSelector(
         (state) => state
     );
     const history = useHistory()
-    const { path } = useRouteMatch();
+    // const { path } = useRouteMatch();
 
     const { SubscribedPlanData } = productCatalogueSlice;
 
@@ -38,12 +38,6 @@ function WalletRecharge() {
     }, [SubscribedPlanData]);
 
 
-    // console.log("unPaidProduct", unPaidProduct)
-
-
-
-    console.log("data", productList)
-
     const paymentHandler = (selectedProduct) => {
         history.push(`sabpaisa-pg/${selectedProduct.clientSubscribedPlanDetailsId}/${selectedProduct.applicationId}/recharge`)
     }
@@ -53,8 +47,8 @@ function WalletRecharge() {
         <div className="row">
             {Object.keys(productList)?.map((item, i) => (
                 <div className="col p-2 m-2 card" key={i}>
-                    <h5 className="text-primary">{productList[item][0].applicationName}</h5>
-                    <h6>Plan Name: {productList[item][0].planName}</h6>
+                    <h5 className="text-primary ">{productList[item][0].applicationName}</h5>
+                    <h6 className="mb-4">Plan Name: {productList[item][0].planName}</h6>
                     <button className="btn cob-btn-primary btn-sm" onClick={() => paymentHandler(productList[item][0])}>Select</button>
                 </div>
             ))}
