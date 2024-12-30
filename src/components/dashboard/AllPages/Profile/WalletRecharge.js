@@ -22,13 +22,15 @@ function WalletRecharge() {
             // If the applicationName key doesn't exist, initialize it with an array
 
             // using mandate status to check user has aleady plan. this feature is for recharge the existing plan
-            if (!preVal[curr.applicationName] && curr.mandateStatus?.toLowerCase() === 'success') {
+            if (!preVal[curr.applicationName]) {
                 preVal[curr.applicationName] = [];
             }
+
+            preVal[curr.applicationName].push(curr);
             // Push the current object to the corresponding applicationName array
-            if (curr.mandateStatus?.toLowerCase() === 'success') {
-                preVal[curr.applicationName].push(curr);
-            }
+            // if (curr.mandateStatus?.toLowerCase() === 'success') {
+            //     preVal[curr.applicationName].push(curr);
+            // }
 
             return preVal;
 
