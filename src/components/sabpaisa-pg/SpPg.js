@@ -81,14 +81,15 @@ function SpPg() {
         let unPaidProduct = []
         const response = await axiosInstanceJWT.post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
 
-        if (chargeflag === 'recharge') {
-            unPaidProduct = response?.data?.data?.filter((d) => ((d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
-        } else {
-            // if first time buy
-            unPaidProduct = response?.data?.data?.filter((d) => (
-                (isNull(d?.mandateStatus) || d?.mandateStatus === "pending")
-                && (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
-        }
+        // if (chargeflag === 'recharge') {
+        //     // unPaidProduct = response?.data?.data?.filter((d) => ((d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+        // } else {
+        //     // if first time buy
+
+        // }
+        unPaidProduct = response?.data?.data?.filter((d) => (
+            (isNull(d?.mandateStatus) || d?.mandateStatus?.toString()?.toLowerCase() !== "success")
+            && (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
 
         //  const unPaidProduct = useMemo(() => {
         //     return SubscribedPlanData?.filter(
@@ -156,41 +157,42 @@ function SpPg() {
                     "clientxnId": queryStringData?.clientTxnId,
                     "clientCode": queryStringData?.udf12, // get logined client code
                 }
-                if (chargeflag === 'recharge') {
-                    // initiate mandate date start and end
-                    const mandateStartDate = new Date()
-                    const year = mandateStartDate.getFullYear();
-                    const month = mandateStartDate.getMonth();
-                    const day = mandateStartDate.getDate();
-                    const mandateEndDate = new Date(year + 1, month, day);
+                // if (chargeflag === 'recharge') {
+                //     // initiate mandate date start and end
+                //     const mandateStartDate = new Date()
+                //     const year = mandateStartDate.getFullYear();
+                //     const month = mandateStartDate.getMonth();
+                //     const day = mandateStartDate.getDate();
+                //     const mandateEndDate = new Date(year + 1, month, day);
 
 
-                    const postData = {
-                        applicationId: unPaidProduct[0]?.applicationId,
-                        applicationName: unPaidProduct[0]?.applicationName,
-                        bankRef: queryStringData.bankTxnId,
-                        clientCode: unPaidProduct[0]?.clientCode,
-                        clientId: unPaidProduct[0]?.clientId,
-                        clientName: clientName,
-                        clientTxnId: queryStringData.clientTxnId,
-                        mandateStartTime: DateFormatter(mandateStartDate).props?.children,
-                        mandateEndTime: DateFormatter(mandateEndDate).props?.children,
-                        mandateStatus: queryStringData.status,
-                        paymentMode: queryStringData.paymentMode,
-                        planId: unPaidProduct[0]?.planId,
-                        planName: unPaidProduct[0]?.planName,
-                        purchaseAmount: queryStringData.amount,
-                        mandateFrequency: unPaidProduct[0]?.mandateFrequency,
-                        subscription_status: unPaidProduct[0]?.subscription_status,
-                    };
+                //     const postData = {
+                //         applicationId: unPaidProduct[0]?.applicationId,
+                //         applicationName: unPaidProduct[0]?.applicationName,
+                //         bankRef: queryStringData.bankTxnId,
+                //         clientCode: unPaidProduct[0]?.clientCode,
+                //         clientId: unPaidProduct[0]?.clientId,
+                //         clientName: clientName,
+                //         clientTxnId: queryStringData.clientTxnId,
+                //         mandateStartTime: DateFormatter(mandateStartDate).props?.children,
+                //         mandateEndTime: DateFormatter(mandateEndDate).props?.children,
+                //         mandateStatus: queryStringData.status,
+                //         paymentMode: queryStringData.paymentMode,
+                //         planId: unPaidProduct[0]?.planId,
+                //         planName: unPaidProduct[0]?.planName,
+                //         purchaseAmount: queryStringData.amount,
+                //         mandateFrequency: unPaidProduct[0]?.mandateFrequency,
+                //         subscription_status: unPaidProduct[0]?.subscription_status,
+                //     };
 
-                    // console.log("Create Mandate", postData)
-                    dispatch(createSubscriptionPlan(postData));
+                //     // console.log("Create Mandate", postData)
+                //     dispatch(createSubscriptionPlan(postData));
 
-                } else {
-                    // update the sucscription data as per the payment status
-                    dispatch(updateSubscribeDetails(updatePostData));
-                }
+                // } else {
+                //     // update the sucscription data as per the payment status
+                //     dispatch(updateSubscribeDetails(updatePostData));
+                // }
+                dispatch(updateSubscribeDetails(updatePostData));
                 toast.success("Your Transaction is completed")
                 setTimeout(() => { history.replace("/dashboard/profile") }, 2300)
 
