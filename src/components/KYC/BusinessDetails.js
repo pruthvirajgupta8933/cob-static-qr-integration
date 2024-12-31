@@ -18,6 +18,7 @@ import {
 
   gstValidation,
   advancePanValidation,
+  cinValidation,
 } from "../../slices/kycValidatorSlice";
 import gotVerified from "../../assets/images/verified.png";
 import { udyamValidate } from "../../services/kyc/kyc-validate/kyc-validate.service";
@@ -48,6 +49,7 @@ function BusinessDetails(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingForGst, setLoadingForGst] = useState(false);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
+  const [loadingForCin, setLoadingForCin] = useState(false);
   const [isLoader, setIsloader] = useState(false);
   const [udyamResponseData, setUdyamResponseData] = useState({});
 
@@ -117,7 +119,12 @@ function BusinessDetails(props) {
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
     pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
 
-    authorized_person_dob: KycList?.authorized_person_dob ?? ""
+    authorized_person_dob: KycList?.authorized_person_dob ?? "",
+
+    cin_number: KycList?.cin_number ?? "",
+    cin_data: KycList?.cin_number ?? {},
+    prevCinNumber: KycList?.cin_number ?? "",
+    isCinVerified: KycList?.cin_number ? true : false
 
   };
 
@@ -233,6 +240,7 @@ function BusinessDetails(props) {
       pan_dob_or_doi: Yup.string().nullable(),
       authorized_person_dob: Yup.string().nullable(),
 
+      cin_number: Yup.string().nullable()
     },
 
     [["registerd_with_gst", "registerd_with_udyam"]]
@@ -362,6 +370,41 @@ function BusinessDetails(props) {
       });
   };
 
+  const cinValidationField = (values, key, setFieldValue, setIsloader) => {
+    setLoadingForCin(true);
+
+
+    try {
+      dispatch(cinValidation({ cin_number: values })).then(res => {
+        setLoadingForCin(false);
+        // console.log(res)
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true &&
+          res.payload.valid === true
+        ) {
+          setFieldValue(key, values);
+          setFieldValue("prevCinNumber", values);
+          setFieldValue("cin_data", res?.payload);
+          setFieldValue("isCinVerified", true);
+          // console.log(res?.payload)
+          // setCinData(res?.payload);
+          // setCinStatus(res.payload.status);
+        } else {
+          toastConfig.error(
+            res?.payload?.message ?? res?.payload?.data?.detail ?? res?.payload
+          );
+        }
+      }).catch(error => {
+        setLoadingForCin(false);
+      })
+
+    } catch (error) {
+      setLoadingForCin(false);
+    }
+
+  };
+
   const authValidation = (values, key, setFieldValue) => {
     setLoadingForSignatory(true);
 
@@ -440,6 +483,10 @@ function BusinessDetails(props) {
       udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
       setIsloader(true);
     }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "cin_number") {
+      cinValidationField(val[key], "cin_number", setFieldValue, setIsloader);
+      setLoadingForCin(true);
+    }
   };
 
   const onSubmit = (values) => {
@@ -465,6 +512,8 @@ function BusinessDetails(props) {
       login_id: merchantloginMasterId,
       is_udyam: JSON.parse(values.registerd_with_udyam),
       udyam_data: udyamResponseData,
+      cin_number: values?.cin_number,
+      cin_data: values?.cin_data,
     };
 
     // console.log("postData", postData)
@@ -545,6 +594,7 @@ function BusinessDetails(props) {
         }) => (
           <Form>
             <div className="row">
+              {/* {console.log(errors, values)} */}
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="input-group">
                   <lable>Do you have a GST number?</lable>
@@ -999,6 +1049,78 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  CIN
+                </label>
+                <div className="input-group">
+                  <Field
+                    type="text"
+                    name="cin_number"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
+                    onChange={(e) => {
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("cin_number", uppercaseValue); // Set the uppercase value to form state
+                      setFieldValue("isCinVerified", false);
+                    }}
+                  />
+                  {values?.cin_number &&
+                    values?.isCinVerified &&
+                    !errors.hasOwnProperty("cin_number") &&
+                    !errors.hasOwnProperty("prevCinNumber") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : (
+                    <div className="input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn cob-btn-primary text-white btn-sm"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "cin_number",
+                            setFieldValue
+                          );
+                        }}
+                      >
+                        {loadingForCin ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                          >
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                        ) : (
+                          "Verify"
+                        )}
+                      </a>
+                    </div>
+                  )}
+                </div>
+
+                {errors?.cin_number && (
+                  <span className="text-danger mb-0 d-flex">
+                    {errors?.cin_number}
+                  </span>
+                )}
+              </div>
+
+
+
+
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
