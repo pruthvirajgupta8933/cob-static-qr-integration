@@ -121,10 +121,10 @@ function BusinessDetails(props) {
 
     authorized_person_dob: KycList?.authorized_person_dob ?? "",
 
-    cin_number: KycList?.cin_number ?? "",
-    cin_data: KycList?.cin_number ?? {},
-    prevCinNumber: KycList?.cin_number ?? "",
-    isCinVerified: KycList?.cin_number ? true : false
+    cin_number: KycList?.cin ?? "",
+    cin_data: {},
+    prevCinNumber: KycList?.cin ?? "",
+    isCinVerified: KycList?.cin ? true : false
 
   };
 
@@ -370,7 +370,7 @@ function BusinessDetails(props) {
       });
   };
 
-  const cinValidationField = (values, key, setFieldValue, setIsloader) => {
+  const cinValidationField = (values, key, setFieldValue) => {
     setLoadingForCin(true);
 
 
@@ -391,8 +391,9 @@ function BusinessDetails(props) {
           // setCinData(res?.payload);
           // setCinStatus(res.payload.status);
         } else {
-          toastConfig.error(
-            res?.payload?.message ?? res?.payload?.data?.detail ?? res?.payload
+          setLoadingForCin(false);
+          toastConfig.errorToast(
+            res?.payload?.data?.message ?? res?.payload?.data?.detail ?? "Something went wrong"
           );
         }
       }).catch(error => {
@@ -484,7 +485,7 @@ function BusinessDetails(props) {
       setIsloader(true);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "cin_number") {
-      cinValidationField(val[key], "cin_number", setFieldValue, setIsloader);
+      cinValidationField(val[key], "cin_number", setFieldValue);
       setLoadingForCin(true);
     }
   };
