@@ -12,14 +12,19 @@ import { v4 as uuidv4 } from "uuid";
 
 import ViewKycCollapse from "./ViewKycCollapse";
 import CustomLoader from "../../../../_components/loader";
+import CinDisplay from "../../additional-kyc/cin-validate/CinDisplay";
+import { cinDataByLoginSlice } from "../../../../slices/kycValidatorSlice";
 
 const BusinessDetails = (props) => {
   const { KycTabStatus, selectedUserData } = props;
+
   const { classifications, nic_codes: nicCodes } =
     selectedUserData?.udyam_data || {};
 
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
+  const { auth, kycValidatorReducer } = useSelector((state) => state);
+  const { cinData } = kycValidatorReducer
+
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const { kycUserList } = useSelector((state) => state?.kyc || {});
   const factumData = kycUserList?.factum_data;
@@ -85,23 +90,17 @@ const BusinessDetails = (props) => {
   const displayPanData = async (data) => {
     try {
       const panDetails = {
-        login_id: selectedUserData?.loginMasterId,
-        // pan: selectedUserData?.panCard,
-        // signatory_pan: selectedUserData?.signatoryPAN,
+        login_id: selectedUserData?.loginMasterId
       };
 
       await dispatch(getMerchantpanData(panDetails));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const toggleCollapse = (index) => {
     // Check if the collapse is being opened or closed
     const isOpening = isCollapseOpen !== index;
     setIsCollapseOpen(isOpening ? index : null);
-    // Check if the collapse with the specified index is open
-    // if (isOpening && index === 2) {
-
-    // }
   };
 
   const formFields = [
@@ -114,9 +113,8 @@ const BusinessDetails = (props) => {
         ? "Verified"
         : "Not Verified",
       gridClasses: "col-sm-12 col-md-6 col-lg-6",
-      inputClasses: `form-control ${
-        selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"
-      }`,
+      inputClasses: `form-control ${selectedUserData?.registerdWithGST ? "bg-default" : "bg-warning"
+        }`,
     },
     {
       label: "Business PAN",
@@ -128,7 +126,7 @@ const BusinessDetails = (props) => {
       inputClasses: "form-control",
     },
     {
-      label: "PAN DOB/DOI",
+      label: "Business PAN DOB/DOI",
       value: selectedUserData?.pan_dob_or_doi,
       gridClasses: "col-sm-12 col-md-6 col-lg-3",
       inputClasses: "form-control",
@@ -139,9 +137,19 @@ const BusinessDetails = (props) => {
       verificationMessage: selectedUserData?.signatoryPAN
         ? "Verified"
         : "Not Verified",
-      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      gridClasses: "col-sm-12 col-md-6 col-lg-3",
       inputClasses: "form-control",
     },
+
+    {
+      label: "Auth Signatory  DOB/DOI",
+      value: selectedUserData?.authorized_person_dob,
+
+      gridClasses: "col-sm-12 col-md-6 col-lg-3",
+      inputClasses: "form-control",
+    },
+
+
     {
       label: "Business Name",
       value: selectedUserData?.companyName ? selectedUserData.companyName : "",
@@ -178,7 +186,17 @@ const BusinessDetails = (props) => {
       gridClasses: "col-sm-12 col-md-6 col-lg-6",
       inputClasses: "form-control",
     },
+    {
+      label: "CIN",
+      value: selectedUserData?.cin ?? "",
+      gridClasses: "col-sm-12 col-md-6 col-lg-6",
+      inputClasses: "form-control",
+      verificationMessage: selectedUserData?.cin
+        ? "Verified" : "",
+    }
   ];
+
+
 
   return (
     <div className="row mb-4 border p-1">
@@ -462,6 +480,8 @@ const BusinessDetails = (props) => {
         />
       </>
 
+
+
       <>
         {Array.isArray(factumData) && (
           <ViewKycCollapse
@@ -511,6 +531,23 @@ const BusinessDetails = (props) => {
         )}
       </>
 
+      <>
+        {selectedUserData?.cin && <ViewKycCollapse
+          title={`CIN : ${selectedUserData?.cin}`}
+          formContent={
+            cinData?.loading ? <CustomLoader loadingState={cinData?.loading} /> : <CinDisplay cinData={cinData?.data} />
+          }
+
+          isOpen={isCollapseOpen === 4}
+          onToggle={() => {
+            toggleCollapse(4);
+            if (!isCollapseOpen) {
+              dispatch(cinDataByLoginSlice({ "login_id": selectedUserData?.loginMasterId }))
+            }
+          }}
+        />}
+
+      </>
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
           <p className="m-0">

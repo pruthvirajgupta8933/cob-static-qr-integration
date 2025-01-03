@@ -8,7 +8,7 @@ import {
   clearKycState,
   saveKycConsent,
 } from "../../../../../../slices/kycSlice";
-import { generateWord } from "../../../../../../utilities/generateClientCode";
+import generateAndSaveClientCode, { generateWord } from "../../../../../../utilities/generateClientCode";
 import { resetFormState } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { axiosInstanceJWT } from "../../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../../config";
@@ -44,16 +44,21 @@ function SubmitKyc({ isEditableInput, editKyc }) {
 
 
   const onSubmit = async (value) => {
+
     if ((kycData?.clientCode === null || kycData?.clientCode === undefined) && !editKyc) {
       const clientFullName = kycData?.name;
       const clientMobileNo = kycData?.contactNumber;
-      const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+
+      // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
       // check client code is existing
-      const stepRespOne = await authService.checkClintCode({
-        client_code: arrayOfClientCode,
-      });
+      // const stepRespOne = await authService.checkClintCode({
+      //   client_code: arrayOfClientCode,
+      // });
+
+      const stepRespOne = await generateAndSaveClientCode(clientFullName, clientMobileNo)
       // console.log("stepRespOne", stepRespOne)
+
       let newClientCode;
       // if client code available return status true, then make request with the given client
       if (

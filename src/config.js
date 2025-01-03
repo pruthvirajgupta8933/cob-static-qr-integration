@@ -313,6 +313,8 @@ const API_LIVE = {
   // UDYAM_REGISTRATION: `${kyc_url}/kyc/validator`,
 
   CIN_DETAIL: `${kyc_url}/kyc/validator/cin/`,
+  CIN_BY_LOGIN: `${kyc_url}/kyc/cin-data/get-by-login-id/`,
+
   Aadhar_number: `${kyc_url}/kyc/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_url}/kyc/validator/validate-aadhar/verify-otp/`,
 
