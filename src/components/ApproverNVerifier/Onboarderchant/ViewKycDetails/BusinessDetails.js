@@ -13,15 +13,18 @@ import { v4 as uuidv4 } from "uuid";
 import ViewKycCollapse from "./ViewKycCollapse";
 import CustomLoader from "../../../../_components/loader";
 import CinDisplay from "../../additional-kyc/cin-validate/CinDisplay";
+import { cinDataByLoginSlice } from "../../../../slices/kycValidatorSlice";
 
 const BusinessDetails = (props) => {
   const { KycTabStatus, selectedUserData } = props;
-  console.log("selectedUserData", selectedUserData)
+
   const { classifications, nic_codes: nicCodes } =
     selectedUserData?.udyam_data || {};
 
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
+  const { auth, kycValidatorReducer } = useSelector((state) => state);
+  const { cinData } = kycValidatorReducer
+
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const { kycUserList } = useSelector((state) => state?.kyc || {});
   const factumData = kycUserList?.factum_data;
@@ -87,9 +90,7 @@ const BusinessDetails = (props) => {
   const displayPanData = async (data) => {
     try {
       const panDetails = {
-        login_id: selectedUserData?.loginMasterId,
-        // pan: selectedUserData?.panCard,
-        // signatory_pan: selectedUserData?.signatoryPAN,
+        login_id: selectedUserData?.loginMasterId
       };
 
       await dispatch(getMerchantpanData(panDetails));
@@ -100,10 +101,6 @@ const BusinessDetails = (props) => {
     // Check if the collapse is being opened or closed
     const isOpening = isCollapseOpen !== index;
     setIsCollapseOpen(isOpening ? index : null);
-    // Check if the collapse with the specified index is open
-    // if (isOpening && index === 2) {
-
-    // }
   };
 
   const formFields = [
@@ -200,63 +197,7 @@ const BusinessDetails = (props) => {
   ];
 
 
-  const cinDataa = {
-    "message": "CIN Validated Successfully",
-    "status": true,
-    "valid": true,
-    "director_name": "",
-    "address": "83 Vasavi Arcade, Bangalore, Bangalore South, Karnataka, India, 560070",
-    "directors_info": [
-      {
-        "din": "06649303",
-        "dob": "05/18/1990",
-        "pan": "*****1552M",
-        "name": "PRAMOD GIRIYAPURA CHANDRAMOULI",
-        "address": "*****, , Karnataka, India, 577550",
-        "fatherName": "*****RA *****",
-        "designation": "Director",
-        "splitAddress": {
-          "city": "",
-          "state": "Karnataka",
-          "country": "India",
-          "pincode": "577550",
-          "district": "",
-          "addressLine": "***** "
-        },
-        "dscExpiryDate": "",
-        "noOfCompanies": 5,
-        "dateOfAppointment": "21/05/2024",
-        "whetherDscRegistered": ""
-      },
-      {
-        "din": "07952072",
-        "dob": "09/20/1997",
-        "pan": "*****5991F",
-        "name": "RANGAPPA NITHYA",
-        "address": "*****, , Karnataka, India, 577550",
-        "fatherName": "*****PPA ",
-        "designation": "Director",
-        "splitAddress": {
-          "city": "",
-          "state": "Karnataka",
-          "country": "India",
-          "pincode": "577550",
-          "district": "",
-          "addressLine": "***** "
-        },
-        "dscExpiryDate": "",
-        "noOfCompanies": 4,
-        "dateOfAppointment": "21/05/2024",
-        "whetherDscRegistered": ""
-      }
-    ],
-    "category_cin": "",
-    "date_of_incorporation": "05/21/2024",
-    "roc_office": "ROC Bangalore",
-    "description_of_maindivision": "COMPUTER PROGRAMMING, CONSULTANCYAND RELATEDACTIVITIES",
-    "country_of_incorporation": "Indian",
-    "email_id": "nithyapramodgc@gmail.com"
-  }
+
   return (
     <div className="row mb-4 border p-1">
       <h6>Business Details</h6>
@@ -591,22 +532,22 @@ const BusinessDetails = (props) => {
       </>
 
       <>
-        {selectedUserData?.cin ?? <ViewKycCollapse
+        {selectedUserData?.cin && <ViewKycCollapse
           title={`CIN : ${selectedUserData?.cin}`}
-          formContent={<CinDisplay cinData={cinDataa} />}
+          formContent={
+            cinData?.loading ? <CustomLoader loadingState={cinData?.loading} /> : <CinDisplay cinData={cinData?.data} />
+          }
+
           isOpen={isCollapseOpen === 4}
           onToggle={() => {
             toggleCollapse(4);
             if (!isCollapseOpen) {
-              // displayPanData(); // Call displayPanData() only when the toggle is being opened
+              dispatch(cinDataByLoginSlice({ "login_id": selectedUserData?.loginMasterId }))
             }
           }}
         />}
 
       </>
-      {console.log("isCollapseOpen", isCollapseOpen)}
-      {console.log("selectedUserData?.cin", selectedUserData?.cin)}
-
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
           <p className="m-0">

@@ -13,9 +13,12 @@ import {
   voterVerify,
   dlVerify,
   advancePanVerify,
+  cinDataByLogin,
 } from "../services/kyc-validator-service/kycValidator.service";
 
-const initialState = {};
+const initialState = {
+  cinData: {}
+};
 
 //----- GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 export const panValidation = createAsyncThunk(
@@ -47,7 +50,6 @@ export const authPanValidation = createAsyncThunk(
         error.toString() ||
         error.request.toString();
       thunkAPI.dispatch(setMessage(message));
-      console.log("message", message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -214,13 +216,28 @@ export const cinValidation = createAsyncThunk(
   async (requestParam) => {
     try {
       const response = await cinVerify(requestParam);
-
       return response.data;
     } catch (error) {
       return error.response;
     }
   }
 );
+
+
+export const cinDataByLoginSlice = createAsyncThunk(
+  "kyc/cinDataByLoginSlice",
+  async (requestParam) => {
+    try {
+      const response = await cinDataByLogin(requestParam);
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
+  }
+);
+
+
+
 
 export const aadhaarNumberVerification = createAsyncThunk(
   "kycValidator/aadhaarNumberVerification",
@@ -261,7 +278,26 @@ export const kycValidatorSlice = createSlice({
           message: action?.payload,
           status: false,
         };
-      });
+      })
+      .addCase(cinDataByLoginSlice.pending, (state, action) => {
+        state.cinData = {
+          data: {},
+          loading: true,
+        };
+      })
+      .addCase(cinDataByLoginSlice.fulfilled, (state, action) => {
+        state.cinData = {
+          data: action.payload,
+          loading: false,
+        };
+      })
+      .addCase(cinDataByLoginSlice.rejected, (state, action) => {
+        state.cinData = {
+          data: { status: false },
+          loading: false,
+        };
+      })
+
   },
 });
 

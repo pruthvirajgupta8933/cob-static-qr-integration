@@ -61,11 +61,11 @@ import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../../B2B_components/ChallanTransactReport";
 // import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
-import { isNull } from "lodash";
+import { isNull, reject } from "lodash";
 import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
 import ReferZone from "../../ApproverNVerifier/ReferZone";
 import GenerateMid from "../../ApproverNVerifier/GenerateMid";
-import { generateWord } from "../../../utilities/generateClientCode";
+import generateAndSaveClientCode, { generateWord } from "../../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "../AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "../AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../../subscription_components/MandateReport";
@@ -122,12 +122,14 @@ function DashboardMainContent() {
     ) {
       const clientFullName = user?.clientContactPersonName;
       const clientMobileNo = user?.clientMobileNo;
-      const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+      // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+
 
       // check client code is existing
-      const stepRespOne = await authService.checkClintCode({
-        client_code: arrayOfClientCode,
-      });
+      // const stepRespOne = await authService.checkClintCode({
+      //   client_code: arrayOfClientCode,
+      // });
+      const stepRespOne = await generateAndSaveClientCode(clientFullName, clientMobileNo)
       // console.log("stepRespOne", stepRespOne)
       let newClientCode;
       // if client code available return status true, then make request with the given client
@@ -241,12 +243,19 @@ function DashboardMainContent() {
     }
   }, [location]);
 
+
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
     return <Redirect to="/login-page" />;
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
+
+
+
+
+
+
 
   // console.log("roles", roles)
   return (

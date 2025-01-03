@@ -1,3 +1,4 @@
+import authService from "../services/auth.service";
 
 function getChar(string, retry, position = 0, charLen = 2) {
     const start = (position + retry);
@@ -61,3 +62,38 @@ export const generateWord = (name, mobile, retry = 1) => {
     }
     return newSuggestedClientCode
 }
+
+
+async function generateAndSaveClientCode(name, contact, apiTriggerCount = 0) {
+    const arrayOfClientCode = generateWord(name, contact);
+    // const apiResponse = new Promise((resolve, rejected) => {
+    //   setTimeout(() => {
+    //     // return resolve({ status: 200, message: "success", apiCallCount: apiCallCount })
+    //     return rejected({ status: 400, message: "failed", apiCallCount: apiTriggerCount })
+    //   }, 5000)
+    // })
+
+    try {
+        const response = await authService.checkClintCode({
+            client_code: arrayOfClientCode,
+        });
+        // ["ABHI38"]
+
+        // const response = await apiResponse
+        // console.log("response", response)
+        return response
+
+    } catch (error) {
+        // console.log("error", error.response.data)
+        const currentDate = new Date()
+        apiTriggerCount++
+
+        if (apiTriggerCount < 5) {
+            generateAndSaveClientCode(name, currentDate.getTime(), apiTriggerCount)
+        } else {
+            return error.response
+        }
+    }
+}
+
+export default generateAndSaveClientCode

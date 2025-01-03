@@ -27,6 +27,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
   const [avgTicketAmount, setAvgTicketAmount] = useState([]);
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
+  const [loadingForBuzzPan, setLoadingForBuzzPan] = useState(false);
   const [platform, setPlatform] = useState([]);
   const [disable, setDisable] = useState(false);
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
@@ -270,6 +271,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
   };
 
   const panValidate = (values, key, setFieldValue) => {
+    setLoadingForBuzzPan(true)
     dispatch(
       advancePanValidation({
         pan_number: values,
@@ -291,13 +293,16 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
           setFieldValue("is_pan_verified", 1);
           setFieldValue("pan_dob_or_doi", res?.payload?.dob);
           toast.success(res?.payload?.message);
+          setLoadingForBuzzPan(false)
         } else {
           setFieldValue(key, "");
           setFieldValue("is_pan_verified", "");
           toast.error(res?.payload?.message ?? res?.payload.data?.message);
+          setLoadingForBuzzPan(false)
         }
       })
       .catch((err) => {
+        setLoadingForBuzzPan(false)
         console.log("err", err);
       });
 
@@ -412,7 +417,16 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
                           );
                         }}
                       >
-                        Verify
+                        {loadingForBuzzPan ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                          >
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                        ) : (
+                          "Verify"
+                        )}
                       </a>
                     </div>
                   )}

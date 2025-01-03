@@ -9,7 +9,7 @@ import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.m
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
-import { generateWord } from "../../utilities/generateClientCode";
+import generateAndSaveClientCode, { generateWord } from "../../utilities/generateClientCode";
 import API_URL from "../../config";
 import authService from "../../services/auth.service";
 import {
@@ -63,13 +63,15 @@ function SubmitKyc(props) {
       basicDetailsResponse?.data?.name ?? kycUserList?.name;
     const clientMobileNo =
       basicDetailsResponse?.data?.mobileNumber ?? kycUserList?.contactNumber;
-    const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+    // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
     // check client code is existing
     let newClientCode;
-    const checkClientCode = await authService.checkClintCode({
-      client_code: arrayOfClientCode,
-    });
+    // const checkClientCode = await authService.checkClintCode({
+    //   client_code: arrayOfClientCode,
+    // });
+    const checkClientCode = await generateAndSaveClientCode(clientFullName, clientMobileNo)
+
     if (
       checkClientCode?.data?.clientCode !== "" &&
       checkClientCode?.data?.status === true
