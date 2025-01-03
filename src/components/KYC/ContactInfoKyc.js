@@ -10,22 +10,14 @@ import {
   kycUserList,
   GetKycTabsStatus,
   getKycIDList,
-  kycUserListForMerchant,
-  // otpVerificationForContactForPhone,
+  kycUserListForMerchant
 } from "../../slices/kycSlice";
 
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
 import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import "./kyc-style.css";
-// import OtpInput from "react-otp-input";
-// import classes from "./kycForm.module.css"
-// import CustomModal from "../../_components/custom_modal";
-// import { kycValidatorAuth } from "../../utilities/axiosInstance";
 import toastConfig from "../../utilities/toastTypes";
-// import API_URL from "../../config";
-// import Timer from "../../utilities/TimerComponent";
-// import TimerComponent from "../../utilities/TimerComponent";
 import AadhaarVerficationModal from "./OtpVerificationKYC/AadhaarVerficationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import {
@@ -33,7 +25,6 @@ import {
   dlValidation,
   voterCardValidation,
 } from "../../slices/kycValidatorSlice";
-// import { error } from "jquery";
 
 function ContactInfoKyc(props) {
   const setTab = props.tab;
@@ -42,9 +33,6 @@ function ContactInfoKyc(props) {
 
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
-
-  // const KycVerificationToken = useSelector((state) => state.kyc.OtpResponse.verification_token);
-
   const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
@@ -548,7 +536,7 @@ function ContactInfoKyc(props) {
                     <span className="text-danger"> *</span>
                   </span>
                   <span
-                    className="text-decoration-underline text-primary cursor_pointer"
+                    className="text-decoration-underline text-primary cursor_pointer small"
                     onClick={() => setIdProofInputToggle((prev) => !prev)}
                   >
                     Select ID Proof

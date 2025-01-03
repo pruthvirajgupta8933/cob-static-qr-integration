@@ -8,7 +8,7 @@ import {
   kycUserList,
 } from "../../../../slices/kycSlice";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
-import { generateWord } from "../../../../utilities/generateClientCode";
+import generateAndSaveClientCode, { generateWord } from "../../../../utilities/generateClientCode";
 import API_URL from "../../../../config";
 import authService from "../../../../services/auth.service";
 import toastConfig from "../../../../utilities/toastTypes";
@@ -42,13 +42,14 @@ const Submit = ({ disableForm, setInfoModal }) => {
     const clientFullName = basicDetailsResponse?.data?.name ?? kycData?.name;
     const clientMobileNo =
       basicDetailsResponse?.data?.mobileNumber ?? kycData?.contactNumber;
-    const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+    // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
     // check client code is existing
     let newClientCode;
-    const checkClientCode = await authService.checkClintCode({
-      client_code: arrayOfClientCode,
-    });
+    // const checkClientCode = await authService.checkClintCode({
+    //   client_code: arrayOfClientCode,
+    // });
+    const checkClientCode = await generateAndSaveClientCode(clientFullName, clientMobileNo)
     if (
       checkClientCode?.data?.clientCode !== "" &&
       checkClientCode?.data?.status === true
@@ -79,7 +80,7 @@ const Submit = ({ disableForm, setInfoModal }) => {
       setSubmitLoader(false);
       toastConfig.errorToast(
         error?.message?.details ||
-          "An error occurred while creating the Client Code. Please try again."
+        "An error occurred while creating the Client Code. Please try again."
       );
       return false;
     }

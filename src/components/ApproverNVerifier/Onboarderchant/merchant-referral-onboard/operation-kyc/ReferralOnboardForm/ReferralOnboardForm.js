@@ -11,7 +11,7 @@ import {
 } from "../../../../../../_components/formik/ValidationRegex";
 import { convertToFormikSelectJson } from "../../../../../../_components/reuseable_components/convertToFormikSelectJson";
 import toastConfig from "../../../../../../utilities/toastTypes";
-import { generateWord } from "../../../../../../utilities/generateClientCode";
+import generateAndSaveClientCode, { generateWord } from "../../../../../../utilities/generateClientCode";
 import { addReferralService } from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
 import authService from "../../../../../../services/auth.service";
 import { createClientProfile } from "../../../../../../slices/auth";
@@ -259,12 +259,13 @@ function ReferralOnboardForm({
         // console.log("1.4")
         const clientFullName = fullName;
         const clientMobileNo = mobileNumber;
-        const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+        // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+        const resp3 = await generateAndSaveClientCode(clientFullName, clientMobileNo)
 
         // check client code is existing
-        const resp3 = await authService.checkClintCode({
-          client_code: arrayOfClientCode,
-        });
+        // const resp3 = await authService.checkClintCode({
+        //   client_code: arrayOfClientCode,
+        // });
         let newClientCode;
         // if client code available return status true, then make request with the given client
         if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {

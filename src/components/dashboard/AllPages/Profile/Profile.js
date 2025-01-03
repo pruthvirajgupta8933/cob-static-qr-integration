@@ -9,6 +9,7 @@ import { isNull } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import MerchantSubscriptionBalance from "./MerchantSubscriptionBalance";
 import { getSubscriptionPlanByClientCode } from "../../../../slices/subscription";
+import WalletRecharge from "./WalletRecharge";
 
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState(1);
@@ -108,9 +109,8 @@ const Profile = () => {
             aria-orientation="vertical"
           >
             <a
-              className={`nav-link cursor_pointer px-2 fs-6 ${
-                currentTab === 1 && "active-secondary"
-              }`}
+              className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 1 && "active-secondary"
+                }`}
               onClick={() => handleTabClick(1)}
               id="v-pills-link1-tab"
               data-mdb-toggle="pill"
@@ -133,26 +133,36 @@ const Profile = () => {
 
             {/* Display plan tab only if merchant role and wallet display data is available */}
             {roles.merchant && SubscribedPlanData?.length > 0 && (
-              <a
-                className={`nav-link cursor_pointer px-2 fs-6 ${
-                  currentTab === 2 && "active-secondary"
-                }`}
-                onClick={() => handleTabClick(2)}
-                id="v-pills-link2-tab"
-                data-mdb-toggle="pill"
-                href={() => false}
-                role="tab"
-                aria-controls="v-pills-link2"
-                aria-selected="false"
-              >
-                Subscribed Plan
-              </a>
+              <>
+                <a
+                  className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 2 && "active-secondary"
+                    }`}
+                  onClick={() => handleTabClick(2)}
+                  id="v-pills-link2-tab"
+                  data-mdb-toggle="pill"
+                  href={() => false}
+                  role="tab"
+                  aria-controls="v-pills-link2"
+                  aria-selected="false"
+                >
+                  Subscribed Plan
+                </a>
+
+                <a
+                  className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 3 && "active-secondary"
+                    }`}
+                  onClick={() => handleTabClick(3)}
+                  id="v-pills-link2-tab"
+                  data-mdb-toggle="pill"
+                  href={() => false}
+                  role="tab"
+                  aria-controls="v-pills-link2"
+                  aria-selected="false"
+                >
+                  Recharge Wallet
+                </a>
+              </>
             )}
-            {/* {roles.merchant && (
-              <a className={`nav-link cursor_pointer px-2 fs-6 ${currentTab === 3 && 'active-secondary'}`} onClick={() => handleTabClick(3)} id="v-pills-link2-tab" data-mdb-toggle="pill" href={() => false} role="tab" aria-controls="v-pills-link2" aria-selected="false">
-                Wallet Balance
-              </a>
-            )} */}
           </div>
 
           {/* Tab navs */}
@@ -168,7 +178,7 @@ const Profile = () => {
                 walletCommission={walletCommission}
               />
             )}
-            {/* {currentTab === 3 && <MerchantSubscriptionBalance />} */}
+            {currentTab === 3 && <WalletRecharge />}
           </div>
           {/* Tab content */}
         </div>

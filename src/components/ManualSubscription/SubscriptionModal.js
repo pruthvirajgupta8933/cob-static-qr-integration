@@ -62,9 +62,9 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
     app_name: subscriptionData?.applicationName ?? "Payment Gateway",
     client: subscriptionData?.clientCode
       ? {
-          value: subscriptionData.clientCode,
-          label: `${subscriptionData.clientCode} - ${subscriptionData.clientName}`,
-        }
+        value: subscriptionData.clientCode,
+        label: `${subscriptionData.clientCode} - ${subscriptionData.clientName}`,
+      }
       : "",
     client_txn_id: subscriptionData?.clientTxnId ?? "",
     bank_ref: subscriptionData?.bankRef ?? "",
@@ -166,7 +166,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
                     ignoreAccents: false,
                   })}
                   label="Client Code"
-                  // onChange={handleSelectChange}
+                // onChange={handleSelectChange}
                 />
               </div>
               <div className="col-lg-6">
@@ -241,7 +241,7 @@ const SubscriptionModal = ({ data, setOpenModal }) => {
                   type="text"
                   name="mandate_frequency"
                   className="form-control"
-                  placeholder="high"
+
                 />
               </div>
             </div>

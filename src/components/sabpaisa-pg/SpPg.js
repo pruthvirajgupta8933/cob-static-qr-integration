@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import NavBar from '../dashboard/NavBar/NavBar'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,6 +13,9 @@ import payment_response_gif from "../../assets/images/image_processing20210906-1
 import classes from "./pg.module.css"
 import { axiosInstanceJWT } from '../../utilities/axiosInstance'
 import API_URL from '../../config'
+import DateFormatter from '../../utilities/DateConvert'
+import { createSubscriptionPlan } from '../../slices/subscription'
+import toastConfig from '../../utilities/toastTypes'
 // import { useLocation } from 'react-router-dom/cjs/react-router-dom'
 
 function SpPg() {
@@ -38,11 +41,12 @@ function SpPg() {
 
     const { auth, productCatalogueSlice } = useSelector((state) => state);
     const { SubscribedPlanData } = productCatalogueSlice
-    const { subscribeId, applicationid } = useParams();
+    const { subscribeId, applicationid, chargeflag } = useParams();
 
     const clientId = auth?.user?.clientMerchantDetailsList[0]?.clientId
+    const clientName = auth?.user?.clientMerchantDetailsList[0]?.clientName
 
-
+    // console.log(auth?.user)
     const productPlans = productCatalogueSlice.productPlanData
     // console.log("selectedPlan", selectedPlan)
     // console.log("productPlans", productPlans)
@@ -50,11 +54,97 @@ function SpPg() {
     const planFilterData = productPlans?.filter((p) => p.plan_code === selectedPlan?.[0]?.plan_code && p?.plan_id === selectedPlan?.[0]?.planId)
 
     // console.log("planFilterData", planFilterData)
-    useEffect(() => {
+
+
+    // const selectedPlanMemo = useCallback(() => {
+
+
+
+
+
+    // }, [clientId])
+
+    // console.log("selectedPlan", selectedPlan)
+
+
+
+
+    const queryStrCheck = useCallback(async () => {
+
+
         const searchParam = window.location.search.slice(1)
         const queryString = new URLSearchParams(searchParam?.toString());
         const queryStringData = Object.fromEntries(queryString.entries());
-        // console.log("paramsData", paramsData)
+        // console.log("queryStringData", queryStringData)
+
+        // fetch the data 
+        let unPaidProduct = []
+        const response = await axiosInstanceJWT.post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
+
+        // if (chargeflag === 'recharge') {
+        //     // unPaidProduct = response?.data?.data?.filter((d) => ((d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+        // } else {
+        //     // if first time buy
+
+        // }
+        unPaidProduct = response?.data?.data?.filter((d) => (
+            (isNull(d?.mandateStatus) || d?.mandateStatus?.toString()?.toLowerCase() !== "success")
+            && (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+
+        //  const unPaidProduct = useMemo(() => {
+        //     return SubscribedPlanData?.filter(
+        //       (d) =>
+        //         (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
+        //         d?.plan_code === "005"
+        //     );
+        //   }, [SubscribedPlanData]);
+
+        if (unPaidProduct?.length > 0) {
+            setSelectedPlan(unPaidProduct)
+        } else {
+            history.replace("/dashboard")
+            toastConfig.errorToast("Something went wrong")
+            // console.log("redirect to dashboard 1")
+        }
+
+
+
+
+        // axiosInstanceJWT
+        //     .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
+        //     .then((resp) => {
+
+        //         if (chargeflag === 'recharge') {
+        //             unPaidProduct = resp?.data?.data?.filter((d) => ((d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+        //         } else {
+        //             // first time buy
+        //             unPaidProduct = resp?.data?.data?.filter((d) => ((
+        //                 isNull(d?.mandateStatus) || d?.mandateStatus === "pending")
+        //                 && (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
+        //         }
+
+        //         if (unPaidProduct?.length > 0) {
+        //             // setSelectedPlanCode(unPaidProduct[0]?.plan_code)
+        //             setSelectedPlan(unPaidProduct)
+        //             // setSelectedPlan()
+        //             // const postBody = { "app_id": unPaidProduct[0]?.applicationId }
+        //             // console.log("postBody", postBody)
+        //             // dispatch(productPlanData(postBody))
+        //         } else {
+        //             // history.replace("/dashboard")
+        //             console.log("redirect to dashboard 1")
+        //         }
+
+        //         // console.log(resp?.data?.data[0])
+        //         // setSelectedPlan(resp?.data?.data[0])
+        //         // setButtonLoader(false)
+        //         // history.push(`${path}/sabpaisa-pg/${resp?.data?.data[0].clientSubscribedPlanDetailsId}`)
+        //         // return <Redirect to={} />;
+        //     }).catch(err => console.log(err))
+
+
+        // console.log("selectedPlan", selectedPlan)
+        // console.log("unPaidProduct", unPaidProduct)
 
         if (Object.values(queryStringData)?.length > 0) {
             setRespFromServerFlag(true)
@@ -67,41 +157,48 @@ function SpPg() {
                     "clientxnId": queryStringData?.clientTxnId,
                     "clientCode": queryStringData?.udf12, // get logined client code
                 }
-                // update the sucscription data as per the payment status
+                // if (chargeflag === 'recharge') {
+                //     // initiate mandate date start and end
+                //     const mandateStartDate = new Date()
+                //     const year = mandateStartDate.getFullYear();
+                //     const month = mandateStartDate.getMonth();
+                //     const day = mandateStartDate.getDate();
+                //     const mandateEndDate = new Date(year + 1, month, day);
+
+
+                //     const postData = {
+                //         applicationId: unPaidProduct[0]?.applicationId,
+                //         applicationName: unPaidProduct[0]?.applicationName,
+                //         bankRef: queryStringData.bankTxnId,
+                //         clientCode: unPaidProduct[0]?.clientCode,
+                //         clientId: unPaidProduct[0]?.clientId,
+                //         clientName: clientName,
+                //         clientTxnId: queryStringData.clientTxnId,
+                //         mandateStartTime: DateFormatter(mandateStartDate).props?.children,
+                //         mandateEndTime: DateFormatter(mandateEndDate).props?.children,
+                //         mandateStatus: queryStringData.status,
+                //         paymentMode: queryStringData.paymentMode,
+                //         planId: unPaidProduct[0]?.planId,
+                //         planName: unPaidProduct[0]?.planName,
+                //         purchaseAmount: queryStringData.amount,
+                //         mandateFrequency: unPaidProduct[0]?.mandateFrequency,
+                //         subscription_status: unPaidProduct[0]?.subscription_status,
+                //     };
+
+                //     // console.log("Create Mandate", postData)
+                //     dispatch(createSubscriptionPlan(postData));
+
+                // } else {
+                //     // update the sucscription data as per the payment status
+                //     dispatch(updateSubscribeDetails(updatePostData));
+                // }
                 dispatch(updateSubscribeDetails(updatePostData));
                 toast.success("Your Transaction is completed")
+                setTimeout(() => { history.replace("/dashboard/profile") }, 2300)
 
             } else {
                 toast.error("Your Transaction is not completed")
             }
-
-        } else {
-
-            axiosInstanceJWT
-                .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": applicationid })
-                .then((resp) => {
-                    // console.log("resp", resp)
-                    const unPaidProduct = resp?.data?.data?.filter((d) => (
-                        (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
-                        (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
-                    if (unPaidProduct?.length > 0) {
-                        setSelectedPlanCode(unPaidProduct[0]?.plan_code)
-                        setSelectedPlan(unPaidProduct)
-                        // setSelectedPlan()
-                        // const postBody = { "app_id": unPaidProduct[0]?.applicationId }
-                        // console.log("postBody", postBody)
-                        // dispatch(productPlanData(postBody))
-                    } else {
-                        history.replace("/dashboard")
-                        // console.log("redirect to dashboard")
-                    }
-                    // console.log(resp?.data?.data[0])
-                    // setSelectedPlan(resp?.data?.data[0])
-                    // setButtonLoader(false)
-                    // history.push(`${path}/sabpaisa-pg/${resp?.data?.data[0].clientSubscribedPlanDetailsId}`)
-                    // return <Redirect to={} />;
-                }).catch(err => console.log(err))
-
 
         }
 
@@ -110,10 +207,11 @@ function SpPg() {
             setIsOpenPg(false)
         }
 
-    }, [])
+    }, [selectedPlan?.[0]?.applicationId, subscribeId])
 
 
     useEffect(() => {
+        queryStrCheck()
         const postBody = { "app_id": applicationid }
         dispatch(productPlanData(postBody))
 
@@ -124,6 +222,7 @@ function SpPg() {
 
         if (planFilterData?.length <= 0 && planFilterData?.[0]?.actual_price === "") {
             history.replace("/dashboard")
+            // console.log('redirect to dashboard 2')
         }
 
         const postBody = {
@@ -152,6 +251,7 @@ function SpPg() {
     }
 
     // console.log("selectedPlan", selectedPlan)
+    // console.log("planFilterData", planFilterData)
 
     return (
         <React.Fragment>
@@ -187,8 +287,8 @@ function SpPg() {
                                                     <h5 className="card-title">Make payment to activate the selected plan.</h5>
                                                     <p className="card-title">Amount : {planFilterData?.[0]?.actual_price} INR</p>
                                                     <p className="card-title">Plan Name : {planFilterData?.[0]?.plan_name}</p>
-                                                    {planFilterData?.length > 0 && <button onClick={() => { getClientTxnId(planFilterData, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>}
-
+                                                    {planFilterData?.length > 0 && <button onClick={() => { getClientTxnId(planFilterData, auth?.user) }} className="btn m-1 cob-btn-primary btn-sm">Pay Now</button>}
+                                                    <Link className="btn m-1  cob-btn-primary btn-sm" to="/dashboard">Back to Dashboard</Link>
                                                 </div>
                                             }
 
