@@ -161,12 +161,11 @@ const BizzAppForm = (props) => {
                     resetForm(initialValues)
                     toastConfig.successToast(response.data.message);
                 } else {
-                    resetForm(initialValues)
                     toastConfig.errorToast(response.data.message);
                 }
 
             }).catch((error) => {
-                toastConfig.errorToast("Data not saved");
+                toastConfig.errorToast(error.response?.message || "Data not saved");
             })
     };
     const InputArray =
