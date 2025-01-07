@@ -10,34 +10,37 @@ import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import { capitalizeFirstLetter } from "../../../../utilities/capitlizedFirstLetter";
+import FormikController from "../../../../_components/formik/FormikController";
+import { Regex, RegexMsg } from "../../../../_components/formik/ValidationRegex";
+import { dateFormatBasic } from "../../../../utilities/DateConvert";
+import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
+import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 
-function FormPaymentLink(props) {
-  const { loaduser } = props;
+function FormPaymentLink({ componentState, dispatchFn }) {
+  // const { loaduser } = props;
   let history = useHistory();
   const [drop, setDrop] = useState([]);
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
   const [disable, setDisable] = useState(false)
+  const [payerData, setPayerData] = useState([])
   const { user } = useSelector((state) => state.auth);
   let clientMerchantDetailsList = [];
   let clientCode = '';
-  if (user && user.clientMerchantDetailsList === null) {
-    // console.log("formpaymet link");
-    history.push('/dashboard/profile');
-  } else {
-    clientMerchantDetailsList = user.clientMerchantDetailsList;
-    clientCode = clientMerchantDetailsList[0].clientCode;
-  }
 
-  const validationSchema = Yup.object().shape({
-    Amount: Yup.string().required("Required!"),
-    Remarks: Yup.string().required("Required!"),
-    Date: Yup.string().required("Required!"),
-    Customer_id: Yup.string().required("Required!"),
+  clientMerchantDetailsList = user.clientMerchantDetailsList;
+  clientCode = clientMerchantDetailsList[0].clientCode;
 
 
-  })
+  // const validationSchema = Yup.object().shape({
+  //   Amount: Yup.string().required("Required!"),
+  //   Remarks: Yup.string().required("Required!"),
+  //   Date: Yup.string().required("Required!"),
+  //   Customer_id: Yup.string().required("Required!"),
+
+
+  // })
 
 
 
@@ -55,11 +58,27 @@ function FormPaymentLink(props) {
       });
   };
 
+  const loadUser = async () => {
+    try {
+      const getPayerResponse = await paymentLinkService.getPayer({ "client_code": clientCode })
+      const data = convertToFormikSelectJson(
+        "id",
+        "payer_name",
+        getPayerResponse.data?.results
+      );
+      setPayerData(data)
+    } catch (error) {
+      toastConfig.errorToast(error.response.message)
+    }
+  }
 
   useEffect(() => {
-    getDrop();
+    // getDrop();
+    loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
 
   const handleCheck = (e) => {                 //for checkbox
     setPasswordCheck(e.target.checked);
@@ -83,7 +102,7 @@ function FormPaymentLink(props) {
         const capitalizedMessage = capitalizeFirstLetter(message)
         if (resp.data?.response_code === '1') {
           toastConfig.successToast(capitalizedMessage);
-          loaduser();
+          // loaduser();
         } else {
           toastConfig.errorToast(capitalizedMessage);
         }
@@ -100,177 +119,188 @@ function FormPaymentLink(props) {
     );
   };
 
+  // console.log(uuidv4())
 
-  const hoursArr = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
+  const initialValues = {
+    valid_from: "",
+    valid_to: "",
+    payer_account_number: "",
+    total_amount: "",
+    purpose: "",
+    is_link_date_validity: true,
+    is_partial_payment_accepted: false,
+    payer: componentState?.id ?? "",
+    client_request_id: uuidv4()
+  }
+
+  const validationSchema = Yup.object().shape({
+    valid_from: Yup.date().required("Start Date Required"),
+    valid_to: Yup.date()
+      .min(Yup.ref("valid_from"), "End date can't be before Start date")
+      .required("End Date Required"),
+    payer_account_number: Yup.string().matches(Regex.digit, RegexMsg.digit)
+      .min(4, "Enter the valid account number")
+      .max(25, "Number Length exceed")
+      .required("Required"),
+    total_amount: Yup.number()
+      .min(1, "Enter Valid Amount")
+      .max(1000000, "Limit Exceed")
+      .required("Required"),
+    purpose: Yup.string().required("Enter Remark"),
+    is_link_date_validity: Yup.string().required(),
+    is_partial_payment_accepted: Yup.string().required(),
+    payer: Yup.string().required(),
+    client_request_id: Yup.string().required(),
+  });
+
+  const onSubmit = async (values) => {
+    setDisable(true)
+    const postData = {
+      ...values,
+      valid_from: dateFormatBasic(values.valid_from)?.props?.children,
+      valid_to: dateFormatBasic(values.valid_to)?.props?.children,
+      client_request_id: uuidv4()
+    }
+
+    try {
+      const response = await paymentLinkService.createPaymentLink(postData)
+      // console.log(response)
+      toastConfig.successToast(response.data?.response_data?.message ?? "Link Created")
+      setDisable(false)
+    } catch (error) {
+      toastConfig.errorToast((error.response.data?.detail || error.response.data?.message) ?? "Something went wrong.")
+      setDisable(false)
+    }
+  };
+
+  const modalCloseHandler = () => {
+    dispatchFn({ type: "reset" })
+  }
 
 
   return (
 
     <div
-      className="mymodals modal fade"
-      id="exampleModal"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      ariaHidden="true"
+      className="mymodals modal fade show"
+      style={{ display: 'block' }}
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
-          <Formik initialValues={{
-            Amount: "",
-            Remarks: "",
-            Date: "",
-            Customer_id: "",
-          }}
+          <Formik
+            initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={(values, { resetForm }) => {
-              submitHandler(values)
-              resetForm()
-            }}>
-            {({ resetForm }) => (
+              onSubmit(values); // this onsubmit used for api integration
+              resetForm();
+            }}
+          >
+            {({ values, errors, resetForm }) => (
               <>
                 <div className="modal-header">
-                  <div className="modal-title" id="exampleModalLabel">
-                    <h6 className="fw-bold">Create Payment Link</h6>
-                  </div>
+                  <h6 className="fw-bold" >Create Payment Link </h6>
                   <button
                     type="button"
                     className="close"
+                    onClick={modalCloseHandler}
                     data-dismiss="modal"
                     aria-label="Close"
-                    onClick={resetForm}
                   >
-                    <span ariaHidden="true">&times;</span>
+                    <span ar iaHidden="true">&times;</span>
                   </button>
                 </div>
-                <div className="container">
+                <div className="modal-body">
                   <Form>
-
-                    <div className="form-row mb-2">
-                      <div className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          onChange={handleCheck}
-                          value={passwordcheck}
-                          id="checkbox_pass"
-                        />
-                        <label className="form-check-label" htmlFor="exampleCheck1" >  Is Password Protected</label>
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label>Select Payer Details</label>
-                        <Field className="form-control" component='select'
-                          name='Customer_id'
-                        >
-                          <option value="">Select Payer</option>
-                          {drop.map((payer, i) => (
-                            <option value={payer.id} key={uuidv4()}>
-                              {payer.name} - {payer.email}
-                            </option>
-                          ))}
-                        </Field>
-                        {<ErrorMessage name="Customer_id">
-                          {msg => <p className="abhitest text-danger" >{msg}</p>}
-                        </ErrorMessage>}
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label>
-                          Payment to be Collected (INR)
-                        </label>
-                        <Field
-                          type="number"
-                          min="1"
-                          step="1"
-                          onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
-                          name="Amount"
-                          autoComplete="off"
+                    <div className="form-row mb-3">
+                      <div className="col-lg-6 col-md-12 col-sm-12">
+                        <label>Start Date</label>
+                        <FormikController
+                          control="input"
+                          type="datetime-local"
+                          name="valid_from"
                           className="form-control"
-                          placeholder="Enter Payment Amount"
+                          required={true}
                         />
-                        {<ErrorMessage name="Amount">
-                          {msg => <p className="abhitest text-danger">{msg}</p>}
-                        </ErrorMessage>}
+
                       </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label >
-                          Purpose of Payment
-                        </label>
-                        <Field
-                          type="text"
-                          name="Remarks"
-                          autoComplete="off"
+                      <div className="col-lg-6 col-md-12 col-sm-12">
+                        <label>End Date</label>
+                        <FormikController
+                          control="input"
+                          type="datetime-local"
+                          name="valid_to"
                           className="form-control"
-                          placeholder="Enter Purpose of Payment"
+                          required={true}
                         />
-                        {<ErrorMessage name="Remarks">
-                          {msg => <div className="abhitest text-danger" >{msg}</div>}
-                        </ErrorMessage>}
+                      </div>
 
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label>Select Date</label>
-                        <Field
-                          name="Date"
-                          type="date"
-                          className="form-control"
-                          min={new Date().toLocaleDateString('en-ca')}
-                          placeholder="From Date"
-                        />
-                        {<ErrorMessage name="Date">
-                          {msg => <div className="abhitest text-danger" >{msg}</div>}
-                        </ErrorMessage>}
-                      </div>
                     </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-6">
-                        <label>Hours</label>
 
-                        <Field component='select' className="form-select" name='hours' value={hours} onChange={(e) => setHours(e.target.value)}>
-                          <option value="" >Hours</option>
-                          {hoursArr.map((val, i) => (
-                            <option value={val} key={uuidv4()}>{val}</option>
-                          ))}
-                        </Field>
-
-
-                      </div>
-                      <div className="form-group col-md-6">
-                        <label>Minutes</label>
-
-                        <Field component='select' className="form-select" name='minutes' value={minutes} onChange={(e) => setMinutes(e.target.value)}>
-                          <option value="">Minutes</option>
-                          {[...Array(60)].map((_, index) => (
-                            <option key={index} value={index.toString().padStart(2, '0')}>
-                              {index.toString().padStart(2, '0')}
-                            </option>
-                          ))}
-                        </Field>
-
-                      </div>
+                    <div className="form-group">
+                      <label>Payer Account Number</label>
+                      <FormikController
+                        control="input"
+                        type="text"
+                        name="payer_account_number"
+                        className="form-control"
+                        lable="Payer Account Number"
+                        required={true}
+                      />
                     </div>
-                    <div className="form-row">
+
+                    <div className="form-group">
+                      <label>Amount</label>
+                      <FormikController
+                        control="input"
+                        type="text"
+                        name="total_amount"
+                        className="form-control"
+                        lable="Amount"
+                        required={true}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Remark</label>
+                      <FormikController
+                        control="input"
+                        type="text"
+                        name="purpose"
+                        className="form-control"
+                        lable="Remark"
+                        required={true}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Payer</label>
+                      <FormikController
+                        control="select"
+                        options={payerData}
+                        name="payer"
+                        className="form-select"
+                        lable="payer"
+                        required={true}
+                      />
+                    </div>
+
+                    <div className="modal-footer">
                       <button
                         type="submit"
-                        className="btn btn-sm cob-btn-primary  mb-3 text-white"
                         disabled={disable}
+                        className="btn cob-btn-primary text-white btn-sm position-relative"
                       >
-                        {disable && (
-                          <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                        )} {/* Show spinner if disabled */}
-                        Submit
+                        {disable ? "Submiting..." : "Submit"}
+
                       </button>
-                      <button onClick={resetForm}
+                      <button
                         type="button"
-                        className="btn btn-sm  cob-btn-secondary mb-3 text-white ml-3"
+                        className="btn cob-btn-secondary btn-danger text-white btn-sm"
                         data-dismiss="modal"
+                        onClick={modalCloseHandler}
                       >
                         Cancel
                       </button>
                     </div>
-
                   </Form>
                 </div>
               </>

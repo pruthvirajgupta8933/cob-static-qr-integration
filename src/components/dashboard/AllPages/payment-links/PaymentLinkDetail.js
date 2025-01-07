@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import _ from "lodash";
 import FormPaymentLink from "./FormPaymentLink";
 import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
-import { axiosInstance } from "../../../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
@@ -18,6 +18,8 @@ import createPaymentLinkService from "../../../../services/create-payment-link/p
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
+import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
+import { toast } from "react-toastify";
 
 const PaymentLinkDetail = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -26,7 +28,7 @@ const PaymentLinkDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const [displayList, setDisplayList] = useState([]);
-  const [loadingState, setLoadingState] = useState(true);
+  const [loadingState, setLoadingState] = useState(false);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode } = clientMerchantDetailsList[0];
@@ -72,28 +74,55 @@ const PaymentLinkDetail = () => {
     return date;
   };
 
-  const loaduser = () => {
-    // toastConfig.infoToast("Loading")
-    axiosInstance
-      .get(`${API_URL.GET_LINKS}${clientCode}/${splitDate}/${splitDate}`)
-      .then((res) => {
-        setData(res.data);
-        setShow(true);
-        setLoadingState(false);
-        setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Something went wrong");
-      });
-  };
-  useEffect(() => {
-    loaduser();
-  }, []);
 
-  const handleSubmit = (values) => {
-    setDisable(true);
-    setLoadingState(true);
+
+  const initialState = {
+    paylinkData: {
+      openModal: false
+    }
+  }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'generatePaymentLink':
+        return {
+          ...state,
+          paylinkData: action.payload
+        }
+      case 'reset':
+        return {
+          ...state,
+          paylinkData: {}
+        }
+      default:
+        return state
+    }
+  }
+
+  const [state, reducerDispatch] = useReducer(reducer, initialState)
+
+
+  // const loaduser = async () => {
+  //   // toastConfig.infoToast("Loading")
+  //   const postData = {
+  //     client_code: clientCode,
+  //     page: 1
+
+  //   }
+  //   try {
+  //     const response = await paymentLinkService.getPaymentLink(postData)
+  //     console.log(response)
+  //   } catch (error) {
+  //     console.log(error.response)
+  //   }
+  // };
+  // useEffect(() => {
+  //   loaduser();
+  // }, []);
+
+  const handleSubmit = async (values) => {
+    // setDisable(true);
+    // setLoadingState(true);
     setData([]);
     setDisplayList([]);
     setPaginatedData([]);
@@ -103,31 +132,55 @@ const PaymentLinkDetail = () => {
     const dateRangeValid = checkValidation(fromDate, toDate);
 
     if (dateRangeValid) {
-      createPaymentLinkService
-        .paymentLinkDetails(clientCode, fromDate, toDate)
-        .then((res) => {
-          if (res.data.length === 0) {
-            toastConfig.errorToast("No Data Found");
 
-            setShow(false);
-          } else {
-            setData(res.data);
-            setLoadingState(false);
-            setDisplayList(res.data);
-            setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-            setShow(true);
-          }
-          setDisable(false);
-          setLoadingState(false);
-        })
-        .catch((err) => {
-          console.error("Error loading data:", err);
-          setShow(false);
-          setDisable(false);
-          setLoadingState(false);
-        });
-    }
-  };
+      const postData = {
+        client_code: clientCode,
+        page: 1,
+        start_date: fromDate,
+        end_date: toDate
+
+      }
+      try {
+        let responseLinks = await paymentLinkService.getPaymentLink(postData)
+
+        responseLinks = responseLinks.data?.results
+        // console.log("responseLinks", responseLinks)
+        setData(responseLinks);
+        setDisplayList(responseLinks);
+        setPaginatedData(_(responseLinks).slice(0).take(pageSize).value());
+
+        setLoadingState(false);
+        setShow(true);
+      } catch (error) {
+        toastConfig.errorToast(error.response?.detail || error.response?.message)
+      }
+    };
+
+    // createPaymentLinkService
+    //   .paymentLinkDetails(clientCode, fromDate, toDate)
+    //   .then((res) => {
+    //     if (res.data.length === 0) {
+    //       toastConfig.errorToast("No Data Found");
+
+    //       setShow(false);
+    //     } else {
+    //       setData(res.data);
+    //       setLoadingState(false);
+    //       setDisplayList(res.data);
+    //       setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+    //       setShow(true);
+    //     }
+    //     setDisable(false);
+    //     setLoadingState(false);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error loading data:", err);
+    //     setShow(false);
+    //     setDisable(false);
+    //     setLoadingState(false);
+    //   });
+  }
+
 
   const checkValidation = (fromDate, toDate) => {
     let flag = true;
@@ -191,10 +244,20 @@ const PaymentLinkDetail = () => {
     setPaginatedData(paginatedPost);
   }, [currentPage]);
 
+  const generatePaylinkHandler = () => {
+    reducerDispatch({
+      type: "generatePaymentLink", payload: {
+        ...data,
+        openModal: true
+      }
+    })
+  }
+
+  // console.log(state)
   return (
     <React.Fragment>
       {/* filter area */}
-      <FormPaymentLink loaduser={loaduser} />
+      {state?.paylinkData?.openModal && <FormPaymentLink componentState={state.paylinkData} dispatchFn={reducerDispatch} />}
 
       <section className="">
         <div className="container-fluid">
@@ -203,9 +266,7 @@ const PaymentLinkDetail = () => {
               <button
                 type="button"
                 className="btn cob-btn-primary btn-primary text-white btn-sm"
-                data-toggle="modal"
-                data-target="#exampleModal"
-                data-whatever="@getbootstrap"
+                onClick={generatePaylinkHandler}
               >
                 Create Payment Link
               </button>
@@ -329,13 +390,14 @@ const PaymentLinkDetail = () => {
                   <thead>
                     <tr>
                       <th>Serial No.</th>
+                      <th>Customer Name</th>
                       <th>Phone No.</th>
                       <th>Amount</th>
-                      <th>Customer Type</th>
+                      {/* <th>Customer Type</th> */}
                       <th>Customer Email</th>
                       <th>Created At</th>
                       <th>Remarks</th>
-                      <th>Customer Name</th>
+
                       <th>Full Link</th>
                     </tr>
                   </thead>
@@ -344,13 +406,14 @@ const PaymentLinkDetail = () => {
                     {paginatedata.map((user, i) => (
                       <tr key={uuidv4()}>
                         <td>{i + 1}</td>
-                        <td>{user?.customer_phoneNumber}</td>
-                        <td>{user?.amount}</td>
-                        <td>{user?.customer_type}</td>
-                        <td>{user?.customer_email}</td>
-                        <td>{dateFormatBasic(user?.created_at)}</td>
-                        <td>{user?.remarks}</td>
-                        <td>{user?.customer_name}</td>
+                        <td>{user?.payer_name}</td>
+                        <td>{user?.payer_mobile}</td>
+                        <td>{user?.total_amount}</td>
+                        {/* <td>{user?.customer_type}</td> */}
+                        <td>{user?.payer_email}</td>
+                        <td>{dateFormatBasic(user?.created_on)}</td>
+                        <td>{user?.purpose}</td>
+
                         <td>
                           <div
                             id={`link_${i}`}

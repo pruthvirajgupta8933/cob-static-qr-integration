@@ -1,107 +1,133 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import _ from "lodash";
+// import { useHistory } from "react-router-dom";
+import { Formik, Form } from "formik";
+// import _ from "lodash";
 import Yup from "../../../../_components/formik/Yup";
 import toastConfig from "../../../../utilities/toastTypes";
-import { v4 as uuidv4 } from 'uuid';
-import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
+// import { v4 as uuidv4 } from 'uuid';
+// import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import { Regex, RegexMsg } from '../../../../_components/formik/ValidationRegex';
-import { capitalizeFirstLetter } from '../../../../utilities/capitlizedFirstLetter';
-const AddSinglePayer = ({ loadUser, customerType }) => {
-    
+// import { capitalizeFirstLetter } from '../../../../utilities/capitlizedFirstLetter';
+import FormikController from '../../../../_components/formik/FormikController';
+// import CustomLoader from '../../../../_components/loader';
+import paymentLinkService from '../../../../services/create-payment-link/paymentLink.service';
+import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson';
+// import { toast } from 'react-toastify';
+const AddSinglePayer = ({ componentState, dispatchFn, loadUserFn }) => {
+
     const { user } = useSelector((state) => state.auth);
     const [disable, setDisable] = useState(false)
-    let history = useHistory();
+    const [payerTypeList, setPayerTypeList] = useState([])
+    const { editPayerModal } = componentState
+
     let clientMerchantDetailsList = [];
     let clientCode = "";
-    if (user && user.clientMerchantDetailsList === null) {
-        // console.log("payerDetails");
-        history.push("/dashboard/profile");
-    } else {
-        clientMerchantDetailsList = user.clientMerchantDetailsList;
-        clientCode = clientMerchantDetailsList[0].clientCode;
+
+    clientMerchantDetailsList = user.clientMerchantDetailsList;
+    clientCode = clientMerchantDetailsList[0].clientCode;
+
+    const initialValues = {
+        payer_name: editPayerModal?.payer_name ?? "",
+        payer_mobile: editPayerModal?.payer_mobile ?? "",
+        payer_email: editPayerModal?.payer_email ?? "",
+        client_code: clientCode ?? "",
+        payer_type: editPayerModal?.payer_type ?? "",
     }
 
-
-
     const validationSchema = Yup.object().shape({
-        name: Yup.string()
+        payer_name: Yup.string()
             .min(3, "It's too short")
             .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
             .required("Required")
             .allowOneSpace(),
-        phone_number: Yup.string()
+        payer_mobile: Yup.string()
             .required("Required")
             .matches(Regex.phoneRegExp, RegexMsg.phoneRegExp)
             .min(10, "Mobile number should be of 10 digits")
             .max(10, "Too long"),
-        email: Yup.string().email("Enter valid email").required("Required").allowOneSpace(),
-        customer_type_id: Yup.string().required("Required"),
+        payer_email: Yup.string().email("Enter valid email").required("Required").allowOneSpace(),
+        client_code: Yup.string().required("Required"),
+        payer_type: Yup.string().required("Required"),
     });
 
-    const onSubmit = async (e) => {
+    const modalCloseHandler = () => {
+        dispatchFn({ type: "reset" })
+    }
+
+    const onSubmit = async (values) => {
         setDisable(true)
-        const postData = {
-            name: e.name,
-            email: e.email,
-            phone_number: e.phone_number,
-            client_code: clientCode,
-            customer_type_id: e.customer_type_id
+        try {
+            let response = {}
+            if (editPayerModal?.isEditable) {
+                const editData = {
+                    ...values,
+                    id: editPayerModal.id
+                }
+                response = await paymentLinkService.editPayer(editData)
+                loadUserFn()
+            } else {
+                response = await paymentLinkService.addPayer(values)
+            }
+
+            toastConfig.successToast(response.data?.message ?? response.data?.detail)
+            setDisable(false)
+            modalCloseHandler()
+        } catch (error) {
+            setDisable(false)
+            console.log(error.response)
+            // toastConfig.errorToast((error.response.data?.message || error.response.data?.detail) ?? "Something went wrong.")
 
         }
-        await createPaymentLinkService.addCustomer(postData)
-            .then(resp => {
-                const message=resp.data?.message
-                const capitalizedMessage = capitalizeFirstLetter(message) 
-                if (resp.data?.response_code === '1') {
-                    
-                  
-                    toastConfig.successToast(capitalizedMessage);
-                    loadUser();
-                } else {
-                    toastConfig.errorToast(capitalizedMessage );
-                }
-                setDisable(false)
-            }).catch(err => {
-                setDisable(false)
-                toastConfig.errorToast("something went wrong")
-            })
-
-
     };
+
+    const fetchPayerType = async () => {
+        try {
+            const respPayer = await paymentLinkService.getPayerType();
+            const formikOpt = convertToFormikSelectJson(
+                "id",
+                "payer_type_name",
+                respPayer.data?.data
+            );
+            setPayerTypeList(formikOpt)
+        } catch (error) {
+            console.log(error.response)
+        }
+
+    }
+
+    useEffect(() => {
+        fetchPayerType()
+    }, [])
+
+
+
+
+
+
     return (
         <div
-            className="mymodals modal fade"
-            id="exampleModal"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            ariaHidden="true"
+            className="mymodals modal fade show"
+            style={{ display: 'block' }}
         >
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <Formik
-                        initialValues={{
-                            name: "",
-                            email: "",
-                            phone_number: "",
-                            customer_type_id: "",
-                        }}
+                        initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={(values, { resetForm }) => {
                             onSubmit(values); // this onsubmit used for api integration
                             resetForm();
                         }}
                     >
-                        {({ resetForm }) => (
+                        {({ errors }) => (
                             <>
                                 <div className="modal-header">
-                                    <h6 className="fw-bold" >Add Payer </h6>
+                                    <h6 className="fw-bold" > {editPayerModal?.isEditable ? "Edit Payer" : "Add Payer"} </h6>
                                     <button
                                         type="button"
                                         className="close"
-                                        onClick={resetForm}
+                                        onClick={modalCloseHandler}
                                         data-dismiss="modal"
                                         aria-label="Close"
                                     >
@@ -111,151 +137,65 @@ const AddSinglePayer = ({ loadUser, customerType }) => {
                                 <div className="modal-body">
                                     <Form>
                                         <div className="form-group">
-                                            <label
-                                                htmlFor="recipient-name"
-                                                className="col-form-label"
-                                            >
-                                                Name of Payer:
-                                            </label>
-                                            <Field
-                                                name="name"
-                                                placeholder="Enter Name of Payer"
+                                            <label>Payer Name</label>
+                                            <FormikController
+                                                control="input"
+                                                name="payer_name"
                                                 className="form-control"
-                                                autoComplete="off"
+                                                lable="Payer Name"
+                                                required={true}
                                             />
-                                            <ErrorMessage name="name">
-                                                {(msg) => (
-                                                    <div
-                                                        className="abhitest"
-                                                        style={{
-                                                            color: "red",
-                                                            position: "absolute",
-                                                            zIndex: " 999",
-                                                        }}
-                                                    >
-                                                        {msg}
-                                                    </div>
-                                                )}
-                                            </ErrorMessage>
                                         </div>
                                         <div className="form-group">
-                                            <label
-                                                htmlFor="recipient-name"
-                                                className="col-form-label"
-                                            >
-                                                Mobile No.:
-                                            </label>
-                                            <Field
-                                                name="phone_number"
-                                                id="phoneNumber"
-                                                onKeyDown={(e) =>
-                                                    ["e", "E", "+", "-", "."].includes(e.key) &&
-                                                    e.preventDefault()
-                                                }
+                                            <label>Payer Email</label>
+                                            <FormikController
+                                                control="input"
                                                 type="text"
-                                                autoComplete="off"
-                                                placeholder="Enter Mobile No."
+                                                name="payer_email"
                                                 className="form-control"
-                                                pattern="\d{10}"
-                                                minLength="4"
-                                                maxLength="10"
+                                                lable="Payer Email"
+                                                required={true}
                                             />
-                                            <ErrorMessage name="phone_number">
-                                                {(msg) => (
-                                                    <div
-                                                        className="abhitest"
-                                                        style={{
-                                                            color: "red",
-                                                            position: "absolute",
-                                                            zIndex: " 999",
-                                                        }}
-                                                    >
-                                                        {msg}
-                                                    </div>
-                                                )}
-                                            </ErrorMessage>
                                         </div>
+
                                         <div className="form-group">
-                                            <label
-                                                htmlFor="recipient-name"
-                                                className="col-form-label"
-                                            >
-                                                Email ID:
-                                            </label>
-                                            <Field
-                                                name="email"
-                                                autoComplete="off"
-                                                placeholder="Enter Email"
-                                                id="pairphn"
+                                            <label>Payer Mobile</label>
+                                            <FormikController
+                                                control="input"
+                                                type="text"
+                                                name="payer_mobile"
                                                 className="form-control"
+                                                lable="Payer Mobile"
+                                                required={true}
                                             />
-                                            <ErrorMessage name="email">
-                                                {(msg) => (
-                                                    <div
-                                                        className="abhitest"
-                                                        style={{
-                                                            color: "red",
-                                                            position: "absolute",
-                                                            zIndex: " 999",
-                                                        }}
-                                                    >
-                                                        {msg}
-                                                    </div>
-                                                )}
-                                            </ErrorMessage>
                                         </div>
+
                                         <div className="form-group">
-                                            <label
-                                                htmlFor="recipient-name"
-                                                className="col-form-label"
-                                            >
-                                                Payer Category:
-                                            </label>
-                                            <Field
-                                                name="customer_type_id"
+                                            <label>Payer Type</label>
+                                            <FormikController
+                                                control="select"
+                                                options={payerTypeList}
+                                                name="payer_type"
                                                 className="form-select"
-                                                component="select"
-                                            >
-                                                <option type="text" id="recipient-name">
-                                                    Select Your Payer Category
-                                                </option>
-                                                {customerType.map((payer, i) => (
-                                                    <option value={payer.id} key={uuidv4()}>
-                                                        {payer.type?.toUpperCase()}
-                                                    </option>
-                                                ))}
-                                            </Field>
-                                            {
-                                                <ErrorMessage name="customer_type_id">
-                                                    {(msg) => (
-                                                        <p
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </p>
-                                                    )}
-                                                </ErrorMessage>
-                                            }
+                                                lable="Payer Type"
+                                                required={true}
+                                            />
                                         </div>
+
                                         <div className="modal-footer">
                                             <button
                                                 type="submit"
                                                 disabled={disable}
                                                 className="btn cob-btn-primary text-white btn-sm position-relative"
                                             >
-                                                {disable && <span className="ml-4 spinner-border spinner-border-sm position-absolute start-0 top-50 translate-middle-y" role="status" ariaHidden="true"></span>}
-                                                Submit
+                                                {disable ? "Submiting..." : "Submit"}
+
                                             </button>
                                             <button
                                                 type="button"
                                                 className="btn cob-btn-secondary btn-danger text-white btn-sm"
                                                 data-dismiss="modal"
-                                                onClick={resetForm}
+                                                onClick={modalCloseHandler}
                                             >
                                                 Cancel
                                             </button>

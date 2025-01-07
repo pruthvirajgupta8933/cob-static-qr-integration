@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, } from "formik";
@@ -9,10 +9,10 @@ import _ from "lodash";
 import Yup from "../../../../_components/formik/Yup";
 import Genratelink from "./Genratelink";
 import { Edituser } from "./Edituser";
-import API_URL from "../../../../config";
+// import API_URL from "../../../../config";
 import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
-import { axiosInstance } from "../../../../utilities/axiosInstance";
+// import { axiosInstance } from "../../../../utilities/axiosInstance";
 import FormikController from "../../../../_components/formik/FormikController";
 // import "./index.css";
 import { v4 as uuidv4 } from 'uuid';
@@ -20,6 +20,8 @@ import ReactPaginate from 'react-paginate';
 import moment from "moment";
 import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import AddSinglePayer from "./AddSinglePayer";
+import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
+import FormPaymentLink from "./FormPaymentLink";
 
 
 
@@ -48,8 +50,52 @@ const PayerDetails = () => {
   const [disable, setDisable] = useState(false)
   const [submitted, setSubmitted] = useState(false);
   const [pageCount, setPageCount] = useState(
-    data ? Math.ceil(data.length / pageSize) : 0
+    data ? Math.ceil(data?.length ?? 0 / pageSize) : 0
   );
+
+  const initialState = {
+    addPayerModal: false,
+    editPayerModal: {
+      isEditable: false
+    },
+    paylinkData: {
+      openModal: false
+    }
+  }
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'addPayer':
+        return {
+          ...state,
+          addPayerModal: action.payload
+        };
+      case 'editPayer':
+        return {
+          ...state,
+          addPayerModal: true,
+          editPayerModal: action.payload
+        }
+      case 'generatePaymentLink':
+        return {
+          ...state,
+          paylinkData: action.payload
+        }
+      case 'reset':
+        return {
+          ...state,
+          addPayerModal: false,
+          generatePaylinkModal: false,
+          paylinkData: {}
+        }
+      default:
+        return state
+    }
+  }
+
+  const [state, reducerDispatch] = useReducer(reducer, initialState)
+
+
 
   const validationSchemaa = Yup.object({
     fromDate: Yup.date().required("Required").nullable(),
@@ -60,10 +106,10 @@ const PayerDetails = () => {
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
-  if (splitDate[1].length === 1) {
+  if (splitDate[1]?.length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
-  if (splitDate[2].length === 1) {
+  if (splitDate[2]?.length === 1) {
     splitDate[2] = "0" + splitDate[2];
   }
   splitDate = splitDate.join("-");
@@ -74,76 +120,74 @@ const PayerDetails = () => {
 
   let clientMerchantDetailsList = [];
   let clientCode = "";
-  if (user && user.clientMerchantDetailsList === null) {
-    // console.log("payerDetails");
-    history.push("/dashboard/profile");
-  } else {
-    clientMerchantDetailsList = user.clientMerchantDetailsList;
-    clientCode = clientMerchantDetailsList[0].clientCode;
-  }
+
+  clientMerchantDetailsList = user.clientMerchantDetailsList;
+  clientCode = clientMerchantDetailsList[0].clientCode;
+
 
   // Alluser data API INTEGRATION
-  const loadUser = async () => {
-    await axiosInstance
-      .get(`${API_URL.GET_CUSTOMERS}${clientCode}/${splitDate}/${splitDate}`)
-      .then((res) => {
-        // console.log(res)
-        setData(res.data);
-        setLoadingState(false)
-        setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+  const loadUser = async (data) => {
+    try {
+      const getPayerResponse = await paymentLinkService.getPayer({ client_code: clientCode, start_date: data.fromDate, end_date: data.toDate })
+      setData(getPayerResponse.data?.results)
+      setDisplayList(getPayerResponse.data?.results);
+      setPaginatedData(_(getPayerResponse.data?.results).slice(0).take(pageSize).value());
+      setLoadingState(false)
+      setSubmitted(false);
+    } catch (error) {
+      toastConfig.errorToast(error.response.message)
+      setLoadingState(false)
+      setSubmitted(false);
+    }
 
-      })
-      .catch((err) => {
-        // console.log(err)
-      });
   };
 
   useEffect(() => {
-    loadUser();
+    loadUser(initialValues);
     // getDrop();
     // setEditModalToggle(false)
   }, []);
 
 
   const formSubmit = (values) => {
-    setDisable(true);
+    // setDisable(true);
     setSubmitted(true);
-    setLoadingState(true);
+    // setLoadingState(true);
 
-    // Clear setData state
-    setData([]);
-    setDisplayList([]);
-    setPaginatedData([]);
+    // // Clear setData state
+    // setData([]);
+    // setDisplayList([]);
+    // setPaginatedData([]);
 
     const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
     const toDate = moment(values.toDate).format('YYYY-MM-DD');
 
-    createPaymentLinkService.getCustomerDetails(fromDate, toDate, clientCode)
-      .then((res) => {
-        if (res.data.length === 0) {
-          toastConfig.errorToast("No Data Found");
-        } else {
-          setData(res.data);
-          setDisplayList(res.data);
-          setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-        }
-        setLoadingState(false);
-        setSubmitted(false);
-        setDisable(false);
-      })
-      .catch((err) => {
-        setLoadingState(false);
-        setDisable(false);
-        setSubmitted(false);
-      });
+    loadUser({ fromDate: fromDate, toDate: toDate })
+    // createPaymentLinkService.getCustomerDetails(fromDate, toDate, clientCode)
+    //   .then((res) => {
+    //     if (res.data?.length === 0) {
+    //       toastConfig.errorToast("No Data Found");
+    //     } else {
+    //       setData(res.data);
+    //       setDisplayList(res.data);
+    //       setPaginatedData(_(res.data).slice(0).take(pageSize).value());
+    //     }
+    //     setLoadingState(false);
+    //     setSubmitted(false);
+    //     setDisable(false);
+    //   })
+    //   .catch((err) => {
+    //     setLoadingState(false);
+    //     setDisable(false);
+    //     setSubmitted(false);
+    //   });
   };
 
 
   // SEARCH FILTER
 
   useEffect(() => {
-    if (searchText.length > 0) {
+    if (searchText?.length > 0) {
       setDisplayList(
         data.filter((item) =>
           Object.values(item)
@@ -165,7 +209,7 @@ const PayerDetails = () => {
 
   useEffect(() => {
     setPaginatedData(_(displayList).slice(0).take(pageSize).value());
-    setPageCount(displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0);
+    setPageCount(displayList?.length > 0 ? Math.ceil(displayList?.length / pageSize) : 0);
   }, [pageSize, displayList]);
 
   useEffect(() => {
@@ -178,19 +222,20 @@ const PayerDetails = () => {
 
   // ADD User Dropdown api integration
 
-  const getDrop = async (e) => {
-    await createPaymentLinkService.getCustomerType()
-      .then((res) => {
+  // const getDrop = async (e) => {
+  //   await createPaymentLinkService.getCustomerType()
+  //     .then((res) => {
 
-        setCustomerType(res.data);
-      })
-      .catch((err) => {
-        // console.log(err)
-      });
-  };
+  //       setCustomerType(res.data);
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err)
+  //     });
+  // };
 
   const handleAddPayerButtonClick = () => {
-    getDrop();
+    // getDrop();
+    reducerDispatch({ type: "addPayer", payload: true })
     // Optionally, you can open the modal here if needed
   };
 
@@ -200,58 +245,71 @@ const PayerDetails = () => {
 
 
   // USE FOR EDIT FORM
-  const handleClick = (id) => {
-    setEditModalToggle(true);
-    data.filter((dataItem) => {
-      if (dataItem.id === id) {
-        setEditForm({
-          myname: dataItem.name,
-          email: dataItem.email,
-          phone: dataItem.phone_number,
-          editCustomerTypeId: dataItem.customer_type_id,
-          id: dataItem.id,
-        });
-      }
-    });
+  const editHandler = (data) => {
+    reducerDispatch({
+      type: "editPayer", payload: { ...data, isEditable: true }
+    })
+    // setEditModalToggle(true);
+    // data.filter((dataItem) => {
+    //   if (dataItem.id === id) {
+    //     setEditForm({
+    //       myname: dataItem.name,
+    //       email: dataItem.email,
+    //       phone: dataItem.phone_number,
+    //       editCustomerTypeId: dataItem.customer_type_id,
+    //       id: dataItem.id,
+    //     });
+    //   }
+    // });
   };
 
   // USE FOR GENERETE LINK
-  const generateli = (id) => {
-    // console.log(id);
-    data.filter((dataItem) => {
-      if (dataItem.id === id) {
-        setGenrateForm({
-          customer_id: id,
-        });
+  const generatelink = (data) => {
+    reducerDispatch({
+      type: "generatePaymentLink", payload: {
+        ...data,
+        openModal: true
       }
-    });
+    })
+    // console.log(id);
+    // data.filter((dataItem) => {
+    //   if (dataItem.id === id) {
+    //     setGenrateForm({
+    //       customer_id: id,
+    //     });
+    //   }
+    // });
   };
 
   const deleteUser = async (id) => {
     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
     if (iscConfirm) {
-      await createPaymentLinkService.deleteCustomer(clientCode, id)
-      loadUser();
+      await paymentLinkService.deletePayer({ id: id })
+      loadUser(initialValues);
     }
   };
 
 
 
   const edit = () => {
-    loadUser();
+    loadUser(initialValues);
   };
+
 
   return (
     <React.Fragment>
-      <Edituser
+      {/* <Edituser
         items={editform}
         callBackFn={edit}
         modalToggle={editModalToggle}
         fnSetModalToggle={setEditModalToggle}
 
-      />
-      <Genratelink generatedata={genrateform} />
-      <AddSinglePayer loadUser={loadUser} customerType={customerType} />
+      /> */}
+      {/* <Genratelink generatedata={genrateform} /> */}
+
+      {state.paylinkData?.openModal && <FormPaymentLink componentState={state.paylinkData} dispatchFn={reducerDispatch} />}
+      {state.addPayerModal && <AddSinglePayer componentState={state} dispatchFn={reducerDispatch} loadUserFn={edit} />}
+
 
       <section >
         <div className="container-fluid">
@@ -350,7 +408,7 @@ const PayerDetails = () => {
                   className="form-select"
                   onChange={(e) => setPageSize(parseInt(e.target.value))}
                 >
-                  <DropDownCountPerPage datalength={data.length} />
+                  <DropDownCountPerPage datalength={data?.length ?? 0} />
                 </select>
               </div>
             </div>}
@@ -360,7 +418,7 @@ const PayerDetails = () => {
 
       <section className="">
         <div className="container-fluid p-3 my-3">
-          {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
+          {data?.length !== 0 && <h6>Total Records: {data?.length ?? 0}</h6>}
 
           {loadingState ? (
             <div className="d-flex justify-content-center align-items-center loader-container">
@@ -388,22 +446,22 @@ const PayerDetails = () => {
                     {paginatedata.map((user, i) => (
                       <tr key={uuidv4()}>
                         <td>{i + 1}</td>
-                        <td>{user.name}</td>
-                        <td>{user.phone_number}</td>
-                        <td>{user.email}</td>
-                        <td>{user.customer_type}</td>
+                        <td>{user.payer_name}</td>
+                        <td>{user.payer_mobile}</td>
+                        <td>{user.payer_email}</td>
+                        <td>{user.payer_type_name}</td>
                         <td>
                           <button
                             type="button"
                             className="btn cob-btn-primary btn-primary text-white btn-sm"
-                            onClick={(e) => handleClick(user.id)}
+                            onClick={(e) => editHandler(user)}
                           >
                             Edit
                           </button>
                         </td>
                         <td>
                           <button
-                            onClick={(e) => generateli(user.id)}
+                            onClick={(e) => generatelink(user)}
                             type="button"
                             className="btn cob-btn-primary text-white btn-sm"
                             data-toggle="modal"

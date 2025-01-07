@@ -26,9 +26,9 @@ function Paylinks() {
                     <li className="nav-item" onClick={() => SetTab(2)} >
                       <a href={() => false} id="navpad" className={"nav-link btn rounded-1 border border-secondary m-1 " + (tab === 2 ? "active" : "inactive")} >Payment Link Detail</a>
                     </li>
-                    <li className="nav-item" onClick={() => SetTab(4)}>
+                    {/* <li className="nav-item" onClick={() => SetTab(4)}>
                       <a href={() => false} id="navpad" className={"nav-link btn rounded-1 border border-secondary m-1 " + (tab === 4 ? "active" : "inactive")} >Reports</a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>

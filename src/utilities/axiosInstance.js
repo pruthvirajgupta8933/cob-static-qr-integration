@@ -18,6 +18,7 @@ export const axiosInstance = axios.create({
   headers: {},
 });
 
+
 export const kycValidatorAuth = axios.create({
   headers: {
     "api-key": "cb1c45b3ee43416884a720f02d449d8d",

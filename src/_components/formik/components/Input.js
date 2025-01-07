@@ -4,16 +4,14 @@ import { Field, ErrorMessage } from "formik";
 function Input(props) {
   const { name, label, lableClassName, displayMsgOutside, required, ...rest } =
     props;
-  // console.log("label",label);
   return (
     <React.Fragment>
-      {typeof label !== "undefined" && (
-        <label htmlFor={name} className={lableClassName}>
-          {" "}
-          {label}
-          {required && <span style={{ color: "red" }}>*</span>}
-        </label>
-      )}
+      {/* {typeof label !== "undefined" && ( */}
+      <label htmlFor={name} className={lableClassName}>
+        {label}
+        {required && <span style={{ color: "red" }}>*</span>}
+      </label>
+      {/* )} */}
       <Field name={name} {...rest} />
       {displayMsgOutside === true ? null : (
         <ErrorMessage name={name}>
