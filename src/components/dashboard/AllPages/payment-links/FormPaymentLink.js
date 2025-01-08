@@ -124,7 +124,7 @@ function FormPaymentLink({ componentState, dispatchFn }) {
   const initialValues = {
     valid_from: "",
     valid_to: "",
-    payer_account_number: "",
+    payer_account_number: "12345678901234",
     total_amount: "",
     purpose: "",
     is_link_date_validity: true,
@@ -140,10 +140,7 @@ function FormPaymentLink({ componentState, dispatchFn }) {
     valid_to: Yup.date()
       .min(Yup.ref("valid_from"), "End date can't be before Start date")
       .required("End Date Required"),
-    payer_account_number: Yup.string().matches(Regex.digit, RegexMsg.digit)
-      .min(4, "Enter the valid account number")
-      .max(25, "Number Length exceed")
-      .required("Required"),
+    payer_account_number: Yup.string(),
     total_amount: Yup.number()
       .min(1, "Enter Valid Amount")
       .max(1000000, "Limit Exceed")
@@ -236,18 +233,6 @@ function FormPaymentLink({ componentState, dispatchFn }) {
                         />
                       </div>
 
-                    </div>
-
-                    <div className="form-group">
-                      <label>Payer Account Number</label>
-                      <FormikController
-                        control="input"
-                        type="text"
-                        name="payer_account_number"
-                        className="form-control"
-                        lable="Payer Account Number"
-                        required={true}
-                      />
                     </div>
 
                     <div className="form-group">
