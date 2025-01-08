@@ -41,8 +41,8 @@ function SideNavbar() {
                   <Link
                     to={url}
                     className={`nav-link ${sideNavClasses.sidebar_menu}  ${selectedMenu === "dashboard"
-                        ? sideNavClasses.selected_memu
-                        : ""
+                      ? sideNavClasses.selected_memu
+                      : ""
                       }`}
                   >
                     <i className="fa fa-home"></i>&nbsp;Dashboard
@@ -78,28 +78,52 @@ function SideNavbar() {
                       }`}
                     role="menu"
                   >
-                    {menu.submenu?.map(
-                      (submenu) =>
-                        submenu?.is_active && (
-                          <li
-                            className="nav-item ml-1"
-                            role="menuitem"
-                            key={submenu.id}
-                          >
+
+
+                    <>
+                      {menu.submenu?.map(
+                        (submenu) =>
+                          submenu?.is_active && (
+                            <li
+                              className="nav-item ml-1"
+                              role="menuitem"
+                              key={submenu.id}
+                            >
+                              <Link
+                                to={`${url}/${submenu.url}`}
+                                className={`nav-link ${sideNavClasses.sidebar_menu
+                                  }  ${selectedMenu === submenu.url.split("/").pop()
+                                    ? sideNavClasses.selected_memu
+                                    : ""
+                                  }`}
+                              >
+                                <i className={submenu.sub_menu_icon}></i>&nbsp;
+                                {submenu.submenu_name}
+                              </Link>
+                            </li>
+
+
+                          )
+                      )}
+
+                      {menu.app_code === "13" && (
+                        auth?.user?.loginId.toString() === "795" && (
+                          <li className="nav-item ml-1" role="menuitem">
                             <Link
-                              to={`${url}/${submenu.url}`}
-                              className={`nav-link ${sideNavClasses.sidebar_menu
-                                }  ${selectedMenu === submenu.url.split("/").pop()
-                                  ? sideNavClasses.selected_memu
-                                  : ""
+                              to={`${url}/paylinks`}
+                              className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "paylinks"
+                                ? sideNavClasses.selected_memu
+                                : ""
                                 }`}
                             >
-                              <i className={submenu.sub_menu_icon}></i>&nbsp;
-                              {submenu.submenu_name}
+                              <i className="fa fa-external-link mr-1"></i>
+                              Payments Link
                             </Link>
                           </li>
                         )
-                    )}
+                      )}
+                    </>
+
                   </ul>
                 </React.Fragment>
               )
@@ -124,8 +148,8 @@ function SideNavbar() {
               <Link
                 to={`${url}/info-bulletin`}
                 className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "info-bulletin"
-                    ? sideNavClasses.selected_memu
-                    : ""
+                  ? sideNavClasses.selected_memu
+                  : ""
                   }`}
               >
                 <i className="fa fa-info-circle"></i>&nbsp;Information Bulletin
@@ -140,8 +164,8 @@ function SideNavbar() {
                 <Link
                   to={`${url}/settlement-report`}
                   className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "settlement-report"
-                      ? sideNavClasses.selected_memu
-                      : ""
+                    ? sideNavClasses.selected_memu
+                    : ""
                     }`}
                 >
                   <i className="fa fa-bank mr-1"></i>
