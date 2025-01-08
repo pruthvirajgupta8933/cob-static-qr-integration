@@ -461,7 +461,9 @@ export const PAYMENT_LINK = {
   // https://stage-paymentlinks.sabpaisa.in/api/payer/get-all-payer/?client_code=TM001%27
   CREATE_LINK: `${paylinkBaseUrl}/api/link/create-link/`,
   GET_LINK: `${paylinkBaseUrl}/api/link/get-all-links/`,
-  GET_PAYER_TYPE: `${paylinkBaseUrl}/api/payer/get-all-payer-type/`
+  GET_PAYER_TYPE: `${paylinkBaseUrl}/api/payer/get-all-payer-type/`,
+  GET_API_KEY: `${paylinkBaseUrl}/api/client-configuration/get-api-key-by-client-code/`,
+  // https://stage-paymentlinks.sabpaisa.in/api/client-configuration/get-api-key-by-client-code/?client_code=LPSD1
 
 }
 

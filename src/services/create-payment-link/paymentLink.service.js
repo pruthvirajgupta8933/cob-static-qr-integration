@@ -1,38 +1,30 @@
-import { axiosInstanceJWT, axiosInstancePaymentLink } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { PAYMENT_LINK } from "../../config";
+import { getQueryStr } from "../../utilities/generateURLQueryParams";
 
+const sessionApiKey = sessionStorage.getItem("paymentLinkApiKey")
 
-
-
-function getQueryStr(url, postData) {
-
-    let qryStr = "?"
-    let i = 0
-    for (let key in postData) {
-        if (i === 0) {
-            qryStr += `${key}=${postData[key]}`
-        } else {
-            qryStr += `&${key}=${postData[key]}`
-        }
-        i++
+const config = {
+    headers: {
+        "api-key": sessionApiKey
     }
-    const apiUrl = url + "" + qryStr
-    return apiUrl
 }
+
+
 const addPayer = (postData) => {
     const url = `${PAYMENT_LINK.CREATE_PAYER}`
-    return axiosInstanceJWT.post(url, postData,)
+    return axiosInstanceJWT.post(url, postData, config)
 }
 const editPayer = (postData) => {
     const url = `${PAYMENT_LINK.UPDATE_PAYER}`
-    return axiosInstanceJWT.put(url, postData,)
+    return axiosInstanceJWT.put(url, postData, config)
 }
 
 const deletePayer = (postData) => {
     const url = `${PAYMENT_LINK.DELETE_PAYER}`
 
     const apiUrl = getQueryStr(url, postData)
-    return axiosInstanceJWT.delete(apiUrl,)
+    return axiosInstanceJWT.delete(apiUrl, config)
 }
 
 const getPayer = (postData) => {
@@ -40,34 +32,31 @@ const getPayer = (postData) => {
     const url = `${PAYMENT_LINK.GET_PAYER}`
     const apiUrl = getQueryStr(url, postData)
 
-    return axiosInstanceJWT.get(apiUrl,)
+    return axiosInstanceJWT.get(apiUrl, config)
 }
 
 const getPayerType = () => {
     const url = `${PAYMENT_LINK.GET_PAYER_TYPE}`
-    return axiosInstanceJWT.get(url,)
+    return axiosInstanceJWT.get(url, config)
 }
 
 
 const createPaymentLink = (postData) => {
     const url = `${PAYMENT_LINK.CREATE_LINK}`
-    return axiosInstanceJWT.post(url, postData,)
+    return axiosInstanceJWT.post(url, postData, config)
 }
 
 const getPaymentLink = (postData) => {
     const url = `${PAYMENT_LINK.GET_LINK}`
-    let qryStr = "?"
-    let i = 0
-    for (let key in postData) {
-        if (i === 0) {
-            qryStr += `${key}=${postData[key]}`
-        } else {
-            qryStr += `&${key}=${postData[key]}`
-        }
-        i++
-    }
-    const apiUrl = url + "" + qryStr
-    return axiosInstanceJWT.get(apiUrl,)
+    const apiUrl = getQueryStr(url, postData)
+    return axiosInstanceJWT.get(apiUrl, config)
+}
+
+
+const getPaymentLinkApiKey = (postData) => {
+    const url = `${PAYMENT_LINK.GET_API_KEY}`
+    const apiUrl = getQueryStr(url, postData)
+    return axiosInstanceJWT.get(apiUrl)
 }
 
 
@@ -121,7 +110,8 @@ const paymentLinkService = {
     getPayer,
     getPayerType,
     createPaymentLink,
-    getPaymentLink
+    getPaymentLink,
+    getPaymentLinkApiKey
 
 };
 export default paymentLinkService

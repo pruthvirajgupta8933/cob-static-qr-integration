@@ -122,7 +122,7 @@ const PaymentLinkDetail = () => {
 
   const handleSubmit = async (values) => {
     // setDisable(true);
-    // setLoadingState(true);
+    setLoadingState(true);
     setData([]);
     setDisplayList([]);
     setPaginatedData([]);
@@ -135,9 +135,12 @@ const PaymentLinkDetail = () => {
 
       const postData = {
         client_code: clientCode,
-        page: 1,
+        // page: 1,
         start_date: fromDate,
-        end_date: toDate
+        end_date: toDate,
+        order_by: "-id"
+
+
 
       }
       try {
@@ -152,6 +155,7 @@ const PaymentLinkDetail = () => {
         setLoadingState(false);
         setShow(true);
       } catch (error) {
+        setLoadingState(false);
         toastConfig.errorToast(error.response?.detail || error.response?.message)
       }
     };
@@ -329,9 +333,9 @@ const PaymentLinkDetail = () => {
                     <button
                       type="submit"
                       className="btn cob-btn-primary approve text-white"
-                      disabled={disable}
+                      disabled={loadingState}
                     >
-                      {disable && (
+                      {loadingState && (
                         <span
                           className="spinner-border spinner-border-sm mr-1"
                           role="status"
@@ -381,7 +385,7 @@ const PaymentLinkDetail = () => {
             <div className="d-flex justify-content-center align-items-center loader-container">
               <CustomLoader loadingState={loadingState} />
             </div>
-          ) : data?.length === 0 ? (
+          ) : show && data?.length === 0 ? (
             <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
           ) : show && data?.length !== 0 ? (
             <React.Fragment>
@@ -398,7 +402,7 @@ const PaymentLinkDetail = () => {
                       <th>Created At</th>
                       <th>Remarks</th>
 
-                      <th>Full Link</th>
+                      <th>Payment Link</th>
                     </tr>
                   </thead>
 
@@ -421,15 +425,15 @@ const PaymentLinkDetail = () => {
                           >
                             <span
                               className="p-2 d-inline-block cursor_pointer copy_clipboard"
-                              title={user?.full_link}
+                              title={user?.shorted_url}
                             >
-                              {user?.full_link}
+                              {user?.shorted_url}
                             </span>
                             <span
                               className="input-group-text"
                               style={{ cursor: "pointer" }}
                               onClick={() =>
-                                handleCopyToClipboard(user?.full_link)
+                                handleCopyToClipboard(user?.shorted_url)
                               }
                               data-tip={copied ? "Copied!" : "Copy"}
                             >

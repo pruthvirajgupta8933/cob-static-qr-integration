@@ -134,7 +134,9 @@ function FormPaymentLink({ componentState, dispatchFn }) {
   }
 
   const validationSchema = Yup.object().shape({
-    valid_from: Yup.date().required("Start Date Required"),
+    valid_from: Yup.date()
+      .min(new Date(), "Start date and time can't be before today date and time")
+      .required("Start Date Required"),
     valid_to: Yup.date()
       .min(Yup.ref("valid_from"), "End date can't be before Start date")
       .required("End Date Required"),
@@ -167,6 +169,7 @@ function FormPaymentLink({ componentState, dispatchFn }) {
       // console.log(response)
       toastConfig.successToast(response.data?.response_data?.message ?? "Link Created")
       setDisable(false)
+      modalCloseHandler()
     } catch (error) {
       toastConfig.errorToast((error.response.data?.detail || error.response.data?.message) ?? "Something went wrong.")
       setDisable(false)
@@ -289,6 +292,13 @@ function FormPaymentLink({ componentState, dispatchFn }) {
                         disabled={disable}
                         className="btn cob-btn-primary text-white btn-sm position-relative"
                       >
+                        {disable && (
+                          <span
+                            className="spinner-border spinner-border-sm mr-1"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        )}
                         {disable ? "Submiting..." : "Submit"}
 
                       </button>
