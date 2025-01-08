@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
 import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
 import Paylink from "../AllPages/createpaymentlink/Paylink";
+import Paylinks from "../AllPages/payment-links/Paylink";
 // improt Profile
 // import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
@@ -408,6 +409,12 @@ function DashboardMainContent() {
                 <Paylink />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/paylinks`}
+                Component={Paylinks}
+                roleList={{ merchant: true }}
+              />
               <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinkdetail`}

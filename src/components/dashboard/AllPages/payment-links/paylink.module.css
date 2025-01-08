@@ -1,0 +1,18 @@
+.activepaylink {
+    background-color: rgb(170, 170, 170);
+}
+
+.paylink_tabs {
+    overflow-x: hidden;
+}
+
+
+@media (max-width: 991px) {
+    .paylink_tabs {
+        overflow-x: scroll;
+        scrollbar-width: thin;
+    }
+
+}
+
+/* media query 991 max */

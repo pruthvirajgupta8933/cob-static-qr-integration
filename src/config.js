@@ -10,6 +10,7 @@ let url,
   payLinkAPIURL,
   qwick_form_url,
   report_api_url,
+  paylinkBaseUrl,
   refund_url = "";
 
 if (ENV_PROD) {
@@ -27,6 +28,7 @@ if (ENV_PROD) {
 
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
+  paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -42,6 +44,7 @@ if (ENV_PROD) {
   refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://stage-qwikform.sabpaisa.in";
   report_api_url = "https://stage-python-reportapi.sabpaisa.in";
+  paylinkBaseUrl = "https://stage-paymentlinks.sabpaisa.in"
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -450,6 +453,20 @@ const WIDGET_SCRIPT_LIVE = {
   SCRIPT_URL: `${widget_script}`,
 };
 
+export const PAYMENT_LINK = {
+  CREATE_PAYER: `${paylinkBaseUrl}/api/payer/create-payer/`,
+  UPDATE_PAYER: `${paylinkBaseUrl}/api/payer/update-payer/`,
+  DELETE_PAYER: `${paylinkBaseUrl}/api/payer/delete-payer/`,
+  GET_PAYER: `${paylinkBaseUrl}/api/payer/get-all-payer/`,
+  // https://stage-paymentlinks.sabpaisa.in/api/payer/get-all-payer/?client_code=TM001%27
+  CREATE_LINK: `${paylinkBaseUrl}/api/link/create-link/`,
+  GET_LINK: `${paylinkBaseUrl}/api/link/get-all-links/`,
+  GET_PAYER_TYPE: `${paylinkBaseUrl}/api/payer/get-all-payer-type/`,
+  GET_API_KEY: `${paylinkBaseUrl}/api/client-configuration/get-api-key-by-client-code/`,
+  // https://stage-paymentlinks.sabpaisa.in/api/client-configuration/get-api-key-by-client-code/?client_code=LPSD1
+
+}
+
 export const wsConnectUrl = {
   connectionURL: webSocketUrl,
   readNotification: `${kyc_url}/kyc/notification/fetch_all/`, //?page_size=5&page=1
@@ -457,12 +474,14 @@ export const wsConnectUrl = {
 
 const API_URL = API_LIVE;
 
+
 export const WIDGET_URL = WIDGET_LIVE;
 // export const Qwick_Form = qwick_form_url;
 
 export const WIDGET_SCRIPT_URL = WIDGET_SCRIPT_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
+
 export default API_URL;
 
 export const APP_ENV = ENV_PROD;
