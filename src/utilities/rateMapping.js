@@ -42,7 +42,8 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                 // console.log("result2",result2)
                 // required parameter for the ratemapping
                 const api_version = await result2?.api_version
-                console.log("Run3- Get API version", api_version)
+                const auth_type = await result2?.auth_type
+                console.log("Run3- Get API version", api_version, auth_type)
                 // console.log("api_version",api_version)
                 const clientCode = merchantData?.clientCode
                 const clientId = merchantData?.clientId
@@ -115,9 +116,9 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                     // Y: zone - 
                     // Z: email(created by )
 
-                    console.log("Run8- updating the apiVersion", `${api_version}:${zone_code}:${created_by_email}`)
+                    console.log("Run8- updating the apiVersion", `${api_version}:${zone_code}:${created_by_email}:${auth_type}`)
 
-                    await callAPI(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/zoneloginsetup/${api_version}:${zone_code}:${created_by_email}/0`, "get", false)
+                    await callAPI(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/zoneloginsetup/${api_version}:${zone_code}:${created_by_email}:${auth_type}/0`, "get", false)
                     loader = false
                     // console.log(rateMappingState.updateValue({loader:false,isError:false}))
 
