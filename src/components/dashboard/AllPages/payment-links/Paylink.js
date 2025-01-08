@@ -42,7 +42,7 @@ function Paylinks() {
       <main className="">
         <div className="">
           <div className="">
-            <h5 className="">Create Payment Link</h5>
+            <h5 className="">Payments Link</h5>
           </div>
           <section className="">
             <div className="container-fluid">
