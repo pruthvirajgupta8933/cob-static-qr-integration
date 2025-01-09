@@ -126,7 +126,7 @@ function Home() {
       .then((resp) => {
         if (resp?.data?.status) {
           toastConfig.successToast("Data saved successfully");
-          dispatch(kycUserList({ login_id: user?.loginId }));
+          dispatch(kycUserListForMerchant());
           setLocationLoader(false);
         }
       })
