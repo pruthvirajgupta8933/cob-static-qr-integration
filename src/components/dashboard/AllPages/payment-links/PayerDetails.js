@@ -128,7 +128,7 @@ const PayerDetails = () => {
   // Alluser data API INTEGRATION
   const loadUser = async (data) => {
     try {
-      const getPayerResponse = await paymentLinkService.getPayer({ client_code: clientCode, start_date: data.fromDate, end_date: data.toDate })
+      const getPayerResponse = await paymentLinkService.getPayer({ client_code: clientCode, start_date: data.fromDate, end_date: data.toDate, order_by: "-id" })
       setData(getPayerResponse.data?.results)
       setDisplayList(getPayerResponse.data?.results);
       setPaginatedData(_(getPayerResponse.data?.results).slice(0).take(pageSize).value());
@@ -249,18 +249,6 @@ const PayerDetails = () => {
     reducerDispatch({
       type: "editPayer", payload: { ...data, isEditable: true }
     })
-    // setEditModalToggle(true);
-    // data.filter((dataItem) => {
-    //   if (dataItem.id === id) {
-    //     setEditForm({
-    //       myname: dataItem.name,
-    //       email: dataItem.email,
-    //       phone: dataItem.phone_number,
-    //       editCustomerTypeId: dataItem.customer_type_id,
-    //       id: dataItem.id,
-    //     });
-    //   }
-    // });
   };
 
   // USE FOR GENERETE LINK
@@ -271,14 +259,6 @@ const PayerDetails = () => {
         openModal: true
       }
     })
-    // console.log(id);
-    // data.filter((dataItem) => {
-    //   if (dataItem.id === id) {
-    //     setGenrateForm({
-    //       customer_id: id,
-    //     });
-    //   }
-    // });
   };
 
   const deleteUser = async (id) => {
@@ -298,15 +278,6 @@ const PayerDetails = () => {
 
   return (
     <React.Fragment>
-      {/* <Edituser
-        items={editform}
-        callBackFn={edit}
-        modalToggle={editModalToggle}
-        fnSetModalToggle={setEditModalToggle}
-
-      /> */}
-      {/* <Genratelink generatedata={genrateform} /> */}
-
       {state.paylinkData?.openModal && <FormPaymentLink componentState={state.paylinkData} dispatchFn={reducerDispatch} />}
       {state.addPayerModal && <AddSinglePayer componentState={state} dispatchFn={reducerDispatch} loadUserFn={edit} />}
 
@@ -391,7 +362,6 @@ const PayerDetails = () => {
           {data?.length !== 0 &&
             <div className="row">
               <div className={`col-lg-3 mt-3`}>
-                {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
                 <label>Search</label>
                 <input
                   className="form-control"
@@ -438,7 +408,7 @@ const PayerDetails = () => {
                       <th scope="col">Email ID</th>
                       <th scope="col">Payer Category</th>
                       <th scope="col">Edit</th>
-                      <th scope="col">Action</th>
+                      <th scope="col">Generate Link</th>
                       <th scope="col">Delete</th>
                     </tr>
                   </thead>
@@ -456,7 +426,7 @@ const PayerDetails = () => {
                             className="btn cob-btn-primary btn-primary text-white btn-sm"
                             onClick={(e) => editHandler(user)}
                           >
-                            Edit
+                            <i className="fa fa-pencil-square-o"></i>
                           </button>
                         </td>
                         <td>
@@ -464,11 +434,8 @@ const PayerDetails = () => {
                             onClick={(e) => generatelink(user)}
                             type="button"
                             className="btn cob-btn-primary text-white btn-sm"
-                            data-toggle="modal"
-                            data-target="#bhuvi"
-                            data-whatever="@getbootstrap"
                           >
-                            Generate Link
+                            <i className="fa fa-link"></i>
                           </button>
                         </td>
                         <td>
@@ -476,7 +443,7 @@ const PayerDetails = () => {
                             className="btn cob-btn-secondary btn-danger text-white btn-sm"
                             onClick={() => deleteUser(user.id)}
                           >
-                            Delete
+                            <i className="fa fa-trash"></i>
                           </button>
                         </td>
                       </tr>

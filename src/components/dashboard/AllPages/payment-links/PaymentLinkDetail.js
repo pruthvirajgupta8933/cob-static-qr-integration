@@ -4,22 +4,22 @@ import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import _ from "lodash";
 import FormPaymentLink from "./FormPaymentLink";
-import API_URL from "../../../../config";
+// import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
-import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+// import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
 import FormikController from "../../../../_components/formik/FormikController";
-import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
+// import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 // import * as Yup from "yup";
 
 import toastConfig from "../../../../utilities/toastTypes";
 import Yup from "../../../../_components/formik/Yup";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 const PaymentLinkDetail = () => {
   const [pageSize, setPageSize] = useState(10);
@@ -151,7 +151,6 @@ const PaymentLinkDetail = () => {
         setData(responseLinks);
         setDisplayList(responseLinks);
         setPaginatedData(_(responseLinks).slice(0).take(pageSize).value());
-
         setLoadingState(false);
         setShow(true);
       } catch (error) {
@@ -160,29 +159,6 @@ const PaymentLinkDetail = () => {
       }
     };
 
-    // createPaymentLinkService
-    //   .paymentLinkDetails(clientCode, fromDate, toDate)
-    //   .then((res) => {
-    //     if (res.data.length === 0) {
-    //       toastConfig.errorToast("No Data Found");
-
-    //       setShow(false);
-    //     } else {
-    //       setData(res.data);
-    //       setLoadingState(false);
-    //       setDisplayList(res.data);
-    //       setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-    //       setShow(true);
-    //     }
-    //     setDisable(false);
-    //     setLoadingState(false);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error loading data:", err);
-    //     setShow(false);
-    //     setDisable(false);
-    //     setLoadingState(false);
-    //   });
   }
 
 
@@ -394,14 +370,13 @@ const PaymentLinkDetail = () => {
                   <thead>
                     <tr>
                       <th>Serial No.</th>
-                      <th>Customer Name</th>
+                      <th>Payer Name</th>
                       <th>Phone No.</th>
                       <th>Amount</th>
                       {/* <th>Customer Type</th> */}
-                      <th>Customer Email</th>
+                      <th>Payer Email</th>
                       <th>Created At</th>
                       <th>Remarks</th>
-
                       <th>Payment Link</th>
                     </tr>
                   </thead>
