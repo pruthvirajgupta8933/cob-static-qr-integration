@@ -65,10 +65,10 @@ const AddSinglePayer = ({ componentState, dispatchFn, loadUserFn }) => {
                     id: editPayerModal.id
                 }
                 response = await paymentLinkService.editPayer(editData)
-                loadUserFn()
             } else {
                 response = await paymentLinkService.addPayer(values)
             }
+            loadUserFn()
 
             toastConfig.successToast(response.data?.message ?? response.data?.detail)
             setDisable(false)
