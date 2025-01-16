@@ -42,7 +42,7 @@
           },
           {
             "key": "Access-Control-Allow-Origin",
-            "value": "https://cob-nf-dev.firebaseapp.com/"
+            "value": "https://partner.sabpaisa.in"
           },
           {
             "key": "Access-Control-Allow-Methods",
