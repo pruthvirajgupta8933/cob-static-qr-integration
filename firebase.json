@@ -35,6 +35,22 @@
           {
             "key": "Permissions-Policy",
             "value": "microphone=(), camera=(), fullscreen=()"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains; preload"
+          },
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "https://cob-nf-dev.firebaseapp.com/"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET, POST, OPTIONS"
+          },
+          {
+            "key": "Access-Control-Allow-Headers",
+            "value": "Content-Type, Authorization"
           }
         ]
       }
