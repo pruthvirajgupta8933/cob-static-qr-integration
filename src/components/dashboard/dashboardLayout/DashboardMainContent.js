@@ -235,13 +235,18 @@ function DashboardMainContent() {
 
   useEffect(() => {
     // fetch subscribe product data
-    if (roles.merchant && location?.pathname === "/dashboard") {
-      dispatch(
-        merchantSubscribedPlanData({
-          clientId: user?.clientMerchantDetailsList[0]?.clientId,
-        })
-      );
+    try {
+      if (roles.merchant && location?.pathname === "/dashboard") {
+        dispatch(
+          merchantSubscribedPlanData({
+            clientId: user?.clientMerchantDetailsList[0]?.clientId,
+          })
+        );
+      }
+    } catch (error) {
+
     }
+
   }, [location]);
 
 
