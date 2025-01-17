@@ -77,10 +77,7 @@ function SideNavbar() {
                       } nav flex-column mb-2 ml-2 ${sideNavClasses.submenu_border
                       }`}
                     role="menu"
-                  >
-
-
-                    <>
+                  ><>
                       {menu.submenu?.map(
                         (submenu) =>
                           submenu?.is_active && (
@@ -104,23 +101,6 @@ function SideNavbar() {
 
 
                           )
-                      )}
-
-                      {menu.app_code === "13" && (
-                        auth?.user?.loginId.toString() === "795" && (
-                          <li className="nav-item ml-1" role="menuitem">
-                            <Link
-                              to={`${url}/paylinks`}
-                              className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "paylinks"
-                                ? sideNavClasses.selected_memu
-                                : ""
-                                }`}
-                            >
-                              <i className="fa fa-external-link mr-1"></i>
-                              Payments Link
-                            </Link>
-                          </li>
-                        )
                       )}
                     </>
 
