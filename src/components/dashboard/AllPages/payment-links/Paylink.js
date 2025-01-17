@@ -26,9 +26,7 @@ function Paylinks() {
         const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
         sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
         setIsApiLoad(true)
-      } catch (error) {
-        toastConfig.errorToast("Something went wrong");
-      }
+      } catch (error) { }
     }
 
     if (!sessionStorage.getItem('paymentLinkApiKey')) {

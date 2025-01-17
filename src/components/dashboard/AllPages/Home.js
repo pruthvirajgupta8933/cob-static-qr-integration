@@ -72,7 +72,7 @@ function Home() {
           const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
           sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
         } catch (error) {
-          toastConfig.errorToast("Something went wrong");
+
         }
 
       }
