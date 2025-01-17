@@ -11,4 +11,5 @@ export const clearLocalStore = () => {
   localStorage.removeItem("onboardingStatusByAdmin");
   localStorage.removeItem("expiredTime");
   localStorage.removeItem("onboardingStatusByReferrer");
+  sessionStorage.removeItem("paymentLinkApiKey")
 };

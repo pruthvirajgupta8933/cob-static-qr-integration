@@ -20,25 +20,23 @@ function Paylinks() {
 
   const [tab, SetTab] = useState(1);
   useEffect(() => {
-    if (!sessionStorage.getItem('paymentLinkApiKey')) {
-      async function getPaymentLinkApiKey() {
-        try {
-          const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
-          sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
-          setIsApiLoad(true)
-        } catch (error) {
-          toastConfig.errorToast("Something went wrong");
-        }
 
+    async function getPaymentLinkApiKey() {
+      try {
+        const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
+        sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
+        setIsApiLoad(true)
+      } catch (error) {
+        toastConfig.errorToast("Something went wrong");
       }
+    }
+
+    if (!sessionStorage.getItem('paymentLinkApiKey')) {
       getPaymentLinkApiKey();
     }
 
-
-    return () => {
-      sessionStorage.removeItem('paymentLinkApiKey');
-    }
   }, [])
+
 
 
 
@@ -48,7 +46,7 @@ function Paylinks() {
   return (
     <section className="">
       <main className="">
-        {!isApiLoad ? <CustomLoader isApiLoad={isApiLoad} /> : <div className="">
+        {<div className="">
           <div >
             <h5 >Payments Link</h5>
           </div>

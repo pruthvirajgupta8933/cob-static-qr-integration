@@ -26,6 +26,7 @@ import menulistService from "../../../services/cob-dashboard/menulist.service";
 import toastConfig from "../../../utilities/toastTypes";
 import { graphDate } from "../../../utilities/graphDate";
 import PasswordExpiry from "../../../_components/reuseable_components/PasswordExpiry";
+import paymentLinkService from "../../../services/create-payment-link/paymentLink.service";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -56,12 +57,35 @@ function Home() {
       dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
       dispatch(kycUserListForMerchant());
 
+
       // graph data
       const clientCode = user?.clientMerchantDetailsList[0]?.clientCode;
       const postGraphData = { p_client_code: clientCode };
       dispatch(txnChartDataSlice(postGraphData));
+
+
+
+      // paylink api key
+
+      async function getPaymentLinkApiKey() {
+        try {
+          const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
+          sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
+        } catch (error) {
+          toastConfig.errorToast("Something went wrong");
+        }
+
+      }
+
+      if (!sessionStorage.getItem('paymentLinkApiKey')) {
+        getPaymentLinkApiKey();
+      }
+
+
     }
   }, []);
+
+
 
   useEffect(() => {
     return () => {
