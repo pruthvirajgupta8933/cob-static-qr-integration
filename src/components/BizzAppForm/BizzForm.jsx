@@ -154,20 +154,29 @@ const BizzAppForm = (props) => {
 
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        await axiosInstanceAuth
-            .post(API_URL.BizzAPPForm, values)
-            .then((response) => {
-                if (response.status === 200) {
-                    resetForm(initialValues)
-                    toastConfig.successToast(response.data.message);
-                } else {
-                    toastConfig.errorToast(response.data.message);
-                }
-
-            }).catch((error) => {
-                toastConfig.errorToast(error.response?.message || "Data not saved");
-            })
+        try {
+            const response = await axiosInstanceAuth.post(API_URL.BizzAPPForm, values);
+    
+            if (response.status === 200) {
+                resetForm(); // Reset the form only on success
+                toastConfig.successToast(response.data.message);
+            } else {
+                toastConfig.errorToast(response.data.message);
+            }
+        } catch (error) {
+           
+            if (error.response) {
+                const { message } = error.response.data; 
+                toastConfig.errorToast(message || "An error occurred");
+            } else {
+                
+                toastConfig.errorToast("Something went wrong. Please try again.");
+            }
+        } finally {
+            setSubmitting(false); 
+        }
     };
+    
     const InputArray =
         [{ control: "input", label: "Merchant business name (DBA name)", name: "merchant_business_name", placeholder: "Enter your answer", type: 'text' },
         { control: "input", label: "Merchant legal name", name: "merchant_legal_name", placeholder: "Enter your answer", type: 'text' },
