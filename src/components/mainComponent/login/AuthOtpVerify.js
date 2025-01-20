@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import classes from "./login.module.css";
 import Yup from '../../../_components/formik/Yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { login } from '../../../slices/auth';
 import TimerComponent from '../../../utilities/TimerComponent';
 
 function AuthOtpVerify({ updateOtpModal, inputValue }) {
+
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
     const { auth_verification } = useSelector((state) => state.auth);
@@ -47,8 +48,7 @@ function AuthOtpVerify({ updateOtpModal, inputValue }) {
 
 
     const resendOtp = () => {
-        const { clientUserId, userPassword } = inputValue;
-        dispatch(login({ username: clientUserId, password: userPassword, is_social: false }))
+        dispatch(login(inputValue))
     };
 
 

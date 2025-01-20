@@ -93,10 +93,12 @@ const Login = () => {
       query: Encrypt(JSON.stringify({ clientUserId: clientUserId, userPassword: userPassword, is_social: false }), keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV)
     }
 
+
     dispatch(login(encQuery))
       .then((res) => {
         if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
           setOpenOtpModal(true)
+          setInputValue(encQuery)
         } else {
           // if MFA false
           if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled === false) {
@@ -171,7 +173,7 @@ const Login = () => {
           }
           setLoading(false);
         })
-        .catch((err) => console.log("err", err));
+        .catch((err) => toastConfig.errorToast("Something went wrong."));
     }
   };
 
