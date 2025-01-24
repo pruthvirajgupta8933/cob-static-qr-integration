@@ -117,7 +117,7 @@ const ReportLayout = ({
             <Table
               row={rowData}
               data={paginatedata}
-              dataCount={data.length}
+              dataCount={data?.length || 0}
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={(page) => setCurrentPage(page)}

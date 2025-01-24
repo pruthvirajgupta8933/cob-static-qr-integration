@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSettledTransactionHistoryDsoitc, fetchTransactionHistoryDoitc } from "../../services/merchant-service/reports.service";
+import { branchTransactionReport, fetchSettledTransactionHistoryDsoitc, fetchTransactionHistoryDoitc } from "../../services/merchant-service/reports.service";
 import { setMessage } from "../message";
 
 
@@ -14,6 +14,10 @@ const initialState = {
         loading: false,
         message: ""
     },
+    brnachTransactionSlice: {
+        loading: false,
+        data: []
+    }
 }
 
 
@@ -25,6 +29,27 @@ export const transactionHistoryDoitc = createAsyncThunk(
             const data = await fetchTransactionHistoryDoitc(object);
             // console.log(data)
             return { data: data };
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue();
+        }
+    }
+);
+
+
+export const brnachTransactionSlice = createAsyncThunk(
+    "reports/brnachTransactionSlice",
+    async (object, thunkAPI) => {
+        try {
+            const data = await branchTransactionReport(object);
+            // console.log(data?.data)
+            return data?.data
         } catch (error) {
             const message =
                 (error.response &&
@@ -63,43 +88,58 @@ export const settledTransactionHistoryDoitc = createAsyncThunk(
 const merchantReportSlice = createSlice({
     name: "merchantReports",
     initialState,
-    reducers:{
-        clearTransactionHistoryDoitc:(state)=>{
+    reducers: {
+        clearTransactionHistoryDoitc: (state) => {
             state.transactionHistoryDoitc.loading = false;
             state.transactionHistoryDoitc.data = [];
         },
-        clearSettledTransactionHistory:(state)=>{
-            state.settledTransactionHistoryDoitc.data=[]
-            state.settledTransactionHistoryDoitc.loading=false
+        clearSettledTransactionHistory: (state) => {
+            state.settledTransactionHistoryDoitc.data = []
+            state.settledTransactionHistoryDoitc.loading = false
         }
     },
-    extraReducers: {
-        [transactionHistoryDoitc.pending]: (state) => {
-            state.transactionHistoryDoitc.loading = true;
-            state.transactionHistoryDoitc.data = [];
-        },
-        [transactionHistoryDoitc.fulfilled]: (state, action) => {
-            state.transactionHistoryDoitc.loading = false;
-            state.transactionHistoryDoitc.data =  action.payload?.data?.data
-        },
-        [transactionHistoryDoitc.rejected]: (state) => {
-            state.transactionHistoryDoitc.loading = false;
-            state.transactionHistoryDoitc.data = [];
-        },
+    extraReducers: (builder) => {
+        builder
+            .addCase(transactionHistoryDoitc.pending, (state) => {
+                state.transactionHistoryDoitc.loading = true;
+                state.transactionHistoryDoitc.data = [];
+            })
+            .addCase(transactionHistoryDoitc.fulfilled, (state, action) => {
+                state.transactionHistoryDoitc.loading = false;
+                state.transactionHistoryDoitc.data = action.payload?.data?.data
+            })
 
-        [settledTransactionHistoryDoitc.pending]: (state) => {
-            state.settledTransactionHistoryDoitc.loading = true;
-            state.settledTransactionHistoryDoitc.data = [];
-        },
-        [settledTransactionHistoryDoitc.fulfilled]: (state, action) => {
-            
-            state.settledTransactionHistoryDoitc.loading = false;
-            state.settledTransactionHistoryDoitc.data = action.payload?.data?.data;
-        },
-        [settledTransactionHistoryDoitc.rejected]: (state) => {
-            state.settledTransactionHistoryDoitc.loading = false;
-            state.settledTransactionHistoryDoitc.data = [];
-        }
+            .addCase(transactionHistoryDoitc.rejected, (state) => {
+                state.transactionHistoryDoitc.loading = false;
+                state.transactionHistoryDoitc.data = [];
+            })
+            .addCase(settledTransactionHistoryDoitc.pending, (state) => {
+                state.settledTransactionHistoryDoitc.loading = true;
+                state.settledTransactionHistoryDoitc.data = [];
+            })
+            .addCase(settledTransactionHistoryDoitc.fulfilled, (state, action) => {
+
+                state.settledTransactionHistoryDoitc.loading = false;
+                state.settledTransactionHistoryDoitc.data = action.payload?.data?.data;
+            })
+            .addCase(settledTransactionHistoryDoitc.rejected, (state) => {
+                state.settledTransactionHistoryDoitc.loading = false;
+                state.settledTransactionHistoryDoitc.data = [];
+            })
+
+            .addCase(brnachTransactionSlice.pending, (state) => {
+                state.brnachTransactionSlice.loading = true;
+                state.brnachTransactionSlice.data = [];
+            })
+            .addCase(brnachTransactionSlice.fulfilled, (state, action) => {
+
+                state.brnachTransactionSlice.loading = false;
+                state.brnachTransactionSlice.data = action.payload;
+            })
+            .addCase(brnachTransactionSlice.rejected, (state) => {
+                state.brnachTransactionSlice.loading = false;
+                state.brnachTransactionSlice.data = [];
+            })
     },
 });
 
