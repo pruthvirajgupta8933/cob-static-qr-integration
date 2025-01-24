@@ -102,6 +102,7 @@ import InformationBulletin from "../../InfoBulletin";
 import ManualSubscription from "../../ManualSubscription";
 import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
 import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
+import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -382,6 +383,15 @@ function DashboardMainContent() {
                 exaxt
                 path={`${path}/refund-transaction-history`}
                 Component={RefundTransactionHistory}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <RefundTransactionHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/branch-transaction`}
+                Component={BranchTransactionHistory}
                 roleList={{ merchant: true, bank: true, referral: true }}
               >
                 <RefundTransactionHistory />
