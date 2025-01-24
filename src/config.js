@@ -22,10 +22,8 @@ if (ENV_PROD) {
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_url = "https://paywidget.sabpaisa.in";
-  widget_script =
-    "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
+  widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
-
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
@@ -119,6 +117,7 @@ const API_LIVE = {
   GetMerchantTxnHistory: `${report_api_url}/transactions/getMerchantTransactionHistory/`,
   merchantTxnHistoryBit: `${report_api_url}/transactions/getMerchantTransactionHistoryBit/`,
   merchantTxnHistoryWhole: `${report_api_url}/transactions/getMerchantTransactionHistoryWhole/`,
+  branchTransactionView: `${report_api_url}/transactions/branchTransactionView/`,
   DownloadTxnHistory: `${url}/download-merchant-transaction-history`,
 
   /* Settlement Report */

@@ -1,5 +1,5 @@
 import API_URL from "../../config";
-import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 
 
 export const fetchTransactionHistoryDoitc = (paramData) => {
@@ -11,4 +11,11 @@ export const fetchTransactionHistoryDoitc = (paramData) => {
 export const fetchSettledTransactionHistoryDsoitc = (paramData) => {
   return axiosInstanceJWT.post(API_URL.GET_DOITC_SETTLED_TXN_HISTORY, paramData);
 }
+
+
+
+export const branchTransactionReport = (paramData) => {
+  return axiosInstanceJWT.post(API_URL.branchTransactionView, paramData);
+}
+
 

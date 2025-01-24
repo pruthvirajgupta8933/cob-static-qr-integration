@@ -13,6 +13,7 @@ function SideNavbar() {
   const headerMenuToggle = themeReducer.dashboardHeader.headerMenuToggle;
   const roleBasedShowTab = roleBasedAccess();
   const enableSettlementReport = ["5208", "5207", "4304", "795"];
+  const branchTransactionMenu = ["795", "31407"]
   const selectedMenu = location.pathname.split("/").pop();
 
   const toggleMenu = (e) => {
@@ -150,6 +151,23 @@ function SideNavbar() {
                 >
                   <i className="fa fa-bank mr-1"></i>
                   Settlement Report (Files)
+                </Link>
+              </li>
+            </ul>
+          )}
+          {/* display menu for selected merchant */}
+          {branchTransactionMenu.includes(auth?.user?.loginId.toString()) && (
+            <ul className="nav flex-column mt-3 " role="menu">
+              <li className="nav-item ml-1" role="menuitem">
+                <Link
+                  to={`${url}/branch-transaction`}
+                  className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "branch-transaction"
+                    ? sideNavClasses.selected_memu
+                    : ""
+                    }`}
+                >
+                  <i className="fa fa-list-alt mr-1"></i>
+                  Branch Transaction
                 </Link>
               </li>
             </ul>
