@@ -73,8 +73,8 @@ const RejectedKYC = ({ commonRows }) => {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -140,6 +140,11 @@ const RejectedKYC = ({ commonRows }) => {
         setData={setData}
         fetchDataCb={kycForRejectedMerchants}
         merchantStatus={"Rejected"}
+        filterData={
+          {
+            setOnboardTypeFn: setOnboardType
+          }
+        }
       />
     </div>
   );

@@ -92,8 +92,8 @@ function ApprovedMerchant({ commonRows }) {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -120,8 +120,8 @@ function ApprovedMerchant({ commonRows }) {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -184,6 +184,11 @@ function ApprovedMerchant({ commonRows }) {
         setData={setData}
         fetchDataCb={kycForApproved}
         merchantStatus={"Approved"}
+        filterData={
+          {
+            setOnboardTypeFn: setOnboardType
+          }
+        }
       />
       <div>
         {openDocumentModal && (
