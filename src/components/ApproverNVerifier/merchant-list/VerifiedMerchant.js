@@ -131,6 +131,11 @@ function VerifiedMerchant({ commonRows }) {
         setData={setData}
         fetchDataCb={kycForVerified}
         merchantStatus={"Verified"}
+        filterData={
+          {
+            setOnboardTypeFn: setOnboardType
+          }
+        }
       />
       {openCommentModal && (
         <CommentModal

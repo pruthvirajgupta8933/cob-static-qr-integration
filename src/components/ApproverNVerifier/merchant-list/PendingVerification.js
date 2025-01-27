@@ -43,7 +43,7 @@ function PendingVerification({ commonRows }) {
             data-target="#kycmodaldetail"
           >
             {(roles?.verifier === true && currenTab === 3) ||
-            Allow_To_Do_Verify_Kyc_details === true
+              Allow_To_Do_Verify_Kyc_details === true
               ? "Verify KYC "
               : "View Status"}
           </button>
@@ -57,8 +57,8 @@ function PendingVerification({ commonRows }) {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -107,8 +107,9 @@ function PendingVerification({ commonRows }) {
     fetchData();
   };
 
+
   const fetchData = useCallback(
-    (startingSerialNumber) => {
+    () => {
       dispatch(
         kycForPending({
           page: currentPage,
@@ -156,6 +157,11 @@ function PendingVerification({ commonRows }) {
         setData={setData}
         merchantStatus={"Processing"}
         fetchDataCb={kycForPending}
+        filterData={
+          {
+            setOnboardTypeFn: setOnboardType
+          }
+        }
       />
     </div>
   );

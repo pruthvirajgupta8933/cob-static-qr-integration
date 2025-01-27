@@ -15,6 +15,7 @@ const ListLayout = ({
   dataCount,
   merchantStatus,
   fetchDataCb,
+  filterData
 }) => {
   // const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -47,6 +48,7 @@ const ListLayout = ({
     },
   ];
 
+
   const filteredData = useMemo(() => {
     return data?.filter((item) =>
       Object.values(item)
@@ -58,9 +60,8 @@ const ListLayout = ({
 
 
 
-
   const fetchData = useCallback(
-    (startingSerialNumber) => {
+    () => {
       dispatch(
         fetchDataCb({
           page: currentPage,
@@ -100,8 +101,11 @@ const ListLayout = ({
     if (fieldType === "dropdown") {
       setSearchByDropDown(true);
       setOnboardType(e);
+      filterData?.setOnboardTypeFn(e)
     }
   };
+
+
 
   return (
     <>
