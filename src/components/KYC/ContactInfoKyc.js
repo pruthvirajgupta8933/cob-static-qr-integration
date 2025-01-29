@@ -78,6 +78,8 @@ function ContactInfoKyc(props) {
     isContactOtpSend: false,
   };
 
+
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .allowOneSpace()
@@ -501,6 +503,11 @@ function ContactInfoKyc(props) {
 
   return (
     <div className="col-lg-12 p-0">
+      {KycList?.isEmailVerified !== 1 && (
+        <div className="alert alert-warning text-center text-danger" role="alert">
+          Please verify your email to enable the fields.
+        </div>
+      )}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -521,7 +528,8 @@ function ContactInfoKyc(props) {
                   type="text"
                   name="name"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
                 />
                 <ErrorMessage name="name">
                   {(msg) => <p className="text-danger m-0">{msg}</p>}
@@ -555,7 +563,8 @@ function ContactInfoKyc(props) {
                           e.target[e.target.selectedIndex].text
                         );
                       }}
-                      disabled={VerifyKycStatus === "Verified" ? true : false}
+                      disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
                     >
                       <option value="">Select ID Proof</option>
                       {proofIdList.data?.map((item) => {
@@ -629,7 +638,8 @@ function ContactInfoKyc(props) {
                       setFieldValue("contact_number", e.target.value);
                       setFieldValue("isContactNumberVerified", 0);
                     }}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
                   />
                   {KycList?.contactNumber !== null &&
                     values?.isContactNumberVerified === 1 &&
@@ -649,7 +659,7 @@ function ContactInfoKyc(props) {
                     <div className="input-group-append">
                       <a
                         href={() => false}
-                        className={`btn cob-btn-primary btn-sm text-white ${isLoading ? "disabled" : ""
+                        className={`btn cob-btn-primary btn-sm text-white ${isLoading || KycList?.isEmailVerified !== 1 ? "disabled" : ""
                           }`}
                         onClick={() => {
                           if (!errors.contact_number) {
@@ -662,6 +672,7 @@ function ContactInfoKyc(props) {
                             );
                           }
                         }}
+                      // disabled={KycList?.isEmailVerified !== 1}
                       >
                         {isLoading ? (
                           <span className="spinner-border spinner-border-sm">

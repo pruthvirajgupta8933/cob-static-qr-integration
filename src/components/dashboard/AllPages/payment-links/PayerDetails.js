@@ -7,26 +7,21 @@ import { Formik, Form, } from "formik";
 import CustomLoader from "../../../../_components/loader";
 import _ from "lodash";
 import Yup from "../../../../_components/formik/Yup";
-import Genratelink from "./Genratelink";
-import { Edituser } from "./Edituser";
-// import API_URL from "../../../../config";
-import toastConfig from "../../../../utilities/toastTypes";
-import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
-// import { axiosInstance } from "../../../../utilities/axiosInstance";
 import FormikController from "../../../../_components/formik/FormikController";
-// import "./index.css";
-import { v4 as uuidv4 } from 'uuid';
-import ReactPaginate from 'react-paginate';
 import moment from "moment";
-import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
 import AddSinglePayer from "./AddSinglePayer";
 import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
 import FormPaymentLink from "./FormPaymentLink";
+import Table from "../../../../_components/table_components/table/Table";
+import CountPerPageFilter from "../../../../_components/table_components/filters/CountPerPage"
+import { getPayerApi } from "../../../../slices/paymentLink/paymentLinkSlice";
+import { useDispatch } from "react-redux";
 
 
 
 const PayerDetails = () => {
   let history = useHistory();
+  const dispatch = useDispatch()
   const [editform, setEditForm] = useState({
     myname: "",
     email: "",
@@ -34,24 +29,18 @@ const PayerDetails = () => {
     editCustomerTypeId: "",
     id: "",
   });
-  const [genrateform, setGenrateForm] = useState({
-    customer_id: "",
-  });
-  const [searchText, setSearchText] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [saveData, setSaveData] = useState()
   const { user } = useSelector((state) => state.auth);
-  const [displayList, setDisplayList] = useState([]);
-  const [loadingState, setLoadingState] = useState(true)
-  const [data, setData] = useState([]);
-  const [customerType, setCustomerType] = useState([]);
+  const [loadingState, setLoadingState] = useState(false)
+  const [payerData, setPayerData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
-  const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [editModalToggle, setEditModalToggle] = useState(false);
-  const [disable, setDisable] = useState(false)
-  const [submitted, setSubmitted] = useState(false);
-  const [pageCount, setPageCount] = useState(
-    data ? Math.ceil(data?.length ?? 0 / pageSize) : 0
-  );
+  const [buttonClicked, isButtonClicked] = useState(false);
+  const [dataCount, setDataCount] = useState('')
+  const [filterData, setFilterData] = useState([])
+
 
   const initialState = {
     addPayerModal: false,
@@ -93,6 +82,84 @@ const PayerDetails = () => {
     }
   }
 
+
+  const rowData = [
+    {
+      id: "2",
+      name: "Name of Payer",
+      selector: (row) => row.payer_name,
+      sortable: true,
+      width: "150px"
+    },
+    {
+      id: "3",
+      name: "Mobile No.",
+      selector: (row) => row.payer_mobile,
+      width: "180px"
+    },
+    {
+      id: "4",
+      name: "Email ID",
+      selector: (row) => row.payer_email,
+      width: "200px"
+    },
+    {
+      id: "5",
+      name: "Payer Category",
+      selector: (row) => row.payer_type_name,
+      sortable: true,
+
+    },
+    {
+      id: "6",
+      name: "Edit",
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn cob-btn-primary btn-primary text-white btn-sm"
+          onClick={() => editHandler(row)}
+        >
+          <i className="fa fa-pencil-square-o"></i>
+        </button>
+      ),
+      width: "100px",
+      ignoreRowClick: true, // Ensures clicking the button won't trigger row click events
+      allowOverflow: true
+    },
+    {
+      id: "7",
+      name: "Generate Link",
+      cell: (row) => (
+        <button
+          onClick={() => generatelink(row)}
+          type="button"
+          className="btn cob-btn-primary text-white btn-sm"
+        >
+          <i className="fa fa-link"></i>
+        </button>
+      ),
+      width: "150px",
+      ignoreRowClick: true,
+      allowOverflow: true
+    },
+    {
+      id: "8",
+      name: "Delete",
+      cell: (row) => (
+        <button
+          className="btn cob-btn-secondary btn-danger text-white btn-sm"
+          onClick={() => deleteUser(row.id)}
+        >
+          <i className="fa fa-trash"></i>
+        </button>
+      ),
+      width: "100px",
+      ignoreRowClick: true,
+      allowOverflow: true
+    }
+  ];
+
+
   const [state, reducerDispatch] = useReducer(reducer, initialState)
 
 
@@ -125,122 +192,87 @@ const PayerDetails = () => {
   clientCode = clientMerchantDetailsList[0].clientCode;
 
 
-  // Alluser data API INTEGRATION
+
   const loadUser = async (data) => {
-    try {
-      const getPayerResponse = await paymentLinkService.getPayer({ client_code: clientCode, start_date: data.fromDate, end_date: data.toDate, order_by: "-id" })
-      setData(getPayerResponse.data?.results)
-      setDisplayList(getPayerResponse.data?.results);
-      setPaginatedData(_(getPayerResponse.data?.results).slice(0).take(pageSize).value());
-      setLoadingState(false)
-      setSubmitted(false);
-    } catch (error) {
-      toastConfig.errorToast(error.response.message)
-      setLoadingState(false)
-      setSubmitted(false);
-    }
+    setLoadingState(true)
+
+    const postData = {
+      fromDate: moment(saveData?.fromDate).startOf('day').format('YYYY-MM-DD'),
+      toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
+      page: currentPage,
+      pageSize: pageSize
+    };
+
+    dispatch(getPayerApi(postData))
+      .then((resp) => {
+        setPayerData(resp?.payload?.results)
+        setDataCount(resp?.payload?.count)
+        setFilterData(resp?.payload?.results)
+        setLoadingState(false)
+
+
+      })
+      .catch((error) => {
+        setLoadingState(false);
+        // setDisable(false)
+
+      });
 
   };
 
   useEffect(() => {
-    loadUser(initialValues);
+    loadUser();
     // getDrop();
     // setEditModalToggle(false)
-  }, []);
+  }, [pageSize, currentPage]);
+
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
+  };
 
 
   const formSubmit = (values) => {
-    // setDisable(true);
-    setSubmitted(true);
-    // setLoadingState(true);
 
-    // // Clear setData state
-    // setData([]);
-    // setDisplayList([]);
-    // setPaginatedData([]);
 
-    const fromDate = moment(values.fromDate).format('YYYY-MM-DD');
-    const toDate = moment(values.toDate).format('YYYY-MM-DD');
 
-    loadUser({ fromDate: fromDate, toDate: toDate })
-    // createPaymentLinkService.getCustomerDetails(fromDate, toDate, clientCode)
-    //   .then((res) => {
-    //     if (res.data?.length === 0) {
-    //       toastConfig.errorToast("No Data Found");
-    //     } else {
-    //       setData(res.data);
-    //       setDisplayList(res.data);
-    //       setPaginatedData(_(res.data).slice(0).take(pageSize).value());
-    //     }
-    //     setLoadingState(false);
-    //     setSubmitted(false);
-    //     setDisable(false);
-    //   })
-    //   .catch((err) => {
-    //     setLoadingState(false);
-    //     setDisable(false);
-    //     setSubmitted(false);
-    //   });
+    const postData = {
+      fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
+      toDate: moment(values.toDate).startOf('day').format('YYYY-MM-DD'),
+      page: currentPage,
+      pageSize: pageSize,
+      client_code: clientCode
+    };
+    setSaveData(values);
+    setLoadingState(true)
+    dispatch(getPayerApi(postData))
+      .then((resp) => {
+        setPayerData(resp?.payload?.results)
+        setFilterData(resp?.payload?.results)
+        setDataCount(resp?.payload?.count)
+        isButtonClicked(true)
+        setLoadingState(false);
+        // setDisable(false)
+
+      })
+      .catch((error) => {
+        setLoadingState(false);
+        // setDisable(false)
+
+      });
+
+
   };
-
-
-  // SEARCH FILTER
-
-  useEffect(() => {
-    if (searchText?.length > 0) {
-      setDisplayList(
-        data.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        )
-      );
-    } else {
-      setDisplayList(data);
-    }
-  }, [searchText]);
-
-  const getSearchTerm = (e) => {
-    setSearchText(e.target.value);
-  };
-
-
-
-  useEffect(() => {
-    setPaginatedData(_(displayList).slice(0).take(pageSize).value());
-    setPageCount(displayList?.length > 0 ? Math.ceil(displayList?.length / pageSize) : 0);
-  }, [pageSize, displayList]);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
-    setPaginatedData(paginatedPost);
-  }, [currentPage]);
-
-
-
-  // ADD User Dropdown api integration
-
-  // const getDrop = async (e) => {
-  //   await createPaymentLinkService.getCustomerType()
-  //     .then((res) => {
-
-  //       setCustomerType(res.data);
-  //     })
-  //     .catch((err) => {
-  //       // console.log(err)
-  //     });
-  // };
-
   const handleAddPayerButtonClick = () => {
     // getDrop();
     reducerDispatch({ type: "addPayer", payload: true })
-    // Optionally, you can open the modal here if needed
+
   };
 
-
-  //ADD user API Integration
 
 
 
@@ -273,6 +305,24 @@ const PayerDetails = () => {
 
   const edit = () => {
     loadUser(initialValues);
+  };
+
+
+
+  const getSearchTerm = (event) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+
+    if (term) {
+      const filteredData = filterData.filter((item) =>
+        Object.values(item).some((value) =>
+          value?.toString().toLowerCase().includes(term.toLowerCase())
+        )
+      );
+      setPayerData(filteredData);
+    } else {
+      setPayerData(filterData);
+    }
   };
 
 
@@ -344,12 +394,17 @@ const PayerDetails = () => {
                     <button
                       type="submit"
                       className="btn cob-btn-primary approve text-white"
-                      disabled={disable}
+                      disabled={loadingState}
                     >
-                      {disable && (
-                        <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                      {loadingState && (
+                        <span
+                          className="spinner-border spinner-border-sm mr-1"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                       )}
                       Submit
+
                     </button>
 
                   </div>
@@ -359,120 +414,70 @@ const PayerDetails = () => {
             )}
           </Formik>
 
-          {data?.length !== 0 &&
-            <div className="row">
-              <div className={`col-lg-3 mt-3`}>
+          {filterData?.length !== 0 &&
+            <div className="row mt-4">
+
+              <div className="form-group col-lg-3 ml-2">
+
+                {/* <label>Search</label>
+              <input
+                className="form-control"
+                onChange={getSearchTerm}
+                type="text"
+                placeholder="Search Here"
+              /> */}
+
                 <label>Search</label>
                 <input
                   className="form-control"
                   onChange={getSearchTerm}
+                  value={searchTerm}
                   type="text"
                   placeholder="Search Here"
                 />
+
+
               </div>
-              <div className={`col-lg-3 mt-3`}>
-                <label>Count Per Page</label>
-                <select
-                  value={pageSize}
-                  rel={pageSize}
-                  className="form-select"
-                  onChange={(e) => setPageSize(parseInt(e.target.value))}
-                >
-                  <DropDownCountPerPage datalength={data?.length ?? 0} />
-                </select>
+
+
+              <div className="form-group col-lg-3">
+                <CountPerPageFilter
+
+                  pageSize={pageSize}
+                  dataCount={dataCount}
+
+                  currentPage={currentPage}
+                  changePageSize={changePageSize}
+                  changeCurrentPage={changeCurrentPage}
+                />
               </div>
-            </div>}
+              {/* } */}
+            </div>
+          }
         </div>
       </section>
 
 
       <section className="">
-        <div className="container-fluid p-3 my-3">
-          {data?.length !== 0 && <h6>Total Records: {data?.length ?? 0}</h6>}
 
-          {loadingState ? (
-            <div className="d-flex justify-content-center align-items-center loader-container">
-              <CustomLoader loadingState={loadingState} />
-            </div>
-          ) : data?.length === 0 ? (
-            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
-          ) : (
-            <>
-              <div className="scroll overflow-auto">
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th scope="col">S.No</th>
-                      <th scope="col">Name of Payer</th>
-                      <th scope="col">Mobile No.</th>
-                      <th scope="col">Email ID</th>
-                      <th scope="col">Payer Category</th>
-                      <th scope="col">Edit</th>
-                      <th scope="col">Generate Link</th>
-                      <th scope="col">Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedata.map((user, i) => (
-                      <tr key={uuidv4()}>
-                        <td>{i + 1}</td>
-                        <td>{user.payer_name}</td>
-                        <td>{user.payer_mobile}</td>
-                        <td>{user.payer_email}</td>
-                        <td>{user.payer_type_name}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn cob-btn-primary btn-primary text-white btn-sm"
-                            onClick={(e) => editHandler(user)}
-                          >
-                            <i className="fa fa-pencil-square-o"></i>
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            onClick={(e) => generatelink(user)}
-                            type="button"
-                            className="btn cob-btn-primary text-white btn-sm"
-                          >
-                            <i className="fa fa-link"></i>
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            className="btn cob-btn-secondary btn-danger text-white btn-sm"
-                            onClick={() => deleteUser(user.id)}
-                          >
-                            <i className="fa fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="d-flex justify-content-center">
-                <ReactPaginate
-                  previousLabel={'Previous'}
-                  nextLabel={'Next'}
-                  breakLabel={'...'}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={(selectedItem) => setCurrentPage(selectedItem.selected + 1)}
-                  containerClassName={'pagination justify-content-center'}
-                  activeClassName={'active'}
-                  previousLinkClassName={'page-link'}
-                  nextLinkClassName={'page-link'}
-                  disabledClassName={'disabled'}
-                  breakClassName={'page-item'}
-                  breakLinkClassName={'page-link'}
-                  pageClassName={'page-item'}
-                  pageLinkClassName={'page-link'}
-                />
-              </div>
-            </>
-          )}
+        <div className="container-fluid mt-3">
+          <div className="scroll overflow-auto">
+            {payerData?.length === 0 ? "" : <h6>Total Count : {dataCount}</h6>}
+            {buttonClicked === true && payerData?.length === 0 && <h5 className="text-center font-weight-bold mt-5">
+              No Data Found
+            </h5>}
+            {!loadingState && filterData?.length !== 0 && (
+              <Table
+                row={rowData}
+                data={payerData}
+                dataCount={dataCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
+            )}
+          </div>
+          <CustomLoader loadingState={loadingState} />
         </div>
 
 

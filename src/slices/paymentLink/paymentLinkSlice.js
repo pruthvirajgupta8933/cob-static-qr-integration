@@ -1,42 +1,74 @@
-// import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import approverDashboardService from "../../services/approver-dashboard/approverDashboard.service.js";
-// import { setMessage } from "../message";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// const InitialState = {
-//   businessCategoryType: [],
-//   generalFormData: {
-//     isFinalSubmit: false,
-//   },
-//   clientCodeList: [],
-//   clientCodeByRole: {},
-//   subMerchantList: {},
-// };
+import paymentLinkService from "../../services/create-payment-link/paymentLink.service";
+const initialState = {
+    getPayerDetails: {
+        result: [],
+        count: 0
+    }
+};
 
-// const approverDashboardSlice = createSlice({
-//   name: "approverDashboard",
-//   initialState: InitialState,
-//   reducers: {
-//     generalFormData: (state, action) => {
-//       //  console.log(action.payload)
-//       state.generalFormData = action.payload;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(businessCategoryType.pending, (state) => {
-//         state.businessCategoryType = [];
-//       })
+export const getPayerApi = createAsyncThunk(
+    "getPayerApi",
+    async (requestParam, thunkAPI) => {
+        try {
+            const response = await paymentLinkService.getPayer(requestParam);
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response && error.response.data && error.response.data.detail) ||
+                error.message ||
+                error.toString() ||
+                error.request.toString();
+            // thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
 
-     
-//       .addCase(fetchSubMerchant.rejected, (state, action) => {
-//         state.subMerchantList = {
-//           [action.meta.arg?.login_id]: { error: true },
-//         };
-//       });
-//   },
-// });
 
-// export const { generalFormData } = approverDashboardSlice.actions;
 
-// const { reducer } = approverDashboardSlice;
-// export default reducer;
+);
+
+
+export const getPayMentLink = createAsyncThunk(
+    "getPayMentLink",
+    async (requestParam, thunkAPI) => {
+        try {
+            const response = await paymentLinkService.getPaymentLink(requestParam);
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response && error.response.data && error.response.data.detail) ||
+                error.message ||
+                error.toString() ||
+                error.request.toString();
+            // thunkAPI.dispatch(setMessage(message));
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+
+
+
+);
+
+
+export const paymentLinkSlice = createSlice({
+    name: "paymentLinkSlice",
+    initialState,
+    reducers: {},
+
+    extraReducers: (builder) => {
+        builder
+            .addCase(getPayerApi.pending, (state) => {
+                // state.infoBulletin = { loading: true };
+            })
+            .addCase(getPayerApi.fulfilled, (state, action) => {
+                state.getPayerDetails = action.payload
+            })
+            .addCase(getPayerApi.rejected, (state) => {
+                // state.infoBulletin = { error: true };
+            });
+    },
+});
+
+export const paymentLinkSliceReducer = paymentLinkSlice.reducer;

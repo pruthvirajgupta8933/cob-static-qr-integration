@@ -15,6 +15,7 @@ import {
   advancePanVerify,
   cinDataByLogin,
 } from "../services/kyc-validator-service/kycValidator.service";
+import { getErrorMessage } from "../utilities/errorUtils";
 
 const initialState = {
   cinData: {}
@@ -122,14 +123,15 @@ export const bankAccountVerification = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString() ||
-        error.request.toString();
-      thunkAPI.dispatch(setMessage(message));
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString() ||
+      //   error.request.toString();
+      // thunkAPI.dispatch(setMessage(message));
+      const message = getErrorMessage(error)
       return thunkAPI.rejectWithValue(message);
     }
   }
