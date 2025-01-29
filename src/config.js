@@ -63,12 +63,12 @@ const API_LIVE = {
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
-  AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
+  // AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
   AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/getotp`,
   AUTH_VERIFY_OTP_ON_FWD: `${url}/auth-service/account/verify-otp`,
   AUTH_CREATE_NEW_PASSWORD: `${url}/auth-service/account/forgot-password`,
   AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
-  AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
+  // AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
   AUTH_CHECK_CLIENT_CODE: `${url}/auth-service/account/check-clientcode`,
   /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
