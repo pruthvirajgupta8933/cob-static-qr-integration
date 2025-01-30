@@ -45,18 +45,18 @@ const Approver = () => {
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
       width: "180px",
     },
-    {
-      id: "4",
-      name: "Merchant Name",
-      selector: (row) => row.name,
-      sortable: true,
-      cell: (row) => (
-        <div className="removeWhiteSpace">
-          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
-        </div>
-      ),
-      width: "200px",
-    },
+    // {
+    //   id: "4",
+    //   name: "Merchant Name",
+    //   selector: (row) => row.name,
+    //   sortable: true,
+    //   cell: (row) => (
+    //     <div className="removeWhiteSpace">
+    //       {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+    //     </div>
+    //   ),
+    //   width: "200px",
+    // },
     {
       id: "5",
       name: "Email",
