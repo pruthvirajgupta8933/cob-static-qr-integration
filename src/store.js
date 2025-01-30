@@ -33,6 +33,7 @@ import { editKycDetailReducer } from "./slices/editKycSlice";
 import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 import { infoBulletinReducer } from "./slices/infoBulletinSlice";
+import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 
 const reducer = {
   auth: authReducer,
@@ -83,6 +84,7 @@ const reducer = {
   kycValidatorReducer: kycValidatorReducer,
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
+  paymentLinkSliceReducer: paymentLinkSliceReducer
 };
 
 const store = configureStore({
