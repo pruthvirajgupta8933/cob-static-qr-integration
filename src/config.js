@@ -348,6 +348,8 @@ const API_LIVE = {
 
   //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111
   UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/REST/ManageFalg/Flag`,
+  GET_WEBSITE_WHITELIST: `${adminAPIURL}/getDataByCommonProc/getCommonData/103`,
+
 
   // For Payout
   LedgersMerchant: `${payout_url}/api/getLedgersMerchant`,

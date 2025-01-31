@@ -3,13 +3,14 @@ import { Formik, Form } from "formik";
 import CustomReactSelect from '../../_components/formik/components/CustomReactSelect';
 import { getAllCLientCodeSlice } from '../../slices/approver-dashboard/approverDashboardSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { kycUserList } from '../../slices/kycSlice';
+import { kycUserList, whiteListedWebsite } from '../../slices/kycSlice';
 import { createFilter } from 'react-select';
 import FormikController from '../../_components/formik/FormikController';
 import { webWhiteListApi } from '../../services/webWhiteList/webWhiteList.service';
 import { Regex, RegexMsg } from '../../_components/formik/ValidationRegex';
 import Yup from '../../_components/formik/Yup';
 import toastConfig from '../../utilities/toastTypes';
+import Table from '../../_components/table_components/table/Table';
 
 const WebWhiteList = () => {
     const [clientCodeList, setCliencodeList] = useState([]);
@@ -22,6 +23,8 @@ const WebWhiteList = () => {
     // const { user } = auth;
     // const { loginId } = user;
     const KycList = kyc?.kycUserList;
+    const { merchantWhitelistWebsite } = kyc
+
 
     const dispatch = useDispatch();
 
@@ -68,6 +71,7 @@ const WebWhiteList = () => {
 
         setSelectedId(selectedOption.value);
         setSelectedClientCode(lableClientCode)
+        dispatch(whiteListedWebsite({ clientCode: lableClientCode }))
 
         setShowInput(true);
         // Update the website_app_url field when client code changes
@@ -90,6 +94,7 @@ const WebWhiteList = () => {
                 "website_url": values.website_app_url
             };
             const response = await webWhiteListApi(postData)
+            dispatch(whiteListedWebsite({ clientCode: selectedClientCode }))
             toastConfig.successToast(response?.data?.message)
             setDisable(false)
 
@@ -98,6 +103,32 @@ const WebWhiteList = () => {
             toastConfig.errorToast("Something went wrong")
         }
     };
+
+
+    const listRow = [
+        {
+            id: "1",
+            name: "URL",
+            selector: (row) => row.clientName,
+            sortable: true,
+            // width: "170px"
+        },
+        {
+            id: "2",
+            name: "Status",
+            cell: (row) => <div className="removeWhiteSpace">{row?.clientId === 1 ? "Active" : "Inactive"}</div>,
+            width: "130px",
+        },
+        {
+            id: "3",
+            name: "Client Code",
+            selector: (row) => row.clientCode,
+            sortable: true,
+
+        },
+    ]
+
+
 
     return (
         <section className="">
@@ -126,6 +157,9 @@ const WebWhiteList = () => {
                                                 />
                                             </div>
                                         </div>
+
+
+
                                         {showInput &&
                                             <div className="form-row">
                                                 <div className="form-group col-md-12 col-sm-12 col-lg-4">
@@ -155,6 +189,27 @@ const WebWhiteList = () => {
                                     </Form>
                                 )}
                             </Formik>
+
+                            <div className="scroll overflow-auto">
+                                <Table
+                                    row={listRow}
+                                    data={merchantWhitelistWebsite}
+                                />
+                                {/* <div>
+                                           
+                                            {!loadingState && data?.length !== 0 && (
+                                                <Table
+                                                row={[]}
+                                                data={[]}
+                                                />
+                                            )}
+                                            </div>
+
+                                            {loadingState && <SkeletonTable />}
+                                            {data?.length === 0 && !loadingState && (
+                                            <h6 className="text-center">No data Found</h6>
+                                            )} */}
+                            </div>
                         </div>
                     </div>
                 </section>

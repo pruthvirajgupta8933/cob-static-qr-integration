@@ -857,6 +857,29 @@ export const businessCategoryById = createAsyncThunk(
     return response.data;
   }
 );
+
+export const whiteListedWebsite = createAsyncThunk(
+  "kyc/whiteListedWebsite",
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await merchantKycService.fetchWhiteListedWebsite(
+        requestParam
+      );
+
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 //---- get-business-category-by-id ------------//
 
 export const approvekyc = createAsyncThunk(
@@ -1313,7 +1336,10 @@ export const kycSlice = createSlice({
       })
       .addCase(documentsUpload.fulfilled, (state, action) => {
         state.documentsUpload = action.payload;
-      });
+      })
+      .addCase(whiteListedWebsite.fulfilled, (state, action) => {
+        state.merchantWhitelistWebsite = action.payload;
+      })
   },
 });
 
