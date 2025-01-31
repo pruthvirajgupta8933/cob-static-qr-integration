@@ -56,7 +56,7 @@ const GeneralForm = ({ role }) => {
 
     const validationSchema = useMemo(() => Yup.object({
         rr_amount: Yup.string().nullable(),
-        business_cat_type: Yup.string().nullable(),
+        business_cat_type: Yup.string().required("Required").nullable(),
         parent_client_code: Yup.string().required("Required").nullable(),
         period_code: Yup.string().required("Required").nullable(),
         rolling_reserve_type: Yup.string().required("Required").nullable(),
