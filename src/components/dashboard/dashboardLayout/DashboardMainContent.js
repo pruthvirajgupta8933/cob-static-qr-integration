@@ -103,6 +103,8 @@ import ManualSubscription from "../../ManualSubscription";
 import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
 import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
 import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
+import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
+import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -696,7 +698,7 @@ function DashboardMainContent() {
                 <CreateMandate />
               </AuthorizedRoute>
 
-              <AuthorizedRoute
+              <AuthorizedRoute                                       //Create Mandate handle by frontend(Old code)
                 exact
                 path={`${path}/subscription/create-mandate-api`}
                 Component={CreateMandateApi}
@@ -713,6 +715,28 @@ function DashboardMainContent() {
               >
                 <CreateMandateApiResponse />
               </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-e-mandate`}
+                Component={CreateEMandateByApi}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandateApiResponse />
+              </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-mandate-api-response`}
+                Component={HandleMandateResponse}
+                roleList={{ merchant: true }}
+              >
+                <HandleMandateResponse />
+              </AuthorizedRoute>
+
+
 
               {/* -----------------------------------------------------------------------------------------------------|| */}
 
