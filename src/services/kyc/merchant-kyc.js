@@ -1,5 +1,5 @@
 import API_URL, { APP_ENV } from "../../config"
-import { axiosInstanceJWT } from "../../utilities/axiosInstance"
+import { axiosInstance, axiosInstanceJWT } from "../../utilities/axiosInstance"
 
 
 
@@ -63,9 +63,15 @@ const documentsUpload = (data) => {
 const GetKycTabsStatus = (requestParam) => {
     return axiosInstanceJWT.get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
 }
+
 const kycDocumentUploadList = (requestParam) => {
     return axiosInstanceJWT.post(`${API_URL?.DOCUMENT_BY_LOGINID}`, requestParam)
 }
+
+const fetchWhiteListedWebsite = (requestParam) => {
+    return axiosInstance.get(`${`${API_URL.GET_WEBSITE_WHITELIST}/${requestParam.clientCode}`}`)
+}
+
 
 const merchantInfo = (requestParam) => {
     const url = requestParam.docType === "1"
@@ -93,7 +99,8 @@ export const merchantKycService = {
     documentsUpload,
     GetKycTabsStatus,
     kycDocumentUploadList,
-    merchantInfo
+    merchantInfo,
+    fetchWhiteListedWebsite
 }
 
 

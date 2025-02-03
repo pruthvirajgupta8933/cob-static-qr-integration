@@ -36,7 +36,8 @@ function MyForm() {
         return_url: widgetDetail?.return_url || '',
         image_URL: widgetDetail?.image_URL || '',
         position: widgetDetail?.position || '',
-        company_name: widgetDetail?.company_name || ''
+        company_name: widgetDetail?.company_name || '',
+        description: widgetDetail?.description || ''
     };
 
     useEffect(() => {
@@ -59,7 +60,8 @@ function MyForm() {
         return_url: Yup.string().url('Invalid URL').required('Return URL is required'),
         image_URL: Yup.string().url('Invalid URL').required('Return URL is required'),
         position: Yup.string().required('Position is required'),
-        company_name: Yup.string().required('Company Name is required')
+        company_name: Yup.string().required('Company Name is required'),
+        description: Yup.string()
     });
 
 
@@ -75,8 +77,8 @@ function MyForm() {
             "return_url": values.return_url,
             "image_URL": values.image_URL,
             "position": values.position,
-            "company_name": values.company_name
-
+            "company_name": values.company_name,
+            "description": values.description
         }
         dispatch(
             widgetClientKeys(postData)
@@ -334,13 +336,35 @@ function MyForm() {
                                                 className="form-control"
                                                 placeholder="Enter company name"
                                                 disabled={activeStatus === "Active" || activeStatus === "Pending"}
-
                                             />
-
-
                                         </div>
 
                                         {<ErrorMessage name="company_name">
+                                            {(msg) => (
+                                                <span className="abhitest- errortxt- text-danger">
+                                                    {msg}
+                                                </span>
+                                            )}
+                                        </ErrorMessage>
+                                        }
+
+                                    </div>
+
+                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
+                                        <label className="col-form-label mt-0 p-2">
+                                            Description<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="description"
+                                                className="form-control"
+                                                placeholder="Enter description"
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            />
+                                        </div>
+
+                                        {<ErrorMessage name="description">
                                             {(msg) => (
                                                 <span className="abhitest- errortxt- text-danger">
                                                     {msg}

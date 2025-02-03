@@ -33,6 +33,8 @@ import { editKycDetailReducer } from "./slices/editKycSlice";
 import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 import { infoBulletinReducer } from "./slices/infoBulletinSlice";
+import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
+import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 
 const reducer = {
   auth: authReducer,
@@ -59,6 +61,7 @@ const reducer = {
   Reports: reportsDataReducer,
   DebitReports: DebitReportsDataReducer,
   createMandate: createMandateReducer,
+  createEmandateByApiSliceReducer: createEmandateByApiSliceReducer,
 
   // approver
   approverDashboard: approverDashboardSlice,
@@ -83,6 +86,7 @@ const reducer = {
   kycValidatorReducer: kycValidatorReducer,
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
+  paymentLinkSliceReducer: paymentLinkSliceReducer
 };
 
 const store = configureStore({

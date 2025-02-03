@@ -7,7 +7,7 @@ import "./App.css";
 import "./theme.scss"
 import AllRoutes from "./AllRoutes";
 import IdleTimerContainer from "./utilities/IdleTimer";
-
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,6 +36,7 @@ const App = () => {
     <React.Fragment>
       {login && <IdleTimerContainer fnLogout={logOutUser} />}
       <AllRoutes />
+      <Toaster />
     </React.Fragment>
   );
 };

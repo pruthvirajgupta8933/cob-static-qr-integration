@@ -121,6 +121,7 @@ function SideNavbar() {
             </h6>
           </div>
 
+
           <ul
             className={` nav flex-column mb-2 ml-2 hide-menu-nav ${sideNavClasses.submenu_border} `}
             role="menu"
@@ -137,6 +138,9 @@ function SideNavbar() {
               </Link>
             </li>
           </ul>
+
+
+
 
           {/* display menu for selected merchant */}
           {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
