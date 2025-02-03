@@ -4,21 +4,17 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController';
 import moment from "moment";
-import { useLocation } from "react-router-dom"
 import toast from 'react-hot-toast';
 import { createEmandateByApi } from '../../slices/subscription-slice/createEmandateSlice';
 import { getRedirectUrl } from '../../utilities/getRedirectUrl';
-import { createMandateHandleResponse } from '../../services/subscription-service/createEmandateByApi.service';
 import { useSelector } from 'react-redux';
+
 
 
 const CreateEMandateByApi = () => {
     const [dropdownData, setDropdownData] = useState([]);
     const [pusposeListData, setPurposeListDate] = useState([])
     const [disable, setDisable] = useState(false)
-    const location = useLocation();
-    const { search } = location;
-    const consumerId = search.split("?consumerId=")[1];
     const dispatch = useDispatch()
     let now = moment();
     let futureStartDate = now.add(3, 'days').format("YYYY-MM-DD");
@@ -26,9 +22,6 @@ const CreateEMandateByApi = () => {
 
     const { user } = useSelector((state) => state.auth);
     const { clientCode } = user.clientMerchantDetailsList[0];
-    console.log('clientCode ', clientCode)
-
-
     const redirectUrl = '/dashboard/create-mandate-api-response/?consumerId='
     function generateRandomNumber() {
         const min = 1000000000;
@@ -69,28 +62,7 @@ const CreateEMandateByApi = () => {
 
     });
 
-    const handleResponseApi = () => {
-        if (consumerId) {
-            createMandateHandleResponse({
-                mandate_registration_id: consumerId,
-            })
-                .then((response) => {
 
-                    if (response.status === 200) {
-
-                    }
-                })
-                .catch((error) => {
-
-
-                });
-        }
-    };
-
-
-    useEffect(() => {
-        handleResponseApi()
-    }, [consumerId])
 
 
 
