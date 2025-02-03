@@ -51,3 +51,11 @@ export const axiosInstanceAuthSubscription = axios.create({
     "auth-token": "1df54c0f7fb14fb19812a1341f0a5884",
   },
 });
+
+////////////////////For E-Nach 
+export const axiosInstanceEmandateAuthApiKey = axios.create({
+  headers: {
+    'api-key': '4d93c7cf31324fcd9be6912dc06ffe9c'
+  }
+
+})

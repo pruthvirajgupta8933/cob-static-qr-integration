@@ -49,16 +49,20 @@ const PaymentLinkDetail = () => {
   });
 
   const handleCopyToClipboard = (link) => {
+    if (!link) {
+      toast.error("Link not generated");
+      return;
+    }
+
     navigator.clipboard.writeText(link);
     setCopied(true);
-
     toast.success("Copied!");
 
-    // Reset the copied state after 1 second
     setTimeout(() => {
       setCopied(false);
     }, 1000);
   };
+
 
 
 
@@ -136,6 +140,7 @@ const PaymentLinkDetail = () => {
       name: "Payer Email",
       selector: (row) => row.payer_email,
       sortable: true,
+      width: "200px"
 
     },
 
@@ -160,12 +165,12 @@ const PaymentLinkDetail = () => {
       selector: (row) => (
         <div id={`link_${row.id}`} className="d-flex align-items-center">
           <span className="p-2 d-inline-block cursor_pointer copy_clipboard" title={row?.shorted_url}>
-            {row?.shorted_url}
+            {/* {row?.shorted_url} */}
           </span>
           <span
             className="input-group-text"
             style={{ cursor: "pointer" }}
-            onClick={() => handleCopyToClipboard(row?.shorted_url)}
+            onClick={() => handleCopyToClipboard(row?.link)}
             data-tip={copied ? "Copied!" : "Copy"}
             data-for={`tooltip-${row.id}`}
           >
@@ -192,7 +197,7 @@ const PaymentLinkDetail = () => {
       end_date: toDate,
       order_by: "-id",
       page: currentPage,
-      pageSize: pageSize
+      page_size: pageSize
 
     };
 
@@ -224,7 +229,7 @@ const PaymentLinkDetail = () => {
 
 
   const handleSubmit = async (values) => {
-    // setDisable(true);
+
     setLoadingState(true);
     setData([]);
     setDisplayList([]);
@@ -238,12 +243,11 @@ const PaymentLinkDetail = () => {
 
       const postData = {
         client_code: clientCode,
-        // page: 1,
         start_date: fromDate,
         end_date: toDate,
         order_by: "-id",
         page: currentPage,
-        pageSize: pageSize
+        page_size: pageSize
 
 
 
@@ -458,7 +462,7 @@ const PaymentLinkDetail = () => {
         <div className="container-fluid  mt-3">
           <div className="scroll overflow-auto">
             {data?.length === 0 ? "" : <h6 className="mt-3">Total Count : {dataCount}</h6>}
-            {buttonClicked === true && data?.length === 0 && <h5 className="text-center font-weight-bold mt-5">
+            {data?.length === 0 && <h5 className="text-center font-weight-bold mt-5">
               No Data Found
             </h5>}
             {!loadingState && filterData?.length !== 0 && (
