@@ -200,7 +200,8 @@ const PayerDetails = () => {
       fromDate: moment(saveData?.fromDate).startOf('day').format('YYYY-MM-DD'),
       toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
       page: currentPage,
-      page_size: pageSize
+      page_size: pageSize,
+      client_code: clientCode
     };
 
     dispatch(getPayerApi(postData))

@@ -142,7 +142,7 @@ function SideNavbar() {
 
 
 
-          <div onClick={(e) => toggleMenu(e)}>
+          {/* <div onClick={(e) => toggleMenu(e)}>
             <h6
               className={`sidebar-heading context-menu d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}
             >
@@ -179,22 +179,7 @@ function SideNavbar() {
                 <i className="fa fa-history"></i>&nbsp;Registaration History
               </Link>
             </li>
-          </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          </ul> */}
 
 
 

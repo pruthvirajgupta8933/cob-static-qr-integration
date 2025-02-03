@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 import { createEmandateByApi } from '../../slices/subscription-slice/createEmandateSlice';
 import { getRedirectUrl } from '../../utilities/getRedirectUrl';
 import { createMandateHandleResponse } from '../../services/subscription-service/createEmandateByApi.service';
+import { useSelector } from 'react-redux';
 
 
 const CreateEMandateByApi = () => {
@@ -22,6 +23,10 @@ const CreateEMandateByApi = () => {
     let now = moment();
     let futureStartDate = now.add(3, 'days').format("YYYY-MM-DD");
     let futureEndDate = moment(futureStartDate).add(3, 'days').format("YYYY-MM-DD"); // 3 days from start date
+
+    const { user } = useSelector((state) => state.auth);
+    const { clientCode } = user.clientMerchantDetailsList[0];
+    console.log('clientCode ', clientCode)
 
 
     const redirectUrl = '/dashboard/create-mandate-api-response/?consumerId='
@@ -159,7 +164,7 @@ const CreateEMandateByApi = () => {
                 max_amount: values.max_amount,
                 frequency: values.frequency,
                 purpose: values.purpose,
-                client_code: "LPSD1",
+                client_code: clientCode,
                 mandate_category: mandateCategory,
                 redirect_url: getRedirectUrl(redirectUrl),
             };
