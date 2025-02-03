@@ -120,6 +120,7 @@ function BankDetails(props) {
           ifsc_number: values,
         })
       ).then((res) => {
+
         if (
           res.meta.requestStatus === "fulfilled" &&
           res.payload.status === true &&
@@ -146,7 +147,7 @@ function BankDetails(props) {
           // toast.success(res?.payload?.message);
         } else {
           setLoading(false);
-          toast.error(res?.payload?.message);
+          toast.error(res?.payload);
         }
       });
     }
@@ -160,6 +161,7 @@ function BankDetails(props) {
         ifsc: ifscCode,
       })
     ).then((res) => {
+
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
@@ -183,7 +185,7 @@ function BankDetails(props) {
         ifscValidationNo(ifscCode, setFieldValue);
       } else {
         setLoading(false);
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload);
       }
     });
   };

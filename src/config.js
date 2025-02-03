@@ -11,7 +11,9 @@ let url,
   qwick_form_url,
   report_api_url,
   paylinkBaseUrl,
+  subscriptionUrl,
   refund_url = "";
+
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -42,7 +44,8 @@ if (ENV_PROD) {
   refund_url = "https://stage-refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://stage-qwikform.sabpaisa.in";
   report_api_url = "https://stage-python-reportapi.sabpaisa.in";
-  paylinkBaseUrl = "https://stage-paymentlinks.sabpaisa.in"
+  paylinkBaseUrl = "https://stage-paymentlinks.sabpaisa.in";
+  subscriptionUrl = "https://uat-subscription.sabpaisa.in/"
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -82,8 +85,6 @@ const API_LIVE = {
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
 
-  EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-
   SUCCESS_TXN_SUMMARY:
     report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
@@ -100,7 +101,7 @@ const API_LIVE = {
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
   BANK_LIST_DC:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
-  SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
+
   SUBSCRIBE_FETCH_APP_AND_PLAN:
     "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
   FETCH_APP_AND_PLAN:
@@ -467,6 +468,12 @@ export const PAYMENT_LINK = {
   // https://stage-paymentlinks.sabpaisa.in/api/client-configuration/get-api-key-by-client-code/?client_code=LPSD1
 
 }
+
+export const E_NACH_URL = {
+  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
+  CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
+}
+
 
 export const wsConnectUrl = {
   connectionURL: webSocketUrl,

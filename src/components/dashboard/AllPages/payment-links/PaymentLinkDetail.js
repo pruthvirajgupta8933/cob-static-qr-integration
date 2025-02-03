@@ -4,40 +4,42 @@ import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import _ from "lodash";
 import FormPaymentLink from "./FormPaymentLink";
-// import API_URL from "../../../../config";
-import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
-// import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
-import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import ReactPaginate from "react-paginate";
 import FormikController from "../../../../_components/formik/FormikController";
-// import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
-// import * as Yup from "yup";
-
-import toastConfig from "../../../../utilities/toastTypes";
+import Table from "../../../../_components/table_components/table/Table";
 import Yup from "../../../../_components/formik/Yup";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
-import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
-// import { toast } from "react-toastify";
+import { getPayMentLink } from "../../../../slices/paymentLink/paymentLinkSlice";
+import { useDispatch } from "react-redux";
+import CountPerPageFilter from "../../../../_components/table_components/filters/CountPerPage"
+import toast from "react-hot-toast";
+
+
+
+
 
 const PaymentLinkDetail = () => {
   const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState([]);
-  const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
+  const [saveData, setSaveData] = useState()
+
   const [displayList, setDisplayList] = useState([]);
+  const [filterData, setFilterData] = useState([])
   const [loadingState, setLoadingState] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [buttonClicked, isButtonClicked] = useState(false);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode } = clientMerchantDetailsList[0];
-  const [pageCount, setPageCount] = useState(
-    data ? Math.ceil(data.length / pageSize) : 0
-  );
+
+
   const [copied, setCopied] = useState(false);
-  const [show, setShow] = useState(false);
+
   const [disable, setDisable] = useState(false);
+  const [dataCount, setDataCount] = useState('')
+  const dispatch = useDispatch()
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required").nullable(),
@@ -47,12 +49,22 @@ const PaymentLinkDetail = () => {
   });
 
   const handleCopyToClipboard = (link) => {
+    if (!link) {
+      toast.error("Link not generated");
+      return;
+    }
+
     navigator.clipboard.writeText(link);
     setCopied(true);
+    toast.success("Copied!");
+
     setTimeout(() => {
       setCopied(false);
-    }, 1000); // Reset copied state after 1.5 seconds
+    }, 1000);
   };
+
+
+
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -69,10 +81,9 @@ const PaymentLinkDetail = () => {
     toDate: splitDate,
   };
 
-  const convertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
-    return date;
-  };
+
+
+
 
 
 
@@ -102,61 +113,165 @@ const PaymentLinkDetail = () => {
   const [state, reducerDispatch] = useReducer(reducer, initialState)
 
 
-  // const loaduser = async () => {
-  //   // toastConfig.infoToast("Loading")
-  //   const postData = {
-  //     client_code: clientCode,
-  //     page: 1
 
-  //   }
-  //   try {
-  //     const response = await paymentLinkService.getPaymentLink(postData)
-  //     console.log(response)
-  //   } catch (error) {
-  //     console.log(error.response)
-  //   }
-  // };
-  // useEffect(() => {
-  //   loaduser();
-  // }, []);
+
+  const rowData = [
+    {
+      id: "2",
+      name: "Payer Name",
+      selector: (row) => row.payer_name,
+      sortable: true,
+      width: "150px"
+    },
+    {
+      id: "3",
+      name: "Phone No.",
+      selector: (row) => row.payer_mobile,
+      width: "180px"
+    },
+    {
+      id: "4",
+      name: "Amount",
+      selector: (row) => row.total_amount,
+      width: "200px"
+    },
+    {
+      id: "5",
+      name: "Payer Email",
+      selector: (row) => row.payer_email,
+      sortable: true,
+      width: "200px"
+
+    },
+
+    {
+      id: "6",
+      name: "Created At",
+      selector: (row) => dateFormatBasic(row?.created_on),
+      sortable: true,
+
+    },
+    {
+      id: "6",
+      name: "Purpose",
+      selector: (row) => row?.purpose
+      ,
+      sortable: true,
+
+    },
+    {
+      id: "8",
+      name: "Payment Link",
+      selector: (row) => (
+        <div id={`link_${row.id}`} className="d-flex align-items-center">
+          <span className="p-2 d-inline-block cursor_pointer copy_clipboard" title={row?.shorted_url}>
+            {/* {row?.shorted_url} */}
+          </span>
+          <span
+            className="input-group-text"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCopyToClipboard(row?.link)}
+            data-tip={copied ? "Copied!" : "Copy"}
+            data-for={`tooltip-${row.id}`}
+          >
+            <i className="fa fa-copy ml-2 text-primary align-middle"></i>
+          </span>
+        </div>
+      ),
+      width: "250px",
+    },
+
+  ];
+
+
+
+  const loadUser = async (data) => {
+    setLoadingState(true)
+
+    const fromDate = moment(saveData?.fromDate).format("YYYY-MM-DD");
+    const toDate = moment(saveData?.toDate).format("YYYY-MM-DD");
+
+    const postData = {
+      client_code: clientCode,
+      start_date: fromDate,
+      end_date: toDate,
+      order_by: "-id",
+      page: currentPage,
+      page_size: pageSize
+
+    };
+
+    dispatch(getPayMentLink(postData))
+      .then((resp) => {
+        setData(resp?.payload?.results)
+        setDataCount(resp?.payload?.count)
+        setFilterData(resp?.payload?.results)
+        setLoadingState(false)
+
+
+      })
+      .catch((error) => {
+        setLoadingState(false);
+        // setDisable(false)
+
+      });
+
+  };
+
+  useEffect(() => {
+    loadUser();
+    // getDrop();
+    // setEditModalToggle(false)
+  }, [pageSize, currentPage]);
+
+
+
+
 
   const handleSubmit = async (values) => {
-    // setDisable(true);
+
     setLoadingState(true);
     setData([]);
     setDisplayList([]);
-    setPaginatedData([]);
 
-    const fromDate = moment(values.fromDate).format("YYYY-MM-DD");
-    const toDate = moment(values.toDate).format("YYYY-MM-DD");
+
+    const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
+    const toDate = moment(values?.toDate).format("YYYY-MM-DD");
     const dateRangeValid = checkValidation(fromDate, toDate);
 
     if (dateRangeValid) {
 
       const postData = {
         client_code: clientCode,
-        // page: 1,
         start_date: fromDate,
         end_date: toDate,
-        order_by: "-id"
+        order_by: "-id",
+        page: currentPage,
+        page_size: pageSize
 
 
 
       }
-      try {
-        let responseLinks = await paymentLinkService.getPaymentLink(postData)
+      setSaveData(values);
 
-        responseLinks = responseLinks.data?.results
-        // console.log("responseLinks", responseLinks)
-        setData(responseLinks);
-        setDisplayList(responseLinks);
-        setPaginatedData(_(responseLinks).slice(0).take(pageSize).value());
-        setLoadingState(false);
-        setShow(true);
-      } catch (error) {
-        setLoadingState(false);
-        toastConfig.errorToast(error.response?.detail || error.response?.message)
-      }
+      setLoadingState(true)
+      dispatch(getPayMentLink(postData))
+        .then((resp) => {
+          // setPayerData(resp?.payload?.results)
+          setData(resp?.payload?.results)
+          setDataCount(resp?.payload?.count)
+          setFilterData(resp?.payload?.results)
+          isButtonClicked(true)
+
+          setLoadingState(false);
+          // setDisable(false)
+
+        })
+        .catch((error) => {
+          setLoadingState(false);
+          // setDisable(false)
+
+        });
     };
 
   }
@@ -188,41 +303,25 @@ const PaymentLinkDetail = () => {
     return flag;
   };
 
-  useEffect(() => {
-    if (searchText !== "") {
-      setDisplayList(
-        data.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+
+
+  const getSearchTerm = (event) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+
+    if (term) {
+      const filteredData = filterData.filter((item) =>
+        Object.values(item).some((value) =>
+          value?.toString().toLowerCase().includes(term.toLowerCase())
         )
       );
+      setData(filteredData);
     } else {
-      setDisplayList(data);
+      setData(filterData);
     }
-  }, [searchText]);
-
-  const getSearchTerm = (e) => {
-    setSearchText(e.target.value);
   };
 
-  useEffect(() => {
-    setPaginatedData(_(displayList).slice(0).take(pageSize).value());
-    setPageCount(
-      displayList.length > 0 ? Math.ceil(displayList.length / pageSize) : 0
-    );
-  }, [pageSize, displayList]);
 
-  useEffect(() => {
-    // console.log("page chagne no")
-    const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(displayList)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
-    setPaginatedData(paginatedPost);
-  }, [currentPage]);
 
   const generatePaylinkHandler = () => {
     reducerDispatch({
@@ -232,6 +331,14 @@ const PaymentLinkDetail = () => {
       }
     })
   }
+
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
+  };
+
 
   // console.log(state)
   return (
@@ -325,28 +432,25 @@ const PaymentLinkDetail = () => {
               </Form>
             )}
           </Formik>
-          {data?.length !== 0 && (
+          {filterData?.length !== 0 && (
             <div className="row">
               <div className={`col-lg-3 mt-3`}>
-                {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
+
                 <label>Search</label>
                 <input
                   className="form-control"
                   onChange={getSearchTerm}
+                  value={searchTerm}
                   type="text"
                   placeholder="Search Here"
                 />
               </div>
               <div className={`col-lg-3 mt-3`}>
-                <label>Count Per Page</label>
-                <select
-                  value={pageSize}
-                  rel={pageSize}
-                  className="form-select"
-                  onChange={(e) => setPageSize(parseInt(e.target.value))}
-                >
-                  <DropDownCountPerPage datalength={data.length} />
-                </select>
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={dataCount}
+                  changePageSize={changePageSize}
+                />
               </div>
             </div>
           )}
@@ -354,98 +458,28 @@ const PaymentLinkDetail = () => {
       </section>
 
       <section className="">
-        <div className="container-fluid p-3 my-3">
-          {data?.length !== 0 && <h6>Total Records: {data.length}</h6>}
 
-          {loadingState ? (
-            <div className="d-flex justify-content-center align-items-center loader-container">
-              <CustomLoader loadingState={loadingState} />
-            </div>
-          ) : show && data?.length === 0 ? (
-            <h6 className="text-center font-weight-bold mt-5">No Data Found</h6>
-          ) : show && data?.length !== 0 ? (
-            <React.Fragment>
-              <div className="scroll" style={{ overflow: "auto" }}>
-                <table className="table table-bordered nowrap">
-                  <thead>
-                    <tr>
-                      <th>Serial No.</th>
-                      <th>Payer Name</th>
-                      <th>Phone No.</th>
-                      <th>Amount</th>
-                      {/* <th>Customer Type</th> */}
-                      <th>Payer Email</th>
-                      <th>Created At</th>
-                      <th>Remarks</th>
-                      <th>Payment Link</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {paginatedata.map((user, i) => (
-                      <tr key={uuidv4()}>
-                        <td>{i + 1}</td>
-                        <td>{user?.payer_name}</td>
-                        <td>{user?.payer_mobile}</td>
-                        <td>{user?.total_amount}</td>
-                        {/* <td>{user?.customer_type}</td> */}
-                        <td>{user?.payer_email}</td>
-                        <td>{dateFormatBasic(user?.created_on)}</td>
-                        <td>{user?.purpose}</td>
-
-                        <td>
-                          <div
-                            id={`link_${i}`}
-                            className="d-flex align-items-center"
-                          >
-                            <span
-                              className="p-2 d-inline-block cursor_pointer copy_clipboard"
-                              title={user?.shorted_url}
-                            >
-                              {user?.shorted_url}
-                            </span>
-                            <span
-                              className="input-group-text"
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                handleCopyToClipboard(user?.shorted_url)
-                              }
-                              data-tip={copied ? "Copied!" : "Copy"}
-                            >
-                              <i className="fa fa-copy ml-2 text-primary align-middle"></i>
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="d-flex justify-content-center mt-2">
-                <ReactPaginate
-                  previousLabel={"Previous"}
-                  nextLabel={"Next"}
-                  breakLabel={"..."}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={(selectedItem) =>
-                    setCurrentPage(selectedItem.selected + 1)
-                  }
-                  containerClassName={"pagination justify-content-center"}
-                  activeClassName={"active"}
-                  previousLinkClassName={"page-link"}
-                  nextLinkClassName={"page-link"}
-                  disabledClassName={"disabled"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                />
-              </div>
-            </React.Fragment>
-          ) : null}
+        <div className="container-fluid  mt-3">
+          <div className="scroll overflow-auto">
+            {data?.length === 0 ? "" : <h6 className="mt-3">Total Count : {dataCount}</h6>}
+            {data?.length === 0 && <h5 className="text-center font-weight-bold mt-5">
+              No Data Found
+            </h5>}
+            {!loadingState && filterData?.length !== 0 && (
+              <Table
+                row={rowData}
+                data={data}
+                dataCount={dataCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
+            )}
+          </div>
+          <CustomLoader loadingState={loadingState} />
         </div>
+
+
       </section>
     </React.Fragment>
   );

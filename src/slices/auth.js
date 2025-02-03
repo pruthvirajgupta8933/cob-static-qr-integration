@@ -6,7 +6,7 @@ import TokenService from "../services/token.service";
 import { getErrorMessage } from "../utilities/errorUtils";
 // import { socketConnection } from "../services/notification-service/notification.service";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
 // console.log("user",user)
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
