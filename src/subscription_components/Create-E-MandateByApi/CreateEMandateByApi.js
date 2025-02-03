@@ -11,8 +11,6 @@ import { getRedirectUrl } from '../../utilities/getRedirectUrl';
 import { createMandateHandleResponse } from '../../services/subscription-service/createEmandateByApi.service';
 
 
-
-
 const CreateEMandateByApi = () => {
     const [dropdownData, setDropdownData] = useState([]);
     const [pusposeListData, setPurposeListDate] = useState([])

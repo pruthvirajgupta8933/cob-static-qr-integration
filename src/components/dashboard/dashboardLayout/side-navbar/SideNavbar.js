@@ -168,7 +168,20 @@ function SideNavbar() {
                 <i className="fa fa-plus"></i>&nbsp;Create Mandate
               </Link>
             </li>
+            <li className="nav-item ml-1" role="menuitem">
+              <Link
+                to={`${url}/registaration-history`}
+                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "registaration-history"
+                  ? sideNavClasses.selected_memu
+                  : ""
+                  }`}
+              >
+                <i className="fa fa-history"></i>&nbsp;Registaration History
+              </Link>
+            </li>
           </ul>
+
+
 
 
 

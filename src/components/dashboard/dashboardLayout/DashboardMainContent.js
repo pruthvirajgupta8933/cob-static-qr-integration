@@ -105,6 +105,7 @@ import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/Chile
 import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
 import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
+import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -735,6 +736,16 @@ function DashboardMainContent() {
               >
                 <HandleMandateResponse />
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/registaration-history`}
+                Component={RegistrationHistory}
+                roleList={{ merchant: true }}
+              >
+                <RegistrationHistory />
+              </AuthorizedRoute>
+
 
 
 
