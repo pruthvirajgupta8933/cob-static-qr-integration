@@ -82,8 +82,6 @@ const API_LIVE = {
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
 
-  EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-
   SUCCESS_TXN_SUMMARY:
     report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
@@ -100,7 +98,7 @@ const API_LIVE = {
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
   BANK_LIST_DC:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
-  SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
+
   SUBSCRIBE_FETCH_APP_AND_PLAN:
     "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
   FETCH_APP_AND_PLAN:
