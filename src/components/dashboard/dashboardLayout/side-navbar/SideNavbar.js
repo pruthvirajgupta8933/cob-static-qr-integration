@@ -142,47 +142,6 @@ function SideNavbar() {
 
 
 
-          {/* <div onClick={(e) => toggleMenu(e)}>
-            <h6
-              className={`sidebar-heading context-menu d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}
-            >
-              <span className="font-size-14 ">Create Mandate</span>
-              <div className="link-secondary">
-                <i className={`fa fa-plus`}></i>
-              </div>
-            </h6>
-          </div>
-
-          <ul
-            className={` nav flex-column mb-2 ml-2 hide-menu-nav ${sideNavClasses.submenu_border} `}
-            role="menu"
-          >
-            <li className="nav-item ml-1" role="menuitem">
-              <Link
-                to={`${url}/create-e-mandate`}
-                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "create-e-mandate"
-                  ? sideNavClasses.selected_memu
-                  : ""
-                  }`}
-              >
-                <i className="fa fa-plus"></i>&nbsp;Create Mandate
-              </Link>
-            </li>
-            <li className="nav-item ml-1" role="menuitem">
-              <Link
-                to={`${url}/registaration-history`}
-                className={`nav-link ${sideNavClasses.nav_link} ${selectedMenu === "registaration-history"
-                  ? sideNavClasses.selected_memu
-                  : ""
-                  }`}
-              >
-                <i className="fa fa-history"></i>&nbsp;Registaration History
-              </Link>
-            </li>
-          </ul> */}
-
-
-
           {/* display menu for selected merchant */}
           {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
             <ul className="nav flex-column mt-3 " role="menu">
