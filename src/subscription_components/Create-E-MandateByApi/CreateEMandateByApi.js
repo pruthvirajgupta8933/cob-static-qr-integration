@@ -9,7 +9,7 @@ import { createEmandateByApi } from '../../slices/subscription-slice/createEmand
 import { getRedirectUrl } from '../../utilities/getRedirectUrl';
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom"
-
+import { v4 as uuidv4 } from "uuid";
 
 
 const CreateEMandateByApi = ({ selectedOption }) => {
@@ -36,7 +36,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     }
     const initialValues = {
 
-        consumer_id: generateRandomNumber(),
+        consumer_id: uuidv4(),
         customer_name: '',
         customer_mobile: '',
         customer_email_id: '',
@@ -206,7 +206,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             };
 
             const response = await dispatch(createEmandateByApi(postDataS));
-            console.log("response?.data?.bank_details_url", response)
             if (response?.payload.data?.bank_details_url) {
                 toast.success(response?.payload.data.message);
                 if (selectedOption === 'customer') {
@@ -214,8 +213,13 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 } else if (selectedOption === 'merchant') {
                     window.location.href = response?.payload?.data.bank_details_url;
                 }
+
+            } else {
+                toast.error(response?.payload?.message || 'Something went wrong.');
+
             }
         } catch (error) {
+
             toast.error(error?.response?.data?.message || 'Something went wrong.');
         }
         setDisable(false);
