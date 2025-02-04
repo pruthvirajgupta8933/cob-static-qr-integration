@@ -19,10 +19,7 @@ export const createEmandateByApi = createAsyncThunk(
         } catch (error) {
             const message =
                 (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString() || error.request.toString();
+                    error.response.data);
 
             return thunkAPI.rejectWithValue(message);
         }
