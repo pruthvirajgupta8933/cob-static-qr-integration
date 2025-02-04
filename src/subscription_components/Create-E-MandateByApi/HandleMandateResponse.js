@@ -4,7 +4,8 @@ import { createMandateHandleResponse } from '../../services/subscription-service
 
 
 
-const HandleMandateResponse = () => {
+const HandleMandateResponse = ({ merchantType }) => {
+
 
     const location = useLocation();
     const [responseData, setResponseData] = useState({})
@@ -40,7 +41,12 @@ const HandleMandateResponse = () => {
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center  mb-4">
                 <h5 >Create Mandate API Response</h5>
             </div>
-            <Link to="/dashboard/create-e-mandate" className="btn cob-btn-primary approve text-white mt-3">Create Mandate</Link>
+            {merchantType !== "Public" && (
+                <Link to="/dashboard/create-e-mandate" className="btn cob-btn-primary approve text-white mt-3">
+                    Create Mandate
+                </Link>
+            )}
+
 
 
             <div className="row mt-5">

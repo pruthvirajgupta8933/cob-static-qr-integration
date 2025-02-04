@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
+import EnachReponsePublic from "./components/Otherpages/EnachReponsePublic";
 const Receipts = React.lazy(() => import("./components/Otherpages/Recipts"));
 const EmailVerification = React.lazy(() =>
   import("./components/Otherpages/EmailVerification")
@@ -118,6 +119,13 @@ function AllRoutes() {
           <ViewTransactionDetails />
         </Suspense>
       </Route>
+
+      <Route exact path="/e-nach-response">
+        <Suspense fallback={fallbackMsg}>
+          <EnachReponsePublic />
+        </Suspense>
+      </Route>
+
       <Route path="*">
         <Suspense fallback={fallbackMsg}>
           <UrlNotFound />

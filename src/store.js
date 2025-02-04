@@ -35,6 +35,7 @@ import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboar
 import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
+import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
 
 const reducer = {
   auth: authReducer,
@@ -62,6 +63,7 @@ const reducer = {
   DebitReports: DebitReportsDataReducer,
   createMandate: createMandateReducer,
   createEmandateByApiSliceReducer: createEmandateByApiSliceReducer,
+  registrationHisorySliceReducer: registrationHisorySliceReducer,
 
   // approver
   approverDashboard: approverDashboardSlice,
