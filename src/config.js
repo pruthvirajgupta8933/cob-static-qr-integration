@@ -29,6 +29,7 @@ if (ENV_PROD) {
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
+  subscriptionUrl = "https://subscriptionapi.sabpaisa.in"
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -472,6 +473,7 @@ export const PAYMENT_LINK = {
 export const E_NACH_URL = {
   MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
+  REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`
 }
 
 
