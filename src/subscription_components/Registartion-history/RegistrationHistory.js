@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from 'react-redux';
 import { registrationHistoryData } from '../../slices/subscription-slice/registrationHistorySlice';
-import { Link } from 'react-router-dom';
+
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 
@@ -366,6 +366,7 @@ const RegistrationHistory = () => {
                     changePageSize={setPageSize}
                     searchQuery={searchQuery}
                     onSearchChange={handleSearchChange}
+                    changeCurrentPage={changeCurrentPage}
                 />
 
             )}

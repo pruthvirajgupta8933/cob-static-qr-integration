@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faSearch, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -17,9 +17,15 @@ const TableWithPagination = ({
     changePageSize,
     searchQuery,
     onSearchChange,
+    changeCurrentPage
 }) => {
     const apiHasData = dataCount > 0; // Check if API has data
     const hasSearchResults = data?.length > 0; // Check if search results exist
+
+    // useEffect(() => {
+    //     changeCurrentPage(90)
+    // }, [])
+
 
     return (
         <div className="card shadow-sm mt-4">
@@ -113,6 +119,7 @@ const TableWithPagination = ({
                                 pageSize={pageSize}
                                 dataCount={dataCount}
                                 changePageSize={changePageSize}
+                                changeCurrentPage={changeCurrentPage}
                             />
                         </div>
                     </div>

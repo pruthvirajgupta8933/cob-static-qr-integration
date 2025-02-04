@@ -1,20 +1,10 @@
 import React from "react";
 import DropDownCountPerPage from "../../reuseable_components/DropDownCountPerPage";
-const CountPerPage = ({ pageSize, dataCount,clientCode, changePageSize, currentPage, changeCurrentPage }) => {
-  // console.log("pageSize",pageSize)
-  // console.log("dataCount",dataCount)
-  
+const CountPerPage = ({ pageSize, dataCount, changePageSize, currentPage, changeCurrentPage }) => {
 
-  const handlerChange = (pageSize, currentPage,clientCode) => {
-    // console.log("cc--pageSize",pageSize)
-    // console.log("cc--currentPage",currentPage)
-    if (currentPage > 1) {
-      changeCurrentPage(1)
-      
-      changePageSize(pageSize)
-    } else {
-      changePageSize(pageSize)
-    }
+  const handlerChange = (pageSize) => {
+    changeCurrentPage(1)
+    changePageSize(pageSize)
   }
 
   return (
