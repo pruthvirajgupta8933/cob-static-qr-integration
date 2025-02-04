@@ -31,7 +31,7 @@ const EnachForm = () => {
                                         setSelectedOption("customer");
                                     }}
                                 />
-                                <span className="ms-1">Customer</span>
+                                <span className="ms-1">E-Mandate Link</span>
                             </label>
 
                             <label style={{ marginLeft: "15px" }}>
@@ -45,7 +45,7 @@ const EnachForm = () => {
                                         setSelectedOption("merchant");
                                     }}
                                 />
-                                <span className="ms-1">Merchant</span>
+                                <span className="ms-1">End To End E-Mandate</span>
                             </label>
                         </div>
                     </Form>

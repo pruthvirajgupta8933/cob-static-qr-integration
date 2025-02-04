@@ -19,14 +19,14 @@ const TableWithPagination = ({
     onSearchChange,
 }) => {
     const apiHasData = dataCount > 0; // Check if API has data
-    const hasSearchResults = data.length > 0; // Check if search results exist
+    const hasSearchResults = data?.length > 0; // Check if search results exist
 
     return (
         <div className="card shadow-sm mt-4">
             <div className="card-body">
                 {apiHasData && (
                     <div className="d-flex justify-content-between mb-3">
-                        <p className="card-title">
+                        <p className="card-title mb-0">
                             <strong>Total Count:</strong> {dataCount || '0'}
                         </p>
                         <div className="d-flex justify-content-end">
@@ -46,7 +46,7 @@ const TableWithPagination = ({
                     </div>
                 )}
 
-                <div className="table-responsive">
+                <div className="table-responsive scroll overflow-auto" style={{ height: "90vh" }}>
                     <table className="table ">
                         <thead className="table-primary">
                             {apiHasData && (
@@ -87,7 +87,7 @@ const TableWithPagination = ({
 
                 {apiHasData && (
                     <div className="row d-flex justify-content-between align-items-center mt-4">
-                        <div className="col-lg-6 d-flex justify-content-end">
+                        <div className="col-lg-6 d-flex justify-content-start">
                             <ReactPaginate
                                 previousLabel={"Previous"}
                                 nextLabel={"Next"}
@@ -108,7 +108,7 @@ const TableWithPagination = ({
                                 forcePage={currentPage - 1}
                             />
                         </div>
-                        <div className="col-lg-2 d-flex justify-content-end p-4">
+                        <div className="col-lg-6 d-flex justify-content-end">
                             <CountPerPageFilter
                                 pageSize={pageSize}
                                 dataCount={dataCount}
