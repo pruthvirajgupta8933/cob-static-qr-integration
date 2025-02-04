@@ -106,6 +106,7 @@ import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
 import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
+import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -721,10 +722,10 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/create-e-mandate`}
-                Component={CreateEMandateByApi}
+                Component={EnachForm}
                 roleList={{ merchant: true }}
               >
-                <CreateMandateApiResponse />
+                <EnachForm />
               </AuthorizedRoute>
 
 

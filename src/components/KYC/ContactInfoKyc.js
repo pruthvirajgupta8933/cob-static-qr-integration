@@ -662,7 +662,7 @@ function ContactInfoKyc(props) {
                       {proofIdList.data?.map((item) => {
                         if (item.is_active)
                           return (
-                            <option value={item.id} dataRel={item.id_type}>
+                            <option value={item.id} datarel={item.id_type}>
                               {item.id_type}
                             </option>
                           );
