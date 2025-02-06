@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController';
@@ -35,7 +35,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
     const initialValues = {
-
         consumer_id: uuidv4(),
         customer_name: '',
         customer_mobile: '',
@@ -47,8 +46,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         purpose: '',
         redirect_url: '',
         mandate_category: ''
-
-
     };
     useEffect(() => {
         if (selectedOption === 'customer') {
@@ -183,29 +180,31 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     // };
 
 
-    const handleViewSubmit = async (values) => {
-        setDisable(true);
-        try {
-            const filteredPurpose = pusposeListData.filter(
-                (item) => item.description === values.purpose
-            );
-            const mandateCategory = filteredPurpose.length > 0 ? filteredPurpose[0].code : null;
-            let postDataS = {
-                consumer_id: values.consumer_id,
-                customer_name: values.customer_name,
-                customer_mobile: values.customer_mobile,
-                customer_email_id: values.customer_email_id,
-                start_date: moment(values?.start_date).startOf("day").format("YYYY-MM-DD"),
-                end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
-                max_amount: values.max_amount,
-                frequency: values.frequency,
-                purpose: values.purpose,
-                client_code: clientCode,
-                mandate_category: mandateCategory,
-                redirect_url: getRedirectUrl(redirectUrl),
-            };
+    const handleViewSubmit = async (values, { setFieldError, setError, setSubmitting }) => {
+        setSubmitting(true)
 
+        const filteredPurpose = pusposeListData.filter(
+            (item) => item.description === values.purpose
+        );
+        const mandateCategory = filteredPurpose.length > 0 ? filteredPurpose[0].code : null;
+        let postDataS = {
+            consumer_id: values.consumer_id,
+            customer_name: values.customer_name,
+            customer_mobile: values.customer_mobile,
+            customer_email_id: values.customer_email_id,
+            start_date: moment(values?.start_date).startOf("day").format("YYYY-MM-DD"),
+            end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
+            max_amount: values.max_amount,
+            frequency: values.frequency,
+            purpose: values.purpose,
+            client_code: clientCode,
+            mandate_category: mandateCategory,
+            redirect_url: getRedirectUrl(redirectUrl),
+        };
+
+        try {
             const response = await dispatch(createEmandateByApi(postDataS));
+
             if (response?.payload.data?.bank_details_url) {
                 toast.success(response?.payload.data.message);
                 if (selectedOption === 'customer') {
@@ -218,11 +217,13 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 toast.error(response?.payload?.message || 'Something went wrong.');
 
             }
+            setSubmitting(false);
         } catch (error) {
-
+            console.log("error", error)
+            setSubmitting(false);
             toast.error(error?.response?.data?.message || 'Something went wrong.');
         }
-        setDisable(false);
+
     };
 
     const copyToClipboard = () => {
@@ -259,21 +260,18 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
-                            onSubmit={(values) => {
-                                handleViewSubmit(values)
-
+                            onSubmit={(values, formikFn) => {
+                                handleViewSubmit(values, { ...formikFn })
                             }}
-
+                            enableReinitialize={true}
                         >
-                            {({ setFieldValue, values, errors }) => (
+                            {({ setFieldValue, values, errors, isSubmitting }) => (
                                 <Form>
-
                                     <div className="row mb-3">
 
                                         <div className="col-md-4">
                                             <label htmlFor="consumer_id" className="form-label">Consumer ID</label>
                                             <FormikController type="text" id="consumer_id" name="consumer_id" className="form-control" placeholder="Enter Consumer ID" control='input' />
-
                                         </div>
                                         <div className="col-md-4">
                                             <label htmlFor="customer_name" className="form-label">Customer Name</label>
@@ -361,8 +359,8 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
                                     <div className="row">
                                         <div className="col text-center">
-                                            <button type="submit" className="btn cob-btn-primary approve text-white" disabled={disable}>
-                                                {disable && (
+                                            <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
+                                                {isSubmitting && (
                                                     <span
                                                         className="spinner-border spinner-border-sm mr-1"
                                                         role="status"
