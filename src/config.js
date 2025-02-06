@@ -330,9 +330,10 @@ const API_LIVE = {
   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
   // ---------------------------   NEW API FOR COMMENTS (2)
   // For Saving Comments
-  SAVE_COMMENTS: `${url}/merchant/save-comments`,
+  SAVE_COMMENTS: `${url}/comment/save-comment/`,
+  UPDATE_COMMENTS: `${url}/comment/update-comment/`,
   // GET API FOR VIEWING COMMENTS
-  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
+  VIEW_COMMENTS_LIST: `${url}/comment/comment_by_client_code/`,
 
   // ---------------------------   NEW API FOR COMMENTS (2)
   // ---------------------------   NEW API FOR Documents
