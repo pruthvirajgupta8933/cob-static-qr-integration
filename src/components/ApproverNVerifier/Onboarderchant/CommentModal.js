@@ -7,6 +7,7 @@ import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingComments,
   forGettingCommentList,
+  updateComment,
 } from "../../../slices/merchantZoneMappingSlice";
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
@@ -19,22 +20,33 @@ import DocViewerComponent from "../../../utilities/DocViewerComponent";
 
 
 const CommentModal = (props) => {
-  // console.log(props)
-
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
   const [docPreviewToggle, setDocPreviewToggle] = useState(false)
+  const [editToggle, setEditToggle] = useState({ toggle: false, id: null })
   const [selectViewDoc, setSelectedViewDoc] = useState("#")
+  const [updateData, setUpdateData] = useState({})
 
-  const initialValues = {
-    comments: "",
-  };
+  const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state?.auth);
   const { loginId } = user;
 
-  const dispatch = useDispatch();
+
+  const initialValues = {
+    comments: updateData?.comments || "",
+  };
+
+  const validationSchema = Yup.object({
+    // comments: Yup.string()
+    //   .min(1, "Please enter , more than 1 character")
+    //   .max(500, "Please do not  enter more than 500 characters")
+    //   .required("Required")
+    //   .nullable(),
+  });
+
+
   const commentUpdate = () => {
     dispatch(
       forGettingCommentList({
@@ -54,6 +66,8 @@ const CommentModal = (props) => {
   }, [props]);
 
   const aRef = useRef(null);
+  const editFormRef = useRef(null)
+
 
   //function for resetupload file
   const resetUploadFile = () => {
@@ -61,39 +75,10 @@ const CommentModal = (props) => {
     setUploadStatus(false);
   };
 
-  const validationSchema = Yup.object({
-    comments: Yup.string()
-      .min(1, "Please enter , more than 1 character")
-      .max(500, "Please do not  enter more than 500 characters")
-      .required("Required")
-      .nullable(),
-  });
 
-  const handleSubmit = async (values) => {
-    let formData = new FormData();
-    formData.append("files", attachCommentFile);
-    formData.append("login_id", loginId);
-    formData.append("client_code", props?.commentData?.clientCode);
-    formData.append("comments", values.comments);
-    formData.append("merchant_tab", props?.tabName);
-    dispatch(forSavingComments(formData))
-      .then((resp) => {
-        if (resp?.payload?.message?.status && resp?.payload?.status) {
-          toast.success(resp?.payload?.message.message);
-          commentUpdate();
-          resetUploadFile();
-          setattachCommentFile([]);
-        } else {
-          toast.error(resp?.payload?.message.message);
-          resetUploadFile();
-          commentUpdate();
-          setattachCommentFile([]);
-        }
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
-  };
+
+
+
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
     return date;
@@ -113,6 +98,7 @@ const CommentModal = (props) => {
     if (res == null) return false;
     else return true;
   };
+
   const fileTypeCheck = (file) => {
     let ext = file.split(".").pop();
     const formats = ["pdf", "jpg", "jpeg", "png"];
@@ -124,11 +110,70 @@ const CommentModal = (props) => {
     }
   };
 
+
   const docModalToggle = (docData) => {
     setDocPreviewToggle(true)
-    setSelectedViewDoc(docData)
+    setSelectedViewDoc({ docData })
   }
 
+  const editHandler = (rowData, enable = false) => {
+    setUpdateData({ ...rowData, isEdit: enable })
+    if (enable) {
+      let form = editFormRef.current
+      let textArea = form.querySelector("#comments")
+      textArea.focus();
+
+      setTimeout(() => {
+        textArea.blur();
+      }, 500);
+    }
+
+
+  }
+
+  const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+
+    setSubmitting(true)
+    let formData = new FormData();
+    // update comment
+    if (updateData?.isEdit) {
+      formData.append("files", attachCommentFile);
+      formData.append("comment_id", updateData?.id);
+      formData.append("comment", values.comments);
+
+      try {
+        await dispatch(updateComment(formData))
+        setSubmitting(false)
+
+      } catch (error) {
+        setSubmitting(false)
+        toast.error(error?.payload?.message || "Someting went wrong!");
+      }
+
+    } else {
+      // insert comment
+      formData.append("files", attachCommentFile);
+      formData.append("login_id", loginId);
+      formData.append("client_code", props?.commentData?.clientCode);
+      formData.append("comments", values.comments);
+      formData.append("merchant_tab", props?.tabName);
+      try {
+        await dispatch(forSavingComments(formData))
+        setSubmitting(false)
+      } catch (error) {
+        toast.error(error?.payload?.message || "Someting went wrong!");
+        setSubmitting(false)
+      }
+
+    }
+
+    setUpdateData({})
+    resetUploadFile();
+    setattachCommentFile([]);
+    resetForm()
+    commentUpdate();
+
+  };
 
   const modalbody = () => {
 
@@ -149,105 +194,132 @@ const CommentModal = (props) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-              resetForm();
+            onSubmit={(values, formikFn) => {
+              handleSubmit(values, { ...formikFn })
             }}
             enableReinitialize={true}
           >
-            <Form>
-              <div className="form-row mt-4">
-                {attachCommentFile['name'] && <p className="text-default m-0"><i className="fa fa-paperclip" /> {attachCommentFile['name']}</p>}
-                <div className="input-group ">
-                  <Field
-                    control="input"
-                    name="comments"
-                    className="form-control p-2"
-                    placeholder="Enter Comments"
+            {({ isSubmitting }) => (
+              <>
+                <Form ref={editFormRef}>
+                  <div className="form-row mt-4">
+                    {attachCommentFile['name'] && <p className="text-default m-0"><i className="fa fa-paperclip" /> {attachCommentFile['name']}</p>}
+                    <div className="input-group">
+                      <Field
+                        control="input"
+                        name="comments"
+                        className="form-control p-2"
+                        placeholder="Enter Comments"
+                        id="comments"
+                      />
+                      <div>
+                        <label for="file-upload" className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle" style={{ height: "39px" }}>
+                          <i className="fa fa-paperclip"></i>
+                        </label>
+                        <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} disabled={isSubmitting} />
+                      </div>
 
-                  />
-                  <div>
-                    <label for="file-upload" className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle" style={{ height: "39px" }}>
-                      <i className="fa fa-paperclip"></i>
-                    </label>
-                    <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
+                      <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
+                        {isSubmitting && (
+                          <span
+                            className="spinner-border spinner-border-sm mr-1"
+                            role="status"
+                            ariaHidden="true"
+                          ></span>
+                        )}
+                        {updateData?.isEdit ? 'Update' : 'Submit'}</button>
+                    </div>
+                    <ErrorMessage name="comments">{msg => <p className="text-danger m-0">{msg}</p>}</ErrorMessage>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="submit-btn approve text-white btn-sm cob-btn-primary"
-                  >
-                    Submit
-                  </button>
+                </Form>
+                <div className="row g-3 mt-4">
+
+                  <div className="col hoz-scroll">
+                    {/* <h6>Previous Comments</h6> */}
+                    <table className="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Commented By</th>
+                          <th>Date of Comments</th>
+                          <th>Comments from tab</th>
+                          <th>Comments</th>
+                          <th>View Document</th>
+                          <th>Edit</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(commentsList?.length === undefined ||
+                          commentsList?.length === 0) && (
+                            <tr>
+                              <td colSpan="5">
+                                <h6 className="text-center">
+                                  No Data found
+                                </h6>
+                              </td>
+                            </tr>
+                          )}
+
+                        {(commentsList?.length !== undefined ||
+                          commentsList?.length > 0) &&
+                          Array.isArray(commentsList)
+                          ? commentsList?.map((commentData, i) => (
+                            <tr key={uuidv4()} >
+                              <td>
+                                {commentData?.comment_by_user_name.toUpperCase()}
+                              </td>
+
+                              <td>
+                                {dateManipulate(commentData?.comment_on)}
+                              </td>
+                              <td>{commentData?.merchant_tab ?? commentData?.comment_type}</td>
+                              <td
+                                style={{ overflowWrap: "anywhere" }}
+                              >
+
+                                {commentData?.comments}
+                              </td>
+                              <td>
+                                {commentData?.file_path !== null &&
+                                  isUrlValid(commentData?.file_path) &&
+                                  fileTypeCheck(commentData?.file_path) && (
+                                    <p
+                                      className="text-primary cursor_pointer text-decoration-underline"
+                                      rel="noreferrer"
+                                      onClick={() => docModalToggle(commentData)}
+                                    >
+                                      View Document
+                                    </p>
+                                  )}
+                              </td>
+
+                              <td>
+                                {loginId?.toString() === commentData?.comment_by &&
+
+                                  (
+                                    <>
+                                      {updateData?.isEdit && updateData?.id === commentData?.id ?
+                                        <button className="btn btn-sm" onClick={() => editHandler({}, false)} ariaLabel="Close"><i className="fa fa-close "></i></button>
+                                        :
+                                        <button className={`btn btn-sm ${editToggle?.toggle === true && 'd-none'}`} onClick={() => editHandler(commentData, true)} ariaLabel="Edit"><i className="fa fa-pencil"></i></button>
+                                      }
+                                    </>
+                                  )
+                                }
+
+                              </td>
+                            </tr>
+                          ))
+                          : []}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <ErrorMessage name="comments">{msg => <p className="text-danger m-0">{msg}</p>}</ErrorMessage>
-              </div>
+              </>
 
 
-              <div className="row g-3 mt-4">
+            )}
 
-                <div className="col hoz-scroll">
-                  {/* <h6>Previous Comments</h6> */}
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Commented By</th>
-                        <th>Comments</th>
-                        <th>Date of Comments</th>
-                        <th>Comments from tab</th>
-                        <th>View Document</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(commentsList?.length === undefined ||
-                        commentsList?.length === 0) && (
-                          <tr>
-                            <td colSpan="5">
-                              <h6 className="text-center">
-                                No Data found
-                              </h6>
-                            </td>
-                          </tr>
-                        )}
-
-                      {(commentsList?.length !== undefined ||
-                        commentsList?.length > 0) &&
-                        Array.isArray(commentsList)
-                        ? commentsList?.map((commentData, i) => (
-                          <tr key={uuidv4()}>
-                            <td>
-                              {commentData?.comment_by_user_name.toUpperCase()}
-                            </td>
-                            <td
-                              style={{ overflowWrap: "anywhere" }}
-                            >
-                              {commentData?.comments}
-                            </td>
-                            <td>
-                              {dateManipulate(commentData?.comment_on)}
-                            </td>
-                            <td>{commentData?.merchant_tab ?? commentData?.comment_type}</td>
-                            <td>
-                              {commentData?.file_path !== null &&
-                                isUrlValid(commentData?.file_path) &&
-                                fileTypeCheck(commentData?.file_path) && (
-                                  <p
-                                    className="text-primary cursor_pointer text-decoration-underline"
-                                    rel="noreferrer"
-                                    onClick={() => docModalToggle(commentData)}
-                                  >
-                                    View Document
-                                  </p>
-                                )}
-                            </td>
-                          </tr>
-                        ))
-                        : []}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </Form>
           </Formik>
         </div>
 

@@ -5,19 +5,19 @@ import zoneService from "../services/merchantZoneMapping.service";
 
 import {
   axiosInstanceJWT,
- 
+
 } from "../utilities/axiosInstance";
 
 
-const initialState = { 
-    postdata:{},
-   
+const initialState = {
+  postdata: {},
+
 };
 
 
 export const zoneDetail = createAsyncThunk(
   "merchantzone/zoneDetail",
-  async ( thunkAPI) => {
+  async (thunkAPI) => {
     try {
       const response = await zoneService.zoneDetails();
       return response.data;
@@ -29,7 +29,7 @@ export const zoneDetail = createAsyncThunk(
 
 export const zoneMaster = createAsyncThunk(
   "zoneMaster/zoneMaster",
-  async ( requestParam) => {
+  async (requestParam) => {
     try {
       const response = await zoneService.zoneMasters(requestParam)
       return response.data;
@@ -39,9 +39,9 @@ export const zoneMaster = createAsyncThunk(
   }
 );
 
-export const zoneEmployee= createAsyncThunk(
+export const zoneEmployee = createAsyncThunk(
   "zoneEmployee/zoneEmployee",
-  async ( requestParam) => {
+  async (requestParam) => {
     try {
       const response = await zoneService.zoneEmployee(requestParam)
       return response.data;
@@ -51,10 +51,10 @@ export const zoneEmployee= createAsyncThunk(
   }
 );
 
-export const updateZoneData= createAsyncThunk(
+export const updateZoneData = createAsyncThunk(
   "zoneEmployee/zoneEmployee",
-  async ( requestParam) => {
-    
+  async (requestParam) => {
+
     try {
       const response = await zoneService.updateZoneData(requestParam)
       return response.data;
@@ -65,10 +65,10 @@ export const updateZoneData= createAsyncThunk(
 );
 
 
-export const getZoneEmployeName= createAsyncThunk(
+export const getZoneEmployeName = createAsyncThunk(
   "zoneEmployee/zoneEmployee",
-  async ( requestParam) => {
-    
+  async (requestParam) => {
+
     try {
       const response = await zoneService.getZoneEmployeName(requestParam)
       return response.data;
@@ -81,7 +81,7 @@ export const getZoneEmployeName= createAsyncThunk(
 export const getMccCodeMaster = createAsyncThunk(
   "zoneEmployee/zoneEmployee",
   async () => {
-    
+
     try {
       const response = await zoneService.getMccCodeMaster()
       return response.data;
@@ -91,10 +91,10 @@ export const getMccCodeMaster = createAsyncThunk(
   }
 );
 
-export const getZoneInfo= createAsyncThunk(
+export const getZoneInfo = createAsyncThunk(
   "zoneEmployee/zoneEmployee",
-  async ( requestParam) => {
-    
+  async (requestParam) => {
+
     try {
       const response = await zoneService.getZoneInfo(requestParam)
       return response.data;
@@ -104,187 +104,193 @@ export const getZoneInfo= createAsyncThunk(
   }
 );
 export const riskCategory = createAsyncThunk(
-    "riskCategory/riskCategory",
-    async (requestParam) => {
-      const response = await axiosInstanceJWT
-        .put(`${API_URL.RISK_CATEGORY}`,  {
-          headers: {
-            // Authorization: ""
-          },
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
+  "riskCategory/riskCategory",
+  async (requestParam) => {
+    const response = await axiosInstanceJWT
+      .put(`${API_URL.RISK_CATEGORY}`, {
+        headers: {
+          // Authorization: ""
+        },
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
 
-    }
-  );
+  }
+);
 
 
 export const forSavingComments = createAsyncThunk(
-    "merchnatzone/forSavingComments",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceJWT
-        .post(`${API_URL.SAVE_COMMENTS}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
+  "merchnatzone/forSavingComments",
+  async (requestParam) => {
 
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.SAVE_COMMENTS}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
 
-
-  export const forGettingCommentList = createAsyncThunk(
-    "merchnatzone/forGettingCommentList",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceJWT
-        .post(`${API_URL.VIEW_COMMENTS_LIST}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
+export const updateComment = createAsyncThunk(
+  "merchnatzone/updateComment",
+  async (requestParam) => {
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.UPDATE_COMMENTS}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
 
 
-  export const forSavingDocument = createAsyncThunk(
-    "merchnatzone/forSavingDocument",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceJWT
-        .post(`${API_URL.UPLOAD_E_AGREEMENT}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
+export const forGettingCommentList = createAsyncThunk(
+  "merchnatzone/forGettingCommentList",
+  async (requestParam) => {
 
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-
-  export const forGettingDocumentList = createAsyncThunk(
-    "merchnatzone/forGettingDocumentList",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceJWT
-        .post(`${API_URL.GET_MERCHANT_AGREEMENT_BY_LOGIN_ID}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-
-  export const removeDocumentSlice = createAsyncThunk(
-    "merchnatzone/removeDocumentSlice",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceJWT
-        .put(`${API_URL.REMOVE_AGREEMENT}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.VIEW_COMMENTS_LIST}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
 
 
-  export const updatedCommentList = createAsyncThunk(
-    "merchnatzone/updatedCommentList",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceJWT
-        .post(`${API_URL.COMMENTS_BOX}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-  ////////////////////////////////////////////////// Rate mapping api start here
-
-  export const merchantZoneMappingSlice = createSlice({
-    name: "merchnatzone",
-    initialState,
-    reducers: {},
-     
-    extraReducers: {
-      [riskCategory.pending]: (state, action) => {
-        state.status = "pending";
-        
-      },
-      [riskCategory.fulfilled]: (state, action) => {
-       
-
-      },
-      [riskCategory.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      // ------------------------------------ For Comments ---------------------
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
 
 
-      [forSavingComments.pending]: (state, action) => {
-        state.status = "pending";
-        
-      },
-      [forSavingComments.fulfilled]: (state, action) => {
-        // state.comments = action.payload
+export const forSavingDocument = createAsyncThunk(
+  "merchnatzone/forSavingDocument",
+  async (requestParam) => {
 
-       
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.UPLOAD_E_AGREEMENT}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
 
-      },
-      [riskCategory.rejected]: (state, action) => {
-        forSavingComments = "failed";
-        state.error = action.error.message;
-      }, 
-      
-    
-    }
-  });
-  export const {
-   
-  } = merchantZoneMappingSlice.actions;
-  export const merchantZoneMappingReducer = merchantZoneMappingSlice.reducer;
-  
+
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+export const forGettingDocumentList = createAsyncThunk(
+  "merchnatzone/forGettingDocumentList",
+  async (requestParam) => {
+
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.GET_MERCHANT_AGREEMENT_BY_LOGIN_ID}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
+
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+export const removeDocumentSlice = createAsyncThunk(
+  "merchnatzone/removeDocumentSlice",
+  async (requestParam) => {
+
+    const response = await axiosInstanceJWT
+      .put(`${API_URL.REMOVE_AGREEMENT}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
+
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+
+export const updatedCommentList = createAsyncThunk(
+  "merchnatzone/updatedCommentList",
+  async (requestParam) => {
+
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.COMMENTS_BOX}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
+
+
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+////////////////////////////////////////////////// Rate mapping api start here
+
+export const merchantZoneMappingSlice = createSlice({
+  name: "merchnatzone",
+  initialState,
+  reducers: {},
+
+  extraReducers: {
+    [riskCategory.pending]: (state, action) => {
+      state.status = "pending";
+
+    },
+    [riskCategory.fulfilled]: (state, action) => {
+
+
+    },
+    [riskCategory.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    // ------------------------------------ For Comments ---------------------
+
+
+    [forSavingComments.pending]: (state, action) => {
+      state.status = "pending";
+
+    },
+    [forSavingComments.fulfilled]: (state, action) => {
+      // state.comments = action.payload
+
+
+
+    },
+    [riskCategory.rejected]: (state, action) => {
+      forSavingComments = "failed";
+      state.error = action.error.message;
+    },
+
+
+  }
+});
+export const {
+
+} = merchantZoneMappingSlice.actions;
+export const merchantZoneMappingReducer = merchantZoneMappingSlice.reducer;
