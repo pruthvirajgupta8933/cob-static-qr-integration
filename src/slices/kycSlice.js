@@ -7,6 +7,7 @@ import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 import { merchantKycService } from "../services/kyc/merchant-kyc";
 import { setMessage } from "./message";
+import { getErrorMessage } from "../utilities/errorUtils";
 
 const initialState = {
   isLoadingForpanDetails: false,
@@ -172,13 +173,7 @@ export const updateContactInfo = createAsyncThunk(
       const response = await merchantKycService.updateContactInfo(requestParam);
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString() ||
-        error.request.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }

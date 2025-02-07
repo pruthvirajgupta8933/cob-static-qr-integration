@@ -61,7 +61,7 @@ function ContactInfoKyc(props) {
     email_id: KycList?.emailId || "",
 
     // ID proof verification
-    id_proof_type: KycList?.id_proof_type ?? 1,
+    id_proof_type: KycList?.id_proof_type || 1,
     id_number: KycList?.aadharNumber || "",
     oldIdNumber: KycList?.aadharNumber || "",
     aadhaarOtpDigit: "",
@@ -76,7 +76,11 @@ function ContactInfoKyc(props) {
     oldContactNumber: KycList?.contactNumber || "",
     contactOtpDigit: "",
     isContactOtpSend: false,
+    developer_name: KycList?.developer_name || "",
+    developer_contact: KycList?.developer_contact || "",
   };
+
+
 
 
   const validationSchema = Yup.object().shape({
@@ -167,6 +171,19 @@ function ContactInfoKyc(props) {
     isIdProofVerified: Yup.string()
       .required("Please verify the ID Proof")
       .nullable(),
+
+    developer_contact: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .min(10, "Phone number is not valid")
+      .max(10, "Only 10 digits are allowed")
+      .nullable(),
+
+    developer_name: Yup.string()
+      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+      .max(100, "Maximum 50 characters are allowed")
+      .nullable(),
+
   });
 
   // const validationSchema = Yup.object().shape({
@@ -275,6 +292,8 @@ function ContactInfoKyc(props) {
         modified_by: loginId,
         aadhar_number: values.id_number,
         id_proof_type: idType,
+        developer_contact: values.developer_contact,
+        developer_name: values.developer_name
       })
     )
       .then((res) => {
@@ -285,7 +304,7 @@ function ContactInfoKyc(props) {
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
           setIsDisable(false);
-          toast.success(res.payload?.message);
+          toast.success(res.payload?.detail || res.payload?.message);
 
           if (props?.role?.merchant) {
             dispatch(kycUserListForMerchant());
@@ -295,9 +314,10 @@ function ContactInfoKyc(props) {
 
           dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
         } else {
-          toast.error(res.payload);
-          toast.error(res.payload?.message);
-          toast.error(res.payload?.detail);
+
+          toastConfig.errorToast(res.payload);
+          // toast.error(res.payload?.detail || res.payload?.message);
+          // toast.error();
           setIsDisable(false);
         }
       })
@@ -578,6 +598,7 @@ function ContactInfoKyc(props) {
       IdProofName = proofIdList.data?.find(
         (item) => item?.id === 1
       );
+      setIdType(1);
 
     } else {
       setIdProofInputToggle(false);
@@ -837,6 +858,48 @@ function ContactInfoKyc(props) {
                 <ErrorMessage name="isEmailVerified">
                   {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-lg-6 col-sm-12 col-md-12">
+                <label
+                  className="col-form-label mt-0 p-2"
+                  data-tip={tooltipData.contact_person_name}
+                >
+                  Developer Name
+                </label>
+                <Field
+                  type="text"
+                  name="developer_name"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
+                />
+                <ErrorMessage name="developer_name">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
+              </div>
+
+              <div className="col-lg-6 col-sm-12 col-md-12">
+                <label
+                  className="col-form-label mt-0 p-2"
+                  data-tip={tooltipData.contact_person_name}
+                >
+                  Developer Contact Number
+                </label>
+                <Field
+                  type="text"
+                  name="developer_contact"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
+                />
+                <ErrorMessage name="developer_contact">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
               </div>
             </div>
 
