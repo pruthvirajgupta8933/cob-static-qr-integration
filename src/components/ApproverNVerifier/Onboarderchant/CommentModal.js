@@ -181,7 +181,7 @@ const CommentModal = (props) => {
 
     return (
       <div className="container-fluid">
-        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.docData?.file_path, documentName: selectViewDoc?.file_name }} />}
+        {docPreviewToggle && <DocViewerComponent modalToggle={docPreviewToggle} fnSetModalToggle={setDocPreviewToggle} selectViewDoc={{ documentUrl: selectViewDoc?.docData?.file_path, documentName: selectViewDoc?.docData?.file_name }} />}
         <div>
           <p className="m-auto">
             Merchant Name: {props?.commentData?.clientName}
