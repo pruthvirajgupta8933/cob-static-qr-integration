@@ -107,6 +107,8 @@ import CreateEMandateByApi from "../../../subscription_components/Create-E-Manda
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
+import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -912,6 +914,24 @@ function DashboardMainContent() {
                 Component={MerchantSummary}
                 roleList={{ bank: true }}
               />
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/payment-link-solution`}
+                roleList={{ merchant: true }}
+                Component={PaylinkDashboard}
+              >
+                <PaylinkDashboard />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-link-generated`}
+                roleList={{ merchant: true }}
+                Component={TotalLinkGenrated}
+              >
+                <TotalLinkGenrated />
+              </AuthorizedRoute>
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
