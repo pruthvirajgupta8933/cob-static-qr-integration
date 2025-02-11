@@ -4,7 +4,7 @@ import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities
 import { clearLocalStore } from "../utilities/clearLocalStorage";
 
 
-const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social, zone_code }) => {
+const register = ({ fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, created_by, roleId, plan_details, is_social, zone_code, developer_contact, developer_name }) => {
   const requestData = {
     name: fullname,
     mobileNumber: mobileNumber,
@@ -17,6 +17,8 @@ const register = ({ fullname, mobileNumber, email, business_cat_code, password, 
     roleId: roleId,
     plan_details: plan_details,
     is_social: is_social,
+    developer_contact: developer_contact || "",
+    developer_name: developer_contact || ""
   };
   if (zone_code) {
     requestData.zone_code = zone_code;

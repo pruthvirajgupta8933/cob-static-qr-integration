@@ -18,12 +18,12 @@ function MerchantContactInfo(props) {
 
   let isVerified =
     KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() ===
-    KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase()
+      KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase()
       ? true
       : false;
   let isRejected =
     KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() ===
-    KYC_STATUS_REJECTED?.toString()?.toLocaleLowerCase()
+      KYC_STATUS_REJECTED?.toString()?.toLocaleLowerCase()
       ? true
       : false;
 
@@ -88,6 +88,7 @@ function MerchantContactInfo(props) {
       }
     }
   };
+
   const inputFields = [
     { label: "Contact Person Name", value: selectedUserData?.name },
     {
