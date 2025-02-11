@@ -55,6 +55,7 @@ const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 
 const API_LIVE = {
   BASE_URL_COB: url,
+
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
@@ -471,6 +472,7 @@ export const PAYMENT_LINK = {
 }
 
 export const E_NACH_URL = {
+  BASE_URL_E_NACH: subscriptionUrl,
   MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`

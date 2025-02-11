@@ -14,6 +14,7 @@ import DateFormatter from '../../utilities/DateConvert';
 import CustomLoader from '../../_components/loader';
 // import TableWithPagination from '../../utilities/tableWithPagination/TableWithPagination';
 import TableWithPagination from "../../utilities/tableWithPagination/TableWithPagination"
+import { E_NACH_URL } from '../../config';
 
 
 const RegistrationHistory = () => {
@@ -30,6 +31,9 @@ const RegistrationHistory = () => {
     const { user } = useSelector((state) => state.auth);
     const { clientCode } = user.clientMerchantDetailsList[0];
     const [viewDataLoader, setViewDataLoader] = useState(false)
+
+
+
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
     if (splitDate[1].length === 1) {
@@ -211,50 +215,51 @@ const RegistrationHistory = () => {
         'Max Amount',
         'Purpose',
         'Amount Type',
-        // 'View Transaction Details'
+        'Registration Link'
+
     ]
 
-    const renderRow = (mandate, index) => (
+    const renderRow = (mandate, index) => {
+        const mandateRegisterdLink = `${E_NACH_URL.BASE_URL_E_NACH}api/mandate/bank-details/?registration_id=${mandate.registration_id}`;
 
-        <tr key={index} className="text-nowrap">
-            <td>{index + 1}</td>
+        const copyToClipboard = (link) => {
+            navigator.clipboard.writeText(link)
+                .then(() => alert("Link copied to clipboard!"))
+                .catch((err) => console.error("Failed to copy:", err));
+        };
 
-            <td>{mandate.customer_email_id}</td>
-            <td>{mandate.customer_mobile}</td>
-            <td >{mandate.customer_name}</td>
-            <td>{mandate.registration_id}</td>
-            <td >{mandate.registration_status}</td>
-            <td >{mandate.consumer_id}</td>
-            <td >{mandate.account_holder_name}</td>
-            <td>{mandate.account_number}</td>
-            <td>{mandate.ifsc_code}</td>
-            <td>{mandate.account_type}</td>
-            <td >{DateFormatter(mandate.created_on)}</td>
-            <td >{mandate.start_date}</td>
-            <td>{mandate.end_date}</td>
-            <td>{mandate.frequency}</td>
-            <td>{mandate.max_amount}</td>
-            <td>{mandate.purpose}</td>
-            <td>{mandate.amount_type}</td>
-            {/* <td >
-                <Link
-                    to={{
-                        pathname: '/dashboard/transaction-history',
-                        state: { registrationId: mandate.registration_id },
-                    }}
-                    className={`btn button_color btn-sm ${mandate.registration_status.toLowerCase() !== "success" ? "disabled" : ""}`}
-                    onClick={(e) => {
-                        if (mandate.registration_status.toLowerCase() !== "success") {
-                            e.preventDefault();
-                        }
-                    }}
-                >
-                    View Transaction
-                </Link>
-            </td> */}
-        </tr>
+        return (
+            <tr key={index} className="text-nowrap">
+                <td>{index + 1}</td>
+                <td>{mandate.customer_email_id}</td>
+                <td>{mandate.customer_mobile}</td>
+                <td>{mandate.customer_name}</td>
+                <td>{mandate.registration_id}</td>
+                <td>{mandate.registration_status}</td>
+                <td>{mandate.consumer_id}</td>
+                <td>{mandate.account_holder_name}</td>
+                <td>{mandate.account_number}</td>
+                <td>{mandate.ifsc_code}</td>
+                <td>{mandate.account_type}</td>
+                <td>{DateFormatter(mandate.created_on)}</td>
+                <td>{mandate.start_date}</td>
+                <td>{mandate.end_date}</td>
+                <td>{mandate.frequency}</td>
+                <td>{mandate.max_amount}</td>
+                <td>{mandate.purpose}</td>
+                <td>{mandate.amount_type}</td>
+                <td>
+                    <button
+                        className="btn cob-btn-primary  approve  text-white btn-sm"
+                        onClick={() => copyToClipboard(mandateRegisterdLink)}
+                    >
+                        <i className="fa fa-clone me-1"></i>
+                    </button>
+                </td>
+            </tr>
+        );
+    };
 
-    )
     return (
         <div className='container-fluid mt-4'>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
