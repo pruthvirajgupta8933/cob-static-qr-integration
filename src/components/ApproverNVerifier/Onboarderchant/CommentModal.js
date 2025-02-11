@@ -30,8 +30,10 @@ const CommentModal = (props) => {
 
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state?.auth);
+  const { auth, zone } = useSelector((state) => state);
+  const { user } = auth
   const { loginId } = user;
+  const { commentData } = zone
 
 
   const initialValues = {
@@ -53,17 +55,17 @@ const CommentModal = (props) => {
         client_code: props?.commentData?.clientCode,
       })
     )
-      .then((resp) => {
-        setCommentsList(resp?.payload?.Data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    //   .then((resp) => {
+    //     setCommentsList(resp?.payload?.Data);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
 
   useEffect(() => {
     commentUpdate();
-  }, [props]);
+  }, []);
 
   const aRef = useRef(null);
   const editFormRef = useRef(null)
@@ -251,8 +253,8 @@ const CommentModal = (props) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {(commentsList?.length === undefined ||
-                          commentsList?.length === 0) && (
+                        {(commentData?.data?.length === undefined ||
+                          commentData?.data?.length === 0) && (
                             <tr>
                               <td colSpan="5">
                                 <h6 className="text-center">
@@ -262,57 +264,55 @@ const CommentModal = (props) => {
                             </tr>
                           )}
 
-                        {(commentsList?.length !== undefined ||
-                          commentsList?.length > 0) &&
-                          Array.isArray(commentsList)
-                          ? commentsList?.map((commentData, i) => (
-                            <tr key={uuidv4()} >
-                              <td>
-                                {commentData?.comment_by_user_name.toUpperCase()}
-                              </td>
+                        {(commentData?.data?.length !== undefined || commentData?.data?.length > 0) && commentData?.data?.map((commentData, i) => (
+                          <tr key={uuidv4()} >
+                            <td>
+                              <p>{commentData?.comment_by_user_name.toUpperCase()}</p>
+                              {commentData?.is_edited && <span className="fw-light text-secondary text-decoration-underline">Edited</span>}
 
-                              <td>
-                                {dateManipulate(commentData?.comment_on)}
-                              </td>
-                              <td>{commentData?.merchant_tab ?? commentData?.comment_type}</td>
-                              <td
-                                style={{ overflowWrap: "anywhere" }}
-                              >
+                            </td>
 
-                                {commentData?.comments}
-                              </td>
-                              <td>
-                                {commentData?.file_path !== null &&
-                                  isUrlValid(commentData?.file_path) &&
-                                  fileTypeCheck(commentData?.file_path) && (
-                                    <p
-                                      className="text-primary cursor_pointer text-decoration-underline"
-                                      rel="noreferrer"
-                                      onClick={() => docModalToggle(commentData)}
-                                    >
-                                      View Document
-                                    </p>
-                                  )}
-                              </td>
+                            <td>
+                              {dateManipulate(commentData?.comment_on)}
+                            </td>
+                            <td>{commentData?.merchant_tab ?? commentData?.comment_type}</td>
+                            <td
+                              style={{ overflowWrap: "anywhere" }}
+                            >
 
-                              <td>
-                                {loginId?.toString() === commentData?.comment_by &&
+                              {commentData?.comments}
+                            </td>
+                            <td>
+                              {commentData?.file_path !== null &&
+                                isUrlValid(commentData?.file_path) &&
+                                fileTypeCheck(commentData?.file_path) && (
+                                  <p
+                                    className="text-primary cursor_pointer text-decoration-underline"
+                                    rel="noreferrer"
+                                    onClick={() => docModalToggle(commentData)}
+                                  >
+                                    View Document
+                                  </p>
+                                )}
+                            </td>
 
-                                  (
-                                    <>
-                                      {updateData?.isEdit && updateData?.id === commentData?.id ?
-                                        <button className="btn btn-sm" onClick={() => editHandler({}, false)} ariaLabel="Close"><i className="fa fa-close "></i></button>
-                                        :
-                                        <button className={`btn btn-sm ${editToggle?.toggle === true && 'd-none'}`} onClick={() => editHandler(commentData, true)} ariaLabel="Edit"><i className="fa fa-pencil"></i></button>
-                                      }
-                                    </>
-                                  )
-                                }
+                            <td>
+                              {loginId?.toString() === commentData?.comment_by &&
 
-                              </td>
-                            </tr>
-                          ))
-                          : []}
+                                (
+                                  <>
+                                    {updateData?.isEdit && updateData?.id === commentData?.id ?
+                                      <button className="btn btn-sm" onClick={() => editHandler({}, false)} ariaLabel="Close"><i className="fa fa-close "></i></button>
+                                      :
+                                      <button className={`btn btn-sm ${editToggle?.toggle === true && 'd-none'}`} onClick={() => editHandler(commentData, true)} ariaLabel="Edit"><i className="fa fa-pencil"></i></button>
+                                    }
+                                  </>
+                                )
+                              }
+
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
