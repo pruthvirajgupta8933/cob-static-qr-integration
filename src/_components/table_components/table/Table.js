@@ -13,35 +13,35 @@ const Table = (props) => {
     scrollY: true,
   };
   const [pageCount, setPageCount] = useState(
-    Math.ceil(props.dataCount / props.pageSize)
+    Math.ceil(props?.dataCount / props?.pageSize)
   );
-  const [currentPage, setCurrentPage] = useState(props.currentPage || 1);
+  const [currentPage, setCurrentPage] = useState(props?.currentPage || 1);
 
   useEffect(() => {
-    setPageCount(Math.ceil(props.dataCount / props.pageSize));
-  }, [props.dataCount, props.pageSize]);
+    setPageCount(Math.ceil(props?.dataCount / props?.pageSize));
+  }, [props?.dataCount, props?.pageSize]);
 
   useEffect(() => {
-    setCurrentPage(props.currentPage);
-  }, [props.currentPage]);
+    setCurrentPage(props?.currentPage);
+  }, [props?.currentPage]);
 
   const handlePageClick = (selectedItem) => {
     const newPage = selectedItem.selected + 1;
     setCurrentPage(newPage);
-    props.changeCurrentPage(newPage);
+    props?.changeCurrentPage(newPage);
   };
 
   return (
     <>
       <DataTable
-        className="table table-bordered"
-        columns={props.row}
-        data={props.data}
+        className="table table-bordered p-0"
+        columns={props?.row}
+        data={props?.data}
         sortIcon={<i className="fa fa-arrow-up ml-1"></i>}
         fixedHeader={fixedHeaderFooter}
-        onRowClicked={props.onRowClick}
-        // pagination
-        // selectableRows
+        onRowClicked={props?.onRowClick}
+      // pagination
+      // selectableRows
       />{" "}
       {props?.dataCount > 0 && (
         <ReactPaginate

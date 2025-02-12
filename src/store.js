@@ -36,6 +36,7 @@ import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
+import { ckycrReducer } from "./components/ApproverNVerifier/backend-kyc/slice/ckycr.slice";
 
 const reducer = {
   auth: authReducer,
@@ -68,6 +69,7 @@ const reducer = {
   // approver
   approverDashboard: approverDashboardSlice,
   rateMappingSlice: rateMappingSlice,
+  ckycrReducer: ckycrReducer,
 
   //merchantOnboardByOps
   merchantReferralOnboardReducer: merchantReferralOnboardReducer,
