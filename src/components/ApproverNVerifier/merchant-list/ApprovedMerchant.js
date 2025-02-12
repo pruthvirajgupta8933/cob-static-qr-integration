@@ -9,16 +9,19 @@ import CommentModal from "../Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import DateFormatter from "../../../utilities/DateConvert";
 import AgreementDocModal from "../Onboarderchant/AgreementDocModal";
+import CkycrModal from "../backend-kyc/ckycr/CkycrModal";
 
 function ApprovedMerchant({ commonRows }) {
   const [searchText, setSearchText] = useState("");
   const [commentId, setCommentId] = useState({});
+  const [ckycrData, setCkycrData] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [openCkycrModal, setOpenCkycrModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  // const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [onboardType, setOnboardType] = useState("");
 
@@ -41,9 +44,7 @@ function ApprovedMerchant({ commonRows }) {
     }
   }, [approvedMerchantList]); //
 
-  function capitalizeFirstLetter(param) {
-    return param?.charAt(0).toUpperCase() + param?.slice(1);
-  }
+
 
   const ApprovedTableData = [
     ...commonRows,
@@ -116,15 +117,16 @@ function ApprovedMerchant({ commonRows }) {
     {
       id: "17",
       name: "Action",
+      width: "200px",
       selector: (row) => row.actionStatus,
       cell: (row) => (
-        <div>
+        <div className="d-flex">
           {roles?.verifier === true ||
             roles?.approver === true ||
             roles?.viewer === true ? (
             <button
               type="button"
-              className="approve text-white"
+              className="approve text-white m-1"
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);
@@ -138,6 +140,23 @@ function ApprovedMerchant({ commonRows }) {
           ) : (
             <></>
           )}
+
+          {(roles?.verifier === true ||
+            roles?.approver === true) && (
+              <button
+                type="button"
+                className="approve text-white m-1"
+                onClick={() => {
+                  setOpenCkycrModal(true);
+                  setCkycrData(row)
+                }}
+
+                disabled={row?.clientCode === null ? true : false}
+              >
+                CKYCR
+              </button>
+            )}
+
         </div>
       ),
     },
@@ -216,6 +235,13 @@ function ApprovedMerchant({ commonRows }) {
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Approved Tab"}
+          />
+        )}
+        {openCkycrModal && (
+          <CkycrModal
+            rowData={ckycrData}
+            isModalOpen={openCkycrModal}
+            setModalState={setOpenCkycrModal}
           />
         )}
       </div>

@@ -139,7 +139,7 @@ const API_LIVE = {
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
-  GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
+  // GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/", not in used
 
   /* PAYLINK */
   GET_CUSTOMERS: `${payLinkAPIURL}/getCustomers/`,
@@ -443,6 +443,13 @@ const API_LIVE = {
 
   GET_INFORMATION_BULLETIN: `${url}/get-information-bulletin/?order_by=-id`,
 };
+
+
+export const BACKEND_USER_API = {
+  save_ckycr: `${kyc_url}/kyc/ckycr/save-ckycr/`,
+  get_ckycr: `${kyc_url}/kyc/ckycr/get-ckycr/`
+}
+
 
 const B2B_API_LIVE = {
   challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`,
