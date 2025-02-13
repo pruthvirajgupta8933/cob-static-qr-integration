@@ -107,6 +107,8 @@ import CreateEMandateByApi from "../../../subscription_components/Create-E-Manda
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import TransactionReport from "../../../subscription_components/Transaction-Report/TransactionReport";
+import CreateBulkEmandate from "../../../subscription_components/Create-Bulk-E-Mandate/CreateBulkEmandate";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -746,6 +748,26 @@ function DashboardMainContent() {
               >
                 <RegistrationHistory />
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-report`}
+                Component={TransactionReport}
+                roleList={{ merchant: true }}
+              >
+                <TransactionReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-bulk-mandate`}
+                Component={CreateBulkEmandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateBulkEmandate />
+              </AuthorizedRoute>
+
+
 
 
 

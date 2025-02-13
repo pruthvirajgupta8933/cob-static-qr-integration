@@ -46,7 +46,7 @@ const TableWithPagination = ({
                     </div>
                 )}
 
-                <div className="table-responsive scroll overflow-auto" style={{ height: "90vh" }}>
+                <div className="table-responsive scroll overflow-auto">
                     <table className="table ">
                         <thead className="table-primary">
                             {apiHasData && (

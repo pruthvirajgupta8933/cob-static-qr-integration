@@ -8,3 +8,8 @@ export const getAllMandateApi = (requestParam) => {
     );
 };
 
+export const transactionHistoryByuserApi = (requestParam) => {
+
+    return axiosInstanceEmandateAuthApiKey.post(`${E_NACH_URL.DEBIT_TRANSACTION_HISTORY}?order_by=-id&page=${requestParam.page}&page_size=${requestParam.page_size}`, requestParam)
+}
+

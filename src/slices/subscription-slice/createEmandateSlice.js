@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { mandateByApi } from "../../services/subscription-service/createEmandateByApi.service";
+import { mandateByApi, bulkCreateEmandateApi } from "../../services/subscription-service/createEmandateByApi.service";
 
 
 
@@ -15,6 +15,26 @@ export const createEmandateByApi = createAsyncThunk(
     async (object, thunkAPI) => {
         try {
             const data = await mandateByApi(object);
+            return data
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString() || error.request.toString();
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+
+export const bulkCreateEmandate = createAsyncThunk(
+    "bulkCreateEmandateApi/bulkCreateEmandateApi",
+    async (object, thunkAPI) => {
+        try {
+            const data = await bulkCreateEmandateApi(object);
             return data
         } catch (error) {
             const message =
