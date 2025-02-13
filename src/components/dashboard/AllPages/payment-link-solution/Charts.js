@@ -10,12 +10,13 @@ import {
     PieChart,
     Pie,
     Cell,
-    Legend
+
 } from "recharts";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const lineChartData = [
-    { month: "Jan", value: 16 },
-    { month: "Feb", value: 18.2 },
+    { month: "Jan 2023", value: 16 },
+    { month: "Feb 2024", value: 18.2 },
     { month: "Mar", value: 23.1 },
     { month: "Apr", value: 27.9 },
     { month: "May", value: 32.2 },
@@ -29,11 +30,46 @@ const lineChartData = [
 ];
 
 const pieChartData = [
-    { name: "UPI", value: 1000, color: "#ff6666" },
-    { name: "Cards", value: 1500, color: "#ffcc66" },
-    { name: "Wallet", value: 3000, color: "#66b3ff" },
-    { name: "Net Banking", value: 2000, color: "#99ff99" }
+    { name: "UPI", value: 3000, color: "#F93C65" },
+    { name: "Cards", value: 1500, color: "#F89131" },
+    { name: "Wallet", value: 1000, color: "#008ADE" },
+    { name: "Net Banking", value: 2000, color: "#029053" }
 ];
+
+const CustomLegend = ({ data }) => {
+    return (
+        <div className="d-inline-flex flex-wrap gap-2 mt-3">
+            {data.map((entry, index) => (
+                <div
+                    key={index}
+                    className="d-inline-flex align-items-center border rounded px-3 py-2 gap-2"
+                    style={{
+                        borderColor: entry.color,
+                        borderWidth: "2px",
+                        borderStyle: "solid",
+                        backgroundColor: "#fff",
+                        color: entry.color,
+                        fontWeight: "bold",
+                    }}
+                >
+
+                    <span
+                        className="rounded-circle d-inline-block"
+                        style={{
+                            width: "12px",
+                            height: "12px",
+                            backgroundColor: entry.color,
+                        }}
+                    ></span>
+
+                    {entry.name}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+
 
 const Charts = ({ chartType }) => {
     if (chartType === "line") {
@@ -52,26 +88,28 @@ const Charts = ({ chartType }) => {
 
     if (chartType === "donut") {
         return (
-            <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                    <Pie
-                        data={pieChartData}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        fill="#82ca9d"
-                        label
-                    >
-                        {pieChartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>
-                    <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-                </PieChart>
-            </ResponsiveContainer>
+            <div className="w-100 text-center  p-3">
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                        <Pie
+                            data={pieChartData}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={60}
+                            outerRadius={100}
+                            fill="#82ca9d"
+                            label
+                        >
+                            {pieChartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+                <CustomLegend data={pieChartData} />
+            </div>
         );
     }
 

@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { getPayMentLink } from "../../../../../slices/paymentLink/paymentLinkSlice";
 import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
+import FormPaymentLink from "../../payment-links/FormPaymentLink";
+import CreatePaymentLink from "./CreatePaymentLinkModal";
 
 
 
@@ -34,6 +36,8 @@ const TotalLinkGenrated = () => {
     const { clientCode } = clientMerchantDetailsList[0];
     const [showFilter, setShowFilter] = useState(false);
     const filterRef = useRef(null);
+    const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
+    const [showAddPayerModal, setShowAddPayerModal] = useState(false);
 
 
     const [copied, setCopied] = useState(false);
@@ -344,107 +348,49 @@ const TotalLinkGenrated = () => {
     // console.log(state)
     return (
         <React.Fragment>
-
-            {/* {state?.paylinkData?.openModal && <FormPaymentLink componentState={state.paylinkData} dispatchFn={reducerDispatch} />} */}
-
-            {/* <section className="">
-                <div className="container-fluid">
-
-                    <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} />
-                    <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={handleSubmit} />
-
-
-
-                    {filterData?.length !== 0 && (
-                        <div className="row">
-                            <div className={`col-lg-3 mt-3`}>
-
-                                <label>Search</label>
-                                <input
-                                    className="form-control"
-                                    onChange={getSearchTerm}
-                                    value={searchTerm}
-                                    type="text"
-                                    placeholder="Search Here"
-                                />
-                            </div>
-                            <div className={`col-lg-3 mt-3`}>
-                                <CountPerPageFilter
-                                    pageSize={pageSize}
-                                    dataCount={dataCount}
-                                    changePageSize={changePageSize}
-                                />
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </section>
-
-            <section className="">
-
-                <div className="container-fluid  mt-3">
-                    <div className="scroll overflow-auto">
-                        {data?.length === 0 ? "" : <h6 className="mt-3">Total Count : {dataCount}</h6>}
-                        {data?.length === 0 && <h5 className="text-center font-weight-bold mt-5">
-                            No Data Found
-                        </h5>}
-                        {!loadingState && filterData?.length !== 0 && (
-                            <Table
-                                row={rowData}
-                                data={data}
-                                dataCount={dataCount}
-                                pageSize={pageSize}
-                                currentPage={currentPage}
-                                changeCurrentPage={changeCurrentPage}
-                            />
-                        )}
-                    </div>
-                    <CustomLoader loadingState={loadingState} />
-                </div>
-
-
-            </section> */}
             <section className="">
                 <div className="container-fluid">
-                    <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} />
+                    <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} setShowCreatePaymentModal={setShowCreatePaymentModal} showCreatePaymentModal={showCreatePaymentModal} setShowAddPayerModal={setShowAddPayerModal} showAddPayerModal={showAddPayerModal} />
                     <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={handleSubmit} />
                 </div>
 
                 <section className="">
                     <div className="container-fluid mt-3">
-
                         <div className="card">
                             <div className="card-body">
-                                {filterData?.length !== 0 && (
-                                    <div className="d-flex justify-content-end mb-3 gap-3">
-                                        {/* Search Input */}
-                                        <div className="d-flex align-items-center mt-4">
-                                            {/* <label className="mr-2 mb-0">Search</label> */}
-                                            <input
-                                                className="form-control"
-                                                onChange={getSearchTerm}
-                                                value={searchTerm}
-                                                type="text"
-                                                placeholder="Search Here"
-                                                style={{ width: "250px" }} // You can adjust the width here
+                                <div className="row align-items-center mb-3">
+                                    <div className="col-md-6">
+                                        <h5 className="mb-0">Total Links Generated</h5>
+                                    </div>
+                                    {filterData?.length !== 0 && (
+                                        <div className="col-md-6 d-flex justify-content-end gap-3 ">
+                                            <div className="d-flex align-items-center mt-4">
+                                                <input
+                                                    className="form-control"
+                                                    onChange={getSearchTerm}
+                                                    value={searchTerm}
+                                                    type="text"
+                                                    placeholder="Search Here"
+                                                    style={{ width: "250px" }}
+                                                />
+                                            </div>
+                                            <CountPerPageFilter
+                                                pageSize={pageSize}
+                                                dataCount={dataCount}
+                                                currentPage={currentPage}
+                                                changePageSize={changePageSize}
+                                                changeCurrentPage={changeCurrentPage}
                                             />
                                         </div>
-                                        <CountPerPageFilter
-                                            pageSize={pageSize}
-                                            dataCount={dataCount}
-                                            changePageSize={changePageSize}
-                                        />
-                                    </div>)}
-
+                                    )}
+                                </div>
 
                                 <div className="scroll overflow-auto">
                                     {data?.length === 0 ? (
-                                        <h5 className="text-center font-weight-bold mt-5">
-                                            No Data Found
-                                        </h5>
+                                        <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
                                     ) : (
                                         <>
-                                            <h6 className="mt-3">Total Count: {dataCount}</h6>
+                                            {/* <h6 className="mt-3">Total Count: {dataCount}</h6> */}
                                             {!loadingState && filterData?.length !== 0 && (
                                                 <Table
                                                     row={rowData}
@@ -463,7 +409,9 @@ const TotalLinkGenrated = () => {
                         <CustomLoader loadingState={loadingState} />
                     </div>
                 </section>
+
             </section>
+
 
 
         </React.Fragment>

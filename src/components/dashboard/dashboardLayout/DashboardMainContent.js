@@ -109,6 +109,7 @@ import RegistrationHistory from "../../../subscription_components/Registartion-h
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
 import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
 import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
+import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -931,6 +932,15 @@ function DashboardMainContent() {
                 Component={TotalLinkGenrated}
               >
                 <TotalLinkGenrated />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-payers`}
+                roleList={{ merchant: true }}
+                Component={TotalPayers}
+              >
+                <TotalPayers />
               </AuthorizedRoute>
 
               <Route path={`${path}/*`} component={UrlNotFound}>
