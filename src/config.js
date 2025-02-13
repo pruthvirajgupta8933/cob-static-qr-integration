@@ -477,7 +477,7 @@ export const E_NACH_URL = {
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
   DEBIT_TRANSACTION_HISTORY: `${subscriptionUrl}api/transaction/transaction-history-by-user/`,
-  BULK_CREATE_MANDATE: `${subscriptionUrl}/api/mandate/bulk-create-mandates/`
+  BULK_CREATE_MANDATE: `${subscriptionUrl}api/mandate/bulk-create-mandates/`
 }
 
 
