@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { bulkCreateEmandate } from '../../slices/subscription-slice/createEmandateSlice'
+import toast from 'react-hot-toast'
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -16,12 +17,18 @@ const CreateBulkEmandate = () => {
     const dispatch = useDispatch()
 
     const handleSubmit = async (values) => {
-        console.log("values", values)
+
         const formData = new FormData()
         formData.append('file', values.file)
 
         try {
-            await dispatch(bulkCreateEmandate(formData))
+            await dispatch(bulkCreateEmandate(formData)).then((res) => {
+                console.log("res", res)
+
+                if (res.meta.requestStatus === 'fulfilled') {
+                    toast.success(res.payload.message)
+                }
+            })
         } catch (error) {
             console.error('Error uploading file:', error)
         }
