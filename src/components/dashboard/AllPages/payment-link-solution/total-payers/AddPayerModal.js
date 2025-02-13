@@ -11,6 +11,7 @@ import { convertToFormikSelectJson } from '../../../../../_components/reuseable_
 const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
 
 
+
     const { user } = useSelector((state) => state.auth);
     const [disable, setDisable] = useState(false)
     const [payerTypeList, setPayerTypeList] = useState([])
@@ -53,6 +54,7 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
     }
 
     const onSubmit = async (values) => {
+
         setDisable(true)
         try {
             let response = {}
@@ -62,14 +64,19 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
                     id: editPayerModal.id
                 }
                 response = await paymentLinkService.editPayer(editData)
+                toastConfig.successToast(response.data?.message ?? response.data?.detail)
+
             } else {
                 response = await paymentLinkService.addPayer(values)
+                modalCloseHandler()
+                toastConfig.successToast(response.data?.message ?? response.data?.detail)
+
             }
             loadUserFn()
 
-            toastConfig.successToast(response.data?.message ?? response.data?.detail)
+
             setDisable(false)
-            modalCloseHandler()
+
         } catch (error) {
             setDisable(false)
             console.log(error.response)

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Formik, Form, Field, useFormikContext } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Classes from "./paymentLinkSolution.module.css";
 import FormikController from "../../../../_components/formik/FormikController";
@@ -12,13 +12,45 @@ const validationSchema = Yup.object().shape({
         .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
 });
 
-// Format today's date properly for Formik's initialValues
+
 const today = moment().format("YYYY-MM-DD");
 
-const initialValues = {
-    fromDate: today,
-    toDate: today,
+
+const getDateRange = (option) => {
+    switch (option) {
+        case "today":
+            return { fromDate: today, toDate: today };
+        case "yesterday":
+            return {
+                fromDate: moment().subtract(1, "days").format("YYYY-MM-DD"),
+                toDate: moment().subtract(1, "days").format("YYYY-MM-DD"),
+            };
+        case "lastWeek":
+            return {
+                fromDate: moment().subtract(7, "days").format("YYYY-MM-DD"),
+                toDate: today,
+            };
+        case "lastMonth":
+            return {
+                fromDate: moment().subtract(1, "months").startOf("month").format("YYYY-MM-DD"),
+                toDate: moment().subtract(1, "months").endOf("month").format("YYYY-MM-DD"),
+            };
+        case "lastSixMonths":
+            return {
+                fromDate: moment().subtract(6, "months").startOf("month").format("YYYY-MM-DD"),
+                toDate: today,
+            };
+        case "financialYear":
+            return {
+                fromDate: moment().month(3).startOf("month").format("YYYY-MM-DD"), // April 1st
+                toDate: today,
+            };
+        default:
+            return { fromDate: today, toDate: today };
+    }
 };
+
+const initialValues = getDateRange("today");
 
 const FilterModal = ({ show, onClose, filterRef, onApply }) => {
     const modalRef = useRef(null);
@@ -61,14 +93,28 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                         <div className="d-flex flex-wrap gap-2">
                             {[
                                 { id: "today", label: "Today" },
+                                { id: "yesterday", label: "Yesterday" },
                                 { id: "lastWeek", label: "Last Week" },
                                 { id: "lastMonth", label: "Last Month" },
                                 { id: "lastSixMonths", label: "Last Six Months" },
                                 { id: "financialYear", label: "Financial Year" },
                             ].map(({ id, label }) => (
                                 <div className="form-check form-check-inline" key={id}>
-                                    <Field className="form-check-input" type="radio" name="dateRange" id={id} value={id} />
-                                    <label className="form-check-label" htmlFor={id}>{label}</label>
+                                    <Field
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="dateRange"
+                                        id={id}
+                                        value={id}
+                                        onClick={() => {
+                                            const { fromDate, toDate } = getDateRange(id);
+                                            setFieldValue("fromDate", fromDate);
+                                            setFieldValue("toDate", toDate);
+                                        }}
+                                    />
+                                    <label className="form-check-label" htmlFor={id}>
+                                        {label}
+                                    </label>
                                 </div>
                             ))}
                         </div>
@@ -81,7 +127,9 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                                     id="fromDate"
                                     name="fromDate"
                                     value={values.fromDate ? new Date(values.fromDate) : null}
-                                    onChange={(date) => setFieldValue("fromDate", moment(date).format("YYYY-MM-DD"))}
+                                    onChange={(date) =>
+                                        setFieldValue("fromDate", moment(date).format("YYYY-MM-DD"))
+                                    }
                                     format="dd-MM-yyyy"
                                     clearIcon={null}
                                     className="form-control rounded-0 p-0"
@@ -92,11 +140,13 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                             <div className="col-6">
                                 <FormikController
                                     control="date"
-                                    label="End Date"
+                                    label="To Date"
                                     id="to_date"
                                     name="toDate"
                                     value={values.toDate ? new Date(values.toDate) : null}
-                                    onChange={(date) => setFieldValue("toDate", moment(date).format("YYYY-MM-DD"))}
+                                    onChange={(date) =>
+                                        setFieldValue("toDate", moment(date).format("YYYY-MM-DD"))
+                                    }
                                     format="dd-MM-yyyy"
                                     clearIcon={null}
                                     className="form-control rounded-0 p-0"
@@ -107,7 +157,14 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                         </div>
 
                         <div className="mt-5 d-flex justify-content-end gap-5">
-                            <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => { resetForm(); onClose(); }}>
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-outline-primary"
+                                onClick={() => {
+                                    resetForm({ values: getDateRange("today") });
+                                    onClose();
+                                }}
+                            >
                                 Reset Filter
                             </button>
                             <button type="submit" className="btn btn-sm btn cob-btn-primary approve text-white">

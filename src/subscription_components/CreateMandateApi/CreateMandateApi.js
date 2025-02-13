@@ -5,7 +5,7 @@ import subAPIURL from "../../config"
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useDispatch } from "react-redux";
-import {useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { fetchFrequency, fetchMandatePurpose, fetchRequestType, } from "../../slices/subscription-slice/createMandateSlice";
 import Yup from "../../_components/formik/Yup";
 import { createMandateService } from "../../services/subscription-service/create.mandate.service";
@@ -75,7 +75,6 @@ const CreateMandateApi = () => {
   const location = useLocation();
   const { search } = location;
   const mendateRegId = search.split("?mendateRegId=")[1];
-  console.log("mendateRegId", mendateRegId)
 
 
   const handleResponseApi = () => {
@@ -98,13 +97,13 @@ const CreateMandateApi = () => {
   }, [mendateRegId])
 
 
-useEffect(() => {
-   fetchManDatePurpose();
+  useEffect(() => {
+    fetchManDatePurpose();
     fetchManDateFrequency();
     fetchMandateRequestType();
   }, []);
 
-const fetchManDatePurpose = async () => {
+  const fetchManDatePurpose = async () => {
     try {
       const resp = await dispatch(fetchMandatePurpose());
       setMandatecatogoryData(resp?.payload?.data)
@@ -117,7 +116,7 @@ const fetchManDatePurpose = async () => {
     }
   };
 
-const fetchManDateFrequency = async () => {
+  const fetchManDateFrequency = async () => {
     try {
       const resp = await dispatch(fetchFrequency());
 
@@ -234,7 +233,7 @@ const fetchManDateFrequency = async () => {
     }
   };
 
-const referingMode = [
+  const referingMode = [
     { key: "", value: "Select" },
     { key: "Netbanking", value: "Netbanking" },
     { key: "Debit Card", value: "Debit Card" },
@@ -264,7 +263,7 @@ const referingMode = [
     }
   };
 
- useEffect(() => {
+  useEffect(() => {
     if (selectedMode === "Netbanking") {
       fetchNetbankingBankList();
     } else if (selectedMode === "Debit Card") {
@@ -273,27 +272,27 @@ const referingMode = [
   }, [selectedMode]);
 
 
-return (
+  return (
     <>
       <section className="ant-layout">
         <div >
           <h5 className="">Create Mandate API</h5>
         </div>
-      <div className="d-flex justify-content-center mt-5">
-       <div className="col-lg-8">
+        <div className="d-flex justify-content-center mt-5">
+          <div className="col-lg-8">
             <Formik
               initialValues={initialValues}
               validationSchema={FORM_VALIDATION}
               enableReinitialize={true}
-             onSubmit={(values) => {
+              onSubmit={(values) => {
                 handleSubmit(values)
 
               }}
-           >
+            >
               {({ values, setFieldValue }) => (
                 <Form id="createMandateForm">
-                 <div>
-                  <div className="row">
+                  <div>
+                    <div className="row">
                       <div className="col-lg-6 form-group">
 
                         <FormikController
@@ -314,7 +313,7 @@ return (
                         />
                       </div>
                     </div>
-                     <div className="row">
+                    <div className="row">
                       <div className="col-lg-6 form-group">
 
                         <FormikController
