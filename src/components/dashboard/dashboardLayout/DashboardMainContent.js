@@ -110,6 +110,7 @@ import EnachForm from "../../../subscription_components/Create-E-MandateByApi/En
 import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
 import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
 import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
+import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -941,6 +942,16 @@ function DashboardMainContent() {
                 Component={TotalPayers}
               >
                 <TotalPayers />
+              </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/recent-transaction`}
+                roleList={{ merchant: true }}
+                Component={RecentTransaction}
+              >
+                <RecentTransaction />
               </AuthorizedRoute>
 
               <Route path={`${path}/*`} component={UrlNotFound}>

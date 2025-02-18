@@ -4,16 +4,19 @@ import * as Yup from "yup";
 import Classes from "./paymentLinkSolution.module.css";
 import FormikController from "../../../../_components/formik/FormikController";
 import moment from "moment";
+import { setDateRange } from "../../../../slices/date-filter-slice/DateFilterSlice";
+import { useDispatch } from "react-redux";
 
 const validationSchema = Yup.object().shape({
-    fromDate: Yup.date().required("From Date is required"),
-    toDate: Yup.date()
-        .required("To Date is required")
-        .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
+    // fromDate: Yup.date().required("From Date is required"),
+    // toDate: Yup.date()
+    //     .required("To Date is required")
+    //     .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
 });
 
 
 const today = moment().format("YYYY-MM-DD");
+
 
 
 const getDateRange = (option) => {
@@ -42,9 +45,10 @@ const getDateRange = (option) => {
             };
         case "financialYear":
             return {
-                fromDate: moment().month(3).startOf("month").format("YYYY-MM-DD"), // April 1st
-                toDate: today,
+                fromDate: moment().month(3).date(1).subtract(1, "year").format("YYYY-MM-DD"), // April 1st of the previous year
+                toDate: moment().month(2).date(31).format("YYYY-MM-DD"), // March 31st of the current year
             };
+
         default:
             return { fromDate: today, toDate: today };
     }
@@ -54,6 +58,7 @@ const initialValues = getDateRange("today");
 
 const FilterModal = ({ show, onClose, filterRef, onApply }) => {
     const modalRef = useRef(null);
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -84,6 +89,7 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={(values) => {
+                    dispatch(setDateRange(values));
                     onApply(values);
                     onClose();
                 }}

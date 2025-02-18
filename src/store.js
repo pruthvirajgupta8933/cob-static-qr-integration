@@ -36,6 +36,7 @@ import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
+import { dateFilterSliceReducer } from "./slices/date-filter-slice/DateFilterSlice"
 
 const reducer = {
   auth: authReducer,
@@ -88,7 +89,8 @@ const reducer = {
   kycValidatorReducer: kycValidatorReducer,
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
-  paymentLinkSliceReducer: paymentLinkSliceReducer
+  paymentLinkSliceReducer: paymentLinkSliceReducer,
+  dateFilterSliceReducer: dateFilterSliceReducer
 };
 
 const store = configureStore({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
     LineChart,
     Line,
@@ -10,7 +10,9 @@ import {
     PieChart,
     Pie,
     Cell,
+
 } from "recharts";
+
 
 const lineChartData = [
     { month: "Jan 2023", value: 16 },
@@ -24,19 +26,17 @@ const lineChartData = [
     { month: "Sep", value: 35.5 },
     { month: "Oct", value: 29.2 },
     { month: "Nov", value: 22 },
-    { month: "Dec", value: 17.8 },
+    { month: "Dec", value: 17.8 }
 ];
 
 const pieChartData = [
     { name: "UPI", value: 3000, color: "#F93C65" },
     { name: "Cards", value: 1500, color: "#F89131" },
     { name: "Wallet", value: 1000, color: "#008ADE" },
-    { name: "Net Banking", value: 2000, color: "#029053" },
+    { name: "Net Banking", value: 2000, color: "#029053" }
 ];
 
-const CustomLegend = ({ data, colorMode }) => {
-    const borderColor = colorMode === "dark" ? "#fff" : "#000"; // Light or dark mode logic
-
+const CustomLegend = ({ data }) => {
     return (
         <div className="d-inline-flex flex-wrap gap-2 mt-3">
             {data.map((entry, index) => (
@@ -44,7 +44,7 @@ const CustomLegend = ({ data, colorMode }) => {
                     key={index}
                     className="d-inline-flex align-items-center border rounded px-3 py-2 gap-2"
                     style={{
-                        borderColor: colorMode === "dark" ? "#fff" : entry.color, // Dynamic border color
+                        borderColor: entry.color,
                         borderWidth: "2px",
                         borderStyle: "solid",
                         backgroundColor: "#fff",
@@ -52,6 +52,7 @@ const CustomLegend = ({ data, colorMode }) => {
                         fontWeight: "bold",
                     }}
                 >
+
                     <span
                         className="rounded-circle d-inline-block"
                         style={{
@@ -68,19 +69,9 @@ const CustomLegend = ({ data, colorMode }) => {
     );
 };
 
-const Charts = ({ chartType, colorMode = "light" }) => {
-    const [total, setTotal] = useState(0);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = pieChartData.map((entry) => entry.value);
-            const sum = data.reduce((acc, value) => acc + value, 0);
-            setTotal(sum);
-        };
 
-        fetchData();
-    }, []);
-
+const Charts = ({ chartType }) => {
     if (chartType === "line") {
         return (
             <ResponsiveContainer width="100%" height={300}>
@@ -89,7 +80,7 @@ const Charts = ({ chartType, colorMode = "light" }) => {
                     <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="value" stroke="#238BE6" strokeWidth={2} />
+                    <Line type="monotone" dataKey="value" stroke="#4caf50" strokeWidth={2} />
                 </LineChart>
             </ResponsiveContainer>
         );
@@ -97,7 +88,7 @@ const Charts = ({ chartType, colorMode = "light" }) => {
 
     if (chartType === "donut") {
         return (
-            <div className="w-100 text-center p-3">
+            <div className="w-100 text-center  p-3">
                 <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                         <Pie
@@ -115,24 +106,9 @@ const Charts = ({ chartType, colorMode = "light" }) => {
                                 <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                         </Pie>
-
-                        <text
-                            x="50%"
-                            y="50%"
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                        >
-                            <tspan x="50%" dy="-10" className="font-weight-bold">
-                                Total
-                            </tspan>
-                            <tspan x="50%" dy="20" style={{ fontSize: "19px" }}>
-                                {total}
-                            </tspan>
-                        </text>
-
                     </PieChart>
                 </ResponsiveContainer>
-                <CustomLegend data={pieChartData} colorMode={colorMode} />
+                <CustomLegend data={pieChartData} />
             </div>
         );
     }
