@@ -18,7 +18,7 @@ import {
 import API_URL from "../../../../config";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import { axiosInstance } from "../../../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import Notification from "../../../../_components/reuseable_components/Notification";
 // import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
@@ -99,8 +99,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -128,8 +128,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -153,21 +153,19 @@ const TransactionHistory = () => {
   });
 
   const getPaymentStatusList = async () => {
-    await axiosInstance
-      .get(API_URL.GET_PAYMENT_STATUS_LIST)
+    await axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const paymodeList = async () => {
-    await axiosInstance
-      .get(API_URL.PAY_MODE_LIST)
+    await axiosInstanceJWT.get(API_URL.PAY_MODE_LIST)
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   let isExtraDataRequired = false;

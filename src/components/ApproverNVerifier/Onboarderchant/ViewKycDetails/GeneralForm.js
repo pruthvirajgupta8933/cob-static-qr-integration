@@ -27,7 +27,7 @@ const GeneralForm = ({ role }) => {
     useEffect(() => {
         dispatch(businessCategoryType());
         // set parent client code
-        axiosInstance.get(API_URL.fetchParentClientCodes)
+        axiosInstanceJWT.get(API_URL.fetchParentClientCodes)
             .then((resp) => {
                 setParentClientCode(resp.data);
             })
