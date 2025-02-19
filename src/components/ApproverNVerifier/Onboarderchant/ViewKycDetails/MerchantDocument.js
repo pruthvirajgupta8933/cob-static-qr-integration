@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
@@ -99,7 +99,7 @@ const MerchantDocument = (props) => {
 
   const getKycDocList = () => {
     const loginId = selectedUserData?.loginMasterId
-    if (loginId !== undefined && loginId !== "") {
+    if (loginId != undefined && loginId != "") {
       const postData = {
         login_id: loginId
       }
@@ -212,7 +212,7 @@ const MerchantDocument = (props) => {
       if (roles.approver === true)
         setEnableBtnApprover(true);
     }
-
+    // dispatch(forGettingCommentList({ client_code: selectedUserData?.clientCode }))
 
   }, [currenTab, roles, Allow_To_Do_Verify_Kyc_details])
 
@@ -251,16 +251,6 @@ const MerchantDocument = (props) => {
     }
   }
 
-  const fetchCommentDocCB = useCallback(() => {
-    if (selectedUserData?.clientCode) {
-      return dispatch(forGettingCommentList({ client_code: selectedUserData?.clientCode }))
-    }
-  }, [selectedUserData?.clientCode])
-
-
-  useEffect(() => {
-    fetchCommentDocCB()
-  }, [selectedUserData?.clientCode])
 
 
   // document viewer 
