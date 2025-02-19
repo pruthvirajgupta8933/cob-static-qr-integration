@@ -205,14 +205,17 @@ const TransactionHistory = () => {
   const tempPayStatus = [{ key: "All", value: "All" }];
 
   paymentStatusList.map((item) => {
-    if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
-      tempPayStatus.push({ key: item, value: item });
+    if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+      if (item?.is_active) {
+        tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+      }
+
     }
   });
 
   const tempPaymode = [{ key: "All", value: "All" }];
   paymentModeList.map((item) => {
-    tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+    tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
   });
 
   // const pagination = (pageNo) => {
