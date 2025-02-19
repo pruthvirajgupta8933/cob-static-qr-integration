@@ -12,7 +12,7 @@ import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import { axiosInstance } from "../../../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import moment from "moment";
 import {
   clearTransactionHistoryDoitc,
@@ -77,8 +77,8 @@ const TransactionHistoryDoitc = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   // formik initial values
   const initialValues = {
@@ -102,22 +102,22 @@ const TransactionHistoryDoitc = () => {
 
   // get payment status list
   const getPaymentStatusList = async () => {
-    await axiosInstance
+    await axiosInstanceJWT
       .get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   // get paymode status list
   const paymodeList = async () => {
-    await axiosInstance
+    await axiosInstanceJWT
       .get(API_URL.PAY_MODE_LIST)
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   // fetch child client data
@@ -126,8 +126,8 @@ const TransactionHistoryDoitc = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -510,8 +510,8 @@ const TransactionHistoryDoitc = () => {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                          // value={startDate}
-                          // onChange={(e)=>setStartDate(e.target.value)}
+                        // value={startDate}
+                        // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 

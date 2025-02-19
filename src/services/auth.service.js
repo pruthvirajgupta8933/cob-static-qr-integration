@@ -90,7 +90,7 @@ const createNewPassword = (object) => {
 // CHECK_PERMISSION_PAYLINK
 const checkPermission = (object) => {
   //pass client code
-  return axiosInstance.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
+  return axiosInstanceJWT.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
 }
 
 
