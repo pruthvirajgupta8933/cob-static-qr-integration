@@ -28,6 +28,7 @@ const NotFilledKYC = () => {
         signUpDate: item.signUpDate,
         isDirect: item.isDirect,
         zoneName: item.zoneName,
+        onboard_type: item.onboard_type,
       };
     });
   }, [notFilledKycData]);
