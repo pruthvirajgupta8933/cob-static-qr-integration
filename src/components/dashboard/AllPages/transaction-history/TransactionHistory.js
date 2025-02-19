@@ -46,7 +46,7 @@ const TransactionHistory = () => {
   const { user } = auth;
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
-  const { isLoadingTxnHistory, isExportData } = dashboard;
+  // const { isLoadingTxnHistory, isExportData } = dashboard;
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   const [txnList, SetTxnList] = useState([]);
