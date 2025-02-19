@@ -15,14 +15,14 @@ export const rateMappingFn = (loginId, parentClientCode) => {
     // console.log(rateMappingState.getValue())
 
 
-    async function callAPI(url, method, isJwtAxiosRequired, body = {}) {
-        let response = {}
-        response = method === "post" ? await axiosInstance.post(url, body) : await axiosInstance.get(url);
-        return response?.data;
-    }
+    // async function callAPI(url, method, body = {}) {
+    //     let response = {}
+    //     response = method === "post" ? await axiosInstance.post(url, body) : await axiosInstance.get(url);
+    //     return response?.data;
+    // }
 
-    async function callApiJwt(url, body = {}) {
-        let response = await axiosInstanceJWT.post(url, body)
+    async function callApiJwt(url, method, body = {}) {
+        let response = method === "post" ? await axiosInstanceJWT.post(url, body) : await axiosInstanceJWT.get(url);
         return response?.data
     }
 
@@ -30,15 +30,15 @@ export const rateMappingFn = (loginId, parentClientCode) => {
 
     async function rateMapping(merchantLoginId) {
         try {
-            const merchantData = await callApiJwt(API_URL.Kyc_User_List, { login_id: merchantLoginId, password_required: true })
+            const merchantData = await callApiJwt(API_URL.Kyc_User_List, "post", { login_id: merchantLoginId, password_required: true })
             console.log("fetch Merchant data with secret key--", merchantData)
-            loader = true
+            // loader = true
 
             // Call the APIs one by one
             if (merchantData?.clientCode && merchantData?.secret_key !== "") {
                 // console.log("merchantData ==", merchantData)
                 console.log("Run2- get platform details by id", { platform_id: merchantData?.platformId })
-                const result2 = await callApiJwt(API_URL.GET_PLATFORM_BY_ID, { platform_id: merchantData?.platformId });
+                const result2 = await callApiJwt(API_URL.GET_PLATFORM_BY_ID, "post", { platform_id: merchantData?.platformId });
                 // console.log("result2",result2)
                 // required parameter for the ratemapping
                 const api_version = await result2?.api_version
@@ -63,10 +63,10 @@ export const rateMappingFn = (loginId, parentClientCode) => {
 
                 //  Check the client code
                 console.log("Run4- check is client code mapped", clientCode)
-                const result3 = await callAPI(`${API_URL.isClientCodeMapped}/${clientCode}`, "get", false);
+                const result3 = await callApiJwt(`${API_URL.isClientCodeMapped}/${clientCode}`, "get", {});
 
                 console.log("Run5- length of the array should be 0 for the starting next process - response->", result3)
-                loader = false
+                // loader = false
                 // console.log(rateMappingState.updateValue({loader:false,isError:false}))
 
                 if (result3?.length === 0) {
@@ -102,11 +102,11 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                     };
                     console.log("Run6- Call api with the Post Data for the rate mapping", inputData)
                     // step 3 - Post date for the ratemapping
-                    await callAPI(API_URL.RATE_MAPPING_GenerateClientFormForCob, "post", false, inputData)
+                    await callApiJwt(API_URL.RATE_MAPPING_GenerateClientFormForCob, "post", inputData)
 
                     console.log("Run7-  // parent client code / new client code / login id", inputData)
                     //2 - rate map clone   // parent client code / new client code / login id
-                    await callAPI(`${API_URL.RATE_MAPPING_CLONE}/${parentClientCode}/${clientCode}/${merchantLoginId}`, "get", false)
+                    await callApiJwt(`${API_URL.RATE_MAPPING_CLONE}/${parentClientCode}/${clientCode}/${merchantLoginId}`, "get", {})
 
 
                     //  console.log("step 7 -  updating the apiVersion ", apiVersion)
@@ -118,15 +118,17 @@ export const rateMappingFn = (loginId, parentClientCode) => {
 
                     console.log("Run8- updating the apiVersion", `${api_version}:${zone_code}:${created_by_email}:${auth_type}`)
 
-                    await callAPI(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/zoneloginsetup/${api_version}:${zone_code}:${created_by_email}:${auth_type}/0`, "get", false)
-                    loader = false
+                    await callApiJwt(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/zoneloginsetup/${api_version}:${zone_code}:${created_by_email}:${auth_type}/0`, "get", {})
+                    // loader = false
                     // console.log(rateMappingState.updateValue({loader:false,isError:false}))
 
                 }
             }
+            // loader = false
+
 
         } catch (error) {
-            loader = false
+            // loader = false
             // setLoader(false)
             // alert(`Error occurred: ${error}`)
             // errorRm = true
