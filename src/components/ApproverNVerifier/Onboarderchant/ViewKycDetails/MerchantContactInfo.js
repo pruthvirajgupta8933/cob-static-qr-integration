@@ -105,7 +105,8 @@ function MerchantContactInfo(props) {
       value: selectedUserData?.emailId,
       verified: selectedUserData?.isEmailVerified,
     },
-  ];
+    { label: "Developer Contact", value: selectedUserData?.developer_contact },
+    { label: "Developer Name", value: selectedUserData?.developer_name }];
 
   return (
     <div className="row mb-4 p-1 border">
