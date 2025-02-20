@@ -110,7 +110,7 @@ const PaylinkDashboard = () => {
               show={showFilter}
               onClose={() => setShowFilter(false)}
               filterRef={filterRef}
-              onApply={() => {}}
+              onApply={() => { }}
             />
           </div>
         </div>

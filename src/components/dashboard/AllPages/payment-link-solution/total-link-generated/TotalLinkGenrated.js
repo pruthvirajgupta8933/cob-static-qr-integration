@@ -350,7 +350,8 @@ const TotalLinkGenrated = () => {
         <React.Fragment>
             <section className="">
                 <div className="container-fluid">
-                    <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} setShowCreatePaymentModal={setShowCreatePaymentModal} showCreatePaymentModal={showCreatePaymentModal} setShowAddPayerModal={setShowAddPayerModal} showAddPayerModal={showAddPayerModal} />
+                    <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} setShowCreatePaymentModal={setShowCreatePaymentModal} showCreatePaymentModal={showCreatePaymentModal} setShowAddPayerModal={setShowAddPayerModal} showAddPayerModal={showAddPayerModal} onBackClick={() => window.history.back()}
+                        showBackLink={true} />
                     <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={handleSubmit} />
                 </div>
 

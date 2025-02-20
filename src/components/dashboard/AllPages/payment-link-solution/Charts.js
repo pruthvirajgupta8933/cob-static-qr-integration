@@ -27,12 +27,14 @@ const lineChartData = [
   { month: "Dec", value: 17.8 },
 ];
 
-const pieChartData = [
-  { name: "UPI", value: 3000, color: "#F93C65" },
-  { name: "Cards", value: 1500, color: "#F89131" },
-  { name: "Wallet", value: 1000, color: "#008ADE" },
-  { name: "Net Banking", value: 2000, color: "#029053" },
-];
+// const pieChartData = [
+//   { name: "UPI", value: 3000, color: "#F93C65" },
+//   { name: "Cards", value: 1500, color: "#F89131" },
+//   { name: "Wallet", value: 1000, color: "#008ADE" },
+//   { name: "Net Banking", value: 2000, color: "#029053" },
+// ];
+
+const colors = ["#F93C65", "#F89131", "#008ADE", "#029053"];
 
 const CustomLegend = ({ data, colorMode }) => {
   const borderColor = colorMode === "dark" ? "#fff" : "#000"; // Light or dark mode logic
@@ -73,22 +75,22 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
   const chartData =
     chartType === "donut"
       ? data
-          ?.filter((entry) => entry.trans_mode)
-          .map((entry, index) => {
-            return {
-              name: entry.trans_mode,
-              value: entry.total_paid,
-              color: pieChartData[index % pieChartData.length].color,
-            };
-          })
+        ?.filter((entry) => entry.trans_mode)
+        .map((entry, index) => {
+          return {
+            name: entry.trans_mode,
+            value: entry.total_paid,
+            color: colors[index % colors.length],
+          };
+        })
       : Array.isArray(data)
-      ? data?.map((entry) => {
+        ? data?.map((entry) => {
           return {
             date: Object.keys(entry)[0],
             value: Object.values(entry)[0],
           };
         })
-      : [];
+        : [];
 
   useEffect(() => {
     const fetchData = async () => {

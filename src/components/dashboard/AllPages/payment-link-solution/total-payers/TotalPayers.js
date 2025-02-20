@@ -371,6 +371,8 @@ const TotalPayers = () => {
                         showCreatePaymentModal={showCreatePaymentModal}
                         componentState={state}
                         loadUserFn={edit}
+                        onBackClick={() => window.history.back()}
+                        showBackLink={true}
                     />
                     <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={formSubmit} />
                     <DeleteModal

@@ -1,26 +1,8 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 
 const TransactionTable = ({ data }) => {
-  const transactions = [
-    {
-      id: 1,
-      name: "Sukhdev Khatri",
-      transactionId: "8765434567654",
-      email: "example1@gmail.com",
-      amount: 457,
-      mode: "UPI",
-      status: "Success",
-    },
-    {
-      id: 2,
-      name: "Joydeep Oosh",
-      transactionId: "8765434567655",
-      email: "example2@gmail.com",
-      amount: 934,
-      mode: "UPI QR",
-      status: "Failed",
-    },
-  ];
+
 
   return (
     <div className="card shadow-sm rounded-3">
@@ -53,6 +35,11 @@ const TransactionTable = ({ data }) => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="text-center mt-3">
+          <Link to="/dashboard/recent-transaction" className="text-decoration-none">
+            See More
+          </Link>
         </div>
       </div>
     </div>

@@ -14,6 +14,8 @@ import { getPayerApi } from "../../../../../slices/paymentLink/paymentLinkSlice"
 import { useDispatch } from "react-redux";
 import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
+import { getTxnData } from "../../../../../slices/paymentLink/paymentLinkSlice";
+import DateFormatter from "../../../../../utilities/DateConvert";
 
 
 
@@ -109,40 +111,59 @@ const RecentTransaction = () => {
 
 
     const rowData = [
+
+        {
+            id: "1",
+            name: "Client Code",
+            selector: (row) => row.client_code,
+            sortable: true,
+            width: "150px"
+        },
         {
             id: "2",
             name: "Name of Payer",
             selector: (row) => row.payer_name,
             sortable: true,
-            width: "150px"
+            width: "200px"
         },
         {
             id: "3",
             name: "Mobile No.",
             selector: (row) => row.payer_mobile,
+            sortable: true,
             width: "180px"
         },
         {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
+            sortable: true,
             // width: "200px"
         },
         {
             id: "5",
-            name: "Payer Category",
-            selector: (row) => row.payer_type_name,
+            name: "Trans Init Date",
+            selector: (row) => DateFormatter(row.trans_init_date),
             sortable: true,
-            // width: "200px"
+            width: "200px"
+
+        },
+        {
+            id: "6",
+            name: "Trans Complete Date",
+            selector: (row) => DateFormatter(row.trans_complete_date),
+            sortable: true,
+            width: "200px"
 
         },
 
-
-
-
-
-
-
+        {
+            id: "7",
+            name: "Status",
+            selector: (row) => row.trans_status,
+            sortable: true,
+            width: "150px"
+        }
 
     ];
 
@@ -189,15 +210,17 @@ const RecentTransaction = () => {
             toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
             page: currentPage,
             page_size: pageSize,
-            client_code: clientCode
+            client_code: clientCode,
+            order_by: "-id",
         };
 
-        dispatch(getPayerApi(postData))
+        dispatch(getTxnData(postData))
             .then((resp) => {
                 setPayerData(resp?.payload?.results)
                 setDataCount(resp?.payload?.count)
                 setFilterData(resp?.payload?.results)
                 setLoadingState(false)
+
 
 
             })
@@ -234,11 +257,12 @@ const RecentTransaction = () => {
             toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
             page: currentPage,
             page_size: pageSize,
-            client_code: clientCode
+            client_code: clientCode,
+            order_by: "-id",
         };
         setSaveData(values);
         setLoadingState(true)
-        dispatch(getPayerApi(postData))
+        dispatch(getTxnData(postData))
             .then((resp) => {
                 setPayerData(resp?.payload?.results)
                 setFilterData(resp?.payload?.results)
@@ -333,6 +357,8 @@ const RecentTransaction = () => {
                         showCreatePaymentModal={showCreatePaymentModal}
                         componentState={state}
                         loadUserFn={edit}
+                        onBackClick={() => window.history.back()}
+                        showBackLink={true}
                     />
                     <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={formSubmit} />
 
