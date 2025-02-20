@@ -40,6 +40,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
         (type) => type.value == kycData?.merchant_account_details?.accountType
       )?.key ?? "",
     ifsc: kycData?.merchant_account_details?.ifsc_code ?? "",
+    isIfscVerified: kycData?.merchant_account_details?.ifsc_code ? 1 : "",
     bankName: kycData?.merchant_account_details?.bankName ?? "",
     branch: kycData?.merchant_account_details?.branch ?? "",
     bank_id: kycData?.merchant_account_details?.bankId ?? "",
@@ -219,6 +220,20 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                         setFieldValue("bank_id", "");
                       }}
                     />
+                    {values?.isIfscVerified !== null &&
+                      values?.isIfscVerified !== "" &&
+                      values?.isIfscVerified !== undefined && (
+                        <span className="success input-group-append">
+                          <img
+                            src={verifiedIcon}
+                            alt=""
+                            title=""
+                            width={"20px"}
+                            height={"20px"}
+                            className="btn-outline-secondary"
+                          />
+                        </span>
+                      )}
                   </div>
                   <ErrorMessage name={"ifsc"}>
                     {(msg) => <p className="text-danger">{msg}</p>}
@@ -242,9 +257,9 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                       }}
                     />
                     {values?.acNumber !== null &&
-                    values?.acNumber !== "" &&
-                    values?.acNumber !== undefined &&
-                    values?.isAccountNumberVerified !== "" ? (
+                      values?.acNumber !== "" &&
+                      values?.acNumber !== undefined &&
+                      values?.isAccountNumberVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
@@ -334,18 +349,6 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                       className="form-control"
                       disabled={disableForm}
                     />
-                    {values?.bank_id !== "" && (
-                      <span className="success input-group-append">
-                        <img
-                          src={verifiedIcon}
-                          alt=""
-                          title=""
-                          width={"20px"}
-                          height={"20px"}
-                          className="btn-outline-secondary"
-                        />
-                      </span>
-                    )}
                   </div>
                 </div>
 

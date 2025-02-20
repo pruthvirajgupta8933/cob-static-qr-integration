@@ -91,7 +91,7 @@ const WebWhiteList = () => {
         try {
             const postData = {
                 "client_code": selectedClientCode,
-                "website_url": values.website_app_url
+                "whitelist": values.website_app_url
             };
             const response = await webWhiteListApi(postData)
             dispatch(whiteListedWebsite({ clientCode: selectedClientCode }))
@@ -190,25 +190,11 @@ const WebWhiteList = () => {
                                 )}
                             </Formik>
 
-                            <div className="scroll overflow-auto">
+                            <div className="scroll overflow-auto z-0">
                                 <Table
                                     row={listRow}
                                     data={merchantWhitelistWebsite}
                                 />
-                                {/* <div>
-                                           
-                                            {!loadingState && data?.length !== 0 && (
-                                                <Table
-                                                row={[]}
-                                                data={[]}
-                                                />
-                                            )}
-                                            </div>
-
-                                            {loadingState && <SkeletonTable />}
-                                            {data?.length === 0 && !loadingState && (
-                                            <h6 className="text-center">No data Found</h6>
-                                            )} */}
                             </div>
                         </div>
                     </div>

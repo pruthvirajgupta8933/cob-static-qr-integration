@@ -31,7 +31,8 @@ if (ENV_PROD) {
   report_api_url = "https://reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
   subscriptionUrl = "https://subscriptionapi.sabpaisa.in"
-  adminAPIURL = "https://adminapi.sabpaisa.in/api"
+  adminAPIURL = "https://preprod-adminapi.sabpaisa.in/api"
+
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -444,7 +445,7 @@ const API_LIVE = {
 
   //ipWhiteList
 
-  IP_WHITElIST: `${kyc_url}/kyc/update-merchant-data/website-url/`,
+  WEBSITE_WHITELIST: `${adminAPIURL}/whitelist/v1/`,
 
   // Bank merchant related reports
   BANK_MERCHANT_DETAIL_LIST: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary/`,

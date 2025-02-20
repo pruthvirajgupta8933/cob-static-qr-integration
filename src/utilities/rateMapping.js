@@ -1,12 +1,9 @@
 import API_URL from "../config";
 // import { createUpdater } from "../custom-hooks/updateGetValue";
 
-import { axiosInstance, axiosInstanceJWT } from "./axiosInstance";
+import { axiosInstanceJWT } from "./axiosInstance";
 
 export const rateMappingFn = (loginId, parentClientCode) => {
-
-    let loader = true
-
     // const initialValue = {
     //     loader : true,
     //     isError : false
