@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 // import * as Yup from "yup";
-import FormikController from "../../../_components/formik/FormikController";
+// import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingComments,
   forGettingCommentList,
   updateComment,
 } from "../../../slices/merchantZoneMappingSlice";
-import toastConfig from "../../../utilities/toastTypes";
+// import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
 import _ from "lodash";
@@ -20,9 +20,9 @@ import DocViewerComponent from "../../../utilities/DocViewerComponent";
 
 
 const CommentModal = (props) => {
-  const [commentsList, setCommentsList] = useState([]);
+  // const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
-  const [uploadStatus, setUploadStatus] = useState(false);
+  // const [uploadStatus, setUploadStatus] = useState(false);
   const [docPreviewToggle, setDocPreviewToggle] = useState(false)
   const [editToggle, setEditToggle] = useState({ toggle: false, id: null })
   const [selectViewDoc, setSelectedViewDoc] = useState("#")
@@ -74,7 +74,7 @@ const CommentModal = (props) => {
   //function for resetupload file
   const resetUploadFile = () => {
     aRef.current.value = null;
-    setUploadStatus(false);
+    // setUploadStatus(false);
   };
 
 
@@ -90,7 +90,7 @@ const CommentModal = (props) => {
   const handleUploadAttachments = (e) => {
     if (e.target.files) {
       setattachCommentFile(e.target.files[0]);
-      setUploadStatus(true);
+      // setUploadStatus(true);
     }
   };
   const isUrlValid = (userInput) => {
@@ -302,9 +302,9 @@ const CommentModal = (props) => {
                                 (
                                   <>
                                     {updateData?.isEdit && updateData?.id === commentData?.id ?
-                                      <button className="btn btn-sm" onClick={() => editHandler({}, false)} ariaLabel="Close"><i className="fa fa-close "></i></button>
+                                      <button className="btn btn-sm" onClick={() => editHandler({}, false)} aria-label="Close"><i className="fa fa-close "></i><span className="sr-only">Close</span></button>
                                       :
-                                      <button className={`btn btn-sm ${editToggle?.toggle === true && 'd-none'}`} onClick={() => editHandler(commentData, true)} ariaLabel="Edit"><i className="fa fa-pencil"></i></button>
+                                      <button className={`btn btn-sm`} onClick={() => editHandler(commentData, true)} aria-label="Close"><i className="fa fa-pencil"></i></button>
                                     }
                                   </>
                                 )
@@ -335,7 +335,7 @@ const CommentModal = (props) => {
         className="btn btn-secondary text-white"
         data-dismiss="modal"
         onClick={() => {
-          setCommentsList([]);
+          // setCommentsList([]);
           props?.setModalState(false);
         }}
       >
