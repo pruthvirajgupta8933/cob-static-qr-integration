@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactPaginate from 'react-paginate';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faSearch, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
