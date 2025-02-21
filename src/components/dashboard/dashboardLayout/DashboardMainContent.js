@@ -107,6 +107,7 @@ import CreateEMandateByApi from "../../../subscription_components/Create-E-Manda
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import WebsiteWhitelistPage from "../../ApproverNVerifier/website-whitelist/WebsiteWhitelistPage";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -893,7 +894,7 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/website-whitelist`}
-                Component={WebWhiteList}
+                Component={WebsiteWhitelistPage}
                 roleList={{ verifier: true }}
               >
                 <WebWhiteList />

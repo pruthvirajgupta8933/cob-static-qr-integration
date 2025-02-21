@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Formik, Form } from "formik";
 import CustomReactSelect from '../../_components/formik/components/CustomReactSelect';
 import { getAllCLientCodeSlice } from '../../slices/approver-dashboard/approverDashboardSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { kycUserList, whiteListedWebsite } from '../../slices/kycSlice';
+import { clearWebsiteWhiteList, kycUserList, whiteListedWebsite } from '../../slices/kycSlice';
 import { createFilter } from 'react-select';
 import FormikController from '../../_components/formik/FormikController';
 import { webWhiteListApi } from '../../services/webWhiteList/webWhiteList.service';
@@ -12,13 +12,14 @@ import Yup from '../../_components/formik/Yup';
 import toastConfig from '../../utilities/toastTypes';
 import Table from '../../_components/table_components/table/Table';
 
-const WebWhiteList = () => {
+const WebWhiteList = ({ selectedUserData, isCommenComponent }) => {
     const [clientCodeList, setCliencodeList] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
     const [showInput, setShowInput] = useState(false);
     const [disable, setDisable] = useState(false)
     const [selectedClientCode, setSelectedClientCode] = useState("")
 
+    const dispatch = useDispatch();
     const { kyc } = useSelector((state) => state);
     // const { user } = auth;
     // const { loginId } = user;
@@ -26,7 +27,7 @@ const WebWhiteList = () => {
     const { merchantWhitelistWebsite } = kyc
 
 
-    const dispatch = useDispatch();
+
 
     const initialValues = {
         website_app_url: KycList?.website_app_url || ''
@@ -48,12 +49,25 @@ const WebWhiteList = () => {
     });
 
 
+    useEffect(() => {
+        if (selectedUserData?.clientCode) {
+            setSelectedClientCode(selectedUserData?.clientCode)
+        }
+
+    }, [selectedUserData?.clientCode])
+
 
     useEffect(() => {
-        dispatch(getAllCLientCodeSlice()).then((resp) => {
-            setCliencodeList(resp?.payload?.result);
-        });
-    }, [dispatch]);
+        if (!isCommenComponent) {
+            dispatch(getAllCLientCodeSlice()).then((resp) => {
+                setCliencodeList(resp?.payload?.result);
+            });
+        }
+        if (isCommenComponent) {
+            setShowInput(true)
+        }
+
+    }, [isCommenComponent]);
 
 
 
@@ -61,7 +75,10 @@ const WebWhiteList = () => {
         if (selectedId) {
             dispatch(kycUserList({ login_id: selectedId }));
         }
-    }, [selectedId, dispatch]);
+    }, [selectedId]);
+
+
+
 
 
     const handleSelectChange = (selectedOption, formik) => {
@@ -105,6 +122,8 @@ const WebWhiteList = () => {
     };
 
 
+
+
     const listRow = [
         {
             id: "1",
@@ -133,7 +152,8 @@ const WebWhiteList = () => {
     return (
         <section className="">
             <main className="">
-                <h5 className="">Website whitelist</h5>
+                {!isCommenComponent && <h5 className="">Website whitelist</h5>}
+
                 <section className="">
                     <div className="container-fluid p-0">
                         <div className="row">
@@ -145,7 +165,7 @@ const WebWhiteList = () => {
                             >
                                 {(formik) => (
                                     <Form>
-                                        <div className="form-row mt-4">
+                                        {!isCommenComponent && <div className="form-row mt-4">
                                             <div className="form-group col-lg-4">
                                                 <CustomReactSelect
                                                     name="react_select"
@@ -156,7 +176,8 @@ const WebWhiteList = () => {
                                                     onChange={(selectedOption) => handleSelectChange(selectedOption, formik)}
                                                 />
                                             </div>
-                                        </div>
+                                        </div>}
+
 
 
 
