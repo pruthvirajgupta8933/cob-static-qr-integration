@@ -12,7 +12,7 @@ const TransactionTable = ({ data }) => {
           <table className="table">
             <thead>
               <tr>
-                <th>#</th>
+                <th>S.No</th>
                 <th>Payer Name</th>
                 <th>Transaction ID</th>
                 <th>Email</th>

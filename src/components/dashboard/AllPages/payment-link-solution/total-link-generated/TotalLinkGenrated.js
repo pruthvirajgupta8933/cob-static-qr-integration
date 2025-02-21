@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useReducer, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import _ from "lodash";
@@ -10,11 +10,11 @@ import { dateFormatBasic } from "../../../../../utilities/DateConvert";
 import { useDispatch } from "react-redux";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
 import toast from "react-hot-toast";
-import { getPayMentLink } from "../../../../../slices/paymentLink/paymentLinkSlice";
+import { getPayMentLink } from '../paylink-solution-slice/paylinkSolutionSlice'
 import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
-import FormPaymentLink from "../../payment-links/FormPaymentLink";
-import CreatePaymentLink from "./CreatePaymentLinkModal";
+import SearchBar from "../searchBar/SearchBar";
+
 
 
 
@@ -242,44 +242,45 @@ const TotalLinkGenrated = () => {
 
         const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
         const toDate = moment(values?.toDate).format("YYYY-MM-DD");
-        const dateRangeValid = checkValidation(fromDate, toDate);
+        // const dateRangeValid = checkValidation(fromDate, toDate);
 
-        if (dateRangeValid) {
+        // if (dateRangeValid) {
 
-            const postData = {
-                client_code: clientCode,
-                start_date: fromDate,
-                end_date: toDate,
-                order_by: "-id",
-                page: currentPage,
-                page_size: pageSize
+        const postData = {
+            client_code: clientCode,
+            start_date: fromDate,
+            end_date: toDate,
+            order_by: "-id",
+            page: searchTerm ? "1" : currentPage,
+            page_size: pageSize,
+            search: searchTerm
 
 
 
-            }
-            setSaveData(values);
+        }
+        setSaveData(values);
 
-            setLoadingState(true)
-            dispatch(getPayMentLink(postData))
-                .then((resp) => {
-                    // setPayerData(resp?.payload?.results)
-                    setData(resp?.payload?.results)
-                    setDataCount(resp?.payload?.count)
-                    setFilterData(resp?.payload?.results)
-                    isButtonClicked(true)
+        setLoadingState(true)
+        dispatch(getPayMentLink(postData))
+            .then((resp) => {
+                // setPayerData(resp?.payload?.results)
+                setData(resp?.payload?.results)
+                setDataCount(resp?.payload?.count)
+                setFilterData(resp?.payload?.results)
+                isButtonClicked(true)
 
-                    setLoadingState(false);
-                    // setDisable(false)
+                setLoadingState(false);
+                // setDisable(false)
 
-                })
-                .catch((error) => {
-                    setLoadingState(false);
-                    // setDisable(false)
+            })
+            .catch((error) => {
+                setLoadingState(false);
+                // setDisable(false)
 
-                });
-        };
+            });
+    };
 
-    }
+    // }
 
 
     const checkValidation = (fromDate, toDate) => {
@@ -366,13 +367,22 @@ const TotalLinkGenrated = () => {
                                     {filterData?.length !== 0 && (
                                         <div className="col-md-6 d-flex justify-content-end gap-3 ">
                                             <div className="d-flex align-items-center mt-4">
-                                                <input
+                                                {/* <input
                                                     className="form-control"
                                                     onChange={getSearchTerm}
                                                     value={searchTerm}
                                                     type="text"
                                                     placeholder="Search Here"
                                                     style={{ width: "250px" }}
+                                                /> */}
+
+                                                <SearchBar
+                                                    searchTerm={searchTerm}
+                                                    setSearchTerm={setSearchTerm}
+                                                    onSearch={handleSubmit}
+                                                    placeholder="Search by Name, Email, Mobile"
+                                                    loadUser={loadUser}
+
                                                 />
                                             </div>
                                             <CountPerPageFilter
@@ -386,28 +396,28 @@ const TotalLinkGenrated = () => {
                                     )}
                                 </div>
 
-                                <div className="scroll overflow-auto">
-                                    {data?.length === 0 ? (
-                                        <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
-                                    ) : (
-                                        <>
-                                            {/* <h6 className="mt-3">Total Count: {dataCount}</h6> */}
-                                            {!loadingState && filterData?.length !== 0 && (
-                                                <Table
-                                                    row={rowData}
-                                                    data={data}
-                                                    dataCount={dataCount}
-                                                    pageSize={pageSize}
-                                                    currentPage={currentPage}
-                                                    changeCurrentPage={changeCurrentPage}
-                                                />
-                                            )}
-                                        </>
-                                    )}
+                                <div className="card-body">
+                                    <div className="scroll overflow-auto">
+                                        {!loadingState && data?.length === 0 && (
+                                            <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
+                                        )}
+                                        {!loadingState && filterData?.length !== 0 && (
+                                            <Table
+                                                row={rowData}
+                                                data={data}
+                                                dataCount={dataCount}
+                                                pageSize={pageSize}
+                                                currentPage={currentPage}
+                                                changeCurrentPage={changeCurrentPage}
+                                            />
+                                        )}
+                                    </div>
+                                    <CustomLoader loadingState={loadingState} />
                                 </div>
+
                             </div>
                         </div>
-                        <CustomLoader loadingState={loadingState} />
+
                     </div>
                 </section>
 

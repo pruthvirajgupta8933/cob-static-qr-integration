@@ -3,26 +3,15 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-// import API_URL from "../../../../config";
 import API_URL from "../../../../../config";
 import { v4 as uuidv4 } from 'uuid';
 import moment from "moment";
-// import toastConfig from "../../../../utilities/toastTypes";
 import toastConfig from "../../../../../utilities/toastTypes";
-// import Yup from "../../../../_components/formik/Yup";
 import Yup from "../../../../../_components/formik/Yup";
-// import createPaymentLinkService from "../../../../services/create-payment-link/payment-link.service";
-import createPaymentLinkService from "../../../../../services/create-payment-link/payment-link.service";
-// import { capitalizeFirstLetter } from "../../../../utilities/capitlizedFirstLetter";
 import { capitalizeFirstLetter } from "../../../../../utilities/capitlizedFirstLetter";
-// import FormikController from "../../../../_components/formik/FormikController";
 import FormikController from "../../../../../_components/formik/FormikController";
-
-// import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import { dateFormatBasic } from "../../../../../utilities/DateConvert";
-// import paymentLinkService from "../../../../services/create-payment-link/paymentLink.service";
-import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
-// import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
+import paymentLinkService from "../paylink-service/pamentLinkSolution.service";
 import { convertToFormikSelectJson } from "../../../../../_components/reuseable_components/convertToFormikSelectJson";
 
 function CreatePaymentLink({ componentState, onClose }) {
@@ -105,7 +94,7 @@ function CreatePaymentLink({ componentState, onClose }) {
             isPasswordProtected: passwordcheck
 
         }
-        createPaymentLinkService.createPaymentLink(postData)
+        paymentLinkService.genratePaymentLink(postData)
             .then(resp => {
                 const message = resp.data?.message
                 const capitalizedMessage = capitalizeFirstLetter(message)

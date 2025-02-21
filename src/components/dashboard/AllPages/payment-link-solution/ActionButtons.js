@@ -22,7 +22,7 @@ const ActionButtons = ({
                 <i
                     className="fa fa-arrow-left text-primary fs-6 cursor-pointer"
                     onClick={onBackClick}
-                    style={{ cursor: "pointer" }}
+
                 ></i>
             )}
 

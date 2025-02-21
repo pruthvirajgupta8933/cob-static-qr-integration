@@ -4,14 +4,15 @@ import TransactionTable from "./TransactionTable";
 import FilterModal from "./FilterModal";
 import ActionButtons from "./ActionButtons";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import TransactionFilter from "./transaction-filter/TransactionFilter";
-import {
-  getDashboardData,
-  getTxnData,
-  getTxnGraphData,
-} from "../../../../slices/paymentLink/paymentLinkSlice";
+// import {
+//   getDashboardData,
+//   getTxnData,
+//   getTxnGraphData,
+// } from "../../../../slices/paymentLink/paymentLinkSlice";
+
+import { getDashboardData, getTxnData, getTxnGraphData } from "./paylink-solution-slice/paylinkSolutionSlice";
 
 const PaylinkDashboard = () => {
   const [showFilter, setShowFilter] = useState(false);

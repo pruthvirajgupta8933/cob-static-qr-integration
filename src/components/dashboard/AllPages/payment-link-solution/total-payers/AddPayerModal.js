@@ -5,7 +5,8 @@ import Yup from '../../../../../_components/formik/Yup';
 import toastConfig from '../../../../../utilities/toastTypes';
 import { Regex, RegexMsg } from '../../../../../_components/formik/ValidationRegex';
 import FormikController from '../../../../../_components/formik/FormikController';
-import paymentLinkService from '../../../../../services/create-payment-link/paymentLink.service';
+// import paymentLinkService from '../../../../../services/create-payment-link/paymentLink.service';
+import paymentLinkService from '../paylink-service/pamentLinkSolution.service';
 import { convertToFormikSelectJson } from '../../../../../_components/reuseable_components/convertToFormikSelectJson';
 
 const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {

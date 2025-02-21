@@ -6,30 +6,25 @@ import CustomLoader from "../../../../../_components/loader";
 import _ from "lodash";
 import Yup from "../../../../../_components/formik/Yup";
 import moment from "moment";
-import AddSinglePayer from "../../payment-links/AddSinglePayer";
-import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
+// import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
+import paymentLinkService from "../../../../../components/dashboard/AllPages/payment-link-solution/paylink-service/pamentLinkSolution.service";
 import Table from "../../../../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
-import { getPayerApi } from "../../../../../slices/paymentLink/paymentLinkSlice";
+// import { getPayerApi } from "../../../../../slices/paymentLink/paymentLinkSlice";
+import { getPayerApi } from "../../../../../components/dashboard/AllPages/payment-link-solution/paylink-solution-slice/paylinkSolutionSlice";
 import { useDispatch } from "react-redux";
 import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
-import AddPayerModal from "./AddPayerModal";
 import DeleteModal from "./DeleteModal";
+import SearchBar from "../searchBar/SearchBar";
 
 
 
 
 const TotalPayers = () => {
-    let history = useHistory();
+
     const dispatch = useDispatch()
-    const [editform, setEditForm] = useState({
-        myname: "",
-        email: "",
-        phone: "",
-        editCustomerTypeId: "",
-        id: "",
-    });
+
 
     const [searchTerm, setSearchTerm] = useState('');
     const [saveData, setSaveData] = useState()
@@ -186,17 +181,6 @@ const TotalPayers = () => {
 
 
     const [state, reducerDispatch] = useReducer(reducer, initialState)
-
-
-
-
-    const validationSchemaa = Yup.object({
-        fromDate: Yup.date().required("Required").nullable(),
-        toDate: Yup.date()
-            .min(Yup.ref("fromDate"), "End date can't be before Start date")
-            .required("Required"),
-    });
-
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
     if (splitDate[1]?.length === 1) {
@@ -227,7 +211,8 @@ const TotalPayers = () => {
             toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
             page: currentPage,
             page_size: pageSize,
-            client_code: clientCode
+            client_code: clientCode,
+            // search: searchTerm
         };
 
         dispatch(getPayerApi(postData))
@@ -236,6 +221,7 @@ const TotalPayers = () => {
                 setDataCount(resp?.payload?.count)
                 setFilterData(resp?.payload?.results)
                 setLoadingState(false)
+                setShowAddPayerModal(false)
 
 
             })
@@ -264,15 +250,13 @@ const TotalPayers = () => {
 
 
     const formSubmit = (values) => {
-
-
-
         const postData = {
             fromDate: moment(values?.fromDate).startOf('day').format('YYYY-MM-DD'),
             toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
-            page: currentPage,
+            page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
-            client_code: clientCode
+            client_code: clientCode,
+            search: searchTerm
         };
         setSaveData(values);
         setLoadingState(true)
@@ -294,11 +278,7 @@ const TotalPayers = () => {
 
 
     };
-    const handleAddPayerButtonClick = () => {
-        // getDrop();
-        reducerDispatch({ type: "addPayer", payload: true })
 
-    };
 
 
 
@@ -324,13 +304,7 @@ const TotalPayers = () => {
         })
     };
 
-    // const deleteUser = async (id) => {
-    //     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
-    //     if (iscConfirm) {
-    //         await paymentLinkService.deletePayer({ id: id })
-    //         loadUser(initialValues);
-    //     }
-    // };
+
 
 
 
@@ -394,7 +368,7 @@ const TotalPayers = () => {
                                 </div>
                                 <div className="col-md-6 d-flex justify-content-end">
 
-                                    <div className="me-3 mt-4">
+                                    {/* <div className="me-3 mt-4">
                                         <input
                                             className="form-control"
                                             onChange={getSearchTerm}
@@ -402,7 +376,35 @@ const TotalPayers = () => {
                                             type="text"
                                             placeholder="Search Here"
                                         />
+                                    </div> */}
+
+                                    <div className="me-3 mt-4 d-flex">
+                                        {/* <input
+                                            className="form-control"
+                                            // onChange={handleSearchChange}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            value={searchTerm}
+                                            type="text"
+                                            placeholder="Search by Name, Email, Mobile"
+                                        />
+                                        <button className="btn btn-primary ms-2" onClick={formSubmit}>
+                                            <i className="fa fa-search"></i>
+                                        </button> */}
+
+                                        <SearchBar
+                                            searchTerm={searchTerm}
+                                            setSearchTerm={setSearchTerm}
+                                            onSearch={formSubmit}
+                                            placeholder="Search by Name, Email, Mobile"
+                                            loadUser={loadUser}
+
+
+
+                                        />
                                     </div>
+
+
+
 
                                     <CountPerPageFilter
                                         pageSize={pageSize}

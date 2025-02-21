@@ -6,16 +6,15 @@ import CustomLoader from "../../../../../_components/loader";
 import _ from "lodash";
 import Yup from "../../../../../_components/formik/Yup";
 import moment from "moment";
-import AddSinglePayer from "../../payment-links/AddSinglePayer";
 import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
 import Table from "../../../../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
-import { getPayerApi } from "../../../../../slices/paymentLink/paymentLinkSlice";
 import { useDispatch } from "react-redux";
 import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
-import { getTxnData } from "../../../../../slices/paymentLink/paymentLinkSlice";
+import { getTxnData } from '../paylink-solution-slice/paylinkSolutionSlice'
 import DateFormatter from "../../../../../utilities/DateConvert";
+import SearchBar from "../searchBar/SearchBar";
 
 
 
@@ -249,16 +248,14 @@ const RecentTransaction = () => {
 
 
     const formSubmit = (values) => {
-
-
-
         const postData = {
             fromDate: moment(values?.fromDate).startOf('day').format('YYYY-MM-DD'),
             toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
-            page: currentPage,
+            page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,
             order_by: "-id",
+            search: searchTerm
         };
         setSaveData(values);
         setLoadingState(true)
@@ -376,13 +373,20 @@ const RecentTransaction = () => {
                                 <div className="col-md-6 d-flex justify-content-end">
 
                                     <div className="me-3 mt-4">
-                                        <input
+                                        {/* <input
                                             className="form-control"
                                             onChange={getSearchTerm}
                                             value={searchTerm}
                                             type="text"
                                             placeholder="Search Here"
-                                        />
+                                        /> */}
+
+                                        <SearchBar
+                                            searchTerm={searchTerm}
+                                            setSearchTerm={setSearchTerm}
+                                            onSearch={formSubmit}
+                                            placeholder="Search by Name, Email, Mobile"
+                                            loadUser={loadUser} />
                                     </div>
 
                                     <CountPerPageFilter
