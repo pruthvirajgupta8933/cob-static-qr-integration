@@ -16,9 +16,9 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
-import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
-import Paylink from "../AllPages/createpaymentlink/Paylink";
-import Paylinks from "../AllPages/payment-links/Paylink";
+// import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
+// import Paylink from "../AllPages/createpaymentlink/Paylink";
+// import Paylinks from "../AllPages/payment-links/Paylink";
 // improt Profile
 // import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
@@ -423,29 +423,29 @@ function DashboardMainContent() {
                 <Products />
               </AuthorizedRoute>
 
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 exaxt
                 path={`${path}/paylink`}
                 Component={Paylink}
                 roleList={{ merchant: true }}
               >
                 <Paylink />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinks`}
-                Component={Paylinks}
+                Component={PaylinkDashboard}
                 roleList={{ merchant: true }}
               />
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinkdetail`}
                 Component={PaymentLinkDetail}
                 roleList={{ merchant: true }}
               >
                 <PaymentLinkDetail />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exact
