@@ -12,8 +12,8 @@ let url,
   report_api_url,
   paylinkBaseUrl,
   subscriptionUrl,
-  refund_url = "";
-
+  refund_url,
+  adminAPIURL = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
