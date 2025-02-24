@@ -34,6 +34,7 @@ import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
+import { qFormSliceReducer } from "./slices/qform-reports";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
 
@@ -88,7 +89,8 @@ const reducer = {
   kycValidatorReducer: kycValidatorReducer,
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
-  paymentLinkSliceReducer: paymentLinkSliceReducer
+  paymentLinkSliceReducer: paymentLinkSliceReducer,
+  qForm: qFormSliceReducer,
 };
 
 const store = configureStore({
