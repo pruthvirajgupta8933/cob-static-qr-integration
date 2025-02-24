@@ -12,8 +12,7 @@ let url,
   report_api_url,
   paylinkBaseUrl,
   subscriptionUrl,
-  refund_url,
-  adminAPIURL = "";
+  refund_url = "";
 
 
 if (ENV_PROD) {
@@ -25,7 +24,8 @@ if (ENV_PROD) {
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_url = "https://paywidget.sabpaisa.in";
-  widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
+  widget_script =
+    "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
@@ -363,7 +363,6 @@ const API_LIVE = {
 
   GET_WEBSITE_WHITELIST: `${adminAPIURL}/common-data/103`,
 
-
   // For Payout
   LedgersMerchant: `${payout_url}/api/getLedgersMerchant`,
   getLedgersMerchantList: `${payout_url}/api/getTransactionHistory`,
@@ -485,15 +484,16 @@ export const PAYMENT_LINK = {
   GET_PAYER_TYPE: `${paylinkBaseUrl}/api/payer/get-all-payer-type/`,
   GET_API_KEY: `${paylinkBaseUrl}/api/client-configuration/get-api-key-by-client-code/`,
   // https://stage-paymentlinks.sabpaisa.in/api/client-configuration/get-api-key-by-client-code/?client_code=LPSD1
-
-}
+  GET_TXN_GRAPH_DATA: `${paylinkBaseUrl}/api/link-dashboard/get-transaction-graph-data/`,
+  GET_LINK_DASHBOARD: `${paylinkBaseUrl}/api/link-dashboard/get-dashboard-data/`,
+  GET_ALL_TXN: `${paylinkBaseUrl}/api/transaction/get-all-transactions/`,
+};
 
 export const E_NACH_URL = {
   MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
-  REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`
-}
-
+  REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
+};
 
 export const wsConnectUrl = {
   connectionURL: webSocketUrl,
@@ -501,7 +501,6 @@ export const wsConnectUrl = {
 };
 
 const API_URL = API_LIVE;
-
 
 export const WIDGET_URL = WIDGET_LIVE;
 // export const Qwick_Form = qwick_form_url;
