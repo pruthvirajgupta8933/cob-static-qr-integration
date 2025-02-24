@@ -202,8 +202,8 @@ const TransactionHistory = () => {
     setClientCodeList(clientCodeListArr);
   }, [clientCodeListArr]);
 
-  const tempPayStatus = [{ key: "All", value: "All" }];
 
+  const tempPayStatus = [{ key: "All", value: "All" }];
   paymentStatusList.map((item) => {
     if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
       if (item?.is_active) {
