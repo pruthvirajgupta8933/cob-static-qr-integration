@@ -141,7 +141,7 @@ const CkycrModal = (props) => {
               <thead>
                 <tr>
                   <th>Description</th>
-                  <th>CKCYR Portal Date</th>
+                  <th>CKYCR Portal Date</th>
                   <th>Sabpaisa KYC Date</th>
                   <th>Updated By</th>
                   <th>Created By</th>
@@ -196,7 +196,7 @@ const CkycrModal = (props) => {
 
   return (
     <>
-      <CustomModal modalBody={modalbody} headerTitle={"Update CKCYR"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
+      <CustomModal modalBody={modalbody} headerTitle={"Update CKYCR"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
     </>
 
   );
