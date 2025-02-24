@@ -7,14 +7,14 @@ import { changePasswordSlice } from "../../../slices/auth";
 import { toast } from "react-toastify";
 import { logout } from "../../../slices/auth";
 import {
-  useRouteMatch, Link
+  Link
 } from "react-router-dom";
 
 function ChangePassword() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { loginId, clientEmail } = user;
-  let { path } = useRouteMatch();
+  // let { path } = useRouteMatch();
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,
@@ -83,7 +83,8 @@ function ChangePassword() {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const updataPassword = (data) => {
+  const updataPassword = (data, { setSubmitting }) => {
+    setSubmitting(true)
     dispatch(
       changePasswordSlice({
         email: data.email,
@@ -91,15 +92,21 @@ function ChangePassword() {
         newpassword: data.new_password,
       })
     ).then((res) => {
+
       if (res.meta.requestStatus === "fulfilled") {
+        setSubmitting(true)
         if (res.payload.status === true) {
           toast.success(res.payload.message);
           dispatch(logout());
+
         } else if (res.payload.status === false) {
           toast.error(res.payload.message);
+          setSubmitting(false)
         }
       }
-    });
+    }).catch((error) => {
+      setSubmitting(false)
+    })
   };
 
   return (
@@ -113,17 +120,14 @@ function ChangePassword() {
                 <div className="card p-3">
                   <Formik
                     enableReintialize="true"
-                    initialValues={{
-                      ...INITIAL_FORM_STATE,
-                    }}
+                    initialValues={{ ...INITIAL_FORM_STATE }}
                     validationSchema={FORM_VALIDATION}
-                    onSubmit={updataPassword}
+                    onSubmit={(values, formikFn) => {
+                      updataPassword(values, { ...formikFn })
+                    }}
                   >
-                    {({ handleSubmit, isSubmitting, errors, touched, }) => (
+                    {({ isSubmitting }) => (
                       <Form className="form-horizontal">
-                        <Field type="hidden" name="loginId" disabled />
-                        <Field type="hidden" name="email" disabled />
-
                         <div className="col-lg-4 mb-3">
                           <label className="form-label">
                             Old Password
@@ -213,7 +217,15 @@ function ChangePassword() {
                             <button
                               type="submit"
                               className="btn btn-sm cob-btn-primary ml-3"
+                              disabled={isSubmitting}
                             >
+                              {isSubmitting && (
+                                <span
+                                  className="spinner-border spinner-border-sm mr-1"
+                                  role="status"
+                                  ariaHidden="true"
+                                ></span>
+                              )}
                               Update Password
                             </button>
                           </div>
