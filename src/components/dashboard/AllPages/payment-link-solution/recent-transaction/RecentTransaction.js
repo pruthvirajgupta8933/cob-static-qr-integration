@@ -161,7 +161,7 @@ const RecentTransaction = () => {
             name: "Status",
             selector: (row) => row.trans_status,
             sortable: true,
-            width: "150px"
+            width: "250px"
         }
 
     ];
