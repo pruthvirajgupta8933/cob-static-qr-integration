@@ -76,7 +76,7 @@ const ReportLayout = ({
                     label="Search"
                     name="search"
                     placeholder="Search Here"
-                    className="form-control rounded-0"
+                    className="form-control"
                     onChange={(e) => {
                       SetSearchText(e.target.value);
                     }}

@@ -612,7 +612,7 @@ const TransactionHistory = () => {
                   control="select"
                   label="Client Code"
                   name="clientCode"
-                  className="form-select rounded-0"
+                  className="form-select rounded"
                   options={clientCodeOption}
                 />
               </div>
@@ -622,7 +622,7 @@ const TransactionHistory = () => {
                 control="select"
                 label="Select Duration"
                 name="duration"
-                className="form-select rounded-0"
+                className="form-select rounded"
                 options={durations}
                 onChange={(e) =>
                   handleDurationChange({
@@ -654,7 +654,7 @@ const TransactionHistory = () => {
                     }}
                     dateFormat="dd-MM-yyyy"
                     placeholderText="Select Date Range"
-                    className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+                    className={`form-control rounded p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
                     showPopperArrow={false}
                     popperClassName={classes.custom_datepicker_popper}
                   />
@@ -680,7 +680,7 @@ const TransactionHistory = () => {
                 control="select"
                 label="Transactions Status"
                 name="transaction_status"
-                className="form-select rounded-0 mt-0"
+                className="form-select rounded mt-0"
                 options={tempPayStatus}
               />
             </div>
@@ -690,7 +690,7 @@ const TransactionHistory = () => {
                 control="select"
                 label="Payment Mode"
                 name="payment_mode"
-                className="form-select rounded-0 mt-0"
+                className="form-select rounded mt-0"
                 options={tempPaymode}
               />
             </div>
@@ -844,7 +844,6 @@ const TransactionHistory = () => {
   return (
     <section className="">
       <div className="profileBarStatus">
-        <Notification />
         {refundModal && (
           <TransactionRefund
             refundModal={refundModal}

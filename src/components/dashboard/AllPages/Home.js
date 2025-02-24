@@ -9,7 +9,6 @@ import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
   GetKycTabsStatus,
-  kycUserList,
   kycUserListForMerchant,
 } from "../../../slices/kycSlice";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
@@ -113,7 +112,7 @@ function Home() {
   if (roles.merchant) {
     const updatedDate = graphDate(txnChartData || []);
     updatedDate?.map((item) => {
-      labels.push(moment(item?.txn_date).format("MMMM Do"));
+      labels.push(moment(item?.txn_date).format("MMM Do"));
       values.push(parseInt(item?.txn_no));
       extraValues.push(parseInt(item?.TSR));
     });
@@ -253,7 +252,7 @@ function Home() {
           </div>
 
           <div className="col-lg-5 col-sm-12 col-md-12">
-            <h6 className="primaryColorSecond p-2 text-white">
+            <h6 className="primaryColorSecond p-2 text-white rounded">
               Dashboard Update
             </h6>
 

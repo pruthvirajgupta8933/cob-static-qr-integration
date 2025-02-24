@@ -75,7 +75,6 @@ const CreateMandateApi = () => {
   const location = useLocation();
   const { search } = location;
   const mendateRegId = search.split("?mendateRegId=")[1];
-  console.log("mendateRegId", mendateRegId)
 
 
   const handleResponseApi = () => {
