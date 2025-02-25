@@ -48,6 +48,9 @@ const RecentTransaction = () => {
     const [showModal, setShowModal] = useState(false);
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
+    const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
 
 
     const initialState = {
@@ -205,8 +208,8 @@ const RecentTransaction = () => {
         setLoadingState(true)
 
         const postData = {
-            fromDate: moment(saveData?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
+            fromDate: fromDate,
+            toDate: toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
@@ -249,8 +252,8 @@ const RecentTransaction = () => {
 
     const formSubmit = (values) => {
         const postData = {
-            fromDate: moment(values?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
+            fromDate: fromDate,
+            toDate: toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,

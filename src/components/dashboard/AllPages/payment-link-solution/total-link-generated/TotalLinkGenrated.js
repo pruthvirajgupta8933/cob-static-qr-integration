@@ -25,6 +25,9 @@ const TotalLinkGenrated = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [saveData, setSaveData] = useState()
+    const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
 
     const [displayList, setDisplayList] = useState([]);
     const [filterData, setFilterData] = useState([])
@@ -193,8 +196,8 @@ const TotalLinkGenrated = () => {
     const loadUser = async (data) => {
         setLoadingState(true)
 
-        const fromDate = moment(saveData?.fromDate).format("YYYY-MM-DD");
-        const toDate = moment(saveData?.toDate).format("YYYY-MM-DD");
+        // const fromDate = moment(saveData?.fromDate).format("YYYY-MM-DD");
+        // const toDate = moment(saveData?.toDate).format("YYYY-MM-DD");
 
         const postData = {
             client_code: clientCode,
@@ -240,8 +243,8 @@ const TotalLinkGenrated = () => {
         setDisplayList([]);
 
 
-        const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
-        const toDate = moment(values?.toDate).format("YYYY-MM-DD");
+        // const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
+        // const toDate = moment(values?.toDate).format("YYYY-MM-DD");
         // const dateRangeValid = checkValidation(fromDate, toDate);
 
         // if (dateRangeValid) {

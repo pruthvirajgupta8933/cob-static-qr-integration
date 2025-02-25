@@ -22,10 +22,7 @@ import SearchBar from "../searchBar/SearchBar";
 
 
 const TotalPayers = () => {
-
     const dispatch = useDispatch()
-
-
     const [searchTerm, setSearchTerm] = useState('');
     const [saveData, setSaveData] = useState()
     const { user } = useSelector((state) => state.auth);
@@ -43,6 +40,9 @@ const TotalPayers = () => {
     const [showModal, setShowModal] = useState(false);
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
+    const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
 
 
     const initialState = {
@@ -113,24 +113,27 @@ const TotalPayers = () => {
             selector: (row) => row.payer_name,
             sortable: true,
             width: "150px"
+
         },
         {
             id: "3",
             name: "Mobile No.",
             selector: (row) => row.payer_mobile,
-            width: "180px"
+            width: "150px"
         },
         {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
-            width: "200px"
+            // width: "200px"
         },
         {
             id: "5",
             name: "Payer Category",
             selector: (row) => row.payer_type_name,
             sortable: true,
+
+
 
         },
 
@@ -209,8 +212,8 @@ const TotalPayers = () => {
         setLoadingState(true)
 
         const postData = {
-            fromDate: moment(saveData?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
+            fromDate: fromDate,
+            toDate: toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
@@ -253,8 +256,8 @@ const TotalPayers = () => {
 
     const formSubmit = (values) => {
         const postData = {
-            fromDate: moment(values?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
+            fromDate: fromDate,
+            toDate: toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,

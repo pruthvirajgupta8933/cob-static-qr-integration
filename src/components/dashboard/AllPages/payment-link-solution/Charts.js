@@ -37,7 +37,7 @@ const lineChartData = [
 const colors = ["#F93C65", "#F89131", "#008ADE", "#029053"];
 
 const CustomLegend = ({ data, colorMode }) => {
-  const borderColor = colorMode === "dark" ? "#fff" : "#000"; // Light or dark mode logic
+  const borderColor = colorMode === "dark" ? "#fff" : "#000";
 
   return (
     <div className="d-inline-flex flex-wrap gap-2 mt-3">

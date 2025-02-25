@@ -6,6 +6,8 @@ import ActionButtons from "./ActionButtons";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import TransactionFilter from "./transaction-filter/TransactionFilter";
+import moment from "moment";
+
 // import {
 //   getDashboardData,
 //   getTxnData,
@@ -88,9 +90,9 @@ const PaylinkDashboard = () => {
     <div className="container-fluid mt-4">
       <div className="row g-4">
         <div className="col-12 d-flex justify-content-between align-items-center">
-          <h6 className="alert alert-info" role="alert">
-            Date Range: {fromDate} to {toDate}
-          </h6>
+          <p className="border border-primary bg-white rounded p-2 " >
+            Date Range: {moment(fromDate).format("YYYY-MMM-DD")} to {moment(toDate).format("YYYY-MMM-DD")}
+          </p>
           {/* <div className="card">
                         <div className="card-body">
                             <h6 className="card-title">Date Range: {fromDate} to {toDate}</h6>
@@ -188,7 +190,7 @@ const PaylinkDashboard = () => {
 
           <div className="col-12 col-md-4">
             <div className="card shadow-sm p-1 h-100">
-              <h6 className="card-title text-center">
+              <h6 className="card-title text-center mt-3">
                 Transactions Payment Mode
               </h6>
               <Charts
