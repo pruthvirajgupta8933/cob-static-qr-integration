@@ -30,7 +30,7 @@ if (ENV_PROD) {
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
-  subscriptionUrl = "https://subscriptionapi.sabpaisa.in"
+  subscriptionUrl = "https://subscriptionapi.sabpaisa.in/"
   adminAPIURL = "https://preprod-adminapi.sabpaisa.in/api"
 
 } else {
