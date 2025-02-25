@@ -175,18 +175,18 @@ const RecentTransaction = () => {
         },
     ];
 
-    console.log(transactionStatusColorArr["ABORTED"])
+    // console.log(transactionStatusColorArr["ABORTED"])
     const [state, reducerDispatch] = useReducer(reducer, initialState)
 
 
+    // console.log(state)
 
-
-    const validationSchemaa = Yup.object({
-        fromDate: Yup.date().required("Required").nullable(),
-        toDate: Yup.date()
-            .min(Yup.ref("fromDate"), "End date can't be before Start date")
-            .required("Required"),
-    });
+    // const validationSchemaa = Yup.object({
+    //     fromDate: Yup.date().required("Required").nullable(),
+    //     toDate: Yup.date()
+    //         .min(Yup.ref("fromDate"), "End date can't be before Start date")
+    //         .required("Required"),
+    // });
 
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
@@ -382,9 +382,9 @@ const RecentTransaction = () => {
 
 
 
-    const getFilterData = (data) => {
+    const getFilterData = (data, filterBy) => {
         // setFilterData(data)
-        console.log(data)
+        console.log(filterBy, data)
     }
 
     return (
@@ -431,16 +431,14 @@ const RecentTransaction = () => {
                                         <SelectFilter
                                             onChange={getFilterData}
                                             options={tempPayStatus}
+                                            filterBy={"payment_status"}
                                         />
                                     </div>
                                     <div className="me-3 mt-4">
                                         <SelectFilter
-                                            searchTerm={searchTerm}
-                                            setSearchTerm={setSearchTerm}
-                                            onSearch={formSubmit}
-                                            placeholder="Search by Name, Email, Mobile"
-                                            loadUser={loadUser}
+                                            onChange={getFilterData}
                                             options={tempPaymode}
+                                            filterBy={"transaction_status"}
 
                                         />
                                     </div>

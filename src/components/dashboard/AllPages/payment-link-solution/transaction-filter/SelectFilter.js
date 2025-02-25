@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function SelectFilter(props) {
-    const { label, name, options, onChange, ...rest } = props;
+    const { label, name, options, onChange, filterBy, ...rest } = props;
     return (
-        <select className="form-select form-select-sm" onChange={(e) => onChange(e.target.value)} >
+        <select className="form-select form-select-sm" onChange={(e) => onChange(e.target.value, filterBy)} >
             {options?.map((option, i) => {
                 return (
                     <option
