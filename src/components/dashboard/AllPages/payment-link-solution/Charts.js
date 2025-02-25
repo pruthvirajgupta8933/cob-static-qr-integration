@@ -11,6 +11,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { colourArr } from "../../../../utilities/colourArr";
 
 const lineChartData = [
   { month: "Jan 2023", value: 16 },
@@ -34,7 +35,7 @@ const lineChartData = [
 //   { name: "Net Banking", value: 2000, color: "#029053" },
 // ];
 
-const colors = ["#F93C65", "#F89131", "#008ADE", "#029053"];
+const colors = colourArr;
 
 const CustomLegend = ({ data, colorMode }) => {
   const borderColor = colorMode === "dark" ? "#fff" : "#000";
@@ -124,37 +125,44 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
 
   if (chartType === "donut") {
     return (
-      <div className="w-100 text-center p-3">
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={chartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={100}
-              fill="#82ca9d"
-              label
-            >
-              {chartData?.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
+      <React.Fragment>
+        <div className="card-body border-0 bg-white">
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={75}
+                outerRadius={115}
+                fill="#82ca9d"
+                label={({ name, value }) => `${value}`}
 
-            <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
-              <tspan x="50%" dy="-10" className="font-weight-bold">
-                Total
-              </tspan>
-              <tspan x="50%" dy="20" style={{ fontSize: "19px" }}>
-                {total}
-              </tspan>
-            </text>
-          </PieChart>
-        </ResponsiveContainer>
-        <CustomLegend data={chartData} colorMode={colorMode} />
-      </div>
+              >
+                {chartData?.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+
+              <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
+                <tspan x="50%" dy="-10" className="font-weight-bold">
+                  Total
+                </tspan>
+                <tspan x="50%" dy="20" style={{ fontSize: "19px" }}>
+                  {total}
+                </tspan>
+              </text>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="card-footer border-0 bg-white">
+          <CustomLegend data={chartData} colorMode={colorMode} />
+        </div>
+      </React.Fragment>
+
     );
   }
 

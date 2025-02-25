@@ -15,6 +15,10 @@ import FilterModal from "../FilterModal";
 import { getTxnData } from '../paylink-solution-slice/paylinkSolutionSlice'
 import DateFormatter from "../../../../../utilities/DateConvert";
 import SearchBar from "../searchBar/SearchBar";
+import { paymodeColorArr, transactionStatusColorArr } from "../../../../../utilities/colourArr";
+import SelectFilter from "../transaction-filter/SelectFilter";
+import { axiosInstance } from "../../../../../utilities/axiosInstance";
+import API_URL from "../../../../../config";
 
 
 
@@ -48,6 +52,10 @@ const RecentTransaction = () => {
     const [showModal, setShowModal] = useState(false);
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
+    const [paymentModeList, SetPaymentModeList] = useState([]);
+
+    const [paymentStatusList, SetPaymentStatusList] = useState([]);
+
     const { fromDate, toDate } = useSelector(
         (state) => state.dateFilterSliceReducer
     );
@@ -113,7 +121,6 @@ const RecentTransaction = () => {
 
 
     const rowData = [
-
         {
             id: "1",
             name: "Client Code",
@@ -140,7 +147,6 @@ const RecentTransaction = () => {
             name: "Email ID",
             selector: (row) => row.payer_email,
             sortable: true,
-            // width: "200px"
         },
         {
             id: "5",
@@ -148,7 +154,6 @@ const RecentTransaction = () => {
             selector: (row) => DateFormatter(row.trans_init_date),
             sortable: true,
             width: "200px"
-
         },
         {
             id: "6",
@@ -156,20 +161,21 @@ const RecentTransaction = () => {
             selector: (row) => DateFormatter(row.trans_complete_date),
             sortable: true,
             width: "200px"
-
         },
-
         {
             id: "7",
             name: "Status",
-            selector: (row) => row.trans_status,
-            sortable: true,
-            width: "250px"
-        }
+            selector: (row) => (
+                <p className="border border-dark-subtle p-1 m-0 rounded-1 " style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toString()?.toUpperCase()] }}>
+                    {row.trans_status}
 
+                </p>
+            ),
+            sortable: true,
+        },
     ];
 
-
+    console.log(transactionStatusColorArr["ABORTED"])
     const [state, reducerDispatch] = useReducer(reducer, initialState)
 
 
@@ -208,8 +214,8 @@ const RecentTransaction = () => {
         setLoadingState(true)
 
         const postData = {
-            fromDate: fromDate,
-            toDate: toDate,
+            start_date: fromDate,
+            end_date: toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
@@ -222,9 +228,6 @@ const RecentTransaction = () => {
                 setDataCount(resp?.payload?.count)
                 setFilterData(resp?.payload?.results)
                 setLoadingState(false)
-
-
-
             })
             .catch((error) => {
                 setLoadingState(false);
@@ -236,6 +239,8 @@ const RecentTransaction = () => {
 
     useEffect(() => {
         loadUser();
+        getPaymentStatusList()
+        paymodeList()
         // getDrop();
         // setEditModalToggle(false)
     }, [pageSize, currentPage]);
@@ -252,8 +257,8 @@ const RecentTransaction = () => {
 
     const formSubmit = (values) => {
         const postData = {
-            fromDate: fromDate,
-            toDate: toDate,
+            start_date: fromDate,
+            end_date: toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,
@@ -343,6 +348,45 @@ const RecentTransaction = () => {
     };
 
 
+
+    const getPaymentStatusList = async () => {
+        await axiosInstance
+            .get(API_URL.GET_PAYMENT_STATUS_LIST)
+            .then((res) => {
+                SetPaymentStatusList(res.data);
+            })
+            .catch((err) => { });
+    };
+
+    const paymodeList = async () => {
+        await axiosInstance
+            .get(API_URL.PAY_MODE_LIST)
+            .then((res) => {
+                SetPaymentModeList(res.data);
+            })
+            .catch((err) => { });
+    };
+
+    const tempPayStatus = [{ key: "All", value: "All" }];
+
+    paymentStatusList.map((item) => {
+        if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
+            tempPayStatus.push({ key: item, value: item });
+        }
+    });
+
+    const tempPaymode = [{ key: "All", value: "All" }];
+    paymentModeList.map((item) => {
+        tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+    });
+
+
+
+    const getFilterData = (data) => {
+        // setFilterData(data)
+        console.log(data)
+    }
+
     return (
         <React.Fragment>
             <section>
@@ -370,35 +414,47 @@ const RecentTransaction = () => {
                     <div className="card shadow-sm">
                         <div className="px-3 py-3">
                             <div className="row align-items-center">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     <h5 className="mb-0">Recent Transaction</h5>
                                 </div>
-                                <div className="col-md-6 d-flex justify-content-end">
-
+                                <div className="col-md-8 d-flex justify-content-end">
                                     <div className="me-3 mt-4">
-                                        {/* <input
-                                            className="form-control"
-                                            onChange={getSearchTerm}
-                                            value={searchTerm}
-                                            type="text"
-                                            placeholder="Search Here"
-                                        /> */}
-
                                         <SearchBar
                                             searchTerm={searchTerm}
                                             setSearchTerm={setSearchTerm}
                                             onSearch={formSubmit}
                                             placeholder="Search by Name, Email, Mobile"
-                                            loadUser={loadUser} />
+                                            loadUser={loadUser}
+                                        />
+                                    </div>
+                                    <div className="me-3 mt-4">
+                                        <SelectFilter
+                                            onChange={getFilterData}
+                                            options={tempPayStatus}
+                                        />
+                                    </div>
+                                    <div className="me-3 mt-4">
+                                        <SelectFilter
+                                            searchTerm={searchTerm}
+                                            setSearchTerm={setSearchTerm}
+                                            onSearch={formSubmit}
+                                            placeholder="Search by Name, Email, Mobile"
+                                            loadUser={loadUser}
+                                            options={tempPaymode}
+
+                                        />
                                     </div>
 
-                                    <CountPerPageFilter
-                                        pageSize={pageSize}
-                                        dataCount={dataCount}
-                                        currentPage={currentPage}
-                                        changePageSize={changePageSize}
-                                        changeCurrentPage={changeCurrentPage}
-                                    />
+                                    <div className="me-3 mt-4">
+                                        <CountPerPageFilter
+                                            pageSize={pageSize}
+                                            dataCount={dataCount}
+                                            currentPage={currentPage}
+                                            changePageSize={changePageSize}
+                                            changeCurrentPage={changeCurrentPage}
+                                            enableLable={false}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -416,6 +472,8 @@ const RecentTransaction = () => {
                                         pageSize={pageSize}
                                         currentPage={currentPage}
                                         changeCurrentPage={changeCurrentPage}
+                                        fixedHeader={true}
+                                        fixedHeaderScrollHeight="400px"
                                     />
                                 )}
                             </div>

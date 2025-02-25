@@ -212,8 +212,8 @@ const TotalPayers = () => {
         setLoadingState(true)
 
         const postData = {
-            fromDate: fromDate,
-            toDate: toDate,
+            start_date: fromDate,
+            end_date: toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
@@ -256,8 +256,8 @@ const TotalPayers = () => {
 
     const formSubmit = (values) => {
         const postData = {
-            fromDate: fromDate,
-            toDate: toDate,
+            start_date: fromDate,
+            end_date: toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,

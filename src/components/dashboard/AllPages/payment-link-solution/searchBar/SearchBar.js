@@ -35,7 +35,7 @@ const SearchBar = ({
             <div className="input-group">
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control form-control-sm"
                     placeholder={placeholder}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
