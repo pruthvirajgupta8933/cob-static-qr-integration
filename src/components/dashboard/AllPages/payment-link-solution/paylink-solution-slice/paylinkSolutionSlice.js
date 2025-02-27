@@ -63,11 +63,32 @@ export const getDashboardData = createAsyncThunk(
     }
 );
 
+
+
+
 export const getTxnGraphData = createAsyncThunk(
     "getTxnGraphData",
     async (requestParam, thunkAPI) => {
         try {
             const response = await paymentLinkService.getTxnGraphData(requestParam);
+            return response.data;
+        } catch (error) {
+            const message =
+                (error.response && error.response.data && error.response.data.detail) ||
+                error.message ||
+                error.toString() ||
+                error.request.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+
+export const getAllPayerData = createAsyncThunk(
+    "getAllPayerData",
+    async (requestParam, thunkAPI) => {
+        try {
+            const response = await paymentLinkService.getPayerData(requestParam);
             return response.data;
         } catch (error) {
             const message =

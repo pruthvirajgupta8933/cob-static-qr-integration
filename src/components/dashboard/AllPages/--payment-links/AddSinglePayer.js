@@ -14,7 +14,7 @@ import FormikController from '../../../../_components/formik/FormikController';
 import paymentLinkService from '../../../../services/create-payment-link/paymentLink.service';
 import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson';
 // import { toast } from 'react-toastify';
-const AddSinglePayer = ({ componentState, dispatchFn, loadUserFn }) => {
+const AddSinglePayer = ({ componentState, dispatchFn, loadDataFn }) => {
 
     const { user } = useSelector((state) => state.auth);
     const [disable, setDisable] = useState(false)
@@ -68,7 +68,7 @@ const AddSinglePayer = ({ componentState, dispatchFn, loadUserFn }) => {
             } else {
                 response = await paymentLinkService.addPayer(values)
             }
-            loadUserFn()
+            loadDataFn()
 
             toastConfig.successToast(response.data?.message ?? response.data?.detail)
             setDisable(false)

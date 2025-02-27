@@ -22,10 +22,7 @@ import SearchBar from "../searchBar/SearchBar";
 
 
 const TotalPayers = () => {
-
     const dispatch = useDispatch()
-
-
     const [searchTerm, setSearchTerm] = useState('');
     const [saveData, setSaveData] = useState()
     const { user } = useSelector((state) => state.auth);
@@ -43,6 +40,13 @@ const TotalPayers = () => {
     const [showModal, setShowModal] = useState(false);
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
+
+
+    const dateFilterValue = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
+
+
 
 
     const initialState = {
@@ -94,7 +98,7 @@ const TotalPayers = () => {
     const handleDelete = async () => {
 
         await paymentLinkService.deletePayer({ id: payerId });
-        loadUser(initialValues);
+        loadData(initialValues);
         setShowModal(false);
     };
 
@@ -108,29 +112,47 @@ const TotalPayers = () => {
 
     const rowData = [
         {
+            id: "1",
+            name: "S No.",
+            selector: (row) => row.serial_number,
+            sortable: true,
+            width: "100px"
+        },
+        {
             id: "2",
             name: "Name of Payer",
             selector: (row) => row.payer_name,
             sortable: true,
             width: "150px"
+
+        },
+        {
+            id: "31",
+            name: "Name of Payer",
+            selector: (row) => row.payer_name,
+            sortable: true,
+            width: "150px"
+
         },
         {
             id: "3",
             name: "Mobile No.",
             selector: (row) => row.payer_mobile,
-            width: "180px"
+            width: "150px"
         },
         {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
-            width: "200px"
+            // width: "200px"
         },
         {
             id: "5",
             name: "Payer Category",
             selector: (row) => row.payer_type_name,
             sortable: true,
+
+
 
         },
 
@@ -205,17 +227,23 @@ const TotalPayers = () => {
 
 
 
-    const loadUser = async (data) => {
+    const loadData = async (data) => {
         setLoadingState(true)
 
         const postData = {
-            fromDate: moment(saveData?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
+            start_date: dateFilterValue?.fromDate,
+            end_date: dateFilterValue?.toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
-            // search: searchTerm
+            order_by: "-id",
         };
+
+        if (data?.clearSearchState !== true) {
+            if (searchTerm !== "") {
+                postData["search"] = searchTerm
+            }
+        }
 
         dispatch(getPayerApi(postData))
             .then((resp) => {
@@ -236,7 +264,7 @@ const TotalPayers = () => {
     };
 
     useEffect(() => {
-        loadUser();
+        loadData();
         // getDrop();
         // setEditModalToggle(false)
     }, [pageSize, currentPage]);
@@ -253,13 +281,18 @@ const TotalPayers = () => {
 
     const formSubmit = (values) => {
         const postData = {
-            fromDate: moment(values?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
+            start_date: values?.fromDate || dateFilterValue?.fromDate,
+            end_date: values?.toDate || dateFilterValue?.toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,
-            search: searchTerm
+            order_by: "-id",
         };
+
+        if (searchTerm !== "") {
+            postData["search"] = searchTerm
+        }
+
         setSaveData(values);
         setLoadingState(true)
         dispatch(getPayerApi(postData))
@@ -311,26 +344,26 @@ const TotalPayers = () => {
 
 
     const edit = () => {
-        loadUser(initialValues);
+        loadData(initialValues);
     };
 
 
 
-    const getSearchTerm = (event) => {
-        const term = event.target.value;
-        setSearchTerm(term);
+    // const getSearchTerm = (event) => {
+    //     const term = event.target.value;
+    //     setSearchTerm(term);
 
-        if (term) {
-            const filteredData = filterData.filter((item) =>
-                Object.values(item).some((value) =>
-                    value?.toString().toLowerCase().includes(term.toLowerCase())
-                )
-            );
-            setPayerData(filteredData);
-        } else {
-            setPayerData(filterData);
-        }
-    };
+    //     if (term) {
+    //         const filteredData = filterData.filter((item) =>
+    //             Object.values(item).some((value) =>
+    //                 value?.toString().toLowerCase().includes(term.toLowerCase())
+    //             )
+    //         );
+    //         setPayerData(filteredData);
+    //     } else {
+    //         setPayerData(filterData);
+    //     }
+    // };
 
 
     return (
@@ -346,7 +379,7 @@ const TotalPayers = () => {
                         showAddPayerModal={showAddPayerModal}
                         showCreatePaymentModal={showCreatePaymentModal}
                         componentState={state}
-                        loadUserFn={edit}
+                        loadDataFn={edit}
                         onBackClick={() => window.history.back()}
                         showBackLink={true}
                     />
@@ -398,14 +431,9 @@ const TotalPayers = () => {
                                             setSearchTerm={setSearchTerm}
                                             onSearch={formSubmit}
                                             placeholder="Search by Name, Email, Mobile"
-                                            loadUser={loadUser}
-
-
-
+                                            loadData={loadData}
                                         />
                                     </div>
-
-
 
 
                                     <CountPerPageFilter

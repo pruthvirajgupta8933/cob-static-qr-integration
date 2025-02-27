@@ -9,7 +9,7 @@ import FormikController from '../../../../../_components/formik/FormikController
 import paymentLinkService from '../paylink-service/pamentLinkSolution.service';
 import { convertToFormikSelectJson } from '../../../../../_components/reuseable_components/convertToFormikSelectJson';
 
-const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
+const AddPayerModal = ({ componentState, dispatchFn, loadDataFn, onClose }) => {
 
 
 
@@ -73,7 +73,7 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
                 toastConfig.successToast(response.data?.message ?? response.data?.detail)
 
             }
-            loadUserFn()
+            loadDataFn()
 
 
             setDisable(false)
@@ -92,7 +92,8 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
             const formikOpt = convertToFormikSelectJson(
                 "id",
                 "payer_type_name",
-                respPayer.data?.data
+                respPayer.data?.data,
+
             );
             setPayerTypeList(formikOpt)
         } catch (error) {
@@ -147,7 +148,7 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
                                         <div className="row">
                                             <div className="col-6">
                                                 <div className="form-group">
-                                                    <label>Payer Name</label>
+
                                                     <FormikController
                                                         control="input"
                                                         name="payer_name"
@@ -159,7 +160,7 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="form-group">
-                                                    <label>Payer Email</label>
+
                                                     <FormikController
                                                         control="input"
                                                         type="text"
@@ -176,7 +177,7 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
                                         <div className="row">
                                             <div className="col-6">
                                                 <div className="form-group">
-                                                    <label>Payer Mobile</label>
+
                                                     <FormikController
                                                         control="input"
                                                         type="text"
@@ -189,14 +190,13 @@ const AddPayerModal = ({ componentState, dispatchFn, loadUserFn, onClose }) => {
                                             </div>
                                             <div className="col-6">
                                                 <div className="form-group">
-                                                    <label>Payer Type</label>
+
                                                     <FormikController
                                                         control="select"
                                                         options={payerTypeList}
                                                         name="payer_type"
                                                         className="form-select"
                                                         label="Payer Type"
-                                                        required={true}
                                                     />
                                                 </div>
                                             </div>
