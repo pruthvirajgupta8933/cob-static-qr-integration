@@ -4,6 +4,7 @@ import moment from "moment";
 const initialState = {
   fromDate: moment().format("YYYY-MM-DD"),
   toDate: moment().format("YYYY-MM-DD"),
+  dateRange: "today",
 };
 
 const dateFilterSlice = createSlice({
@@ -13,6 +14,7 @@ const dateFilterSlice = createSlice({
     setDateRange: (state, action) => {
       state.fromDate = action.payload.fromDate;
       state.toDate = action.payload.toDate;
+      state.dateRange = action.payload.dateRange;
     },
     resetDateRange: (state) => {
       state.fromDate = moment().format("YYYY-MM-DD");

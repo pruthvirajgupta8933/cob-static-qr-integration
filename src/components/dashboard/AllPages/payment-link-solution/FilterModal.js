@@ -5,7 +5,7 @@ import Classes from "./paymentLinkSolution.module.css";
 import FormikController from "../../../../_components/formik/FormikController";
 import moment from "moment";
 import { setDateRange } from "../../../../slices/date-filter-slice/DateFilterSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const validationSchema = Yup.object().shape({
     // fromDate: Yup.date().required("From Date is required"),
@@ -22,43 +22,50 @@ const today = moment().format("YYYY-MM-DD");
 const getDateRange = (option) => {
     switch (option) {
         case "today":
-            return { fromDate: today, toDate: today };
+            return { fromDate: today, toDate: today, dateRange: "today" };
         case "yesterday":
             return {
                 fromDate: moment().subtract(1, "days").format("YYYY-MM-DD"),
                 toDate: moment().subtract(1, "days").format("YYYY-MM-DD"),
+                dateRange: "yesterday"
             };
         case "lastWeek":
             return {
                 fromDate: moment().subtract(7, "days").format("YYYY-MM-DD"),
                 toDate: today,
+                dateRange: "lastWeek"
             };
         case "lastMonth":
             return {
                 fromDate: moment().subtract(1, "months").startOf("month").format("YYYY-MM-DD"),
                 toDate: moment().subtract(1, "months").endOf("month").format("YYYY-MM-DD"),
+                dateRange: "lastMonth"
             };
         case "lastSixMonths":
             return {
                 fromDate: moment().subtract(6, "months").startOf("month").format("YYYY-MM-DD"),
                 toDate: today,
+                dateRange: "lastSixMonths"
             };
         case "financialYear":
             return {
                 fromDate: moment().month(3).date(1).subtract(1, "year").format("YYYY-MM-DD"), // April 1st of the previous year
                 toDate: moment().month(2).date(31).format("YYYY-MM-DD"), // March 31st of the current year
+                dateRange: "financialYear"
             };
 
         default:
-            return { fromDate: today, toDate: today };
+            return { fromDate: today, toDate: today, dateRange: "today" };
     }
 };
 
-const initialValues = getDateRange("today");
 
 const FilterModal = ({ show, onClose, filterRef, onApply }) => {
     const modalRef = useRef(null);
     const dispatch = useDispatch()
+    const dateFilterData = useSelector((state) => state.dateFilterSliceReducer);
+
+    const initialValues = { fromDate: dateFilterData?.fromDate || today, toDate: dateFilterData?.toDate || today, dateRange: dateFilterData?.dateRange || "today" };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -88,6 +95,7 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
+                enableReinitialize={true}
                 onSubmit={(values) => {
                     dispatch(setDateRange(values));
                     onApply(values);
@@ -168,7 +176,8 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                                 className="btn btn-sm btn-outline-primary"
                                 onClick={() => {
                                     resetForm({ values: getDateRange("today") });
-                                    onClose();
+                                    dispatch(setDateRange(getDateRange("today")));
+                                    // onClose();
                                 }}
                             >
                                 Reset Filter

@@ -11,7 +11,7 @@ const ActionButtons = ({
     showAddPayerModal,
     showCreatePaymentModal,
     componentState,
-    loadUserFn,
+    loadDataFn,
     showBackLink,
     onBackClick
 }) => {
@@ -20,7 +20,7 @@ const ActionButtons = ({
 
             {showBackLink && (
                 <i
-                    className="fa fa-arrow-left text-primary fs-6 cursor-pointer"
+                    className="fa fa-long-arrow-left text-primary fs-6 cursor-pointer"
                     onClick={onBackClick}
 
                 ></i>
@@ -59,7 +59,7 @@ const ActionButtons = ({
             {showAddPayerModal && (
                 <AddPayerModal
                     onClose={() => setShowAddPayerModal(false)}
-                    loadUserFn={loadUserFn}
+                    loadDataFn={loadDataFn}
                     componentState={componentState}
                 />
             )}
