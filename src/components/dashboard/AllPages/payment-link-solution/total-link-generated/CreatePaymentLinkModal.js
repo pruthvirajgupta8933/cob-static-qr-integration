@@ -58,11 +58,16 @@ function CreatePaymentLink({ componentState, onClose }) {
 
     const loadUser = async () => {
         try {
-            const getPayerResponse = await paymentLinkService.getPayer({ "client_code": clientCode })
+            const getPayerResponse = await paymentLinkService.getPayer({ "client_code": clientCode, order_by: "-id" })
             const data = convertToFormikSelectJson(
                 "id",
                 "payer_name",
-                getPayerResponse.data?.results
+                getPayerResponse.data?.results,
+                {},
+                false,
+                false,
+                true,
+                "payer_email"
             );
             setPayerData(data)
         } catch (error) {

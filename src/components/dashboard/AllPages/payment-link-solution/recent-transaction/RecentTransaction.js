@@ -15,6 +15,10 @@ import FilterModal from "../FilterModal";
 import { getTxnData } from '../paylink-solution-slice/paylinkSolutionSlice'
 import DateFormatter from "../../../../../utilities/DateConvert";
 import SearchBar from "../searchBar/SearchBar";
+import { paymodeColorArr, transactionStatusColorArr } from "../../../../../utilities/colourArr";
+import SelectFilter from "../transaction-filter/SelectFilter";
+import { axiosInstance } from "../../../../../utilities/axiosInstance";
+import API_URL from "../../../../../config";
 
 
 
@@ -48,6 +52,19 @@ const RecentTransaction = () => {
     const [showModal, setShowModal] = useState(false);
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
+    const [paymentModeList, SetPaymentModeList] = useState([]);
+    const [paymentStatusList, SetPaymentStatusList] = useState([]);
+
+    const [paymentStatus, setPaymentStatus] = useState("All")
+    const [transactionMode, setTransactionMode] = useState("All")
+
+    const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
+
+    const dateFilterValue = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
 
 
     const initialState = {
@@ -99,7 +116,7 @@ const RecentTransaction = () => {
     const handleDelete = async () => {
 
         await paymentLinkService.deletePayer({ id: payerId });
-        loadUser(initialValues);
+        loadData(initialValues);
         setShowModal(false);
     };
 
@@ -110,13 +127,17 @@ const RecentTransaction = () => {
 
 
     const rowData = [
-
+        {
+            id: "0",
+            name: "S No.",
+            selector: (row) => row.serial_number,
+            sortable: true,
+            width: "70px"
+        },
         {
             id: "1",
             name: "Client Code",
             selector: (row) => row.client_code,
-            sortable: true,
-            width: "150px"
         },
         {
             id: "2",
@@ -129,55 +150,60 @@ const RecentTransaction = () => {
             id: "3",
             name: "Mobile No.",
             selector: (row) => row.payer_mobile,
-            sortable: true,
-            width: "180px"
+            width: "120px"
         },
         {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
             sortable: true,
-            // width: "200px"
+            width: "180px"
         },
         {
             id: "5",
             name: "Trans Init Date",
             selector: (row) => DateFormatter(row.trans_init_date),
             sortable: true,
-            width: "200px"
-
+            width: "150px"
         },
         {
             id: "6",
             name: "Trans Complete Date",
             selector: (row) => DateFormatter(row.trans_complete_date),
             sortable: true,
-            width: "200px"
-
+            width: "150px"
         },
-
         {
             id: "7",
             name: "Status",
-            selector: (row) => row.trans_status,
-            sortable: true,
-            width: "250px"
-        }
+            selector: (row) => (
+                <p className="border border-dark-subtle p-1 m-0 rounded-1 " style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toString()?.toUpperCase()] }}>
+                    {row.trans_status}
 
+                </p>
+            ),
+            sortable: true,
+        },
+        {
+            id: "8",
+            name: "Payment Mode",
+            selector: (row) => row.trans_mode,
+
+        },
     ];
 
-
+    // console.log(transactionStatusColorArr["ABORTED"])
     const [state, reducerDispatch] = useReducer(reducer, initialState)
 
 
+    // console.log(state)
 
-
-    const validationSchemaa = Yup.object({
-        fromDate: Yup.date().required("Required").nullable(),
-        toDate: Yup.date()
-            .min(Yup.ref("fromDate"), "End date can't be before Start date")
-            .required("Required"),
-    });
+    // const validationSchemaa = Yup.object({
+    //     fromDate: Yup.date().required("Required").nullable(),
+    //     toDate: Yup.date()
+    //         .min(Yup.ref("fromDate"), "End date can't be before Start date")
+    //         .required("Required"),
+    // });
 
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
@@ -199,19 +225,33 @@ const RecentTransaction = () => {
     clientMerchantDetailsList = user.clientMerchantDetailsList;
     clientCode = clientMerchantDetailsList[0].clientCode;
 
+    // console.log("searchTerm", searchTerm)
 
-
-    const loadUser = async (data) => {
+    const loadData = async (data) => {
+        // console.log(1, data)
         setLoadingState(true)
 
         const postData = {
-            fromDate: moment(saveData?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(saveData?.toDate).startOf('day').format('YYYY-MM-DD'),
+            start_date: dateFilterValue?.fromDate,
+            end_date: dateFilterValue?.toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
             order_by: "-id",
         };
+        if (transactionMode !== "All") {
+            postData["payment_mode"] = transactionMode
+        }
+
+        if (paymentStatus !== "All") {
+            postData["status"] = paymentStatus
+        }
+
+        if (data?.clearSearchState !== true) {
+            if (searchTerm !== "") {
+                postData["search"] = searchTerm
+            }
+        }
 
         dispatch(getTxnData(postData))
             .then((resp) => {
@@ -219,9 +259,6 @@ const RecentTransaction = () => {
                 setDataCount(resp?.payload?.count)
                 setFilterData(resp?.payload?.results)
                 setLoadingState(false)
-
-
-
             })
             .catch((error) => {
                 setLoadingState(false);
@@ -232,10 +269,16 @@ const RecentTransaction = () => {
     };
 
     useEffect(() => {
-        loadUser();
+        loadData();
         // getDrop();
         // setEditModalToggle(false)
-    }, [pageSize, currentPage]);
+    }, [pageSize, currentPage, paymentStatus, transactionMode]);
+
+
+    useEffect(() => {
+        getPaymentStatusList()
+        paymodeList()
+    }, [])
 
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
@@ -248,16 +291,29 @@ const RecentTransaction = () => {
 
 
     const formSubmit = (values) => {
+        // console.log("formsubmit-1", values);
         const postData = {
-            fromDate: moment(values?.fromDate).startOf('day').format('YYYY-MM-DD'),
-            toDate: moment(values?.toDate).startOf('day').format('YYYY-MM-DD'),
+            start_date: values?.fromDate || dateFilterValue?.fromDate,
+            end_date: values?.toDate || dateFilterValue?.toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,
             order_by: "-id",
-            search: searchTerm
         };
-        setSaveData(values);
+        // console.log("f-postData", postData);
+        if (searchTerm !== "") {
+            postData["search"] = searchTerm
+        }
+        if (transactionMode !== "All") {
+            postData["payment_mode"] = transactionMode
+        }
+
+        if (paymentStatus !== "All") {
+            postData["status"] = paymentStatus
+        }
+
+
+        // setSaveData(values);
         setLoadingState(true)
         dispatch(getTxnData(postData))
             .then((resp) => {
@@ -311,14 +367,14 @@ const RecentTransaction = () => {
     //     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
     //     if (iscConfirm) {
     //         await paymentLinkService.deletePayer({ id: id })
-    //         loadUser(initialValues);
+    //         loadData(initialValues);
     //     }
     // };
 
 
 
     const edit = () => {
-        loadUser(initialValues);
+        loadData(initialValues);
     };
 
 
@@ -340,6 +396,49 @@ const RecentTransaction = () => {
     };
 
 
+
+    const getPaymentStatusList = async () => {
+        await axiosInstance
+            .get(API_URL.GET_PAYMENT_STATUS_LIST)
+            .then((res) => {
+                SetPaymentStatusList(res.data);
+            })
+            .catch((err) => { });
+    };
+
+    const paymodeList = async () => {
+        await axiosInstance
+            .get(API_URL.PAY_MODE_LIST)
+            .then((res) => {
+                SetPaymentModeList(res.data);
+            })
+            .catch((err) => { });
+    };
+
+    const tempPayStatus = [{ key: "All", value: "All" }];
+
+    paymentStatusList.map((item) => {
+        if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
+            tempPayStatus.push({ key: item, value: item });
+        }
+    });
+
+    const tempPaymode = [{ key: "All", value: "All" }];
+    paymentModeList.map((item) => {
+        tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+    });
+
+
+
+    const getFilterData = (data, filterBy) => {
+        if (filterBy === 'payment_status') {
+            setPaymentStatus(data)
+        }
+        if (filterBy === 'transaction_status') {
+            setTransactionMode(data)
+        }
+    }
+
     return (
         <React.Fragment>
             <section>
@@ -353,7 +452,7 @@ const RecentTransaction = () => {
                         showAddPayerModal={showAddPayerModal}
                         showCreatePaymentModal={showCreatePaymentModal}
                         componentState={state}
-                        loadUserFn={edit}
+                        loadDataFn={edit}
                         onBackClick={() => window.history.back()}
                         showBackLink={true}
                     />
@@ -367,35 +466,46 @@ const RecentTransaction = () => {
                     <div className="card shadow-sm">
                         <div className="px-3 py-3">
                             <div className="row align-items-center">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     <h5 className="mb-0">Recent Transaction</h5>
                                 </div>
-                                <div className="col-md-6 d-flex justify-content-end">
-
+                                <div className="col-md-8 d-flex justify-content-end">
                                     <div className="me-3 mt-4">
-                                        {/* <input
-                                            className="form-control"
-                                            onChange={getSearchTerm}
-                                            value={searchTerm}
-                                            type="text"
-                                            placeholder="Search Here"
-                                        /> */}
-
                                         <SearchBar
                                             searchTerm={searchTerm}
                                             setSearchTerm={setSearchTerm}
                                             onSearch={formSubmit}
                                             placeholder="Search by Name, Email, Mobile"
-                                            loadUser={loadUser} />
+                                            loadData={loadData}
+                                        />
+                                    </div>
+                                    <div className="me-3 mt-4">
+                                        <SelectFilter
+                                            onChange={getFilterData}
+                                            options={tempPayStatus}
+                                            filterBy={"payment_status"}
+                                            value={paymentStatus}
+                                        />
+                                    </div>
+                                    <div className="me-3 mt-4">
+                                        <SelectFilter
+                                            onChange={getFilterData}
+                                            options={tempPaymode}
+                                            filterBy={"transaction_status"}
+                                            value={transactionMode}
+                                        />
                                     </div>
 
-                                    <CountPerPageFilter
-                                        pageSize={pageSize}
-                                        dataCount={dataCount}
-                                        currentPage={currentPage}
-                                        changePageSize={changePageSize}
-                                        changeCurrentPage={changeCurrentPage}
-                                    />
+                                    <div className="me-3 mt-4">
+                                        <CountPerPageFilter
+                                            pageSize={pageSize}
+                                            dataCount={dataCount}
+                                            currentPage={currentPage}
+                                            changePageSize={changePageSize}
+                                            changeCurrentPage={changeCurrentPage}
+                                            enableLable={false}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -413,6 +523,8 @@ const RecentTransaction = () => {
                                         pageSize={pageSize}
                                         currentPage={currentPage}
                                         changeCurrentPage={changeCurrentPage}
+                                        fixedHeader={true}
+                                        fixedHeaderScrollHeight="400px"
                                     />
                                 )}
                             </div>

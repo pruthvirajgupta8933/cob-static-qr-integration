@@ -127,6 +127,14 @@ const getTxnTableData = (postData) => {
     return axiosInstanceJWT.get(apiUrl, config);
 };
 
+const getPayerData = (postData) => {
+    const url = `${PAYMENT_LINK.GET_PAYER_DATA}`;
+    const apiUrl = getQueryStr(url, postData);
+    return axiosInstanceJWT.get(apiUrl);
+}
+
+
+
 
 
 // const getCustomerDetails = (fromDate, toDate, clientCode) => {
@@ -181,5 +189,6 @@ const paymentLinkService = {
     getDashboardData,
     getTxnGraphData,
     getTxnTableData,
+    getPayerData
 };
 export default paymentLinkService;

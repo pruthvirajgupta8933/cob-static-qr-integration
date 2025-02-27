@@ -8,16 +8,16 @@ const SearchBar = ({
     payerData,
     setPayerData,
     filterData,
-    loadUser
+    loadData
 }) => {
     const [error, setError] = useState("");
 
 
 
-    const handleClear = () => {
-        setSearchTerm("");
+    const handleClear = async () => {
+        await setSearchTerm("");
         setError(""); // Clear any existing error
-        loadUser();
+        loadData({ clearSearchState: true });
     };
 
     const handleSearch = () => {
@@ -35,7 +35,7 @@ const SearchBar = ({
             <div className="input-group">
                 <input
                     type="text"
-                    className="form-control"
+                    className="form-control form-control-sm"
                     placeholder={placeholder}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}

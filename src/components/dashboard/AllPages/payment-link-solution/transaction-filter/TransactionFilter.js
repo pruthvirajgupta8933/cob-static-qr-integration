@@ -15,7 +15,7 @@ const TransactionFilter = ({
     const start = moment(fromDate, "YYYY-MM-DD");
     const end = moment(toDate, "YYYY-MM-DD");
     const daysDiff = end.diff(start, "days");
-    console.log("daysDiff ", daysDiff);
+    // console.log("daysDiff ", daysDiff);
 
     let options = [];
     if (daysDiff === 0) {

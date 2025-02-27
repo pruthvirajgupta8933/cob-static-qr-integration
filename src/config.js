@@ -30,7 +30,7 @@ if (ENV_PROD) {
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
-  subscriptionUrl = "https://subscriptionapi.sabpaisa.in"
+  subscriptionUrl = "https://subscriptionapi.sabpaisa.in/"
   adminAPIURL = "https://preprod-adminapi.sabpaisa.in/api"
 
 } else {
@@ -487,6 +487,8 @@ export const PAYMENT_LINK = {
   GET_TXN_GRAPH_DATA: `${paylinkBaseUrl}/api/link-dashboard/get-transaction-graph-data/`,
   GET_LINK_DASHBOARD: `${paylinkBaseUrl}/api/link-dashboard/get-dashboard-data/`,
   GET_ALL_TXN: `${paylinkBaseUrl}/api/transaction/get-all-transactions/`,
+  GET_PAYER_DATA: `${paylinkBaseUrl}/api/payer/get-payer/`
+  // GET_ALL_TRANSACTION_DATA: `${paylinkBaseUrl}/transaction/get-all-transactions/`
 };
 
 export const E_NACH_URL = {

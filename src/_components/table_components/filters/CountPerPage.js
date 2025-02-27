@@ -1,6 +1,6 @@
 import React from "react";
 import DropDownCountPerPage from "../../reuseable_components/DropDownCountPerPage";
-const CountPerPage = ({ pageSize, dataCount, changePageSize, currentPage, changeCurrentPage }) => {
+const CountPerPage = ({ pageSize, dataCount, changePageSize, currentPage, changeCurrentPage, enableLable }) => {
 
   const handlerChange = (pageSize) => {
     changeCurrentPage(1)
@@ -9,12 +9,12 @@ const CountPerPage = ({ pageSize, dataCount, changePageSize, currentPage, change
 
   return (
     <div>
-      <label>Count Per Page</label>
+      {enableLable !== false && <label>Count Per Page</label>}
       <select
         value={pageSize}
         rel={pageSize}
         onChange={(e) => handlerChange(parseInt(e.target.value), currentPage)}
-        className="form-select"
+        className="form-select form-select-sm"
       >
         <DropDownCountPerPage datalength={dataCount} />
       </select>

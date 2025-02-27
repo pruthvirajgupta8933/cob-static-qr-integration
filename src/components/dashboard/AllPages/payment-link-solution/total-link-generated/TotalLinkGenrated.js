@@ -25,6 +25,9 @@ const TotalLinkGenrated = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [saveData, setSaveData] = useState()
+    const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
 
     const [displayList, setDisplayList] = useState([]);
     const [filterData, setFilterData] = useState([])
@@ -45,6 +48,9 @@ const TotalLinkGenrated = () => {
     const [disable, setDisable] = useState(false);
     const [dataCount, setDataCount] = useState('')
     const dispatch = useDispatch()
+    const dateFilterValue = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
 
     const validationSchema = Yup.object({
         fromDate: Yup.date().required("Required").nullable(),
@@ -122,6 +128,13 @@ const TotalLinkGenrated = () => {
 
     const rowData = [
         {
+            id: "1",
+            name: "S No.",
+            selector: (row) => row.serial_number,
+            sortable: true,
+            width: "100px"
+        },
+        {
             id: "2",
             name: "Payer Name",
             selector: (row) => row.payer_name,
@@ -190,21 +203,23 @@ const TotalLinkGenrated = () => {
 
 
 
-    const loadUser = async (data) => {
+    const loadData = async (data) => {
         setLoadingState(true)
-
-        const fromDate = moment(saveData?.fromDate).format("YYYY-MM-DD");
-        const toDate = moment(saveData?.toDate).format("YYYY-MM-DD");
 
         const postData = {
             client_code: clientCode,
-            start_date: fromDate,
-            end_date: toDate,
+            start_date: dateFilterValue?.fromDate,
+            end_date: dateFilterValue?.toDate,
             order_by: "-id",
             page: currentPage,
             page_size: pageSize
-
         };
+
+        if (data?.clearSearchState !== true) {
+            if (searchTerm !== "") {
+                postData["search"] = searchTerm
+            }
+        }
 
         dispatch(getPayMentLink(postData))
             .then((resp) => {
@@ -212,19 +227,15 @@ const TotalLinkGenrated = () => {
                 setDataCount(resp?.payload?.count)
                 setFilterData(resp?.payload?.results)
                 setLoadingState(false)
-
-
             })
             .catch((error) => {
                 setLoadingState(false);
-                // setDisable(false)
-
             });
 
     };
 
     useEffect(() => {
-        loadUser();
+        loadData();
         // getDrop();
         // setEditModalToggle(false)
     }, [pageSize, currentPage]);
@@ -240,23 +251,23 @@ const TotalLinkGenrated = () => {
         setDisplayList([]);
 
 
-        const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
-        const toDate = moment(values?.toDate).format("YYYY-MM-DD");
+        // const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
+        // const toDate = moment(values?.toDate).format("YYYY-MM-DD");
         // const dateRangeValid = checkValidation(fromDate, toDate);
 
         // if (dateRangeValid) {
 
         const postData = {
             client_code: clientCode,
-            start_date: fromDate,
-            end_date: toDate,
+            start_date: values?.fromDate || dateFilterValue?.fromDate,
+            end_date: values?.toDate || dateFilterValue?.toDate,
             order_by: "-id",
             page: searchTerm ? "1" : currentPage,
-            page_size: pageSize,
-            search: searchTerm
+            page_size: pageSize
+        }
 
-
-
+        if (searchTerm !== "") {
+            postData["search"] = searchTerm
         }
         setSaveData(values);
 
@@ -348,84 +359,70 @@ const TotalLinkGenrated = () => {
 
     // console.log(state)
     return (
-        <React.Fragment>
+        <section >
+            <div className="container-fluid">
+                <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} setShowCreatePaymentModal={setShowCreatePaymentModal} showCreatePaymentModal={showCreatePaymentModal} setShowAddPayerModal={setShowAddPayerModal} showAddPayerModal={showAddPayerModal} onBackClick={() => window.history.back()}
+                    showBackLink={true} />
+                <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={handleSubmit} />
+            </div>
+
             <section className="">
-                <div className="container-fluid">
-                    <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} setShowCreatePaymentModal={setShowCreatePaymentModal} showCreatePaymentModal={showCreatePaymentModal} setShowAddPayerModal={setShowAddPayerModal} showAddPayerModal={showAddPayerModal} onBackClick={() => window.history.back()}
-                        showBackLink={true} />
-                    <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={handleSubmit} />
-                </div>
+                <div className="container-fluid mt-3">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="row align-items-center mb-3">
+                                <div className="col-md-6">
+                                    <h5 className="mb-0">Total Links Generated</h5>
+                                </div>
+                                {filterData?.length !== 0 && (
+                                    <div className="col-md-6 d-flex justify-content-end gap-3 ">
+                                        <div className="d-flex align-items-center mt-4">
+                                            <SearchBar
+                                                searchTerm={searchTerm}
+                                                setSearchTerm={setSearchTerm}
+                                                onSearch={handleSubmit}
+                                                placeholder="Search by Name, Email, Mobile"
+                                                loadData={loadData}
 
-                <section className="">
-                    <div className="container-fluid mt-3">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="row align-items-center mb-3">
-                                    <div className="col-md-6">
-                                        <h5 className="mb-0">Total Links Generated</h5>
-                                    </div>
-                                    {filterData?.length !== 0 && (
-                                        <div className="col-md-6 d-flex justify-content-end gap-3 ">
-                                            <div className="d-flex align-items-center mt-4">
-                                                {/* <input
-                                                    className="form-control"
-                                                    onChange={getSearchTerm}
-                                                    value={searchTerm}
-                                                    type="text"
-                                                    placeholder="Search Here"
-                                                    style={{ width: "250px" }}
-                                                /> */}
-
-                                                <SearchBar
-                                                    searchTerm={searchTerm}
-                                                    setSearchTerm={setSearchTerm}
-                                                    onSearch={handleSubmit}
-                                                    placeholder="Search by Name, Email, Mobile"
-                                                    loadUser={loadUser}
-
-                                                />
-                                            </div>
-                                            <CountPerPageFilter
-                                                pageSize={pageSize}
-                                                dataCount={dataCount}
-                                                currentPage={currentPage}
-                                                changePageSize={changePageSize}
-                                                changeCurrentPage={changeCurrentPage}
                                             />
                                         </div>
+                                        <CountPerPageFilter
+                                            pageSize={pageSize}
+                                            dataCount={dataCount}
+                                            currentPage={currentPage}
+                                            changePageSize={changePageSize}
+                                            changeCurrentPage={changeCurrentPage}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="card-body">
+                                <div className="scroll overflow-auto">
+                                    {!loadingState && data?.length === 0 && (
+                                        <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
+                                    )}
+                                    {!loadingState && filterData?.length !== 0 && (
+                                        <Table
+                                            row={rowData}
+                                            data={data}
+                                            dataCount={dataCount}
+                                            pageSize={pageSize}
+                                            currentPage={currentPage}
+                                            changeCurrentPage={changeCurrentPage}
+                                        />
                                     )}
                                 </div>
-
-                                <div className="card-body">
-                                    <div className="scroll overflow-auto">
-                                        {!loadingState && data?.length === 0 && (
-                                            <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
-                                        )}
-                                        {!loadingState && filterData?.length !== 0 && (
-                                            <Table
-                                                row={rowData}
-                                                data={data}
-                                                dataCount={dataCount}
-                                                pageSize={pageSize}
-                                                currentPage={currentPage}
-                                                changeCurrentPage={changeCurrentPage}
-                                            />
-                                        )}
-                                    </div>
-                                    <CustomLoader loadingState={loadingState} />
-                                </div>
-
+                                <CustomLoader loadingState={loadingState} />
                             </div>
+
                         </div>
-
                     </div>
-                </section>
 
+                </div>
             </section>
 
-
-
-        </React.Fragment>
+        </section>
     );
 };
 
