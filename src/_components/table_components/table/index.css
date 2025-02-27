@@ -41,3 +41,23 @@
   padding: 0px !important;
   height: 50px;
 }
+
+.__rdt_custom_sort_icon__ {
+  position: absolute;
+  right: 10px;
+  color: #4DABF7;
+  font-size: 14px;
+}
+
+.desc.__rdt_custom_sort_icon__ {
+  top: 5px;
+}
+
+.asc.__rdt_custom_sort_icon__ {
+  top: 5px;
+
+}
+
+.__rdt_custom_sort_icon__>.fa {
+  font-size: 14px;
+}

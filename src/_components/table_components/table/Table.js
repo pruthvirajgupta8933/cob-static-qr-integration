@@ -102,7 +102,11 @@ const Table = (props) => {
         className=" bg-white border-0"
         columns={props?.row}
         data={props?.data}
-        sortIcon={<span><i className="fa fa-long-arrow-up text-primary p-0 m-0" style={{ width: "2px" }}></i><i className="fa fa-long-arrow-down text-primary p-0 m-0" style={{ width: "2px" }}></i></span>}
+        sortIcon={
+          <span>
+            <i className="fa fa-long-arrow-up p-0 my-1" style={{ width: "7px" }}></i>
+            <i className="fa fa-long-arrow-down p-0 my-1" style={{ width: "7px" }}></i>
+          </span>}
         fixedHeader={fixedHeaderFooter}
         onRowClicked={props.onRowClick}
         fixedHeaderScrollHeight={props?.fixedHeaderScrollHeight}

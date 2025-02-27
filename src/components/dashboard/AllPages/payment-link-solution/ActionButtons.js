@@ -20,7 +20,7 @@ const ActionButtons = ({
 
             {showBackLink && (
                 <i
-                    className="fa fa-arrow-left text-primary fs-6 cursor-pointer"
+                    className="fa fa-long-arrow-left text-primary fs-6 cursor-pointer"
                     onClick={onBackClick}
 
                 ></i>
