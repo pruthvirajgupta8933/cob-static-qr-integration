@@ -330,7 +330,7 @@ const PayerDetails = () => {
   return (
     <React.Fragment>
       {state.paylinkData?.openModal && <FormPaymentLink componentState={state.paylinkData} dispatchFn={reducerDispatch} />}
-      {state.addPayerModal && <AddSinglePayer componentState={state} dispatchFn={reducerDispatch} loadUserFn={edit} />}
+      {state.addPayerModal && <AddSinglePayer componentState={state} dispatchFn={reducerDispatch} loadDataFn={edit} />}
 
 
       <section >

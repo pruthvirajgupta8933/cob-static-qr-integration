@@ -8,16 +8,16 @@ const SearchBar = ({
     payerData,
     setPayerData,
     filterData,
-    loadUser
+    loadData
 }) => {
     const [error, setError] = useState("");
 
 
 
-    const handleClear = () => {
-        setSearchTerm("");
+    const handleClear = async () => {
+        await setSearchTerm("");
         setError(""); // Clear any existing error
-        loadUser();
+        loadData({ clearSearchState: true });
     };
 
     const handleSearch = () => {

@@ -20,6 +20,7 @@ import moment from "moment";
 
 import { getDashboardData, getTxnData, getTxnGraphData } from "./paylink-solution-slice/paylinkSolutionSlice";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import RecentTransaction from "./recent-transaction/RecentTransaction";
 
 const PaylinkDashboard = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -49,6 +50,8 @@ const PaylinkDashboard = () => {
         order_by: "-id",
         page: 1,
         page_size: 10,
+        start_date: fromDate,
+        end_date: toDate,
       })
     );
   }, []);
@@ -94,8 +97,8 @@ const PaylinkDashboard = () => {
   return (
     <div className="container-fluid mt-4">
       <div className="row g-4">
-        <div className="col-12 d-flex justify-content-between align-items-center">
-          <p className="border border-primary bg-white rounded p-2 " >
+        <div className="col-12 d-flex justify-content-between align-items-center ">
+          <p className="border border-default bg-white rounded p-2 shadow" >
             Date Range: {moment(fromDate).format("YYYY-MMM-DD")} to {moment(toDate).format("YYYY-MMM-DD")}
           </p>
 
@@ -215,6 +218,7 @@ const PaylinkDashboard = () => {
 
         <div className="row mt-3">
           <div className="col-12">
+            {/* <RecentTransaction /> */}
             <TransactionTable data={txnTableData?.results} />
           </div>
         </div>

@@ -11,7 +11,7 @@ const ActionButtons = ({
     showAddPayerModal,
     showCreatePaymentModal,
     componentState,
-    loadUserFn,
+    loadDataFn,
     showBackLink,
     onBackClick
 }) => {
@@ -59,7 +59,7 @@ const ActionButtons = ({
             {showAddPayerModal && (
                 <AddPayerModal
                     onClose={() => setShowAddPayerModal(false)}
-                    loadUserFn={loadUserFn}
+                    loadDataFn={loadDataFn}
                     componentState={componentState}
                 />
             )}

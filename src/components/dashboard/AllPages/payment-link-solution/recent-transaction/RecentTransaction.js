@@ -53,10 +53,16 @@ const RecentTransaction = () => {
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
     const [paymentModeList, SetPaymentModeList] = useState([]);
-
     const [paymentStatusList, SetPaymentStatusList] = useState([]);
 
+    const [paymentStatus, setPaymentStatus] = useState("All")
+    const [transactionMode, setTransactionMode] = useState("All")
+
     const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
+
+    const dateFilterValue = useSelector(
         (state) => state.dateFilterSliceReducer
     );
 
@@ -110,7 +116,7 @@ const RecentTransaction = () => {
     const handleDelete = async () => {
 
         await paymentLinkService.deletePayer({ id: payerId });
-        loadUser(initialValues);
+        loadData(initialValues);
         setShowModal(false);
     };
 
@@ -122,11 +128,16 @@ const RecentTransaction = () => {
 
     const rowData = [
         {
+            id: "0",
+            name: "S No.",
+            selector: (row) => row.serial_number,
+            sortable: true,
+            width: "70px"
+        },
+        {
             id: "1",
             name: "Client Code",
             selector: (row) => row.client_code,
-            sortable: true,
-            width: "150px"
         },
         {
             id: "2",
@@ -139,28 +150,28 @@ const RecentTransaction = () => {
             id: "3",
             name: "Mobile No.",
             selector: (row) => row.payer_mobile,
-            sortable: true,
-            width: "180px"
+            width: "120px"
         },
         {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
             sortable: true,
+            width: "180px"
         },
         {
             id: "5",
             name: "Trans Init Date",
             selector: (row) => DateFormatter(row.trans_init_date),
             sortable: true,
-            width: "200px"
+            width: "150px"
         },
         {
             id: "6",
             name: "Trans Complete Date",
             selector: (row) => DateFormatter(row.trans_complete_date),
             sortable: true,
-            width: "200px"
+            width: "150px"
         },
         {
             id: "7",
@@ -172,6 +183,12 @@ const RecentTransaction = () => {
                 </p>
             ),
             sortable: true,
+        },
+        {
+            id: "8",
+            name: "Payment Mode",
+            selector: (row) => row.trans_mode,
+
         },
     ];
 
@@ -208,19 +225,33 @@ const RecentTransaction = () => {
     clientMerchantDetailsList = user.clientMerchantDetailsList;
     clientCode = clientMerchantDetailsList[0].clientCode;
 
+    // console.log("searchTerm", searchTerm)
 
-
-    const loadUser = async (data) => {
+    const loadData = async (data) => {
+        // console.log(1, data)
         setLoadingState(true)
 
         const postData = {
-            start_date: fromDate,
-            end_date: toDate,
+            start_date: dateFilterValue?.fromDate,
+            end_date: dateFilterValue?.toDate,
             page: currentPage,
             page_size: pageSize,
             client_code: clientCode,
             order_by: "-id",
         };
+        if (transactionMode !== "All") {
+            postData["payment_mode"] = transactionMode
+        }
+
+        if (paymentStatus !== "All") {
+            postData["status"] = paymentStatus
+        }
+
+        if (data?.clearSearchState !== true) {
+            if (searchTerm !== "") {
+                postData["search"] = searchTerm
+            }
+        }
 
         dispatch(getTxnData(postData))
             .then((resp) => {
@@ -238,12 +269,16 @@ const RecentTransaction = () => {
     };
 
     useEffect(() => {
-        loadUser();
-        getPaymentStatusList()
-        paymodeList()
+        loadData();
         // getDrop();
         // setEditModalToggle(false)
-    }, [pageSize, currentPage]);
+    }, [pageSize, currentPage, paymentStatus, transactionMode]);
+
+
+    useEffect(() => {
+        getPaymentStatusList()
+        paymodeList()
+    }, [])
 
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
@@ -256,16 +291,29 @@ const RecentTransaction = () => {
 
 
     const formSubmit = (values) => {
+        // console.log("formsubmit-1", values);
         const postData = {
-            start_date: fromDate,
-            end_date: toDate,
+            start_date: values?.fromDate || dateFilterValue?.fromDate,
+            end_date: values?.toDate || dateFilterValue?.toDate,
             page: searchTerm ? "1" : currentPage,
             page_size: pageSize,
             client_code: clientCode,
             order_by: "-id",
-            search: searchTerm
         };
-        setSaveData(values);
+        // console.log("f-postData", postData);
+        if (searchTerm !== "") {
+            postData["search"] = searchTerm
+        }
+        if (transactionMode !== "All") {
+            postData["payment_mode"] = transactionMode
+        }
+
+        if (paymentStatus !== "All") {
+            postData["status"] = paymentStatus
+        }
+
+
+        // setSaveData(values);
         setLoadingState(true)
         dispatch(getTxnData(postData))
             .then((resp) => {
@@ -319,14 +367,14 @@ const RecentTransaction = () => {
     //     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
     //     if (iscConfirm) {
     //         await paymentLinkService.deletePayer({ id: id })
-    //         loadUser(initialValues);
+    //         loadData(initialValues);
     //     }
     // };
 
 
 
     const edit = () => {
-        loadUser(initialValues);
+        loadData(initialValues);
     };
 
 
@@ -383,8 +431,12 @@ const RecentTransaction = () => {
 
 
     const getFilterData = (data, filterBy) => {
-        // setFilterData(data)
-        console.log(filterBy, data)
+        if (filterBy === 'payment_status') {
+            setPaymentStatus(data)
+        }
+        if (filterBy === 'transaction_status') {
+            setTransactionMode(data)
+        }
     }
 
     return (
@@ -400,7 +452,7 @@ const RecentTransaction = () => {
                         showAddPayerModal={showAddPayerModal}
                         showCreatePaymentModal={showCreatePaymentModal}
                         componentState={state}
-                        loadUserFn={edit}
+                        loadDataFn={edit}
                         onBackClick={() => window.history.back()}
                         showBackLink={true}
                     />
@@ -424,7 +476,7 @@ const RecentTransaction = () => {
                                             setSearchTerm={setSearchTerm}
                                             onSearch={formSubmit}
                                             placeholder="Search by Name, Email, Mobile"
-                                            loadUser={loadUser}
+                                            loadData={loadData}
                                         />
                                     </div>
                                     <div className="me-3 mt-4">
@@ -432,6 +484,7 @@ const RecentTransaction = () => {
                                             onChange={getFilterData}
                                             options={tempPayStatus}
                                             filterBy={"payment_status"}
+                                            value={paymentStatus}
                                         />
                                     </div>
                                     <div className="me-3 mt-4">
@@ -439,7 +492,7 @@ const RecentTransaction = () => {
                                             onChange={getFilterData}
                                             options={tempPaymode}
                                             filterBy={"transaction_status"}
-
+                                            value={transactionMode}
                                         />
                                     </div>
 
