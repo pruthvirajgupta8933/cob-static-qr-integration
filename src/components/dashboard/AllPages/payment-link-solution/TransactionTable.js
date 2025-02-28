@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom'
 import Table from "../../../../_components/table_components/table/Table";
-import DateFormatter from "../../../../utilities/DateConvert";
+import { DateFormatAlphaNumeric } from "../../../../utilities/DateConvert";
 import { transactionStatusColorArr } from "../../../../utilities/colourArr";
 
 const TransactionTable = ({ data }) => {
@@ -13,15 +13,18 @@ const TransactionTable = ({ data }) => {
       sortable: true,
       width: "70px"
     },
+
     {
-      id: "1",
-      name: "Client Code",
-      selector: (row) => row.client_code,
+      id: "2",
+      name: "Payer Name",
+      selector: (row) => row.payer_name,
+      sortable: true,
+      width: "120px"
     },
     {
       id: "2",
-      name: "Name of Payer",
-      selector: (row) => row.payer_name,
+      name: "Transaction ID",
+      selector: (row) => row.sabpaisa_trans_id,
       sortable: true,
       width: "200px"
     },
@@ -29,7 +32,7 @@ const TransactionTable = ({ data }) => {
       id: "3",
       name: "Mobile No.",
       selector: (row) => row.payer_mobile,
-      width: "120px"
+      width: "100px"
     },
     {
       id: "4",
@@ -39,35 +42,42 @@ const TransactionTable = ({ data }) => {
       width: "180px"
     },
     {
-      id: "5",
-      name: "Trans Init Date",
-      selector: (row) => DateFormatter(row.trans_init_date),
+      id: "41",
+      name: "Amount",
+      sortable: true,
+      selector: (row) => row.trans_amount,
+    },
+
+    {
+      id: "6",
+      name: "Transaction Date",
+      selector: (row) => DateFormatAlphaNumeric(row.trans_complete_date),
       sortable: true,
       width: "150px"
     },
     {
-      id: "6",
-      name: "Trans Complete Date",
-      selector: (row) => DateFormatter(row.trans_complete_date),
+      id: "5",
+      name: "Payment Mode",
+      selector: (row) => row.trans_mode,
       sortable: true,
-      width: "150px"
+      width: "120px"
     },
     {
       id: "7",
       name: "Status",
       selector: (row) => (
-        <p className="border p-1 m-0 rounded-1" style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.background, color: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color }}>
+        <p className="p-1 m-0 rounded-1"
+          style={{
+            backgroundColor: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.background,
+            color: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color,
+            border: `1px ${transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color} solid`
+          }}>
           {row.trans_status}
+
         </p>
       ),
       sortable: true,
-    },
-    {
-      id: "8",
-      name: "Payment Mode",
-      selector: (row) => row.trans_mode,
-
-    },
+    }
   ];
 
   return (

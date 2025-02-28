@@ -67,7 +67,7 @@ function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
     {
       id: "0",
       name: "Create Date & Time",
-      selector: (row) => row.serial_number,
+      selector: (row) => row.link_creation_date,
       sortable: true,
       // width: "70px"
     },
@@ -171,16 +171,18 @@ function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
               <h6>Transaction History</h6>
               <div className="card-body">
                 <div className="scroll overflow-auto">
-                  {!txnLoading && <Table
-                    row={rowData}
-                    data={txnTableData?.results}
-                    dataCount={txnTableData?.count > 10 ? 0 : txnTableData?.count}
-                    pageSize={10}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                    fixedHeader={true}
-                    fixedHeaderScrollHeight="300px"
-                  />}
+                  {console.log("txnTableData?.count", txnTableData?.count)}
+                  {!txnLoading &&
+                    <Table
+                      row={rowData}
+                      data={txnTableData?.results}
+                      dataCount={txnTableData?.count || txnTableData?.count <= 10 ? 0 : 10}
+                      pageSize={10}
+                      currentPage={currentPage}
+                      changeCurrentPage={changeCurrentPage}
+                      fixedHeader={true}
+                      fixedHeaderScrollHeight="300px"
+                    />}
 
                 </div>
                 <CustomLoader loadingState={txnLoading} />

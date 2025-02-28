@@ -14,6 +14,20 @@ const DateFormatter = (date, time = true) => {
   return <span>{formattedDate}</span>;
 };
 
+export const DateFormatAlphaNumeric = (date, time = true) => {
+  if (!date) {
+    return null;
+  }
+
+  let DateFormat = "ll";
+  if (time) {
+    DateFormat = "lll";
+  }
+
+  const formattedDate = moment(date).format(DateFormat);
+  return <span>{formattedDate}</span>;
+}
+
 export const dateFormatBasic = (dateVal) => {
   //convert only this format 2024-10-10T12:36:30Z
   if (!dateVal?.includes("T")) return dateVal;

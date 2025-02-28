@@ -6,7 +6,7 @@ import CustomLoader from "../../../../../_components/loader";
 import moment from "moment";
 import Table from "../../../../../_components/table_components/table/Table";
 import Yup from "../../../../../_components/formik/Yup";
-import { dateFormatBasic } from "../../../../../utilities/DateConvert";
+import { DateFormatAlphaNumeric, dateFormatBasic } from "../../../../../utilities/DateConvert";
 import { useDispatch } from "react-redux";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
 import toast from "react-hot-toast";
@@ -143,15 +143,10 @@ const TotalLinkGenrated = () => {
         },
         {
             id: "3",
-            name: "Phone No.",
+            name: "Mobile No.",
             selector: (row) => row.payer_mobile,
+            sortable: true,
             width: "120px"
-        },
-        {
-            id: "4",
-            name: "Amount",
-            selector: (row) => row.total_amount,
-            width: "90px"
         },
         {
             id: "5",
@@ -159,12 +154,19 @@ const TotalLinkGenrated = () => {
             selector: (row) => row.payer_email,
             sortable: true,
             width: "170px"
-
         },
         {
+            id: "4",
+            name: "Amount",
+            selector: (row) => row.total_amount,
+            sortable: true,
+            width: "90px"
+        },
+
+        {
             id: "6",
-            name: "Created At",
-            selector: (row) => dateFormatBasic(row?.created_on),
+            name: "Created Date, Time",
+            selector: (row) => DateFormatAlphaNumeric(row?.created_on, true),
             sortable: true,
             width: "170px"
 

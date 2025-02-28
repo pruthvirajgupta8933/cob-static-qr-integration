@@ -40,7 +40,7 @@ function DocumentsUpload(props) {
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [savedData, setSavedData] = useState([]);
- 
+
 
   const [imgAttr, setImgAttr] = useState("#");
   const [isRequiredDocUpload, setIsRequiredDocUpload] = useState(true)
@@ -60,7 +60,7 @@ function DocumentsUpload(props) {
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
- 
+
   const documentListData = savedData?.filter((data) => (String((data?.status)).toLowerCase()) !== "rejected")?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
@@ -106,17 +106,19 @@ function DocumentsUpload(props) {
 
 
   useEffect(() => {
-    dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
-      .then((resp) => {
-        setIsRequiredData(resp?.payload)
+    if (businessType) {
+      dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
+        .then((resp) => {
+          setIsRequiredData(resp?.payload || [])
+          const data = convertToFormikSelectJson("id", "name", resp?.payload);
+          setDocTypeList(data);
+          setImgAttr("#");
+        })
+        .catch((err) => {
+          setImgAttr("#");
+        });
+    }
 
-        const data = convertToFormikSelectJson("id", "name", resp?.payload);
-        setDocTypeList(data);
-        setImgAttr("#");
-      })
-      .catch((err) => {
-        setImgAttr("#");
-      });
   }, []);
 
   const required = [];

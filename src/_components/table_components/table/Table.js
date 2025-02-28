@@ -118,6 +118,8 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
       // pagination
       // selectableRows
       />{" "}
+
+      {console.log(dataCount)}
       {dataCount > 0 && (
         <ReactPaginate
 
