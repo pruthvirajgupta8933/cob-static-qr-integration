@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { bulkCreateEmandate } from '../../slices/subscription-slice/createEmandateSlice'
 import toast from 'react-hot-toast'
+import { bulkCreateEmandateApi } from '../../services/subscription-service/createEmandateByApi.service'
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -15,25 +16,29 @@ const validationSchema = Yup.object({
 
 const CreateBulkEmandate = () => {
     const dispatch = useDispatch()
+    const [response, setResponse] = useState([])
 
-    const handleSubmit = async (values) => {
-
+    const handleSubmit = async (values, setSubmitting) => {
+        setSubmitting(true)
         const formData = new FormData()
         formData.append('file', values.file)
-
+        setResponse([])
         try {
-            await dispatch(bulkCreateEmandate(formData)).then((res) => {
-                console.log("res", res)
-
-                if (res.meta.requestStatus === 'fulfilled') {
-                    toast.success(res.payload.message)
-                }
+            // await dispatch(bulkCreateEmandate(formData)).then((res) => {
+            await bulkCreateEmandateApi(formData).then((res) => {
+                console.log(res.data.message)
+                toast.success(res.data.message || "Something went wrong!");
+                setResponse(res?.data?.bank_details_urls)
+                setSubmitting(false)
             })
         } catch (error) {
-            console.error('Error uploading file:', error)
+            // console.log(error.response?.data?.detail)
+            toast.error(error.response?.data?.detail || "Something went wrong!");
+            setSubmitting(false)
         }
     }
 
+    console.log(response)
     return (
         <div className='container-fluid mt-4'>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
@@ -43,9 +48,11 @@ const CreateBulkEmandate = () => {
             <Formik
                 initialValues={{ file: null }}
                 validationSchema={validationSchema}
-                onSubmit={handleSubmit}
+                onSubmit={(values, { setSubmitting }) => {
+                    handleSubmit(values, setSubmitting);
+                }}
             >
-                {({ setFieldValue, errors, touched }) => (
+                {({ setFieldValue, errors, touched, isSubmitting }) => (
                     <Form>
                         <div className="row mb-3">
                             <div className="col-md-4">
@@ -62,7 +69,7 @@ const CreateBulkEmandate = () => {
                                 )}
                             </div>
                             <div className="col-md-4 d-flex align-items-end">
-                                <button type="submit" className="btn btn-sm cob-btn-primary approve text-white ">
+                                <button type="submit" className="btn btn-sm cob-btn-primary approve text-white" disabled={isSubmitting}>
                                     Submit
                                 </button>
                             </div>
@@ -70,6 +77,29 @@ const CreateBulkEmandate = () => {
                     </Form>
                 )}
             </Formik>
+
+            {/*  list  */}
+            {response && response.length > 0 && (
+                <div className="row mt-4">
+                    <div className="col-md-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <h6 >Mandate URLs</h6>
+                                <ul className="list-group">
+                                    {response?.map((item, key) => (
+                                        <li key={key} className="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>{item?.consumer_id}</span>
+                                            <span>{item?.customer_name}</span>
+                                            <a href={item?.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm cob-btn-primary approve text-white">View</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }

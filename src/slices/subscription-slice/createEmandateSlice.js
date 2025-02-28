@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { mandateByApi, bulkCreateEmandateApi } from "../../services/subscription-service/createEmandateByApi.service";
+import { getErrorMessage } from "../../utilities/errorUtils";
 
 
 
@@ -37,13 +38,7 @@ export const bulkCreateEmandate = createAsyncThunk(
             const data = await bulkCreateEmandateApi(object);
             return data
         } catch (error) {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString() || error.request.toString();
-
+            const message = getErrorMessage(error);
             return thunkAPI.rejectWithValue(message);
         }
     }
