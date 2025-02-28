@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPayerData, getTxnData } from "../paylink-solution-slice/paylinkSolutionSlice";
 import TransactionComponent from "../recent-transaction/TransactionComponent";
 import CustomLoader from "../../../../../_components/loader";
+import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
+import { transactionStatusColorArr } from "../../../../../utilities/colourArr";
 // import InfiniteScroll from "react-infinite-scroll-component";
 // import classes from "./transaction.module.css";
 // import moment from "moment";
@@ -67,27 +69,31 @@ function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
     {
       id: "0",
       name: "Create Date & Time",
-      selector: (row) => row.link_creation_date,
+      selector: (row) => DateFormatAlphaNumeric(row.link_creation_date, true),
       sortable: true,
       // width: "70px"
     },
     {
       id: "1",
       name: "Amount",
-      selector: (row) => row.trans_amount,
+      selector: (row) => `₹ ${row.trans_amount}`,
     },
     {
       id: "2",
       name: "Status",
-      selector: (row) => row.trans_status,
-      sortable: true,
+      selector: (row) => (
+        <p className="p-1 m-0 rounded-1"
+          style={{
+            backgroundColor: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.background,
+            color: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color,
+            border: `1px ${transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color} solid`
+          }}>
+          {row.trans_status}
+
+        </p>
+      ),
+      // sortable: true,
       // width: "200px"
-    },
-    {
-      id: "3",
-      name: "Mobile No.",
-      selector: (row) => row.payer_mobile,
-      width: "120px"
     },
     {
       id: "4",
@@ -99,7 +105,7 @@ function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
     {
       id: "5",
       name: "Payment Date & Time",
-      selector: (row) => row.trans_complete_date,
+      selector: (row) => DateFormatAlphaNumeric(row.trans_complete_date, true),
       sortable: true,
       width: "180px"
     }

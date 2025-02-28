@@ -199,7 +199,6 @@ const RecentTransaction = () => {
 
                 </p>
             ),
-            sortable: true,
         }
     ];
 

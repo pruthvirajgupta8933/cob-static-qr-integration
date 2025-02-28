@@ -19,6 +19,7 @@ import DeleteModal from "./DeleteModal";
 import SearchBar from "../searchBar/SearchBar";
 import toastConfig from "../../../../../utilities/toastTypes";
 import PayerDetailModal from "./PayerDetailModal";
+import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
 
 
 
@@ -167,20 +168,13 @@ const TotalPayers = () => {
         },
         {
             id: "2",
-            name: "Name of Payer",
+            name: "Payer Name",
             selector: (row) => row.payer_name,
             sortable: true,
             width: "150px"
 
         },
-        {
-            id: "31",
-            name: "Name of Payer",
-            selector: (row) => row.payer_name,
-            sortable: true,
-            width: "150px"
 
-        },
         {
             id: "3",
             name: "Mobile No.",
@@ -192,6 +186,14 @@ const TotalPayers = () => {
             name: "Email ID",
             selector: (row) => row.payer_email,
             // width: "200px"
+        },
+        {
+            id: "31",
+            name: "Created Date, Time",
+            selector: (row) => DateFormatAlphaNumeric(row.created_on, true),
+            sortable: true,
+            width: "150px"
+
         },
         {
             id: "5",
