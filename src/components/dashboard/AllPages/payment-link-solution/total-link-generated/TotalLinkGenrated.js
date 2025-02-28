@@ -6,7 +6,7 @@ import CustomLoader from "../../../../../_components/loader";
 import moment from "moment";
 import Table from "../../../../../_components/table_components/table/Table";
 import Yup from "../../../../../_components/formik/Yup";
-import { dateFormatBasic } from "../../../../../utilities/DateConvert";
+import { DateFormatAlphaNumeric, dateFormatBasic } from "../../../../../utilities/DateConvert";
 import { useDispatch } from "react-redux";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
 import toast from "react-hot-toast";
@@ -132,7 +132,7 @@ const TotalLinkGenrated = () => {
             name: "S No.",
             selector: (row) => row.serial_number,
             sortable: true,
-            width: "100px"
+            width: "80px"
         },
         {
             id: "2",
@@ -143,37 +143,38 @@ const TotalLinkGenrated = () => {
         },
         {
             id: "3",
-            name: "Phone No.",
+            name: "Mobile No.",
             selector: (row) => row.payer_mobile,
-            width: "180px"
-        },
-        {
-            id: "4",
-            name: "Amount",
-            selector: (row) => row.total_amount,
-            width: "200px"
+            sortable: true,
+            width: "120px"
         },
         {
             id: "5",
             name: "Payer Email",
             selector: (row) => row.payer_email,
             sortable: true,
-            width: "200px"
-
+            width: "170px"
+        },
+        {
+            id: "4",
+            name: "Amount",
+            selector: (row) => row.total_amount,
+            sortable: true,
+            width: "90px"
         },
 
         {
             id: "6",
-            name: "Created At",
-            selector: (row) => dateFormatBasic(row?.created_on),
+            name: "Created Date, Time",
+            selector: (row) => DateFormatAlphaNumeric(row?.created_on, true),
             sortable: true,
+            width: "170px"
 
         },
         {
             id: "6",
             name: "Purpose",
-            selector: (row) => row?.purpose
-            ,
+            selector: (row) => row?.purpose,
             sortable: true,
 
         },
@@ -182,9 +183,6 @@ const TotalLinkGenrated = () => {
             name: "Payment Link",
             selector: (row) => (
                 <div id={`link_${row.id}`} className="d-flex align-items-center">
-                    <span className="p-2 d-inline-block cursor_pointer copy_clipboard" title={row?.shorted_url}>
-                        {/* {row?.shorted_url} */}
-                    </span>
                     <span
                         className="input-group-text"
                         style={{ cursor: "pointer" }}
@@ -195,8 +193,7 @@ const TotalLinkGenrated = () => {
                         <i className="fa fa-copy ml-2 text-primary align-middle"></i>
                     </span>
                 </div>
-            ),
-            width: "250px",
+            )
         },
 
     ];

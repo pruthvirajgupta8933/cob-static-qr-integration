@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CustomLoader from "../../../../../_components/loader";
-import _ from "lodash";
+import _, { differenceBy } from "lodash";
 import Yup from "../../../../../_components/formik/Yup";
 import moment from "moment";
 // import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
@@ -17,6 +17,9 @@ import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
 import DeleteModal from "./DeleteModal";
 import SearchBar from "../searchBar/SearchBar";
+import toastConfig from "../../../../../utilities/toastTypes";
+import PayerDetailModal from "./PayerDetailModal";
+import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
 
 
 
@@ -27,19 +30,22 @@ const TotalPayers = () => {
     const [saveData, setSaveData] = useState()
     const { user } = useSelector((state) => state.auth);
     const [loadingState, setLoadingState] = useState(false)
+    const [buttonClicked, isButtonClicked] = useState(false)
     const [payerData, setPayerData] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
-    const [buttonClicked, isButtonClicked] = useState(false);
-    const [dataCount, setDataCount] = useState('')
+    const [deleteType, setDeleteType] = useState("single");
+    const [dataCount, setDataCount] = useState(0)
     const [filterData, setFilterData] = useState([])
     const [showFilter, setShowFilter] = useState(false);
     const filterRef = useRef(null);
     const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
     const [showAddPayerModal, setShowAddPayerModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [toggleModal, setToggleModal] = useState(false);
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
+    const [selectedSingleRow, setSelectedSingleRow] = useState({});
 
 
     const dateFilterValue = useSelector(
@@ -47,6 +53,31 @@ const TotalPayers = () => {
     );
 
 
+    const [selectedRows, setSelectedRows] = React.useState([]);
+    const [toggleCleared, setToggleCleared] = React.useState(false);
+    // const [data, setData] = React.useState([]);
+
+    const handleRowSelected = React.useCallback(state => {
+        setSelectedRows(state.selectedRows);
+        console.log("row selected", state.selectedRows)
+
+    }, []);
+
+    // const contextActions = React.useMemo(() => {
+    //     const handleDelete = () => {
+
+    //         if (window.confirm(`Are you sure you want to delete:\r ${selectedRows.map(r => r.title)}?`)) {
+    //             setToggleCleared(!toggleCleared);
+    //             setPayerData(differenceBy(payerData, selectedRows, 'title'));
+    //         }
+    //     };
+
+    //     return (
+    //         <button key="delete" onClick={handleDelete} style={{ backgroundColor: 'red' }} icon>
+    //             Delete
+    //         </button>
+    //     );
+    // }, [payerData, selectedRows, toggleCleared]);
 
 
     const initialState = {
@@ -89,15 +120,22 @@ const TotalPayers = () => {
         }
     }
 
-    const deleteUser = (id, name) => {
-        setPayerName(name);
-        setPayerId(id);
+    const deleteUser = (id, name, type) => {
+        setDeleteType(type)
+        if (type !== "bulk") {
+            setPayerName(name);
+            setPayerId(id);
+        }
         setShowModal(true);
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (type) => {
+        if (deleteType === "bulk") {
+            await bulkDelete()
+        } else {
+            await paymentLinkService.deletePayer({ id: payerId });
+        }
 
-        await paymentLinkService.deletePayer({ id: payerId });
         loadData(initialValues);
         setShowModal(false);
     };
@@ -106,6 +144,16 @@ const TotalPayers = () => {
         setShowModal(false);
     };
 
+    const bulkDelete = async () => {
+        try {
+            await Promise.all(
+                selectedRows?.map(item => paymentLinkService.deletePayer({ id: item?.id }))
+            );
+            setSelectedRows([])
+        } catch (error) {
+            toastConfig.errorToast("Delete Error !")
+        }
+    }
 
 
 
@@ -120,20 +168,13 @@ const TotalPayers = () => {
         },
         {
             id: "2",
-            name: "Name of Payer",
+            name: "Payer Name",
             selector: (row) => row.payer_name,
             sortable: true,
             width: "150px"
 
         },
-        {
-            id: "31",
-            name: "Name of Payer",
-            selector: (row) => row.payer_name,
-            sortable: true,
-            width: "150px"
 
-        },
         {
             id: "3",
             name: "Mobile No.",
@@ -145,6 +186,14 @@ const TotalPayers = () => {
             name: "Email ID",
             selector: (row) => row.payer_email,
             // width: "200px"
+        },
+        {
+            id: "31",
+            name: "Created Date, Time",
+            selector: (row) => DateFormatAlphaNumeric(row.created_on, true),
+            sortable: true,
+            width: "150px"
+
         },
         {
             id: "5",
@@ -179,7 +228,6 @@ const TotalPayers = () => {
             name: "Action",
             cell: (row) => (
                 <div className="d-flex">
-
                     <i
                         className="fa fa-pencil-square-o text-dark"
                         onClick={() => editHandler(row)}
@@ -189,7 +237,7 @@ const TotalPayers = () => {
 
                     <i
                         className="fa fa-trash cob-btn-danger text-danger"
-                        onClick={() => deleteUser(row.id, row.payer_name)}  // Pass payer name to deleteUser
+                        onClick={() => deleteUser(row.id, row.payer_name, "single")}  // Pass payer name to deleteUser
                         style={{ cursor: "pointer", fontSize: "20px" }}  // Increased size
                     ></i>
                 </div>
@@ -229,6 +277,8 @@ const TotalPayers = () => {
 
     const loadData = async (data) => {
         setLoadingState(true)
+        setSelectedRows([])
+        setSelectedSingleRow({})
 
         const postData = {
             start_date: dateFilterValue?.fromDate,
@@ -280,6 +330,8 @@ const TotalPayers = () => {
 
 
     const formSubmit = (values) => {
+        setSelectedRows([])
+        setSelectedSingleRow({})
         const postData = {
             start_date: values?.fromDate || dateFilterValue?.fromDate,
             end_date: values?.toDate || dateFilterValue?.toDate,
@@ -414,17 +466,11 @@ const TotalPayers = () => {
                                     </div> */}
 
                                     <div className="me-3 mt-4 d-flex">
-                                        {/* <input
-                                            className="form-control"
-                                            // onChange={handleSearchChange}
-                                            onChange={(e) => setSearchTerm(e.target.value)}
-                                            value={searchTerm}
-                                            type="text"
-                                            placeholder="Search by Name, Email, Mobile"
-                                        />
-                                        <button className="btn btn-primary ms-2" onClick={formSubmit}>
-                                            <i className="fa fa-search"></i>
-                                        </button> */}
+                                        {selectedRows?.length > 0 && <div className=" mx-3">
+                                            <button className="btn btn-danger ms-2 btn-sm " onClick={() => deleteUser(0, 0, "bulk")}>
+                                                <i className="fa fa-trash"></i> Delete ({selectedRows?.length} Payer's)
+                                            </button>
+                                        </div>}
 
                                         <SearchBar
                                             searchTerm={searchTerm}
@@ -460,6 +506,14 @@ const TotalPayers = () => {
                                         pageSize={pageSize}
                                         currentPage={currentPage}
                                         changeCurrentPage={changeCurrentPage}
+                                        selectableRows
+                                        // contextActions={contextActions}
+                                        onSelectedRowsChange={handleRowSelected}
+                                        clearSelectedRows={toggleCleared}
+                                        onRowClick={(item) => {
+                                            setSelectedSingleRow(item)
+                                            setToggleModal(true)
+                                        }}
                                     />
                                 )}
                             </div>
@@ -468,8 +522,12 @@ const TotalPayers = () => {
                     </div>
                 </div>
             </section>
-
-
+            {toggleModal &&
+                <PayerDetailModal
+                    fnSetModalToggle={() => setToggleModal()}
+                    selectedRow={selectedSingleRow}
+                />
+            }
 
         </React.Fragment>
 

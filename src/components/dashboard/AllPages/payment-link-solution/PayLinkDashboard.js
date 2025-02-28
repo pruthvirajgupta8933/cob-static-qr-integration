@@ -99,7 +99,7 @@ const PaylinkDashboard = () => {
       <div className="row g-4">
         <div className="col-12 d-flex justify-content-between align-items-center ">
           <p className="border border-default bg-white rounded p-2 shadow" >
-            Date Range: {moment(fromDate).format("YYYY-MMM-DD")} to {moment(toDate).format("YYYY-MMM-DD")}
+            Date Range: {moment(fromDate).format("ll")} to {moment(toDate).format("ll")}
           </p>
 
 

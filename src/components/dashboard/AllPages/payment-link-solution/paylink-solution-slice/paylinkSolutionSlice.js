@@ -8,6 +8,8 @@ const initialState = {
     },
     dashboardData: {},
     txnTableData: [],
+    txnLoading: false,
+    singlePayerData: {}
 };
 
 export const getPayerApi = createAsyncThunk(
@@ -149,8 +151,26 @@ export const paymentLinkSolutionSlice = createSlice({
                     `${action.meta.arg.start_date}-${action.meta.arg.end_date}`
                 ] = { error: true };
             })
+            .addCase(getTxnData.pending, (state, action) => {
+                state.txnTableData = [];
+                state.txnLoading = true
+            })
             .addCase(getTxnData.fulfilled, (state, action) => {
                 state.txnTableData = action.payload;
+                state.txnLoading = false
+            })
+            .addCase(getTxnData.rejected, (state, action) => {
+                state.txnTableData = [];
+                state.txnLoading = false
+            })
+            .addCase(getAllPayerData.pending, (state, action) => {
+                state.singlePayerData = {};
+            })
+            .addCase(getAllPayerData.fulfilled, (state, action) => {
+                state.singlePayerData = action.payload;
+            })
+            .addCase(getAllPayerData.rejected, (state, action) => {
+                state.singlePayerData = {};
             });
     },
 });
