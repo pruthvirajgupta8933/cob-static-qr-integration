@@ -3,23 +3,18 @@ import moment from "moment";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import {
-  registrationHistoryData,
-  registrationHistoryReport,
-} from "../../slices/subscription-slice/registrationHistorySlice";
-import { saveAs } from "file-saver";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
-
+import { saveAs } from "file-saver";
 import DateFormatter from "../../utilities/DateConvert";
-
-import CustomLoader from "../../_components/loader";
-// import TableWithPagination from '../../utilities/tableWithPagination/TableWithPagination';
 import TableWithPagination from "../../utilities/tableWithPagination/TableWithPagination";
-import { E_NACH_URL } from "../../config";
+import CustomLoader from "../../_components/loader";
 
-const RegistrationHistory = () => {
+import {
+  transactionHistoryByUser,
+  transactionReport,
+} from "../../slices/subscription-slice/registrationHistorySlice";
+const TransactionReport = () => {
   const dispatch = useDispatch();
   const [showAllCreatedMandateApi, setShowAllCreatedMandateApi] = useState([]);
   const [filteredMandates, setFilteredMandates] = useState([]);
@@ -30,10 +25,16 @@ const RegistrationHistory = () => {
   const [pageCount, setPageCount] = useState(Math.ceil(dataCount / pageSize));
   const [currentPage, setCurrentPage] = useState(1);
   const [savedValues, setSavedValues] = useState();
-  const { user } = useSelector((state) => state.auth);
-  const { clientCode } = user.clientMerchantDetailsList[0];
   const [viewDataLoader, setViewDataLoader] = useState(false);
+  const [userListData, setUserListData] = useState([]);
   const [isExporting, setExporting] = useState(false);
+
+  const { user } = useSelector((state) => state.auth);
+  let clientMerchantDetailsList = [];
+  let clientCode = "";
+
+  clientMerchantDetailsList = user.clientMerchantDetailsList;
+  clientCode = clientMerchantDetailsList[0].clientCode;
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -51,6 +52,7 @@ const RegistrationHistory = () => {
     end_date: todayDate,
 
     registration_status: "ALL",
+    client_code: "",
   };
   const validationSchema = Yup.object({
     from_date: Yup.date().required("Required").nullable(),
@@ -84,10 +86,6 @@ const RegistrationHistory = () => {
     changeCurrentPage(newPage);
   };
 
-  const handlePageChange = (selectedItem) => {
-    setCurrentPage(selectedItem.selected + 1);
-  };
-
   useEffect(() => {
     let postDataS = {
       start_date: moment(savedValues?.from_date)
@@ -105,7 +103,7 @@ const RegistrationHistory = () => {
       client_code: clientCode,
     };
 
-    dispatch(registrationHistoryData(postDataS))
+    dispatch(transactionHistoryByUser(postDataS))
       .then((resp) => {
         if (resp?.meta?.requestStatus === "fulfilled") {
           setShowAllCreatedMandateApi(resp.payload.data.results);
@@ -119,11 +117,7 @@ const RegistrationHistory = () => {
         // setDisableView(false);
         // setViewLoader(false);
       })
-      .catch(() => {
-        // setDisableView(false);
-        // setViewLoader(false);
-        // toast.error("Something went wrong");
-      });
+      .catch(() => {});
   }, [pageSize, currentPage]);
 
   const handleSearchChange = (value) => {
@@ -140,24 +134,84 @@ const RegistrationHistory = () => {
     }
   };
 
+  const handlePageChange = (selectedItem) => {
+    setCurrentPage(selectedItem.selected + 1);
+  };
+
   const dropdownOptions = [
     { key: "All", value: "ALL" },
     { key: "Success", value: "SUCCESS" },
     { key: "Pending", value: "PENDING" },
     { key: "Failed", value: "FAILED" },
-    // { key: "Initiated", value: "INITIATED" }
+    { key: "Initiated", value: "INITIATED" },
+    { key: "Scheduled", value: "SCHEDULED" },
   ];
+
+  const headers = [
+    "S.NO",
+    "Transaction ID",
+    "Transaction Status",
+    "Trans Amount",
+    "Bank Txn ID",
+    "Trans Date",
+    "Created On",
+    "Bank Message",
+  ];
+
+  const renderRow = (row, index) => (
+    <tr key={index} className="text-nowrap">
+      <td>{index + 1}</td>
+      <td>{row.transaction_id}</td>
+      <td>{row.trans_status}</td>
+      <td>{row.trans_amount}</td>
+      <td>{row.bank_transaction_id}</td>
+      <td>{DateFormatter(row.trans_date)}</td>
+      <td>{DateFormatter(row.created_on)}</td>
+      <td>{row.bank_message}</td>
+    </tr>
+  );
+
+  const handleExport = (values) => {
+    let postDataS = {
+      start_date: moment(values?.from_date).startOf("day").format("YYYY-MM-DD"),
+      end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
+      registration_status:
+        values.registration_status.toLowerCase() === "all"
+          ? ""
+          : values.registration_status,
+    };
+    setExporting(true);
+    dispatch(transactionReport(postDataS))
+      .then((resp) => {
+        if (resp?.meta?.requestStatus === "fulfilled") {
+          const blob = new Blob([resp?.payload?.data], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+          saveAs(
+            blob,
+            `E-mandate_Transaction_REPORT_${clientCode}_${splitDate}.csv`
+          );
+          toast.success("Downloaded successfully");
+        } else {
+          toast.error(resp.payload?.detail || "Failed to fetch data");
+        }
+        setExporting(false);
+      })
+      .catch(() => {
+        setExporting(false);
+        toast.error("Something went wrong");
+      });
+  };
 
   const handleViewSubmit = (values) => {
     setSavedValues(values);
     setViewDataLoader(true);
     setIsLoading(true);
     setCurrentPage(1);
-
     let postDataS = {
       start_date: moment(values?.from_date).startOf("day").format("YYYY-MM-DD"),
       end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
-      registration_status:
+      transaction_status:
         values.registration_status.toLowerCase() === "all"
           ? ""
           : values.registration_status,
@@ -167,7 +221,7 @@ const RegistrationHistory = () => {
       client_code: clientCode,
     };
 
-    dispatch(registrationHistoryData(postDataS))
+    dispatch(transactionHistoryByUser(postDataS))
       .then((resp) => {
         if (resp?.meta?.requestStatus === "fulfilled") {
           setShowAllCreatedMandateApi(resp.payload.data.results);
@@ -188,107 +242,10 @@ const RegistrationHistory = () => {
         // toast.error("Something went wrong");
       });
   };
-
-  const handleExport = (values) => {
-    let postDataS = {
-      start_date: moment(values?.from_date).startOf("day").format("YYYY-MM-DD"),
-      end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
-      registration_status:
-        values.registration_status.toLowerCase() === "all"
-          ? ""
-          : values.registration_status,
-    };
-    setExporting(true);
-    dispatch(registrationHistoryReport(postDataS))
-      .then((resp) => {
-        if (resp?.meta?.requestStatus === "fulfilled") {
-          const blob = new Blob([resp?.payload?.data], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          });
-          saveAs(
-            blob,
-            `E-mandate_Registration_REPORT_${clientCode}_${splitDate}.csv`
-          );
-          toast.success("Downloaded successfully");
-        } else {
-          toast.error(resp.payload?.detail || "Failed to fetch data");
-        }
-        setExporting(false);
-      })
-      .catch(() => {
-        setExporting(false);
-        toast.error("Something went wrong");
-      });
-  };
-
-  const headers = [
-    "S.NO",
-    "Email",
-    "Mobile",
-    "Customer Name",
-    "Registration ID",
-    "Registration Status",
-    "Consumer ID",
-    "Account Holder Name",
-    "Account Number",
-    "IFSC",
-    "Account Type",
-    "Created On",
-    "Start Date",
-    "End Date",
-    "Frequency",
-    "Max Amount",
-    "Purpose",
-    "Amount Type",
-    "Registration Link",
-  ];
-
-  const renderRow = (mandate, index) => {
-    const mandateRegisterdLink = `${E_NACH_URL.BASE_URL_E_NACH}api/mandate/bank-details/?registration_id=${mandate.registration_id}`;
-
-    const copyToClipboard = (link) => {
-      navigator.clipboard
-        .writeText(link)
-        .then(() => alert("Link copied to clipboard!"))
-        .catch((err) => console.error("Failed to copy:", err));
-    };
-
-    return (
-      <tr key={index} className="text-nowrap">
-        <td>{index + 1}</td>
-        <td>{mandate.customer_email_id}</td>
-        <td>{mandate.customer_mobile}</td>
-        <td>{mandate.customer_name}</td>
-        <td>{mandate.registration_id}</td>
-        <td>{mandate.registration_status}</td>
-        <td>{mandate.consumer_id}</td>
-        <td>{mandate.account_holder_name}</td>
-        <td>{mandate.account_number}</td>
-        <td>{mandate.ifsc_code}</td>
-        <td>{mandate.account_type}</td>
-        <td>{DateFormatter(mandate.created_on)}</td>
-        <td>{mandate.start_date}</td>
-        <td>{mandate.end_date}</td>
-        <td>{mandate.frequency}</td>
-        <td>{mandate.max_amount}</td>
-        <td>{mandate.purpose}</td>
-        <td>{mandate.amount_type}</td>
-        <td>
-          <button
-            className="btn cob-btn-primary  approve  text-white btn-sm"
-            onClick={() => copyToClipboard(mandateRegisterdLink)}
-          >
-            <i className="fa fa-clone me-1"></i>
-          </button>
-        </td>
-      </tr>
-    );
-  };
-
   return (
     <div className="container-fluid mt-4">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
-        <h5>Registration History</h5>
+        <h5>Transaction Report</h5>
       </div>
 
       <div className="card shadow-sm mb-4">
@@ -415,4 +372,4 @@ const RegistrationHistory = () => {
   );
 };
 
-export default RegistrationHistory;
+export default TransactionReport;

@@ -130,7 +130,13 @@ const getTxnTableData = (postData) => {
 const getPayerData = (postData) => {
     const url = `${PAYMENT_LINK.GET_PAYER_DATA}`;
     const apiUrl = getQueryStr(url, postData);
-    return axiosInstanceJWT.get(apiUrl);
+    const sessionApiKey = sessionStorage.getItem("paymentLinkApiKey");
+    const config = {
+        headers: {
+            "api-key": sessionApiKey,
+        }
+    }
+    return axiosInstanceJWT.get(apiUrl, config);
 }
 
 

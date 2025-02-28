@@ -14,7 +14,6 @@ let url,
   subscriptionUrl,
   refund_url,
   adminAPIURL = "";
-
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
@@ -50,7 +49,7 @@ if (ENV_PROD) {
   report_api_url = "https://stage-python-reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://stage-paymentlinks.sabpaisa.in";
   subscriptionUrl = "https://uat-subscription.sabpaisa.in/";
-  adminAPIURL = "https://stage-python-adminapi.sabpaisa.in/api"
+  adminAPIURL = "https://stage-python-adminapi.sabpaisa.in/api";
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -60,6 +59,7 @@ const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 
 const API_LIVE = {
   BASE_URL_COB: url,
+
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
@@ -492,9 +492,14 @@ export const PAYMENT_LINK = {
 };
 
 export const E_NACH_URL = {
+  BASE_URL_E_NACH: subscriptionUrl,
   MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
+  DEBIT_TRANSACTION_HISTORY: `${subscriptionUrl}api/transaction/transaction-history-by-user/`,
+  BULK_CREATE_MANDATE: `${subscriptionUrl}api/mandate/bulk-create-mandates/`,
+  REGISTRATION_REPORT: `${subscriptionUrl}api/mandate/mandate-registration-data/`,
+  DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
 };
 
 export const wsConnectUrl = {
