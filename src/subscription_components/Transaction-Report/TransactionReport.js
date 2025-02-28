@@ -189,7 +189,7 @@ const TransactionReport = () => {
           });
           saveAs(
             blob,
-            `E-mandate_Transaction_REPORT_${clientCode}_${splitDate}.xlsx`
+            `E-mandate_Transaction_REPORT_${clientCode}_${splitDate}.csv`
           );
           toast.success("Downloaded successfully");
         } else {
@@ -331,6 +331,7 @@ const TransactionReport = () => {
                       <button
                         className="btn cob-btn-primary approve text-white mt-4 w-100"
                         type="button"
+                        disabled={isExporting}
                         onClick={() => handleExport(formik.values)}
                       >
                         {isExporting && (
