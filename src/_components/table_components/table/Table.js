@@ -54,14 +54,14 @@ const customStyles = {
       paddingRight: '8px',
       backgroundColor: '#ffffff',
       fontSize: '14px',
-      fontWeight: 'bold',
-      color: '#000000',
+      color: '#727272',
     },
   },
   cells: {
     style: {
       paddingLeft: '8px', // override the cell padding for data cells
       paddingRight: '8px',
+
     },
     stripedStyle: {
       backgroundColor: 'blue',
@@ -69,7 +69,7 @@ const customStyles = {
   },
 };
 
-const Table = (props) => {
+const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data, onRowClick, fixedHeaderScrollHeight, ...rest }) => {
   const fixedHeaderFooter = {
     header: true,
     footer: true,
@@ -78,46 +78,51 @@ const Table = (props) => {
     scrollY: true,
   };
   const [pageCount, setPageCount] = useState(
-    Math.ceil(props?.dataCount / props?.pageSize)
+    Math.ceil(dataCount / pageSize)
   );
-  const [currentPage, setCurrentPage] = useState(props?.currentPage || 1);
+  const [currentPageTable, setCurrentPagetable] = useState(currentPage || 1);
 
   useEffect(() => {
-    setPageCount(Math.ceil(props?.dataCount / props?.pageSize));
-  }, [props?.dataCount, props?.pageSize]);
+    setPageCount(Math.ceil(dataCount / pageSize));
+  }, [dataCount, pageSize]);
 
   useEffect(() => {
-    setCurrentPage(props?.currentPage);
-  }, [props?.currentPage]);
+    setCurrentPagetable(currentPage);
+  }, [currentPage]);
 
   const handlePageClick = (selectedItem) => {
     const newPage = selectedItem.selected + 1;
-    setCurrentPage(newPage);
-    props?.changeCurrentPage(newPage);
+    setCurrentPagetable(newPage);
+    changeCurrentPage(newPage);
   };
 
   return (
     <>
       <DataTable
-        className=" bg-white border-0"
-        columns={props?.row}
-        data={props?.data}
+        className="bg-white border-0 mb-5"
+        columns={row}
+        data={data}
         sortIcon={
           <span>
             <i className="fa fa-long-arrow-up p-0 my-1" style={{ width: "7px" }}></i>
             <i className="fa fa-long-arrow-down p-0 my-1" style={{ width: "7px" }}></i>
           </span>}
         fixedHeader={fixedHeaderFooter}
-        onRowClicked={props.onRowClick}
-        fixedHeaderScrollHeight={props?.fixedHeaderScrollHeight}
+        onRowClicked={onRowClick}
+        fixedHeaderScrollHeight={fixedHeaderScrollHeight}
         theme="solarized"
         customStyles={customStyles}
+        {...rest}
+
       // fixedHeader={true}
       // pagination
       // selectableRows
       />{" "}
-      {props?.dataCount > 0 && (
+
+      {console.log(dataCount)}
+      {dataCount > 0 && (
         <ReactPaginate
+
           previousLabel={"Previous"}
           nextLabel={"Next"}
           breakLabel={"..."}
@@ -125,7 +130,7 @@ const Table = (props) => {
           marginPagesDisplayed={2}
           pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
           onPageChange={handlePageClick}
-          containerClassName={"pagination justify-content-center"}
+          containerClassName={"pagination justify-content-center mb-0"}
           activeClassName={"active"}
           previousLinkClassName={"page-link"}
           nextLinkClassName={"page-link"}

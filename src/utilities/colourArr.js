@@ -75,12 +75,12 @@ export const paymodeColorArr =
     ]
 
 export const transactionStatusColorArr = {
-    "SUCCESS": "#28a745",
-    "INITIATED": "#ffc107",
-    "ABORTED": "#dc3545",
-    "FAILED": "#dc3545",
-    "CHALLAN_GENERATED": "#17a2b8",
-    "CHALLAN_ENQUIRED": "#17a2b8",
-    "REFUND_INITIATED": "#6c757d",
-    "REFUNDED": "#6c757d"
+    "SUCCESS": { background: "#D0FFDC", color: "#039054" },
+    "INITIATED": { background: "#FFEFD0", color: "#F89131" },
+    "ABORTED": { background: "#FEEAEE", color: "#F93C65" },
+    "FAILED": { background: "#FEEAEE", color: "#F93C65" },
+    "CHALLAN_GENERATED": { background: "#17a2b8", color: "#FFFFFF" },
+    "CHALLAN_ENQUIRED": { background: "#17a2b8", color: "#FFFFFF" },
+    "REFUND_INITIATED": { background: "#6c757d", color: "#FFFFFF" },
+    "REFUNDED": { background: "#D0FFDC", color: "#039054" }
 };

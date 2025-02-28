@@ -9,3 +9,10 @@ export const mandateByApi = (postData) => {
 export const createMandateHandleResponse = (postData) => {
     return axiosInstanceEmandateAuthApiKey.post(E_NACH_URL.CREATE_MANDATE_HANDLE_RESPONSE, postData);
 }
+
+export const bulkCreateEmandateApi = (postData) => {
+
+    return axiosInstanceEmandateAuthApiKey.post(E_NACH_URL.BULK_CREATE_MANDATE, postData);
+}
+
+
