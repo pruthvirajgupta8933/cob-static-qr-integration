@@ -132,7 +132,7 @@ const TotalLinkGenrated = () => {
             name: "S No.",
             selector: (row) => row.serial_number,
             sortable: true,
-            width: "100px"
+            width: "80px"
         },
         {
             id: "2",
@@ -145,35 +145,34 @@ const TotalLinkGenrated = () => {
             id: "3",
             name: "Phone No.",
             selector: (row) => row.payer_mobile,
-            width: "180px"
+            width: "120px"
         },
         {
             id: "4",
             name: "Amount",
             selector: (row) => row.total_amount,
-            width: "200px"
+            width: "90px"
         },
         {
             id: "5",
             name: "Payer Email",
             selector: (row) => row.payer_email,
             sortable: true,
-            width: "200px"
+            width: "170px"
 
         },
-
         {
             id: "6",
             name: "Created At",
             selector: (row) => dateFormatBasic(row?.created_on),
             sortable: true,
+            width: "170px"
 
         },
         {
             id: "6",
             name: "Purpose",
-            selector: (row) => row?.purpose
-            ,
+            selector: (row) => row?.purpose,
             sortable: true,
 
         },
@@ -182,9 +181,6 @@ const TotalLinkGenrated = () => {
             name: "Payment Link",
             selector: (row) => (
                 <div id={`link_${row.id}`} className="d-flex align-items-center">
-                    <span className="p-2 d-inline-block cursor_pointer copy_clipboard" title={row?.shorted_url}>
-                        {/* {row?.shorted_url} */}
-                    </span>
                     <span
                         className="input-group-text"
                         style={{ cursor: "pointer" }}
@@ -195,8 +191,7 @@ const TotalLinkGenrated = () => {
                         <i className="fa fa-copy ml-2 text-primary align-middle"></i>
                     </span>
                 </div>
-            ),
-            width: "250px",
+            )
         },
 
     ];

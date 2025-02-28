@@ -43,7 +43,7 @@ const RecentTransaction = () => {
     const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [buttonClicked, isButtonClicked] = useState(false);
-    const [dataCount, setDataCount] = useState('')
+    const [dataCount, setDataCount] = useState(0)
     const [filterData, setFilterData] = useState([])
     const [showFilter, setShowFilter] = useState(false);
     const filterRef = useRef(null);
@@ -177,7 +177,7 @@ const RecentTransaction = () => {
             id: "7",
             name: "Status",
             selector: (row) => (
-                <p className="border border-dark-subtle p-1 m-0 rounded-1 " style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toString()?.toUpperCase()] }}>
+                <p className="border  p-1 m-0 rounded-1 " style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.background, color: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color }}>
                     {row.trans_status}
 
                 </p>
@@ -525,6 +525,7 @@ const RecentTransaction = () => {
                                         changeCurrentPage={changeCurrentPage}
                                         fixedHeader={true}
                                         fixedHeaderScrollHeight="400px"
+
                                     />
                                 )}
                             </div>

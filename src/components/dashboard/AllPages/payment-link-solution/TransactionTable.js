@@ -56,9 +56,8 @@ const TransactionTable = ({ data }) => {
       id: "7",
       name: "Status",
       selector: (row) => (
-        <p className="border border-dark-subtle p-1 m-0 rounded-1 " style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toString()?.toUpperCase()] }}>
+        <p className="border p-1 m-0 rounded-1" style={{ backgroundColor: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.background, color: transactionStatusColorArr[row?.trans_status?.toUpperCase()]?.color }}>
           {row.trans_status}
-
         </p>
       ),
       sortable: true,
