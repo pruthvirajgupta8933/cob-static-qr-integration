@@ -14,7 +14,6 @@ let url,
   subscriptionUrl,
   refund_url = "";
 
-
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
@@ -24,12 +23,13 @@ if (ENV_PROD) {
   payLinkAPIURL = "https://paybylink.sabpaisa.in/paymentlink";
   webSocketUrl = "wss://stage-notification.sabpaisa.in";
   widget_url = "https://paywidget.sabpaisa.in";
-  widget_script = "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
+  widget_script =
+    "https://prod-payment-widget-sabpaisa.web.app/widget-bundle.js";
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
-  paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
-  subscriptionUrl = "https://subscriptionapi.sabpaisa.in"
+  paylinkBaseUrl = "https://sendpaylink.sabpaisa.in";
+  subscriptionUrl = "https://subscriptionapi.sabpaisa.in";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -46,7 +46,7 @@ if (ENV_PROD) {
   qwick_form_url = "https://stage-qwikform.sabpaisa.in";
   report_api_url = "https://stage-python-reportapi.sabpaisa.in";
   paylinkBaseUrl = "https://stage-paymentlinks.sabpaisa.in";
-  subscriptionUrl = "https://uat-subscription.sabpaisa.in/"
+  subscriptionUrl = "https://uat-subscription.sabpaisa.in/";
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -468,8 +468,7 @@ export const PAYMENT_LINK = {
   GET_PAYER_TYPE: `${paylinkBaseUrl}/api/payer/get-all-payer-type/`,
   GET_API_KEY: `${paylinkBaseUrl}/api/client-configuration/get-api-key-by-client-code/`,
   // https://stage-paymentlinks.sabpaisa.in/api/client-configuration/get-api-key-by-client-code/?client_code=LPSD1
-
-}
+};
 
 export const E_NACH_URL = {
   BASE_URL_E_NACH: subscriptionUrl,
@@ -477,9 +476,10 @@ export const E_NACH_URL = {
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
   DEBIT_TRANSACTION_HISTORY: `${subscriptionUrl}api/transaction/transaction-history-by-user/`,
-  BULK_CREATE_MANDATE: `${subscriptionUrl}api/mandate/bulk-create-mandates/`
-}
-
+  BULK_CREATE_MANDATE: `${subscriptionUrl}api/mandate/bulk-create-mandates/`,
+  REGISTRATION_REPORT: `${subscriptionUrl}api/mandate/mandate-registration-data/`,
+  DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
+};
 
 export const wsConnectUrl = {
   connectionURL: webSocketUrl,
@@ -487,7 +487,6 @@ export const wsConnectUrl = {
 };
 
 const API_URL = API_LIVE;
-
 
 export const WIDGET_URL = WIDGET_LIVE;
 // export const Qwick_Form = qwick_form_url;
