@@ -16,14 +16,13 @@ const ActionButtons = ({
     onBackClick
 }) => {
     return (
-        <div className="col-12 d-flex justify-content-between align-items-center">
+        <div className="col-12 d-flex justify-content-between align-items-center p-0">
 
             {showBackLink && (
-                <i
-                    className="fa fa-long-arrow-left text-primary fs-6 cursor-pointer"
-                    onClick={onBackClick}
 
-                ></i>
+                <span className="bg-light p-1 rounded-circle shadow cursor_pointer" onClick={onBackClick}>
+                    <i className="fa fa-arrow-left text-primary fs-6" ></i>
+                </span>
             )}
 
 
