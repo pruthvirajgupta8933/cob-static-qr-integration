@@ -204,6 +204,11 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 mandate_category: mandateCategory,
                 redirect_url: getRedirectUrl(redirectUrl),
             };
+            if (selectedOption === "customer") {
+                postDataS["customer_type"] = "customer"
+            } else {
+                postDataS["customer_type"] = "merchant"
+            }
 
             const response = await dispatch(createEmandateByApi(postDataS));
             console.log("response?.data?.bank_details_url", response)
