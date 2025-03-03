@@ -438,6 +438,8 @@ const API_LIVE = {
 
   // merchant onboarding in qwick form
   qwickFormOnboard: `${qwick_form_url}/QwikForms/cobMerchant/saveClientCredentials`,
+  qwickFormList: `${qwick_form_url}/QwikForms/prt/getListOfForms`,
+  qwickFormTxnReport: `${qwick_form_url}/QwikForms/prt/getTxnReports`,
 
   // get merchant data by client id
   clientDataById: `${url}/GetClientByID`,
