@@ -18,7 +18,7 @@ const EmailVerification = () => {
         setData(response.data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginId]);

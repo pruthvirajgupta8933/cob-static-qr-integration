@@ -125,7 +125,7 @@ const DocumentUploadNewEdtKyc = (props) => {
             getKycDocList();
           }, 2000);
         } else {
-          console.log("res.payload", response.payload)
+          // console.log("res.payload", response.payload)
           const message = response?.payload?.message || response?.payload;
           toast.error(message);
         }
@@ -245,17 +245,17 @@ const DocumentUploadNewEdtKyc = (props) => {
                     </button>
                   </div>
 
-                  
+
                   <div className="col-md-2">
 
-                  <button
+                    <button
                       type="button"
                       className={` ${classes.custom_button} btn btn-outline-primary text-white ml-5`}
                       onClick={() => handleRemoveField(index, values, setFieldValue)}
                     >
-                    {/* <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer"> */}
+                      {/* <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer"> */}
                       <i className={`${classes.icon_large} fa fa-trash`}></i>
-                    {/* </span> */}
+                      {/* </span> */}
                     </button>
                   </div>
                 </div>

@@ -6,7 +6,7 @@ export function createUpdater(initialValue) {
     }
 
     function getValue() {
-        console.log("value",value);
+        // console.log("value",value);
     }
 
     return {

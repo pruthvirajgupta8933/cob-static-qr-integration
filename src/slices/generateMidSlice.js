@@ -5,9 +5,9 @@ import { setMessage } from "./message";
 
 
 
-const initialState = { 
-    postdata:{},
-   
+const initialState = {
+  postdata: {},
+
 };
 
 export const createMidApi = createAsyncThunk(
@@ -15,7 +15,7 @@ export const createMidApi = createAsyncThunk(
   async (dataObj, thunkAPI) => {
     try {
       const response = await midCreateApi(dataObj);
-      console.log("rse", response);
+      // console.log("rse", response);
 
       // thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
@@ -26,7 +26,7 @@ export const createMidApi = createAsyncThunk(
           error.response.data.detail) ||
         error.detail ||
         error.toString();
-      console.log("message", message);
+      // console.log("message", message);
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message); // Return the message here
     }
@@ -38,35 +38,34 @@ export const createMidApi = createAsyncThunk(
 
 
 
-  
 
-  export const generateMidSlice = createSlice({
-    name: "mid",
-    initialState,
-    reducers: {},
-     
-    extraReducers: (builder)=>{
-      builder
-      .addCase(createMidApi.pending,(state)=>{
+
+export const generateMidSlice = createSlice({
+  name: "mid",
+  initialState,
+  reducers: {},
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(createMidApi.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(createMidApi.fulfilled,(state)=>{
+      .addCase(createMidApi.fulfilled, (state) => {
 
       })
-      .addCase(createMidApi.rejected,(state,action)=>{
+      .addCase(createMidApi.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
 
       })
-     
-      
 
-       
-    
-    }
-  });
-  export const {
-   
-  } = generateMidSlice .actions;
-  export const genreateMidReducer = generateMidSlice.reducer;
-  
+
+
+
+
+  }
+});
+export const {
+
+} = generateMidSlice.actions;
+export const genreateMidReducer = generateMidSlice.reducer;
