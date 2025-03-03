@@ -17,9 +17,15 @@ const TableWithPagination = ({
     changePageSize,
     searchQuery,
     onSearchChange,
+    changeCurrentPage
 }) => {
     const apiHasData = dataCount > 0; // Check if API has data
     const hasSearchResults = data?.length > 0; // Check if search results exist
+
+    // useEffect(() => {
+    //     changeCurrentPage(90)
+    // }, [])
+
 
     return (
         <div className="card shadow-sm mt-4">
@@ -74,7 +80,7 @@ const TableWithPagination = ({
                                 <tr>
                                     <td colSpan={headers.length} className="text-center">
                                         <div className="d-flex justify-content-center align-items-center h-100 mt-5">
-                                            <h6 className="alert alert-warning" role="alert">
+                                            <h6 className="alert alert-warning">
                                                 No Data Found
                                             </h6>
                                         </div>
@@ -113,6 +119,7 @@ const TableWithPagination = ({
                                 pageSize={pageSize}
                                 dataCount={dataCount}
                                 changePageSize={changePageSize}
+                                changeCurrentPage={changeCurrentPage}
                             />
                         </div>
                     </div>

@@ -1,19 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { verifyKycEachTab, GetKycTabsStatus } from '../../../../slices/kycSlice';
+import { verifyKycEachTab, GetKycTabsStatus, whiteListedWebsite, clearWebsiteWhiteList } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 // import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from '../../../../utilities/enums';
+import CustomModal from '../../../../_components/custom_modal';
+// import Table from '../../../../_components/table_components/table/Table';
+import WebWhiteList from '../../WebWhiteList';
 
 
 const BusinessOverview = (props) => {
   const { KycTabStatus, selectedUserData } = props;
 
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
+  const { auth, kyc } = useSelector((state) => state);
+  // const { merchantWhitelistWebsite } = kyc
+
+  const [customModal, setCustomModal] = useState(false);
 
   const { kycUserList } = useSelector(state => state?.kyc || {});
   let isVerified = KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() === KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase() ? true : false;
@@ -21,15 +27,8 @@ const BusinessOverview = (props) => {
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
 
-
-
-
   const { user } = auth;
   const { loginId } = user;
-
-
-
-
 
   const handleVerifyClick = async () => {
     try {
@@ -138,7 +137,61 @@ const BusinessOverview = (props) => {
 
   // console.log(selectedUserData?.website_app_url)
 
+  // const listRow = [
+  //   {
+  //     id: "1",
+  //     name: "URL",
+  //     selector: (row) => row.clientName,
+  //     sortable: true,
+  //     // width: "170px"
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Status",
+  //     cell: (row) => <div className="removeWhiteSpace">{row?.clientId === 1 ? "Active" : "Inactive"}</div>,
+  //     width: "130px",
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "Client Code",
+  //     selector: (row) => row.clientCode,
+  //     sortable: true,
 
+  //   },
+  // ]
+
+  const handleWebsiteModal = (modalToggleState) => {
+    setCustomModal(modalToggleState)
+
+    if (modalToggleState) {
+      dispatch(whiteListedWebsite({ clientCode: selectedUserData.clientCode }))
+    }
+  }
+
+  useEffect(() => {
+
+
+    return () => {
+      dispatch(clearWebsiteWhiteList())
+    }
+  }, [])
+
+  const modalBody = () => {
+
+    return (<WebWhiteList selectedUserData={selectedUserData} isCommenComponent={true} />)
+    // return (
+
+    //   <div className="scroll overflow-auto z-0">
+    //     <Table
+    //       row={listRow}
+    //       data={merchantWhitelistWebsite}
+    //     />
+    //   </div>
+
+    // )
+
+
+  }
 
 
   return (
@@ -162,7 +215,17 @@ const BusinessOverview = (props) => {
                   rows={3}
                   value={element.value}
                 ></textarea>
+
+                <button className="btn btn-sm cob-btn-primary my-3" onClick={() => handleWebsiteModal(true)}>View Website Whitelist status</button>
+
+                {customModal && <CustomModal
+                  modalBody={modalBody}
+                  headerTitle={"Website Whitelist"}
+                  modalToggle={customModal}
+                  fnSetModalToggle={setCustomModal}
+                />}
               </div>
+
             ) : (
               <div className={element.className}>
                 <p className="font-weight-bold text-danger">
@@ -189,6 +252,8 @@ const BusinessOverview = (props) => {
 
           )}
         </div>
+
+
       ))}
 
 

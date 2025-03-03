@@ -7,6 +7,7 @@ import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../utilities/enums";
 import approverDashboardService from "../services/approver-dashboard/approverDashboard.service";
 import { merchantKycService } from "../services/kyc/merchant-kyc";
 import { setMessage } from "./message";
+import { getErrorMessage } from "../utilities/errorUtils";
 
 const initialState = {
   isLoadingForpanDetails: false,
@@ -172,13 +173,7 @@ export const updateContactInfo = createAsyncThunk(
       const response = await merchantKycService.updateContactInfo(requestParam);
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString() ||
-        error.request.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
@@ -857,6 +852,29 @@ export const businessCategoryById = createAsyncThunk(
     return response.data;
   }
 );
+
+export const whiteListedWebsite = createAsyncThunk(
+  "kyc/whiteListedWebsite",
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await merchantKycService.fetchWhiteListedWebsite(
+        requestParam
+      );
+
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 //---- get-business-category-by-id ------------//
 
 export const approvekyc = createAsyncThunk(
@@ -956,9 +974,9 @@ export const kycSlice = createSlice({
     clearKycState: (state) => {
       state.kycUserList = {};
     },
-    // clearKycDetailsByMerchantLoginId: (state) => {
-    //   state.merchantKycData = {};
-    // },
+    clearWebsiteWhiteList: (state) => {
+      state.merchantWhitelistWebsite = [];
+    },
 
     saveDropDownAndFinalArray: (state, action) => {
       // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
@@ -1313,7 +1331,16 @@ export const kycSlice = createSlice({
       })
       .addCase(documentsUpload.fulfilled, (state, action) => {
         state.documentsUpload = action.payload;
-      });
+      })
+      .addCase(whiteListedWebsite.pending, (state, action) => {
+        state.merchantWhitelistWebsite = [];
+      })
+      .addCase(whiteListedWebsite.fulfilled, (state, action) => {
+        state.merchantWhitelistWebsite = action.payload;
+      })
+      .addCase(whiteListedWebsite.rejected, (state, action) => {
+        state.merchantWhitelistWebsite = [];
+      })
   },
 });
 
@@ -1328,6 +1355,7 @@ export const {
   saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc,
+  clearWebsiteWhiteList
   // clearKycDetailsByMerchantLoginId,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

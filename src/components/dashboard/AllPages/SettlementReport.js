@@ -2,8 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import API_URL from "../../../config";
-// import { isClientCodeCreated } from "../../../utilities/isClientCodeCreated";
-// import { isKycCompleted } from "../../../utilities/isKycCompleted";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 // import NavBar from "../NavBar/NavBar";
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +15,7 @@ const SettlementReport = () => {
   const [selectedFolder, SetSelectedFolder] = React.useState("");
   const [selectedSubFolder, SetSelectedSubFolder] = React.useState("");
   const [searchFilterData, setSearchFilterData] = React.useState([]);
-  
+
 
 
   const { user } = useSelector((state) => state.auth);
@@ -178,37 +176,37 @@ const SettlementReport = () => {
               {searchFilterData.length > 0 && (
                 <h6>Total Record : {searchFilterData.length} </h6>
               )}
-              {searchFilterData?.length ===0 ? "" : (
-              <div className="scroll" style={{ overflow: "auto" }}>
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Client Code</th>
-                      <th>File Name</th>
-                      <th>Created On</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {searchFilterData.length > 0 ? (
-                      searchFilterData.map((user, i) => (
-                        <tr key={user.Id}>
-                          <td>{i + 1}</td>
-                          <td>{user.client_code} </td>
-                          <td>{user.file_name}</td>
-                          <td>{user.created_on}</td>
-                          <td>
-                            <a href={user.base_url_path}>Download</a>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+              {searchFilterData?.length === 0 ? "" : (
+                <div className="scroll" style={{ overflow: "auto" }}>
+                  <table className="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Client Code</th>
+                        <th>File Name</th>
+                        <th>Created On</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {searchFilterData.length > 0 ? (
+                        searchFilterData.map((user, i) => (
+                          <tr key={user.Id}>
+                            <td>{i + 1}</td>
+                            <td>{user.client_code} </td>
+                            <td>{user.file_name}</td>
+                            <td>{user.created_on}</td>
+                            <td>
+                              <a href={user.base_url_path}>Download</a>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           </section>

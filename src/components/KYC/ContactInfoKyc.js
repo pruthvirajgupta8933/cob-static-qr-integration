@@ -57,52 +57,57 @@ function ContactInfoKyc(props) {
   }, []);
 
   const initialValues = {
-    name: KycList?.name,
-    email_id: KycList?.emailId,
+    name: KycList?.name || "",
+    email_id: KycList?.emailId || "",
 
     // ID proof verification
-    id_proof_type: KycList?.id_proof_type ?? 1,
-    id_number: KycList?.aadharNumber,
-    oldIdNumber: KycList?.aadharNumber,
+    id_proof_type: KycList?.id_proof_type || 1,
+    id_number: KycList?.aadharNumber || "",
+    oldIdNumber: KycList?.aadharNumber || "",
     aadhaarOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
     isIdProofVerified: KycList?.aadharNumber ? 1 : "",
 
     // contact OTP initial values
-    isContactNumberVerified: KycList?.isContactNumberVerified ?? null,
-    isEmailVerified: KycList?.isEmailVerified ?? null,
-    contact_number: KycList?.contactNumber,
-    oldContactNumber: KycList?.contactNumber,
+    isContactNumberVerified: KycList?.isContactNumberVerified || "",
+    isEmailVerified: KycList?.isEmailVerified || "",
+    contact_number: KycList?.contactNumber || "",
+    oldContactNumber: KycList?.contactNumber || "",
     contactOtpDigit: "",
     isContactOtpSend: false,
+    developer_name: KycList?.developer_name || "",
+    developer_contact: KycList?.developer_contact || "",
   };
+
 
 
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .allowOneSpace()
+      .allowOneSpace() // Only one instance is needed
       .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
-      .required("Required")
       .wordLength("Word character length exceeded")
       .max(100, "Maximum 100 characters are allowed")
-      .nullable()
-      .allowOneSpace(),
-    email_id: Yup.string()
-      .allowOneSpace()
-      .email("Invalid email")
       .required("Required")
       .nullable(),
+
+    email_id: Yup.string()
+      .email("Invalid email / Please verify email")
+      .required("Required")
+      .nullable(),
+
+    isEmailVerified: Yup.string().required("Please verify email").nullable(),
 
     contact_number: Yup.string()
       .allowOneSpace()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .required("Required")
       .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
       .min(10, "Phone number is not valid")
-      .max(10, "Only 10 digits are allowed ")
+      .max(10, "Only 10 digits are allowed")
+      .required("Required")
       .nullable(),
+
     oldContactNumber: Yup.string()
       .trim()
       .oneOf(
@@ -111,12 +116,11 @@ function ContactInfoKyc(props) {
       )
       .required("You need to verify Your Contact Number")
       .nullable(),
+
     isContactNumberVerified: Yup.string()
       .required("Please verify the contact number")
       .nullable(),
-    isEmailVerified: Yup.string()
-      .required("Email is not verified")
-      .nullable(),
+
     contactOtpDigit: Yup.string().when("isContactOtpSend", {
       is: true,
       then: Yup.string()
@@ -127,42 +131,31 @@ function ContactInfoKyc(props) {
         .nullable(),
       otherwise: Yup.string(),
     }),
-    // ************2110
-    id_number: Yup.string()
-      // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .when("id_proof_type", {
-        is: (value) => value === 1, // For id_proof_type = 1
+
+    id_number: Yup.string().when("id_proof_type", {
+      is: 1, // Case: id_proof_type = 1
+      then: Yup.string()
+        .max(12, "Maximum 12 digits are required")
+        .required("Required")
+        .nullable(),
+      otherwise: Yup.string().when("id_proof_type", {
+        is: 4, // Case: id_proof_type = 4
         then: Yup.string()
-          // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-          .max(12, "Maximum 12 digits are required")
+          .min(14, "Minimum 14 digits are required")
           .required("Required")
           .nullable(),
         otherwise: Yup.string().when("id_proof_type", {
-          is: (value) => value === 4, // For id_proof_type = 4
-          then: Yup.string()
-            .min(14, "Minimum 14 digits are required")
-            // .max(14, "Maximum 14 digits are required")
+          is: 3, // Case: id_proof_type = 3 (e.g., Voter ID)
+          then: Yup.string().length(10, "Invalid Voter ID"),
+          otherwise: Yup.string()
+            .allowOneSpace()
             .required("Required")
-            .nullable(),
-          otherwise: Yup.string().when("id_proof_type", {
-            is: (value) => value === 3,
-            then: Yup.string().length(10, "Invalid Voter ID"),
-            // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-            otherwise: Yup.string()
-              .allowOneSpace()
-              .required("Required")
-              .nullable(), // Default case if none of the above conditions match
-          }),
+            .nullable(), // Default case if none of the conditions match
         }),
       }),
-    oldIdNumber: Yup.string()
-      .trim()
-      // .oneOf(
-      //   [Yup.ref("aadhar_number"), null],
-      //   "You need to verify Your Aadhaar Number"
-      // )
-      // .required("You need to verify Your Aadhaar Number")
-      .nullable(),
+    }),
+
+    oldIdNumber: Yup.string().trim().nullable(),
 
     aadhaarOtpDigit: Yup.string().when("isProofOtpSend", {
       is: true,
@@ -174,10 +167,119 @@ function ContactInfoKyc(props) {
         .nullable(),
       otherwise: Yup.string(),
     }),
+
     isIdProofVerified: Yup.string()
       .required("Please verify the ID Proof")
       .nullable(),
+
+    developer_contact: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .min(10, "Phone number is not valid")
+      .max(10, "Only 10 digits are allowed")
+      .nullable(),
+
+    developer_name: Yup.string()
+      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+      .max(100, "Maximum 50 characters are allowed")
+      .nullable(),
+
   });
+
+  // const validationSchema = Yup.object().shape({
+  //   name: Yup.string()
+  //     .allowOneSpace()
+  //     .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+  //     .required("Required")
+  //     .wordLength("Word character length exceeded")
+  //     .max(100, "Maximum 100 characters are allowed")
+  //     .nullable()
+  //     .allowOneSpace(),
+
+  //   email_id: Yup.string().when("isEmailVerified", {
+  //     is: 0,
+  //     then: Yup.string().email("Invalid email / Please verify email").nullable(),
+  //     otherwise: Yup.string().email("Invalid email").required("Required"),
+  //   }),
+
+  //   contact_number: Yup.string()
+  //     .allowOneSpace()
+  //     .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+  //     .required("Required")
+  //     .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+  //     .min(10, "Phone number is not valid")
+  //     .max(10, "Only 10 digits are allowed ")
+  //     .nullable(),
+  //   oldContactNumber: Yup.string()
+  //     .trim()
+  //     .oneOf(
+  //       [Yup.ref("contact_number"), null],
+  //       "You need to verify Your Contact Number"
+  //     )
+  //     .required("You need to verify Your Contact Number")
+  //     .nullable(),
+  //   isContactNumberVerified: Yup.string()
+  //     .required("Please verify the contact number")
+  //     .nullable(),
+
+  //   contactOtpDigit: Yup.string().when("isContactOtpSend", {
+  //     is: true,
+  //     then: Yup.string()
+  //       .matches(Regex.digit, RegexMsg.digit)
+  //       .min(6, "Minimum 6 digits are required")
+  //       .max(6, "Maximum 6 digits are allowed")
+  //       .required("Required")
+  //       .nullable(),
+  //     otherwise: Yup.string(),
+  //   }),
+  //   // ************2110
+  //   id_number: Yup.string()
+  //     // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+  //     .when("id_proof_type", {
+  //       is: (value) => value === 1, // For id_proof_type = 1
+  //       then: Yup.string()
+  //         .max(12, "Maximum 12 digits are required")
+  //         .required("Required")
+  //         .nullable(),
+
+  //       otherwise: Yup.string().when("id_proof_type", {
+  //         is: (value) => value === 4, // For id_proof_type = 4
+  //         then: Yup.string()
+  //           .min(14, "Minimum 14 digits are required")
+  //           .required("Required")
+  //           .nullable(),
+
+  //         otherwise: Yup.string().when("id_proof_type", {
+  //           is: (value) => value === 3,
+  //           then: Yup.string().length(10, "Invalid Voter ID"),
+
+  //           otherwise: Yup.string()
+  //             .allowOneSpace()
+  //             .required("Required")
+  //             .nullable(), // Default case if none of the above conditions match
+  //         }),
+  //       }),
+  //     }),
+  //   oldIdNumber: Yup.string()
+  //     .trim()
+  //     .nullable(),
+
+  //   aadhaarOtpDigit: Yup.string().when("isProofOtpSend", {
+  //     is: true,
+  //     then: Yup.string()
+  //       .matches(Regex.digit, RegexMsg.digit)
+  //       .min(6, "Minimum 6 digits are required")
+  //       .max(6, "Maximum 6 digits are allowed")
+  //       .required("Required")
+  //       .nullable(),
+  //     otherwise: Yup.string(),
+  //   }),
+  //   isIdProofVerified: Yup.string()
+  //     .required("Please verify the ID Proof")
+  //     .nullable(),
+  // });
+
+
 
   const handleSubmitContact = (values) => {
     setIsDisable(true);
@@ -190,6 +292,8 @@ function ContactInfoKyc(props) {
         modified_by: loginId,
         aadhar_number: values.id_number,
         id_proof_type: idType,
+        developer_contact: values.developer_contact,
+        developer_name: values.developer_name
       })
     )
       .then((res) => {
@@ -200,7 +304,7 @@ function ContactInfoKyc(props) {
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
           setIsDisable(false);
-          toast.success(res.payload?.message);
+          toast.success(res.payload?.detail || res.payload?.message);
 
           if (props?.role?.merchant) {
             dispatch(kycUserListForMerchant());
@@ -210,9 +314,10 @@ function ContactInfoKyc(props) {
 
           dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
         } else {
-          toast.error(res.payload);
-          toast.error(res.payload?.message);
-          toast.error(res.payload?.detail);
+
+          toastConfig.errorToast(res.payload);
+          // toast.error(res.payload?.detail || res.payload?.message);
+          // toast.error();
           setIsDisable(false);
         }
       })
@@ -486,26 +591,34 @@ function ContactInfoKyc(props) {
   // handle input toggle if id proof type is null then show dropdown else show input field
 
   useEffect(() => {
+
+    let IdProofName = ""
     if (KycList?.id_proof_type === null) {
-      setIdProofInputToggle(true);
+      setIdProofInputToggle(false);
+      IdProofName = proofIdList.data?.find(
+        (item) => item?.id === 1
+      );
+      setIdType(1);
+
     } else {
       setIdProofInputToggle(false);
       setIdType(KycList?.id_proof_type);
+      IdProofName = proofIdList.data?.find(
+        (item) => item?.id === KycList?.id_proof_type ?? 1
+      );
     }
 
-    const IdProofName = proofIdList.data?.find(
-      (item) => item?.id === KycList?.id_proof_type
-    );
     if (IdProofName?.id_type) {
       setSelectedIdProofName(IdProofName?.id_type);
     }
+
   }, [KycList?.id_proof_type, proofIdList]);
 
   return (
     <div className="col-lg-12 p-0">
       {KycList?.isEmailVerified !== 1 && (
         <div className="alert alert-warning text-center text-danger" role="alert">
-          Please verify your email to enable the fields.
+          Email verification is required to complete the Know Your Customer (KYC) process. We have sent a verification email to your registered email address. Please check your inbox or spam folder.
         </div>
       )}
       <Formik
@@ -570,7 +683,7 @@ function ContactInfoKyc(props) {
                       {proofIdList.data?.map((item) => {
                         if (item.is_active)
                           return (
-                            <option value={item.id} dataRel={item.id_type}>
+                            <option value={item.id} datarel={item.id_type}>
                               {item.id_type}
                             </option>
                           );
@@ -745,6 +858,48 @@ function ContactInfoKyc(props) {
                 <ErrorMessage name="isEmailVerified">
                   {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-lg-6 col-sm-12 col-md-12">
+                <label
+                  className="col-form-label mt-0 p-2"
+                  data-tip={tooltipData.contact_person_name}
+                >
+                  Developer Name
+                </label>
+                <Field
+                  type="text"
+                  name="developer_name"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
+                />
+                <ErrorMessage name="developer_name">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
+              </div>
+
+              <div className="col-lg-6 col-sm-12 col-md-12">
+                <label
+                  className="col-form-label mt-0 p-2"
+                  data-tip={tooltipData.contact_person_name}
+                >
+                  Developer Contact Number
+                </label>
+                <Field
+                  type="text"
+                  name="developer_contact"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
+                />
+                <ErrorMessage name="developer_contact">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
               </div>
             </div>
 

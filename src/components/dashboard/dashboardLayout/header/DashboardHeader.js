@@ -87,8 +87,8 @@ function DashboardHeader() {
                   className="fa fa-user-circle font-size-16 "
                   style={{ color: "#286ECD" }}
                 />{" "}
-                {username.length > 15
-                  ? username.substring(0, 15) + "..."
+                {username?.length > 15
+                  ? username?.substring(0, 15) + "..."
                   : username}
               </button>
               <ul className="dropdown-menu position-absolute">

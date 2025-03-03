@@ -74,7 +74,7 @@ function AuthOtpVerify({ updateOtpModal, inputValue }) {
                                 name="otp"
                             />
                             <ErrorMessage name="otp">
-                                {(msg) => <div className="text-danger">{msg}</div>}
+                                {(msg) => <div className="text-danger mt-1">{msg}</div>}
                             </ErrorMessage>
                         </div>
                         <div className="d-flex justify-content-between">

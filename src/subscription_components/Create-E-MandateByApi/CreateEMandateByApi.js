@@ -211,7 +211,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             }
 
             const response = await dispatch(createEmandateByApi(postDataS));
-            console.log("response?.data?.bank_details_url", response)
+
             if (response?.payload.data?.bank_details_url) {
                 toast.success(response?.payload.data.message);
                 if (selectedOption === 'customer') {

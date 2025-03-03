@@ -52,18 +52,19 @@ const KycDetailsModal = (props) => {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const { kyc, rateMappingSlice, approverDashboard, verifierApproverTab, productCatalogueSlice } = state;
+  const { kyc, rateMappingSlice, approverDashboard, productCatalogueSlice } = state;
   const { KycTabStatusStore, KycDocUpload } = kyc;
   const { SubscribedPlanData } = productCatalogueSlice
   const { generalFormData } = approverDashboard;
 
-  const currenTab = parseInt(verifierApproverTab?.currenTab);
+  // const currenTab = parseInt(verifierApproverTab?.currenTab);
   const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId]);
   const selectedUserData = useMemo(() => kyc.kycUserList, [kyc.kycUserList]);
 
   const [productData, setProductData] = useState([])
 
   useEffect(() => {
+
     if (merchantLoginLogin) {
       dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }));
     }

@@ -26,7 +26,7 @@ const CreateBulkEmandate = () => {
         try {
             // await dispatch(bulkCreateEmandate(formData)).then((res) => {
             await bulkCreateEmandateApi(formData).then((res) => {
-                console.log(res.data.message)
+                // console.log(res.data.message)
                 toast.success(res.data.message || "Something went wrong!");
                 setResponse(res?.data?.bank_details_urls)
                 setSubmitting(false)
@@ -83,17 +83,23 @@ const CreateBulkEmandate = () => {
                 <div className="row mt-4">
                     <div className="col-md-12">
                         <div className="card">
-                            <div className="card-body">
+                            <div className="card-body overflow-scroll">
                                 <h6 >Mandate URLs</h6>
-                                <ul className="list-group">
+
+                                <table className="table table-striped">
+                                    <tr>
+                                        <th>Consumer ID</th>
+                                        <th>Customer Name</th>
+                                        <th>URL</th>
+                                    </tr>
                                     {response?.map((item, key) => (
-                                        <li key={key} className="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>{item?.consumer_id}</span>
-                                            <span>{item?.customer_name}</span>
-                                            <a href={item?.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm cob-btn-primary approve text-white">View</a>
-                                        </li>
+                                        <tr key={key}>
+                                            <td>{item?.consumer_id}</td>
+                                            <td>{item?.customer_name}</td>
+                                            <td><a href={item?.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm cob-btn-primary approve text-white">View</a></td>
+                                        </tr>
                                     ))}
-                                </ul>
+                                </table>
                             </div>
                         </div>
                     </div>
