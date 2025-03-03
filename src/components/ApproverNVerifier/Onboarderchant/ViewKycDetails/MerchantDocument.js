@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +12,8 @@ import { useRef } from 'react';
 import { trimValue } from '../../../../utilities/trim';
 import CustomModal from '../../../../_components/custom_modal';
 import DocViewerComponent from '../../../../utilities/DocViewerComponent';
+import { forGettingCommentList } from '../../../../slices/merchantZoneMappingSlice';
+import DateFormatter from '../../../../utilities/DateConvert';
 // import DocViewerComponent from '../../../../utilities/DocViewerComponent';
 
 const MerchantDocument = (props) => {
@@ -22,14 +24,16 @@ const MerchantDocument = (props) => {
   const commentRef = useRef({})
   const [commentBtnLoader, setCommentBtnLoader] = useState(false)
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth, kyc, zone } = useSelector((state) => state);
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
+
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
+  const { commentData } = zone
 
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
@@ -95,15 +99,13 @@ const MerchantDocument = (props) => {
 
   const getKycDocList = () => {
     const loginId = selectedUserData?.loginMasterId
-    if (loginId != undefined && loginId != "") {
+    if (loginId !== undefined && loginId !== "") {
       const postData = {
         login_id: loginId
       }
 
-      dispatch(
-        kycDocumentUploadList(postData)
+      dispatch(kycDocumentUploadList(postData));
 
-      );
     }
   };
 
@@ -211,6 +213,7 @@ const MerchantDocument = (props) => {
         setEnableBtnApprover(true);
     }
 
+
   }, [currenTab, roles, Allow_To_Do_Verify_Kyc_details])
 
 
@@ -248,6 +251,16 @@ const MerchantDocument = (props) => {
     }
   }
 
+  const fetchCommentDocCB = useCallback(() => {
+    if (selectedUserData?.clientCode) {
+      return dispatch(forGettingCommentList({ client_code: selectedUserData?.clientCode }))
+    }
+  }, [selectedUserData?.clientCode])
+
+
+  useEffect(() => {
+    fetchCommentDocCB()
+  }, [selectedUserData?.clientCode])
 
 
   // document viewer 
@@ -343,7 +356,8 @@ const MerchantDocument = (props) => {
 
                     <td>{i + 1}</td>
 
-                    <td><p className="text-wrap mb-1"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
+                    <td>
+                      <p className="text-wrap mb-1"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
                       <p><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</p>
                       <p
                         className="text-primary cursor_pointer text-decoration-underline"
@@ -417,8 +431,33 @@ const MerchantDocument = (props) => {
             ) : (
               <></>
             )}
+            {commentData?.data?.length > 0 && <tr>
+              <td colspan="4" className="text-center fw-bold">Comment Section Document</td>
+            </tr>}
+
+            {(commentData?.data?.length !== undefined || commentData?.data?.length > 0) && commentData?.data?.map((commentData, i) => (
+              commentData?.file_path && <tr key={uuidv4()} >
+                <td> {i + 1} </td>
+                <td>
+                  <p className="text-wrap mb-1"><span className='font-weight-bold'>Comment By:</span> {commentData?.comment_by_user_name.toUpperCase()}</p>
+                  <p className="text-wrap mb-1"><span className='font-weight-bold'>Comment Tab:</span> {commentData?.merchant_tab ?? commentData?.comment_type}</p>
+                  <p
+                    className="text-primary cursor_pointer text-decoration-underline"
+                    rel="noreferrer"
+                    onClick={() => docModalToggle({ filePath: commentData?.file_path, doc_type_name: commentData?.file_name })}>
+                    View Document
+                  </p>
+                </td>
+
+                <td style={{ overflowWrap: "anywhere" }} colspan="3">
+                  <p>{commentData?.comments}</p>
+                </td>
+              </tr>
+            ))}
+
           </tbody>
         </table>
+
       </div>
     </div>
   )

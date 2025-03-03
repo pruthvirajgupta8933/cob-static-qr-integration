@@ -478,7 +478,7 @@ function Signup() {
 
                                     <h6 className={`hr_line_or my-2 `} >or</h6>
                                     <div className="d-flex justify-content-center">
-                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
+                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
                                     </div>
 
                                     <div className="text-center my-5">

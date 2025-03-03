@@ -146,7 +146,7 @@ function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
               <h6>Transaction History</h6>
               <div className="card-body">
                 <div className="scroll overflow-auto">
-                  {console.log("txnTableData?.count", txnTableData?.count)}
+                  {/* {console.log("txnTableData?.count", txnTableData?.count)} */}
                   {!txnLoading &&
                     <Table
                       row={rowData}

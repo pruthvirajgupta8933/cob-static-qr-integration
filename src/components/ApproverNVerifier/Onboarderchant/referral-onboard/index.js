@@ -116,16 +116,14 @@ const Referral = ({ type, zoneCode, edit }) => {
           >
             {tabs?.map((tab) => (
               <a
-                className={`nav-link cursor_pointer px-2 ${
-                  currentTab === tab.id && "active-secondary"
-                } ${
-                  tab.id === "basic"
+                className={`nav-link cursor_pointer px-2 ${currentTab === tab.id && "active-secondary"
+                  } ${tab.id === "basic"
                     ? "pe-auto"
                     : basicDetailsResponse?.loginMasterId ||
                       (edit && kycData?.loginMasterId)
-                    ? "pe-auto"
-                    : "pe-none"
-                }`}
+                      ? "pe-auto"
+                      : "pe-none"
+                  }`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}
                 data-mdb-toggle="pill"
@@ -148,7 +146,6 @@ const Referral = ({ type, zoneCode, edit }) => {
           className={
             "modal fade mymodals" + (infoModal ? " show d-block" : " d-none")
           }
-          role="dialog"
         >
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">

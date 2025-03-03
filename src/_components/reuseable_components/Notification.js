@@ -11,9 +11,9 @@ function Notification() {
     <>
       <div>
         {isBeforeAugust27 && (
-          <div className="alert alert-success text-center font-weight-bold" role="alert">
+          <div className="alert alert-success text-center font-weight-bold text-success p-2" role="alert">
             Kindly visit on this Url (
-            <a href="https://sp2-partner.sabpaisa.in" target="_blank" className="alert-link" rel="noreferrer">
+            <a href="https://sp2-partner.sabpaisa.in" target="_blank" className="alert-link text-primary" rel="noreferrer">
               https://sp2-partner.sabpaisa.in/
             </a>
             ) to see all the data before 27 August 2022.

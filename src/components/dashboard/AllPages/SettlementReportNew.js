@@ -73,8 +73,8 @@ const SettlementReportNew = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -747,10 +747,6 @@ const SettlementReportNew = () => {
   );
   return (
     <section className="ant-layout">
-      <div className="profileBarStatus">
-        <Notification />
-      </div>
-
       <main>
         <div>
           <ReportLayout

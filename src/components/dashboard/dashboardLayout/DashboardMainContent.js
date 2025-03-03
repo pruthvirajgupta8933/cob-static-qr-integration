@@ -66,7 +66,9 @@ import { isNull, reject } from "lodash";
 import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
 import ReferZone from "../../ApproverNVerifier/ReferZone";
 import GenerateMid from "../../ApproverNVerifier/GenerateMid";
-import generateAndSaveClientCode, { generateWord } from "../../../utilities/generateClientCode";
+import generateAndSaveClientCode, {
+  generateWord,
+} from "../../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "../AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "../AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../../subscription_components/MandateReport";
@@ -103,14 +105,18 @@ import ManualSubscription from "../../ManualSubscription";
 import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
 import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
 import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
-import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
+// import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import TransactionReport from "../../../subscription_components/Transaction-Report/TransactionReport";
+import CreateBulkEmandate from "../../../subscription_components/Create-Bulk-E-Mandate/CreateBulkEmandate";
+import WebsiteWhitelistPage from "../../ApproverNVerifier/website-whitelist/WebsiteWhitelistPage";
 import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
 import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
 import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
 import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
+import QFormReports from "../../qform-reports";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -134,12 +140,14 @@ function DashboardMainContent() {
       const clientMobileNo = user?.clientMobileNo;
       // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
-
       // check client code is existing
       // const stepRespOne = await authService.checkClintCode({
       //   client_code: arrayOfClientCode,
       // });
-      const stepRespOne = await generateAndSaveClientCode(clientFullName, clientMobileNo)
+      const stepRespOne = await generateAndSaveClientCode(
+        clientFullName,
+        clientMobileNo
+      );
       // console.log("stepRespOne", stepRespOne)
       let newClientCode;
       // if client code available return status true, then make request with the given client
@@ -252,12 +260,8 @@ function DashboardMainContent() {
           })
         );
       }
-    } catch (error) {
-
-    }
-
+    } catch (error) { }
   }, [location]);
-
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -265,12 +269,6 @@ function DashboardMainContent() {
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
-
-
-
-
-
-
 
   // console.log("roles", roles)
   return (
@@ -317,10 +315,7 @@ function DashboardMainContent() {
               >
                 <InternalDashboard />
               </AuthorizedRoute>
-              <Route
-                exact
-                path={`${path}/change-password`}
-              >
+              <Route exact path={`${path}/change-password`}>
                 <ChangePassword />
               </Route>
 
@@ -654,6 +649,14 @@ function DashboardMainContent() {
                 <MerchantBalance />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exact
+                path={`${path}/q-form-reports`}
+                Component={QFormReports}
+                roleList={{ merchant: true }}
+              >
+                <QFormReports />
+              </AuthorizedRoute>
               {/* Routing for Faq */}
 
               <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
@@ -704,7 +707,7 @@ function DashboardMainContent() {
                 <CreateMandate />
               </AuthorizedRoute>
 
-              <AuthorizedRoute                                       //Create Mandate handle by frontend(Old code)
+              <AuthorizedRoute //Create Mandate handle by frontend(Old code)
                 exact
                 path={`${path}/subscription/create-mandate-api`}
                 Component={CreateMandateApi}
@@ -722,7 +725,6 @@ function DashboardMainContent() {
                 <CreateMandateApiResponse />
               </AuthorizedRoute>
 
-
               <AuthorizedRoute
                 exact
                 path={`${path}/create-e-mandate`}
@@ -731,7 +733,6 @@ function DashboardMainContent() {
               >
                 <EnachForm />
               </AuthorizedRoute>
-
 
               <AuthorizedRoute
                 exact
@@ -750,6 +751,26 @@ function DashboardMainContent() {
               >
                 <RegistrationHistory />
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-report`}
+                Component={TransactionReport}
+                roleList={{ merchant: true }}
+              >
+                <TransactionReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-bulk-mandate`}
+                Component={CreateBulkEmandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateBulkEmandate />
+              </AuthorizedRoute>
+
+
 
 
 
@@ -801,15 +822,17 @@ function DashboardMainContent() {
                 }}
               />
 
-              {roles?.approver && (
-                <Route
-                  exact
-                  path={`${path}/ratemapping/:loginid`}
-                  Component={ManualRateMapping}
-                >
-                  <ManualRateMapping />
-                </Route>
-              )}
+              {
+                roles?.approver && (
+                  <Route
+                    exact
+                    path={`${path}/ratemapping/:loginid`}
+                    Component={ManualRateMapping}
+                  >
+                    <ManualRateMapping />
+                  </Route>
+                )
+              }
 
               <AuthorizedRoute
                 exact
@@ -865,8 +888,6 @@ function DashboardMainContent() {
                 <ChiledMerchantList />
               </AuthorizedRoute>
 
-
-
               <AuthorizedRoute
                 exact
                 path={`${path}/multi-user-onboard`}
@@ -897,7 +918,7 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/website-whitelist`}
-                Component={WebWhiteList}
+                Component={WebsiteWhitelistPage}
                 roleList={{ verifier: true }}
               >
                 <WebWhiteList />
@@ -957,11 +978,11 @@ function DashboardMainContent() {
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
               </Route>
-            </Switch>
-          </main>
-        </div>
-      </div>
-    </React.Fragment>
+            </Switch >
+          </main >
+        </div >
+      </div >
+    </React.Fragment >
   );
 }
 
