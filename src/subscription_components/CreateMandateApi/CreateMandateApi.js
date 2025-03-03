@@ -82,7 +82,7 @@ const CreateMandateApi = () => {
       axiosInstance
         .post(subAPIURL.CREATE_MANDATE_API_RESPONSE + mendateRegId)
         .then((response) => {
-          console.log("response", response)
+          // console.log("response", response)
           if (response.status === 200) {
 
           }
@@ -224,7 +224,7 @@ const CreateMandateApi = () => {
           newForm.submit();
         }
       } else {
-        console.log("Unexpected response format or no headers found:", response?.data);
+        // console.log("Unexpected response format or no headers found:", response?.data);
       }
     } catch (err) {
       console.error("Error occurred while submitting the form:", err);

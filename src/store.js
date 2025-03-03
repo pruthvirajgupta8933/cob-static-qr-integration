@@ -34,6 +34,7 @@ import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
+import { qFormSliceReducer } from "./slices/qform-reports";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
 import { ckycrReducer } from "./components/ApproverNVerifier/backend-kyc/slice/ckycr.slice";
@@ -96,7 +97,8 @@ const reducer = {
   dateFilterSliceReducer: dateFilterSliceReducer,
   /// Payment Link Solution
 
-  paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer
+  paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer,
+  qForm: qFormSliceReducer,
 };
 
 const store = configureStore({

@@ -119,7 +119,7 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
       // selectableRows
       />{" "}
 
-      {console.log(dataCount)}
+
       {dataCount > 0 && (
         <ReactPaginate
 

@@ -59,7 +59,7 @@ const TotalPayers = () => {
 
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
-        console.log("row selected", state.selectedRows)
+        // console.log("row selected", state.selectedRows)
 
     }, []);
 
