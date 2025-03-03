@@ -31,60 +31,62 @@ token = 'verifier_token'
 
 function Connection() {
 
-    const [objectArray, setObjectArray] = useState([]);
+    // const [objectArray, setObjectArray] = useState([]);
 
-    const socket = io('ws://192.168.34.26:5000',
-        {
-            extraHeaders: {
-                token: token,
-            },
-        });
+    // const socket = io('ws://192.168.34.26:5000',
+    //     {
+    //         extraHeaders: {
+    //             token: token,
+    //         },
+    //     });
 
-    useEffect(() => {
-        // Replace 'your-server-url' with your Socket.io server URL
+    // useEffect(() => {
+    //     // Replace 'your-server-url' with your Socket.io server URL
 
-        // Event listener for when the connection is established
-        socket.on('connect', () => {
-            console.log('Socket.io connected!');
-        });
+    //     // Event listener for when the connection is established
+    //     socket.on('connect', () => {
+    //         console.log('Socket.io connected!');
+    //     });
 
-        // Event listener for receiving messages from the server
-        // socket.on('jwt_token', (data) => {
-        //   console.log('jwt_token:', data);
-        //   // Handle the received message here as needed
-        // });
+    //     // Event listener for receiving messages from the server
+    //     // socket.on('jwt_token', (data) => {
+    //     //   console.log('jwt_token:', data);
+    //     //   // Handle the received message here as needed
+    //     // });
 
-        // Event listener for receiving messages from the server
+    //     // Event listener for receiving messages from the server
 
-        socket.on('notify', (data) => {
-            console.log("notify", data)
-            // const parsedData = JSON.parse(data);
-            // Update the state by adding the new object to the existing array
-            setObjectArray((prevArray) => [...prevArray, data]);
-            // Handle the received message here as needed
-        });
+    //     socket.on('notify', (data) => {
+    //         console.log("notify", data)
+    //         // const parsedData = JSON.parse(data);
+    //         // Update the state by adding the new object to the existing array
+    //         setObjectArray((prevArray) => [...prevArray, data]);
+    //         // Handle the received message here as needed
+    //     });
 
-        // Event listener for errors
-        socket.on('error', (error) => {
-            console.error('Socket.io error:', error);
-        });
+    //     // Event listener for errors
+    //     socket.on('error', (error) => {
+    //         console.error('Socket.io error:', error);
+    //     });
 
-        // Clean up the Socket.io connection when the component unmounts
-        return () => {
-            socket.off('connect');
-            socket.off('jwt_token');
-            socket.off('notify');
-            socket.off('error');
-            socket.off('disconnect');
-            setObjectArray([])
-            socket.disconnect();
-        };
-    }, []);
+    //     // Clean up the Socket.io connection when the component unmounts
+    //     return () => {
+    //         socket.off('connect');
+    //         socket.off('jwt_token');
+    //         socket.off('notify');
+    //         socket.off('error');
+    //         socket.off('disconnect');
+    //         setObjectArray([])
+    //         socket.disconnect();
+    //     };
+    // }, []);
 
-    console.log("objectArray", objectArray)
+    // console.log("objectArray", objectArray)
 
     return (
-        <div><button onClick={() => socket.emit('mark_as_read', { delivery_tag: 1 })}>emit</button></div>
+        <div>
+            {/* <button onClick={() => socket.emit('mark_as_read', { delivery_tag: 1 })}>emit</button> */}
+        </div>
     )
 }
 

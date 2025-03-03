@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactPaginate from 'react-paginate';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faSearch, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -52,7 +52,7 @@ const TableWithPagination = ({
                     </div>
                 )}
 
-                <div className="table-responsive scroll overflow-auto" style={{ height: "90vh" }}>
+                <div className="table-responsive scroll overflow-auto">
                     <table className="table ">
                         <thead className="table-primary">
                             {apiHasData && (
@@ -80,7 +80,7 @@ const TableWithPagination = ({
                                 <tr>
                                     <td colSpan={headers.length} className="text-center">
                                         <div className="d-flex justify-content-center align-items-center h-100 mt-5">
-                                            <h6 className="alert alert-warning" role="alert">
+                                            <h6 className="alert alert-warning">
                                                 No Data Found
                                             </h6>
                                         </div>

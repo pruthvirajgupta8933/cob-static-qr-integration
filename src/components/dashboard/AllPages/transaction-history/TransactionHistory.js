@@ -18,7 +18,7 @@ import {
 import API_URL from "../../../../config";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import { axiosInstance } from "../../../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import Notification from "../../../../_components/reuseable_components/Notification";
 // import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
@@ -46,7 +46,7 @@ const TransactionHistory = () => {
   const { user } = auth;
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
-  const { isLoadingTxnHistory, isExportData } = dashboard;
+  // const { isLoadingTxnHistory, isExportData } = dashboard;
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   const [txnList, SetTxnList] = useState([]);
@@ -99,8 +99,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -128,8 +128,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -153,21 +153,19 @@ const TransactionHistory = () => {
   });
 
   const getPaymentStatusList = async () => {
-    await axiosInstance
-      .get(API_URL.GET_PAYMENT_STATUS_LIST)
+    await axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
         SetPaymentStatusList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const paymodeList = async () => {
-    await axiosInstance
-      .get(API_URL.PAY_MODE_LIST)
+    await axiosInstanceJWT.get(API_URL.PAY_MODE_LIST)
       .then((res) => {
         SetPaymentModeList(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   let isExtraDataRequired = false;
@@ -204,17 +202,20 @@ const TransactionHistory = () => {
     setClientCodeList(clientCodeListArr);
   }, [clientCodeListArr]);
 
-  const tempPayStatus = [{ key: "All", value: "All" }];
 
+  const tempPayStatus = [{ key: "All", value: "All" }];
   paymentStatusList.map((item) => {
-    if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
-      tempPayStatus.push({ key: item, value: item });
+    if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+      if (item?.is_active) {
+        tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+      }
+
     }
   });
 
   const tempPaymode = [{ key: "All", value: "All" }];
   paymentModeList.map((item) => {
-    tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+    tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
   });
 
   // const pagination = (pageNo) => {
@@ -399,9 +400,9 @@ const TransactionHistory = () => {
     }
   }, [searchText]);
 
-  const getSearchTerm = (e) => {
-    SetSearchText(e.target.value);
-  };
+  // const getSearchTerm = (e) => {
+  //   SetSearchText(e.target.value);
+  // };
 
   const today = new Date();
   const lastThreeMonth = new Date(today);
@@ -611,7 +612,7 @@ const TransactionHistory = () => {
                   control="select"
                   label="Client Code"
                   name="clientCode"
-                  className="form-select rounded-0"
+                  className="form-select rounded"
                   options={clientCodeOption}
                 />
               </div>
@@ -621,7 +622,7 @@ const TransactionHistory = () => {
                 control="select"
                 label="Select Duration"
                 name="duration"
-                className="form-select rounded-0"
+                className="form-select rounded"
                 options={durations}
                 onChange={(e) =>
                   handleDurationChange({
@@ -653,7 +654,7 @@ const TransactionHistory = () => {
                     }}
                     dateFormat="dd-MM-yyyy"
                     placeholderText="Select Date Range"
-                    className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+                    className={`form-control rounded p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
                     showPopperArrow={false}
                     popperClassName={classes.custom_datepicker_popper}
                   />
@@ -679,7 +680,7 @@ const TransactionHistory = () => {
                 control="select"
                 label="Transactions Status"
                 name="transaction_status"
-                className="form-select rounded-0 mt-0"
+                className="form-select rounded mt-0"
                 options={tempPayStatus}
               />
             </div>
@@ -689,7 +690,7 @@ const TransactionHistory = () => {
                 control="select"
                 label="Payment Mode"
                 name="payment_mode"
-                className="form-select rounded-0 mt-0"
+                className="form-select rounded mt-0"
                 options={tempPaymode}
               />
             </div>
@@ -843,7 +844,6 @@ const TransactionHistory = () => {
   return (
     <section className="">
       <div className="profileBarStatus">
-        <Notification />
         {refundModal && (
           <TransactionRefund
             refundModal={refundModal}

@@ -26,7 +26,7 @@ const CreateBulkEmandate = () => {
         try {
             // await dispatch(bulkCreateEmandate(formData)).then((res) => {
             await bulkCreateEmandateApi(formData).then((res) => {
-                console.log(res.data.message)
+                // console.log(res.data.message)
                 toast.success(res.data.message || "Something went wrong!");
                 setResponse(res?.data?.bank_details_urls)
                 setSubmitting(false)
