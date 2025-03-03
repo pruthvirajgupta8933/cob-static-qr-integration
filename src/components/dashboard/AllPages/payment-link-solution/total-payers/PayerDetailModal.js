@@ -2,48 +2,20 @@ import React, { useEffect, useState } from "react";
 import Table from "../../../../../_components/table_components/table/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPayerData, getTxnData } from "../paylink-solution-slice/paylinkSolutionSlice";
-import TransactionComponent from "../recent-transaction/TransactionComponent";
 import CustomLoader from "../../../../../_components/loader";
 import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
 import { transactionStatusColorArr } from "../../../../../utilities/colourArr";
-// import InfiniteScroll from "react-infinite-scroll-component";
-// import classes from "./transaction.module.css";
-// import moment from "moment";
-// import { dateFormatBasic } from "../../../../utilities/DateConvert";
-// import CustomLoader from "../../../../_components/loader";
+
 
 function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
-
   const [udfToggle, setUdfToggle] = useState(false);
-  const [page, setPage] = useState(1);
-  // const [hasMore, setHasMore] = useState(true);
-  // const [txnData, setTxnData] = useState([]);
-  // const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-
   const dispatch = useDispatch()
   const { paymentLinkSolutionSliceReducer } = useSelector(state => state)
   const { singlePayerData, txnTableData, txnLoading } = paymentLinkSolutionSliceReducer
 
 
-  // const fetchData = async () => {
-  //   const payload = {
-  //     payer_id: selectedRow?.id,
-  //     page: page,
-  //     page_size: "10",
-  //     // client_code: "LPSD1",
 
-  //     order_by: "-id"
-  //   }
-  //   const newData = await dispatch(getTxnData(payload));
-  //   const results = newData?.payload?.results
-  //   if (results.length === 0) {
-  //     setHasMore(false);
-  //   } else {
-  //     setTxnData(prevData => [...prevData, ...results]);
-  //     setPage(prevPage => prevPage + 1);
-  //   }
-  // };
 
   useEffect(() => {
     const payload = {
@@ -131,10 +103,7 @@ function PayerDetailModal({ selectedRow, fnSetModalToggle }) {
       >
         <div className="modal-content rounded-0" style={{ height: "800px" }}>
           <div className="d-flex justify-content-start p-3 ">
-            {/* <h1 className="modal-title fs-5 border-start border-5 ps-2">
-              Sabpaisa Transaction ID :{" "}
-              <span className="text-primary">lllllllllllllll</span>
-            </h1> */}
+
             <button
               type="button"
               className="btn-close"
