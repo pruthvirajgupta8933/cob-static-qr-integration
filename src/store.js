@@ -36,6 +36,7 @@ import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
+import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
 
 const reducer = {
   auth: authReducer,
@@ -57,6 +58,8 @@ const reducer = {
   ReferralMidReducer: ReferralMidReducer,
   challanReducer: challanReducer,
   merchantReportSlice: merchantReportSlice,
+
+
 
   // For subscription
   Reports: reportsDataReducer,
@@ -88,7 +91,8 @@ const reducer = {
   kycValidatorReducer: kycValidatorReducer,
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
-  paymentLinkSliceReducer: paymentLinkSliceReducer
+  paymentLinkSliceReducer: paymentLinkSliceReducer,
+  mfaReducer: mfaReducer,
 };
 
 const store = configureStore({

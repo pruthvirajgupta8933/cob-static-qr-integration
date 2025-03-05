@@ -86,6 +86,10 @@ const API_LIVE = {
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
 
+  ////////////MFA
+
+  MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
+
   SUCCESS_TXN_SUMMARY:
     report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/

@@ -107,6 +107,7 @@ import CreateEMandateByApi from "../../../subscription_components/Create-E-Manda
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -912,6 +913,20 @@ function DashboardMainContent() {
                 Component={MerchantSummary}
                 roleList={{ bank: true }}
               />
+
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/mfa`}
+                Component={Mfa}
+                roleList={{
+                  approver: true,
+
+                }}
+              >
+
+              </AuthorizedRoute>
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
