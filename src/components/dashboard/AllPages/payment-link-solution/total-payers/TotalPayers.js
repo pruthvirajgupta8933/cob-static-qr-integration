@@ -159,7 +159,7 @@ const TotalPayers = () => {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
-            // width: "200px"
+            width: "200px"
         },
         {
             id: "31",

@@ -67,6 +67,7 @@ function CreatePaymentLink({ componentState, onClose }) {
             .required("End Date Required"),
         payer_account_number: Yup.string(),
         total_amount: Yup.number()
+            .typeError("Only numbers are allowed")
             .min(1, "Enter Valid Amount")
             .max(1000000, "Limit Exceed")
             .required("Required"),

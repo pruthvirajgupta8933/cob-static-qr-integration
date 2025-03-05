@@ -170,7 +170,9 @@ const RecentTransaction = () => {
                     {row.trans_status}
 
                 </p>
+
             ),
+            width: "200px"
         }
     ];
 

@@ -77,6 +77,7 @@ const TransactionTable = ({ data }) => {
         </p>
       ),
       sortable: true,
+      width: "200px"
     }
   ];
 
