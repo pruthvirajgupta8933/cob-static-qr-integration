@@ -1,75 +1,97 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import Yup from "../../../_components/formik/Yup";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
+import assignAccountMangerService from "../../../services/assign-account-manager/assign-account-manager.service";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../../_components/formik/FormikController";
 import toastConfig from "../../../utilities/toastTypes";
-import { updateMfaStatus } from "./MfaSlice";
 import {
     assignAccountMangerApi,
     assignManagerDetails,
 } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import { assignBd } from "./bdSlice.js/bdSlice";
 
-const Mfa = () => {
-    const [clientCodeList, setCliencodeList] = useState([]);
-
+const AssigneBusinessDevelopment = () => {
+    const [clientCodeList, setClientCodeList] = useState([]);
+    const [selectedClient, setSelectedClient] = useState(null);
+    const [assignedAccountManger, setAssignedAccountManger] = useState("");
+    const [assignDetails, setAssignDetails] = useState([]);
     const [disable, setDisable] = useState(false);
+    const { user } = useSelector((state) => state.auth);
+    const roleId = user?.roleId;
+
     const dispatch = useDispatch();
-    let initialValues = {
+
+    const initialValues = {
         react_select: "",
-        mfa: "",
+        login_master: "",
     };
 
     const validationSchema = Yup.object().shape({
-        mfa: Yup.string().required("Required"),
+        login_master: Yup.string().required("Required"),
         react_select: Yup.object().required("Required").nullable(),
     });
 
     const handleChange = (selectedOption) => {
-        const clientId = selectedOption ? selectedOption.value : null;
-
-
-        if (clientId) {
+        if (selectedOption) {
+            setSelectedClient(selectedOption); // Store the whole object
             const postData = {
-                client_code: clientId,
+                client_code: selectedOption.value, // Sending clientCode in API call
             };
 
             dispatch(assignAccountMangerApi(postData))
-
+                .then((res) => {
+                    setAssignedAccountManger(res?.payload?.result);
+                })
                 .catch((err) => {
                     console.error("Error:", err);
                 });
         }
     };
 
-
+    useEffect(() => {
+        const postData = {
+            role_id: "102",
+        };
+        dispatch(assignManagerDetails(postData))
+            .then((response) => {
+                const data = convertToFormikSelectJson(
+                    "login_master_id",
+                    "name",
+                    response?.payload?.result
+                );
+                setAssignDetails(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching merchant data:", error);
+            });
+    }, []);
 
     useEffect(() => {
         dispatch(getAllCLientCodeSlice()).then((resp) => {
-            setCliencodeList(resp?.payload?.result);
+            setClientCodeList(resp?.payload?.result);
         });
     }, []);
 
     const onSubmit = (values) => {
         setDisable(true);
 
-        dispatch(updateMfaStatus({
-            client_code: values?.react_select?.value,
-            mfa_status: values.mfa === "true",
+        dispatch(assignBd({
+            "bd_login_id": values.login_master,
+            "merchant_login_id": selectedClient?.loginMasterId, // Sending loginMasterId in payload
         }))
             .then((res) => {
-                console.log("res", res)
                 if (res?.meta.requestStatus === "fulfilled") {
                     toastConfig.successToast(res?.payload?.message);
                 } else {
                     toastConfig.errorToast(res?.payload?.message);
                 }
             })
-            .catch((err) => {
+            .catch(() => {
                 toastConfig.errorToast("An error occurred while updating MFA status");
             })
             .finally(() => {
@@ -77,34 +99,27 @@ const Mfa = () => {
             });
     };
 
-
-
-
     const options = [
         { value: "", label: "Select Client Code" },
         ...clientCodeList.map((data) => ({
-            value: data.clientCode,
+            value: data.clientCode, // Display clientCode in dropdown
             label: `${data.clientCode} - ${data.name}`,
+            loginMasterId: data.loginMasterId, // Storing loginMasterId for submission
         })),
     ];
 
-    const mfaAssign = [{ key: "", value: "Select" },
-    { key: "true", value: "Unable" },
-    { key: "false", value: "Disable" }
-    ]
     return (
-        <section className="">
-            <main className="">
-                <div className="">
-                    <div className="">
-                        <h5 className="">MFA</h5>
+        <section>
+            <main>
+                <div>
+                    <div>
+                        <h5>Business Development Assignment</h5>
                     </div>
                     <div className="container-fluid p-0">
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
                             onSubmit={onSubmit}
-                            enableReinitialize={true}
                         >
                             {(formik) => (
                                 <Form className="row mt-5">
@@ -118,15 +133,27 @@ const Mfa = () => {
                                                 label="Client Code"
                                                 onChange={handleChange}
                                             />
-
+                                            <div className="text-primary mb-3 mt-5 d-flex">
+                                                {selectedClient && (
+                                                    <h6>Current Account Manager</h6>
+                                                )}
+                                            </div>
+                                            {selectedClient && (
+                                                <h6 className="mt-3">
+                                                    Name: {assignedAccountManger?.name || "NA"}
+                                                </h6>
+                                            )}
+                                            {selectedClient && (
+                                                <h6>Email: {assignedAccountManger?.email || "NA"}</h6>
+                                            )}
                                         </div>
                                         <div className="col-lg-3">
                                             <FormikController
                                                 control="select"
-                                                name="mfa"
-                                                options={mfaAssign}
+                                                name="login_master"
+                                                options={assignDetails}
                                                 className="form-select"
-                                                label="MFA Status"
+                                                label="Business Development List"
                                             />
                                         </div>
                                         <div className="col-lg-3 mt-4">
@@ -139,10 +166,10 @@ const Mfa = () => {
                                                     <span
                                                         className="spinner-border spinner-border-sm mr-1"
                                                         role="status"
-                                                        ariaHidden="true"
+                                                        aria-hidden="true"
                                                     ></span>
                                                 )}
-                                                Submit
+                                                Assign
                                             </button>
                                         </div>
                                     </div>
@@ -151,10 +178,9 @@ const Mfa = () => {
                         </Formik>
                     </div>
                 </div>
-                <div></div>
             </main>
         </section>
     );
 };
 
-export default Mfa;
+export default AssigneBusinessDevelopment;

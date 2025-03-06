@@ -90,6 +90,11 @@ const API_LIVE = {
 
   MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
 
+  ////////////Bd Development
+
+
+
+
   SUCCESS_TXN_SUMMARY:
     report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
@@ -184,6 +189,10 @@ const API_LIVE = {
   searchQuery: `${kyc_url}/kyc/get-merchant-data/?search=Pending&search_query=lpsuman2001@gmail.com&page_size=5&page=1`,
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
   getAllClientCode: `${kyc_url}/kyc/get-all-client-code`, //get APi
+
+  ///////// Bd Development
+
+  BD_DEVELOPMENT: `${kyc_url}/kyc/assignment/assign-bd/`,
 
   getClientCodeByRole: `${kyc_url}/kyc/get-client-code-by-role`,
   saveSubMerchant: `${url}/sub-merchant/create/`,

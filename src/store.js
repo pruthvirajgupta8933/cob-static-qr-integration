@@ -37,6 +37,7 @@ import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
 import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
+import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDevelopment/bdSlice.js/bdSlice";
 
 const reducer = {
   auth: authReducer,
@@ -93,6 +94,8 @@ const reducer = {
   infoBulletinReducer: infoBulletinReducer,
   paymentLinkSliceReducer: paymentLinkSliceReducer,
   mfaReducer: mfaReducer,
+  assignBdReducer: assignBdReducer
+
 };
 
 const store = configureStore({

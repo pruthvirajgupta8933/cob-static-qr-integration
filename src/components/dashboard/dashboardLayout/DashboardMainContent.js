@@ -108,6 +108,7 @@ import HandleMandateResponse from "../../../subscription_components/Create-E-Man
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
 import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
+import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -926,7 +927,24 @@ function DashboardMainContent() {
                 }}
               >
 
+
+
+
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/assign-business-development`}
+                Component={AssigneBusinessDevelopment}
+                roleList={{
+                  approver: true,
+
+
+                }}
+              >
+              </AuthorizedRoute>
+
+
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
