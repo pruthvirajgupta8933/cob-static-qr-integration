@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
-import { Formik, Form} from "formik";
+import { Formik, Form } from "formik";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { fetchPaymentMode, fetchBankName, getMidClientCode } from "../../services/generate-mid/generate-mid.service";
-import  { createFilter } from 'react-select';
+import { createFilter } from 'react-select';
 import CustomModal from "../../_components/custom_modal";
 import Yup from "../../_components/formik/Yup";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
@@ -64,7 +64,7 @@ function AssignZone() {
 
   const [createMidData, setCreateMidData] = useState("")
   const [show, Setshow] = useState(false)
-  
+
 
   useEffect(() => {
     fetchPaymentMode()
@@ -128,7 +128,7 @@ function AssignZone() {
 
               <div className="modal-body">
 
-               
+
                 <h6 className="ml-3">
                   Payment Mode: {formValues?.mode_name}
                 </h6>
@@ -137,7 +137,7 @@ function AssignZone() {
                 </h6>
                 <div className="container">
                   <Form>
-                    
+
                     <div className="">
                       {createMidData.onboardStatus !== 'SUCCESS' && (
                         <button
@@ -227,10 +227,10 @@ function AssignZone() {
     setFormValues(values)
     setCreateMidData({})
   }
-  
+
 
   const handleSubmit = (values) => {
-   setDisable(true)
+    setDisable(true)
     setLoading(true)
     setCreateMidData({})
     const midData = {
@@ -264,6 +264,10 @@ function AssignZone() {
       });
   };
 
+  const handleButtonToggle = () => {
+
+  }
+
   return (
     <section className="">
       <main className="">
@@ -279,21 +283,29 @@ function AssignZone() {
             >
               {(formik) => (
                 <Form className="mt-5">
-                  <div className="row">
-                    <div className="col-lg-3">
-                     <CustomReactSelect
+                  <div className="row card p-1">
+                    <div className="col-lg-4 col-md-3 ">
+                      <CustomReactSelect
                         name="react_select"
                         options={options}
-                        placeholder="Select Client Code"
+                        placeholder="Client Code"
                         filterOption={createFilter({ ignoreAccents: false })}
-                        label="Client Code"
+                        label="Select Client Code"
                         onChange={handleSelectChange}
-
                       />
                     </div>
+                    <div className="col-lg-3 d-flex align-items-end justify-content-between">
 
+                      <button className="btn btn-sm cob-btn-primary">MID Detail</button>
+
+                      <p className="btn btn-sm cob-btn-secondary text-white">Generate MID</p>
+
+                    </div>
+
+                  </div>
+
+                  <div className="row d-none">
                     <div className="col-lg-3">
-
                       <FormikController
                         control="select"
                         name="mode_name"
@@ -302,8 +314,8 @@ function AssignZone() {
                         label="Payment Mode"
                       />
                     </div>
-                    <div className="col-lg-3">
 
+                    <div className="col-lg-3">
                       <FormikController
                         control="select"
                         name="bank_name"
@@ -313,6 +325,7 @@ function AssignZone() {
                       />
 
                     </div>
+
                     <div className="col-lg-3 mt-4">
                       <button
                         type="submit"
@@ -324,6 +337,7 @@ function AssignZone() {
                         Submit
                       </button>
                     </div>
+
                   </div>
                 </Form>
               )}
@@ -337,8 +351,6 @@ function AssignZone() {
 
       <CustomModal modalBody={modalBody} headerTitle={"MID Generation Request"} modalToggle={openZoneModal}
         fnSetModalToggle={setOpenModal} />
-
-
     </section>
   );
 }
