@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CustomLoader from "../../../../../_components/loader";
 import _ from "lodash";
-import Yup from "../../../../../_components/formik/Yup";
 import moment from "moment";
 import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
 import Table from "../../../../../_components/table_components/table/Table";
@@ -13,9 +12,9 @@ import { useDispatch } from "react-redux";
 import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
 import { getTxnData } from '../paylink-solution-slice/paylinkSolutionSlice'
-import DateFormatter, { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
+import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
 import SearchBar from "../searchBar/SearchBar";
-import { paymodeColorArr, transactionStatusColorArr } from "../../../../../utilities/colourArr";
+import { transactionStatusColorArr } from "../../../../../utilities/colourArr";
 import SelectFilter from "../transaction-filter/SelectFilter";
 import { axiosInstance } from "../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../config";
@@ -25,18 +24,8 @@ import API_URL from "../../../../../config";
 
 
 const RecentTransaction = () => {
-    let history = useHistory();
     const dispatch = useDispatch()
-    const [editform, setEditForm] = useState({
-        myname: "",
-        email: "",
-        phone: "",
-        editCustomerTypeId: "",
-        id: "",
-    });
-
     const [searchTerm, setSearchTerm] = useState('');
-    const [saveData, setSaveData] = useState()
     const { user } = useSelector((state) => state.auth);
     const [loadingState, setLoadingState] = useState(false)
     const [payerData, setPayerData] = useState([]);
@@ -58,9 +47,7 @@ const RecentTransaction = () => {
     const [paymentStatus, setPaymentStatus] = useState("All")
     const [transactionMode, setTransactionMode] = useState("All")
 
-    const { fromDate, toDate } = useSelector(
-        (state) => state.dateFilterSliceReducer
-    );
+
 
     const dateFilterValue = useSelector(
         (state) => state.dateFilterSliceReducer
@@ -107,22 +94,7 @@ const RecentTransaction = () => {
         }
     }
 
-    const deleteUser = (id, name) => {
-        setPayerName(name);
-        setPayerId(id);
-        setShowModal(true);
-    };
 
-    const handleDelete = async () => {
-
-        await paymentLinkService.deletePayer({ id: payerId });
-        loadData(initialValues);
-        setShowModal(false);
-    };
-
-    const handleClose = () => {
-        setShowModal(false);
-    };
 
 
 
@@ -198,22 +170,17 @@ const RecentTransaction = () => {
                     {row.trans_status}
 
                 </p>
+
             ),
+            width: "200px"
         }
     ];
 
-    // console.log(transactionStatusColorArr["ABORTED"])
+
     const [state, reducerDispatch] = useReducer(reducer, initialState)
 
 
-    // console.log(state)
 
-    // const validationSchemaa = Yup.object({
-    //     fromDate: Yup.date().required("Required").nullable(),
-    //     toDate: Yup.date()
-    //         .min(Yup.ref("fromDate"), "End date can't be before Start date")
-    //         .required("Required"),
-    // });
 
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
@@ -235,7 +202,7 @@ const RecentTransaction = () => {
     clientMerchantDetailsList = user.clientMerchantDetailsList;
     clientCode = clientMerchantDetailsList[0].clientCode;
 
-    // console.log("searchTerm", searchTerm)
+
 
     const loadData = async (data) => {
         // console.log(1, data)
@@ -343,69 +310,10 @@ const RecentTransaction = () => {
 
 
     };
-    const handleAddPayerButtonClick = () => {
-        // getDrop();
-        reducerDispatch({ type: "addPayer", payload: true })
-
-    };
-
-
-
-
-    // USE FOR EDIT FORM
-    const editHandler = (data) => {
-        setShowAddPayerModal(true)
-
-        reducerDispatch({
-            type: "editPayer", payload: { ...data, isEditable: true }
-        })
-    };
-
-    // USE FOR GENERETE LINK
-    const generatelink = (data) => {
-        setShowCreatePaymentModal(true)
-
-        reducerDispatch({
-            type: "generatePaymentLink", payload: {
-                ...data,
-                openModal: true
-            }
-        })
-    };
-
-    // const deleteUser = async (id) => {
-    //     let iscConfirm = window.confirm("Are you sure you want to delete it ?");
-    //     if (iscConfirm) {
-    //         await paymentLinkService.deletePayer({ id: id })
-    //         loadData(initialValues);
-    //     }
-    // };
-
-
 
     const edit = () => {
         loadData(initialValues);
     };
-
-
-
-    const getSearchTerm = (event) => {
-        const term = event.target.value;
-        setSearchTerm(term);
-
-        if (term) {
-            const filteredData = filterData.filter((item) =>
-                Object.values(item).some((value) =>
-                    value?.toString().toLowerCase().includes(term.toLowerCase())
-                )
-            );
-            setPayerData(filteredData);
-        } else {
-            setPayerData(filterData);
-        }
-    };
-
-
 
     const getPaymentStatusList = async () => {
         await axiosInstance

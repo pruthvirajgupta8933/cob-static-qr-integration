@@ -1,16 +1,10 @@
-
 import React, { useState, useRef, useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import CustomLoader from "../../../../../_components/loader";
-import _, { differenceBy } from "lodash";
-import Yup from "../../../../../_components/formik/Yup";
 import moment from "moment";
-// import paymentLinkService from "../../../../../services/create-payment-link/paymentLink.service";
 import paymentLinkService from "../../../../../components/dashboard/AllPages/payment-link-solution/paylink-service/pamentLinkSolution.service";
 import Table from "../../../../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
-// import { getPayerApi } from "../../../../../slices/paymentLink/paymentLinkSlice";
 import { getPayerApi } from "../../../../../components/dashboard/AllPages/payment-link-solution/paylink-solution-slice/paylinkSolutionSlice";
 import { useDispatch } from "react-redux";
 import ActionButtons from "../ActionButtons";
@@ -20,8 +14,6 @@ import SearchBar from "../searchBar/SearchBar";
 import toastConfig from "../../../../../utilities/toastTypes";
 import PayerDetailModal from "./PayerDetailModal";
 import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
-
-
 
 
 const TotalPayers = () => {
@@ -46,38 +38,20 @@ const TotalPayers = () => {
     const [payerName, setPayerName] = useState('');
     const [payerId, setPayerId] = useState('');
     const [selectedSingleRow, setSelectedSingleRow] = useState({});
-
-
     const dateFilterValue = useSelector(
         (state) => state.dateFilterSliceReducer
     );
 
 
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [toggleCleared, setToggleCleared] = React.useState(false);
-    // const [data, setData] = React.useState([]);
+
+
 
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
-        // console.log("row selected", state.selectedRows)
 
     }, []);
 
-    // const contextActions = React.useMemo(() => {
-    //     const handleDelete = () => {
-
-    //         if (window.confirm(`Are you sure you want to delete:\r ${selectedRows.map(r => r.title)}?`)) {
-    //             setToggleCleared(!toggleCleared);
-    //             setPayerData(differenceBy(payerData, selectedRows, 'title'));
-    //         }
-    //     };
-
-    //     return (
-    //         <button key="delete" onClick={handleDelete} style={{ backgroundColor: 'red' }} icon>
-    //             Delete
-    //         </button>
-    //     );
-    // }, [payerData, selectedRows, toggleCleared]);
 
 
     const initialState = {
@@ -185,7 +159,7 @@ const TotalPayers = () => {
             id: "4",
             name: "Email ID",
             selector: (row) => row.payer_email,
-            // width: "200px"
+            width: "200px"
         },
         {
             id: "31",
@@ -401,23 +375,6 @@ const TotalPayers = () => {
 
 
 
-    // const getSearchTerm = (event) => {
-    //     const term = event.target.value;
-    //     setSearchTerm(term);
-
-    //     if (term) {
-    //         const filteredData = filterData.filter((item) =>
-    //             Object.values(item).some((value) =>
-    //                 value?.toString().toLowerCase().includes(term.toLowerCase())
-    //             )
-    //         );
-    //         setPayerData(filteredData);
-    //     } else {
-    //         setPayerData(filterData);
-    //     }
-    // };
-
-
     return (
         <React.Fragment>
             <section>
@@ -455,15 +412,7 @@ const TotalPayers = () => {
                                 </div>
                                 <div className="col-md-6 d-flex justify-content-end">
 
-                                    {/* <div className="me-3 mt-4">
-                                        <input
-                                            className="form-control"
-                                            onChange={getSearchTerm}
-                                            value={searchTerm}
-                                            type="text"
-                                            placeholder="Search Here"
-                                        />
-                                    </div> */}
+
 
                                     <div className="me-3 mt-4 d-flex">
                                         {selectedRows?.length > 0 && <div className=" mx-3">
@@ -509,7 +458,7 @@ const TotalPayers = () => {
                                         selectableRows
                                         // contextActions={contextActions}
                                         onSelectedRowsChange={handleRowSelected}
-                                        clearSelectedRows={toggleCleared}
+
                                         onRowClick={(item) => {
                                             setSelectedSingleRow(item)
                                             setToggleModal(true)

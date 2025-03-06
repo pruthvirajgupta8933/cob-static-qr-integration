@@ -1,7 +1,4 @@
-@import url("../src/assets/fonts/Satoshi/Fonts/WEB/css/satoshi.css");
-@import url("../src/assets/fonts/OpenSans/Fonts/opensans.css");
-@import url("../src/assets/fonts/NunitoSans/nunitosans.css");
-@import url("../src/assets/fonts/Roboto/roboto.css");
+@import url("../src/assets/fonts/Sofia/sofia.css");
 
 
 
@@ -11,9 +8,10 @@ html {
 
 
 body {
-  font-family: "Lato", "Lato-Regular", Helvetica, Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: "Sofia-Pro-Regular";
+  /* font-family: "Lato", "Lato-Regular", Helvetica, Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   color: #545454;
   font-size: 13px !important;
   line-height: 1.3;
@@ -384,6 +382,7 @@ select {
 .cob-btn-primary {
   background-color: #286ECD !important;
   color: whitesmoke !important;
+
 }
 
 .cob-btn-primary :hover {
@@ -415,16 +414,7 @@ select {
   color: #023677
 }
 
-/* gloablly apply css */
-/* 
-p{
-  font-family: "Roboto-Regular";
-} */
 
-/* 
-h1, h2, h3, h4, h5, h6{
-  font-family: "OpenSans-Regular";
-} */
 
 .fs-12 {
   font-size: 12px;

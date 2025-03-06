@@ -20,7 +20,9 @@ $lightGrayColor: #D2D2D2;
 // fontFamily
 
 
-
+#root {
+    font-family: "Sofia-Pro-Regular";
+}
 
 // outer dashboard
 .headerBg {
@@ -77,7 +79,7 @@ p{
 
 }
 
-h1,h2,h3,h4,h5{
+h1,h2,h3,h4,h5,h6{
     font-family: "Sofia-Pro-Regular";
     font-weight: 500;
     font-style: normal;
@@ -87,6 +89,11 @@ a, span, label {
     font-family: "Sofia-Pro-Regular";
     font-weight: 500;
     font-style: normal
+}
+.btn {
+    // font-family: "Sofia-Pro-Regular !important";
+    // font-weight: 500 !important;
+    // font-style: normal !important;;
 }
 
 input {

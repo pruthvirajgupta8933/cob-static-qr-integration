@@ -5,11 +5,10 @@ import Yup from '../../../../../_components/formik/Yup';
 import toastConfig from '../../../../../utilities/toastTypes';
 import { Regex, RegexMsg } from '../../../../../_components/formik/ValidationRegex';
 import FormikController from '../../../../../_components/formik/FormikController';
-// import paymentLinkService from '../../../../../services/create-payment-link/paymentLink.service';
 import paymentLinkService from '../paylink-service/pamentLinkSolution.service';
 import { convertToFormikSelectJson } from '../../../../../_components/reuseable_components/convertToFormikSelectJson';
 
-const AddPayerModal = ({ componentState, dispatchFn, loadDataFn, onClose }) => {
+const AddPayerModal = ({ componentState, loadDataFn, onClose }) => {
 
 
 
@@ -81,7 +80,6 @@ const AddPayerModal = ({ componentState, dispatchFn, loadDataFn, onClose }) => {
         } catch (error) {
             setDisable(false)
             console.log(error.response)
-            // toastConfig.errorToast((error.response.data?.message || error.response.data?.detail) ?? "Something went wrong.")
 
         }
     };

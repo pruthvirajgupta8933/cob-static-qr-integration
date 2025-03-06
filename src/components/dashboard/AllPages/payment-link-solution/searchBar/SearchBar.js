@@ -5,9 +5,6 @@ const SearchBar = ({
     setSearchTerm,
     onSearch,
     placeholder = "Search...",
-    payerData,
-    setPayerData,
-    filterData,
     loadData
 }) => {
     const [error, setError] = useState("");

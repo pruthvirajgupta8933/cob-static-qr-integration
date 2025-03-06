@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from 'formik'
-import axios from "axios";
+import { Formik, Form, } from 'formik'
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import API_URL from "../../../../../config";
 import { v4 as uuidv4 } from 'uuid';
-import moment from "moment";
 import toastConfig from "../../../../../utilities/toastTypes";
 import Yup from "../../../../../_components/formik/Yup";
-import { capitalizeFirstLetter } from "../../../../../utilities/capitlizedFirstLetter";
+
 import FormikController from "../../../../../_components/formik/FormikController";
 import { dateFormatBasic } from "../../../../../utilities/DateConvert";
 import paymentLinkService from "../paylink-service/pamentLinkSolution.service";
 import { convertToFormikSelectJson } from "../../../../../_components/reuseable_components/convertToFormikSelectJson";
 
 function CreatePaymentLink({ componentState, onClose }) {
-    // const { loaduser } = props;
-    let history = useHistory();
-    const [drop, setDrop] = useState([]);
-    const [hours, setHours] = useState("");
-    const [minutes, setMinutes] = useState("");
-    const [passwordcheck, setPasswordCheck] = useState(false);
     const [disable, setDisable] = useState(false)
     const [payerData, setPayerData] = useState([])
     const { user } = useSelector((state) => state.auth);
@@ -29,32 +19,6 @@ function CreatePaymentLink({ componentState, onClose }) {
 
     clientMerchantDetailsList = user.clientMerchantDetailsList;
     clientCode = clientMerchantDetailsList[0].clientCode;
-
-
-    // const validationSchema = Yup.object().shape({
-    //   Amount: Yup.string().required("Required!"),
-    //   Remarks: Yup.string().required("Required!"),
-    //   Date: Yup.string().required("Required!"),
-    //   Customer_id: Yup.string().required("Required!"),
-
-
-    // })
-
-
-
-
-    const getDrop = async (e) => {
-        const currentData = moment().format('YYYY-MM-DD');
-
-        await axios
-            .get(`${API_URL.GET_CUSTOMERS}${clientCode}/2015-01-01/${currentData}`)
-            .then((res) => {
-                setDrop(res.data);
-            })
-            .catch((err) => {
-                // console.log(err);
-            });
-    };
 
     const loadUser = async () => {
         try {
@@ -76,53 +40,11 @@ function CreatePaymentLink({ componentState, onClose }) {
     }
 
     useEffect(() => {
-        // getDrop();
+
         loadUser();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, []);
 
-
-
-    const handleCheck = (e) => {                 //for checkbox
-        setPasswordCheck(e.target.checked);
-    };
-
-
-    const submitHandler = async (e) => {
-        setDisable(true)
-        const postData = {
-            Customer_id: e.Customer_id,
-            Remarks: e.Remarks,
-            Amount: e.Amount,
-            clientCode,
-            valid_to: dateFormat(e.Date),
-            isPasswordProtected: passwordcheck
-
-        }
-        paymentLinkService.genratePaymentLink(postData)
-            .then(resp => {
-                const message = resp.data?.message
-                const capitalizedMessage = capitalizeFirstLetter(message)
-                if (resp.data?.response_code === '1') {
-                    toastConfig.successToast(capitalizedMessage);
-                    // loaduser();
-                } else {
-                    toastConfig.errorToast(capitalizedMessage);
-                }
-                setDisable(false)
-            }).catch(err => {
-                setDisable(false)
-                toastConfig.errorToast("something went wrong")
-            })
-    };
-
-    const dateFormat = (enteredDate) => {
-        return (
-            enteredDate + '%20' + hours + ':' + minutes
-        );
-    };
-
-    // console.log(uuidv4())
 
     const initialValues = {
         valid_from: "",
@@ -145,6 +67,7 @@ function CreatePaymentLink({ componentState, onClose }) {
             .required("End Date Required"),
         payer_account_number: Yup.string(),
         total_amount: Yup.number()
+            .typeError("Only numbers are allowed")
             .min(1, "Enter Valid Amount")
             .max(1000000, "Limit Exceed")
             .required("Required"),
@@ -166,7 +89,7 @@ function CreatePaymentLink({ componentState, onClose }) {
 
         try {
             const response = await paymentLinkService.createPaymentLink(postData)
-            // console.log(response)
+
             toastConfig.successToast(response.data?.response_data?.message ?? "Link Created")
 
             setDisable(false)
@@ -178,9 +101,7 @@ function CreatePaymentLink({ componentState, onClose }) {
         }
     };
 
-    // const modalCloseHandler = () => {
-    //     dispatchFn({ type: "reset" })
-    // }
+
 
 
     return (
@@ -199,7 +120,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                             resetForm();
                         }}
                     >
-                        {({ values, errors, resetForm }) => (
+                        {({ }) => (
                             <>
                                 <div className="modal-header">
                                     <h6 className="fw-bold" >Create Payment Link </h6>
