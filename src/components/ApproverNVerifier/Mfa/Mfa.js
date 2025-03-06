@@ -89,8 +89,8 @@ const Mfa = () => {
     ];
 
     const mfaAssign = [{ key: "", value: "Select" },
-    { key: "true", value: "Unable" },
-    { key: "false", value: "Disable" }
+    { key: "true", value: "Active" },
+    { key: "false", value: "Deactive" }
     ]
     return (
         <section className="">
