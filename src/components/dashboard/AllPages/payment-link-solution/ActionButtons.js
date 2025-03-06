@@ -1,6 +1,7 @@
 import React from "react";
 import CreatePaymentLinkModal from "./total-link-generated/CreatePaymentLinkModal";
 import AddPayerModal from "./total-payers/AddPayerModal";
+import customStyle from "./paymentLinkSolution.module.css";
 
 const ActionButtons = ({
     filterRef,
@@ -20,8 +21,8 @@ const ActionButtons = ({
 
             {showBackLink && (
 
-                <span className="bg-light p-1 rounded-circle shadow cursor_pointer" onClick={onBackClick}>
-                    <i className="fa fa-arrow-left text-primary fs-6" ></i>
+                <span onClick={onBackClick} className={`cursor_pointer ${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light`}  >
+                    <i className="fa fa-arrow-left text-primary"></i>
                 </span>
             )}
 
