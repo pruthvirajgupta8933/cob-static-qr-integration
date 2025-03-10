@@ -9,8 +9,8 @@ import TransactionFilter from "./transaction-filter/TransactionFilter";
 import transactionCardIcon from "../../../../assets/images/paylink/icon (2).svg";
 import payerCardIcon from "../../../../assets/images/paylink/icon (3).svg";
 import generateLinkCardIcon from "../../../../assets/images/paylink/icon (1).svg";
-
 import moment from "moment";
+import customStyle from "./paymentLinkSolution.module.css"
 
 // import {
 //   getDashboardData,
@@ -126,17 +126,18 @@ const PaylinkDashboard = () => {
           <div className="col-12 col-md-8">
             <div className="row">
               <div className="col-12 col-md-4">
-                <div className="card shadow-sm p-3 rounded border-0 position-relative">
+                <div className="card shadow p-3 rounded border-0 position-relative">
                   <div className="d-flex justify-content-between align-items-center mb-3">
                     <h6 className="mb-1">Total Transaction</h6>
-                    <span><img src={transactionCardIcon} alt="Icon" /></span>
+                    <span className={`${customStyle.card_icon_1} ${customStyle.card_icon}`}>
+                      <img src={transactionCardIcon} alt="Icon" width={"22px"} /></span>
                   </div>
-                  <h5 className="text-success">
-                    {dashboardData?.transaction_data?.value}
+                  <h5 >
+                    Rs. {dashboardData?.transaction_data?.value || 0}
                   </h5>
-                  <div className="position-absolute bottom-0 end-0 p-3">
+                  <div className="position-absolute bottom-0 end-0 p-3 top-50">
                     <Link to={`${path}/recent-transaction`} className="text-decoration-none">
-                      <span className="bg-light p-2 rounded-circle shadow">
+                      <span className={`${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light`}  >
                         <i className="fa fa-arrow-right text-primary"></i>
                       </span>
                     </Link>
@@ -145,17 +146,17 @@ const PaylinkDashboard = () => {
               </div>
 
               <div className="col-12 col-md-4">
-                <div className="card shadow-sm p-3 rounded border-0 position-relative">
+                <div className="card shadow p-3 rounded border-0 position-relative">
                   <div className="d-flex justify-content-between align-items-center mb-3">
                     <h6 className="mb-1">Total Link Generated</h6>
-                    <span><img src={generateLinkCardIcon} alt="Icon" /></span>
+                    <span className={`${customStyle.card_icon_2} ${customStyle.card_icon}`}><img src={generateLinkCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 className="text-success">
-                    {dashboardData?.payment_link_data?.value}
+                  <h5 >
+                    {dashboardData?.payment_link_data?.value || 0}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">
                     <Link to={`${path}/total-link-generated`} className="text-decoration-none">
-                      <span className="bg-light p-2 rounded-circle shadow">
+                      <span className={`${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light`}  >
                         <i className="fa fa-arrow-right text-primary"></i>
                       </span>
                     </Link>
@@ -165,17 +166,17 @@ const PaylinkDashboard = () => {
 
 
               <div className="col-12 col-md-4">
-                <div className="card shadow-sm p-3 rounded border-0 position-relative">
+                <div className="card shadow p-3 rounded border-0 position-relative">
                   <div className="d-flex justify-content-between align-items-center mb-3">
                     <h6 className="mb-1">Total Payers</h6>
-                    <span><img src={payerCardIcon} alt="Icon" /></span>
+                    <span className={`${customStyle.card_icon_3} ${customStyle.card_icon}`}><img src={payerCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 className="text-success">
-                    {dashboardData?.payer_data?.value}
+                  <h5 >
+                    {dashboardData?.payer_data?.value || 0}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">
                     <Link to={`${path}/total-payers`} className="text-decoration-none">
-                      <span className="bg-light p-2 rounded-circle shadow">
+                      <span className={`${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light`}  >
                         <i className="fa fa-arrow-right text-primary"></i>
                       </span>
                     </Link>
@@ -186,7 +187,7 @@ const PaylinkDashboard = () => {
 
             <div className="row mt-3">
               <div className="col-12">
-                <div className="card shadow-sm p-3">
+                <div className="card shadow p-3">
                   <h6>Transactions Overview</h6>
                   <TransactionFilter
                     fromDate={fromDate}
@@ -202,7 +203,7 @@ const PaylinkDashboard = () => {
           </div>
 
           <div className="col-12 col-md-4 p-0">
-            <div className="card shadow-sm border-1 rounded-1">
+            <div className="card shadow border-1 rounded-1">
               <div className="card-header border-0 bg-white">
                 <h6 className="card-title mt-3">
                   Transactions Payment Mode

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
-import { bulkCreateEmandate } from '../../slices/subscription-slice/createEmandateSlice'
+// import { useDispatch } from 'react-redux'
+// import { bulkCreateEmandate } from '../../slices/subscription-slice/createEmandateSlice'
 import toast from 'react-hot-toast'
 import { bulkCreateEmandateApi } from '../../services/subscription-service/createEmandateByApi.service'
 
@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
 })
 
 const CreateBulkEmandate = () => {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const [response, setResponse] = useState([])
 
     const handleSubmit = async (values, setSubmitting) => {
@@ -45,38 +45,46 @@ const CreateBulkEmandate = () => {
                 <h5>Create Bulk Mandate</h5>
             </div>
 
-            <Formik
-                initialValues={{ file: null }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                    handleSubmit(values, setSubmitting);
-                }}
-            >
-                {({ setFieldValue, errors, touched, isSubmitting }) => (
-                    <Form>
-                        <div className="row mb-3">
-                            <div className="col-md-4">
-                                <label htmlFor="file" className="form-label">Upload CSV File</label>
-                                <input
-                                    id="file"
-                                    name="file"
-                                    type="file"
-                                    className={`form-control ${touched.file && errors.file ? 'is-invalid' : ''}`}
-                                    onChange={(e) => setFieldValue('file', e.currentTarget.files[0])}
-                                />
-                                {touched.file && errors.file && (
-                                    <div className="invalid-feedback">{errors.file}</div>
-                                )}
-                            </div>
-                            <div className="col-md-4 d-flex align-items-end">
-                                <button type="submit" className="btn btn-sm cob-btn-primary approve text-white" disabled={isSubmitting}>
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap flex-lg-nowrap ">
+                <div className="col-lg-6 col-sm-12 p-0">
+                    <Formik
+                        initialValues={{ file: null }}
+                        validationSchema={validationSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleSubmit(values, setSubmitting);
+                        }}
+                    >
+                        {({ setFieldValue, errors, touched, isSubmitting }) => (
+                            <Form>
+                                <div className="row mb-3">
+                                    <div className="col-lg-5 m-1">
+                                        <label htmlFor="file" className="form-label">Upload CSV File</label>
+                                        <input
+                                            id="file"
+                                            name="file"
+                                            type="file"
+                                            className={`form-control ${touched.file && errors.file ? 'is-invalid' : ''}`}
+                                            onChange={(e) => setFieldValue('file', e.currentTarget.files[0])}
+                                        />
+                                        {touched.file && errors.file && (
+                                            <div className="invalid-feedback">{errors.file}</div>
+                                        )}
+                                    </div>
+                                    <div className="col-lg-4  m-1 d-flex align-items-end ">
+                                        <button type="submit" className="btn btn-sm cob-btn-primary approve text-white" disabled={isSubmitting}>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className="col-lg-6 col-sm-12 p-0 text-end" >
+                    <a href="/bulk-mandate-sample.csv" download="bulk-mandate-sample.csv" rel="noopener noreferrer">Download bulk mandate sample</a>
+                    <p className="text-danger">Note: Date format should be (YYYY-MM-DD) .</p>
+                </div>
+            </div>
 
             {/*  list  */}
             {response && response.length > 0 && (
