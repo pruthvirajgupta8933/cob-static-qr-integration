@@ -6,7 +6,7 @@ import CustomLoader from "../../../../../_components/loader";
 import moment from "moment";
 import Table from "../../../../../_components/table_components/table/Table";
 import Yup from "../../../../../_components/formik/Yup";
-import { DateFormatAlphaNumeric, dateFormatBasic } from "../../../../../utilities/DateConvert";
+import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
 import { useDispatch } from "react-redux";
 import CountPerPageFilter from "../../../../../_components/table_components/filters/CountPerPage"
 import toast from "react-hot-toast";
@@ -25,10 +25,6 @@ const TotalLinkGenrated = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [saveData, setSaveData] = useState()
-    const { fromDate, toDate } = useSelector(
-        (state) => state.dateFilterSliceReducer
-    );
-
     const [displayList, setDisplayList] = useState([]);
     const [filterData, setFilterData] = useState([])
     const [loadingState, setLoadingState] = useState(false);
@@ -87,10 +83,6 @@ const TotalLinkGenrated = () => {
     }
     splitDate = splitDate.join("-");
 
-    const initialValues = {
-        fromDate: splitDate,
-        toDate: splitDate,
-    };
 
 
 
@@ -248,11 +240,7 @@ const TotalLinkGenrated = () => {
         setDisplayList([]);
 
 
-        // const fromDate = moment(values?.fromDate).format("YYYY-MM-DD");
-        // const toDate = moment(values?.toDate).format("YYYY-MM-DD");
-        // const dateRangeValid = checkValidation(fromDate, toDate);
 
-        // if (dateRangeValid) {
 
         const postData = {
             client_code: clientCode,
@@ -288,63 +276,16 @@ const TotalLinkGenrated = () => {
             });
     };
 
-    // }
-
-
-    const checkValidation = (fromDate, toDate) => {
-        let flag = true;
-
-        if (!fromDate || !toDate) {
-            alert("Please select both start and end dates.");
-            flag = false;
-        } else {
-            const date1 = new Date(fromDate);
-            const date2 = new Date(toDate);
-
-            const diffTime = Math.abs(date2 - date1);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            let allowedTxnViewDays = 60; // Two months * 31 days per month
-            let monthAllowed = 2; // Two months
-
-            if (diffDays < 0 || diffDays > allowedTxnViewDays) {
-                flag = false;
-                alert(`Please choose a ${monthAllowed}-month date range.`);
-                setDisable(false);
-            }
-        }
-
-        return flag;
-    };
 
 
 
-    const getSearchTerm = (event) => {
-        const term = event.target.value;
-        setSearchTerm(term);
-
-        if (term) {
-            const filteredData = filterData.filter((item) =>
-                Object.values(item).some((value) =>
-                    value?.toString().toLowerCase().includes(term.toLowerCase())
-                )
-            );
-            setData(filteredData);
-        } else {
-            setData(filterData);
-        }
-    };
 
 
 
-    const generatePaylinkHandler = () => {
-        reducerDispatch({
-            type: "generatePaymentLink", payload: {
-                ...data,
-                openModal: true
-            }
-        })
-    }
+
+
+
+
 
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
@@ -354,7 +295,7 @@ const TotalLinkGenrated = () => {
     };
 
 
-    // console.log(state)
+
     return (
         <section >
             <div className="container-fluid">

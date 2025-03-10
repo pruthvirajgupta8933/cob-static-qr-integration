@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForPending } from "../../../slices/kycSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
@@ -18,7 +18,7 @@ function PendingVerification({ commonRows }) {
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [data, setData] = useState([]);
-  const [newRegistrationData, setNewRegistrationData] = useState([]);
+
   const [kycIdClick, setKycIdClick] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
@@ -97,7 +97,7 @@ function PendingVerification({ commonRows }) {
 
     if (pendingVerificationDataList) {
       setData(pendingVerificationDataList);
-      setNewRegistrationData(pendingVerificationDataList);
+      // setNewRegistrationData(pendingVerificationDataList);
       setKycIdClick(pendingVerificationDataList);
       setDataCount(dataCount);
     }

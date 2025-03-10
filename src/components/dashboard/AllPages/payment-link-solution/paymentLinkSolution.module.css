@@ -10,3 +10,32 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 
 }
+
+
+.shadow_icon {
+    box-shadow: 1px 1px 9px 2px #d1d1d1;
+}
+
+.card_link_icon_arrow {
+    padding: 5px;
+    border-radius: 2px;
+    text-align: center;
+}
+
+
+.card_icon_1 {
+    background: #D0FFDD;
+}
+
+.card_icon_2 {
+    background: #DBE6FD;
+}
+
+.card_icon_3 {
+    background: #FFEFD0;
+}
+
+.card_icon {
+    padding: 7px;
+    border-radius: 3px;
+}

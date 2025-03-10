@@ -34,7 +34,7 @@ export const paymodeColorArr =
         },
         {
             "paymodeName": "BHIM UPI QR",
-            "color": "#FF33A1"
+            "color": "#FFA700"
         },
         {
             "paymodeName": "Static QR",

@@ -77,6 +77,7 @@ const TransactionTable = ({ data }) => {
         </p>
       ),
       sortable: true,
+      width: "200px"
     }
   ];
 
@@ -87,32 +88,7 @@ const TransactionTable = ({ data }) => {
         <div className="table-responsive shadow-sm">
           <Table row={rowData}
             data={data} />
-          {/* <table className="table">
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Payer Name</th>
-                <th>Transaction ID</th>
-                <th>Email</th>
-                <th>Amount</th>
-                <th>Mode</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((txn, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{txn.payer_name}</td>
-                  <td>{txn.sabpaisa_trans_id}</td>
-                  <td>{txn.payer_email}</td>
-                  <td>₹{txn.trans_amount}</td>
-                  <td>{txn.trans_mode}</td>
-                  <td>{txn.trans_status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
+
         </div>
         <div className="text-center mt-3">
           <Link to="/dashboard/recent-transaction" className="text-decoration-none">

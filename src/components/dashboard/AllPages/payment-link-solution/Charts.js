@@ -13,32 +13,12 @@ import {
 } from "recharts";
 import { colourArr } from "../../../../utilities/colourArr";
 
-const lineChartData = [
-  { month: "Jan 2023", value: 16 },
-  { month: "Feb 2024", value: 18.2 },
-  { month: "Mar", value: 23.1 },
-  { month: "Apr", value: 27.9 },
-  { month: "May", value: 32.2 },
-  { month: "Jun", value: 36.4 },
-  { month: "Jul", value: 38.8 },
-  { month: "Aug", value: 38.4 },
-  { month: "Sep", value: 35.5 },
-  { month: "Oct", value: 29.2 },
-  { month: "Nov", value: 22 },
-  { month: "Dec", value: 17.8 },
-];
 
-// const pieChartData = [
-//   { name: "UPI", value: 3000, color: "#F93C65" },
-//   { name: "Cards", value: 1500, color: "#F89131" },
-//   { name: "Wallet", value: 1000, color: "#008ADE" },
-//   { name: "Net Banking", value: 2000, color: "#029053" },
-// ];
 
 const colors = colourArr;
 
 const CustomLegend = ({ data, colorMode }) => {
-  const borderColor = colorMode === "dark" ? "#fff" : "#000";
+
 
   return (
     <div className="d-inline-flex flex-wrap gap-2 mt-3">

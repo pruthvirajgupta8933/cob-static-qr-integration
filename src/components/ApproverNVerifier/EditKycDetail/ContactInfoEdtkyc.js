@@ -3,7 +3,6 @@ import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../../_components/formik/FormikController";
 import "./kyc-style.css";
-import OtpInput from "react-otp-input";
 import { updateContactInfoEditDetails } from "../../../slices/editKycSlice";
 import { kycUserList } from "../../../slices/kycSlice";
 import { toast } from "react-toastify";
@@ -39,8 +38,7 @@ function ContactInfoEdtkyc(props) {
     name: Yup.string()
       .allowOneSpace()
       .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
-      // .wordLength("Word character length exceeded")
-      // .max(100, "Maximum 100 characters are allowed")
+
       .nullable()
       .allowOneSpace(),
     contact_number: Yup.string()
@@ -50,14 +48,7 @@ function ContactInfoEdtkyc(props) {
       .min(10, "Phone number is not valid")
       .max(10, "Only 10 digits are allowed ")
       .nullable(),
-    // oldContactNumber: Yup.string()
-    //   .trim()
-    //   .oneOf(
-    //     [Yup.ref("contact_number"), null],
-    //     "You need to verify Your Contact Number"
-    //   )
-    //   .required("You need to verify Your Contact Number")
-    //   .nullable(),
+
     email_id: Yup.string()
       .allowOneSpace()
       .email("Invalid email")
@@ -66,14 +57,13 @@ function ContactInfoEdtkyc(props) {
     aadhar_number: Yup.string()
       .allowOneSpace()
       .max(18, "Exceeds the limit")
-      // .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      // .matches(Regex.aadhaarRegex, RegexMsg.aadhaarRegex)
+
       .nullable(),
 
   });
 
   const handleSubmitContact = (values) => {
-    // Check if any required fields are empty
+
     const emptyFields = ['name', 'contact_number', 'email_id', 'aadhar_number'].some(
       (field) => !values[field]
     );
@@ -226,9 +216,7 @@ function ContactInfoEdtkyc(props) {
 
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                {/* {VerifyKycStatus === KYC_STATUS_VERIFIED ? (
-                  <></>
-                ) : ( */}
+
                 <button
                   disabled={disable}
                   type="submit"
@@ -242,7 +230,7 @@ function ContactInfoEdtkyc(props) {
                   }
                   {"Save and Next"}
                 </button>
-                {/* )} */}
+
               </div>
             </div>
 

@@ -13,7 +13,7 @@ import {
   assignAccountMangerApi,
   assignManagerDetails,
 } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
-import classes from "./assign-accountManger.module.css";
+
 const AssigneAccountManger = () => {
   const [clientCodeList, setCliencodeList] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(null);
