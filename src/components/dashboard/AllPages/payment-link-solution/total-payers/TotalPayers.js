@@ -138,17 +138,22 @@ const TotalPayers = () => {
             name: "S No.",
             selector: (row) => row.serial_number,
             sortable: true,
-            width: "100px"
+            width: "70px"
         },
         {
             id: "2",
             name: "Payer Name",
             selector: (row) => row.payer_name,
-            sortable: true,
-            width: "150px"
+            // width: "150px",
+            grow: 2,
+            style: {
+                cursor: 'pointer',
+                color: '#006dff',
+                textDecoration: 'underline',
+
+            }
 
         },
-
         {
             id: "3",
             name: "Mobile No.",
@@ -167,7 +172,6 @@ const TotalPayers = () => {
             selector: (row) => DateFormatAlphaNumeric(row.created_on, true),
             sortable: true,
             width: "150px"
-
         },
         {
             id: "5",
@@ -183,13 +187,13 @@ const TotalPayers = () => {
             id: "6",
             name: "Create Link",
             cell: (row) => (
-                <span style={{ display: "flex", alignItems: "center", cursor: "pointer", fontSize: "16px" }}>
+                <span style={{ display: "flex", alignItems: "center", cursor: "pointer", fontSize: "12px" }}>
                     <i
                         className="fa fa-link text-primary"
                         onClick={() => generatelink(row)}
-                        style={{ fontSize: "20px", marginRight: "8px" }}
+                        style={{ fontSize: "14px", marginRight: "8px" }}
                     ></i>
-                    <p onClick={() => generatelink(row)} className="text-primary mt-2">Create Link</p>
+                    <p onClick={() => generatelink(row)} className="text-primary m-0">Create Link</p>
                 </span>
             ),
             width: "150px",
