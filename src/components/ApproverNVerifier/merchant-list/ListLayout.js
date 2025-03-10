@@ -6,7 +6,6 @@ import SkeletonTable from "../../../_components/table_components/table/skeleton-
 import SearchFilter from "../../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage";
-// import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 const ListLayout = ({
   loadingState,
   data,
@@ -17,7 +16,7 @@ const ListLayout = ({
   fetchDataCb,
   filterData
 }) => {
-  // const [data, setData] = useState([]);
+
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
