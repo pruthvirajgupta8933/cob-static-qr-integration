@@ -1,0 +1,2 @@
+consumer_id,customer_name,customer_mobile,customer_email_id,start_date,end_date,max_amount,frequency,purpose,mandate_category,client_code,redirect_url
+23423f345436,John Test,9988776655,mandate@gmail.com,01-03-2025,20-03-2025,1,DAIL,testing,U005,LPSD1,https://google.com
