@@ -65,6 +65,11 @@ function AssignZone() {
   const [createMidData, setCreateMidData] = useState("")
   const [show, Setshow] = useState(false)
 
+  const [btnHandler, setBtnHandler] = useState({
+    view: false,
+    generate: false
+  })
+
 
   useEffect(() => {
     fetchPaymentMode()
@@ -126,41 +131,35 @@ function AssignZone() {
           {({ resetForm }) => (
             <>
 
-              <div className="modal-body">
-
-
-                <h6 className="ml-3">
+              <div>
+                <h6>Merchant : <span></span></h6>
+                <h6>
                   Payment Mode: {formValues?.mode_name}
                 </h6>
-                <h6 className="ml-3">
+                <h6 >
                   Bank: {formValues?.bank_name}
                 </h6>
-                <div className="container">
-                  <Form>
+                <Form>
+                  <div className="">
+                    {createMidData.onboardStatus !== 'SUCCESS' && (
+                      <button
+                        type="submit"
+                        className="btn btn-sm cob-btn-primary text-white mt-3"
+                        disabled={disable}
+                      >
+                        {disable && (
+                          <span
+                            className="spinner-border spinner-border-sm mr-1"
+                            role="status"
+                            ariaHidden="true"
+                          ></span>
+                        )}
+                        Confirm
+                      </button>
+                    )}
+                  </div>
+                </Form>
 
-                    <div className="">
-                      {createMidData.onboardStatus !== 'SUCCESS' && (
-                        <button
-                          type="submit"
-                          className="submit-btn cob-btn-primary text-white mt-3"
-                          disabled={disable}
-                        >
-                          {disable && (
-                            <span
-                              className="spinner-border spinner-border-sm mr-1"
-                              role="status"
-                              ariaHidden="true"
-                            ></span>
-                          )}
-                          Confirm
-                        </button>
-                      )}
-                    </div>
-
-
-
-                  </Form>
-                </div>
               </div>
             </>
           )}
@@ -264,10 +263,18 @@ function AssignZone() {
       });
   };
 
-  const handleButtonToggle = () => {
+  const handleButtonToggle = (btnType) => {
+    console.log(btnType)
+    if (btnType === "view") {
+      setBtnHandler({ view: true, generate: false })
+    }
 
+    if (btnType === "generate") {
+      setBtnHandler({ generate: true, view: false })
+    }
   }
 
+  console.log(btnHandler.generate)
   return (
     <section className="">
       <main className="">
@@ -275,16 +282,16 @@ function AssignZone() {
           <div className="">
             <h5>MID Generation</h5>
           </div>
-          <div className="container-fluid p-0">
+          <div className="container-fluid card p-2 mt-5">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
               {(formik) => (
-                <Form className="mt-5">
-                  <div className="row card p-1">
-                    <div className="col-lg-4 col-md-3 ">
+                <Form className="">
+                  <div className="row  p-1">
+                    <div className="col-lg-3 col-md-3">
                       <CustomReactSelect
                         name="react_select"
                         options={options}
@@ -294,55 +301,47 @@ function AssignZone() {
                         onChange={handleSelectChange}
                       />
                     </div>
-                    <div className="col-lg-3 d-flex align-items-end justify-content-between">
+                    {btnHandler.generate === true &&
+                      <React.Fragment>
+                        <div className="col-lg-3">
+                          <FormikController
+                            control="select"
+                            name="mode_name"
+                            options={merchantData}
+                            className="form-select"
+                            label="Payment Mode"
+                          />
+                        </div>
 
-                      <button className="btn btn-sm cob-btn-primary">MID Detail</button>
+                        <div className="col-lg-3">
+                          <FormikController
+                            control="select"
+                            name="bank_name"
+                            options={bankName}
+                            className="form-select"
+                            label="Bank"
+                          />
+                        </div>
 
-                      <p className="btn btn-sm cob-btn-secondary text-white">Generate MID</p>
-
-                    </div>
-
-                  </div>
-
-                  <div className="row d-none">
-                    <div className="col-lg-3">
-                      <FormikController
-                        control="select"
-                        name="mode_name"
-                        options={merchantData}
-                        className="form-select"
-                        label="Payment Mode"
-                      />
-                    </div>
-
-                    <div className="col-lg-3">
-                      <FormikController
-                        control="select"
-                        name="bank_name"
-                        options={bankName}
-                        className="form-select"
-                        label="Bank"
-                      />
-
-                    </div>
-
-                    <div className="col-lg-3 mt-4">
-                      <button
-                        type="submit"
-
-                        className="approve cob-btn-primary "
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
-                      >
-                        Submit
-                      </button>
-                    </div>
-
+                        <div className="col-lg-3 d-flex align-items-center">
+                          <button
+                            type="submit"
+                            className="btn btn-sm cob-btn-primary" >
+                            Submit
+                          </button>
+                        </div>
+                      </React.Fragment>}
                   </div>
                 </Form>
               )}
             </Formik>
+
+            <div className="col-lg-2 d-flex align-items-end  flex-row  p-2">
+              <button className="btn btn-sm cob-btn-primary mr-2" onClick={() => handleButtonToggle("view")}>View MID Detail</button>
+              <button className="btn btn-sm cob-btn-secondary text-white" onClick={() => handleButtonToggle("generate")}>Generate MID</button>
+            </div>
           </div>
+
         </div>
         <div>
         </div>
