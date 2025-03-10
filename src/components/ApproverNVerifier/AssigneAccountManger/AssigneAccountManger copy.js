@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import Yup from "../../../_components/formik/Yup";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
-import { assignManagerDetails, assignmentTypeApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import { assignAccountMangerApi, assignManagerDetails, assignmentTypeApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { assignRoleWiseApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../../_components/formik/FormikController";
@@ -16,12 +16,7 @@ const AssigneAccountManger = () => {
   const [clientCodeList, setClientCodeList] = useState([]);
   const [assignmentType, setAssignmentType] = useState([]);
   const [assignDetails, setAssignDetails] = useState([]);
-  const [selectedId, setSelectedId] = useState(null)
   const [disable, setDisable] = useState(false);
-  const { kyc } = useSelector((state) => state);
-  // const { user } = auth;
-  // const { loginId } = user;
-  const KycList = kyc?.kycUserList;
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -40,8 +35,8 @@ const AssigneAccountManger = () => {
     dispatch(assignmentTypeApi())
       .then((response) => {
         const data = response?.payload?.assignment_type?.map((item) => ({
-          value: item.value,
-          label: item.key,
+          value: item.value, // Value to be sent in payload
+          label: item.key, // Key to be displayed in dropdown
           role_id: item.role_id,
         }));
         setAssignmentType(data);
@@ -68,7 +63,7 @@ const AssigneAccountManger = () => {
 
   const handleClientChange = (selectedOption) => {
     if (selectedOption) {
-      dispatch(kycUserList({ login_id: selectedOption.value }));
+      dispatch(assignAccountMangerApi({ client_code: selectedOption.value }));
     }
   };
 
@@ -81,7 +76,7 @@ const AssigneAccountManger = () => {
       assignment_type: values.assignment_type?.value,
     };
 
-    if (!window.confirm("Are you sure to assign a new role?")) {
+    if (!window.confirm("Are you sure to assign a new account manager?")) {
       setDisable(false);
       return;
     }
@@ -122,37 +117,10 @@ const AssigneAccountManger = () => {
                       filterOption={createFilter({ ignoreAccents: false })}
                       label="Client Code"
                       onChange={(selectedOption) => {
-                        setSelectedId(selectedOption)
                         setFieldValue("react_select", selectedOption);
                         handleClientChange(selectedOption);
                       }}
                     />
-                    {selectedId &&
-                      <div>
-                        <div className="text-primary mb-3 mt-5 d-flex">
-
-                          <h6 className={``}>Current Account Manager</h6>
-
-
-                        </div>
-
-                        <h6 className="mt-3">
-                          Account Manager Name: {KycList?.account_manager_name || "NA"}
-                        </h6>
-
-
-                        <h6 className="">
-                          {" "}
-                          Assigned BD Name: {KycList?.assigned_bd_name || "NA"}
-                        </h6>
-
-                        <h6>
-                          Assigned Zonal Manager :{KycList?.assigned_zonal_manager_name || "NA"}
-                        </h6>
-                      </div>}
-
-
-
                   </div>
                   <div className="col-lg-3">
                     <CustomReactSelect

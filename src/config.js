@@ -185,6 +185,7 @@ const API_LIVE = {
   saveSubMerchant: `${url}/sub-merchant/create/`,
   getSubMerchants: `${url}/sub-merchant/get/`,
 
+
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
   UPLOAD_MERCHANT_AADHAAR: `${kyc_url}/kyc/upload-merchant-document/aadhar-upload/`, //post APi
@@ -232,6 +233,8 @@ const API_LIVE = {
   FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
   GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
   ASSIGN_ACCOUNT_MANAGER: `${url}/assigned-account-manager`,
+  GET_ASSIGNMENT_TYPE: `${kyc_url}/kyc/assignment/assignment-type/`,
+  ASSIGN_ROLE_WISE: `${kyc_url}/kyc/assignment/assign/`,
   ACCOUNT_MANAGER_DETAILS: `${url}/account-manager-details`,
   ASSIGN_CLIENT: `${url}/assign-client`,
 
