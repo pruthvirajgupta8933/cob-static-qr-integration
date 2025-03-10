@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { kycForPendingMerchants } from "../../../slices/kycSlice";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
@@ -64,8 +64,8 @@ const PendindKyc = ({ commonRows }) => {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"

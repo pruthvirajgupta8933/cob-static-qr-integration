@@ -14,11 +14,8 @@ import {
   businessType,
   busiCategory,
   platformType,
-  // collectionFrequency,
-  // collectionType,
-  saveBusinessInfo,
   kycUserList,
-  GetKycTabsStatus,
+
 } from "../../../slices/kycSlice";
 
 import kycOperationService from "../../../services/kycOperation.service";
@@ -40,7 +37,7 @@ function BusinessOverviewEditKyc(props) {
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
   const [avgTicketAmount, setAvgTicketAmount] = useState([]);
 
-  let readOnly = false;
+
   let buttonText = "Save and Next";
 
   const { user } = auth;
@@ -63,7 +60,7 @@ function BusinessOverviewEditKyc(props) {
     { key: "On my website/app", value: "Yes" },
   ];
 
-  const VerifyKycStatus = KycTabStatusStore?.business_info_status;
+
 
   // check if data exists
   let business_category_code;
@@ -256,23 +253,7 @@ function BusinessOverviewEditKyc(props) {
 
   };
 
-  // let converter = require('number-to-words');
 
-  // function div(x) {
-  //   if(!isNaN(x) && !isNull(x)){
-  //     const xx = parseFloat(x)
-  //     if (isFinite(1000 / xx)) {
-  //       console.log( "this is chnages value",converter.toWords(xx))
-  //     }else{
-  //       console.log( "this is chnages value----"+ xx)
-
-  //     }
-  //   }
-
-  // }
-  // useEffect(() => {
-
-  // }, []);
 
   const getExpectedTransactions = async (slabId) => {
     try {
@@ -292,24 +273,7 @@ function BusinessOverviewEditKyc(props) {
     const getuser = event.target.value;
     // setAppUrl(getuser);
   };
-  //////////////////////////////////// Check for finite number
-  // useEffect(() => {
-  //   const number = numberChnaged;
-  //   if (number?.length > 1) {
-  //     if (!isNaN(number) && !isNull(number)) {
-  //       const xx = parseFloat(number)
-  //       if (isFinite(1000 / xx)) {
-  //         setTextWord(converter.toWords(xx))
-  //       } else {
-  //         setTextWord("")
 
-  //       }
-  //     }
-  //   }
-
-  // }, [numberChnaged])
-
-  ////////////////////////////////
 
   const slabOptions = convertToFormikSelectJson(
     "id",
@@ -352,8 +316,7 @@ function BusinessOverviewEditKyc(props) {
                   name="business_type"
                   options={data}
                   className="form-select"
-                // disabled={VerifyKycStatus === "Verified" ? true : false}
-                // readOnly={readOnly}
+
                 />
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
@@ -366,8 +329,7 @@ function BusinessOverviewEditKyc(props) {
                   name="business_category"
                   options={businessCategory}
                   className="form-select"
-                // disabled={VerifyKycStatus === "Verified" ? true : false}
-                // readOnly={readOnly}
+
                 />
               </div>
             </div>
@@ -383,8 +345,7 @@ function BusinessOverviewEditKyc(props) {
                   type="text"
                   name="billing_label"
                   className="form-control fs-12"
-                // disabled={VerifyKycStatus === "Verified" ? true : false}
-                // readOnly={readOnly}
+
                 />
                 <p className="fs-10">
                   Please give a brief description of the nature of your
@@ -419,8 +380,7 @@ function BusinessOverviewEditKyc(props) {
                   }}
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                   className="form-check-input"
                 />
 
@@ -437,8 +397,7 @@ function BusinessOverviewEditKyc(props) {
                         name="website_app_url"
                         placeHolder="Enter your website/app URL"
                         className="form-control pull-left"
-                      // disabled={VerifyKycStatus === "Verified" ? true : false}
-                      // readOnly={readOnly}
+
                       />
                     </div>
                   </div>
@@ -457,8 +416,7 @@ function BusinessOverviewEditKyc(props) {
                   name="platform_id"
                   className="form-select"
                   valueFlag={false}
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                   options={platform}
 
                 />
@@ -477,8 +435,7 @@ function BusinessOverviewEditKyc(props) {
                   name="expected_transactions"
                   valueFlag={true}
                   className="form-select form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                   options={slabOptions}
 
                 />
@@ -495,10 +452,9 @@ function BusinessOverviewEditKyc(props) {
                   name="avg_ticket_size"
                   className="form-select form-control"
                   valueFlag={true}
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                   options={ticketOptions}
-                // onClick={() => getExpectedTransactions(2)}
+
                 />
               </div>
 
@@ -507,9 +463,7 @@ function BusinessOverviewEditKyc(props) {
 
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                {/* {VerifyKycStatus === "Verified" ? (
-                  <></>
-                ) : ( */}
+
                 <button
                   className="float-lg-right cob-btn-primary text-white btn btn-sm mt-4"
                   type="submit"
@@ -523,7 +477,7 @@ function BusinessOverviewEditKyc(props) {
                   </>}
                   {buttonText}
                 </button>
-                {/* )} */}
+
               </div>
             </div>
           </Form>

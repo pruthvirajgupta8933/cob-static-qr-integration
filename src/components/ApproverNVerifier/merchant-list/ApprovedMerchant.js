@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../../slices/kycSlice";
-// import toastConfig from "../../utilities/toastTypes";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import ListLayout from "./ListLayout";
 import CommentModal from "../Onboarderchant/CommentModal";
@@ -18,7 +17,6 @@ function ApprovedMerchant({ commonRows }) {
   const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
-  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [onboardType, setOnboardType] = useState("");
 
@@ -41,9 +39,7 @@ function ApprovedMerchant({ commonRows }) {
     }
   }, [approvedMerchantList]); //
 
-  function capitalizeFirstLetter(param) {
-    return param?.charAt(0).toUpperCase() + param?.slice(1);
-  }
+
 
   const ApprovedTableData = [
     ...commonRows,

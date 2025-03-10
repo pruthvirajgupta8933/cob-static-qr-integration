@@ -12,7 +12,6 @@ const DocumentUploadNewEdtKyc = (props) => {
   const [docTypeList, setDocTypeList] = useState([]);
   const [savedData, setSavedData] = useState([]);
   const [otherDocTypeId, setOtherDocTypeId] = useState(null);
-  const [disable, setIsDisable] = useState(false);
   const [typeId, setTypeId] = useState("");
   const { auth, kyc } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -140,7 +139,7 @@ const DocumentUploadNewEdtKyc = (props) => {
       initialValues={{ option: 'A', dropdown: '', inputs: [{ description: '', file: null }] }}
       onSubmit={onSubmit}
     >
-      {({ values, setFieldValue, errors, touched }) => (
+      {({ values, setFieldValue, }) => (
         <Form>
           <div>
             <div className="d-flex justify-content-between w-50 mt-3">
@@ -169,7 +168,7 @@ const DocumentUploadNewEdtKyc = (props) => {
                     </div>
                     <div className="col-3">
                       <Field name={`files[${index}]`}>
-                        {({ field, form, meta }) => (
+                        {({ meta }) => (
                           <input
                             type="file"
                             className={`form-control ${meta.error && meta.touched ? 'is-invalid' : ''}`}
@@ -245,17 +244,17 @@ const DocumentUploadNewEdtKyc = (props) => {
                     </button>
                   </div>
 
-                  
+
                   <div className="col-md-2">
 
-                  <button
+                    <button
                       type="button"
                       className={` ${classes.custom_button} btn btn-outline-primary text-white ml-5`}
                       onClick={() => handleRemoveField(index, values, setFieldValue)}
                     >
-                    {/* <span onClick={() => handleRemoveField(index, values, setFieldValue)} className="cursor-pointer"> */}
+
                       <i className={`${classes.icon_large} fa fa-trash`}></i>
-                    {/* </span> */}
+
                     </button>
                   </div>
                 </div>
