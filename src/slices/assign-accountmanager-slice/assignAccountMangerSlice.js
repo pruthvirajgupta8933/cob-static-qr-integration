@@ -5,6 +5,7 @@ import { getErrorMessage } from "../../utilities/errorUtils";
 
 const initialState = {
   postdata: {},
+  assignmentType: null,
 
 };
 
@@ -115,10 +116,23 @@ export const assignManagerDetails = createAsyncThunk(
 export const assignAccountManagerSlice = createSlice({
   name: "assignAccountManager",
   initialState,
-  reducers: {},
-  extraReducers: {}
+  reducers: {
+    setAssignmentType: (state, action) => {
+      state.assignmentType = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(assignmentTypeApi.fulfilled, (state, action) => {
+      const assignmentTypes = action.payload?.assignment_type || [];
+      const filteredAssignment = assignmentTypes.find(
+        (item) => item.role_id === action.meta.arg
+      );
+      state.assignmentType = filteredAssignment || null;
+    });
+  },
+
 });
-export const {
+export const { setAssignmentType
 
 } = assignAccountManagerSlice.actions;
 export const assignAccountManagerReducer = assignAccountManagerSlice.reducer;

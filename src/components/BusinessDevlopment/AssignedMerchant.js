@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAssignedMerchantData } from "./businessDevelopmentSlice/BusinessDevelopmentSlice";
 import { assignmentTypeApi } from "../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
@@ -7,6 +7,7 @@ import DateFormatter from "../../utilities/DateConvert";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+
 const AssignedMerchant = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
@@ -19,7 +20,7 @@ const AssignedMerchant = () => {
     const [dataCount, setDataCount] = useState(0);
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchFilterData, setSearchFilterData] = useState([])
+    const [searchFilterData, setSearchFilterData] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
@@ -40,8 +41,6 @@ const AssignedMerchant = () => {
         setSearchText(e);
     };
 
-
-
     const searchByText = (text) => {
         setData(
             searchFilterData?.filter((item) =>
@@ -61,15 +60,19 @@ const AssignedMerchant = () => {
             );
 
             if (filteredAssignment) {
-                const payload = {
-                    assigned_login_id: loginId,
-                    assignment_type: filteredAssignment.value,
+                const queryParams = {
+
                     page: currentPage,
                     page_size: pageSize,
                     search_query: searchText,
                 };
 
-                dispatch(getAssignedMerchantData(payload));
+                const payload = {
+                    assignment_type: filteredAssignment.value,
+                    assigned_login_id: loginId,
+                };
+
+                dispatch(getAssignedMerchantData({ queryParams, payload }));
             }
         });
     }, [dispatch, loginId, roleId, currentPage, pageSize, searchText]);
@@ -102,7 +105,6 @@ const AssignedMerchant = () => {
                             <SearchFilter
                                 kycSearch={kycSearch}
                                 searchText={searchText}
-                                // searchByText={filteredData}
                                 searchByText={searchByText}
                                 setSearchByDropDown={setSearchByDropDown}
                                 searchTextByApiCall={true}

@@ -12,14 +12,14 @@ import { getQueryStr } from "../../../utilities/generateURLQueryParams";
 
 
 
-const getAssignedMerchant = (postData) => {
-    console.log("postData", postData)
-    const url = `${API_URL.GET_ASSIGNED_MERCHANT}`
-    console.log("url", url)
-    const apiUrl = getQueryStr(url, postData)
-    console.log("apiurl", apiUrl)
-    return axiosInstanceJWT.post(apiUrl, postData)
-}
+const getAssignedMerchant = ({ queryParams, payload }) => {
+    console.log("queryParams", queryParams)
+    console.log("payload", payload)
+    const url = `${API_URL.GET_ASSIGNED_MERCHANT}`;
+    const apiUrl = getQueryStr(url, queryParams);
+
+    return axiosInstanceJWT.post(apiUrl, payload);
+};
 
 
 
