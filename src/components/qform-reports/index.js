@@ -14,8 +14,6 @@ const QFormReports = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [txnList, setTxnList] = useState();
-  const [exportReportLoader, setExportReportLoader] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
   const formList = useSelector((state) => state.qForm.qFormList.result);
@@ -41,8 +39,7 @@ const QFormReports = () => {
   });
 
   const exportToExcelFn = async () => {};
-  const submitHandler = (values) => {
-    setLoading(true);
+  const submitHandler = (values, { setSubmitting }) => {
     setTxnList([]);
     const payload = {
       clientId: user.clientMerchantDetailsList?.[0]?.clientId,
@@ -56,18 +53,18 @@ const QFormReports = () => {
     };
     try {
       dispatch(getQformTxnList(payload)).then((res) => {
-        setLoading(false);
         if (res.payload) {
           if (res.payload === "Network Error") {
             alert("Network Error");
             return;
           }
           setTxnList(res.payload);
+          setSubmitting(false);
         }
       });
     } catch (e) {
       console.log(e);
-      setLoading(false);
+      setSubmitting(false);
     }
   };
   return (
@@ -77,7 +74,7 @@ const QFormReports = () => {
         validationSchema={validationSchema}
         onSubmit={submitHandler}
       >
-        {({ values, setFieldValue, errors }) => (
+        {({ values, setFieldValue, errors, isSubmitting }) => (
           <Form>
             <div className="form-row mt-4">
               <div className="form-group col-md-4 col-lg-2 col-sm-12">
@@ -89,7 +86,10 @@ const QFormReports = () => {
                   options={convertToFormikSelectJson(
                     "formId",
                     "formName",
-                    formList
+                    formList,
+                    false,
+                    false,
+                    true
                   )}
                 />
               </div>
@@ -131,11 +131,11 @@ const QFormReports = () => {
               </div>
               <div className="form-group col-md-2 col-sm-12 col-lg-3">
                 <button
-                  disabled={loading}
+                  disabled={isSubmitting}
                   className="btn btn-sm text-white cob-btn-primary mt-4"
                   type="submit"
                 >
-                  {loading && (
+                  {isSubmitting && (
                     <span
                       className="spinner-border spinner-border-sm mr-1"
                       role="status"
@@ -166,18 +166,26 @@ const QFormReports = () => {
       </Formik>
       <div className="col-md-12 mt-4 overflow-scroll">
         {txnList?.length > 0 && (
-          <table className="table table-bordered">
-            <thead className="bg-primary text-white">
-              {Object.keys(txnList[0])?.length > 0 &&
-                Object.keys(txnList[0])?.map((key) => <th>{key}</th>)}
-            </thead>
-            {txnList?.map((row) => (
-              <tr>
-                {Object.values(row).map((col) => (
-                  <td>{col}</td>
-                ))}
+          <table className="table table-bordered bg-white">
+            <thead>
+              <tr className="">
+                {Object.keys(txnList[0])?.length > 0 &&
+                  Object.keys(txnList[0])?.map((key) => (
+                    <th className="px-2 border-1 fw-bold text-black-50">
+                      {key}
+                    </th>
+                  ))}
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {txnList?.map((row, i) => (
+                <tr className="text-black" key={`${row}-${i}`}>
+                  {Object.values(row).map((col) => (
+                    <td>{col}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
           </table>
         )}
       </div>
