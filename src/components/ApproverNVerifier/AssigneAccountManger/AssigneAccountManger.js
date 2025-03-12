@@ -5,8 +5,7 @@ import Yup from "../../../_components/formik/Yup";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
-import { assignManagerDetails, assignmentTypeApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
-import { assignRoleWiseApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import { assignManagerDetails, assignmentTypeApi, assignRoleWiseApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../../_components/formik/FormikController";
 import toastConfig from "../../../utilities/toastTypes";
@@ -16,11 +15,8 @@ const AssigneAccountManger = () => {
   const [clientCodeList, setClientCodeList] = useState([]);
   const [assignmentType, setAssignmentType] = useState([]);
   const [assignDetails, setAssignDetails] = useState([]);
-  const [selectedId, setSelectedId] = useState(null)
-  const [disable, setDisable] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const { kyc } = useSelector((state) => state);
-  // const { user } = auth;
-  // const { loginId } = user;
   const KycList = kyc?.kycUserList;
   const dispatch = useDispatch();
 
@@ -37,16 +33,14 @@ const AssigneAccountManger = () => {
   });
 
   useEffect(() => {
-    dispatch(assignmentTypeApi())
-      .then((response) => {
-        const data = response?.payload?.assignment_type?.map((item) => ({
-          value: item.value,
-          label: item.key,
-          role_id: item.role_id,
-        }));
-        setAssignmentType(data);
-      })
-      .catch((error) => console.error("Error fetching assignment types:", error));
+    dispatch(assignmentTypeApi()).then((response) => {
+      const data = response?.payload?.assignment_type?.map((item) => ({
+        value: item.value,
+        label: item.key,
+        role_id: item.role_id,
+      }));
+      setAssignmentType(data);
+    });
   }, []);
 
   useEffect(() => {
@@ -57,12 +51,10 @@ const AssigneAccountManger = () => {
 
   const fetchAccountManagers = (role_id) => {
     if (role_id) {
-      dispatch(assignManagerDetails({ role_id }))
-        .then((response) => {
-          const data = convertToFormikSelectJson("login_master_id", "name", response?.payload?.result);
-          setAssignDetails(data);
-        })
-        .catch((error) => console.error("Error fetching account managers:", error));
+      dispatch(assignManagerDetails({ role_id })).then((response) => {
+        const data = convertToFormikSelectJson("login_master_id", "name", response?.payload?.result);
+        setAssignDetails(data);
+      });
     }
   };
 
@@ -72,9 +64,7 @@ const AssigneAccountManger = () => {
     }
   };
 
-  const onSubmit = (values) => {
-    setDisable(true);
-
+  const onSubmit = (values, { setSubmitting }) => {
     const postData = {
       assigned_login_id: values.assigned_login_id,
       merchant_login_id: values?.react_select?.value,
@@ -82,22 +72,19 @@ const AssigneAccountManger = () => {
     };
 
     if (!window.confirm("Are you sure to assign a new role?")) {
-      setDisable(false);
+      setSubmitting(false);
       return;
     }
 
-    dispatch(assignRoleWiseApi(postData))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          toastConfig.successToast(res.payload.message);
-          dispatch(kycUserList({ login_id: values?.react_select?.value }));
-
-        } else {
-          toastConfig.errorToast(res.payload);
-        }
-        setDisable(false);
-      })
-      .catch(() => setDisable(false));
+    dispatch(assignRoleWiseApi(postData)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        toastConfig.successToast(res.payload.message);
+        dispatch(kycUserList({ login_id: values?.react_select?.value }));
+      } else {
+        toastConfig.errorToast(res.payload);
+      }
+      setSubmitting(false);
+    });
   };
 
   const clientOptions = clientCodeList.map((data) => ({
@@ -111,10 +98,10 @@ const AssigneAccountManger = () => {
         <h5>Merchant Assignment</h5>
         <div className="container-fluid p-0">
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-            {({ values, setFieldValue }) => (
+            {({ values, setFieldValue, isSubmitting }) => (
               <Form className="row mt-5">
                 <div className="row">
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-12">
                     <CustomReactSelect
                       name="react_select"
                       options={clientOptions}
@@ -122,39 +109,13 @@ const AssigneAccountManger = () => {
                       filterOption={createFilter({ ignoreAccents: false })}
                       label="Client Code"
                       onChange={(selectedOption) => {
-                        setSelectedId(selectedOption)
+                        setSelectedId(selectedOption);
                         setFieldValue("react_select", selectedOption);
                         handleClientChange(selectedOption);
                       }}
                     />
-                    {selectedId &&
-                      <div>
-                        <div className="text-primary mb-3 mt-5 d-flex">
-
-                          <h6 className={``}>Current Account Manager</h6>
-
-
-                        </div>
-
-                        <h6 className="mt-3">
-                          Account Manager Name: {KycList?.account_manager_name || "NA"}
-                        </h6>
-
-
-                        <h6 className="">
-                          {" "}
-                          Assigned BD Name: {KycList?.assigned_bd_name || "NA"}
-                        </h6>
-
-                        <h6>
-                          Assigned Zonal Manager :{KycList?.assigned_zonal_manager_name || "NA"}
-                        </h6>
-                      </div>}
-
-
-
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-12">
                     <CustomReactSelect
                       name="assignment_type"
                       options={assignmentType}
@@ -169,14 +130,41 @@ const AssigneAccountManger = () => {
                       }}
                     />
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-12">
                     <FormikController control="select" name="assigned_login_id" options={assignDetails} className="form-select" label="Account Manager List" />
                   </div>
-                  <div className="col-lg-3 mt-4">
-                    <button type="submit" className="btn cob-btn-primary approve text-white" disabled={disable}>
-                      {disable && <span className="spinner-border spinner-border-sm mr-1" role="status"></span>} Assign
+                  <div className="col-lg-3 col-md-6 col-12 mt-4">
+                    <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
+                      {isSubmitting && <span className="spinner-border spinner-border-sm mr-1" role="status"></span>} Assign
                     </button>
                   </div>
+                </div>
+                <div className="row mt-4">
+                  {KycList?.result?.loginMasterId && (
+                    <div className="">
+                      <table className="table table-bordered table-responsive-sm">
+                        <thead>
+                          <tr>
+                            <th className="" colSpan="2">Assigned Manager</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><strong>Account Manager Name</strong></td>
+                            <td>{KycList?.result?.loginMasterId?.account_manager_name || "NA"}</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Assigned BD Name</strong></td>
+                            <td>{KycList?.result?.loginMasterId?.assigned_bd_name || "NA"}</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Assigned Zonal Manager</strong></td>
+                            <td>{KycList?.result?.loginMasterId?.assigned_zonal_manager_name || "NA"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
               </Form>
             )}

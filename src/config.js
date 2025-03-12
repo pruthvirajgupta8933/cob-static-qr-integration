@@ -266,6 +266,9 @@ const API_LIVE = {
   /* Registered Address */
   Registered_Address: `${kyc_url}/kyc/save-registered-address/`,
   /* Registered Address */
+
+
+  GET_ASSIGNED_MERCHANT: `${kyc_url}/kyc/get-merchant-data/get-by-assigned-id/`,
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
   /* Product catalogue */
   PRODUCT_DETAILS: `${url}/product/product-details`,
