@@ -1,4 +1,4 @@
-export  const maskedString = (string="", lengthOfMasked) => {
+export const maskedString = (string, lengthOfMasked = 0) => {
 
     const str = string?.toString();
     let maskedStr = []
@@ -8,6 +8,7 @@ export  const maskedString = (string="", lengthOfMasked) => {
         } else {
             maskedStr.push("*")
         }
+        return char;
     })
 
     return maskedStr.join("").toString();

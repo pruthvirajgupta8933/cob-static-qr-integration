@@ -16,12 +16,9 @@ import DateFormatter from "../../../utilities/DateConvert";
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-  // console.log(verifierApproverTab?.currenTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab);
-  function capitalizeFirstLetter(param) {
-    return param?.charAt(0).toUpperCase() + param?.slice(1);
-  }
-  // console.log("currenTab",currenTab)
+
+
   const dispatch = useDispatch();
   const commonRows = [
     {
@@ -45,18 +42,7 @@ const Approver = () => {
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
       width: "180px",
     },
-    // {
-    //   id: "4",
-    //   name: "Merchant Name",
-    //   selector: (row) => row.name,
-    //   sortable: true,
-    //   cell: (row) => (
-    //     <div className="removeWhiteSpace">
-    //       {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
-    //     </div>
-    //   ),
-    //   width: "200px",
-    // },
+
     {
       id: "5",
       name: "Email",
@@ -250,8 +236,6 @@ const Approver = () => {
 
           <section>
             <div className="row">
-              {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-                lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
 
               {(currenTab === 1 && <NotFilledKYC />) ||
                 (currenTab === 2 && <PendindKyc commonRows={commonRows} />) ||

@@ -1,7 +1,7 @@
 import React from "react";
 import {
   axiosInstanceJWT,
-  kycValidatorAuth,
+
 } from "../../../../utilities/axiosInstance";
 import toastConfig from "../../../../utilities/toastTypes";
 import API_URL from "../../../../config";
@@ -32,8 +32,8 @@ function AadharVerify() {
       setDisable(false);
       toastConfig.errorToast(
         error?.response?.data?.message ??
-          error?.message ??
-          "Something went wrong, Please try again"
+        error?.message ??
+        "Something went wrong, Please try again"
       );
     }
   };
@@ -53,7 +53,7 @@ function AadharVerify() {
       setAdharOtpDisable(false);
       toastConfig.errorToast(
         error?.response?.data?.message ??
-          "Something went wrong, Please try again"
+        "Something went wrong, Please try again"
       );
     }
   };
@@ -165,18 +165,16 @@ function AadharVerify() {
             <div className="col-md-4 d-flex justify-content-center align-items-center">
               <img
                 className="card-img"
-                src={`data:image/png;base64,${
-                  JSON.parse(aadharJsonResponse)?.image
-                }`}
+                src={`data:image/png;base64,${JSON.parse(aadharJsonResponse)?.image
+                  }`}
                 alt="Aadhar"
               />
             </div>
 
             <div className="col-md-8">
               <div className="card-body">
-                <h5 className="card-title">{`${
-                  JSON.parse(aadharJsonResponse)?.first_name
-                } ${JSON.parse(aadharJsonResponse)?.last_name}`}</h5>
+                <h5 className="card-title">{`${JSON.parse(aadharJsonResponse)?.first_name
+                  } ${JSON.parse(aadharJsonResponse)?.last_name}`}</h5>
 
                 {/* Masked Aadhaar Number */}
                 <p className="card-text">

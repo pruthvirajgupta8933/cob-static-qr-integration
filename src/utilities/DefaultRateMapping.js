@@ -2,14 +2,8 @@ import React, { useState, useEffect } from "react"
 import { rateMappingFn } from "./rateMapping"
 import { useDispatch } from "react-redux"
 import { clearApproveKyc } from "../slices/kycSlice"
-import { generalFormData } from "../slices/approver-dashboard/approverDashboardSlice"
 
 
-
-// rateMappingFn
-
-
-// console.log("uperr trigger")
 export const DefaultRateMapping = (props) => {
     const { merchantLoginId } = props
 

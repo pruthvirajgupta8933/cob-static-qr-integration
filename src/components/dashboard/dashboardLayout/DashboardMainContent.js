@@ -16,9 +16,9 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
-import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
-import Paylink from "../AllPages/createpaymentlink/Paylink";
-import Paylinks from "../AllPages/payment-links/Paylink";
+// import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
+// import Paylink from "../AllPages/createpaymentlink/Paylink";
+// import Paylinks from "../AllPages/payment-links/Paylink";
 // improt Profile
 // import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
@@ -105,10 +105,17 @@ import ManualSubscription from "../../ManualSubscription";
 import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
 import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
 import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
-import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
+// import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import TransactionReport from "../../../subscription_components/Transaction-Report/TransactionReport";
+import CreateBulkEmandate from "../../../subscription_components/Create-Bulk-E-Mandate/CreateBulkEmandate";
+import WebsiteWhitelistPage from "../../ApproverNVerifier/website-whitelist/WebsiteWhitelistPage";
+import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
+import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
+import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
+import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
 import QFormReports from "../../qform-reports";
 
 function DashboardMainContent() {
@@ -253,7 +260,7 @@ function DashboardMainContent() {
           })
         );
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [location]);
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -411,29 +418,29 @@ function DashboardMainContent() {
                 <Products />
               </AuthorizedRoute>
 
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 exaxt
                 path={`${path}/paylink`}
                 Component={Paylink}
                 roleList={{ merchant: true }}
               >
                 <Paylink />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinks`}
-                Component={Paylinks}
+                Component={PaylinkDashboard}
                 roleList={{ merchant: true }}
               />
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinkdetail`}
                 Component={PaymentLinkDetail}
                 roleList={{ merchant: true }}
               >
                 <PaymentLinkDetail />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exact
@@ -745,6 +752,29 @@ function DashboardMainContent() {
                 <RegistrationHistory />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-report`}
+                Component={TransactionReport}
+                roleList={{ merchant: true }}
+              >
+                <TransactionReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-bulk-mandate`}
+                Component={CreateBulkEmandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateBulkEmandate />
+              </AuthorizedRoute>
+
+
+
+
+
+
               {/* -----------------------------------------------------------------------------------------------------|| */}
 
               <AuthorizedRoute
@@ -792,15 +822,17 @@ function DashboardMainContent() {
                 }}
               />
 
-              {roles?.approver && (
-                <Route
-                  exact
-                  path={`${path}/ratemapping/:loginid`}
-                  Component={ManualRateMapping}
-                >
-                  <ManualRateMapping />
-                </Route>
-              )}
+              {
+                roles?.approver && (
+                  <Route
+                    exact
+                    path={`${path}/ratemapping/:loginid`}
+                    Component={ManualRateMapping}
+                  >
+                    <ManualRateMapping />
+                  </Route>
+                )
+              }
 
               <AuthorizedRoute
                 exact
@@ -886,7 +918,7 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/website-whitelist`}
-                Component={WebWhiteList}
+                Component={WebsiteWhitelistPage}
                 roleList={{ verifier: true }}
               >
                 <WebWhiteList />
@@ -906,14 +938,51 @@ function DashboardMainContent() {
                 roleList={{ bank: true }}
               />
 
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/payment-link-solution`}
+                roleList={{ merchant: true }}
+                Component={PaylinkDashboard}
+              >
+                <PaylinkDashboard />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-link-generated`}
+                roleList={{ merchant: true }}
+                Component={TotalLinkGenrated}
+              >
+                <TotalLinkGenrated />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-payers`}
+                roleList={{ merchant: true }}
+                Component={TotalPayers}
+              >
+                <TotalPayers />
+              </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/recent-transaction`}
+                roleList={{ merchant: true }}
+                Component={RecentTransaction}
+              >
+                <RecentTransaction />
+              </AuthorizedRoute>
+
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
               </Route>
-            </Switch>
-          </main>
-        </div>
-      </div>
-    </React.Fragment>
+            </Switch >
+          </main >
+        </div >
+      </div >
+    </React.Fragment >
   );
 }
 

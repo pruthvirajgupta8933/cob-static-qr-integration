@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 const useGoogleLogout = (onLogout) => {
   useEffect(() => {
     const logout = () => {
-      console.log('User logged out successfully.');
+      // console.log('User logged out successfully.');
       // Call the provided logout function
       onLogout();
     };

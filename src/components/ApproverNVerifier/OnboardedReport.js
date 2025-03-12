@@ -3,7 +3,6 @@ import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { clearFetchAllByKycStatus, onboardedReport } from "../../slices/kycSlice";
 import moment from "moment";
-// import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
@@ -16,7 +15,6 @@ import Yup from "../../_components/formik/Yup";
 
 const OnboardedReport = () => {
   const [searchingData, setSearchingData] = useState([]);
-  // const [dataCount, setDataCount] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
@@ -25,7 +23,7 @@ const OnboardedReport = () => {
   const [selectedvalue, setSelectedvalue] = useState(KYC_STATUS_APPROVED);
   const [disabled, setDisabled] = useState(false);
   const [exportDisable, setExportDisable] = useState(false)
-  // const [dataClick, setDataClick] = useState(false);
+
 
   const dispatch = useDispatch();
   const { kyc } = useSelector(state => state)

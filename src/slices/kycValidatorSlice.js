@@ -207,7 +207,7 @@ export const cinLookupApi = createAsyncThunk(
         error.toString() ||
         error.request.toString();
       thunkAPI.dispatch(setMessage(message));
-      console.log("message", message);
+      // console.log("message", message);
       return thunkAPI.rejectWithValue(message);
     }
   }
