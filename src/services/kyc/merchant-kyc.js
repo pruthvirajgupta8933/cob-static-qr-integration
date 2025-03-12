@@ -69,7 +69,7 @@ const kycDocumentUploadList = (requestParam) => {
 }
 
 const fetchWhiteListedWebsite = (requestParam) => {
-    return axiosInstance.get(`${`${API_URL.GET_WEBSITE_WHITELIST}/${requestParam.clientCode}`}`)
+    return axiosInstanceJWT.get(`${`${API_URL.GET_WEBSITE_WHITELIST}/${requestParam.clientCode}`}`)
 }
 
 

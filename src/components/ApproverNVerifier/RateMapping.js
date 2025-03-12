@@ -93,17 +93,17 @@ function RateMapping() {
     setSearchText(e);
   };
 
-  //function for change current page
+
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
 
-  //function for change page size
+
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
 
-  //options for search dropdown filter
+
   const optionSearchData = [
     {
       name: "Select Onboard Type",

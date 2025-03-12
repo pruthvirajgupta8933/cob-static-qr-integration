@@ -37,6 +37,9 @@ import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
 import { qFormSliceReducer } from "./slices/qform-reports";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
+import { ckycrReducer } from "./components/ApproverNVerifier/backend-kyc/slice/ckycr.slice";
+import { dateFilterSliceReducer } from "./slices/date-filter-slice/DateFilterSlice"
+import { paymentLinkSolutionSliceReducer } from "./components/dashboard/AllPages/payment-link-solution/paylink-solution-slice/paylinkSolutionSlice";
 
 const reducer = {
   auth: authReducer,
@@ -69,6 +72,7 @@ const reducer = {
   // approver
   approverDashboard: approverDashboardSlice,
   rateMappingSlice: rateMappingSlice,
+  ckycrReducer: ckycrReducer,
 
   //merchantOnboardByOps
   merchantReferralOnboardReducer: merchantReferralOnboardReducer,
@@ -90,6 +94,10 @@ const reducer = {
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
   paymentLinkSliceReducer: paymentLinkSliceReducer,
+  dateFilterSliceReducer: dateFilterSliceReducer,
+  /// Payment Link Solution
+
+  paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer,
   qForm: qFormSliceReducer,
 };
 
