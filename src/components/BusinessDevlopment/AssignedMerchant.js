@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAssignedMerchantData } from "./businessDevelopmentSlice/BusinessDevelopmentSlice";
 import { assignmentTypeApi } from "../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import Table from "../../_components/table_components/table/Table";
-import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
@@ -13,19 +12,14 @@ const AssignedMerchant = () => {
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
     const roleId = user?.roleId;
-
     const assigneMerchantList = useSelector(
         (state) => state.merchantAssignedReducer.assignedMerchantList
     );
-
     const [data, setData] = useState([]);
-
     const [dataCount, setDataCount] = useState(0);
     const [searchText, setSearchText] = useState("");
-
     const [currentPage, setCurrentPage] = useState(1);
     const [searchFilterData, setSearchFilterData] = useState([])
-
     const [pageSize, setPageSize] = useState(10);
     const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
@@ -58,6 +52,7 @@ const AssignedMerchant = () => {
             )
         );
     };
+
     useEffect(() => {
         dispatch(assignmentTypeApi()).then((response) => {
             const assignmentTypes = response?.payload?.assignment_type || [];
