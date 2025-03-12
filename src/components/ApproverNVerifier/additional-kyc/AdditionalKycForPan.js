@@ -11,7 +11,6 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
   const [showPanInfo, setShowPanInfo] = useState([]);
   const [panStatus, setPanStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [buttonDisable, setButtonDisable] = useState(false);
   const panInfoData = Object.entries(showPanInfo);
   const dispatch = useDispatch();
   const handlePanSubmit = async (values) => {
@@ -19,13 +18,13 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
       toast.error("Enter PAN Card Number.");
       return;
     }
-    setButtonDisable(true);
+
     setIsLoading(true);
     try {
       const res = await dispatch(
         authPanValidation({ pan_number: values.pan_card })
       );
-      setButtonDisable(false);
+
       setShowPanInfo(res?.payload);
       setIsLoading(false);
       // console.log("res", res)
@@ -40,7 +39,7 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
       }
     } catch (error) {
       toastConfig.errorToast("Something went wrong");
-      setButtonDisable(false);
+
       setIsLoading(false);
     }
   };

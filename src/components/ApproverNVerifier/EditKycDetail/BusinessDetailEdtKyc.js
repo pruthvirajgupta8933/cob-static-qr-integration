@@ -15,9 +15,9 @@ import {
   kycUserList,
   GetKycTabsStatus,
 } from "../../../slices/kycSlice";
-// import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
-// import gotVerified from "../../assets/images/verified.png";
+
 import gotVerified from "../../../assets/images/verified.png";
 import { isNull } from "lodash";
 import { udyamValidate } from "../../../services/kyc/kyc-validate/kyc-validate.service";
@@ -33,15 +33,15 @@ function BusinessDetailEdtKyc(props) {
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
-  const { allTabsValidate, KycTabStatusStore } = kyc;
-  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status;
+  const { allTabsValidate } = kyc;
+
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
   const KycList = kyc?.kycUserList;
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
 
-  const readOnly = false;
+
   const buttonText = "Save and Next";
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
@@ -60,9 +60,8 @@ function BusinessDetailEdtKyc(props) {
       ? ""
       : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  let businessAuthName = `${
-    busiAuthFirstName !== undefined ? busiAuthFirstName : ""
-  } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
+  let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
+    } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
   const trimFullName = (strOne, strTwo) => {
     let fullStr = isNull(strOne) ? "" : strOne;
@@ -118,9 +117,7 @@ function BusinessDetailEdtKyc(props) {
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
   };
 
-  // console.log("isPanVerified", isPanVerified)
 
-  // console.log("initialValues-----reupdate", initialValues)
 
   const validationSchema = Yup.object().shape(
     {
@@ -330,31 +327,7 @@ function BusinessDetailEdtKyc(props) {
     });
   };
 
-  // const udyamValidation = (values, key, setFieldValue) => {
-  //   setIsloader(true)
-  //   setUdyamData("")
 
-  //   udyamValidate({ "reg_number": values }).then(
-  //     resp => {
-  //       if (resp?.data?.valid === true) {
-
-  //         setFieldValue(key, values)
-  //         setFieldValue("prevUdyamNumber", values)
-  //         setUdyamResponseData(resp?.data)
-  //         setIsloader(false)
-
-  //         toastConfig.successToast(resp?.data?.message)
-  //         setUdyamData({ entity: resp?.data?.entity, valid: resp?.data?.valid })
-  //       } else {
-  //         setUdyamResponseData({})
-  //         setIsloader(false)
-  //         toastConfig.errorToast("Detail is not valid");
-  //       }
-  //     }).catch(err =>
-  //       toastConfig.errorToast(err.response?.data?.detail)
-
-  //       )
-  // }
   const udyamValidation = (values, key, setFieldValue, setIsloader) => {
     setIsloader(true);
     setUdyamData("");
@@ -418,7 +391,7 @@ function BusinessDetailEdtKyc(props) {
     setErr,
     setFieldTouched,
     key,
-    setFieldValue = () => {}
+    setFieldValue = () => { }
   ) => {
     // setIsLoading(true)
     const hasErr = err.hasOwnProperty(key);
@@ -459,7 +432,7 @@ function BusinessDetailEdtKyc(props) {
   };
 
   const onSubmit = (values) => {
-    // Check if any required fields are empty
+
     const emptyFields = [
       "company_name",
       "gst_number",
@@ -476,18 +449,18 @@ function BusinessDetailEdtKyc(props) {
       "udyam_data",
     ].some((field) => !values[field]);
 
-    // If any required fields are empty, confirm with the user
+
     if (emptyFields) {
       const confirmSubmit = window.confirm(
         "Some fields are empty. Are you sure you want to proceed?"
       );
 
       if (!confirmSubmit) {
-        return; // Exit the function if the user cancels
+        return;
       }
     }
 
-    // Disable the form and prepare data for submission
+
     setIsDisable(true);
     const postData = {
       login_id: selectedId,
@@ -507,9 +480,9 @@ function BusinessDetailEdtKyc(props) {
       udyam_data: udyamResponseData,
     };
 
-    // Dispatch the action to update the merchant information
+
     dispatch(updateMerchantInfo(postData)).then((res) => {
-      // console.log("res", res);
+
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true
@@ -581,9 +554,7 @@ function BusinessDetailEdtKyc(props) {
         }) => (
           <Form>
             <div className="row">
-              {/* {console.log("initialValues",initialValues)}
-            {console.log("values",values)}
-            {console.log("errors",errors)} */}
+
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="">
                   <lable>Do you have a GST number? </lable>
@@ -596,8 +567,7 @@ function BusinessDetailEdtKyc(props) {
                       onChange={(e) => {
                         registeredWithGstHandler(e.target.value, setFieldValue);
                       }}
-                      // disabled={VerifyKycStatus === "Verified" ? true : false}
-                      // readOnly={readOnly}
+
                     />
                   </div>
                 </div>
@@ -617,8 +587,7 @@ function BusinessDetailEdtKyc(props) {
                             setFieldValue
                           );
                         }}
-                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                        // readOnly={readOnly}
+
                       />
                     </div>
                   </div>
@@ -626,7 +595,7 @@ function BusinessDetailEdtKyc(props) {
               </div>
 
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b pb-3">
-                {/* {console.log("{JSON.parse(values?.registerd_with_gst)",JSON.parse(values?.registerd_with_gst))} */}
+
                 {JSON.parse(values?.registerd_with_gst) === true && (
                   <React.Fragment>
                     <label className="col-form-label pt-0 p-2 ">
@@ -637,15 +606,14 @@ function BusinessDetailEdtKyc(props) {
                         type="text"
                         name="gst_number"
                         className="form-control"
-                        // disabled={VerifyKycStatus === "Verified" ? true : false}
-                        // readOnly={readOnly}
+
                       />
 
                       {values?.gst_number !== null &&
-                      values?.gst_number !== undefined &&
-                      values?.gst_number !== "" &&
-                      !errors.hasOwnProperty("gst_number") &&
-                      !errors.hasOwnProperty("prevGstNumber") ? (
+                        values?.gst_number !== undefined &&
+                        values?.gst_number !== "" &&
+                        !errors.hasOwnProperty("gst_number") &&
+                        !errors.hasOwnProperty("prevGstNumber") ? (
                         <span className="success input-group-append">
                           <img
                             src={gotVerified}
@@ -693,15 +661,7 @@ function BusinessDetailEdtKyc(props) {
                   </React.Fragment>
                 )}
 
-                {/* {(JSON.parse(values?.registerd_with_udyam) === false && JSON.parse(values?.registerd_with_gst) === false) &&
-                  <div className="input-group">
-                    <label>
-                      Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
-                    </label>
-                    <a className="btn cob-btn-primary text-white btn-sm mb-1" href="https://firebasestorage.googleapis.com/v0/b/cob-staging.appspot.com/o/SRS-GST-Declaration.pdf?alt=media&token=9eaae583-b357-4146-b7d9-96b58073d075" target="_blank" rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
-                  </div>
 
-                } */}
 
                 {JSON.parse(values?.registerd_with_udyam) === true &&
                   JSON.parse(values?.registerd_with_gst) === false && (
@@ -715,15 +675,14 @@ function BusinessDetailEdtKyc(props) {
                           type="text"
                           name="udyam_number"
                           className="form-control"
-                          // disabled={VerifyKycStatus === "Verified" ? true : false}
-                          // readOnly={readOnly}
+
                         />
 
                         {values?.udyam_number !== null &&
-                        values?.udyam_number !== "" &&
-                        values?.udyam_number !== undefined &&
-                        !errors.hasOwnProperty("udyam_number") &&
-                        !errors.hasOwnProperty("prevUdyamNumber") ? (
+                          values?.udyam_number !== "" &&
+                          values?.udyam_number !== undefined &&
+                          !errors.hasOwnProperty("udyam_number") &&
+                          !errors.hasOwnProperty("prevUdyamNumber") ? (
                           <span className="success input-group-append">
                             <img
                               src={gotVerified}
@@ -780,9 +739,7 @@ function BusinessDetailEdtKyc(props) {
 
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
-                {/* <label className="col-form-label mt-0 p-2">
-                  Business PAN <span className="text-danger">*</span>
-                </label> */}
+
                 <label className="col-form-label p-2">
                   Business PAN<span className="text-danger">*</span>
                 </label>
@@ -796,17 +753,16 @@ function BusinessDetailEdtKyc(props) {
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                       setFieldValue("pan_card", uppercaseValue); // Set the uppercase value to form state
                     }}
-                    // disabled={VerifyKycStatus === "Verified"}
-                    // readOnly={JSON.parse(values?.registerd_with_gst)}
+
                   />
 
                   {values?.pan_card !== null &&
-                  values?.isPanVerified !== "" &&
-                  values?.pan_card !== "" &&
-                  values?.pan_card !== undefined &&
-                  !errors.hasOwnProperty("pan_card") &&
-                  !errors.hasOwnProperty("prev_pan_card") &&
-                  values?.pan_card === values?.prev_pan_card ? (
+                    values?.isPanVerified !== "" &&
+                    values?.pan_card !== "" &&
+                    values?.pan_card !== undefined &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("prev_pan_card") &&
+                    values?.pan_card === values?.prev_pan_card ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -885,9 +841,9 @@ function BusinessDetailEdtKyc(props) {
                     }}
                   />
                   {values?.signatory_pan &&
-                  values?.isSignatoryPanVerified &&
-                  !errors.hasOwnProperty("signatory_pan") &&
-                  !errors.hasOwnProperty("prevSignatoryPan") ? (
+                    values?.isSignatoryPanVerified &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -956,7 +912,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="company_name"
                   className="form-control"
-                  // readOnly={readOnly === false ? true : readOnly}
+
                 />
               </div>
 
@@ -969,7 +925,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="name_on_pancard"
                   className="form-control"
-                  // readOnly={readOnly === false ? true : readOnly}
+
                 />
               </div>
             </div>
@@ -983,8 +939,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="operational_address"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                 />
               </div>
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -996,8 +951,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="city_id"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                 />
               </div>
             </div>
@@ -1011,8 +965,7 @@ function BusinessDetailEdtKyc(props) {
                   name="state_id"
                   options={BusinessOverview}
                   className="form-select"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                 />
               </div>
 
@@ -1025,8 +978,7 @@ function BusinessDetailEdtKyc(props) {
                   type="text"
                   name="pin_code"
                   className="form-control"
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
-                  // readOnly={readOnly}
+
                 />
               </div>
             </div>
