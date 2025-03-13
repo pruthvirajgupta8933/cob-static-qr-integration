@@ -117,6 +117,9 @@ import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-gene
 import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
 import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
 import QFormReports from "../../qform-reports";
+import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
+
+import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -124,7 +127,14 @@ function DashboardMainContent() {
 
   const { auth } = useSelector((state) => state);
   const { user } = auth;
+  const loginId = user?.loginId;
+  const roleId = user?.roleId;
   const roles = roleBasedAccess();
+  const assignmentType = useSelector((state) => state.
+    assignAccountManagerReducer.assignmentType
+
+  );
+
   // console.log("roles",roles);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -248,7 +258,32 @@ function DashboardMainContent() {
     }
   }, [user, dispatch]);
 
-  // menuListReducer.enableMenu.length===0
+
+  useEffect(() => {
+    if (!assignmentType && roles?.businessDevelopment) {
+      if (roleId) {
+        dispatch(assignmentTypeApi(roleId)).then((response) => {
+          const assignmentTypes = response?.payload?.assignment_type ?? [];
+
+          if (Array.isArray(assignmentTypes)) {
+            const filteredAssignment = assignmentTypes.find(
+              (item) => item?.role_id === roleId
+            );
+
+            if (filteredAssignment) {
+              dispatch(setAssignmentType(filteredAssignment));
+            }
+          }
+        });
+      }
+    }
+  }, [dispatch]);
+
+
+
+
+
+
 
   useEffect(() => {
     // fetch subscribe product data
@@ -269,6 +304,17 @@ function DashboardMainContent() {
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
+
+
+
+
+
+
+
+
+
+
+
 
   // console.log("roles", roles)
   return (
@@ -297,6 +343,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true
                 }}
               >
                 <OnboardMerchant />
@@ -311,6 +358,7 @@ function DashboardMainContent() {
                   viewer: true,
                   verifier: true,
                   accountManager: true,
+                  businessDevelopment: true
                 }}
               >
                 <InternalDashboard />
@@ -819,6 +867,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
                 }}
               />
 
@@ -874,7 +923,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/my-merchant`}
                 Component={MyMerchantList}
-                roleList={{ viewer: true, accountManager: true }}
+                roleList={{ viewer: true, accountManager: true, businessDevelopment: true }}
               >
                 <MyMerchantList />
               </AuthorizedRoute>
@@ -974,6 +1023,13 @@ function DashboardMainContent() {
               >
                 <RecentTransaction />
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/assigned-merchant`}
+                Component={AssignedMerchant}
+                roleList={{ accountManager: true, zonalManager: true, businessDevelopment: true }}
+              />
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
