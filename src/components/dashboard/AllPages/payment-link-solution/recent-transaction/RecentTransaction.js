@@ -16,7 +16,7 @@ import { DateFormatAlphaNumeric } from "../../../../../utilities/DateConvert";
 import SearchBar from "../searchBar/SearchBar";
 import { transactionStatusColorArr } from "../../../../../utilities/colourArr";
 import SelectFilter from "../transaction-filter/SelectFilter";
-import { axiosInstance } from "../../../../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
 import API_URL from "../../../../../config";
 
 
@@ -316,7 +316,7 @@ const RecentTransaction = () => {
     };
 
     const getPaymentStatusList = async () => {
-        await axiosInstance
+        await axiosInstanceJWT
             .get(API_URL.GET_PAYMENT_STATUS_LIST)
             .then((res) => {
                 SetPaymentStatusList(res.data);
@@ -325,7 +325,7 @@ const RecentTransaction = () => {
     };
 
     const paymodeList = async () => {
-        await axiosInstance
+        await axiosInstanceJWT
             .get(API_URL.PAY_MODE_LIST)
             .then((res) => {
                 SetPaymentModeList(res.data);
@@ -336,14 +336,18 @@ const RecentTransaction = () => {
     const tempPayStatus = [{ key: "All", value: "All" }];
 
     paymentStatusList.map((item) => {
-        if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
-            tempPayStatus.push({ key: item, value: item });
+        if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+            if (item?.is_active) {
+                tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+            }
+
         }
     });
 
+
     const tempPaymode = [{ key: "All", value: "All" }];
     paymentModeList.map((item) => {
-        tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+        tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
     });
 
 
