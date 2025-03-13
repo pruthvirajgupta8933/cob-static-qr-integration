@@ -90,7 +90,7 @@ const AssignedMerchant = () => {
         { id: "2", name: "Name", selector: (row) => row.login_id?.name, width: "130px" },
         { id: "3", name: "Email", selector: (row) => row.login_id?.email, sortable: true, width: "200px" },
         { id: "4", name: "UserName", selector: (row) => row.login_id?.username, width: "220px" },
-        { id: "5", name: "Status", selector: (row) => row.status, width: "150px" },
+        { id: "5", name: "Kyc Status", selector: (row) => row.status, width: "150px" },
         { id: "6", name: "Created Date", selector: (row) => DateFormatter(row.login_id?.createdDate) },
         { id: "7", name: "Onboard Type", selector: (row) => row.login_id?.onboard_type },
     ];

@@ -335,6 +335,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true
                 }}
               >
                 <OnboardMerchant />
@@ -835,6 +836,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
                 }}
               />
 
