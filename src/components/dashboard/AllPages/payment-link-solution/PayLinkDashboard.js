@@ -131,7 +131,7 @@ const PaylinkDashboard = () => {
                     <h6 className="mb-1">Total Transaction</h6>
                     <span><img src={transactionCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 className="text-success">
+                  <h5 className="">
                     {dashboardData?.transaction_data?.value}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">
@@ -150,7 +150,7 @@ const PaylinkDashboard = () => {
                     <h6 className="mb-1">Total Link Generated</h6>
                     <span><img src={generateLinkCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 className="text-success">
+                  <h5 className="">
                     {dashboardData?.payment_link_data?.value}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">
@@ -170,7 +170,7 @@ const PaylinkDashboard = () => {
                     <h6 className="mb-1">Total Payers</h6>
                     <span><img src={payerCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 className="text-success">
+                  <h5 className="">
                     {dashboardData?.payer_data?.value}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">

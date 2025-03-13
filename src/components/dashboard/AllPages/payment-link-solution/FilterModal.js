@@ -8,10 +8,10 @@ import { setDateRange } from "../../../../slices/date-filter-slice/DateFilterSli
 import { useDispatch, useSelector } from "react-redux";
 
 const validationSchema = Yup.object().shape({
-    // fromDate: Yup.date().required("From Date is required"),
-    // toDate: Yup.date()
-    //     .required("To Date is required")
-    //     .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
+    fromDate: Yup.date().required("From Date is required"),
+    toDate: Yup.date()
+        .required("To Date is required")
+        .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
 });
 
 
