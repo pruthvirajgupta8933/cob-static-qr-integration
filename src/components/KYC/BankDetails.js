@@ -40,8 +40,8 @@ function BankDetails(props) {
 
   const buttonText = "Save and Next";
   const [data, setData] = useState([]);
-  const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-  const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
+  // const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+  // const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
   const { loginId } = user;
 
@@ -81,8 +81,8 @@ function BankDetails(props) {
       .allowOneSpace()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(
-        IFSCRegex,
-        "Your IFSC code is Invalid and must be in capital letters"
+        Regex.ifsc_Masked,
+        RegexMsg.ifscRegex
       )
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
@@ -90,7 +90,7 @@ function BankDetails(props) {
       .nullable(),
     account_number: Yup.string()
       .allowOneSpace()
-      .matches(AccountNoRgex, "Your Account Number is Invalid")
+      .matches(Regex.accountNo_Masked, RegexMsg.accountNoRgex)
       .required("Required")
       .nullable(),
     account_type: Yup.string().required("Required").nullable(),

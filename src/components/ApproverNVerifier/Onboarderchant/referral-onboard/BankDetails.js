@@ -61,14 +61,14 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
     acHolderName: Yup.string().allowOneSpace().required("Required").nullable(),
     ifsc: Yup.string()
       // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(Regex.ifscRegex, RegexMsg.ifscRegex)
+      .matches(Regex.ifsc_Masked, RegexMsg.ifscRegex)
       .min(6, "IFSC must be at least 6 characters")
       .max(20, "IFSC must not exceed 20 characters")
       .required("Required")
       .nullable(),
     acNumber: Yup.string()
       .trim()
-      .matches(Regex.accountNoRgex, RegexMsg.accountNoRgex)
+      .matches(Regex.accountNo_Masked, RegexMsg.accountNoRgex)
       .required("Required")
       .nullable(),
     acType: Yup.string().required("Required").nullable(),
@@ -247,7 +247,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                   </label>
                   <div className="input-group">
                     <Field
-                      type="number"
+                      type="text"
                       name="acNumber"
                       className="form-control"
                       disabled={disableForm}
