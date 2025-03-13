@@ -296,6 +296,9 @@ const API_LIVE = {
   COMPLETE_VERIFICATION: `${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC: `${kyc_url}/kyc/verify-kyc/reject/`,
 
+  //////////////////////update Rolling Reserve
+  UPDATE_ROLLING_RESERVE: `${kyc_url}/kyc/rolling-reserve/save/`,
+
   /////frm(push-merchant-data)
   PUSH_MERCHANT_DATA: `${kyc_url}/kyc/frm/push-merchant-data/`,
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,

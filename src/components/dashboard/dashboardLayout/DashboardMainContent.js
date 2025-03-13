@@ -107,6 +107,7 @@ import CreateEMandateByApi from "../../../subscription_components/Create-E-Manda
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -911,6 +912,13 @@ function DashboardMainContent() {
                 path={`${path}/merchant-summary`}
                 Component={MerchantSummary}
                 roleList={{ bank: true }}
+              />
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/update-rolling-reserve`}
+                Component={UpdateRollingReserve}
+                roleList={{ approver: true }}
               />
 
               <Route path={`${path}/*`} component={UrlNotFound}>
