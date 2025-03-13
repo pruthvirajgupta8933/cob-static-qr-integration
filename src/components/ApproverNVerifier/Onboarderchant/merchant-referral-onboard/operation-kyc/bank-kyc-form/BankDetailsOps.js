@@ -65,15 +65,14 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
       .required("Required")
       .nullable(),
     ifsc_code: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(Regex.ifscRegex, RegexMsg.ifscRegex)
+      .matches(Regex.ifsc_Masked, RegexMsg.ifscRegex)
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
       .required("Required")
       .nullable(),
     account_number: Yup.string()
       .trim()
-      .matches(Regex.accountNoRgex, RegexMsg.accountNoRgex)
+      .matches(Regex.accountNo_Masked, RegexMsg.accountNoRgex)
       .required("Required")
       .nullable(),
     account_type: Yup.string().required("Required").nullable(),

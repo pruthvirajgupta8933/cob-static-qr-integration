@@ -61,13 +61,14 @@ function BasicDetailsOps({
   const validationSchema = Yup.object().shape({
     fullName: Yup.string()
       .allowOneSpace()
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
       .wordLength("Word character length exceeded", 100)
       .max(100, "Maximum 100 characters are allowed")
       .required("Required")
       .nullable(),
     mobileNumber: Yup.string()
       .allowOneSpace()
-      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
       .required("Required")
       .min(10, "Phone number is not valid")
       .max(10, "Only 10 digits are allowed ")
@@ -107,12 +108,12 @@ function BasicDetailsOps({
       .nullable(),
 
     developer_name: Yup.string()
-      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
       .max(100, "Maximum 50 characters are allowed")
       .nullable(),
     developer_contact: Yup.string()
       .allowOneSpace()
-      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
       .min(10, "Phone number is not valid")
       .max(10, "Only 10 digits are allowed")
       .nullable(),
