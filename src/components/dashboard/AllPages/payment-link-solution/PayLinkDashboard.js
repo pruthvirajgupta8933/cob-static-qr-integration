@@ -132,8 +132,8 @@ const PaylinkDashboard = () => {
                     <span className={`${customStyle.card_icon_1} ${customStyle.card_icon}`}>
                       <img src={transactionCardIcon} alt="Icon" width={"22px"} /></span>
                   </div>
-                  <h5 >
-                    Rs. {dashboardData?.transaction_data?.value || 0}
+                  <h5 className="">
+                    {dashboardData?.transaction_data?.value}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3 top-50">
                     <Link to={`${path}/recent-transaction`} className="text-decoration-none">
@@ -151,8 +151,8 @@ const PaylinkDashboard = () => {
                     <h6 className="mb-1">Total Link Generated</h6>
                     <span className={`${customStyle.card_icon_2} ${customStyle.card_icon}`}><img src={generateLinkCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 >
-                    {dashboardData?.payment_link_data?.value || 0}
+                  <h5 className="">
+                    {dashboardData?.payment_link_data?.value}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">
                     <Link to={`${path}/total-link-generated`} className="text-decoration-none">
@@ -171,8 +171,8 @@ const PaylinkDashboard = () => {
                     <h6 className="mb-1">Total Payers</h6>
                     <span className={`${customStyle.card_icon_3} ${customStyle.card_icon}`}><img src={payerCardIcon} alt="Icon" /></span>
                   </div>
-                  <h5 >
-                    {dashboardData?.payer_data?.value || 0}
+                  <h5 className="">
+                    {dashboardData?.payer_data?.value}
                   </h5>
                   <div className="position-absolute bottom-0 end-0 p-3">
                     <Link to={`${path}/total-payers`} className="text-decoration-none">
