@@ -4,11 +4,9 @@ import { Formik, Form } from "formik";
 import Yup from "../../../_components/formik/Yup";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
-// import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import FormikController from "../../../_components/formik/FormikController";
 import { businessCategoryType } from "../../../slices/approver-dashboard/approverDashboardSlice";
-import { axiosInstance } from "../../../utilities/axiosInstance";
 import API_URL from "../../../config";
 import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import toastConfig from "../../../utilities/toastTypes";
@@ -22,41 +20,15 @@ const UpdateRollingReserve = () => {
     const dispatch = useDispatch();
     const [clientCodeList, setCliencodeList] = useState([]);
     const [selectedClientId, setSelectedClientId] = useState(null);
-    const [assignedAccountManger, setAssignedAccountManger] = useState("");
-    const [parentClientCode, setParentClientCode] = useState([]);
-    const [selectedRefBy, setSelectedRefBy] = useState(null);
     const [rollingResPeriod, setRollingResPeriod] = useState([]);
-    const { approverDashboard, kyc, verifierApproverTab } = useSelector((state) => state);
-    const currenTab = parseInt(verifierApproverTab?.currenTab);
-
-    useEffect(() => {
-        dispatch(businessCategoryType());
-        // set parent client code
-        // axiosInstance.get(API_URL.fetchParentClientCodes)
-        //     .then((resp) => {
-        //         setParentClientCode(resp.data);
-        //     })
-        //     .catch((err) => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"));
-
-
-        // set rolling reserve period
-        axiosInstanceJWT.get(API_URL.rollingReservePeriod).then((resp) => {
-            setRollingResPeriod(resp.data)
-        }).catch(err => toastConfig.errorToast("Rolling reserve period not found. Please try again after some time"))
-    }, [dispatch]);
-
-    const amtTypeOptions = useMemo(() => [
-        { key: "", value: "Select" },
-        { key: "Percentage", value: "Percentage" },
-        { key: "Fixed", value: "Fixed" }
-    ], []);
+    const { approverDashboard } = useSelector((state) => state);
 
     const initialValues = useMemo(() => ({
         rr_amount: "",
         react_select: "",
         business_cat_type: "",
         rolling_reserve_type: "",
-        // parent_client_code: "",
+
         period_code: ""
     }), []);
 
@@ -71,18 +43,22 @@ const UpdateRollingReserve = () => {
     }), []);
 
 
+    useEffect(() => {
+        dispatch(businessCategoryType());
+
+        axiosInstanceJWT.get(API_URL.rollingReservePeriod).then((resp) => {
+            setRollingResPeriod(resp.data)
+        }).catch(err => toastConfig.errorToast("Rolling reserve period not found. Please try again after some time"))
+    }, [dispatch]);
+
+    const amtTypeOptions = useMemo(() => [
+        { key: "", value: "Select" },
+        { key: "Percentage", value: "Percentage" },
+        { key: "Fixed", value: "Fixed" }
+    ], []);
 
 
 
-    // let initialValues = {
-    //     react_select: "",
-    //     login_master: "",
-    // };
-
-    // const validationSchema = Yup.object().shape({
-
-    //     react_select: Yup.object().required("Required").nullable(),
-    // });
 
     const handleChange = (selectedOption) => {
         const clientId = selectedOption ? selectedOption.value : null;
@@ -104,7 +80,7 @@ const UpdateRollingReserve = () => {
         });
     }, []);
 
-    const onSubmit = (values) => {
+    const onSubmit = (values, { setSubmitting }) => {
         const postData = {
             "login_id": values?.react_select?.value,
             "rolling_reserve": values.period_code,
@@ -116,8 +92,10 @@ const UpdateRollingReserve = () => {
         dispatch(updateRollingReserveApi(postData)).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 toastConfig.successToast(res.payload.message);
+                setSubmitting(false);
             } else {
                 toastConfig.errorToast("Failed to update Rolling Reserve");
+                setSubmitting(false);
             }
         });
     };
@@ -137,125 +115,98 @@ const UpdateRollingReserve = () => {
                     <div className="">
                         <h5 className="">Update Rolling Reserve</h5>
                     </div>
-                    <div className="container-fluid p-0">
-                        <Formik
-                            initialValues={initialValues}
-                            validationSchema={validationSchema}
-                            onSubmit={onSubmit}
-                        >
-                            {(formik, isSubmitting) => (
+                    <div className="container-fluid p-0 mt-4">
+                        <div className="card">
 
+                            <div className="card-body">
+                                <Formik
+                                    initialValues={initialValues}
+                                    validationSchema={validationSchema}
+                                    onSubmit={onSubmit}
+                                >
+                                    {(formik) => (
+                                        <Form>
+                                            <div className="row mt-3">
+                                                <div className="col-lg-3">
+                                                    <CustomReactSelect
+                                                        name="react_select"
+                                                        options={options}
+                                                        placeholder="Select Client Code"
+                                                        filterOption={createFilter({ ignoreAccents: false })}
+                                                        label="Client Code"
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                            </div>
 
-                                < Form >
-                                    {console.log(" isSubmitting", formik)}
-                                    <div className="row mt-5">
-                                        <div className="col-lg-3">
-                                            <CustomReactSelect
-                                                name="react_select"
-                                                options={options}
-                                                placeholder="Select Client Code"
-                                                filterOption={createFilter({ ignoreAccents: false })}
-                                                label="Client Code"
-                                                onChange={handleChange}
-                                            />
-                                            {/* <div className="text-primary mb-3 mt-5 d-flex">
-                                                {selectedClientId && (
-                                                    <h6 className={``}>Current Account Manager</h6>
-                                                )}
-                                            </div> */}
-                                            {/* {selectedClientId && (
-                                                <h6 className="mt-3">
-                                                    Name: {assignedAccountManger?.name || "NA"}
-                                                </h6>
-                                            )}
                                             {selectedClientId && (
-                                                <h6 className="">
-                                                    {" "}
-                                                    Email: {assignedAccountManger?.email || "NA"}
-                                                </h6>
-                                            )} */}
-                                        </div>
+                                                <div>
+                                                    <div className="row">
+                                                        <div className="col-md-4 g-3">
+                                                            <FormikController
+                                                                control="select"
+                                                                name="period_code"
+                                                                options={rollingReservePeriodOption}
+                                                                className="form-select"
+                                                                label="Rolling Reserve Period"
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-4 g-3">
+                                                            <FormikController
+                                                                control="select"
+                                                                name="rolling_reserve_type"
+                                                                options={amtTypeOptions}
+                                                                className="form-select"
+                                                                label="RR Amount Type"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-md-4 g-3">
+                                                            <FormikController
+                                                                control="input"
+                                                                type="number"
+                                                                name="rr_amount"
+                                                                className="form-control"
+                                                                label="Rolling Reserve"
+                                                                onChange={(e) => {
+                                                                    formik.setFieldValue("rr_amount", e.target.value);
+                                                                    formik.setStatus(false);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-4 g-3">
+                                                            <FormikController
+                                                                control="select"
+                                                                name="business_cat_type"
+                                                                options={businessCategoryOption}
+                                                                className="form-select"
+                                                                label="Business Category"
+                                                                onChange={(e) => {
+                                                                    formik.setFieldValue("business_cat_type", e.target.value);
+                                                                    formik.setStatus(false);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
 
-                                    </div>
-
-
-                                    {selectedClientId &&
-                                        <div>
-                                            <div className='row'>
-                                                <div className="col-md-4 g-3">
-                                                    <FormikController
-                                                        control="select"
-                                                        name="period_code"
-                                                        options={rollingReservePeriodOption}
-                                                        className="form-select"
-                                                        label="Rolling Reserve Period"
-
-                                                    />
+                                                    <div className="row mt-3">
+                                                        <div className="col-md-4">
+                                                            <button type="submit" className="btn cob-btn-primary approve text-white" disabled={formik.isSubmitting}>
+                                                                {formik?.isSubmitting && (
+                                                                    <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                                                                )}
+                                                                Save
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="col-md-4 g-3">
-                                                    <FormikController
-                                                        control="select"
-                                                        name="rolling_reserve_type"
-                                                        options={amtTypeOptions}
-                                                        className="form-select"
-                                                        label="RR Amount Type"
-
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className="col-md-4 g-3">
-                                                    <FormikController
-                                                        control="input"
-                                                        type="number"
-                                                        name="rr_amount"
-                                                        className="form-control"
-                                                        label="Rolling Reserve"
-
-                                                        onChange={(e) => {
-                                                            formik.setFieldValue("rr_amount", e.target.value);
-                                                            formik.setStatus(false);
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div className="col-md-4 g-3">
-                                                    <FormikController
-                                                        control="select"
-                                                        name="business_cat_type"
-                                                        options={businessCategoryOption}
-                                                        className="form-select"
-                                                        label="Business Category"
-
-                                                        onChange={(e) => {
-                                                            formik.setFieldValue("business_cat_type", e.target.value);
-                                                            formik.setStatus(false);
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-
-
-                                            <div className='row mt-3'>
-                                                <div className="col-md-4">
-
-
-                                                    <button type="submit" className="btn cob-btn-primary btn-sm" disabled={formik.isSubmitting}>
-                                                        {formik?.isSubmitting && (
-                                                            <span
-                                                                className="spinner-border spinner-border-sm mr-1"
-                                                                role="status"
-                                                                ariaHidden="true"
-                                                            ></span>
-                                                        )}
-
-                                                        Save</button>
-
-                                                </div>
-                                            </div>
-                                        </div>}
-                                </Form>
-                            )}
-                        </Formik>
+                                            )}
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
+                        </div>
                     </div>
 
 
