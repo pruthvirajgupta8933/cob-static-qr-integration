@@ -12,6 +12,7 @@ import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import toastConfig from "../../../utilities/toastTypes";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { updateRollingReserveApi } from "./UpdateRollingReserveSlice/UpdateRollingReserveSlice";
+import { kycUserList } from "../../../slices/kycSlice";
 
 
 
@@ -61,8 +62,11 @@ const UpdateRollingReserve = () => {
 
 
     const handleChange = (selectedOption) => {
+
         const clientId = selectedOption ? selectedOption.value : null;
         setSelectedClientId(clientId);
+        dispatch(kycUserList({ login_id: clientId }));
+
 
 
     };
@@ -204,6 +208,8 @@ const UpdateRollingReserve = () => {
                                             )}
                                         </Form>
                                     )}
+
+
                                 </Formik>
                             </div>
                         </div>
