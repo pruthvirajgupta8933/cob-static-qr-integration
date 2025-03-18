@@ -40,6 +40,7 @@ import { registrationHisorySliceReducer } from "./slices/subscription-slice/regi
 import { ckycrReducer } from "./components/ApproverNVerifier/backend-kyc/slice/ckycr.slice";
 import { dateFilterSliceReducer } from "./slices/date-filter-slice/DateFilterSlice"
 import { paymentLinkSolutionSliceReducer } from "./components/dashboard/AllPages/payment-link-solution/paylink-solution-slice/paylinkSolutionSlice";
+import { merchantAssignedReducer } from "./components/BusinessDevlopment/businessDevelopmentSlice/BusinessDevelopmentSlice";
 
 const reducer = {
   auth: authReducer,
@@ -94,6 +95,7 @@ const reducer = {
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
   paymentLinkSliceReducer: paymentLinkSliceReducer,
+  merchantAssignedReducer: merchantAssignedReducer,
   dateFilterSliceReducer: dateFilterSliceReducer,
   /// Payment Link Solution
 

@@ -13,7 +13,9 @@ export const roleBasedAccess = () => {
         merchant: false,
         viewer: false,
         b2b: false,
-        accountManager: false
+        accountManager: false,
+        businessDevelopment: false,
+        zonalManager: false,
     };
 
     let roleAccessObj = roleBasedTab;
@@ -47,7 +49,19 @@ export const roleBasedAccess = () => {
     } else if (roleId === 101) {
         // accountManager
         roleAccessObj = { ...roleAccessObj, accountManager: true };
-    } else {
+
+
+    } else if (roleId === 102) {
+        // accountManager
+        roleAccessObj = { ...roleAccessObj, businessDevelopment: true };
+    }
+    else if (roleId ===
+        103) {
+        // accountManager
+        roleAccessObj = { ...roleAccessObj, zonalManager: true };
+    }
+
+    else {
         // console.log("Permission not match with these roles");
     }
 
