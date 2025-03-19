@@ -102,7 +102,7 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
   return (
     <>
       <DataTable
-        className="bg-white border-0 mb-5"
+        className="bg-white border-0 "
         columns={row}
         data={data}
         sortIcon={
@@ -143,6 +143,7 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
           pageClassName={"page-item"}
           pageLinkClassName={"page-link"}
           forcePage={currentPage - 1}
+        // className="mt-5"
         />
       )}
     </>
