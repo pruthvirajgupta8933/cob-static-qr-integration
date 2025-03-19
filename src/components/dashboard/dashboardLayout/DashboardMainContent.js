@@ -1045,10 +1045,10 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/assigned-merchant`}
                 Component={AssignedMerchant}
-                roleList={{ accountManager: true, zonalManager: true, businessDevelopment: true }}
+                roleList={{ approver: true, accountManager: true, zonalManager: true, businessDevelopment: true }}
               />
 
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 path={`${path}/assign-business-development`}
                 Component={AssigneBusinessDevelopment}
                 roleList={{
@@ -1056,7 +1056,7 @@ function DashboardMainContent() {
                   verifier: true
                 }}
               >
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
 
 
