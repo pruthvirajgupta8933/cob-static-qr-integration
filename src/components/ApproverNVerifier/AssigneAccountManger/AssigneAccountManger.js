@@ -131,7 +131,7 @@ const AssigneAccountManger = () => {
                     />
                   </div>
                   <div className="col-lg-3 col-md-6 col-12">
-                    <FormikController control="select" name="assigned_login_id" options={assignDetails} className="form-select" label="Account Manager List" />
+                    <FormikController control="select" name="assigned_login_id" options={assignDetails} className="form-select" label="Manager List" />
                   </div>
                   <div className="col-lg-3 col-md-6 col-12 mt-4">
                     <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
@@ -145,20 +145,20 @@ const AssigneAccountManger = () => {
                       <table className="table table-bordered table-responsive-sm">
                         <thead>
                           <tr>
-                            <th className="" colSpan="2">Assigned Manager</th>
+                            <td className="" colSpan="2">Assigned Manager</td>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td><strong>Account Manager Name</strong></td>
+                            <td>Account Manager Name</td>
                             <td>{KycList?.result?.loginMasterId?.account_manager_name || "NA"}</td>
                           </tr>
                           <tr>
-                            <td><strong>Assigned BD Name</strong></td>
+                            <td>Assigned BD Name</td>
                             <td>{KycList?.result?.loginMasterId?.assigned_bd_name || "NA"}</td>
                           </tr>
                           <tr>
-                            <td><strong>Assigned Zonal Manager</strong></td>
+                            <td>Assigned Zonal Manager</td>
                             <td>{KycList?.result?.loginMasterId?.assigned_zonal_manager_name || "NA"}</td>
                           </tr>
                         </tbody>
