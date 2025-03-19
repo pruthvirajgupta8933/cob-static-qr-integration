@@ -120,6 +120,9 @@ import QFormReports from "../../qform-reports";
 import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
 
 import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
+import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
+import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -1026,9 +1029,43 @@ function DashboardMainContent() {
 
               <AuthorizedRoute
                 exact
+                path={`${path}/mfa`}
+                Component={Mfa}
+                roleList={{
+                  approver: true,
+
+                }}
+              />
+
+
+
+
+              {/* </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
                 path={`${path}/assigned-merchant`}
                 Component={AssignedMerchant}
-                roleList={{ accountManager: true, zonalManager: true, businessDevelopment: true }}
+                roleList={{ approver: true, accountManager: true, zonalManager: true, businessDevelopment: true }}
+              />
+
+              {/* <AuthorizedRoute
+                path={`${path}/assign-business-development`}
+                Component={AssigneBusinessDevelopment}
+                roleList={{
+                  approver: true,
+                  verifier: true
+                }}
+              >
+              </AuthorizedRoute> */}
+
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/update-rolling-reserve`}
+                Component={UpdateRollingReserve}
+                roleList={{ approver: true, verifier: true }}
               />
 
               <Route path={`${path}/*`} component={UrlNotFound}>

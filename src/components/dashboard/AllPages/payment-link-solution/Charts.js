@@ -73,6 +73,7 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
         })
         : [];
 
+  console.log(chartData)
   useEffect(() => {
     const fetchData = async () => {
       const data = chartData?.map((entry) => entry.value);
@@ -86,7 +87,7 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
   if (!data) return null;
   if (chartType === "line") {
     return (
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={230}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
