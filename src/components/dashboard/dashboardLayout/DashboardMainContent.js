@@ -122,6 +122,7 @@ import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
 import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
+import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -1059,6 +1060,13 @@ function DashboardMainContent() {
               </AuthorizedRoute> */}
 
 
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/update-rolling-reserve`}
+                Component={UpdateRollingReserve}
+                roleList={{ approver: true }}
+              />
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
