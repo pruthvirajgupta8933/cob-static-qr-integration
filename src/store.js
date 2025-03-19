@@ -41,6 +41,8 @@ import { ckycrReducer } from "./components/ApproverNVerifier/backend-kyc/slice/c
 import { dateFilterSliceReducer } from "./slices/date-filter-slice/DateFilterSlice"
 import { paymentLinkSolutionSliceReducer } from "./components/dashboard/AllPages/payment-link-solution/paylink-solution-slice/paylinkSolutionSlice";
 import { merchantAssignedReducer } from "./components/BusinessDevlopment/businessDevelopmentSlice/BusinessDevelopmentSlice";
+import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
+import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDevelopment/bdSlice.js/bdSlice";
 
 const reducer = {
   auth: authReducer,
@@ -62,6 +64,8 @@ const reducer = {
   ReferralMidReducer: ReferralMidReducer,
   challanReducer: challanReducer,
   merchantReportSlice: merchantReportSlice,
+
+
 
   // For subscription
   Reports: reportsDataReducer,
@@ -101,6 +105,9 @@ const reducer = {
 
   paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer,
   qForm: qFormSliceReducer,
+  mfaReducer: mfaReducer,
+  assignBdReducer: assignBdReducer
+
 };
 
 const store = configureStore({
