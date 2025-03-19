@@ -1065,7 +1065,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/update-rolling-reserve`}
                 Component={UpdateRollingReserve}
-                roleList={{ approver: true }}
+                roleList={{ approver: true, verifier: true }}
               />
 
               <Route path={`${path}/*`} component={UrlNotFound}>
