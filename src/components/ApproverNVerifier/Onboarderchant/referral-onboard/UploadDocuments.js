@@ -31,7 +31,7 @@ const UploadDocuments = ({ disableForm, setInfoModal }) => {
             err?.message ?? "Error fetching the list of required documents"
           );
         });
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (basicDetailsResponse && !kycData?.isEmailVerified) setInfoModal(true);
@@ -93,9 +93,8 @@ const UploadDocuments = ({ disableForm, setInfoModal }) => {
                           {({ field, form, meta }) => (
                             <input
                               type="file"
-                              className={`form-control ${
-                                meta.error && meta.touched ? "is-invalid" : ""
-                              }`}
+                              className={`form-control ${meta.error && meta.touched ? "is-invalid" : ""
+                                }`}
                               onChange={(e) => {
                                 setFieldValue(
                                   `files[${index}]`,
