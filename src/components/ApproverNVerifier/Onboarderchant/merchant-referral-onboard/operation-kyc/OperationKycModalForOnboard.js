@@ -65,6 +65,7 @@ function OperationKycModalForOnboard({
   }, []);
 
 
+
   useEffect(() => {
     let merchantLoginId = "";
     if (merchantId && merchantId !== "")
