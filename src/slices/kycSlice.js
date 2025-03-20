@@ -973,6 +973,10 @@ export const kycSlice = createSlice({
     },
     clearKycState: (state) => {
       state.kycUserList = {};
+      state.documentsUpload = []
+    },
+    clearKYCDocumentList: (state) => {
+      state.documentsUpload = []
     },
     clearWebsiteWhiteList: (state) => {
       state.merchantWhitelistWebsite = [];
@@ -1329,8 +1333,14 @@ export const kycSlice = createSlice({
       .addCase(getKycIDList.rejected, (state) => {
         state.kycIdList = [];
       })
+      .addCase(documentsUpload.pending, (state) => {
+        state.documentsUpload = [];
+      })
       .addCase(documentsUpload.fulfilled, (state, action) => {
         state.documentsUpload = action.payload;
+      })
+      .addCase(documentsUpload.rejected, (state) => {
+        state.documentsUpload = [];
       })
       .addCase(whiteListedWebsite.pending, (state, action) => {
         state.merchantWhitelistWebsite = [];
@@ -1355,7 +1365,8 @@ export const {
   saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc,
-  clearWebsiteWhiteList
+  clearWebsiteWhiteList,
+  clearKYCDocumentList
   // clearKycDetailsByMerchantLoginId,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

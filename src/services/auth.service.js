@@ -1,6 +1,6 @@
 
 import API_URL from "../config";
-import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
+import { axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
 import { clearLocalStore } from "../utilities/clearLocalStorage";
 
 
@@ -18,7 +18,7 @@ const register = ({ fullname, mobileNumber, email, business_cat_code, password, 
     plan_details: plan_details,
     is_social: is_social,
     developer_contact: developer_contact || "",
-    developer_name: developer_contact || ""
+    developer_name: developer_name || ""
   };
   if (zone_code) {
     requestData.zone_code = zone_code;

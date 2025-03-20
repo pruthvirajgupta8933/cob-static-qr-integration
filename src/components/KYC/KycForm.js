@@ -16,6 +16,7 @@ import {
   GetKycTabsStatus,
   clearKycState,
   kycUserListForMerchant,
+  clearKYCDocumentList,
 } from "../../slices/kycSlice";
 import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -79,6 +80,13 @@ function KycForm() {
 
   }, [merchantloginMasterId]);
   //-----------Kyc Document Upload List ------//
+  useEffect(() => {
+    // clear kyc state when unmount the component
+    return () => {
+      dispatch(clearKYCDocumentList())
+    }
+  }, [])
+
 
   const redirect = () => {
     if (

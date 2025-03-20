@@ -1,14 +1,18 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import BasicDetails from "./BasicDetails";
 import BankDetails from "./BankDetails";
 import UploadDocuments from "./UploadDocuments";
 import ViewDocuments from "./ViewDocuments";
 import AddressDetails from "./AddressDetails";
 import Submit from "./Submit";
+import { clearKYCDocumentList } from "../../../../slices/kycSlice";
 
 const Referral = ({ type, zoneCode, edit }) => {
   let tabs = [];
+
+  const dispatch = useDispatch()
+
   if (type === "individual") {
     tabs = [
       { id: "basic", name: "Basic Details" },
@@ -25,10 +29,21 @@ const Referral = ({ type, zoneCode, edit }) => {
   const basicDetailsResponse = useSelector(
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
+
+
   const kycData = useSelector((state) => state.kyc?.kycUserList);
   const [currentTab, setCurrentTab] = useState("basic");
   const [infoModal, setInfoModal] = useState();
   const handleTabClick = (tabId) => setCurrentTab(tabId);
+
+
+  useEffect(() => {
+    // clear kyc state when unmount the component
+    return () => {
+      dispatch(clearKYCDocumentList())
+    }
+  }, [])
+
 
   const renderTabContent = () => {
     switch (currentTab) {

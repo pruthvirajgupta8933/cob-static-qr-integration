@@ -128,6 +128,7 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
     let { fullname, mobilenumber, emaill, passwordd, business_cat_code, developer_contact,
       developer_name } =
       formData;
+
     setBtnDisable(true);
 
     dispatch(
