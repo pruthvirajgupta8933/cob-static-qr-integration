@@ -17,6 +17,7 @@ const initialState = {
   isLoadingForPendingApproval: false,
   isLoadingForApproved: false,
   isLoadingForRejected: false,
+  isLoadingState: false,
 
   kycUserList: {},
   notFilledUserList: {
@@ -165,6 +166,7 @@ const initialState = {
   merchantKycData: {},
   kycIdList: [],
 };
+
 
 export const updateContactInfo = createAsyncThunk(
   "kyc/updateContactInfo",
@@ -1139,13 +1141,16 @@ export const kycSlice = createSlice({
       })
       .addCase(kycUserList.pending, (state) => {
         state.status = "pending";
+        state.isLoadingState = true;
       })
       .addCase(kycUserList.fulfilled, (state, action) => {
         state.kycUserList = action.payload;
+        state.isLoadingState = false;
       })
       .addCase(kycUserList.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        state.isLoadingState = false;
       })
 
       // state update for the merchant roles 
