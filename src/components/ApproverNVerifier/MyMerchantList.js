@@ -262,10 +262,9 @@ const MyMerchantList = () => {
         <div className="d-flex">
           {
             roles?.viewer === true ||
-              (roles?.accountManager === true &&
-                row?.login_id?.master_client_id?.clientCode !== undefined) ? (
+              (roles?.accountManager === true) ? (
               <>
-                <button
+                {row?.login_id?.master_client_id?.clientCode && <button
                   type="button"
                   className="approve text-white  cob-btn-primary mr-1  btn-sm"
                   data-toggle="modal"
@@ -273,10 +272,10 @@ const MyMerchantList = () => {
                     setCommentId(row?.login_id?.master_client_id);
                     setOpenCommentModal(true);
                   }}
-                  data-target="#exampleModal"
                 >
                   Comments
-                </button>
+                </button>}
+
                 <button
                   type="button"
                   className="approve text-white cob-btn-primary btn-sm"
@@ -303,7 +302,7 @@ const MyMerchantList = () => {
                         )}&redirectUrl=${history.location.pathname}`
                       );
                   }}
-                  data-target="#exampleModal"
+
                 >
                   Edit KYC
                 </button>

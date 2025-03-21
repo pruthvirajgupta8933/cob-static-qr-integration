@@ -13,6 +13,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { updateRollingReserveApi } from "./UpdateRollingReserveSlice/UpdateRollingReserveSlice";
 import { kycUserList } from "../../../slices/kycSlice";
+import CustomLoader from "../../../_components/loader";
 
 
 
@@ -23,6 +24,11 @@ const UpdateRollingReserve = () => {
     const [selectedClientId, setSelectedClientId] = useState(null);
     const [rollingResPeriod, setRollingResPeriod] = useState([]);
     const { approverDashboard } = useSelector((state) => state);
+    const { kyc } = useSelector((state) => state);
+    const KycList = kyc?.kycUserList;
+    const loadingState = useSelector((state) => state.kyc.isLoadingState)
+
+
 
     const initialValues = useMemo(() => ({
         rr_amount: "",
@@ -96,6 +102,7 @@ const UpdateRollingReserve = () => {
         dispatch(updateRollingReserveApi(postData)).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 toastConfig.successToast(res.payload.message);
+                dispatch(kycUserList({ login_id: values?.react_select?.value }));
                 setSubmitting(false);
             } else {
                 toastConfig.errorToast("Failed to update Rolling Reserve");
@@ -211,9 +218,41 @@ const UpdateRollingReserve = () => {
 
 
                                 </Formik>
+
                             </div>
                         </div>
                     </div>
+                    <div className="row mt-4">
+                        <CustomLoader loadingState={loadingState} />
+                        {KycList?.result?.loginMasterId && (
+
+                            <div className="col-md-12">
+
+
+                                <div className="card">
+
+
+                                    <div className="card-body">
+                                        <table className="table table-bordered table-responsive-sm mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Rolling Reserve</strong></td>
+                                                    <td>{KycList?.rolling_reserve || "NA"}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Rolling Reserve Type</strong></td>
+                                                    <td>{KycList?.
+                                                        rolling_reserve_type || "NA"}</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
 
 
 
