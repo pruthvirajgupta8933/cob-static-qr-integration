@@ -2,6 +2,8 @@ import React from "react";
 import CreatePaymentLinkModal from "./total-link-generated/CreatePaymentLinkModal";
 import AddPayerModal from "./total-payers/AddPayerModal";
 import customStyle from "./paymentLinkSolution.module.css";
+import moment from "moment";
+import { useSelector } from "react-redux";
 
 const ActionButtons = ({
     filterRef,
@@ -16,16 +18,30 @@ const ActionButtons = ({
     showBackLink,
     onBackClick
 }) => {
+
+    const { fromDate, toDate } = useSelector(
+        (state) => state.dateFilterSliceReducer
+    );
+
+
     return (
         <div className="col-12 d-flex justify-content-between align-items-center p-0">
+            <div className="d-flex align-items-center gap-2">
+                {showBackLink && (
+                    <div>
+                        <button type="button" onClick={onBackClick} className={`cursor_pointer ${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light btn`}  >
+                            <i className="fa fa-arrow-left text-primary"></i>
+                        </button>
+                    </div>
 
-            {showBackLink && (
+                )}
+                <div>
+                    <p className="border border-default bg-white rounded p-2 shadow m-0" >
+                        Date Range: {moment(fromDate).format("ll")} to {moment(toDate).format("ll")}
+                    </p>
 
-                <span onClick={onBackClick} className={`cursor_pointer ${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light`}  >
-                    <i className="fa fa-arrow-left text-primary"></i>
-                </span>
-            )}
-
+                </div>
+            </div>
 
             <div className="d-flex gap-2">
                 <button className="btn btn-sm btn cob-btn-primary approve text-white d-flex align-items-center"
