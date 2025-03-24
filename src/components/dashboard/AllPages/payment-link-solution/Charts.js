@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -53,7 +53,9 @@ const CustomLegend = ({ data, colorMode }) => {
 
 const Charts = ({ data, chartType, colorMode = "light" }) => {
   const [total, setTotal] = useState(0);
-  const chartData =
+
+
+  const chartData = useMemo(() =>
     chartType === "donut"
       ? data
         ?.filter((entry) => entry.trans_mode)
@@ -66,14 +68,17 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
         })
       : Array.isArray(data)
         ? data?.map((entry) => {
+
           return {
             date: Object.keys(entry)[0],
-            value: Object.values(entry)[0],
+            value: Object.values(entry)[0] < 0 ? null : Object.values(entry)[0],
           };
         })
-        : [];
+        : [],
+    [data])
 
-  console.log(chartData)
+
+  // console.log(chartData)
   useEffect(() => {
     const fetchData = async () => {
       const data = chartData?.map((entry) => entry.value);
@@ -87,8 +92,8 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
   if (!data) return null;
   if (chartType === "line") {
     return (
-      <ResponsiveContainer width="100%" height={230}>
-        <LineChart data={chartData}>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={chartData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
