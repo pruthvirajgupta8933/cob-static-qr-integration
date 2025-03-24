@@ -396,8 +396,9 @@ export const merchantInfo = createAsyncThunk(
 export const kycUserList = createAsyncThunk(
   "kyc/kycUserList",
   async (requestParam) => {
+    const operation = requestParam?.masking === 1 ? "r" : "k"
     const response = await axiosInstanceJWT
-      .post(`${API_URL.Kyc_User_List}`, requestParam)
+      .post(`${API_URL.Kyc_User_List}`, { ...requestParam, operation: operation })
       .catch((error) => {
         return error.response;
       });
