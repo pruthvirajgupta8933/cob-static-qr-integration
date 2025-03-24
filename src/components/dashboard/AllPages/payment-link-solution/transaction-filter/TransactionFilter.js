@@ -21,12 +21,12 @@ const TransactionFilter = ({
     if (daysDiff === 0) {
       options = ["hourly"];
     } else if (daysDiff > 0 && daysDiff < 7) {
-      options = ["hourly", "daily"];
+      options = ["daily", "hourly"];
     } else if (daysDiff >= 7 && daysDiff <= 60) {
-      options = ["daily", "weekly"];
+      options = ["weekly", "daily"];
     } else if (daysDiff > 60 && daysDiff <= 366) {
-      options = ["weekly", "monthly"];
-    } else options = ["monthly", "annually"];
+      options = ["monthly", "weekly"];
+    } else options = ["annually", "monthly"];
 
     setAvailableOptions(options);
     setSelectedOption(options[0]);
