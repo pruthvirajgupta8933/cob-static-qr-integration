@@ -109,35 +109,28 @@ const PaylinkDashboard = () => {
     history.push(`${path}/recent-transaction`);
   };
 
+  console.log(dashboardTxnData)
+
   return (
     <div className="container-fluid p-0">
-      <div className="row px-2">
-        <div className="col-12 d-flex justify-content-between align-items-start p-0">
-          <p className="border border-default bg-white rounded p-2 shadow" >
-            Date Range: {moment(fromDate).format("ll")} to {moment(toDate).format("ll")}
-          </p>
-
-
-          <div className="d-flex gap-2">
-            <ActionButtons
-              filterRef={filterRef}
-              setShowFilter={setShowFilter}
-              showFilter={showFilter}
-              setShowCreatePaymentModal={setShowCreatePaymentModal}
-              setShowAddPayerModal={setShowAddPayerModal}
-              showAddPayerModal={showAddPayerModal}
-              showCreatePaymentModal={showCreatePaymentModal}
-            />
-            <FilterModal
-              show={showFilter}
-              onClose={() => setShowFilter(false)}
-              filterRef={filterRef}
-              onApply={() => { }}
-            />
-          </div>
-        </div>
+      <div className="d-flex gap-2">
+        <ActionButtons
+          filterRef={filterRef}
+          setShowFilter={setShowFilter}
+          showFilter={showFilter}
+          setShowCreatePaymentModal={setShowCreatePaymentModal}
+          setShowAddPayerModal={setShowAddPayerModal}
+          showAddPayerModal={showAddPayerModal}
+          showCreatePaymentModal={showCreatePaymentModal}
+        />
+        <FilterModal
+          show={showFilter}
+          onClose={() => setShowFilter(false)}
+          filterRef={filterRef}
+          onApply={() => { }}
+        />
       </div>
-      <div className="row">
+      <div className="row mt-2">
         <div className="col-12 col-md-8">
           <div className="row">
             <div className="col-12 col-md-4">
@@ -218,7 +211,7 @@ const PaylinkDashboard = () => {
         </div>
 
         <div className="col-12 col-md-4 p-0">
-          <div className="card shadow border-1 rounded-1">
+          <div className="card shadow border-1 rounded-1 h-100">
             <div className="card-header border-0 bg-white">
               <h6 className="card-title mt-3">
                 Transactions Payment Mode
