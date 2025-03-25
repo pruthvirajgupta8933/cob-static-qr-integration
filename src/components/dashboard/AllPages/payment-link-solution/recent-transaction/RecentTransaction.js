@@ -364,7 +364,7 @@ const RecentTransaction = () => {
     return (
         <React.Fragment>
             <section>
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     <ActionButtons
                         filterRef={filterRef}
                         setShowFilter={setShowFilter}
@@ -384,7 +384,7 @@ const RecentTransaction = () => {
             </section>
 
             <section className="mt-3">
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     <div className="card shadow-sm">
                         <div className="px-3 py-3">
                             <div className="row align-items-center">
@@ -446,7 +446,7 @@ const RecentTransaction = () => {
                                         currentPage={currentPage}
                                         changeCurrentPage={changeCurrentPage}
                                         fixedHeader={true}
-                                        fixedHeaderScrollHeight="400px"
+                                    // fixedHeaderScrollHeight="400px"
 
                                     />
                                 )}

@@ -382,7 +382,7 @@ const TotalPayers = () => {
     return (
         <React.Fragment>
             <section>
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     <ActionButtons
                         filterRef={filterRef}
                         setShowFilter={setShowFilter}
@@ -407,7 +407,7 @@ const TotalPayers = () => {
             </section>
 
             <section className="mt-3">
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     <div className="card shadow-sm">
                         <div className="px-3 py-3">
                             <div className="row align-items-center">
@@ -421,7 +421,7 @@ const TotalPayers = () => {
                                     <div className="me-3 mt-4 d-flex">
                                         {selectedRows?.length > 0 && <div className=" mx-3">
                                             <button className="btn btn-danger ms-2 btn-sm " onClick={() => deleteUser(0, 0, "bulk")}>
-                                                <i className="fa fa-trash"></i> Delete ({selectedRows?.length} Payer's)
+                                                <i className="fa fa-trash"></i> Delete ({selectedRows?.length} Payer)
                                             </button>
                                         </div>}
 

@@ -25,8 +25,8 @@ const ActionButtons = ({
 
 
     return (
-        <div className="col-12 d-flex justify-content-between align-items-center p-0">
-            <div className="d-flex align-items-center gap-2">
+        <div className="col-12 d-flex flex-column flex-md-row flex-lg-row justify-content-md-between p-0 gap-2">
+            <div className="d-flex align-items-start gap-2">
                 {showBackLink && (
                     <div>
                         <button type="button" onClick={onBackClick} className={`cursor_pointer ${customStyle.card_link_icon_arrow} ${customStyle.shadow_icon} bg-light btn`}  >
@@ -35,7 +35,7 @@ const ActionButtons = ({
                     </div>
 
                 )}
-                <div>
+                <div className="flex-fill">
                     <p className="border border-default bg-white rounded p-2 shadow m-0" >
                         Date Range: {moment(fromDate).format("ll")} to {moment(toDate).format("ll")}
                     </p>
@@ -43,7 +43,7 @@ const ActionButtons = ({
                 </div>
             </div>
 
-            <div className="d-flex gap-2">
+            <div className="d-flex flex-column flex-md-row flex-lg-row gap-2">
                 <button className="btn btn-sm btn cob-btn-primary approve text-white d-flex align-items-center"
                     onClick={() => setShowAddPayerModal(true)}>
                     <i className="fa fa-user-plus me-2"></i> Add Payer
