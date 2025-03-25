@@ -999,6 +999,8 @@ export const kycSlice = createSlice({
       state.approveKyc.isError = false;
       state.approveKyc.logs = {};
     },
+
+
   },
   extraReducers: (builder) => {
     builder
@@ -1147,6 +1149,7 @@ export const kycSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         state.isLoadingState = false;
+
       })
 
       // state update for the merchant roles 
@@ -1354,6 +1357,7 @@ export const {
   saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc,
+
   // clearKycDetailsByMerchantLoginId,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

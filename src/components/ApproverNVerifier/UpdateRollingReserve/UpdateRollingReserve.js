@@ -12,7 +12,7 @@ import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import toastConfig from "../../../utilities/toastTypes";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { updateRollingReserveApi } from "./UpdateRollingReserveSlice/UpdateRollingReserveSlice";
-import { kycUserList } from "../../../slices/kycSlice";
+import { kycUserList, clearKycState } from "../../../slices/kycSlice";
 import CustomLoader from "../../../_components/loader";
 
 
@@ -64,6 +64,12 @@ const UpdateRollingReserve = () => {
         { key: "Percentage", value: "Percentage" },
         { key: "Fixed", value: "Fixed" }
     ], []);
+
+
+    useEffect(() => {
+        dispatch(clearKycState()); // Clear KYC data when the component mounts
+        setSelectedClientId(null); // Reset selected client
+    }, [dispatch]);
 
 
 
