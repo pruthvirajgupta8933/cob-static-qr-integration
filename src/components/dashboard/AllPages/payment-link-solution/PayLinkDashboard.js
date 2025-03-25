@@ -97,23 +97,23 @@ const PaylinkDashboard = () => {
   }, [fromDate, toDate, selectedOption]);
 
 
-  const handleCardClick = () => {
-    history.push(`${path}/total-link-generated`);
-  };
+  // const handleCardClick = () => {
+  //   history.push(`${path}/total-link-generated`);
+  // };
 
-  const handleTotalPayerClick = () => {
-    history.push(`${path}/total-payers`);
-  };
+  // const handleTotalPayerClick = () => {
+  //   history.push(`${path}/total-payers`);
+  // };
 
-  const handleTotalTransactionClick = () => {
-    history.push(`${path}/recent-transaction`);
-  };
+  // const handleTotalTransactionClick = () => {
+  //   history.push(`${path}/recent-transaction`);
+  // };
 
-  console.log(dashboardTxnData)
+  // console.log(dashboardTxnData)
 
   return (
     <div className="container-fluid p-0">
-      <div className="d-flex gap-2">
+      <div className="d-flex gap-2 ">
         <ActionButtons
           filterRef={filterRef}
           setShowFilter={setShowFilter}
@@ -130,10 +130,11 @@ const PaylinkDashboard = () => {
           onApply={() => { }}
         />
       </div>
-      <div className="row mt-2">
-        <div className="col-12 col-md-8">
-          <div className="row">
-            <div className="col-12 col-md-4">
+
+      <div className="row mt-2 ">
+        <div className="col-12 col-md-12 col-lg-8">
+          <div className="row gap-2 gap-lg-0 d-flex flex-row">
+            <div className="col-12 col-md-12 col-lg-4">
               <div className="card shadow p-3 rounded border-0 position-relative">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h6 className="mb-1">Total Transaction</h6>
@@ -141,7 +142,7 @@ const PaylinkDashboard = () => {
                     <img src={transactionCardIcon} alt="Icon" width={"22px"} /></span>
                 </div>
                 <h5 className="">
-                  {dashboardData?.transaction_data?.value}
+                  ₹ {dashboardData?.transaction_data?.value}
                 </h5>
                 <div className="position-absolute bottom-0 end-0 p-3 top-50">
                   <Link to={`${path}/recent-transaction`} className="text-decoration-none">
@@ -153,7 +154,7 @@ const PaylinkDashboard = () => {
               </div>
             </div>
 
-            <div className="col-12 col-md-4">
+            <div className="col-12 col-md-12 col-lg-4">
               <div className="card shadow p-3 rounded border-0 position-relative">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h6 className="mb-1">Total Link Generated</h6>
@@ -172,8 +173,7 @@ const PaylinkDashboard = () => {
               </div>
             </div>
 
-
-            <div className="col-12 col-md-4">
+            <div className="col-12 col-md-12 col-lg-4">
               <div className="card shadow p-3 rounded border-0 position-relative">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h6 className="mb-1">Total Payers</h6>
@@ -210,7 +210,7 @@ const PaylinkDashboard = () => {
           </div>
         </div>
 
-        <div className="col-12 col-md-4 p-0">
+        <div className="col-12 col-md-12 col-lg-4">
           <div className="card shadow border-1 rounded-1 h-100">
             <div className="card-header border-0 bg-white">
               <h6 className="card-title mt-3">
