@@ -27,7 +27,6 @@ const UpdateRollingReserve = () => {
     const { kyc } = useSelector((state) => state);
     const KycList = kyc?.kycUserList;
     const loadingState = useSelector((state) => state.kyc.isLoadingState)
-    console.log("loadingState", loadingState)
 
 
 
