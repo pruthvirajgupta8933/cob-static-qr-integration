@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
-
+// import * as Yup from "yup";
+// import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingDocument,
   forGettingDocumentList,
@@ -11,14 +12,16 @@ import {
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
+// import downloadIcon from "../../../assets/images/download-icon.svg";
+// import _ from "lodash";
+import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 
-
 const AgreementDocModal = (props) => {
-
+  // console.log("this is rela bsbfsf", props)
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -38,7 +41,7 @@ const AgreementDocModal = (props) => {
   const commentUpdate = () => {
     dispatch(
       forGettingDocumentList({
-        login_id: props?.documentData.documentData?.loginMasterId,
+        login_id: props?.documentData?.loginMasterId,
       })
     )
       .then((resp) => {
@@ -74,7 +77,7 @@ const AgreementDocModal = (props) => {
     let formData = new FormData();
     formData.append("type", "22");
     formData.append("approver_id", loginId);
-    formData.append("login_id", props?.documentData.documentData?.loginMasterId);
+    formData.append("login_id", props?.documentData?.loginMasterId);
     formData.append("modified_by", loginId);
     formData.append("files", attachCommentFile);
     formData.append("comment", values.comments);
@@ -151,8 +154,9 @@ const AgreementDocModal = (props) => {
     setDocPreviewToggle(true);
     setSelectedViewDoc(docData);
   };
-  return (
-    <>
+
+  const modalBody = () => {
+    return (
       <div className="container-fluid">
         {docPreviewToggle && (
           <DocViewerComponent
@@ -168,11 +172,11 @@ const AgreementDocModal = (props) => {
           <div className="d-flex justify-content-between">
             <p>
               <span className="fw-bold">Merchant Name : </span>{" "}
-              {props?.documentData.documentData?.clientName}
+              {props?.documentData?.clientName}
             </p>
             <p>
               <span className="fw-bold"> Client Code : </span>
-              {props?.documentData.documentData?.clientCode}
+              {props?.documentData?.clientCode}
             </p>
           </div>
         </div>
@@ -314,8 +318,38 @@ const AgreementDocModal = (props) => {
           </div>
         </div>
       </div>
-    </>
-  )
-}
+    );
+  };
 
-export default AgreementDocModal
+  const modalFooter = () => {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn btn-secondary text-white"
+          data-dismiss="modal"
+          onClick={() => {
+            setCommentsList([]);
+            props?.setModalState(false);
+          }}
+        >
+          Close
+        </button>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <CustomModal
+        modalBody={modalBody}
+        headerTitle={"Upload Agreement"}
+        modalFooter={modalFooter}
+        modalToggle={props?.isModalOpen}
+        fnSetModalToggle={props?.setModalState}
+      />
+    </>
+  );
+};
+
+export default AgreementDocModal;

@@ -8,7 +8,7 @@ import ListLayout from "./ListLayout";
 import CommentModal from "../Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import DateFormatter from "../../../utilities/DateConvert";
-import AgreementDocModal from "../Onboarderchant/AgreementDocModal";
+import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
 
 function ApprovedMerchant({ commonRows }) {
   const [searchText, setSearchText] = useState("");
@@ -192,12 +192,12 @@ function ApprovedMerchant({ commonRows }) {
       />
       <div>
         {openDocumentModal && (
-          <AgreementDocModal
-            documentData={commentId}
+
+
+          <AgreementUploadTab documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
-            tabName={"Approved Tab"}
-          />
+            tabName={"Approved Tab"} />
         )}
 
         {isOpenModal && (

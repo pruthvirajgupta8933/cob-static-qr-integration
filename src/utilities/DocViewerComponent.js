@@ -5,6 +5,7 @@ import classes from "./utilities.module.css"
 import { saveImage } from "./saveImage";
 
 const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) => {
+
   const getFileType = (url) => {
     const extension = url?.split('.')?.pop()?.toLowerCase(); // Get the file extension
     if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) {
