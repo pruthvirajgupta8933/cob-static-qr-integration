@@ -396,8 +396,9 @@ export const merchantInfo = createAsyncThunk(
 export const kycUserList = createAsyncThunk(
   "kyc/kycUserList",
   async (requestParam) => {
+    const operation = requestParam?.masking === 1 ? "k" : "r"
     const response = await axiosInstanceJWT
-      .post(`${API_URL.Kyc_User_List}`, requestParam)
+      .post(`${API_URL.Kyc_User_List}`, { ...requestParam, operation: operation })
       .catch((error) => {
         return error.response;
       });
@@ -975,10 +976,14 @@ export const kycSlice = createSlice({
     },
     clearKycState: (state) => {
       state.kycUserList = {};
+      state.documentsUpload = []
     },
-    // clearKycDetailsByMerchantLoginId: (state) => {
-    //   state.merchantKycData = {};
-    // },
+    clearKYCDocumentList: (state) => {
+      state.documentsUpload = []
+    },
+    clearWebsiteWhiteList: (state) => {
+      state.merchantWhitelistWebsite = [];
+    },
 
     saveDropDownAndFinalArray: (state, action) => {
       // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
@@ -1337,11 +1342,23 @@ export const kycSlice = createSlice({
       .addCase(getKycIDList.rejected, (state) => {
         state.kycIdList = [];
       })
+      .addCase(documentsUpload.pending, (state) => {
+        state.documentsUpload = [];
+      })
       .addCase(documentsUpload.fulfilled, (state, action) => {
         state.documentsUpload = action.payload;
       })
+      .addCase(documentsUpload.rejected, (state) => {
+        state.documentsUpload = [];
+      })
+      .addCase(whiteListedWebsite.pending, (state, action) => {
+        state.merchantWhitelistWebsite = [];
+      })
       .addCase(whiteListedWebsite.fulfilled, (state, action) => {
         state.merchantWhitelistWebsite = action.payload;
+      })
+      .addCase(whiteListedWebsite.rejected, (state, action) => {
+        state.merchantWhitelistWebsite = [];
       })
   },
 });
@@ -1357,7 +1374,8 @@ export const {
   saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc,
-
+  clearWebsiteWhiteList,
+  clearKYCDocumentList
   // clearKycDetailsByMerchantLoginId,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

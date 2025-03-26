@@ -103,7 +103,8 @@ function MerchantContactInfo(props) {
       value: selectedUserData?.emailId,
       verified: selectedUserData?.isEmailVerified,
     },
-  ];
+    { label: "Developer Contact", value: selectedUserData?.developer_contact },
+    { label: "Developer Name", value: selectedUserData?.developer_name }];
 
   const lastThreeFields = [
     {

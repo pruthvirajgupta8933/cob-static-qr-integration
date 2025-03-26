@@ -33,7 +33,7 @@ const ResetPassword = (props) => {
     confirmpassword: "",
   };
   const resetSubmit = async (values) => {
-    console.log(values)
+    // console.log(values)
     await axiosInstanceAuth.put(API_URL.AUTH_CHANGE_PASSWORD, {
       password: values.password,
       newpassword: values.newpassword,

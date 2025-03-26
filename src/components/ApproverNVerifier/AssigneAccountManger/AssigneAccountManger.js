@@ -1,200 +1,175 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import Yup from "../../../_components/formik/Yup";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
-import assignAccountMangerService from "../../../services/assign-account-manager/assign-account-manager.service";
+import { assignManagerDetails, assignmentTypeApi, assignRoleWiseApi } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../../_components/formik/FormikController";
 import toastConfig from "../../../utilities/toastTypes";
-import {
-  assignAccountMangerApi,
-  assignManagerDetails,
-} from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
-import classes from "./assign-accountManger.module.css";
+import { kycUserList } from "../../../slices/kycSlice";
+
 const AssigneAccountManger = () => {
-  const [clientCodeList, setCliencodeList] = useState([]);
-  const [selectedClientId, setSelectedClientId] = useState(null);
-  const [assignedAccountManger, setAssignedAccountManger] = useState("");
+  const [clientCodeList, setClientCodeList] = useState([]);
+  const [assignmentType, setAssignmentType] = useState([]);
   const [assignDetails, setAssignDetails] = useState([]);
-  const [disable, setDisable] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const { kyc } = useSelector((state) => state);
+  const KycList = kyc?.kycUserList;
   const dispatch = useDispatch();
-  let initialValues = {
+
+  const initialValues = {
     react_select: "",
-    login_master: "",
+    assigned_login_id: "",
+    assignment_type: null,
   };
 
   const validationSchema = Yup.object().shape({
-    login_master: Yup.string().required("Required"),
+    assigned_login_id: Yup.string().required("Required"),
     react_select: Yup.object().required("Required").nullable(),
+    assignment_type: Yup.object().required("Required").nullable(),
   });
 
-
-
-  const handleChange = (selectedOption) => {
-    const clientId = selectedOption ? selectedOption.value : null;
-    setSelectedClientId(clientId);
-
-    if (clientId) {
-      const postData = {
-        client_code: clientId,
-      };
-
-      dispatch(assignAccountMangerApi(postData))
-        .then((res) => {
-          // console.log("res", res)
-          setAssignedAccountManger(res?.payload?.result);
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-        });
-    }
-  };
-
   useEffect(() => {
-    const postData = {
-      role_id: "101",
-    };
-    dispatch(assignManagerDetails(postData))
-      .then((response) => {
-        const data = convertToFormikSelectJson(
-          "login_master_id",
-          "name",
-
-          response?.payload?.result
-        );
-        setAssignDetails(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching merchant data:", error);
-      });
+    dispatch(assignmentTypeApi()).then((response) => {
+      const data = response?.payload?.assignment_type?.map((item) => ({
+        value: item.value,
+        label: item.key,
+        role_id: item.role_id,
+      }));
+      setAssignmentType(data);
+    });
   }, []);
 
   useEffect(() => {
     dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setCliencodeList(resp?.payload?.result);
+      setClientCodeList(resp?.payload?.result);
     });
   }, []);
 
-  const onSubmit = (values) => {
-    setDisable(true);
-
-    const postData = {
-      client_code: values?.react_select?.value,
-      login_master_id: values.login_master,
-    };
-
-    if (postData) {
-      if (!window.confirm("Are you sure to assign a new account manager?")) {
-        setDisable(false);
-        return;
-      }
-
-      assignAccountMangerService
-        .assignClient(postData)
-        .then((res) => {
-          if (res?.data?.status === true) {
-            toastConfig.successToast(res?.data?.message);
-            dispatch(
-              assignAccountMangerApi({ client_code: selectedClientId })
-            ).then((res) => {
-              setAssignedAccountManger(res?.payload?.result);
-              setDisable(false);
-            });
-          } else {
-            toastConfig.errorToast(res?.data?.message);
-            setDisable(false);
-          }
-        })
-        .catch((err) => {
-          setDisable(false);
-        });
+  const fetchAccountManagers = (role_id) => {
+    if (role_id) {
+      dispatch(assignManagerDetails({ role_id })).then((response) => {
+        const data = convertToFormikSelectJson("login_master_id", "name", response?.payload?.result);
+        setAssignDetails(data);
+      });
     }
   };
 
-  const options = [
-    { value: "", label: "Select Client Code" },
-    ...clientCodeList.map((data) => ({
-      value: data.clientCode,
-      label: `${data.clientCode} - ${data.name}`,
-    })),
-  ];
+  const handleClientChange = (selectedOption) => {
+    if (selectedOption) {
+      dispatch(kycUserList({ login_id: selectedOption.value }));
+    }
+  };
+
+  const onSubmit = (values, { setSubmitting }) => {
+    const postData = {
+      assigned_login_id: values.assigned_login_id,
+      merchant_login_id: values?.react_select?.value,
+      assignment_type: values.assignment_type?.value,
+    };
+
+    if (!window.confirm("Are you sure to assign a new role?")) {
+      setSubmitting(false);
+      return;
+    }
+
+    dispatch(assignRoleWiseApi(postData)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        toastConfig.successToast(res.payload.message);
+        dispatch(kycUserList({ login_id: values?.react_select?.value }));
+      } else {
+        toastConfig.errorToast(res.payload);
+      }
+      setSubmitting(false);
+    });
+  };
+
+  const clientOptions = clientCodeList.map((data) => ({
+    value: data.loginMasterId,
+    label: `${data.clientCode} - ${data.name}`,
+  }));
+
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="">
-            <h5 className="">Merchant Assignment</h5>
-          </div>
-          <div className="container-fluid p-0">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => (
-                <Form className="row mt-5">
-                  <div className="row">
-                    <div className="col-lg-3">
-                      <CustomReactSelect
-                        name="react_select"
-                        options={options}
-                        placeholder="Select Client Code"
-                        filterOption={createFilter({ ignoreAccents: false })}
-                        label="Client Code"
-                        onChange={handleChange}
-                      />
-                      <div className="text-primary mb-3 mt-5 d-flex">
-                        {selectedClientId && (
-                          <h6 className={``}>Current Account Manager</h6>
-                        )}
-                      </div>
-                      {selectedClientId && (
-                        <h6 className="mt-3">
-                          Name: {assignedAccountManger?.name || "NA"}
-                        </h6>
-                      )}
-                      {selectedClientId && (
-                        <h6 className="">
-                          {" "}
-                          Email: {assignedAccountManger?.email || "NA"}
-                        </h6>
-                      )}
-                    </div>
-                    <div className="col-lg-3">
-                      <FormikController
-                        control="select"
-                        name="login_master"
-                        options={assignDetails}
-                        className="form-select"
-                        label="Account Manager List"
-                      />
-                    </div>
-                    <div className="col-lg-3 mt-4">
-                      <button
-                        type="submit"
-                        className="btn cob-btn-primary approve text-white"
-                        disabled={disable}
-                      >
-                        {disable && (
-                          <span
-                            className="spinner-border spinner-border-sm mr-1"
-                            role="status"
-                            ariaHidden="true"
-                          ></span>
-                        )}
-                        Assign
-                      </button>
-                    </div>
+    <section>
+      <main>
+        <h5>Merchant Assignment</h5>
+        <div className="container-fluid p-0">
+          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+            {({ values, setFieldValue, isSubmitting }) => (
+              <Form className="row mt-5">
+                <div className="row">
+                  <div className="col-lg-3 col-md-6 col-12">
+                    <CustomReactSelect
+                      name="react_select"
+                      options={clientOptions}
+                      placeholder="Select Client Code"
+                      filterOption={createFilter({ ignoreAccents: false })}
+                      label="Client Code"
+                      onChange={(selectedOption) => {
+                        setSelectedId(selectedOption);
+                        setFieldValue("react_select", selectedOption);
+                        handleClientChange(selectedOption);
+                      }}
+                    />
                   </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
+                  <div className="col-lg-3 col-md-6 col-12">
+                    <CustomReactSelect
+                      name="assignment_type"
+                      options={assignmentType}
+                      placeholder="Select Assignment Type"
+                      filterOption={createFilter({ ignoreAccents: false })}
+                      label="Assignment Type"
+                      onChange={(selectedOption) => {
+                        setFieldValue("assignment_type", selectedOption);
+                        if (selectedOption) {
+                          fetchAccountManagers(selectedOption.role_id);
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="col-lg-3 col-md-6 col-12">
+                    <FormikController control="select" name="assigned_login_id" options={assignDetails} className="form-select" label="Manager List" />
+                  </div>
+                  <div className="col-lg-3 col-md-6 col-12 mt-4">
+                    <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
+                      {isSubmitting && <span className="spinner-border spinner-border-sm mr-1" role="status"></span>} Assign
+                    </button>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  {KycList?.result?.loginMasterId && (
+                    <div className="">
+                      <table className="table table-bordered table-responsive-sm">
+                        <thead>
+                          <tr>
+                            <td className="" colSpan="2">Assigned Manager</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Account Manager Name</td>
+                            <td>{KycList?.result?.loginMasterId?.account_manager_name || "NA"}</td>
+                          </tr>
+                          <tr>
+                            <td>Assigned BD Name</td>
+                            <td>{KycList?.result?.loginMasterId?.assigned_bd_name || "NA"}</td>
+                          </tr>
+                          <tr>
+                            <td>Assigned Zonal Manager</td>
+                            <td>{KycList?.result?.loginMasterId?.assigned_zonal_manager_name || "NA"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
-        <div></div>
       </main>
     </section>
   );

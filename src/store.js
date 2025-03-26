@@ -34,8 +34,15 @@ import { kycValidatorReducer } from "./slices/kycValidatorSlice";
 import { bankDashboardReducer } from "./slices/bank-dashboard-slice/bankDashboardSlice";
 import { infoBulletinReducer } from "./slices/infoBulletinSlice";
 import { paymentLinkSliceReducer } from "./slices/paymentLink/paymentLinkSlice";
+import { qFormSliceReducer } from "./slices/qform-reports";
 import { createEmandateByApiSliceReducer } from "./slices/subscription-slice/createEmandateSlice";
 import { registrationHisorySliceReducer } from "./slices/subscription-slice/registrationHistorySlice";
+import { ckycrReducer } from "./components/ApproverNVerifier/backend-kyc/slice/ckycr.slice";
+import { dateFilterSliceReducer } from "./slices/date-filter-slice/DateFilterSlice"
+import { paymentLinkSolutionSliceReducer } from "./components/dashboard/AllPages/payment-link-solution/paylink-solution-slice/paylinkSolutionSlice";
+import { merchantAssignedReducer } from "./components/BusinessDevlopment/businessDevelopmentSlice/BusinessDevelopmentSlice";
+import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
+import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDevelopment/bdSlice.js/bdSlice";
 
 const reducer = {
   auth: authReducer,
@@ -58,6 +65,8 @@ const reducer = {
   challanReducer: challanReducer,
   merchantReportSlice: merchantReportSlice,
 
+
+
   // For subscription
   Reports: reportsDataReducer,
   DebitReports: DebitReportsDataReducer,
@@ -68,6 +77,7 @@ const reducer = {
   // approver
   approverDashboard: approverDashboardSlice,
   rateMappingSlice: rateMappingSlice,
+  ckycrReducer: ckycrReducer,
 
   //merchantOnboardByOps
   merchantReferralOnboardReducer: merchantReferralOnboardReducer,
@@ -88,7 +98,16 @@ const reducer = {
   kycValidatorReducer: kycValidatorReducer,
   bankDashboardReducer: bankDashboardReducer,
   infoBulletinReducer: infoBulletinReducer,
-  paymentLinkSliceReducer: paymentLinkSliceReducer
+  paymentLinkSliceReducer: paymentLinkSliceReducer,
+  merchantAssignedReducer: merchantAssignedReducer,
+  dateFilterSliceReducer: dateFilterSliceReducer,
+  /// Payment Link Solution
+
+  paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer,
+  qForm: qFormSliceReducer,
+  mfaReducer: mfaReducer,
+  assignBdReducer: assignBdReducer
+
 };
 
 const store = configureStore({

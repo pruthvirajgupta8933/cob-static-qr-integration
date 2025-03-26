@@ -40,6 +40,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
         (type) => type.value == kycData?.merchant_account_details?.accountType
       )?.key ?? "",
     ifsc: kycData?.merchant_account_details?.ifsc_code ?? "",
+    isIfscVerified: kycData?.merchant_account_details?.ifsc_code ? 1 : "",
     bankName: kycData?.merchant_account_details?.bankName ?? "",
     branch: kycData?.merchant_account_details?.branch ?? "",
     bank_id: kycData?.merchant_account_details?.bankId ?? "",
@@ -60,14 +61,13 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
     acHolderName: Yup.string().allowOneSpace().required("Required").nullable(),
     ifsc: Yup.string()
       // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(Regex.ifscRegex, RegexMsg.ifscRegex)
+      .matches(Regex.ifsc_Masked, RegexMsg.ifscRegex)
       .min(6, "IFSC must be at least 6 characters")
       .max(20, "IFSC must not exceed 20 characters")
       .required("Required")
       .nullable(),
     acNumber: Yup.string()
-      .trim()
-      .matches(Regex.accountNoRgex, RegexMsg.accountNoRgex)
+      .matches(Regex.accountNo_Masked, RegexMsg.accountNoRgex)
       .required("Required")
       .nullable(),
     acType: Yup.string().required("Required").nullable(),
@@ -219,6 +219,20 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                         setFieldValue("bank_id", "");
                       }}
                     />
+                    {values?.isIfscVerified !== null &&
+                      values?.isIfscVerified !== "" &&
+                      values?.isIfscVerified !== undefined && (
+                        <span className="success input-group-append">
+                          <img
+                            src={verifiedIcon}
+                            alt=""
+                            title=""
+                            width={"20px"}
+                            height={"20px"}
+                            className="btn-outline-secondary"
+                          />
+                        </span>
+                      )}
                   </div>
                   <ErrorMessage name={"ifsc"}>
                     {(msg) => <p className="text-danger">{msg}</p>}
@@ -232,7 +246,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                   </label>
                   <div className="input-group">
                     <Field
-                      type="number"
+                      type="text"
                       name="acNumber"
                       className="form-control"
                       disabled={disableForm}
@@ -242,9 +256,9 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                       }}
                     />
                     {values?.acNumber !== null &&
-                    values?.acNumber !== "" &&
-                    values?.acNumber !== undefined &&
-                    values?.isAccountNumberVerified !== "" ? (
+                      values?.acNumber !== "" &&
+                      values?.acNumber !== undefined &&
+                      values?.isAccountNumberVerified !== "" ? (
                       <span className="success input-group-append">
                         <img
                           src={verifiedIcon}
@@ -334,18 +348,6 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                       className="form-control"
                       disabled={disableForm}
                     />
-                    {values?.bank_id !== "" && (
-                      <span className="success input-group-append">
-                        <img
-                          src={verifiedIcon}
-                          alt=""
-                          title=""
-                          width={"20px"}
-                          height={"20px"}
-                          className="btn-outline-secondary"
-                        />
-                      </span>
-                    )}
                   </div>
                 </div>
 

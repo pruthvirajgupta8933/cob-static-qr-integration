@@ -21,7 +21,6 @@ function IdleTimerContainer(props) {
 
 
   const onIdle = () => {
-    // console.log('User is idle')
     setModalIsOpen(true)
     sessionTimeoutRef.current = setTimeout(logOut, 10000)
   }
@@ -102,16 +101,6 @@ function IdleTimerContainer(props) {
             </div>
           </div>
         </div>
-        {/* </div> */}
-        {/* <div className="" >
-        <h2>You've been idle for a while!</h2>
-        <p>You will be logged out soon</p>
-        <div>
-          <button onClick={logOut}>Log me out</button>
-          <button onClick={stayActive}>Keep me signed in</button>
-        </div>
-        </div> */}
-
       </Modal>
     </div>
   )
