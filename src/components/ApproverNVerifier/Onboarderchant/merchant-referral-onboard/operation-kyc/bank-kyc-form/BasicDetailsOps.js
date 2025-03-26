@@ -210,6 +210,7 @@ function BasicDetailsOps({
             dispatch(
               kycUserList({
                 login_id: resp?.payload?.merchant_data?.loginMasterId,
+                masking: 1
               })
             );
             toastConfig.successToast(resp?.payload?.message);
