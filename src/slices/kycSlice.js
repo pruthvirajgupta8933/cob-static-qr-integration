@@ -17,6 +17,7 @@ const initialState = {
   isLoadingForPendingApproval: false,
   isLoadingForApproved: false,
   isLoadingForRejected: false,
+  isLoadingState: false,
 
   kycUserList: {},
   notFilledUserList: {
@@ -165,6 +166,7 @@ const initialState = {
   merchantKycData: {},
   kycIdList: [],
 };
+
 
 export const updateContactInfo = createAsyncThunk(
   "kyc/updateContactInfo",
@@ -394,8 +396,9 @@ export const merchantInfo = createAsyncThunk(
 export const kycUserList = createAsyncThunk(
   "kyc/kycUserList",
   async (requestParam) => {
+    const operation = requestParam?.masking === 1 ? "k" : "r"
     const response = await axiosInstanceJWT
-      .post(`${API_URL.Kyc_User_List}`, requestParam)
+      .post(`${API_URL.Kyc_User_List}`, { ...requestParam, operation: operation })
       .catch((error) => {
         return error.response;
       });
@@ -973,10 +976,14 @@ export const kycSlice = createSlice({
     },
     clearKycState: (state) => {
       state.kycUserList = {};
+      state.documentsUpload = []
     },
-    // clearKycDetailsByMerchantLoginId: (state) => {
-    //   state.merchantKycData = {};
-    // },
+    clearKYCDocumentList: (state) => {
+      state.documentsUpload = []
+    },
+    clearWebsiteWhiteList: (state) => {
+      state.merchantWhitelistWebsite = [];
+    },
 
     saveDropDownAndFinalArray: (state, action) => {
       // state.compareDocListArray.dropDownDocList = action?.payload?.dropDownDocList;
@@ -1135,13 +1142,16 @@ export const kycSlice = createSlice({
       })
       .addCase(kycUserList.pending, (state) => {
         state.status = "pending";
+        state.isLoadingState = true;
       })
       .addCase(kycUserList.fulfilled, (state, action) => {
         state.kycUserList = action.payload;
+        state.isLoadingState = false;
       })
       .addCase(kycUserList.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        state.isLoadingState = false;
       })
 
       // state update for the merchant roles 
@@ -1329,11 +1339,23 @@ export const kycSlice = createSlice({
       .addCase(getKycIDList.rejected, (state) => {
         state.kycIdList = [];
       })
+      .addCase(documentsUpload.pending, (state) => {
+        state.documentsUpload = [];
+      })
       .addCase(documentsUpload.fulfilled, (state, action) => {
         state.documentsUpload = action.payload;
       })
+      .addCase(documentsUpload.rejected, (state) => {
+        state.documentsUpload = [];
+      })
+      .addCase(whiteListedWebsite.pending, (state, action) => {
+        state.merchantWhitelistWebsite = [];
+      })
       .addCase(whiteListedWebsite.fulfilled, (state, action) => {
         state.merchantWhitelistWebsite = action.payload;
+      })
+      .addCase(whiteListedWebsite.rejected, (state, action) => {
+        state.merchantWhitelistWebsite = [];
       })
   },
 });
@@ -1349,6 +1371,8 @@ export const {
   saveDropDownAndFinalArray,
   clearFetchAllByKycStatus,
   clearApproveKyc,
+  clearWebsiteWhiteList,
+  clearKYCDocumentList
   // clearKycDetailsByMerchantLoginId,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

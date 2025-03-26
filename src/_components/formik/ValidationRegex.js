@@ -2,18 +2,19 @@ export const Regex = {
   acceptAlphabet: /^[aA-zZ\s]+$/,
   acceptAlphaNumericDot: /^[a-zA-Z0-9. ]+$/,
   acceptAlphaWithComma: /^[a-zA-Z,.\s]+$/,
-  acceptNumber:
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+  acceptNumber: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
   acceptAlphaNumeric: /^[a-zA-Z0-9\s*]+$/, // alphanumeric with *
   alphaBetwithhyphon: /[a-zA-Z._^%$#!~@,-]+/,
   digit: /^[0-9]+$/,
   address: /^[a-zA-Z0-9\s,.'-]{3,}$/,
   addressForSpecific: /^[#.0-9a-zA-Z\s,-/]+$/,
-  phoneNumber:
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+  phoneNumber: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+
   password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+
   ifscRegex: /^[A-Z]{4}0[A-Z0-9]{6}$/,
   accountNoRgex: /^[a-zA-Z0-9]{2,25}$/,
+
   multipleSpace: /^\S+(\s{1}\S+)*$/,
   emailRegexForSpace: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   urlFormate:
@@ -28,6 +29,14 @@ export const Regex = {
   pinCodeRegExp: /^[1-9][0-9]{5}$/,
   latitudeRegex: /^-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)/,
   longitudeRegex: /^-?((1[0-7][0-9]|[1-9]?[0-9])(\.\d+)?|180(\.0+)?)/,
+  // masked regex
+  acceptAlphaNumericDot_Masked: /^[a-zA-Z0-9.* ]+$/,
+  phoneNumber_Masked: /^(?:\*{1,6})?[0-9]{4,10}$/,
+  ifsc_Masked: /^(?:\*{1,15})?[a-zA-Z0-9]{4,25}$/,
+  accountNo_Masked: /^(?:\*{1,6})?[A-Z0-9]{4,30}$/,
+
+
+
 };
 
 export const RegexMsg = {

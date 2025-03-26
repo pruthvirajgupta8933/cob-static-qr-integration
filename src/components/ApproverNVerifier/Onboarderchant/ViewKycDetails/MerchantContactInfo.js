@@ -14,16 +14,15 @@ import {
 
 function MerchantContactInfo(props) {
   const { KycTabStatus, selectedUserData } = props;
-  // const [buttonText, setButtonText] = useState("Save and Next");
 
   let isVerified =
     KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() ===
-    KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase()
+      KYC_STATUS_VERIFIED?.toString()?.toLocaleLowerCase()
       ? true
       : false;
   let isRejected =
     KycTabStatus?.general_info_status?.toString()?.toLocaleLowerCase() ===
-    KYC_STATUS_REJECTED?.toString()?.toLocaleLowerCase()
+      KYC_STATUS_REJECTED?.toString()?.toLocaleLowerCase()
       ? true
       : false;
 
@@ -72,7 +71,6 @@ function MerchantContactInfo(props) {
     if (window.confirm("Reject Merchant Contact Info?")) {
       try {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
-        // console.log(resp)
         if (resp?.payload?.general_info_status) {
           toast.success("Rejected");
           dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }));
@@ -82,12 +80,13 @@ function MerchantContactInfo(props) {
 
         dispatch(
           GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId })
-        ); // Used to remove kyc button because updated in redux store
+        );
       } catch (error) {
         toast.error("Try Again Network Error");
       }
     }
   };
+
   const inputFields = [
     { label: "Contact Person Name", value: selectedUserData?.name },
     {
@@ -104,6 +103,22 @@ function MerchantContactInfo(props) {
       value: selectedUserData?.emailId,
       verified: selectedUserData?.isEmailVerified,
     },
+    { label: "Developer Contact", value: selectedUserData?.developer_contact },
+    { label: "Developer Name", value: selectedUserData?.developer_name }];
+
+  const lastThreeFields = [
+    {
+      label: "Parent Bank Name",
+      value: selectedUserData?.result?.loginMasterId?.parent_bank_name,
+    },
+    {
+      label: "Parent Referral Name",
+      value: selectedUserData?.result?.loginMasterId?.parent_referral_name,
+    },
+    {
+      label: "Parent Merchant Name",
+      value: selectedUserData?.result?.loginMasterId?.parent_merchant_name,
+    },
   ];
 
   return (
@@ -113,40 +128,27 @@ function MerchantContactInfo(props) {
         {inputFields?.map((field) => (
           <div className="col-sm-6 col-md-6 col-lg-6 mb-3" key={uuidv4()}>
             <label className="">{field.label}</label>
-            {field.value !== undefined ? (
-              <>
-                <input
-                  type="text"
-                  className="form-control"
-                  disabled={true}
-                  value={field.value}
-                />
-                <span>
-                  {field.verified !== undefined && (
-                    <p
-                      className={
-                        field.verified === 1 ? "text-success" : "text-danger"
-                      }
-                    >
-                      {field.verified === 1 ? "Verified" : "Not Verified"}
-                    </p>
-                  )}
-                </span>
-              </>
-            ) : (
-              <p className="font-weight-bold">Loading...</p>
+            <input type="text" className="form-control" disabled={true} value={field.value} />
+            {field.verified !== undefined && (
+              <p className={field.verified === 1 ? "text-success" : "text-danger"}>
+                {field.verified === 1 ? "Verified" : "Not Verified"}
+              </p>
             )}
+          </div>
+        ))}
+      </div>
+      <div className="form-row g-3 d-flex">
+        {lastThreeFields?.map((field) => (
+          <div className="col-4 mb-3" key={uuidv4()}>
+            <label className="">{field.label}</label>
+            <input type="text" className="form-control" disabled={true} value={field.value} />
           </div>
         ))}
       </div>
       <div className="form-row g-3">
         <div className="col-lg-6 font-weight-bold">
-          <p className="m-0">
-            Status : <span>{KycTabStatus?.general_info_status}</span>
-          </p>
-          <p className="m-0">
-            Comment : <span>{KycTabStatus?.general_info_reject_comments}</span>
-          </p>
+          <p className="m-0">Status : <span>{KycTabStatus?.general_info_status}</span></p>
+          <p className="m-0">Comment : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
         </div>
         <div className="col-lg-6">
           <VerifyRejectBtn

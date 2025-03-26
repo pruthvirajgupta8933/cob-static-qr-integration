@@ -3,14 +3,15 @@ import { setMessage } from "./message";
 import API_URL from "../config";
 import zoneService from "../services/merchantZoneMapping.service";
 
-import {
-  axiosInstanceJWT,
-
-} from "../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../utilities/axiosInstance";
 
 
 const initialState = {
   postdata: {},
+  commentData: {
+    data: [],
+    loading: false
+  }
 
 };
 
@@ -296,11 +297,8 @@ export const merchantZoneMappingSlice = createSlice({
   extraReducers: {
     [riskCategory.pending]: (state, action) => {
       state.status = "pending";
-
     },
     [riskCategory.fulfilled]: (state, action) => {
-
-
     },
     [riskCategory.rejected]: (state, action) => {
       state.status = "failed";
@@ -316,12 +314,25 @@ export const merchantZoneMappingSlice = createSlice({
     [forSavingComments.fulfilled]: (state, action) => {
       // state.comments = action.payload
 
-
-
     },
     [riskCategory.rejected]: (state, action) => {
       forSavingComments = "failed";
       state.error = action.error.message;
+    },
+
+    [forGettingCommentList.pending]: (state) => {
+      state.commentData.loading = true;
+      state.commentData.data = []
+
+    },
+    [forGettingCommentList.fulfilled]: (state, action) => {
+      state.commentData.loading = false;
+      state.commentData.data = action.payload.Data
+
+    },
+    [forGettingCommentList.rejected]: (state) => {
+      state.commentData.loading = true;
+      state.commentData.data = []
     },
 
 

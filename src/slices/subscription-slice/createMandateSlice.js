@@ -126,10 +126,10 @@ export const fetchMandateBankName = createAsyncThunk(
 );
 
 
-export const createMendateApiData=createAsyncThunk(
+export const createMendateApiData = createAsyncThunk(
   "subcription/createMendateApiData",
-  async (thunkAPI,formData) => {
-    console.log("formData",formData)
+  async (thunkAPI, formData) => {
+    // console.log("formData",formData)
     try {
       const response = await createMandateService.createMandateApi(formData);
 

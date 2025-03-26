@@ -16,9 +16,9 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "../AllPages/ClientList";
-import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
-import Paylink from "../AllPages/createpaymentlink/Paylink";
-import Paylinks from "../AllPages/payment-links/Paylink";
+// import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
+// import Paylink from "../AllPages/createpaymentlink/Paylink";
+// import Paylinks from "../AllPages/payment-links/Paylink";
 // improt Profile
 // import { Profile } from "../../AllPages/Profile/Profile";
 import Emandate from "../AllPages/Emandate";
@@ -66,7 +66,9 @@ import { isNull, reject } from "lodash";
 import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
 import ReferZone from "../../ApproverNVerifier/ReferZone";
 import GenerateMid from "../../ApproverNVerifier/GenerateMid";
-import generateAndSaveClientCode, { generateWord } from "../../../utilities/generateClientCode";
+import generateAndSaveClientCode, {
+  generateWord,
+} from "../../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "../AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "../AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../../subscription_components/MandateReport";
@@ -103,10 +105,24 @@ import ManualSubscription from "../../ManualSubscription";
 import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
 import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
 import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
-import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
+// import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
 import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
 import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
 import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import TransactionReport from "../../../subscription_components/Transaction-Report/TransactionReport";
+import CreateBulkEmandate from "../../../subscription_components/Create-Bulk-E-Mandate/CreateBulkEmandate";
+import WebsiteWhitelistPage from "../../ApproverNVerifier/website-whitelist/WebsiteWhitelistPage";
+import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
+import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
+import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
+import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
+import QFormReports from "../../qform-reports";
+import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
+
+import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
+import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
+import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -114,7 +130,14 @@ function DashboardMainContent() {
 
   const { auth } = useSelector((state) => state);
   const { user } = auth;
+  const loginId = user?.loginId;
+  const roleId = user?.roleId;
   const roles = roleBasedAccess();
+  const assignmentType = useSelector((state) => state.
+    assignAccountManagerReducer.assignmentType
+
+  );
+
   // console.log("roles",roles);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -130,12 +153,14 @@ function DashboardMainContent() {
       const clientMobileNo = user?.clientMobileNo;
       // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
-
       // check client code is existing
       // const stepRespOne = await authService.checkClintCode({
       //   client_code: arrayOfClientCode,
       // });
-      const stepRespOne = await generateAndSaveClientCode(clientFullName, clientMobileNo)
+      const stepRespOne = await generateAndSaveClientCode(
+        clientFullName,
+        clientMobileNo
+      );
       // console.log("stepRespOne", stepRespOne)
       let newClientCode;
       // if client code available return status true, then make request with the given client
@@ -236,7 +261,32 @@ function DashboardMainContent() {
     }
   }, [user, dispatch]);
 
-  // menuListReducer.enableMenu.length===0
+
+  useEffect(() => {
+    if (!assignmentType && roles?.businessDevelopment) {
+      if (roleId) {
+        dispatch(assignmentTypeApi(roleId)).then((response) => {
+          const assignmentTypes = response?.payload?.assignment_type ?? [];
+
+          if (Array.isArray(assignmentTypes)) {
+            const filteredAssignment = assignmentTypes.find(
+              (item) => item?.role_id === roleId
+            );
+
+            if (filteredAssignment) {
+              dispatch(setAssignmentType(filteredAssignment));
+            }
+          }
+        });
+      }
+    }
+  }, [dispatch]);
+
+
+
+
+
+
 
   useEffect(() => {
     // fetch subscribe product data
@@ -248,12 +298,8 @@ function DashboardMainContent() {
           })
         );
       }
-    } catch (error) {
-
-    }
-
+    } catch (error) { }
   }, [location]);
-
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -261,6 +307,11 @@ function DashboardMainContent() {
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
+
+
+
+
+
 
 
 
@@ -295,6 +346,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true
                 }}
               >
                 <OnboardMerchant />
@@ -309,14 +361,12 @@ function DashboardMainContent() {
                   viewer: true,
                   verifier: true,
                   accountManager: true,
+                  businessDevelopment: true
                 }}
               >
                 <InternalDashboard />
               </AuthorizedRoute>
-              <Route
-                exact
-                path={`${path}/change-password`}
-              >
+              <Route exact path={`${path}/change-password`}>
                 <ChangePassword />
               </Route>
 
@@ -419,29 +469,29 @@ function DashboardMainContent() {
                 <Products />
               </AuthorizedRoute>
 
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 exaxt
                 path={`${path}/paylink`}
                 Component={Paylink}
                 roleList={{ merchant: true }}
               >
                 <Paylink />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinks`}
-                Component={Paylinks}
+                Component={PaylinkDashboard}
                 roleList={{ merchant: true }}
               />
-              <AuthorizedRoute
+              {/* <AuthorizedRoute
                 exaxt
                 path={`${path}/paylinkdetail`}
                 Component={PaymentLinkDetail}
                 roleList={{ merchant: true }}
               >
                 <PaymentLinkDetail />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exact
@@ -650,6 +700,14 @@ function DashboardMainContent() {
                 <MerchantBalance />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exact
+                path={`${path}/q-form-reports`}
+                Component={QFormReports}
+                roleList={{ merchant: true }}
+              >
+                <QFormReports />
+              </AuthorizedRoute>
               {/* Routing for Faq */}
 
               <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
@@ -700,7 +758,7 @@ function DashboardMainContent() {
                 <CreateMandate />
               </AuthorizedRoute>
 
-              <AuthorizedRoute                                       //Create Mandate handle by frontend(Old code)
+              <AuthorizedRoute //Create Mandate handle by frontend(Old code)
                 exact
                 path={`${path}/subscription/create-mandate-api`}
                 Component={CreateMandateApi}
@@ -718,7 +776,6 @@ function DashboardMainContent() {
                 <CreateMandateApiResponse />
               </AuthorizedRoute>
 
-
               <AuthorizedRoute
                 exact
                 path={`${path}/create-e-mandate`}
@@ -727,7 +784,6 @@ function DashboardMainContent() {
               >
                 <EnachForm />
               </AuthorizedRoute>
-
 
               <AuthorizedRoute
                 exact
@@ -746,6 +802,26 @@ function DashboardMainContent() {
               >
                 <RegistrationHistory />
               </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-report`}
+                Component={TransactionReport}
+                roleList={{ merchant: true }}
+              >
+                <TransactionReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-bulk-mandate`}
+                Component={CreateBulkEmandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateBulkEmandate />
+              </AuthorizedRoute>
+
+
 
 
 
@@ -794,18 +870,21 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
                 }}
               />
 
-              {roles?.approver && (
-                <Route
-                  exact
-                  path={`${path}/ratemapping/:loginid`}
-                  Component={ManualRateMapping}
-                >
-                  <ManualRateMapping />
-                </Route>
-              )}
+              {
+                roles?.approver && (
+                  <Route
+                    exact
+                    path={`${path}/ratemapping/:loginid`}
+                    Component={ManualRateMapping}
+                  >
+                    <ManualRateMapping />
+                  </Route>
+                )
+              }
 
               <AuthorizedRoute
                 exact
@@ -847,7 +926,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/my-merchant`}
                 Component={MyMerchantList}
-                roleList={{ viewer: true, accountManager: true }}
+                roleList={{ viewer: true, accountManager: true, businessDevelopment: true }}
               >
                 <MyMerchantList />
               </AuthorizedRoute>
@@ -860,8 +939,6 @@ function DashboardMainContent() {
               >
                 <ChiledMerchantList />
               </AuthorizedRoute>
-
-
 
               <AuthorizedRoute
                 exact
@@ -893,7 +970,7 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/website-whitelist`}
-                Component={WebWhiteList}
+                Component={WebsiteWhitelistPage}
                 roleList={{ verifier: true }}
               >
                 <WebWhiteList />
@@ -913,14 +990,92 @@ function DashboardMainContent() {
                 roleList={{ bank: true }}
               />
 
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/payment-link-solution`}
+                roleList={{ merchant: true }}
+                Component={PaylinkDashboard}
+              >
+                <PaylinkDashboard />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-link-generated`}
+                roleList={{ merchant: true }}
+                Component={TotalLinkGenrated}
+              >
+                <TotalLinkGenrated />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-payers`}
+                roleList={{ merchant: true }}
+                Component={TotalPayers}
+              >
+                <TotalPayers />
+              </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/recent-transaction`}
+                roleList={{ merchant: true }}
+                Component={RecentTransaction}
+              >
+                <RecentTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/mfa`}
+                Component={Mfa}
+                roleList={{
+                  approver: true,
+
+                }}
+              />
+
+
+
+
+              {/* </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/assigned-merchant`}
+                Component={AssignedMerchant}
+                roleList={{ approver: true, accountManager: true, zonalManager: true, businessDevelopment: true }}
+              />
+
+              {/* <AuthorizedRoute
+                path={`${path}/assign-business-development`}
+                Component={AssigneBusinessDevelopment}
+                roleList={{
+                  approver: true,
+                  verifier: true
+                }}
+              >
+              </AuthorizedRoute> */}
+
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/update-rolling-reserve`}
+                Component={UpdateRollingReserve}
+                roleList={{ approver: true, verifier: true }}
+              />
+
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
               </Route>
-            </Switch>
-          </main>
-        </div>
-      </div>
-    </React.Fragment>
+            </Switch >
+          </main >
+        </div >
+      </div >
+    </React.Fragment >
   );
 }
 

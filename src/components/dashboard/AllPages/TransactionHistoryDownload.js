@@ -14,7 +14,7 @@ import {
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import API_URL from "../../../config";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { axiosInstance } from "../../../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
@@ -94,8 +94,7 @@ function TransactionHistoryDownload() {
   //  }
 
   const getPaymentStatusList = async () => {
-    await axiosInstance
-      .get(API_URL.GET_PAYMENT_STATUS_LIST)
+    await axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
         // console.log(res)
         SetPaymentStatusList(res.data);
@@ -106,7 +105,7 @@ function TransactionHistoryDownload() {
   };
 
   const paymodeList = async () => {
-    await axiosInstance
+    await axiosInstanceJWT
       .get(API_URL.PAY_MODE_LIST)
       .then((res) => {
         // console.log(res)
@@ -131,17 +130,34 @@ function TransactionHistoryDownload() {
     isExtraDataRequired
   );
 
+  // const tempPayStatus = [{ key: "All", value: "All" }];
+  // paymentStatusList.map((item) => {
+  //   if (item !== "INITIATED") {
+  //     tempPayStatus.push({ key: item, value: item });
+  //   }
+  // });
+
+  // const tempPaymode = [{ key: "All", value: "All" }];
+  // paymentModeList.map((item) => {
+  //   tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+  // });
+
+
   const tempPayStatus = [{ key: "All", value: "All" }];
   paymentStatusList.map((item) => {
-    if (item !== "INITIATED") {
-      tempPayStatus.push({ key: item, value: item });
+    if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+      if (item?.is_active) {
+        tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+      }
+
     }
   });
 
   const tempPaymode = [{ key: "All", value: "All" }];
   paymentModeList.map((item) => {
-    tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
+    tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
   });
+
 
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
@@ -441,8 +457,8 @@ function TransactionHistoryDownload() {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                          // value={startDate}
-                          // onChange={(e)=>setStartDate(e.target.value)}
+                        // value={startDate}
+                        // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 

@@ -54,18 +54,21 @@ function BasicDetailsOps({
     isEditTable: loginIdFromState,
     zone_code: "",
     bank_login_id: "",
+    developer_name: kycData?.developer_name || "",
+    developer_contact: kycData?.developer_contact || "",
   };
 
   const validationSchema = Yup.object().shape({
     fullName: Yup.string()
       .allowOneSpace()
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
       .wordLength("Word character length exceeded", 100)
       .max(100, "Maximum 100 characters are allowed")
       .required("Required")
       .nullable(),
     mobileNumber: Yup.string()
       .allowOneSpace()
-      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
       .required("Required")
       .min(10, "Phone number is not valid")
       .max(10, "Only 10 digits are allowed ")
@@ -103,6 +106,19 @@ function BasicDetailsOps({
       .max(100, "Maximum 100 characters are allowed")
       .matches(Regex.userNameRegex, RegexMsg.userNameRegex)
       .nullable(),
+
+    developer_name: Yup.string()
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
+      .max(100, "Maximum 50 characters are allowed")
+      .nullable(),
+    developer_contact: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
+      .min(10, "Phone number is not valid")
+      .max(10, "Only 10 digits are allowed")
+      .nullable(),
+
+
   });
 
   const handleSubmitContact = async (value) => {
@@ -116,7 +132,10 @@ function BasicDetailsOps({
       password,
       business_type,
       username,
+      developer_contact,
+      developer_name
     } = value;
+
     const updateReqBody = {
       login_id:
         kycData?.loginMasterId ?? merchantOnboardingProcess?.merchantLoginId,
@@ -128,6 +147,8 @@ function BasicDetailsOps({
       updated_by: auth?.user?.loginId,
       password: kycData?.secret_key,
       zone_code: zoneCode,
+      developer_contact: developer_contact,
+      developer_name: developer_name
     };
 
     const saveDetailsReqBody = {
@@ -140,6 +161,8 @@ function BasicDetailsOps({
       username: username,
       bank_login_id: auth?.user?.loginId,
       created_by: auth?.user?.loginId,
+      developer_contact: developer_contact,
+      developer_name: developer_name
     };
     if (bankLoginId) {
       saveDetailsReqBody.bank_login_id = bankLoginId;
@@ -347,6 +370,31 @@ function BasicDetailsOps({
                   {(msg) => <p className="text-danger m-0">{msg}</p>}
                 </ErrorMessage>
               </div>
+
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="developer_name"
+                  className="form-control"
+                  placeholder="Enter Developer Name"
+                  label="Developer Name"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="developer_contact"
+                  placeholder="Developer Contact Number"
+                  className="form-control"
+                  label="Enter Developer Contact Number"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+
               <div className="col-6">
                 {!isEditableInput && (
                   <button

@@ -7,8 +7,15 @@ import { saveImage } from "./saveImage";
 const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) => {
 
   const getFileType = (url) => {
-    const extension = url?.split('.')?.pop()?.toLowerCase(); // Get the file extension
-    if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) {
+    if (!url) return 'unsupported';
+
+    // Extract the file extension using regex
+    const match = url.match(/\.([a-zA-Z0-9]+)$/);
+    const extension = match ? match[1].toLowerCase() : '';
+
+    // Validate against supported types
+    const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'];
+    if (imageExtensions.includes(extension)) {
       return 'image';
     } else if (extension === 'pdf') {
       return 'pdf';
@@ -19,6 +26,7 @@ const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) =>
 
   const docModalBody = () => {
     const fileType = getFileType(selectViewDoc?.documentUrl);
+
 
     return (
       <div>

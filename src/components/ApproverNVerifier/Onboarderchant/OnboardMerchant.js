@@ -16,6 +16,8 @@ import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import { createSubMerchant } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import toastConfig from "../../../utilities/toastTypes";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+import FormikController from "../../../_components/formik/FormikController";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -54,6 +56,16 @@ const FORM_VALIDATION = Yup.object().shape({
     .required("Confirm Password Required")
     .allowOneSpace(),
   business_cat_code: Yup.string().required("Required"),
+  developer_name: Yup.string()
+    .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+    .max(100, "Maximum 50 characters are allowed")
+    .nullable(),
+  developer_contact: Yup.string()
+    .allowOneSpace()
+    .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+    .min(10, "Phone number is not valid")
+    .max(10, "Only 10 digits are allowed")
+    .nullable(),
   // roleId: Yup.string().required("Required")
 });
 
@@ -113,8 +125,10 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
 
   const handleRegistration = (formData, { resetForm }) => {
     let businessType = 1;
-    let { fullname, mobilenumber, emaill, passwordd, business_cat_code } =
+    let { fullname, mobilenumber, emaill, passwordd, business_cat_code, developer_contact,
+      developer_name } =
       formData;
+
     setBtnDisable(true);
 
     dispatch(
@@ -130,6 +144,10 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
         created_by: user?.loginId,
         roleId: "4",
         is_social: false,
+        developer_contact: developer_contact,
+        developer_name: developer_name
+
+
       })
     )
       .unwrap()
@@ -183,7 +201,7 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
         limit: 1,
         transition: Zoom,
       });
-      setTimeout(function () {}, 3000);
+      setTimeout(function () { }, 3000);
     }
 
     if (isUserRegistered === false) {
@@ -222,6 +240,8 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
           roleId: "",
           zone_code: "",
           terms_and_condition: false,
+          developer_name: "",
+          developer_contact: "",
         }}
         validationSchema={validator ?? FORM_VALIDATION}
         onSubmit={(values, { resetForm }) => {
@@ -434,6 +454,30 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
               </div>
             )}
 
+            <div className="col-md-6">
+              <FormikController
+                control="input"
+                name="developer_name"
+                className="form-control"
+                placeholder="Enter Developer Name"
+                label="Developer Name"
+                autoComplete="off"
+
+              />
+            </div>
+
+            <div className="col-md-6">
+              <FormikController
+                control="input"
+                name="developer_contact"
+                placeholder="Developer Contact Number"
+                className="form-control"
+                label="Enter Developer Contact Number"
+                autoComplete="off"
+
+              />
+            </div>
+
             <div className="col-md-9">
               <button
                 className="cob-btn-primary btn btn-sm text-white disabled1"
@@ -443,9 +487,9 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                 defaultValue="Create Account"
                 disabled={
                   btnDisable ||
-                  (zoneCode
-                    ? !(formik.isValid && formik.dirty)
-                    : !clientLoginId)
+                    (zoneCode
+                      ? !(formik.isValid && formik.dirty)
+                      : !clientLoginId)
                     ? true
                     : false
                 }
