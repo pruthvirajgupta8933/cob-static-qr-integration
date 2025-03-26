@@ -192,6 +192,43 @@ export const forSavingDocument = createAsyncThunk(
   }
 );
 
+
+export const forSavingBgvReport = createAsyncThunk(
+  "forSavingBgvReport/forSavingBgvReport",
+  async (requestParam) => {
+
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.BGV_REPORT}`, requestParam, {
+
+
+
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+export const fetchBgvReport = createAsyncThunk(
+  "forSavingBgvReport/forSavingBgvReport",
+  async (requestParam) => {
+
+    const response = await axiosInstanceJWT
+      .post(`${API_URL.FETCH_BGV_REPORT}`, requestParam, {
+
+
+
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
 export const forGettingDocumentList = createAsyncThunk(
   "merchnatzone/forGettingDocumentList",
   async (requestParam) => {

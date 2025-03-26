@@ -1004,6 +1004,8 @@ export const kycSlice = createSlice({
       state.approveKyc.isError = false;
       state.approveKyc.logs = {};
     },
+
+
   },
   extraReducers: (builder) => {
     builder
@@ -1152,6 +1154,7 @@ export const kycSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         state.isLoadingState = false;
+
       })
 
       // state update for the merchant roles 
