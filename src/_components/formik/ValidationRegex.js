@@ -33,10 +33,7 @@ export const Regex = {
   acceptAlphaNumericDot_Masked: /^[a-zA-Z0-9.* ]+$/,
   phoneNumber_Masked: /^(?:\*{1,6})?[0-9]{4,10}$/,
   ifsc_Masked: /^(?:\*{1,15})?[a-zA-Z0-9]{4,25}$/,
-  accountNo_Masked: /^\*{0,36}[A-Z0-9]{4}$/,
-
-
-
+  accountNo_Masked: /^\*{0,36}[A-Z0-9]{4,36}$/,
 };
 
 export const RegexMsg = {
