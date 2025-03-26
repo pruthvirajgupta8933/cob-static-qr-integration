@@ -69,8 +69,9 @@ const AgreementDocModal = (props) => {
       .nullable(),
   });
 
-  const handleSubmit = async (values) => {
-    setBtnDisable(true);
+  const handleSubmit = async (values, setSubmitting) => {
+    setSubmitting(true); // Start loader
+
     let formData = new FormData();
     formData.append("type", "22");
     formData.append("approver_id", loginId);
@@ -79,26 +80,26 @@ const AgreementDocModal = (props) => {
     formData.append("files", attachCommentFile);
     formData.append("comment", values.comments);
 
-    // 2)SAVE API
-    dispatch(forSavingDocument(formData))
-      .then((resp) => {
-        if (resp?.payload?.status) {
-          toast.success(resp?.payload?.message);
-          commentUpdate();
-          resetUploadFile();
-          setBtnDisable(false);
-        } else {
-          toast.error(resp?.payload?.message);
-          resetUploadFile();
-          commentUpdate();
-          setBtnDisable(false);
-        }
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-        setBtnDisable(false);
-      });
+    try {
+      const resp = await dispatch(forSavingDocument(formData));
+
+      if (resp?.payload?.status) {
+        toast.success(resp?.payload?.message);
+        setSubmitting(false);
+      } else {
+        toast.error(resp?.payload?.message);
+        setSubmitting(false);
+      }
+
+      commentUpdate();
+      resetUploadFile();
+    } catch (err) {
+      toastConfig.errorToast("Data not loaded");
+    } finally {
+      setSubmitting(false); // Stop loader
+    }
   };
+
 
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
@@ -181,58 +182,68 @@ const AgreementDocModal = (props) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-              resetForm();
+            onSubmit={(values, actions) => {
+              handleSubmit(values, actions.setSubmitting, actions.resetForm);
             }}
+
             enableReinitialize={true}
           >
-            <Form>
-              <div className="form-row">
-                {attachCommentFile["name"] && (
-                  <p className="text-default m-0">
-                    <i className="fa fa-paperclip" />{" "}
-                    {attachCommentFile["name"]}
-                  </p>
-                )}
-                <div className="input-group ">
-                  <Field
-                    control="input"
-                    name="comments"
-                    className="form-control p-2"
-                    placeholder="Enter Comments"
-                  />
-                  <div>
-                    <label
-                      for="file-upload"
-                      className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
-                      style={{ height: "39px" }}
-                    >
-                      <i className="fa fa-paperclip"></i>
-                    </label>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      className="d-none"
-                      onChange={(e) => handleUploadAttachments(e)}
-                      ref={aRef}
+            {({ isSubmitting }) => (
+              <Form>
+                <div className="form-row">
+                  {attachCommentFile["name"] && (
+                    <p className="text-default m-0">
+                      <i className="fa fa-paperclip" />{" "}
+                      {attachCommentFile["name"]}
+                    </p>
+                  )}
+                  <div className="input-group ">
+                    <Field
+                      control="input"
+                      name="comments"
+                      className="form-control p-2"
+                      placeholder="Enter Comments"
                     />
+                    <div>
+                      <label
+                        for="file-upload"
+                        className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
+                        style={{ height: "39px" }}
+                      >
+                        <i className="fa fa-paperclip"></i>
+                      </label>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        className="d-none"
+                        onChange={(e) => handleUploadAttachments(e)}
+                        ref={aRef}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="submit-btn approve text-white btn-sm cob-btn-primary"
+                    >
+                      {isSubmitting ? (
+                        <span
+                          className="spinner-border spinner-border-sm mr-1"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                      ) : (
+                        "Submit"
+                      )}
+                    </button>
                   </div>
+                  <ErrorMessage name="comments">
+                    {(msg) => <p className="text-danger m-0">{msg}</p>}
+                  </ErrorMessage>
 
-                  <button
-                    type="submit"
-                    className="submit-btn approve text-white btn-sm cob-btn-primary"
-                  >
-                    Submit
-                  </button>
+
                 </div>
-                <ErrorMessage name="comments">
-                  {(msg) => <p className="text-danger m-0">{msg}</p>}
-                </ErrorMessage>
-
-
-              </div>
-            </Form>
+              </Form>
+            )}
           </Formik>
         </div>
 
