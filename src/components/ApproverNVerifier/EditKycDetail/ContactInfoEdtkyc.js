@@ -99,7 +99,7 @@ function ContactInfoEdtkyc(props) {
         setTitle("BUSINESS OVERVIEW");
         setIsDisable(false);
         toast.success(res.payload?.message);
-        dispatch(kycUserList({ login_id: selectedId }));
+        dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
       } else {
         toast.error(res.payload?.message || "Something went wrong");
         toast.error(res.payload?.detail);
