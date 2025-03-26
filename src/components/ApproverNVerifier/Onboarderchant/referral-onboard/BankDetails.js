@@ -67,6 +67,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
       .required("Required")
       .nullable(),
     acNumber: Yup.string()
+      .allowOneSpace()
       .matches(Regex.accountNo_Masked, RegexMsg.accountNoRgex)
       .required("Required")
       .nullable(),

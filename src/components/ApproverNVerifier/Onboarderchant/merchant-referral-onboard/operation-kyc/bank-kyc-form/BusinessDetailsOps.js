@@ -228,6 +228,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
             kycUserList({
               login_id: kycData?.loginMasterId,
               password_required: true,
+              masking: 1
             })
           );
         }
