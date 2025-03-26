@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
-
+// import * as Yup from "yup";
+// import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingDocument,
   forGettingDocumentList,
@@ -11,14 +12,16 @@ import {
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
+// import downloadIcon from "../../../assets/images/download-icon.svg";
+// import _ from "lodash";
+import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 
-
 const AgreementDocModal = (props) => {
-
+  // console.log("this is rela bsbfsf", props)
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -38,7 +41,7 @@ const AgreementDocModal = (props) => {
   const commentUpdate = () => {
     dispatch(
       forGettingDocumentList({
-        login_id: props?.documentData.documentData?.loginMasterId,
+        login_id: props?.documentData?.loginMasterId,
       })
     )
       .then((resp) => {
@@ -69,37 +72,36 @@ const AgreementDocModal = (props) => {
       .nullable(),
   });
 
-  const handleSubmit = async (values, setSubmitting) => {
-    setSubmitting(true); // Start loader
-
+  const handleSubmit = async (values) => {
+    setBtnDisable(true);
     let formData = new FormData();
     formData.append("type", "22");
     formData.append("approver_id", loginId);
-    formData.append("login_id", props?.documentData.documentData?.loginMasterId);
+    formData.append("login_id", props?.documentData?.loginMasterId);
     formData.append("modified_by", loginId);
     formData.append("files", attachCommentFile);
     formData.append("comment", values.comments);
 
-    try {
-      const resp = await dispatch(forSavingDocument(formData));
-
-      if (resp?.payload?.status) {
-        toast.success(resp?.payload?.message);
-        setSubmitting(false);
-      } else {
-        toast.error(resp?.payload?.message);
-        setSubmitting(false);
-      }
-
-      commentUpdate();
-      resetUploadFile();
-    } catch (err) {
-      toastConfig.errorToast("Data not loaded");
-    } finally {
-      setSubmitting(false); // Stop loader
-    }
+    // 2)SAVE API
+    dispatch(forSavingDocument(formData))
+      .then((resp) => {
+        if (resp?.payload?.status) {
+          toast.success(resp?.payload?.message);
+          commentUpdate();
+          resetUploadFile();
+          setBtnDisable(false);
+        } else {
+          toast.error(resp?.payload?.message);
+          resetUploadFile();
+          commentUpdate();
+          setBtnDisable(false);
+        }
+      })
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+        setBtnDisable(false);
+      });
   };
-
 
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
@@ -152,8 +154,9 @@ const AgreementDocModal = (props) => {
     setDocPreviewToggle(true);
     setSelectedViewDoc(docData);
   };
-  return (
-    <>
+
+  const modalBody = () => {
+    return (
       <div className="container-fluid">
         {docPreviewToggle && (
           <DocViewerComponent
@@ -169,11 +172,11 @@ const AgreementDocModal = (props) => {
           <div className="d-flex justify-content-between">
             <p>
               <span className="fw-bold">Merchant Name : </span>{" "}
-              {props?.documentData.documentData?.clientName}
+              {props?.documentData?.clientName}
             </p>
             <p>
               <span className="fw-bold"> Client Code : </span>
-              {props?.documentData.documentData?.clientCode}
+              {props?.documentData?.clientCode}
             </p>
           </div>
         </div>
@@ -182,68 +185,58 @@ const AgreementDocModal = (props) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values, actions) => {
-              handleSubmit(values, actions.setSubmitting, actions.resetForm);
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values);
+              resetForm();
             }}
-
             enableReinitialize={true}
           >
-            {({ isSubmitting }) => (
-              <Form>
-                <div className="form-row">
-                  {attachCommentFile["name"] && (
-                    <p className="text-default m-0">
-                      <i className="fa fa-paperclip" />{" "}
-                      {attachCommentFile["name"]}
-                    </p>
-                  )}
-                  <div className="input-group ">
-                    <Field
-                      control="input"
-                      name="comments"
-                      className="form-control p-2"
-                      placeholder="Enter Comments"
-                    />
-                    <div>
-                      <label
-                        for="file-upload"
-                        className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
-                        style={{ height: "39px" }}
-                      >
-                        <i className="fa fa-paperclip"></i>
-                      </label>
-                      <input
-                        id="file-upload"
-                        type="file"
-                        className="d-none"
-                        onChange={(e) => handleUploadAttachments(e)}
-                        ref={aRef}
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="submit-btn approve text-white btn-sm cob-btn-primary"
+            <Form>
+              <div className="form-row">
+                {attachCommentFile["name"] && (
+                  <p className="text-default m-0">
+                    <i className="fa fa-paperclip" />{" "}
+                    {attachCommentFile["name"]}
+                  </p>
+                )}
+                <div className="input-group ">
+                  <Field
+                    control="input"
+                    name="comments"
+                    className="form-control p-2"
+                    placeholder="Enter Comments"
+                  />
+                  <div>
+                    <label
+                      for="file-upload"
+                      className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
+                      style={{ height: "39px" }}
                     >
-                      {isSubmitting ? (
-                        <span
-                          className="spinner-border spinner-border-sm mr-1"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
-                      ) : (
-                        "Submit"
-                      )}
-                    </button>
+                      <i className="fa fa-paperclip"></i>
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="d-none"
+                      onChange={(e) => handleUploadAttachments(e)}
+                      ref={aRef}
+                    />
                   </div>
-                  <ErrorMessage name="comments">
-                    {(msg) => <p className="text-danger m-0">{msg}</p>}
-                  </ErrorMessage>
 
-
+                  <button
+                    type="submit"
+                    className="submit-btn approve text-white btn-sm cob-btn-primary"
+                  >
+                    Submit
+                  </button>
                 </div>
-              </Form>
-            )}
+                <ErrorMessage name="comments">
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+
+
+              </div>
+            </Form>
           </Formik>
         </div>
 
@@ -325,8 +318,38 @@ const AgreementDocModal = (props) => {
           </div>
         </div>
       </div>
-    </>
-  )
-}
+    );
+  };
 
-export default AgreementDocModal
+  const modalFooter = () => {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn btn-secondary text-white"
+          data-dismiss="modal"
+          onClick={() => {
+            setCommentsList([]);
+            props?.setModalState(false);
+          }}
+        >
+          Close
+        </button>
+      </>
+    );
+  };
+
+  return (
+    <>
+      <CustomModal
+        modalBody={modalBody}
+        headerTitle={"Upload Agreement"}
+        modalFooter={modalFooter}
+        modalToggle={props?.isModalOpen}
+        fnSetModalToggle={props?.setModalState}
+      />
+    </>
+  );
+};
+
+export default AgreementDocModal;

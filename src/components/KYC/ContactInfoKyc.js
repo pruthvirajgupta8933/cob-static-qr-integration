@@ -463,8 +463,9 @@ function ContactInfoKyc(props) {
         ) : (
           <div className="input-group-append">
             {idType === "1" && (
-              <a
-                href={() => false}
+              <button
+                // href={() => false}
+                type='button'
                 className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 12 ||
                   aadhaarVerificationLoader ||
                   errors?.id_number
@@ -483,11 +484,12 @@ function ContactInfoKyc(props) {
                 ) : (
                   "Verify"
                 )}
-              </a>
+              </button>
             )}
             {idType === "3" && (
-              <a
-                href={() => false}
+              <button
+                // href={() => false}
+                type='button'
                 className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 10 ? "disabled" : ""
                   }`}
                 onClick={() => {
@@ -502,11 +504,12 @@ function ContactInfoKyc(props) {
                 ) : (
                   "Verify"
                 )}
-              </a>
+              </button>
             )}
             {idType === "4" && (
-              <a
-                href={() => false}
+              <button
+                // href={() => false}
+                type='button'
                 className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
                   ? "disabled"
                   : ""
@@ -516,7 +519,7 @@ function ContactInfoKyc(props) {
                 }}
               >
                 Verify
-              </a>
+              </button>
             )}
           </div>
         )}
@@ -766,8 +769,9 @@ function ContactInfoKyc(props) {
                     </span>
                   ) : (
                     <div className="input-group-append">
-                      <a
-                        href={() => false}
+                      <button
+                        // href={() => false}
+                        type='button'
                         className={`btn cob-btn-primary btn-sm text-white ${isLoading || KycList?.isEmailVerified !== 1 ? "disabled" : ""
                           }`}
                         onClick={() => {
@@ -790,7 +794,7 @@ function ContactInfoKyc(props) {
                         ) : (
                           "Send OTP"
                         )}
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>

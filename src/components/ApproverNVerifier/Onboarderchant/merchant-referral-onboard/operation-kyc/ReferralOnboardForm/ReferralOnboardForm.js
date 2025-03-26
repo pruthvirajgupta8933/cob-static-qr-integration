@@ -35,12 +35,16 @@ function ReferralOnboardForm({
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [BusinessOverview, setBusinessOverview] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
   const [disable, setDisable] = useState(false);
   const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
     (state) => state
   );
   const { kycUserList: kycData } = kyc;
   const { merchantBasicDetails } = merchantReferralOnboardReducer;
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
 
 
@@ -496,16 +500,32 @@ function ReferralOnboardForm({
                       label="Username *"
                     />
                   </div>
-                  <div className={`col-lg-6`}>
-                    <FormikController
-                      control="input"
-                      type="password"
-                      name="password"
-                      placeholder="Create Password"
-                      className="form-control"
-                      label="Password *"
-                    />
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label className="form-label">Password *</label>
+                      <div className="input-group">
+                        <FormikController
+                          control="input"
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          placeholder="Create Password"
+                          className="form-control"
+                        />
+                        <div className="input-group-append">
+                          <span
+                            className="input-group-text border-left-0 bg-transparent"
+                            onClick={handleClickShowPassword}
+                            style={{ cursor: "pointer" }}
+                          >
+                            {showPassword ? <i className="fa fa-eye"></i> : <i className="fa fa-eye-slash"></i>}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
+
+
                 </>
               )}
 

@@ -363,6 +363,9 @@ const API_LIVE = {
   UPLOAD_E_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/upload-agreement/`,
   REMOVE_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/remove-agreement-doc/`,
   GET_MERCHANT_AGREEMENT_BY_LOGIN_ID: `${kyc_url}/kyc/upload-merchant-document/get-merchant-agreement-by-login-id/`,
+  BGV_REPORT: `${kyc_url}/kyc/bgv/bgv-upload/`,
+  FETCH_BGV_REPORT: `${kyc_url}/kyc/bgv/get-by-login-id/`,
+
 
   // refer list
   GET_REFERRAL: `${kyc_url}/kyc/refer-zone/get-referral-zone-mapper/`,
