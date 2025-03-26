@@ -110,6 +110,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       dispatch(
         kycUserList({
           login_id: basicDetailsResponse?.data.loginMasterId,
+          masking: 1
         })
       );
   }, [basicDetailsResponse]);
@@ -612,8 +613,8 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                           <a
                             href={() => false}
                             className={`btn cob-btn-primary text-white btn btn-sm ${values.pan?.length !== 10 || disableForm
-                                ? "disabled"
-                                : "pe-auto"
+                              ? "disabled"
+                              : "pe-auto"
                               }`}
                             onClick={() => verifyPan(values.pan, setFieldValue)}
                           >
