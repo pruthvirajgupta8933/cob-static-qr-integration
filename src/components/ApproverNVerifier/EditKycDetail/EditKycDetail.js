@@ -34,7 +34,7 @@ function EditKycDetail() {
   }, [])
 
   useEffect(() => {
-    dispatch(kycUserList({ login_id: selectedId }));
+    dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
   }, [selectedId]);
 
   const handleSelectChange = (selectedOption) => {

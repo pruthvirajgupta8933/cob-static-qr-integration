@@ -259,7 +259,7 @@ function BankDetailEdtKyc(props) {
         setTab(5);
         setIsDisable(false);
         setTitle("DOCUMENTS UPLOAD");
-        dispatch(kycUserList({ login_id: selectedId }));
+        dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
         dispatch(GetKycTabsStatus({ login_id: selectedId }));
       } else {
         toast.error(res?.payload?.detail);

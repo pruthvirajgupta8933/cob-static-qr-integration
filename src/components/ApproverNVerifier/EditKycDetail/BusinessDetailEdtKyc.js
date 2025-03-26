@@ -491,7 +491,7 @@ function BusinessDetailEdtKyc(props) {
         toast.success(res?.payload?.message);
         setTab(4);
         setTitle("BANK DETAILS");
-        dispatch(kycUserList({ login_id: selectedId }));
+        dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
         dispatch(GetKycTabsStatus({ login_id: selectedId }));
         setIsDisable(false);
       } else {
