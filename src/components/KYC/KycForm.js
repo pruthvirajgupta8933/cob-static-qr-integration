@@ -72,7 +72,7 @@ function KycForm() {
     if (roles.merchant) {
       dispatch(kycUserListForMerchant());
     } else {
-      dispatch(kycUserList({ login_id: merchantloginMasterId, operation: "k" }));
+      dispatch(kycUserList({ login_id: merchantloginMasterId, masking: 1 }));
     }
 
     dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }));

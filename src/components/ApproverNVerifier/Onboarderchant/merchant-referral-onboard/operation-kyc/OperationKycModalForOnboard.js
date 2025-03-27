@@ -77,7 +77,7 @@ function OperationKycModalForOnboard({
         kycUserList({
           login_id: merchantLoginId,
           password_required: true,
-          operation: "k"
+          masking: 1
         })
       ).then((resp) => {
         dispatch(

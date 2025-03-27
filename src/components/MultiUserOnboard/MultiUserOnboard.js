@@ -155,7 +155,7 @@ const MultiUserOnboard = () => {
 
   useEffect(() => {
     if (merchantId)
-      dispatch(kycUserList({ login_id: merchantId, password_required: true, operation: "k" }));
+      dispatch(kycUserList({ login_id: merchantId, password_required: true, masking: 1 }));
   }, [merchantId]);
   useEffect(() => {
     dispatch(getAllZoneName()).then((res) => {

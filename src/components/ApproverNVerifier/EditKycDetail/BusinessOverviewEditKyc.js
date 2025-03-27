@@ -241,7 +241,7 @@ function BusinessOverviewEditKyc(props) {
           toast.success(res.payload.message);
           setTab(3);
           setTitle("BUSINESS DETAILS");
-          dispatch(kycUserList({ login_id: selectedId }));
+          dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
           // dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
           setIsDisabled(false);
         } else {

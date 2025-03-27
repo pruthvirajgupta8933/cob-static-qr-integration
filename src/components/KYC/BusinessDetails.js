@@ -535,7 +535,7 @@ function BusinessDetails(props) {
         if (props?.role?.merchant) {
           dispatch(kycUserListForMerchant());
         } else {
-          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+          dispatch(kycUserList({ login_id: merchantloginMasterId, masking: 1 }));
         }
 
         dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
