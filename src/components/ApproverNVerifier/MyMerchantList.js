@@ -11,6 +11,7 @@ import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { v4 as uuidv4 } from "uuid";
+import AgreementUploadTab from '../ApproverNVerifier/Onboarderchant/AgreementUploadTab'
 import {
   KYC_STATUS_APPROVED,
   KYC_STATUS_NOT_FILLED,
@@ -327,12 +328,13 @@ const MyMerchantList = () => {
       </div>
       <div className="form-row">
         {openDocumentModal && (
-          <AgreementDocModal
+          <AgreementUploadTab
             documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
             tabName={"My Merchant List"}
           />
+
         )}
 
         {openCommentModal && (

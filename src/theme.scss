@@ -28,6 +28,7 @@ $lightGrayColor: #D2D2D2;
 .headerBg {
     background-color: $primaryColor;
 }
+
 .primaryColorSecond {
     background-color: $primaryColorSecond;
 }
@@ -36,12 +37,12 @@ $lightGrayColor: #D2D2D2;
 // --------------------------------------------------------------------------------- 
 
 // inner dashboard 
-.sidebarBg{
-    background-color: $primaryColor  //;
+.sidebarBg {
+    background-color: $primaryColor //;
 }
 
-.dashboardHeaderBg{
-    background-color:$primaryColor  //#130532;
+.dashboardHeaderBg {
+    background-color: $primaryColor //#130532;
 }
 
 
@@ -49,20 +50,22 @@ $lightGrayColor: #D2D2D2;
 
 // --------------------------------------------------------------------------------------
 
-.cob-primary-btn-bg{
+.cob-primary-btn-bg {
     background-color: $primaryColor;
 }
-.cob-secondary-btn{
+
+.cob-secondary-btn {
     background-color: $secondaryColor;
 }
 
 
 
-.active-secondary{
+.active-secondary {
     color: white !important;
     background-color: $secondaryColor !important;
 }
-.active-tab{
+
+.active-tab {
     color: #000000 !important;
     background-color: #ADD1F4 !important;
 }
@@ -72,24 +75,32 @@ $lightGrayColor: #D2D2D2;
 
 // global tag
 
-p{
+p {
     font-family: "Sofia-Pro-Regular";
     font-weight: 500;
     font-style: normal;
 
 }
 
-h1,h2,h3,h4,h5,h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: "Sofia-Pro-Regular";
     font-weight: 500;
     font-style: normal;
 }
 
-a, span, label {
+a,
+span,
+label {
     font-family: "Sofia-Pro-Regular";
     font-weight: 500;
     font-style: normal
 }
+
 .btn {
     // font-family: "Sofia-Pro-Regular !important";
     // font-weight: 500 !important;
@@ -98,18 +109,22 @@ a, span, label {
 
 input {
     font-family: "Sofia-Pro-Regular";
-  }
+}
 
 
-  .large_content_wrap {
-    word-wrap: break-word; /* Break long words */
-    word-break: break-all; /* Break long words anywhere */
-    white-space: normal; /* Allow wrapping within the container */
-  }
-  .background_color {
-      background-color: #FAFAFA !important
-  }
-  
-  
+.large_content_wrap {
+    word-wrap: break-word;
+    /* Break long words */
+    word-break: break-all;
+    /* Break long words anywhere */
+    white-space: normal;
+    /* Allow wrapping within the container */
+}
 
+.background_color {
+    background-color: #FAFAFA !important
+}
 
+.rs-picker-popup.rs-picker-popup-date {
+    z-index: 9999
+}

@@ -7,7 +7,8 @@ import ListLayout from "./ListLayout";
 import CommentModal from "../Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import DateFormatter from "../../../utilities/DateConvert";
-import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
+// import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
+import AgreementUploadTab from '../Onboarderchant/AgreementUploadTab'
 import CkycrModal from "../backend-kyc/ckycr/CkycrModal";
 
 function ApprovedMerchant({ commonRows }) {
