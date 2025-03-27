@@ -121,6 +121,7 @@ function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
             kycUserList({
               login_id: kycData?.loginMasterId,
               password_required: true,
+              masking: 1
             })
           );
         }
