@@ -109,6 +109,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
               login_id:
                 kycData?.loginMasterId ?? basicDetailsResponse?.loginMasterId,
               password_required: true,
+              masking: 1
             })
           );
         }
