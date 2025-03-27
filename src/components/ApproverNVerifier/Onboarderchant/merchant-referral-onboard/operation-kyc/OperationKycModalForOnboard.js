@@ -60,6 +60,7 @@ function OperationKycModalForOnboard({
         kycUserList({
           login_id: merchantOnboardingProcess?.merchantLoginId,
           password_required: true,
+          masking: 1
         })
       );
   }, []);
