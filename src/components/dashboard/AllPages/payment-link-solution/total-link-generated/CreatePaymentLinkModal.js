@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import toastConfig from "../../../../../utilities/toastTypes";
 import * as Yup from "yup";
 import moment from "moment";
-
 import FormikController from "../../../../../_components/formik/FormikController";
 import { dateFormatBasic } from "../../../../../utilities/DateConvert";
 import paymentLinkService from "../paylink-service/pamentLinkSolution.service";
@@ -66,6 +65,7 @@ function CreatePaymentLink({ componentState, onClose }) {
         is_partial_payment_accepted: false,
         payer: componentState?.id ?? "",
         client_request_id: uuidv4(),
+
     };
 
     const validationSchema = Yup.object().shape({
@@ -82,6 +82,9 @@ function CreatePaymentLink({ componentState, onClose }) {
             .required("Required"),
         purpose: Yup.string().required("Enter Remark"),
         payer: Yup.string().required("Payer is required"),
+        communication_mode: Yup.array()
+            .min(1, "At least one communication method is required")
+            .required("At least one communication method is required")
     });
 
     const onSubmit = async (values) => {
@@ -94,6 +97,7 @@ function CreatePaymentLink({ componentState, onClose }) {
             valid_from: formattedValidFrom,
             valid_to: formattedValidTo,
             client_request_id: uuidv4(),
+            communication_mode: values.communication_mode,
         };
 
         try {
@@ -109,14 +113,19 @@ function CreatePaymentLink({ componentState, onClose }) {
         }
     };
 
+
     return (
         <div className="mymodals modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
                     <Formik
-                        initialValues={initialValues}
+                        initialValues={{ ...initialValues, communication_mode: ["email"] }}
                         validationSchema={validationSchema}
-                        onSubmit={(values, { resetForm }) => {
+                        onSubmit={(values, { resetForm, setErrors }) => {
+                            if (values.communication_mode.length === 0) {
+                                setErrors({ communication_mode: "At least one communication mode is required" });
+                                return;
+                            }
                             onSubmit(values);
                             resetForm();
                         }}
@@ -181,6 +190,47 @@ function CreatePaymentLink({ componentState, onClose }) {
                                             <FormikController control="select" options={payerData} name="payer" className="form-select" required />
                                         </div>
 
+                                        <div className="form-group">
+                                            <label>Communication Mode</label>
+                                            <div className="d-flex align-items-center">
+                                                <div className="form-check form-check-inline">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="emailCheckbox"
+                                                        className="form-check-input"
+                                                        checked={values.communication_mode.includes("email")}
+                                                        onChange={(e) => {
+                                                            const updatedModes = e.target.checked
+                                                                ? [...values.communication_mode, "email"]
+                                                                : values.communication_mode.filter((mode) => mode !== "email");
+                                                            setFieldValue("communication_mode", updatedModes);
+                                                        }}
+                                                    />
+                                                    <label className="form-check-label" htmlFor="emailCheckbox">Email</label>
+                                                </div>
+                                                <div className="form-check form-check-inline">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="smsCheckbox"
+                                                        className="form-check-input"
+                                                        checked={values.communication_mode.includes("sms")}
+                                                        onChange={(e) => {
+                                                            const updatedModes = e.target.checked
+                                                                ? [...values.communication_mode, "sms"]
+                                                                : values.communication_mode.filter((mode) => mode !== "sms");
+                                                            setFieldValue("communication_mode", updatedModes);
+                                                        }}
+                                                    />
+                                                    <label className="form-check-label" htmlFor="smsCheckbox">SMS</label>
+                                                </div>
+                                            </div>
+
+
+                                            {errors.communication_mode && (
+                                                <div className="text-danger mt-0">{errors.communication_mode}</div>
+                                            )}
+                                        </div>
+
                                         <div className="row mt-3">
                                             <div className="col-lg-6">
                                                 <button
@@ -210,6 +260,8 @@ function CreatePaymentLink({ componentState, onClose }) {
                             </>
                         )}
                     </Formik>
+
+
                 </div>
             </div>
         </div>

@@ -142,7 +142,7 @@ const PaylinkDashboard = () => {
                     <img src={transactionCardIcon} alt="Icon" width={"22px"} /></span>
                 </div>
                 <h5 className="">
-                  ₹ {dashboardData?.transaction_data?.value}
+                  ₹ {dashboardData?.transaction_data?.value || 0}
                 </h5>
                 <div className="position-absolute bottom-0 end-0 p-3 top-50">
                   <Link to={`${path}/recent-transaction`} className="text-decoration-none">
@@ -161,7 +161,7 @@ const PaylinkDashboard = () => {
                   <span className={`${customStyle.card_icon_2} ${customStyle.card_icon}`}><img src={generateLinkCardIcon} alt="Icon" /></span>
                 </div>
                 <h5 className="">
-                  {dashboardData?.payment_link_data?.value}
+                  {dashboardData?.payment_link_data?.value || 0}
                 </h5>
                 <div className="position-absolute bottom-0 end-0 p-3">
                   <Link to={`${path}/total-link-generated`} className="text-decoration-none">
@@ -180,7 +180,7 @@ const PaylinkDashboard = () => {
                   <span className={`${customStyle.card_icon_3} ${customStyle.card_icon}`}><img src={payerCardIcon} alt="Icon" /></span>
                 </div>
                 <h5 className="">
-                  {dashboardData?.payer_data?.value}
+                  {dashboardData?.payer_data?.value || 0}
                 </h5>
                 <div className="position-absolute bottom-0 end-0 p-3">
                   <Link to={`${path}/total-payers`} className="text-decoration-none">
