@@ -194,7 +194,7 @@ export const forSavingDocument = createAsyncThunk(
 
 
 export const forSavingBgvReport = createAsyncThunk(
-  "forSavingBgvReport/forSavingBgvReport",
+  "merchnatzone/forSavingBgvReport",
   async (requestParam) => {
 
     const response = await axiosInstanceJWT
@@ -212,7 +212,7 @@ export const forSavingBgvReport = createAsyncThunk(
 );
 
 export const fetchBgvReport = createAsyncThunk(
-  "forSavingBgvReport/forSavingBgvReport",
+  "merchnatzone/forSavingBgvReport",
   async (requestParam) => {
 
     const response = await axiosInstanceJWT
