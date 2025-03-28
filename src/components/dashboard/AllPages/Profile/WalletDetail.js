@@ -24,6 +24,18 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
 
   const rowHeader = [
     {
+      id: "201",
+      name: "Subscribed Id",
+      selector: (row) => row.clientSubscribedPlanDetailsId,
+      grow: 0
+    },
+    {
+      id: "202",
+      name: "Client Transaction Id",
+      selector: (row) => row.clientTxnId,
+      width: "250px"
+    },
+    {
       id: "2",
       name: "Application Name",
       selector: (row) => row.applicationName,
