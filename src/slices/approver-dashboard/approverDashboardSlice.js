@@ -7,7 +7,9 @@ const InitialState = {
   generalFormData: {
     isFinalSubmit: false,
   },
-  clientCodeList: [],
+  clientCodeList: localStorage?.getItem("all-client-code")
+    ? JSON.parse(localStorage.getItem("all-client-code"))
+    : [],
   clientCodeByRole: {},
   subMerchantList: {},
 };
@@ -126,6 +128,11 @@ const approverDashboardSlice = createSlice({
       })
       .addCase(getAllCLientCodeSlice.fulfilled, (state, action) => {
         state.clientCodeList = action.payload.result;
+        if (action.payload.result?.length > 0)
+          localStorage.setItem(
+            "all-client-code",
+            JSON.stringify(action.payload.result)
+          );
       })
       .addCase(getAllCLientCodeSlice.rejected, (state, action) => {
         state.clientCodeList = [];
