@@ -11,6 +11,8 @@ const TransactionFilter = ({
   const dispatch = useDispatch();
   const [availableOptions, setAvailableOptions] = useState([]);
 
+
+
   useEffect(() => {
     const start = moment(fromDate, "YYYY-MM-DD");
     const end = moment(toDate, "YYYY-MM-DD");
@@ -25,7 +27,7 @@ const TransactionFilter = ({
     } else if (daysDiff >= 7 && daysDiff <= 60) {
       options = ["weekly", "daily"];
     } else if (daysDiff > 60 && daysDiff <= 366) {
-      options = ["monthly", "weekly"];
+      options = ["weekly", "monthly"];
     } else options = ["annually", "monthly"];
 
     setAvailableOptions(options);

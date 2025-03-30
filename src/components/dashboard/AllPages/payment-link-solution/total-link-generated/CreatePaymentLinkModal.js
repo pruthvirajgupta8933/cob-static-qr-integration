@@ -9,9 +9,10 @@ import FormikController from "../../../../../_components/formik/FormikController
 import { dateFormatBasic } from "../../../../../utilities/DateConvert";
 import paymentLinkService from "../paylink-service/pamentLinkSolution.service";
 import { convertToFormikSelectJson } from "../../../../../_components/reuseable_components/convertToFormikSelectJson";
+import CustomDatePicker from "./CustomDatePicker";
 
 import { DatePicker } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
+// import "rsuite/dist/rsuite.min.css";
 
 function CreatePaymentLink({ componentState, onClose }) {
     const [disable, setDisable] = useState(false);
@@ -52,8 +53,7 @@ function CreatePaymentLink({ componentState, onClose }) {
     const validTo = moment(validFrom).add(24, "hours").toDate();
 
 
-    console.log("validFrom", validFrom)
-    console.log("validTo", validTo)
+
 
     const initialValues = {
         valid_from: validFrom,
@@ -143,7 +143,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                                         <div className="form-row mb-3">
                                             <div className="col-lg-6 col-md-12 col-sm-12">
                                                 <label>Start Date</label>
-                                                <DatePicker
+                                                {/* <DatePicker
                                                     format="yyyy-MM-dd HH:mm"
                                                     value={values.valid_from}
                                                     onChange={(date) => setFieldValue("valid_from", date)}
@@ -151,15 +151,23 @@ function CreatePaymentLink({ componentState, onClose }) {
                                                     placement="bottomStart"
                                                     placeholder="Select Start Date"
                                                     showMeridian={false}
+                                                /> */}
+                                                <CustomDatePicker
+                                                    // label="Start Date"
+                                                    value={values.valid_from}
+                                                    onChange={(date) => setFieldValue("valid_from", date)}
+                                                    error={errors.valid_from && touched.valid_from ? errors.valid_from : ""}
+                                                    placeholder="Select Start Date"
                                                 />
+
                                                 {errors.valid_from && touched.valid_from && (
                                                     <div className="text-danger">{errors.valid_from}</div>
                                                 )}
                                             </div>
 
                                             <div className="col-lg-6 col-md-12 col-sm-12">
-                                                <label>End Date</label>
-                                                <DatePicker
+                                                {/* <label>End Date</label> */}
+                                                {/* <DatePicker
                                                     format="yyyy-MM-dd HH:mm"
                                                     value={values.valid_to}
                                                     onChange={(date) => setFieldValue("valid_to", date)}
@@ -167,6 +175,13 @@ function CreatePaymentLink({ componentState, onClose }) {
                                                     placement="auto"
                                                     placeholder="Select End Date"
                                                     showMeridian={false}
+                                                /> */}
+                                                <CustomDatePicker
+                                                    label="End Date"
+                                                    value={values.valid_to}
+                                                    onChange={(date) => setFieldValue("valid_to", date)}
+                                                    error={errors.valid_to && touched.valid_to ? errors.valid_to : ""}
+                                                    placeholder="Select End Date"
                                                 />
                                                 {errors.valid_to && touched.valid_to && (
                                                     <div className="text-danger">{errors.valid_to}</div>
