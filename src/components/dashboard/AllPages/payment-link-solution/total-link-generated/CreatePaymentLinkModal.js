@@ -159,10 +159,10 @@ function CreatePaymentLink({ componentState, onClose }) {
                                                     error={errors.valid_from && touched.valid_from ? errors.valid_from : ""}
                                                     placeholder="Select Start Date"
                                                 />
-
+                                                {/* 
                                                 {errors.valid_from && touched.valid_from && (
                                                     <div className="text-danger">{errors.valid_from}</div>
-                                                )}
+                                                )} */}
                                             </div>
 
                                             <div className="col-lg-6 col-md-12 col-sm-12">
@@ -183,9 +183,9 @@ function CreatePaymentLink({ componentState, onClose }) {
                                                     error={errors.valid_to && touched.valid_to ? errors.valid_to : ""}
                                                     placeholder="Select End Date"
                                                 />
-                                                {errors.valid_to && touched.valid_to && (
+                                                {/* {errors.valid_to && touched.valid_to && (
                                                     <div className="text-danger">{errors.valid_to}</div>
-                                                )}
+                                                )} */}
                                             </div>
                                         </div>
 
