@@ -167,7 +167,7 @@ const Profile = () => {
 
           {/* Tab navs */}
         </div>
-        <div className="col-lg-8">
+        <div className="col-lg-10">
           {/* Tab content */}
           <div className="tab-content" id="v-pills-tabContent">
             {currentTab === 1 && <UserDetails />}

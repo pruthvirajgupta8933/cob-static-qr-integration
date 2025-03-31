@@ -154,9 +154,7 @@ function ClientList() {
             onClick={() => {
               setModalTogalforMessage(true);
             }}
-            data-target="#exampleModal"
-          >
-            Kyc Complete
+          >Edit Kyc
           </Link>
         </div>
       ),
@@ -189,8 +187,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
 
     clientListExportApi({ bank_login_id: user?.loginId, type })
       .then((res) => {
@@ -266,8 +264,8 @@ function ClientList() {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     let postObj = {
       page: currentPage,
       page_size: pageSize,
