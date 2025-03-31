@@ -20,6 +20,8 @@ import customStyle from "./paymentLinkSolution.module.css"
 
 import { getDashboardData, getTxnData, getTxnGraphData } from "./paylink-solution-slice/paylinkSolutionSlice";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import { durationFilter } from "./durationFilter";
+import { setGraphFilterOption, setSeletedGraphOption } from "../../../../slices/date-filter-slice/DateFilterSlice";
 // import RecentTransaction from "./recent-transaction/RecentTransaction";
 
 const PaylinkDashboard = () => {
@@ -40,9 +42,12 @@ const PaylinkDashboard = () => {
   );
   const [dashboardTxnData, setDashboardTxnData] = useState([]);
   const dispatch = useDispatch();
+
   const filterRef = useRef(null);
   let { path } = useRouteMatch();
   const history = useHistory();
+
+
   // useEffect(() => {
   //   dispatch(
   //     getTxnData({
@@ -75,9 +80,8 @@ const PaylinkDashboard = () => {
         end_date: toDate,
       })
     );
-  }, [fromDate, toDate]);
 
-  useEffect(() => {
+    // setDashboardTxnData([]);
     dispatch(
       getTxnGraphData({
         start_date: fromDate,
@@ -92,24 +96,103 @@ const PaylinkDashboard = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+
       });
-  }, [fromDate, toDate, selectedOption]);
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("selectedOption", selectedOption)
+
+  //   setDashboardTxnData([]);
+  //   dispatch(
+  //     getTxnGraphData({
+  //       start_date: fromDate,
+  //       end_date: toDate,
+  //       client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
+  //       transaction_data_span: selectedOption,
+  //     })
+  //   )
+  //     .then((res) => {
+  //       if (res.payload?.transaction_graph_data) {
+  //         setDashboardTxnData(res.payload.transaction_graph_data);
+  //       }
+  //     })
+  //     .catch((err) => {
+
+  //     });
+  // }, [selectedOption]);
+
+  const filterOptionHandler = ({ fromDate, toDate }) => {
+
+    const durationRange = durationFilter({ fromDate, toDate })
+
+    dispatch(setGraphFilterOption({ duration: durationRange }))
+    dispatch(setSeletedGraphOption({ currentFilter: durationRange[0] }))
+
+    dispatch(
+      getDashboardData({
+        start_date: fromDate,
+        end_date: toDate,
+        client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
+      })
+    );
+
+    dispatch(
+      getTxnData({
+        client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
+        order_by: "-id",
+        page: 1,
+        page_size: 10,
+        start_date: fromDate,
+        end_date: toDate,
+      })
+    );
+
+    setDashboardTxnData([]);
+    dispatch(
+      getTxnGraphData({
+        start_date: fromDate,
+        end_date: toDate,
+        client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
+        transaction_data_span: durationRange[0],
+      })
+    )
+      .then((res) => {
+        if (res.payload?.transaction_graph_data) {
+          setDashboardTxnData(res.payload.transaction_graph_data);
+        }
+      })
+      .catch((err) => {
+
+      });
+  }
 
 
-  // const handleCardClick = () => {
-  //   history.push(`${path}/total-link-generated`);
-  // };
+  const lineChartGraphHandler = (currentSelectionOption) => {
+    // fromDate
+    // toDate
+    // lineChartGraphHandler
+    setDashboardTxnData([]);
+    dispatch(
+      getTxnGraphData({
+        start_date: fromDate,
+        end_date: toDate,
+        client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
+        transaction_data_span: currentSelectionOption,
+      })
+    )
+      .then((res) => {
+        if (res.payload?.transaction_graph_data) {
+          setDashboardTxnData(res.payload.transaction_graph_data);
+        }
+      })
+      .catch((err) => {
 
-  // const handleTotalPayerClick = () => {
-  //   history.push(`${path}/total-payers`);
-  // };
+      });
+  }
 
-  // const handleTotalTransactionClick = () => {
-  //   history.push(`${path}/recent-transaction`);
-  // };
 
-  // console.log(dashboardTxnData)
+
 
   return (
     <div className="container-fluid p-0">
@@ -127,7 +210,7 @@ const PaylinkDashboard = () => {
           show={showFilter}
           onClose={() => setShowFilter(false)}
           filterRef={filterRef}
-          onApply={() => { }}
+          onApply={filterOptionHandler}
         />
       </div>
 
@@ -202,6 +285,7 @@ const PaylinkDashboard = () => {
                   toDate={toDate}
                   selectedOption={selectedOption}
                   setSelectedOption={setSelectedOption}
+                  onApply={lineChartGraphHandler}
                 />
 
                 <Charts chartType="line" data={dashboardTxnData} />

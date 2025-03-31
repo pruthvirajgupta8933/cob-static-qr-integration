@@ -78,7 +78,7 @@ const Charts = ({ data, chartType, colorMode = "light" }) => {
     [data])
 
 
-  // console.log(chartData)
+
   useEffect(() => {
     const fetchData = async () => {
       const data = chartData?.map((entry) => entry.value);

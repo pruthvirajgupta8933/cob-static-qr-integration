@@ -36,7 +36,8 @@ const UpdateRollingReserve = () => {
         business_cat_type: "",
         rolling_reserve_type: "",
 
-        period_code: ""
+        period_code: "",
+
     }), []);
 
     const validationSchema = useMemo(() => Yup.object({
@@ -99,7 +100,7 @@ const UpdateRollingReserve = () => {
     const onSubmit = (values, { setSubmitting }) => {
         const postData = {
             "login_id": values?.react_select?.value,
-            "rolling_reserve": values.period_code,
+            "rolling_reserve": values.rr_amount,
             "rolling_reserve_type": values.rolling_reserve_type,
             "period_code": values.period_code,
             "business_category_type": values.business_cat_type
