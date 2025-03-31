@@ -78,6 +78,7 @@ const PaylinkDashboard = () => {
   }, [fromDate, toDate]);
 
   useEffect(() => {
+    setDashboardTxnData([]);
     dispatch(
       getTxnGraphData({
         start_date: fromDate,
@@ -87,29 +88,22 @@ const PaylinkDashboard = () => {
       })
     )
       .then((res) => {
+
+
         if (res.payload?.transaction_graph_data) {
+
           setDashboardTxnData(res.payload.transaction_graph_data);
         }
       })
       .catch((err) => {
-        console.log(err);
+
       });
   }, [fromDate, toDate, selectedOption]);
 
 
-  // const handleCardClick = () => {
-  //   history.push(`${path}/total-link-generated`);
-  // };
 
-  // const handleTotalPayerClick = () => {
-  //   history.push(`${path}/total-payers`);
-  // };
 
-  // const handleTotalTransactionClick = () => {
-  //   history.push(`${path}/recent-transaction`);
-  // };
 
-  // console.log(dashboardTxnData)
 
   return (
     <div className="container-fluid p-0">
