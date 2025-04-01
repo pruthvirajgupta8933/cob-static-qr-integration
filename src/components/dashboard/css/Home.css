@@ -166,7 +166,7 @@ table.tables tr:nth-child(odd) {
   white-space: nowrap;
   border: 0px;
 }
-.disabled {
+.disabledApprove {
   color: #fff;
   border-radius: 4px;
   font-size: 12px;
