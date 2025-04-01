@@ -5,11 +5,17 @@ const CustomDatePicker = ({ label, value, onChange, error, placeholder }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
-
         import("rsuite/dist/rsuite.min.css").then(() => {
             setShowDatePicker(true);
         });
     }, []);
+
+    // Function to disable past dates
+    const disablePastDates = (date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return date >= today;
+    };
 
     return (
         <div>
@@ -23,10 +29,9 @@ const CustomDatePicker = ({ label, value, onChange, error, placeholder }) => {
                     placement="bottomStart"
                     placeholder={placeholder}
                     showMeridian={false}
+                    disabledDate={(date) => !disablePastDates(date)}
                 />
-            ) : (
-                null
-            )}
+            ) : null}
             {error && <div className="text-danger">{error}</div>}
         </div>
     );
