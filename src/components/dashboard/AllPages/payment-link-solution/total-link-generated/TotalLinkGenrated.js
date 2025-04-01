@@ -319,7 +319,7 @@ const TotalLinkGenrated = () => {
                                                 searchTerm={searchTerm}
                                                 setSearchTerm={setSearchTerm}
                                                 onSearch={handleSubmit}
-                                                placeholder="Search by Name, Email, Mobile"
+                                                placeholder="Search by Name, Email"
                                                 loadData={loadData}
 
                                             />
