@@ -8,11 +8,11 @@ import { Formik, Form } from "formik";
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
-import API_URL from "../../../../config";
+
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+
 import moment from "moment";
 import {
   clearTransactionHistoryDoitc,
@@ -24,6 +24,10 @@ import { fetchChildDataList } from "../../../../slices/approver-dashboard/mercha
 import ReactPaginate from "react-paginate";
 import { saveAs } from "file-saver";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
+import {
+  fetchPayModeList,
+  fetchPayStatusList,
+} from "../../../../slices/dashboardSlice";
 
 const TransactionHistoryDoitc = () => {
   const dispatch = useDispatch();
@@ -32,13 +36,12 @@ const TransactionHistoryDoitc = () => {
 
   const { auth, merchantReportSlice, merchantReferralOnboardReducer } =
     useSelector((state) => state);
+  const { paymode, payStatus } = useSelector((state) => state.dashboard);
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   // console.log("clientCodeData", clientCodeData)
   const { user } = auth;
 
-  const [paymentStatusList, SetPaymentStatusList] = useState([]);
-  const [paymentModeList, SetPaymentModeList] = useState([]);
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   // const [show, setShow] = useState("");
@@ -77,8 +80,8 @@ const TransactionHistoryDoitc = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
 
   // formik initial values
   const initialValues = {
@@ -100,34 +103,14 @@ const TransactionHistoryDoitc = () => {
     payment_mode: Yup.string().required("Required"),
   });
 
-  // get payment status list
-  const getPaymentStatusList = async () => {
-    await axiosInstanceJWT
-      .get(API_URL.GET_PAYMENT_STATUS_LIST)
-      .then((res) => {
-        SetPaymentStatusList(res.data);
-      })
-      .catch((err) => { });
-  };
-
-  // get paymode status list
-  const paymodeList = async () => {
-    await axiosInstanceJWT
-      .get(API_URL.PAY_MODE_LIST)
-      .then((res) => {
-        SetPaymentModeList(res.data);
-      })
-      .catch((err) => { });
-  };
-
   // fetch child client data
   const fetchData = () => {
     const roleType = roles;
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-        ? "referrer"
-        : "default";
+      ? "referrer"
+      : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -186,23 +169,25 @@ const TransactionHistoryDoitc = () => {
   //   tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
   // });
 
-
-
   const tempPayStatus = [{ key: "All", value: "All" }];
-  paymentStatusList.map((item) => {
-    if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+  payStatus.map((item) => {
+    if (
+      item?.payment_status_name !== "CHALLAN_ENQUIRED" &&
+      item?.payment_status_name !== "INITIATED"
+    ) {
       if (item?.is_active) {
-        tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+        tempPayStatus.push({
+          key: item?.payment_status_name,
+          value: item?.payment_status_name,
+        });
       }
-
     }
   });
 
   const tempPaymode = [{ key: "All", value: "All" }];
-  paymentModeList.map((item) => {
+  paymode.map((item) => {
     tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
   });
-
 
   // table pagination
   const pagination = (pageNo) => {
@@ -294,8 +279,8 @@ const TransactionHistoryDoitc = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    getPaymentStatusList();
-    paymodeList();
+    if (!payStatus.length > 0) dispatch(fetchPayStatusList());
+    if (!paymode.length > 0) dispatch(fetchPayModeList());
     SetTxnList([]);
     return () => {
       dispatch(clearTransactionHistoryDoitc());
@@ -528,8 +513,8 @@ const TransactionHistoryDoitc = () => {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                        // value={startDate}
-                        // onChange={(e)=>setStartDate(e.target.value)}
+                          // value={startDate}
+                          // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 

@@ -145,7 +145,7 @@ const TotalLinkGenrated = () => {
             name: "Payer Email",
             selector: (row) => row.payer_email,
             sortable: true,
-            width: "170px"
+            width: "200px"
         },
         {
             id: "4",
@@ -319,7 +319,7 @@ const TotalLinkGenrated = () => {
                                                 searchTerm={searchTerm}
                                                 setSearchTerm={setSearchTerm}
                                                 onSearch={handleSubmit}
-                                                placeholder="Search by Name, Email, Mobile"
+                                                placeholder="Search by Name, Email"
                                                 loadData={loadData}
 
                                             />
