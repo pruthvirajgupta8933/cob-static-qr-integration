@@ -363,7 +363,7 @@ const RecentTransaction = () => {
                       searchTerm={searchTerm}
                       setSearchTerm={setSearchTerm}
                       onSearch={formSubmit}
-                      placeholder="Search by Name, Email, Mobile"
+                      placeholder="Name, Email, Mobile"
                       loadData={loadData}
                     />
                   </div>
