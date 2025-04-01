@@ -16,6 +16,12 @@ const initialState = {
   productSubscribe: true,
   isExportData: false,
   txnChartData: [],
+  paymode: localStorage.getItem("pay-mode")
+    ? JSON.parse(localStorage.getItem("pay-mode"))
+    : [],
+  payStatus: localStorage.getItem("pay-status")
+    ? JSON.parse(localStorage.getItem("pay-status"))
+    : [],
 };
 
 export const successTxnSummary = createAsyncThunk(
@@ -156,7 +162,42 @@ export const fetchTransactionHistoryDetailSlice = createAsyncThunk(
 ////////////////////////////////////////////
 
 //////////////////////////////////////
-
+export const fetchPayModeList = createAsyncThunk(
+  "dashbaord/paymode",
+  async (data, thunkAPI) => {
+    try {
+      const response = await Dashboardservice.getPayModeList();
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const fetchPayStatusList = createAsyncThunk(
+  "dashbaord/paystatus",
+  async (data, thunkAPI) => {
+    try {
+      const response = await Dashboardservice.getPayStatusList();
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
 export const fetchSettlementSummary = createAsyncThunk(
   "dashbaord/fetchSettlementSummary",
   async (data, thunkAPI) => {
@@ -448,6 +489,14 @@ export const dashboardSlice = createSlice({
       .addCase(fetchChargebackTxnHistory.rejected, (state, action) => {
         state.isLoadingTxnHistory = false;
         state.settlementReport = [];
+      })
+      .addCase(fetchPayModeList.fulfilled, (state, action) => {
+        state.paymode = action.payload;
+        localStorage.setItem("pay-mode", JSON.stringify(action.payload));
+      })
+      .addCase(fetchPayStatusList.fulfilled, (state, action) => {
+        state.payStatus = action.payload;
+        localStorage.setItem("pay-status", JSON.stringify(action.payload));
       });
   },
 });
