@@ -65,8 +65,8 @@ const TransactionEnquirey = React.memo(() => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       const postObj = {
         type: type,
@@ -207,7 +207,7 @@ const TransactionEnquirey = React.memo(() => {
       <main className="">
         <h5 className="">Transaction Enquiry</h5>
         <section className="">
-          <div className="card p-4">
+          <div className="card p-4  mt-3">
             <div className="row">
               <Formik
                 initialValues={initialValues}

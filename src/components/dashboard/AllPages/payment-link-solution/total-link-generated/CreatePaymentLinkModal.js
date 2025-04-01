@@ -71,10 +71,10 @@ function CreatePaymentLink({ componentState, onClose }) {
     const validationSchema = Yup.object().shape({
         valid_from: Yup.date()
             .min(new Date(), "Start date can't be before today")
-            .required("Start Date Required"),
+            .required("Start Date Required").nullable(),
         valid_to: Yup.date()
             .min(Yup.ref("valid_from"), "End date can't be before Start date")
-            .required("End Date Required"),
+            .required("End Date Required").nullable(),
         total_amount: Yup.number()
             .typeError("Only numbers are allowed")
             .min(1, "Enter Valid Amount")
