@@ -429,7 +429,7 @@ const TotalPayers = () => {
                                             searchTerm={searchTerm}
                                             setSearchTerm={setSearchTerm}
                                             onSearch={formSubmit}
-                                            placeholder="Search by Name, Email, Mobile"
+                                            placeholder="Search by Name, Email"
                                             loadData={loadData}
                                         />
                                     </div>
