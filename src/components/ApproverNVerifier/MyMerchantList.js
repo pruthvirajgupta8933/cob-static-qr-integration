@@ -283,7 +283,7 @@ const MyMerchantList = () => {
                   [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].includes(
                     row.status
                   )
-                    ? "disabled text-white cob-btn-primary btn btn-sm"
+                    ? "disabledApprove text-white cob-btn-primary btn btn-sm"
                     : "approve text-white cob-btn-primary btn btn-sm"
                 }
                 disabled={[KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].includes(
