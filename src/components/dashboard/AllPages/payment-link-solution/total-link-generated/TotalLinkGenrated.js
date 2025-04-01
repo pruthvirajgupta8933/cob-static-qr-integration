@@ -145,7 +145,7 @@ const TotalLinkGenrated = () => {
             name: "Payer Email",
             selector: (row) => row.payer_email,
             sortable: true,
-            width: "170px"
+            width: "200px"
         },
         {
             id: "4",
