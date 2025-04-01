@@ -64,7 +64,7 @@ function SideNavbar() {
                       <span className="font-size-14 ">{menu.app_name}</span>
                       <div className="link-secondary">
                         <i
-                          className={`fa ${index !== 0 ? "fa-plus cursor_pointer" : "fa-minus cursor_pointer"
+                          className={`fa cursor_pointer ${index !== 0 ? "fa-plus" : "fa-minus"
                             }`}
                           id={`icon_${menu?.app_code}`}
                         ></i>
