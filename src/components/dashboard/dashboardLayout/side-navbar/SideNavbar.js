@@ -57,6 +57,7 @@ function SideNavbar() {
             (menu, index) =>
               menu?.is_active && (
                 <React.Fragment key={menu.app_name}>
+
                   <div onClick={(e) => toggleMenu(e)}>
                     <h6
                       className={`sidebar-heading context-menu d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}
