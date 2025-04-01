@@ -229,7 +229,7 @@ const Login = () => {
               </div>
             </div>
             <div className="row align-items-start flex-grow-1 mt-md-5 mt-sm-5">
-              <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
+              <div className="col-lg-3 col-md-2 col-sm-2 col-1"></div>
 
               {openOtpModal ? <AuthOtpVerify updateOtpModal={setOpenOtpModal} inputValue={inputValue} /> : <div className={`col ${classes.form_container}`}>
 
@@ -327,7 +327,7 @@ const Login = () => {
                 </div>
               </div>}
 
-              <div className="col-lg-3 col-md-2 col-sm-2 col-xs-2"></div>
+              <div className="col-lg-3 col-md-2 col-sm-2 col-1"></div>
             </div>
             <div className="row align-items-end flex-grow-1">
               <div className="col">
