@@ -12,7 +12,7 @@ function WalletRecharge() {
         (state) => state
     );
     const history = useHistory()
-    // const { path } = useRouteMatch();
+
 
     const { SubscribedPlanData } = productCatalogueSlice;
 
@@ -58,17 +58,29 @@ function WalletRecharge() {
     }
 
 
+
     return (
         <div className="row">
-            {Object.keys(productList)?.map((item, i) => (
-                <div className="col p-2 m-2 card" key={i}>
-                    <h6 className="text-primary ">{productList[item][0].applicationName}</h6>
-                    <p className="mb-4">Plan Name: {productList[item][0].planName}</p>
-                    <button className="btn cob-btn-primary btn-sm" onClick={() => paymentHandler(productList[item][0])}>Select</button>
-                </div>
-            ))}
+            {Object.entries(productList)?.map(([key, products], index, arr) => {
+                const colClass = arr.length === 2 ? "col-md-6" : arr.length === 3 ? "col-md-4" : "col-md-3";
 
+                return (
+                    <div className={`${colClass} p-2`} key={key}>
+                        <div className="card p-3">
+                            <h6 className="text-primary">{products[0].applicationName}</h6>
+                            <p className="mb-4">Plan Name: {products[0].planName}</p>
+                            <button
+                                className="btn cob-btn-primary btn-sm"
+                                onClick={() => paymentHandler(products[0])}
+                            >
+                                Select
+                            </button>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
+
     )
 }
 
