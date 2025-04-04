@@ -123,7 +123,7 @@ import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-acc
 import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
-import Disbursment from "../../ApproverNVerifier/Disbursment/Disbursment";
+import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -1072,8 +1072,8 @@ function DashboardMainContent() {
 
               <AuthorizedRoute
                 exact
-                path={`${path}/disbursment`}
-                Component={Disbursment}
+                path={`${path}/Disbursement`}
+                Component={Disbursement}
                 roleList={{ approver: true }}
               >
 
