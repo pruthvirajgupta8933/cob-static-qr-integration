@@ -123,6 +123,7 @@ import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-acc
 import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
+import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -1067,6 +1068,17 @@ function DashboardMainContent() {
                 Component={UpdateRollingReserve}
                 roleList={{ approver: true, verifier: true }}
               />
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/Disbursement`}
+                Component={Disbursement}
+                roleList={{ approver: true }}
+              >
+
+              </AuthorizedRoute>
+
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />

@@ -58,11 +58,6 @@ export const generateMidSlice = createSlice({
         state.error = action.error.message;
 
       })
-
-
-
-
-
   }
 });
 export const {
