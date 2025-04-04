@@ -257,10 +257,10 @@ function DashboardMainContent() {
 
       dispatch(fetchMenuList(postBody));
     } else {
-      toastConfig.errorToast("Session Expired");
       dispatch(logout());
+      toastConfig.errorToast("Session Expired");
     }
-  }, [user, dispatch]);
+  }, []);
 
 
   useEffect(() => {
