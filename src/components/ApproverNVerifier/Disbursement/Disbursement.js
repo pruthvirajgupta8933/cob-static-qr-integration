@@ -6,11 +6,12 @@ import { createFilter } from "react-select";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 
 import { kycUserList } from "../../../slices/kycSlice";
+import { fetchMidDataByClientCode } from "../../../services/generate-mid/generate-mid.service";
 
 
 
 
-const Disbursment = () => {
+const Disbursement = () => {
     const dispatch = useDispatch();
     const [responseData, setResponseData] = useState(null);
     const [clientCodeList, setCliencodeList] = useState([]);
@@ -34,11 +35,28 @@ const Disbursment = () => {
 
 
 
-    const handleChange = (selectedOption) => {
+    const handleChange = async (selectedOption) => {
 
-        const clientId = selectedOption ? selectedOption.value : null;
-        setSelectedClientId(clientId);
-        dispatch(kycUserList({ login_id: clientId, masking: 1 }));
+        try {
+            const clientId = selectedOption ? selectedOption.value : null;
+            setSelectedClientId(clientId);
+            dispatch(kycUserList({ login_id: clientId, masking: 1 }));
+
+            fetchMidDataByClientCode({
+                "startDate": "2023-03-01",
+                "endDate": "2025-03-07",
+                "clientCode": "VIDY77",
+                "status": "SUCCESS",
+                "page": "1",
+                "size": "10",
+                "sortOrder": "ASC"
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
 
     };
 
@@ -112,7 +130,7 @@ const Disbursment = () => {
             <main className="">
                 <div className="">
                     <div className="">
-                        <h5 className="">Disbursment</h5>
+                        <h5 className="">Disbursement</h5>
                     </div>
                     <div className="container-fluid p-0 mt-4">
                         <div className="card">
@@ -167,4 +185,4 @@ const Disbursment = () => {
     );
 };
 
-export default Disbursment;
+export default Disbursement;
