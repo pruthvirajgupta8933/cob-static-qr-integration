@@ -14,4 +14,5 @@ export const clearLocalStore = () => {
   sessionStorage.removeItem("paymentLinkApiKey");
   localStorage.removeItem("pay-mode");
   localStorage.removeItem("pay-status");
+  localStorage.removeItem("openTabs");
 };
