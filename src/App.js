@@ -24,9 +24,9 @@ const App = () => {
       setLogin(true);
     }
     window.addEventListener("load", function (e) {
-      var openTabs = this.window.localStorage.getItem("openTabs");
+      let openTabs = this.window.localStorage.getItem("openTabs");
 
-      if (openTabs && openTabs > 0) {
+      if (openTabs && parseInt(openTabs) > 0) {
         dispatch(logout());
       } else {
         this.window.localStorage.setItem("openTabs", 1);
@@ -34,10 +34,11 @@ const App = () => {
     });
     window.addEventListener("unload", function (e) {
       e.preventDefault();
-      var openTabs = this.window.localStorage.getItem("openTabs");
-      if (openTabs && openTabs > 0) {
-        openTabs--;
-        this.window.localStorage.setItem("openTabs", openTabs);
+      let openTabs = this.window.localStorage.getItem("openTabs");
+      if (openTabs && parseInt(openTabs) > 0) {
+        let tabs = parseInt(openTabs);
+        tabs--;
+        this.window.localStorage.setItem("openTabs", tabs);
       }
       e.returnValue = "";
     });
