@@ -343,14 +343,14 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                     Bank Name
                     <span style={{ color: "red" }}>*</span>
                   </label>
-                  <div className="input-group">
-                    <FormikController
-                      control="input"
-                      name="bankName"
-                      className="form-control"
-                      disabled={disableForm}
-                    />
-                  </div>
+                  {/* <div className="input-group"> */}
+                  <FormikController
+                    control="input"
+                    name="bankName"
+                    className="form-control"
+                    disabled={disableForm}
+                  />
+                  {/* </div> */}
                 </div>
 
                 <div className="col-sm-12 col-md-12 col-lg-6">

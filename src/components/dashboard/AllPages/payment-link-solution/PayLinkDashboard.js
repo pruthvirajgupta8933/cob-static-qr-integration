@@ -3,26 +3,18 @@ import Charts from "./Charts";
 import TransactionTable from "./TransactionTable";
 import FilterModal from "./FilterModal";
 import ActionButtons from "./ActionButtons";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import TransactionFilter from "./transaction-filter/TransactionFilter";
 import transactionCardIcon from "../../../../assets/images/paylink/icon (2).svg";
 import payerCardIcon from "../../../../assets/images/paylink/icon (3).svg";
 import generateLinkCardIcon from "../../../../assets/images/paylink/icon (1).svg";
-import moment from "moment";
 import customStyle from "./paymentLinkSolution.module.css"
-
-// import {
-//   getDashboardData,
-//   getTxnData,
-//   getTxnGraphData,
-// } from "../../../../slices/paymentLink/paymentLinkSlice";
-
 import { getDashboardData, getTxnData, getTxnGraphData } from "./paylink-solution-slice/paylinkSolutionSlice";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { durationFilter } from "./durationFilter";
 import { setGraphFilterOption, setSeletedGraphOption } from "../../../../slices/date-filter-slice/DateFilterSlice";
-// import RecentTransaction from "./recent-transaction/RecentTransaction";
+
 
 const PaylinkDashboard = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -45,21 +37,9 @@ const PaylinkDashboard = () => {
 
   const filterRef = useRef(null);
   let { path } = useRouteMatch();
-  const history = useHistory();
 
 
-  // useEffect(() => {
-  //   dispatch(
-  //     getTxnData({
-  //       client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
-  //       order_by: "-id",
-  //       page: 1,
-  //       page_size: 10,
-  //       start_date: fromDate,
-  //       end_date: toDate,
-  //     })
-  //   );
-  // }, []);
+
 
   useEffect(() => {
     dispatch(
@@ -100,27 +80,7 @@ const PaylinkDashboard = () => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   console.log("selectedOption", selectedOption)
 
-  //   setDashboardTxnData([]);
-  //   dispatch(
-  //     getTxnGraphData({
-  //       start_date: fromDate,
-  //       end_date: toDate,
-  //       client_code: user.clientMerchantDetailsList?.[0]?.clientCode,
-  //       transaction_data_span: selectedOption,
-  //     })
-  //   )
-  //     .then((res) => {
-  //       if (res.payload?.transaction_graph_data) {
-  //         setDashboardTxnData(res.payload.transaction_graph_data);
-  //       }
-  //     })
-  //     .catch((err) => {
-
-  //     });
-  // }, [selectedOption]);
 
   const filterOptionHandler = ({ fromDate, toDate }) => {
 

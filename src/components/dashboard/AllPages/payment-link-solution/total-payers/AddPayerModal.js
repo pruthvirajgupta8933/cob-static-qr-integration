@@ -105,10 +105,6 @@ const AddPayerModal = ({ componentState, loadDataFn, onClose }) => {
     }, [])
 
 
-
-
-
-
     return (
         <div
             className="mymodals modal fade show"
