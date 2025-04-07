@@ -124,6 +124,7 @@ import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 import Disbursment from "../../ApproverNVerifier/Disbursment/Disbursment";
+import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -802,6 +803,15 @@ function DashboardMainContent() {
                 roleList={{ merchant: true }}
               >
                 <RegistrationHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/schedule-transaction`}
+                Component={ScheduleTransaction}
+                roleList={{ merchant: true }}
+              >
+
               </AuthorizedRoute>
 
               <AuthorizedRoute
