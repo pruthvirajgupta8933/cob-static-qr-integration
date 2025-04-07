@@ -325,6 +325,10 @@ const Login = () => {
                               e.preventDefault();
                               return false;
                             }}
+                            onPaste={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
                             placeholder="Enter your username"
                             type="text"
                             name="clientUserId"
@@ -352,6 +356,10 @@ const Login = () => {
                                 return false;
                               }}
                               onCut={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
+                              onPaste={(e) => {
                                 e.preventDefault();
                                 return false;
                               }}
