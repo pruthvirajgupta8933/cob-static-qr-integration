@@ -78,7 +78,7 @@ const Login = () => {
       })
       .catch((error) => {
         toastConfig.errorToast(
-          "Error with google login. Please try after sometime."
+          "Error captcha verification failed. Please try again after sometime."
         );
       });
   };
@@ -87,6 +87,7 @@ const Login = () => {
     const { clientUserId, userPassword } = formValue;
 
     setLoading(true);
+
     const encQuery = {
       query: Encrypt(
         JSON.stringify({
