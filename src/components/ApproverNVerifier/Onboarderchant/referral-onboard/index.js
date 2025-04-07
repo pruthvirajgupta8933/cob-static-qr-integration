@@ -11,7 +11,7 @@ import { clearKYCDocumentList } from "../../../../slices/kycSlice";
 const Referral = ({ type, zoneCode, edit }) => {
   let tabs = [];
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   if (type === "individual") {
     tabs = [
@@ -30,20 +30,17 @@ const Referral = ({ type, zoneCode, edit }) => {
     (state) => state.referralOnboard.basicDetailsResponse?.data
   );
 
-
   const kycData = useSelector((state) => state.kyc?.kycUserList);
   const [currentTab, setCurrentTab] = useState("basic");
   const [infoModal, setInfoModal] = useState();
   const handleTabClick = (tabId) => setCurrentTab(tabId);
 
-
   useEffect(() => {
     // clear kyc state when unmount the component
     return () => {
-      dispatch(clearKYCDocumentList())
-    }
-  }, [])
-
+      dispatch(clearKYCDocumentList());
+    };
+  }, []);
 
   const renderTabContent = () => {
     switch (currentTab) {
@@ -131,14 +128,16 @@ const Referral = ({ type, zoneCode, edit }) => {
           >
             {tabs?.map((tab) => (
               <a
-                className={`nav-link cursor_pointer px-2 ${currentTab === tab.id && "active-secondary"
-                  } ${tab.id === "basic"
+                className={`nav-link cursor_pointer px-2 ${
+                  currentTab === tab.id && "active-secondary"
+                } ${
+                  tab.id === "basic"
                     ? "pe-auto"
                     : basicDetailsResponse?.loginMasterId ||
                       (edit && kycData?.loginMasterId)
-                      ? "pe-auto"
-                      : "pe-none"
-                  }`}
+                    ? "pe-auto"
+                    : "pe-none"
+                }`}
                 onClick={() => handleTabClick(tab.id)}
                 id={`v-pills-link${tab.id}-tab`}
                 data-mdb-toggle="pill"

@@ -23,25 +23,28 @@ const App = () => {
     if (expireTime > 0 && expireTime > Date.now()) {
       setLogin(true);
     }
-    window.addEventListener("load", function (e) {
-      let openTabs = this.window.localStorage.getItem("openTabs");
-
+    const setOpenTab = () => {
+      let openTabs = window.localStorage.getItem("openTabs");
       if (openTabs && parseInt(openTabs) > 0) {
         dispatch(logout());
       } else {
-        this.window.localStorage.setItem("openTabs", 1);
+        window.localStorage.setItem("openTabs", 1);
       }
-    });
-    window.addEventListener("unload", function (e) {
-      e.preventDefault();
-      let openTabs = this.window.localStorage.getItem("openTabs");
+    };
+    const resetOpenTab = () => {
+      let openTabs = window.localStorage.getItem("openTabs");
       if (openTabs && parseInt(openTabs) > 0) {
         let tabs = parseInt(openTabs);
         tabs--;
-        this.window.localStorage.setItem("openTabs", tabs);
+        window.localStorage.setItem("openTabs", tabs);
       }
-      e.returnValue = "";
-    });
+    };
+    window.addEventListener("load", setOpenTab);
+    window.addEventListener("unload", resetOpenTab);
+    return () => {
+      window.removeEventListener("load", setOpenTab);
+      window.removeEventListener("unload", resetOpenTab);
+    };
   }, []);
 
   // logout session expireTime if user not idle
