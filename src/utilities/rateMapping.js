@@ -27,7 +27,7 @@ export const rateMappingFn = (loginId, parentClientCode) => {
 
     async function rateMapping(merchantLoginId) {
         try {
-            const merchantData = await callApiJwt(API_URL.Kyc_User_List, "post", { login_id: merchantLoginId, password_required: true })
+            const merchantData = await callApiJwt(API_URL.Kyc_User_List, "post", { login_id: merchantLoginId, password_required: true, operation: "k" })
             console.log("fetch Merchant data with secret key--", merchantData)
             // loader = true
 
