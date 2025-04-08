@@ -123,7 +123,7 @@ import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-acc
 import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
-import Disbursment from "../../ApproverNVerifier/Disbursment/Disbursment";
+import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 
 function DashboardMainContent() {
@@ -258,10 +258,10 @@ function DashboardMainContent() {
 
       dispatch(fetchMenuList(postBody));
     } else {
-      toastConfig.errorToast("Session Expired");
       dispatch(logout());
+      toastConfig.errorToast("Session Expired");
     }
-  }, [user, dispatch]);
+  }, []);
 
 
   useEffect(() => {
@@ -1082,8 +1082,8 @@ function DashboardMainContent() {
 
               <AuthorizedRoute
                 exact
-                path={`${path}/disbursment`}
-                Component={Disbursment}
+                path={`${path}/Disbursement`}
+                Component={Disbursement}
                 roleList={{ approver: true }}
               >
 

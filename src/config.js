@@ -13,9 +13,12 @@ let url,
   paylinkBaseUrl,
   subscriptionUrl,
   refund_url,
+  mid_url,
   adminAPIURL = "";
 if (ENV_PROD) {
+
   url = "https://cobawsapi.sabpaisa.in";
+  mid_url = "https://merchantonboarding.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
   // kyc_validate = " https://kycvalidator.sabpaisa.in";
   payout_url = "https://payout.sabpaisa.in";
@@ -35,6 +38,7 @@ if (ENV_PROD) {
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
+  mid_url = "https://stage-merchantonboarding.sabpaisa.in";
   // url = "http://192.168.2.44:8000";
   // kyc_url = "http://192.168.2.44:8001";
   // kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
@@ -50,6 +54,7 @@ if (ENV_PROD) {
   paylinkBaseUrl = "https://stage-paymentlinks.sabpaisa.in";
   subscriptionUrl = "https://uat-subscription.sabpaisa.in/";
   adminAPIURL = "https://stage-python-adminapi.sabpaisa.in/api";
+
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -89,8 +94,9 @@ const API_LIVE = {
   GET_ALL_BANK_NAME: `${url}/mid/bank/`,
   MID_CREATE_API: `${url}/mid/create/`,
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
-  SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
+  MID_FETCH_DATA_BY_CLIENT_CODE: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
 
+  SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
   ////////////MFA
 
   MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
