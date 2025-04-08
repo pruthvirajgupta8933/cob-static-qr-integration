@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForPending } from "../../../slices/kycSlice";
+import { kycForPending, kycListByStatus } from "../../../slices/kycSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "../Onboarderchant/CommentModal";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
@@ -43,7 +43,7 @@ function PendingVerification({ commonRows }) {
             data-target="#kycmodaldetail"
           >
             {(roles?.verifier === true && currenTab === 3) ||
-              Allow_To_Do_Verify_Kyc_details === true
+            Allow_To_Do_Verify_Kyc_details === true
               ? "Verify KYC "
               : "View Status"}
           </button>
@@ -57,8 +57,8 @@ function PendingVerification({ commonRows }) {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-            roles?.approver === true ||
-            roles?.viewer === true ? (
+          roles?.approver === true ||
+          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -88,7 +88,7 @@ function PendingVerification({ commonRows }) {
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
 
   const pendindVerificationList = useSelector(
-    (state) => state.kyc.pendingVerificationKycList
+    (state) => state.kyc.kycListByStatus?.["Processing"] || {}
   );
 
   useEffect(() => {
@@ -107,21 +107,18 @@ function PendingVerification({ commonRows }) {
     fetchData();
   };
 
-
-  const fetchData = useCallback(
-    () => {
-      dispatch(
-        kycForPending({
-          page: currentPage,
-          page_size: pageSize,
-          searchquery: searchText,
-          merchantStatus: "Processing",
-          isDirect: onboardType,
-        })
-      );
-    },
-    [currentPage, pageSize, searchText, dispatch, onboardType]
-  );
+  const fetchData = useCallback(() => {
+    dispatch(
+      kycListByStatus({
+        orderByField: "-id",
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Processing",
+        isDirect: onboardType,
+      })
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   return (
     <div className="container-fluid flleft">
@@ -149,19 +146,18 @@ function PendingVerification({ commonRows }) {
         </div>
       </div>
       <ListLayout
-        loadingState={loadingState}
+        loadingState={pendindVerificationList?.loading}
         searchData={pendindVerificationList}
         dataCount={dataCount}
         rowData={PendingVerificationData}
         data={data}
         setData={setData}
         merchantStatus={"Processing"}
-        fetchDataCb={kycForPending}
-        filterData={
-          {
-            setOnboardTypeFn: setOnboardType
-          }
-        }
+        orderByField="-id"
+        fetchDataCb={kycListByStatus}
+        filterData={{
+          setOnboardTypeFn: setOnboardType,
+        }}
       />
     </div>
   );

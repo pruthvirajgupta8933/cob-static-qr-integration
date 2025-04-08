@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForRejectedMerchants } from "../../../slices/kycSlice";
+import {
+  kycForRejectedMerchants,
+  kycListByStatus,
+} from "../../../slices/kycSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import ListLayout from "./ListLayout";
@@ -18,7 +21,9 @@ const RejectedKYC = ({ commonRows }) => {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [onboardType, setOnboardType] = useState("");
 
-  const rejectedKycList = useSelector((state) => state.kyc.rejectedKycList);
+  const rejectedKycList = useSelector(
+    (state) => state.kyc.kycListByStatus?.["Rejected"] || {}
+  );
 
   // Initialize data state with an empty array
   const [data, setData] = useState([]);
@@ -73,8 +78,8 @@ const RejectedKYC = ({ commonRows }) => {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-            roles?.approver === true ||
-            roles?.viewer === true ? (
+          roles?.approver === true ||
+          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -99,7 +104,8 @@ const RejectedKYC = ({ commonRows }) => {
   const fetchData = useCallback(
     (startingSerialNumber) => {
       dispatch(
-        kycForRejectedMerchants({
+        kycListByStatus({
+          orderByField: "-kyc_reject",
           page: currentPage,
           page_size: pageSize,
           searchquery: searchText,
@@ -132,19 +138,18 @@ const RejectedKYC = ({ commonRows }) => {
       )}
 
       <ListLayout
-        loadingState={loadingState}
+        loadingState={rejectedKycList?.loading}
         searchData={rejectedMerchants}
         dataCount={dataCount}
         rowData={RejectedTableData}
         data={data}
         setData={setData}
-        fetchDataCb={kycForRejectedMerchants}
+        fetchDataCb={kycListByStatus}
         merchantStatus={"Rejected"}
-        filterData={
-          {
-            setOnboardTypeFn: setOnboardType
-          }
-        }
+        orderByField="-kyc_reject"
+        filterData={{
+          setOnboardTypeFn: setOnboardType,
+        }}
       />
     </div>
   );

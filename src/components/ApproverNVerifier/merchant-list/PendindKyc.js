@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { kycForPendingMerchants } from "../../../slices/kycSlice";
+import {
+  kycForPendingMerchants,
+  kycListByStatus,
+} from "../../../slices/kycSlice";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "../Onboarderchant/CommentModal";
@@ -15,7 +18,9 @@ const PendindKyc = ({ commonRows }) => {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false);
 
-  const pendindKycList = useSelector((state) => state.kyc.pendingKycuserList);
+  const pendindKycList = useSelector(
+    (state) => state.kyc.kycListByStatus?.["Pending"] || {}
+  );
 
   const [data, setData] = useState([]);
   const [pendingKycData, setPendingKycData] = useState([]);
@@ -64,8 +69,8 @@ const PendindKyc = ({ commonRows }) => {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-            roles?.approver === true ||
-            roles?.viewer === true ? (
+          roles?.approver === true ||
+          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -108,14 +113,15 @@ const PendindKyc = ({ commonRows }) => {
         </div>
       </div>
       <ListLayout
-        loadingState={loadingState}
+        loadingState={pendindKycList?.loading}
         searchData={pendingKycData}
         dataCount={dataCount}
         rowData={PendindKycRowData}
         data={data}
         setData={setData}
         merchantStatus={"Pending"}
-        fetchDataCb={kycForPendingMerchants}
+        fetchDataCb={kycListByStatus}
+        orderByField="-id"
       />
     </div>
   );

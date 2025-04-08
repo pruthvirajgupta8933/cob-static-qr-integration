@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForApproved } from "../../../slices/kycSlice";
+import { kycForApproved, kycListByStatus } from "../../../slices/kycSlice";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import ListLayout from "./ListLayout";
 import CommentModal from "../Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import DateFormatter from "../../../utilities/DateConvert";
 // import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
-import AgreementUploadTab from '../Onboarderchant/AgreementUploadTab'
+import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
 import CkycrModal from "../backend-kyc/ckycr/CkycrModal";
 
 function ApprovedMerchant({ commonRows }) {
@@ -25,7 +25,7 @@ function ApprovedMerchant({ commonRows }) {
   const [onboardType, setOnboardType] = useState("");
 
   const approvedMerchantList = useSelector(
-    (state) => state.kyc.kycApprovedList
+    (state) => state.kyc.kycListByStatus?.["Approved"] || {}
   );
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
@@ -42,8 +42,6 @@ function ApprovedMerchant({ commonRows }) {
       setDataCount(dataCount);
     }
   }, [approvedMerchantList]); //
-
-
 
   const ApprovedTableData = [
     ...commonRows,
@@ -92,8 +90,8 @@ function ApprovedMerchant({ commonRows }) {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-            roles?.approver === true ||
-            roles?.viewer === true ? (
+          roles?.approver === true ||
+          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -121,8 +119,8 @@ function ApprovedMerchant({ commonRows }) {
       cell: (row) => (
         <div className="d-flex">
           {roles?.verifier === true ||
-            roles?.approver === true ||
-            roles?.viewer === true ? (
+          roles?.approver === true ||
+          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white m-1"
@@ -140,22 +138,19 @@ function ApprovedMerchant({ commonRows }) {
             <></>
           )}
 
-          {(roles?.verifier === true ||
-            roles?.approver === true) && (
-              <button
-                type="button"
-                className="approve text-white m-1"
-                onClick={() => {
-                  setOpenCkycrModal(true);
-                  setCkycrData(row)
-                }}
-
-                disabled={row?.clientCode === null ? true : false}
-              >
-                CKYCR
-              </button>
-            )}
-
+          {(roles?.verifier === true || roles?.approver === true) && (
+            <button
+              type="button"
+              className="approve text-white m-1"
+              onClick={() => {
+                setOpenCkycrModal(true);
+                setCkycrData(row);
+              }}
+              disabled={row?.clientCode === null ? true : false}
+            >
+              CKYCR
+            </button>
+          )}
         </div>
       ),
     },
@@ -168,7 +163,8 @@ function ApprovedMerchant({ commonRows }) {
   const fetchData = useCallback(
     (startingSerialNumber) => {
       dispatch(
-        kycForApproved({
+        kycListByStatus({
+          orderByField: "-approved_date",
           page: currentPage,
           page_size: pageSize,
           searchquery: searchText,
@@ -194,28 +190,27 @@ function ApprovedMerchant({ commonRows }) {
   return (
     <div className="container-fluid">
       <ListLayout
-        loadingState={loadingState}
+        loadingState={approvedMerchantList?.loading}
         searchData={approvedMerchantData}
         dataCount={dataCount}
         rowData={ApprovedTableData}
         data={data}
         setData={setData}
-        fetchDataCb={kycForApproved}
+        fetchDataCb={kycListByStatus}
         merchantStatus={"Approved"}
-        filterData={
-          {
-            setOnboardTypeFn: setOnboardType
-          }
-        }
+        orderByField="-approved_date"
+        filterData={{
+          setOnboardTypeFn: setOnboardType,
+        }}
       />
       <div>
         {openDocumentModal && (
-
-
-          <AgreementUploadTab documentData={commentId}
+          <AgreementUploadTab
+            documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
-            tabName={"Approved Tab"} />
+            tabName={"Approved Tab"}
+          />
         )}
 
         {isOpenModal && (

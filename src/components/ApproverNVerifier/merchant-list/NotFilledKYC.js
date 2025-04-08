@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { kycForNotFilled } from "../../../slices/kycSlice";
+import { kycListByStatus } from "../../../slices/kycSlice";
 import { NotFilledKYCData } from "../../../utilities/tableData";
 import ListLayout from "./ListLayout";
 
 const rowData = NotFilledKYCData;
 
 const NotFilledKYC = () => {
-  const loadingState = useSelector((state) => state.kyc.isLoading);
-  const { results: notFilledKycData, count: dataCount } = useSelector(
-    (state) => state.kyc.notFilledUserList
-  );
+  // const loadingState = useSelector((state) => state.kyc.isLoading);
+  const {
+    results: notFilledKycData,
+    count: dataCount,
+    loading: loadingState,
+  } = useSelector((state) => state.kyc.kycListByStatus?.["Not-Filled"] || {});
 
   const [notFilledData, setNotFilledData] = useState(notFilledKycData);
   const [data, setData] = useState(notFilledKycData);
@@ -33,7 +35,6 @@ const NotFilledKYC = () => {
     });
   }, [notFilledKycData]);
 
-
   return (
     <div className="container-fluid flleft">
       <ListLayout
@@ -43,8 +44,9 @@ const NotFilledKYC = () => {
         rowData={rowData}
         data={mappedData}
         setData={setData}
-        fetchDataCb={kycForNotFilled}
+        fetchDataCb={kycListByStatus}
         merchantStatus="Not-Filled"
+        orderByField="-id"
       />
     </div>
   );

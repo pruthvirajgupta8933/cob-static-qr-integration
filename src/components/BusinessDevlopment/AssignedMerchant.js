@@ -29,6 +29,7 @@ const AssignedMerchant = () => {
   const [searchFilterData, setSearchFilterData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [masked, setMasked] = useState(true);
 
   useEffect(() => {
     if (assigneMerchantList?.results) {
@@ -72,6 +73,7 @@ const AssignedMerchant = () => {
           page: currentPage,
           page_size: pageSize,
           search_query: searchText,
+          operation: masked ? "u" : "k",
         };
 
         const payload = {
@@ -82,7 +84,7 @@ const AssignedMerchant = () => {
         dispatch(getAssignedMerchantData({ queryParams, payload }));
       }
     });
-  }, [dispatch, loginId, roleId, currentPage, pageSize, searchText]);
+  }, [dispatch, loginId, roleId, currentPage, pageSize, searchText, masked]);
 
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
@@ -195,16 +197,38 @@ const AssignedMerchant = () => {
                 changeCurrentPage={changeCurrentPage}
               />
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-4">
-              <button
-                className="btn cob-btn-primary  approve  text-white ml-3"
-                type="button"
-                onClick={() => exportToExcelFn()}
-                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-              >
-                Export
-              </button>
-            </div>
+            {data.length > 0 && (
+              <>
+                <div className="form-group col-lg-1 col-md-12 mt-4">
+                  <button
+                    className="btn cob-btn-primary btn-sm"
+                    type="button"
+                    onClick={() => exportToExcelFn()}
+                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                  >
+                    Export
+                  </button>
+                </div>
+                <div className="form-group col-lg-1 col-md-12 mt-4">
+                  <button
+                    className="btn btn-sm cob-btn-primary"
+                    // disabled={disable}
+                    type="button"
+                    onClick={() => {
+                      setMasked(!masked);
+                    }}
+                  >
+                    <i
+                      className={`fa ${
+                        masked ? "fa-eye-slash" : "fa-eye"
+                      } text-white pr-1`}
+                    />
+                    {masked ? "Unmask" : "Mask"}
+                    {/* {loading ? "Downloading..." : "Export"} */}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
           <div>
             <div className="scroll overflow-auto">
