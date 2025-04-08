@@ -1,26 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
-import { Formik, Form} from "formik";
+import { Formik, Form } from "formik";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
-import { fetchPaymentMode, fetchBankName, getMidClientCode } from "../../services/generate-mid/generate-mid.service";
-import  { createFilter } from 'react-select';
+import { fetchPaymentMode, fetchBankName, getMidClientCode, fetchMidPayload } from "../../services/generate-mid/generate-mid.service";
+import { createFilter } from 'react-select';
 import CustomModal from "../../_components/custom_modal";
 import Yup from "../../_components/formik/Yup";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
 
 import toastConfig from "../../utilities/toastTypes";
-import { createMidApi } from "../../slices/generateMidSlice";
-function AssignZone() {
+import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlice";
 
+function AssignZone() {
 
   const [clientCodeList, setCliencodeList] = useState([])
   const [disable, setDisable] = useState(false)
+  const midState = useSelector(state => state.mid)
 
+  const midPayloadData = midState?.midPayload
   const validationSchema = Yup.object().shape({
-
-
     mode_name: Yup.string()
       .required("Required")
       .allowOneSpace(),
@@ -64,7 +64,7 @@ function AssignZone() {
 
   const [createMidData, setCreateMidData] = useState("")
   const [show, Setshow] = useState(false)
-  
+
 
   useEffect(() => {
     fetchPaymentMode()
@@ -113,58 +113,43 @@ function AssignZone() {
 
   const modalBody = () => {
     return (
-      <div className="container-fluid">
-        <Formik
-          initialValues={initialValuess}
-          // validationSchema={validationSchema}
+      <div className="container-fluid p-0">
+        <div className="modal-body p-0">
+          <div className="container">
+            <h6>MID request data :</h6>
+            <p> Payment Mode: {formValues?.mode_name}</p>
+            <p> Bank: {formValues?.bank_name}</p>
 
-          onSubmit={(values, { resetForm }) => {
-            handleSubmit(values);
-            resetForm();
-          }}
-        >
-          {({ resetForm }) => (
-            <>
-
-              <div className="modal-body">
-
-               
-                <h6 className="ml-3">
-                  Payment Mode: {formValues?.mode_name}
-                </h6>
-                <h6 className="ml-3">
-                  Bank: {formValues?.bank_name}
-                </h6>
-                <div className="container">
-                  <Form>
-                    
-                    <div className="">
-                      {createMidData.onboardStatus !== 'SUCCESS' && (
-                        <button
-                          type="submit"
-                          className="submit-btn cob-btn-primary text-white mt-3"
-                          disabled={disable}
-                        >
-                          {disable && (
-                            <span
-                              className="spinner-border spinner-border-sm mr-1"
-                              role="status"
-                              ariaHidden="true"
-                            ></span>
-                          )}
-                          Confirm
-                        </button>
-                      )}
-                    </div>
+            {/* <div className="my-5">
+           
+              {Object.keys(midPayloadData?.data)?.map((item, index) => (
+                <p key={index}>{item} : {midPayloadData?.data[item]}</p>
+              ))}
+            </div> */}
 
 
+            <div className="">
+              {createMidData.onboardStatus !== 'SUCCESS' && (
+                <button
+                  type="button"
+                  className="submit-btn cob-btn-primary text-white mt-3"
+                  disabled={disable}
+                  onClick={() => handleSubmit()}
+                >
+                  {disable && (
+                    <span
+                      className="spinner-border spinner-border-sm mr-1"
+                      role="status"
+                      ariaHidden="true"
+                    ></span>
+                  )}
+                  Confirm
+                </button>
+              )}
+            </div>
 
-                  </Form>
-                </div>
-              </div>
-            </>
-          )}
-        </Formik>
+          </div>
+        </div>
         {loading ? (
           <div className="d-flex justify-content-center">
             <div className="spinner-border spinner-border-sm" role="status">
@@ -172,6 +157,7 @@ function AssignZone() {
             </div>
           </div>
         ) : (
+
           createMidData?.description && (
             <div className="d-flex justify-content-center">
               <div className="card bg-warning text-center">
@@ -184,6 +170,7 @@ function AssignZone() {
             </div>
           )
         )}
+
         {createMidData?.onboardStatus === "SUCCESS" &&
           <table class="table mt-3">
             <thead>
@@ -227,20 +214,24 @@ function AssignZone() {
     setFormValues(values)
     setCreateMidData({})
   }
-  
 
-  const handleSubmit = (values) => {
-   setDisable(true)
+
+  const handleSubmit = async () => {
+    setDisable(true)
     setLoading(true)
-    setCreateMidData({})
+    // setCreateMidData({})
     const midData = {
       "merchant_id": selectedClientId,
       "bank_name": formValues?.bank_name,
       "mode_name": formValues?.mode_name
-
     };
-    dispatch(createMidApi(midData))
-      .then((resp) => {
+
+    try {
+      let reqPayload = await fetchMidPayload(midData);
+      reqPayload = reqPayload?.data?.result
+      let createMidResp = dispatch(createMidApi(reqPayload))
+      createMidResp.then((resp) => {
+        console.log(resp)
         if (resp?.meta?.requestStatus === "fulfilled") {
           Setshow(true)
           setCreateMidData(resp?.payload)
@@ -251,17 +242,42 @@ function AssignZone() {
           setDisable(false)
           setLoading(false)
         }
-
-
-        // setData(resp.payload.ResponseData);
       })
-      .catch((err) => {
-        console.log("err", err)
-        toastConfig.errorToast(err);
-        Setshow(false)
-        setDisable(false)
 
-      });
+    } catch (error) {
+      console.log("err", error)
+      toastConfig.errorToast(error);
+      Setshow(false)
+      setDisable(false)
+
+    }
+
+    // dispatch(fetchMidPayloadSlice(midData))
+
+
+    // dispatch(createMidApi(midData))
+    //   .then((resp) => {
+    //     if (resp?.meta?.requestStatus === "fulfilled") {
+    //       Setshow(true)
+    //       setCreateMidData(resp?.payload)
+    //       setDisable(false)
+    //       setLoading(false)
+    //     } else {
+    //       toastConfig.errorToast(resp?.payload ?? "Something went wrong");
+    //       setDisable(false)
+    //       setLoading(false)
+    //     }
+
+
+    //     // setData(resp.payload.ResponseData);
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err)
+    //     toastConfig.errorToast(err);
+    //     Setshow(false)
+    //     setDisable(false)
+
+    //   });
   };
 
   return (
@@ -281,7 +297,7 @@ function AssignZone() {
                 <Form className="mt-5">
                   <div className="row">
                     <div className="col-lg-3">
-                     <CustomReactSelect
+                      <CustomReactSelect
                         name="react_select"
                         options={options}
                         placeholder="Select Client Code"

@@ -86,16 +86,19 @@ const API_LIVE = {
   BizzAPPForm: `${url}/biz-app-form/`,
   Business_Category_Type: `${url}/auth-service/auth/business-category`,
 
-  ///////////Payment mode for mid
+  ///////////MID service
   GET_PAYMENT_MODE_LIST: `${url}/mid/payment-mode/`,
   GET_ALL_BANK_NAME: `${url}/mid/bank/`,
-  MID_CREATE_API: `${url}/mid/create/`,
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
+  MID_PAYLOAD_BY_MERCHANT_ID: `${url}/mid/get-mid/`,
+
+  MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
   MID_FETCH_DATA_BY_CLIENT_CODE: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  // https://stage-merchantonboarding.sabpaisa.in
+
 
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
   ////////////MFA
-
   MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
 
   ////////////Bd Development
