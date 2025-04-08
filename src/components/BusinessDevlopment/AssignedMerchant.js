@@ -13,6 +13,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
+import { setKycMasked } from "../../slices/kycSlice";
 
 const AssignedMerchant = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const AssignedMerchant = () => {
   const [searchFilterData, setSearchFilterData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [masked, setMasked] = useState(true);
+  const { isKycMasked } = useSelector((state) => state.kyc);
 
   useEffect(() => {
     if (assigneMerchantList?.results) {
@@ -73,7 +74,7 @@ const AssignedMerchant = () => {
           page: currentPage,
           page_size: pageSize,
           search_query: searchText,
-          operation: masked ? "u" : "k",
+          operation: isKycMasked ? "u" : "k",
         };
 
         const payload = {
@@ -84,7 +85,15 @@ const AssignedMerchant = () => {
         dispatch(getAssignedMerchantData({ queryParams, payload }));
       }
     });
-  }, [dispatch, loginId, roleId, currentPage, pageSize, searchText, masked]);
+  }, [
+    dispatch,
+    loginId,
+    roleId,
+    currentPage,
+    pageSize,
+    searchText,
+    isKycMasked,
+  ]);
 
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
@@ -215,15 +224,15 @@ const AssignedMerchant = () => {
                     // disabled={disable}
                     type="button"
                     onClick={() => {
-                      setMasked(!masked);
+                      dispatch(setKycMasked(!isKycMasked));
                     }}
                   >
                     <i
                       className={`fa ${
-                        masked ? "fa-eye-slash" : "fa-eye"
+                        isKycMasked ? "fa-eye-slash" : "fa-eye"
                       } text-white pr-1`}
                     />
-                    {masked ? "Unmask" : "Mask"}
+                    {isKycMasked ? "Unmask" : "Mask"}
                     {/* {loading ? "Downloading..." : "Export"} */}
                   </button>
                 </div>
