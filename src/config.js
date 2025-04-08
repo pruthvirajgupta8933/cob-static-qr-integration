@@ -533,6 +533,8 @@ export const E_NACH_URL = {
   BULK_CREATE_MANDATE: `${subscriptionUrl}api/mandate/bulk-create-mandates/`,
   REGISTRATION_REPORT: `${subscriptionUrl}api/mandate/mandate-registration-data/`,
   DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
+  SCHEDULE_TRRANSACTION: `${subscriptionUrl}api/mandate/upcoming-mandates/`,
+  USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`
 };
 
 export const wsConnectUrl = {
