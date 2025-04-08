@@ -49,7 +49,7 @@ function MerchantContactInfo(props) {
 
       if (resp?.payload?.general_info_status) {
         toast.success("Verified");
-        dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }));
+        dispatch(kycUserList({ login_id: selectedUserData.loginMasterId, masking: 1 }));
       } else if (resp?.payload?.detail) {
         toast.error(resp.payload.detail);
       }
@@ -73,7 +73,7 @@ function MerchantContactInfo(props) {
         const resp = await dispatch(rejectKycOperation(rejectDetails));
         if (resp?.payload?.general_info_status) {
           toast.success("Rejected");
-          dispatch(kycUserList({ login_id: selectedUserData.loginMasterId }));
+          dispatch(kycUserList({ login_id: selectedUserData.loginMasterId, masking: 1 }));
         } else if (resp?.payload) {
           toast.error(resp.payload);
         }

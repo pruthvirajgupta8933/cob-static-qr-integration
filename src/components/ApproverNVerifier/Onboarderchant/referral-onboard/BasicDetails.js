@@ -266,6 +266,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
           kycUserList({
             login_id: kycData?.loginMasterId,
             password_required: true,
+            masking: 1
           })
         );
     });

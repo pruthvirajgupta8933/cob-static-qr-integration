@@ -30,6 +30,7 @@ const Submit = ({ disableForm, setInfoModal }) => {
         kycUserList({
           login_id:
             kycData?.loginMasterId ?? basicDetailsResponse?.data.loginMasterId,
+          masking: 1
         })
       );
   }, []);

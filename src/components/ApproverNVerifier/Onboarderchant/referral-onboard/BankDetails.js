@@ -50,7 +50,7 @@ const BankDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
   };
   useEffect(() => {
     if (basicDetailsResponse)
-      dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
+      dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId, masking: 1 }));
   }, []);
 
   useEffect(() => {
