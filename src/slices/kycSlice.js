@@ -8,6 +8,7 @@ import approverDashboardService from "../services/approver-dashboard/approverDas
 import { merchantKycService } from "../services/kyc/merchant-kyc";
 import { setMessage } from "./message";
 import { getErrorMessage } from "../utilities/errorUtils";
+import { getQueryStr } from "../utilities/generateURLQueryParams";
 
 const initialState = {
   isLoadingForpanDetails: false,
@@ -521,17 +522,23 @@ export const kycForNotFilled = createAsyncThunk(
 export const MyMerchantListData = createAsyncThunk(
   "kyc/MyMerchantListData",
   async (data) => {
-    const requestParam = data?.page;
-    const requestParam1 = data?.page_size;
+    let queryParamPayload = {}
+    let apiUrl = ""
+
     const searchQuery = data?.searchquery;
-    let apiUrl = `${API_URL.MY_MERCHANT_LIST}?page=${searchQuery ? 1 : requestParam
-      }&page_size=${requestParam1}&order_by=-login_id`;
-    // Check if kyc_status is present and not equal to 'ALL'
-    if (data?.kyc_status && data.kyc_status !== "All") {
-      apiUrl += `&kyc_status=${data.kyc_status}`;
+
+    if (data?.page) {
+      queryParamPayload["page"] = data?.page
     }
-    // Add the search_query parameter
-    apiUrl += `&search_query=${searchQuery}`;
+
+    if (data?.page) {
+      queryParamPayload["page_size"] = data?.page_size
+    }
+
+    queryParamPayload["order_by"] = "-login_id"
+    queryParamPayload["search_query"] = searchQuery
+
+    apiUrl = getQueryStr(API_URL.MY_MERCHANT_LIST, queryParamPayload)
     const response = await axiosInstanceJWT
       .post(apiUrl, { created_by: data.created_by })
       .catch((error) => {

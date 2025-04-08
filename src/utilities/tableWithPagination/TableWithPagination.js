@@ -22,6 +22,7 @@ const TableWithPagination = ({
     const apiHasData = dataCount > 0; // Check if API has data
     const hasSearchResults = data?.length > 0; // Check if search results exist
 
+
     // useEffect(() => {
     //     changeCurrentPage(90)
     // }, [])

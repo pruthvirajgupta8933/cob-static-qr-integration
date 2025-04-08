@@ -9,7 +9,7 @@ const basicAuth = Buffer.from(
 ).toString("base64");
 
 export const axiosInstanceAuth = axios.create({
-  headers: { Authorization: "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69" },
+  headers: { Authorization: "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69" }, //.env - REACT_APP_AUTH
 });
 
 export const axiosInstance = axios.create({
@@ -17,18 +17,21 @@ export const axiosInstance = axios.create({
 });
 
 
+//.env - REACT_APP_AUTH
 export const kycValidatorAuth = axios.create({
   headers: {
     "api-key": "cb1c45b3ee43416884a720f02d449d8d",
   },
 });
 
+//.env REACT_APP_KYC_VALID_AUTH
 export const bankValidatorAuth = axios.create({
   headers: {
     "api-key": "cb1c45b3ee43416884a720f02d449d8d", //befisc
   },
 });
 
+//.env REACT_APP_KYC_VALID_AUTH
 export const cinValidatorAuth = axios.create({
   headers: {
     "api-key": "b553fcecb9094b90804d8c954f251046",
@@ -36,6 +39,7 @@ export const cinValidatorAuth = axios.create({
 });
 
 // Instance for JWT
+//.env REACT_APP_AUTH
 export const axiosInstanceJWT = axios.create({
   headers: {
     "Content-Type": "application/json",
@@ -43,6 +47,7 @@ export const axiosInstanceJWT = axios.create({
   },
 });
 
+//.env REACT_APP_SUBCRIPTION_AUTH
 export const axiosInstanceAuthSubscription = axios.create({
   headers: {
     Authorization: `Basic ${basicAuth}`,
@@ -50,6 +55,8 @@ export const axiosInstanceAuthSubscription = axios.create({
   },
 });
 
+
+//.env REACT_APP_ENACH_AUTH
 ////////////////////For E-Nach 
 export const axiosInstanceEmandateAuthApiKey = axios.create({
   headers: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController';
@@ -46,7 +46,10 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         frequency: '',
         purpose: '',
         redirect_url: '',
-        mandate_category: ''
+        mandate_category: '',
+        untilCancelled: false,
+        emi_amount: "",
+        amount_type: "",
 
 
     };
@@ -67,21 +70,40 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
 
     const validationSchema = Yup.object({
-
         consumer_id: Yup.string().required('Required'),
         customer_name: Yup.string().required('Required'),
         customer_mobile: Yup.string()
             .matches(/^\d{10}$/, 'Must be a valid 10-digit mobile number')
             .required('Required'),
         customer_email_id: Yup.string().email('Invalid email').required('Required'),
+        untilCancelled: Yup.boolean(),
 
         start_date: Yup.date().required('Required'),
         end_date: Yup.date().required('Required'),
-        max_amount: Yup.number().required('Required'),
-        frequency: Yup.string().required('Required'),
-        purpose: Yup.string().required('Required'),
 
+        max_amount: Yup.number()
+            .typeError('Max amount must be a number')
+            .required('Required'),
+
+        emi_amount: Yup.number()
+            .typeError('EMI amount must be a number')
+            .required('Required')
+            .test(
+                'emi-less-than-max',
+                'EMI amount must be less than or equal to Max amount',
+                function (value) {
+                    const { max_amount } = this.parent;
+                    return value !== undefined && max_amount !== undefined
+                        ? value <= max_amount
+                        : true;
+                }
+            ),
+
+        frequency: Yup.string().required('Required'),
+        amount_type: Yup.string().required('Required'),
+        purpose: Yup.string().required('Required'),
     });
+
 
 
 
@@ -103,7 +125,12 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
         ]
 
+    const AmountType = [
+        { key: '', value: 'Select' },
+        { key: "fixed", value: "Fixed" },
+        { key: "Variable", value: "Variable" },
 
+    ]
 
     useEffect(() => {
         const apiResponse = {
@@ -184,30 +211,38 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
 
     const handleViewSubmit = async (values) => {
+
+
         setDisable(true);
         try {
             const filteredPurpose = pusposeListData.filter(
                 (item) => item.description === values.purpose
             );
+
             const mandateCategory = filteredPurpose.length > 0 ? filteredPurpose[0].code : null;
+
+            // Base object
             let postDataS = {
                 consumer_id: values.consumer_id,
                 customer_name: values.customer_name,
                 customer_mobile: values.customer_mobile,
                 customer_email_id: values.customer_email_id,
                 start_date: moment(values?.start_date).startOf("day").format("YYYY-MM-DD"),
-                end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
                 max_amount: values.max_amount,
                 frequency: values.frequency,
                 purpose: values.purpose,
                 client_code: clientCode,
                 mandate_category: mandateCategory,
                 redirect_url: getRedirectUrl(redirectUrl),
+                amount_type: values.amount_type,
+                until_cancel: values.untilCancelled,
+                emi_amount: values.emi_amount,
+                customer_type: selectedOption === "customer" ? "customer" : "merchant"
             };
-            if (selectedOption === "customer") {
-                postDataS["customer_type"] = "customer"
-            } else {
-                postDataS["customer_type"] = "merchant"
+
+            // Conditionally add `end_date` if untilCancelled is false
+            if (!values.untilCancelled) {
+                postDataS.end_date = moment(values?.end_date).startOf("day").format("YYYY-MM-DD");
             }
 
             const response = await dispatch(createEmandateByApi(postDataS));
@@ -225,6 +260,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         }
         setDisable(false);
     };
+
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(bankDetailsUrl);
@@ -271,51 +307,81 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
                                     <div className="row mb-3">
 
-                                        <div className="col-md-4">
+                                        <div className="col-md-3">
                                             <label htmlFor="consumer_id" className="form-label">Consumer ID</label>
                                             <FormikController type="text" id="consumer_id" name="consumer_id" className="form-control" placeholder="Enter Consumer ID" control='input' />
 
                                         </div>
-                                        <div className="col-md-4">
+                                        <div className="col-md-3">
                                             <label htmlFor="customer_name" className="form-label">Customer Name</label>
                                             <FormikController type="text" id="customer_name" name="customer_name" className="form-control" placeholder="Enter Customer Name" control='input' />
 
                                         </div>
-                                        <div className="col-md-4">
+                                        <div className="col-md-3">
                                             <label htmlFor="customer_mobile" className="form-label">Customer Mobile</label>
                                             <FormikController type="text" id="customer_mobile" name="customer_mobile" className="form-control" placeholder="Enter Customer Mobile" control='input' />
 
                                         </div>
-
-                                    </div>
-                                    <div className="row mb-3">
-                                        <div className="col-md-4">
+                                        <div className="col-md-3">
                                             <label htmlFor="customer_email_id" className="form-label">Customer Email</label>
                                             <FormikController type="email" id="customer_email_id" name="customer_email_id" className="form-control" placeholder="Enter Customer Email" control='input' />
 
                                         </div>
 
-                                        <div className="col-md-4">
+
+                                    </div>
+                                    <div className="row mb-3">
+
+                                        <div className="col-md-3">
+                                            <label htmlFor="frequency" className="form-label">Amount Type</label>
+                                            <FormikController type="number" id="frequency" name="amount_type" className="form-select" control='select' options={AmountType} />
+
+                                        </div>
+
+                                        <div className="col-md-3">
                                             <label htmlFor="frequency" className="form-label">Frequency</label>
                                             <FormikController type="number" id="frequency" name="frequency" className="form-select" control='select' options={frequencyDropdown} />
 
                                         </div>
-                                        <div className="col-md-4">
-                                            <label htmlFor="purpose" className="form-label">Purpose</label>
-                                            <FormikController type="text" id="purpose" name="purpose" className="form-select" placeholder="Enter Purpose" control='select' options={dropdownData} />
 
+                                        <div className="col-md-3">
+                                            <label htmlFor="max_amount" className="form-label">Max Amount</label>
+                                            <FormikController
+                                                type="input"
+                                                id="max_amount"
+                                                name="max_amount"
+                                                className="form-control"
+                                                placeholder="Enter Max Amount"
+                                                control="input"
+                                            />
                                         </div>
-
+                                        <div className="col-md-3">
+                                            <label htmlFor="max_amount" className="form-label">EMI Amount</label>
+                                            <FormikController
+                                                type="input"
+                                                id="emi_amount"
+                                                name="emi_amount"
+                                                className="form-control"
+                                                placeholder="Enter Max Amount"
+                                                control="input"
+                                            />
+                                        </div>
 
                                     </div>
 
                                     <div className="row mb-3">
-                                        <div className="col-md-4">
-                                            <label htmlFor="start_date" className="form-label">Start Date</label>
 
+
+
+                                        <div className="col-md-3">
+                                            <label htmlFor="purpose" className="form-label">Purpose</label>
+                                            <FormikController type="text" id="purpose" name="purpose" className="form-select" placeholder="Enter Purpose" control='select' options={dropdownData} />
+
+                                        </div>
+                                        {/* <div className="col-md-3">
+                                            <label htmlFor="start_date" className="form-label">Start Date</label>
                                             <FormikController
                                                 control="date"
-
                                                 id="from_date"
                                                 name="start_date"
                                                 value={values?.start_date ? new Date(values?.start_date) : null}
@@ -326,15 +392,32 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 required={true}
                                                 errorMsg={errors["start_date"]}
                                                 popperPlacement="top-end"
+                                                disabled={isFutureTransaction}
                                             />
-
-                                        </div>
-                                        <div className="col-md-4">
-                                            <label htmlFor="end_date" className="form-label">End Date</label>
-
+                                        </div> */}
+                                        <div className="col-md-3">
+                                            <label htmlFor="start_date" className="form-label">Start Date</label>
                                             <FormikController
                                                 control="date"
+                                                id="from_date"
+                                                name="start_date"
+                                                value={values?.start_date ? new Date(values?.start_date) : null}
+                                                onChange={(date) => setFieldValue("start_date", date)}
+                                                format="dd-MM-y"
+                                                clearIcon={null}
+                                                className="form-control rounded-datepicker p-2 zindex_DateCalender"
+                                                required={true}
+                                                errorMsg={errors["start_date"]}
+                                                minDate={moment().add(3, 'days').toDate()}
+                                                popperPlacement="top-end"
+                                            />
+                                        </div>
 
+
+                                        <div className="col-md-3">
+                                            <label htmlFor="end_date" className="form-label">End Date</label>
+                                            <FormikController
+                                                control="date"
                                                 id="end_date"
                                                 name="end_date"
                                                 value={values.end_date ? new Date(values.end_date) : null}
@@ -344,14 +427,28 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 className="form-control rounded-datepicker p-2 zindex_DateCalender"
                                                 required={true}
                                                 errorMsg={errors["end_date"]}
+                                                disabled={values.untilCancelled}
+                                                popperPlacement="top-end"
+                                                minDate={moment().add(4, 'days').toDate()} // disables today and past
+                                            // calendarStartDate={moment().add(3, 'days').toDate()} // calendar opens showing 3 days ahead
                                             />
+                                            <div className="form-check mt-2">
+                                                <Field
+                                                    type="checkbox"
+                                                    name="untilCancelled *"
+                                                    className="form-check-input"
+                                                    checked={values.untilCancelled}
+                                                    onChange={() => {
+                                                        setFieldValue("untilCancelled", !values.untilCancelled);
+                                                    }}
+                                                />
+                                                <label htmlFor="untilCancelled" className="form-check-label ml-1">
+                                                    Until Cancelled
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div className="col-md-4">
-                                            <label htmlFor="max_amount" className="form-label">Max Amount</label>
 
-                                            <FormikController type="number" id="max_amount" name="max_amount" className="form-control" placeholder="Enter Max Amount" control='input' />
 
-                                        </div>
                                     </div>
 
 
