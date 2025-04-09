@@ -12,6 +12,7 @@ import CustomReactSelect from "../../_components/formik/components/CustomReactSe
 
 import toastConfig from "../../utilities/toastTypes";
 import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlice";
+import moment from "moment";
 
 function AssignZone() {
 
@@ -160,10 +161,12 @@ function AssignZone() {
 
           createMidData?.description && (
             <div className="d-flex justify-content-center">
-              <div className="card bg-warning text-center">
+              <div className="card text-bg-light p-3 text-center">
                 <div className="card-body">
                   <div>
-                    <h6>{createMidData?.description}</h6>
+                    <h6>MID Response : {createMidData?.description}</h6>
+                    <h6>Disbursement Registration Status : {createMidData?.disbursementRegistrationStatus}</h6>
+                    <h6>Onboard Status : {createMidData?.onboardStatus}</h6>
                   </div>
                 </div>
               </div>
@@ -216,6 +219,27 @@ function AssignZone() {
   }
 
 
+  const MidPayloadUpdate = (payload) => {
+    // clientOwnershipType
+    let clientOwnershipType = ""
+    if (payload?.clientOwnershipType?.toLowerCase() === "proprietorship") {
+      clientOwnershipType = "PROPRIETARY"
+    } else if (payload?.clientOwnershipType?.toLowerCase() === "private ltd") {
+      clientOwnershipType = "PRIVATE"
+    } else if (payload?.clientOwnershipType === "public limited") {
+      clientOwnershipType = "PUBLIC"
+    }
+
+    let reqPayload = {
+      ...payload,
+      clientOwnershipType: clientOwnershipType,
+      collectionModes: "UPI",
+      clientDob: moment(payload.clientDob, "YYYY-MM-DD").format("DD/MM/YYYY"),
+      clientDoi: moment(payload.clientDoi, "YYYY-MM-DD").format("DD/MM/YYYY")
+    }
+    return reqPayload
+  }
+
   const handleSubmit = async () => {
     setDisable(true)
     setLoading(true)
@@ -228,7 +252,8 @@ function AssignZone() {
 
     try {
       let reqPayload = await fetchMidPayload(midData);
-      reqPayload = reqPayload?.data?.result
+      reqPayload = MidPayloadUpdate(reqPayload?.data?.result)
+
       let createMidResp = dispatch(createMidApi(reqPayload))
       createMidResp.then((resp) => {
         console.log(resp)
