@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { KYC_STATUS_PROCESSING } from "../../../utilities/enums";
 import { kycForPending, kycListByStatus } from "../../../slices/kycSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "../Onboarderchant/CommentModal";
@@ -88,7 +89,7 @@ function PendingVerification({ commonRows }) {
     roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details;
 
   const pendindVerificationList = useSelector(
-    (state) => state.kyc.kycListByStatus?.["Processing"] || {}
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_PROCESSING] || {}
   );
 
   useEffect(() => {
@@ -152,7 +153,7 @@ function PendingVerification({ commonRows }) {
         rowData={PendingVerificationData}
         data={data}
         setData={setData}
-        merchantStatus={"Processing"}
+        merchantStatus={KYC_STATUS_PROCESSING}
         orderByField="-id"
         fetchDataCb={kycListByStatus}
         filterData={{

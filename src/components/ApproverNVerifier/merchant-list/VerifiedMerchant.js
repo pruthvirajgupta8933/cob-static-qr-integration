@@ -6,11 +6,12 @@ import CommentModal from "../Onboarderchant/CommentModal";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import ListLayout from "./ListLayout";
 import DateFormatter from "../../../utilities/DateConvert";
+import { KYC_STATUS_VERIFIED } from "../../../utilities/enums";
 
 function VerifiedMerchant({ commonRows }) {
   const dispatch = useDispatch();
   const verifiedList = useSelector(
-    (state) => state.kyc.kycListByStatus?.["Verified"] || {}
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_VERIFIED] || {}
   );
 
   const [data, setData] = useState([]);
@@ -133,7 +134,7 @@ function VerifiedMerchant({ commonRows }) {
         data={data}
         setData={setData}
         fetchDataCb={kycListByStatus}
-        merchantStatus={"Verified"}
+        merchantStatus={KYC_STATUS_VERIFIED}
         orderByField="-verified_date"
         filterData={{
           setOnboardTypeFn: setOnboardType,

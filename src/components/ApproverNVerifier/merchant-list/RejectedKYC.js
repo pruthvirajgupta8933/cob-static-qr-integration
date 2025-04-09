@@ -4,6 +4,7 @@ import {
   kycForRejectedMerchants,
   kycListByStatus,
 } from "../../../slices/kycSlice";
+import { KYC_STATUS_REJECTED } from "../../../utilities/enums";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import ListLayout from "./ListLayout";
@@ -22,7 +23,7 @@ const RejectedKYC = ({ commonRows }) => {
   const [onboardType, setOnboardType] = useState("");
 
   const rejectedKycList = useSelector(
-    (state) => state.kyc.kycListByStatus?.["Rejected"] || {}
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_REJECTED] || {}
   );
 
   // Initialize data state with an empty array
@@ -145,7 +146,7 @@ const RejectedKYC = ({ commonRows }) => {
         data={data}
         setData={setData}
         fetchDataCb={kycListByStatus}
-        merchantStatus={"Rejected"}
+        merchantStatus={KYC_STATUS_REJECTED}
         orderByField="-kyc_reject"
         filterData={{
           setOnboardTypeFn: setOnboardType,

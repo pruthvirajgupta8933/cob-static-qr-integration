@@ -5,6 +5,7 @@ import {
   kycForPendingMerchants,
   kycListByStatus,
 } from "../../../slices/kycSlice";
+import { KYC_STATUS_PENDING } from "../../../utilities/enums";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "../Onboarderchant/CommentModal";
@@ -19,7 +20,7 @@ const PendindKyc = ({ commonRows }) => {
   const [isOpenModal, setIsModalOpen] = useState(false);
 
   const pendindKycList = useSelector(
-    (state) => state.kyc.kycListByStatus?.["Pending"] || {}
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_PENDING] || {}
   );
 
   const [data, setData] = useState([]);
@@ -119,7 +120,7 @@ const PendindKyc = ({ commonRows }) => {
         rowData={PendindKycRowData}
         data={data}
         setData={setData}
-        merchantStatus={"Pending"}
+        merchantStatus={KYC_STATUS_PENDING}
         fetchDataCb={kycListByStatus}
         orderByField="-id"
       />

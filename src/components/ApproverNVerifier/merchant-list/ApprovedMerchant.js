@@ -7,7 +7,7 @@ import ListLayout from "./ListLayout";
 import CommentModal from "../Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import DateFormatter from "../../../utilities/DateConvert";
-// import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
+import { KYC_STATUS_APPROVED } from "../../../utilities/enums";
 import AgreementUploadTab from "../Onboarderchant/AgreementUploadTab";
 import CkycrModal from "../backend-kyc/ckycr/CkycrModal";
 
@@ -25,7 +25,7 @@ function ApprovedMerchant({ commonRows }) {
   const [onboardType, setOnboardType] = useState("");
 
   const approvedMerchantList = useSelector(
-    (state) => state.kyc.kycListByStatus?.["Approved"] || {}
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_APPROVED] || {}
   );
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
@@ -197,7 +197,7 @@ function ApprovedMerchant({ commonRows }) {
         data={data}
         setData={setData}
         fetchDataCb={kycListByStatus}
-        merchantStatus={"Approved"}
+        merchantStatus={KYC_STATUS_APPROVED}
         orderByField="-approved_date"
         filterData={{
           setOnboardTypeFn: setOnboardType,
