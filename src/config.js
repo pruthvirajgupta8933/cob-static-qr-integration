@@ -239,13 +239,14 @@ const API_LIVE = {
   GET_MERCHANT_DATA: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_STATUS: `${kyc_url}/kyc/get-merchant-data/`,
+  // KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   MY_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/created-by/`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
+  // KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  // KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
+  // KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  // KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
+  // KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   // MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
@@ -526,7 +527,7 @@ export const E_NACH_URL = {
   REGISTRATION_REPORT: `${subscriptionUrl}api/mandate/mandate-registration-data/`,
   DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
   SCHEDULE_TRRANSACTION: `${subscriptionUrl}api/mandate/upcoming-mandates/`,
-  USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`
+  USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`,
 };
 
 export const wsConnectUrl = {

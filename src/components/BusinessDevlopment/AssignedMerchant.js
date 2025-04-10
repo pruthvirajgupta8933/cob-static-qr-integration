@@ -23,6 +23,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
+import { setKycMasked } from "../../slices/kycSlice";
 
 const AssignedMerchant = () => {
   const roles = roleBasedAccess();
@@ -46,6 +47,8 @@ const AssignedMerchant = () => {
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [kycIdClick, setKycIdClick] = useState([]);
+  const { isKycMasked } = useSelector((state) => state.kyc);
+
   useEffect(() => {
     if (assigneMerchantList?.results) {
       setData(assigneMerchantList.results);
@@ -88,6 +91,7 @@ const AssignedMerchant = () => {
           page: currentPage,
           page_size: pageSize,
           search_query: searchText,
+          operation: isKycMasked ? "u" : "k",
         };
 
         const payload = {
@@ -98,7 +102,15 @@ const AssignedMerchant = () => {
         dispatch(getAssignedMerchantData({ queryParams, payload }));
       }
     });
-  }, [dispatch, loginId, roleId, currentPage, pageSize, searchText]);
+  }, [
+    dispatch,
+    loginId,
+    roleId,
+    currentPage,
+    pageSize,
+    searchText,
+    isKycMasked,
+  ]);
 
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
@@ -334,16 +346,38 @@ const AssignedMerchant = () => {
                 changeCurrentPage={changeCurrentPage}
               />
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-4">
-              <button
-                className="btn cob-btn-primary  approve  text-white ml-3"
-                type="button"
-                onClick={() => exportToExcelFn()}
-                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-              >
-                Export
-              </button>
-            </div>
+            {data.length > 0 && (
+              <>
+                <div className="form-group col-lg-1 col-md-12 mt-4">
+                  <button
+                    className="btn cob-btn-primary btn-sm"
+                    type="button"
+                    onClick={() => exportToExcelFn()}
+                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                  >
+                    Export
+                  </button>
+                </div>
+                <div className="form-group col-lg-1 col-md-12 mt-4">
+                  <button
+                    className="btn btn-sm cob-btn-primary"
+                    // disabled={disable}
+                    type="button"
+                    onClick={() => {
+                      dispatch(setKycMasked(!isKycMasked));
+                    }}
+                  >
+                    <i
+                      className={`fa ${
+                        isKycMasked ? "fa-eye-slash" : "fa-eye"
+                      } text-white pr-1`}
+                    />
+                    {isKycMasked ? "Unmask" : "Mask"}
+                    {/* {loading ? "Downloading..." : "Export"} */}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
           <div>
             <div className="scroll overflow-auto">
