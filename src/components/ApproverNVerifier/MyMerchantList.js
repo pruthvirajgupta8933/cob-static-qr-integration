@@ -11,6 +11,7 @@ import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { v4 as uuidv4 } from "uuid";
+import AgreementUploadTab from '../ApproverNVerifier/Onboarderchant/AgreementUploadTab'
 import {
   KYC_STATUS_APPROVED,
   KYC_STATUS_NOT_FILLED,
@@ -260,11 +261,9 @@ const MyMerchantList = () => {
       width: "170px",
       cell: (row) => (
         <div className="d-flex">
-          {
-            roles?.viewer === true ||
-              (roles?.accountManager === true &&
-                row?.login_id?.master_client_id?.clientCode !== undefined) ? (
-              <>
+          {roles?.viewer === true || roles?.accountManager === true ? (
+            <>
+              {row?.login_id?.master_client_id?.clientCode && (
                 <button
                   type="button"
                   className="approve text-white  cob-btn-primary mr-1  btn-sm"
@@ -273,44 +272,57 @@ const MyMerchantList = () => {
                     setCommentId(row?.login_id?.master_client_id);
                     setOpenCommentModal(true);
                   }}
-                  data-target="#exampleModal"
                 >
                   Comments
                 </button>
-                <button
-                  type="button"
-                  className="approve text-white cob-btn-primary btn-sm"
-                  data-toggle="modal"
-                  onClick={() => {
-                    if (["Verified", "Approved"].includes(row.status))
-                      toastConfig.infoToast(
-                        "You're not allowed to edit as it has been " + row.status
-                      );
-                    else if (
-                      row.login_id?.onboard_type === "Sub Merchant" ||
-                      row.login_id?.onboard_type === "Offline Merchant" ||
-                      row.login_id?.onboard_type === "Referrer Child"
+              )}
+
+              <button
+                type="button"
+                className={
+                  [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].includes(
+                    row.status
+                  )
+                    ? "disabledApprove text-white cob-btn-primary btn btn-sm"
+                    : "approve text-white cob-btn-primary btn btn-sm"
+                }
+                disabled={[KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].includes(
+                  row.status
+                )}
+                data-toggle="modal"
+                onClick={() => {
+                  if (
+                    [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED].includes(
+                      row.status
                     )
-                      history.push(
-                        `kyc?kycid=${stringEnc(
-                          row?.login_id?.loginMasterId
-                        )}&redirectUrl=${history.location.pathname}`
-                      );
-                    else
-                      history.push(
-                        `/dashboard/multi-user-onboard?merchantId=${stringEnc(
-                          row?.login_id?.loginMasterId
-                        )}&redirectUrl=${history.location.pathname}`
-                      );
-                  }}
-                  data-target="#exampleModal"
-                >
-                  Edit KYC
-                </button>
-              </>
-            ) : (
-              <></>
-            )}
+                  )
+                    toastConfig.infoToast(
+                      "You're not allowed to edit as it has been " + row.status
+                    );
+                  else if (
+                    row.login_id?.onboard_type === "Sub Merchant" ||
+                    row.login_id?.onboard_type === "Offline Merchant" ||
+                    row.login_id?.onboard_type === "Referrer Child"
+                  )
+                    history.push(
+                      `kyc?kycid=${stringEnc(
+                        row?.login_id?.loginMasterId
+                      )}&redirectUrl=${history.location.pathname}`
+                    );
+                  else
+                    history.push(
+                      `/dashboard/multi-user-onboard?merchantId=${stringEnc(
+                        row?.login_id?.loginMasterId
+                      )}&redirectUrl=${history.location.pathname}`
+                    );
+                }}
+              >
+                Edit KYC
+              </button>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       ),
     },
@@ -328,12 +340,13 @@ const MyMerchantList = () => {
       </div>
       <div className="form-row">
         {openDocumentModal && (
-          <AgreementDocModal
+          <AgreementUploadTab
             documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
             tabName={"My Merchant List"}
           />
+
         )}
 
         {openCommentModal && (

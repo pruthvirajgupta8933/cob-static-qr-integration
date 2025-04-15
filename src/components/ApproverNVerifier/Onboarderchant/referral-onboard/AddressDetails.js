@@ -59,7 +59,7 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
       })
       .catch((err) => console.log(err));
     if (basicDetailsResponse)
-      dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId }));
+      dispatch(kycUserList({ login_id: basicDetailsResponse?.loginMasterId, masking: 1 }));
   }, []);
 
   useEffect(() => {
@@ -82,6 +82,7 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
           kycUserList({
             login_id: basicDetailsResponse?.loginMasterId,
             password_required: true,
+            masking: 1
           })
         );
 
@@ -121,7 +122,7 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                   name="operational_address"
                   className="form-control"
                   disabled={disableForm}
-                  // readOnly={readOnly}
+                // readOnly={readOnly}
                 />
               </div>
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -134,7 +135,7 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                   name="city"
                   className="form-control"
                   disabled={disableForm}
-                  // readOnly={readOnly}
+                // readOnly={readOnly}
                 />
               </div>
             </div>
@@ -149,7 +150,7 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                   options={stateData}
                   className="form-select"
                   disabled={disableForm}
-                  // readOnly={readOnly}
+                // readOnly={readOnly}
                 />
               </div>
 
@@ -163,7 +164,7 @@ const AddressDetails = ({ setCurrentTab, disableForm, setInfoModal }) => {
                   name="pin_code"
                   className="form-control"
                   disabled={disableForm}
-                  // readOnly={readOnly}
+                // readOnly={readOnly}
                 />
               </div>
             </div>

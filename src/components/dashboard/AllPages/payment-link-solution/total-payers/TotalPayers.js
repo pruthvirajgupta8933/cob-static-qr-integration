@@ -138,17 +138,22 @@ const TotalPayers = () => {
             name: "S No.",
             selector: (row) => row.serial_number,
             sortable: true,
-            width: "100px"
+            width: "70px"
         },
         {
             id: "2",
             name: "Payer Name",
             selector: (row) => row.payer_name,
-            sortable: true,
-            width: "150px"
+            // width: "150px",
+            grow: 2,
+            style: {
+                cursor: 'pointer',
+                color: '#006dff',
+                textDecoration: 'underline',
+
+            }
 
         },
-
         {
             id: "3",
             name: "Mobile No.",
@@ -167,7 +172,6 @@ const TotalPayers = () => {
             selector: (row) => DateFormatAlphaNumeric(row.created_on, true),
             sortable: true,
             width: "150px"
-
         },
         {
             id: "5",
@@ -183,13 +187,13 @@ const TotalPayers = () => {
             id: "6",
             name: "Create Link",
             cell: (row) => (
-                <span style={{ display: "flex", alignItems: "center", cursor: "pointer", fontSize: "16px" }}>
+                <span style={{ display: "flex", alignItems: "center", cursor: "pointer", fontSize: "12px" }}>
                     <i
                         className="fa fa-link text-primary"
                         onClick={() => generatelink(row)}
-                        style={{ fontSize: "20px", marginRight: "8px" }}
+                        style={{ fontSize: "14px", marginRight: "8px" }}
                     ></i>
-                    <p onClick={() => generatelink(row)} className="text-primary mt-2">Create Link</p>
+                    <p onClick={() => generatelink(row)} className="text-primary m-0">Create Link</p>
                 </span>
             ),
             width: "150px",
@@ -378,7 +382,7 @@ const TotalPayers = () => {
     return (
         <React.Fragment>
             <section>
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     <ActionButtons
                         filterRef={filterRef}
                         setShowFilter={setShowFilter}
@@ -403,7 +407,7 @@ const TotalPayers = () => {
             </section>
 
             <section className="mt-3">
-                <div className="container-fluid">
+                <div className="container-fluid p-0">
                     <div className="card shadow-sm">
                         <div className="px-3 py-3">
                             <div className="row align-items-center">
@@ -417,7 +421,7 @@ const TotalPayers = () => {
                                     <div className="me-3 mt-4 d-flex">
                                         {selectedRows?.length > 0 && <div className=" mx-3">
                                             <button className="btn btn-danger ms-2 btn-sm " onClick={() => deleteUser(0, 0, "bulk")}>
-                                                <i className="fa fa-trash"></i> Delete ({selectedRows?.length} Payer's)
+                                                <i className="fa fa-trash"></i> Delete ({selectedRows?.length} Payer)
                                             </button>
                                         </div>}
 
@@ -425,7 +429,7 @@ const TotalPayers = () => {
                                             searchTerm={searchTerm}
                                             setSearchTerm={setSearchTerm}
                                             onSearch={formSubmit}
-                                            placeholder="Search by Name, Email, Mobile"
+                                            placeholder="Name, Email, Mobile"
                                             loadData={loadData}
                                         />
                                     </div>

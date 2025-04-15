@@ -86,7 +86,7 @@ function ContactInfoKyc(props) {
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .allowOneSpace() // Only one instance is needed
-      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
       .wordLength("Word character length exceeded")
       .max(100, "Maximum 100 characters are allowed")
       .required("Required")
@@ -101,8 +101,7 @@ function ContactInfoKyc(props) {
 
     contact_number: Yup.string()
       .allowOneSpace()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
       .min(10, "Phone number is not valid")
       .max(10, "Only 10 digits are allowed")
       .required("Required")
@@ -171,19 +170,16 @@ function ContactInfoKyc(props) {
     isIdProofVerified: Yup.string()
       .required("Please verify the ID Proof")
       .nullable(),
-
+    developer_name: Yup.string()
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
+      .max(100, "Maximum 50 characters are allowed")
+      .nullable(),
     developer_contact: Yup.string()
       .allowOneSpace()
-      .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
       .min(10, "Phone number is not valid")
       .max(10, "Only 10 digits are allowed")
       .nullable(),
-
-    developer_name: Yup.string()
-      .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
-      .max(100, "Maximum 50 characters are allowed")
-      .nullable(),
-
   });
 
   // const validationSchema = Yup.object().shape({
@@ -309,7 +305,7 @@ function ContactInfoKyc(props) {
           if (props?.role?.merchant) {
             dispatch(kycUserListForMerchant());
           } else {
-            dispatch(kycUserList({ login_id: merchantloginMasterId }));
+            dispatch(kycUserList({ login_id: merchantloginMasterId, masking: 1 }));
           }
 
           dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
@@ -467,8 +463,9 @@ function ContactInfoKyc(props) {
         ) : (
           <div className="input-group-append">
             {idType === "1" && (
-              <a
-                href={() => false}
+              <button
+                // href={() => false}
+                type='button'
                 className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 12 ||
                   aadhaarVerificationLoader ||
                   errors?.id_number
@@ -487,11 +484,12 @@ function ContactInfoKyc(props) {
                 ) : (
                   "Verify"
                 )}
-              </a>
+              </button>
             )}
             {idType === "3" && (
-              <a
-                href={() => false}
+              <button
+                // href={() => false}
+                type='button'
                 className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 10 ? "disabled" : ""
                   }`}
                 onClick={() => {
@@ -506,11 +504,12 @@ function ContactInfoKyc(props) {
                 ) : (
                   "Verify"
                 )}
-              </a>
+              </button>
             )}
             {idType === "4" && (
-              <a
-                href={() => false}
+              <button
+                // href={() => false}
+                type='button'
                 className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
                   ? "disabled"
                   : ""
@@ -520,7 +519,7 @@ function ContactInfoKyc(props) {
                 }}
               >
                 Verify
-              </a>
+              </button>
             )}
           </div>
         )}
@@ -770,8 +769,9 @@ function ContactInfoKyc(props) {
                     </span>
                   ) : (
                     <div className="input-group-append">
-                      <a
-                        href={() => false}
+                      <button
+                        // href={() => false}
+                        type='button'
                         className={`btn cob-btn-primary btn-sm text-white ${isLoading || KycList?.isEmailVerified !== 1 ? "disabled" : ""
                           }`}
                         onClick={() => {
@@ -794,7 +794,7 @@ function ContactInfoKyc(props) {
                         ) : (
                           "Send OTP"
                         )}
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -838,7 +838,7 @@ function ContactInfoKyc(props) {
                     name="email_id"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={true}
+                  // readOnly={true}
                   />
                   {KycList?.emailId !== null &&
                     KycList?.isEmailVerified === 1 && (

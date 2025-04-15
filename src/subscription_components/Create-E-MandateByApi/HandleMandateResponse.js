@@ -20,6 +20,8 @@ const HandleMandateResponse = ({ merchantType }) => {
                 .then((response) => {
 
 
+
+
                     if (response.status === 200) {
                         setResponseData(response?.data?.result)
 
@@ -76,6 +78,10 @@ const HandleMandateResponse = ({ merchantType }) => {
                             <tr>
                                 <th>Registration ID</th>
                                 <td>{responseData.registration_id}</td>
+                            </tr>
+                            <tr>
+                                <th>Bank Message</th>
+                                <td>{responseData?.bank_status_message}</td>
                             </tr>
                             <tr>
                                 <th>Consumer ID</th>

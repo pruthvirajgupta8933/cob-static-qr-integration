@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
-// import * as Yup from "yup";
-// import FormikController from "../../../_components/formik/FormikController";
+
 import {
   forSavingDocument,
   forGettingDocumentList,
@@ -12,15 +11,14 @@ import {
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
-// import downloadIcon from "../../../assets/images/download-icon.svg";
-// import _ from "lodash";
-import CustomModal from "../../../_components/custom_modal";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 
+
 const AgreementDocModal = (props) => {
+
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -40,7 +38,7 @@ const AgreementDocModal = (props) => {
   const commentUpdate = () => {
     dispatch(
       forGettingDocumentList({
-        login_id: props?.documentData?.loginMasterId,
+        login_id: props?.documentData.documentData?.loginMasterId,
       })
     )
       .then((resp) => {
@@ -71,36 +69,37 @@ const AgreementDocModal = (props) => {
       .nullable(),
   });
 
-  const handleSubmit = async (values) => {
-    setBtnDisable(true);
+  const handleSubmit = async (values, setSubmitting) => {
+    setSubmitting(true); // Start loader
+
     let formData = new FormData();
     formData.append("type", "22");
     formData.append("approver_id", loginId);
-    formData.append("login_id", props?.documentData?.loginMasterId);
+    formData.append("login_id", props?.documentData.documentData?.loginMasterId);
     formData.append("modified_by", loginId);
     formData.append("files", attachCommentFile);
     formData.append("comment", values.comments);
 
-    // 2)SAVE API
-    dispatch(forSavingDocument(formData))
-      .then((resp) => {
-        if (resp?.payload?.status) {
-          toast.success(resp?.payload?.message);
-          commentUpdate();
-          resetUploadFile();
-          setBtnDisable(false);
-        } else {
-          toast.error(resp?.payload?.message);
-          resetUploadFile();
-          commentUpdate();
-          setBtnDisable(false);
-        }
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-        setBtnDisable(false);
-      });
+    try {
+      const resp = await dispatch(forSavingDocument(formData));
+
+      if (resp?.payload?.status) {
+        toast.success(resp?.payload?.message);
+        setSubmitting(false);
+      } else {
+        toast.error(resp?.payload?.message);
+        setSubmitting(false);
+      }
+
+      commentUpdate();
+      resetUploadFile();
+    } catch (err) {
+      toastConfig.errorToast("Data not loaded");
+    } finally {
+      setSubmitting(false); // Stop loader
+    }
   };
+
 
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
@@ -115,25 +114,7 @@ const AgreementDocModal = (props) => {
     }
   };
 
-  // const isUrlValid = (userInput) => {
-  //   let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/g);
-  //   if (res == null)
-  //     return false;
-  //   else
-  //     return true;
-  // }
 
-  // const fileTypeCheck = (file) => {
-  //   let ext = file.split('.').pop();
-  //   const formats = ["pdf", "jpg", "jpeg", "png"];
-  //   let htmlType = _.includes(formats, `${ext}`);
-  //   if (!htmlType) {
-  //     return false;
-  //   }
-  //   else {
-  //     return true;
-  //   }
-  // }
 
   const removeDocument = (id) => {
     const rejectDetails = {
@@ -171,9 +152,8 @@ const AgreementDocModal = (props) => {
     setDocPreviewToggle(true);
     setSelectedViewDoc(docData);
   };
-
-  const modalBody = () => {
-    return (
+  return (
+    <>
       <div className="container-fluid">
         {docPreviewToggle && (
           <DocViewerComponent
@@ -189,11 +169,11 @@ const AgreementDocModal = (props) => {
           <div className="d-flex justify-content-between">
             <p>
               <span className="fw-bold">Merchant Name : </span>{" "}
-              {props?.documentData?.clientName}
+              {props?.documentData.documentData?.clientName}
             </p>
             <p>
               <span className="fw-bold"> Client Code : </span>
-              {props?.documentData?.clientCode}
+              {props?.documentData.documentData?.clientCode}
             </p>
           </div>
         </div>
@@ -202,104 +182,68 @@ const AgreementDocModal = (props) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-              resetForm();
+            onSubmit={(values, actions) => {
+              handleSubmit(values, actions.setSubmitting, actions.resetForm);
             }}
+
             enableReinitialize={true}
           >
-            <Form>
-              <div className="form-row">
-                {attachCommentFile["name"] && (
-                  <p className="text-default m-0">
-                    <i className="fa fa-paperclip" />{" "}
-                    {attachCommentFile["name"]}
-                  </p>
-                )}
-                <div className="input-group ">
-                  <Field
-                    control="input"
-                    name="comments"
-                    className="form-control p-2"
-                    placeholder="Enter Comments"
-                  />
-                  <div>
-                    <label
-                      for="file-upload"
-                      className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
-                      style={{ height: "39px" }}
-                    >
-                      <i className="fa fa-paperclip"></i>
-                    </label>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      className="d-none"
-                      onChange={(e) => handleUploadAttachments(e)}
-                      ref={aRef}
+            {({ isSubmitting }) => (
+              <Form>
+                <div className="form-row">
+                  {attachCommentFile["name"] && (
+                    <p className="text-default m-0">
+                      <i className="fa fa-paperclip" />{" "}
+                      {attachCommentFile["name"]}
+                    </p>
+                  )}
+                  <div className="input-group ">
+                    <Field
+                      control="input"
+                      name="comments"
+                      className="form-control p-2"
+                      placeholder="Enter Comments"
                     />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="submit-btn approve text-white btn-sm cob-btn-primary"
-                  >
-                    Submit
-                  </button>
-                </div>
-                <ErrorMessage name="comments">
-                  {(msg) => <p className="text-danger m-0">{msg}</p>}
-                </ErrorMessage>
-
-                {/* <div className="col-md-6">
-                  <FormikController
-                    control="textArea"
-                    name="comments"
-                    row={10}
-                    className="form-control"
-                  />
-                </div>
-
-                <div className="col-md-6">
-                  <div className="file-input">
-                    <div className="">
-                      <div>
-                        <label for="file-upload" className="btn btn-sm cob-btn-secondary font-sm text-white">
-                          <i className="fa fa-paperclip"></i> Attach file
-                        </label>
-                        <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
-                      </div>
-                      <div>
-                        <button
-                          type="submit"
-                          className="btn cob-btn-primary btn-sm"
-                          disabled={btnDisable}
-                        >
-                          <i className="fa fa-cloud-upload"></i>&nbsp;
-                          Submit
-                        </button>
-                      </div>
+                    <div>
+                      <label
+                        for="file-upload"
+                        className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle"
+                        style={{ height: "39px" }}
+                      >
+                        <i className="fa fa-paperclip"></i>
+                      </label>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        className="d-none"
+                        onChange={(e) => handleUploadAttachments(e)}
+                        ref={aRef}
+                      />
                     </div>
 
-                    <div className="d-flex justify-content-between">
-                      {uploadStatus && (
-                        <>
-                          <div>{attachCommentFile?.name}</div>
-                          <button
-                            type="button"
-                            className="close"
-                            aria-label="Close"
-                            onClick={resetUploadFile}
-                          >
-                            <span ariaHidden="true">&times;</span>
-                          </button>
-                        </>
+                    <button
+                      type="submit"
+                      className="submit-btn approve text-white btn-sm cob-btn-primary"
+                    >
+                      {isSubmitting ? (
+                        <span
+                          className="spinner-border spinner-border-sm mr-1"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                      ) : (
+                        "Submit"
                       )}
-                    </div>
+                    </button>
                   </div>
-                </div> */}
-              </div>
-            </Form>
+                  <ErrorMessage name="comments">
+                    {(msg) => <p className="text-danger m-0">{msg}</p>}
+                  </ErrorMessage>
+
+
+                </div>
+              </Form>
+            )}
           </Formik>
         </div>
 
@@ -381,38 +325,8 @@ const AgreementDocModal = (props) => {
           </div>
         </div>
       </div>
-    );
-  };
-
-  const modalFooter = () => {
-    return (
-      <>
-        <button
-          type="button"
-          className="btn btn-secondary text-white"
-          data-dismiss="modal"
-          onClick={() => {
-            setCommentsList([]);
-            props?.setModalState(false);
-          }}
-        >
-          Close
-        </button>
-      </>
-    );
-  };
-
-  return (
-    <>
-      <CustomModal
-        modalBody={modalBody}
-        headerTitle={"Upload Agreement"}
-        modalFooter={modalFooter}
-        modalToggle={props?.isModalOpen}
-        fnSetModalToggle={props?.setModalState}
-      />
     </>
-  );
-};
+  )
+}
 
-export default AgreementDocModal;
+export default AgreementDocModal

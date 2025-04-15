@@ -14,8 +14,6 @@ const QFormReports = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [txnList, setTxnList] = useState();
-  const [exportReportLoader, setExportReportLoader] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
   const formList = useSelector((state) => state.qForm.qFormList.result);
@@ -23,7 +21,7 @@ const QFormReports = () => {
   useEffect(() => {
     dispatch(
       getQformList({
-        clientCode: "GCED1", //user.clientMerchantDetailsList?.[0]?.clientCode,
+        clientCode: user.clientMerchantDetailsList?.[0]?.clientCode,
       })
     );
   }, []);
@@ -36,16 +34,16 @@ const QFormReports = () => {
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
-    formId: Yup.string().required("Client code not found"),
+    formId: Yup.string().required("Form not found"),
     endDate: Yup.date().required("Required"),
   });
 
   const exportToExcelFn = async () => {};
-  const submitHandler = (values) => {
-    setLoading(true);
+  const submitHandler = (values, { setSubmitting }) => {
+    setTxnList([]);
     const payload = {
-      clientId: "2326", //user.clientMerchantDetailsList?.[0]?.clientId,
-      clientCode: "GCED1", //user.clientMerchantDetailsList?.[0]?.clientCode,
+      clientId: user.clientMerchantDetailsList?.[0]?.clientId,
+      clientCode: user.clientMerchantDetailsList?.[0]?.clientCode,
       formId: values.formId,
       formName: formList.find((form) => form.formId == values.formId)?.formName,
       fromDate: moment(values.fromDate).format("DD-MM-YYYY"),
@@ -56,13 +54,17 @@ const QFormReports = () => {
     try {
       dispatch(getQformTxnList(payload)).then((res) => {
         if (res.payload) {
-          setLoading(false);
+          if (res.payload === "Network Error") {
+            alert("Network Error");
+            return;
+          }
           setTxnList(res.payload);
+          setSubmitting(false);
         }
       });
     } catch (e) {
       console.log(e);
-      setLoading(false);
+      setSubmitting(false);
     }
   };
   return (
@@ -72,7 +74,7 @@ const QFormReports = () => {
         validationSchema={validationSchema}
         onSubmit={submitHandler}
       >
-        {(formik) => (
+        {({ values, setFieldValue, errors, isSubmitting }) => (
           <Form>
             <div className="form-row mt-4">
               <div className="form-group col-md-4 col-lg-2 col-sm-12">
@@ -84,57 +86,56 @@ const QFormReports = () => {
                   options={convertToFormikSelectJson(
                     "formId",
                     "formName",
-                    formList
+                    formList,
+                    false,
+                    false,
+                    true
                   )}
                 />
               </div>
-              <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
-                <label htmlFor="dateRange" className="form-label">
-                  Start Date - End Date
+              <div className="col-md-3">
+                <label htmlFor="start_date" className="form-label">
+                  Start Date
                 </label>
-                <div
-                  className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
-                >
-                  <DatePicker
-                    id="dateRange"
-                    selectsRange={true}
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={(update) => {
-                      const [start, end] = update;
-                      setStartDate(start);
-                      setEndDate(end);
-                      formik.setFieldValue("fromDate", start);
-                      formik.setFieldValue("endDate", end);
-                    }}
-                    dateFormat="dd-MM-yyyy"
-                    placeholderText="Select Date Range"
-                    className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
-                    showPopperArrow={false}
-                    popperClassName={classes.custom_datepicker_popper}
-                  />
-                  <div
-                    className="input-group-append"
-                    onClick={() => {
-                      document.getElementById("dateRange").click();
-                    }}
-                  >
-                    <span
-                      className={`input-group-text ${classes.calendar_input_border}`}
-                    >
-                      {" "}
-                      <FaCalendarAlt />
-                    </span>
-                  </div>
-                </div>
+
+                <FormikController
+                  control="date"
+                  id="from_date"
+                  name="fromDate"
+                  value={values.fromDate ? new Date(values.fromDate) : null}
+                  onChange={(date) => setFieldValue("fromDate", date)}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-datepicker p-2 zindex_DateCalender"
+                  required={true}
+                  popperPlacement="top-end"
+                />
+              </div>
+              <div className="col-md-3">
+                <label htmlFor="end_date" className="form-label">
+                  End Date
+                </label>
+
+                <FormikController
+                  control="date"
+                  id="end_date"
+                  name="endDate"
+                  value={values.endDate ? new Date(values.endDate) : null}
+                  onChange={(date) => setFieldValue("endDate", date)}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-datepicker p-2 zindex_DateCalender"
+                  required={true}
+                  errorMsg={errors["end_date"]}
+                />
               </div>
               <div className="form-group col-md-2 col-sm-12 col-lg-3">
                 <button
-                  disabled={loading}
+                  disabled={isSubmitting}
                   className="btn btn-sm text-white cob-btn-primary mt-4"
                   type="submit"
                 >
-                  {loading && (
+                  {isSubmitting && (
                     <span
                       className="spinner-border spinner-border-sm mr-1"
                       role="status"
@@ -165,18 +166,26 @@ const QFormReports = () => {
       </Formik>
       <div className="col-md-12 mt-4 overflow-scroll">
         {txnList?.length > 0 && (
-          <table className="table table-bordered">
-            <thead className="bg-primary text-white">
-              {Object.keys(txnList[0])?.length > 0 &&
-                Object.keys(txnList[0])?.map((key) => <th>{key}</th>)}
-            </thead>
-            {txnList?.map((row) => (
-              <tr>
-                {Object.values(row).map((col) => (
-                  <td>{col}</td>
-                ))}
+          <table className="table table-bordered bg-white">
+            <thead>
+              <tr className="">
+                {Object.keys(txnList[0])?.length > 0 &&
+                  Object.keys(txnList[0])?.map((key) => (
+                    <th className="px-2 border-1 fw-bold text-black-50">
+                      {key}
+                    </th>
+                  ))}
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {txnList?.map((row, i) => (
+                <tr className="text-black" key={`${row}-${i}`}>
+                  {Object.values(row).map((col) => (
+                    <td>{col}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
           </table>
         )}
       </div>

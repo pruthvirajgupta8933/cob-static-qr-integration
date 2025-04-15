@@ -60,9 +60,11 @@ function OperationKycModalForOnboard({
         kycUserList({
           login_id: merchantOnboardingProcess?.merchantLoginId,
           password_required: true,
+          masking: 1
         })
       );
   }, []);
+
 
 
   useEffect(() => {
@@ -76,6 +78,7 @@ function OperationKycModalForOnboard({
         kycUserList({
           login_id: merchantLoginId,
           password_required: true,
+          masking: 1
         })
       ).then((resp) => {
         dispatch(

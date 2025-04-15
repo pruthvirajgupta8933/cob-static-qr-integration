@@ -19,7 +19,7 @@ createTheme('solarized', {
     // text: '#FFFFFF',
   },
   divider: {
-    default: '#000000',
+    // default: '#ffffff',
   },
   action: {
     button: 'rgba(0,0,0,.54)',
@@ -44,7 +44,7 @@ const customStyles = {
   rows: {
     style: {
       // border: 'none',
-      border: '1px solid rgb(255, 255, 255)',
+      border: '1px solid rgb(107, 107, 107)',
       // minHeight: '72px', // override the row height
     },
   },
@@ -59,6 +59,9 @@ const customStyles = {
   },
   cells: {
     style: {
+      borderTopStyle: 'solid',
+      borderTopWidth: '1px',
+      borderTopColor: 'rgb(201, 201, 201)',
       paddingLeft: '8px', // override the cell padding for data cells
       paddingRight: '8px',
 
@@ -99,7 +102,7 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
   return (
     <>
       <DataTable
-        className="bg-white border-0 mb-5"
+        className="bg-white border-0 "
         columns={row}
         data={data}
         sortIcon={
@@ -140,6 +143,7 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
           pageClassName={"page-item"}
           pageLinkClassName={"page-link"}
           forcePage={currentPage - 1}
+        // className="mt-5"
         />
       )}
     </>

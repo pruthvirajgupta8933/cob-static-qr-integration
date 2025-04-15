@@ -117,6 +117,17 @@ import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-gene
 import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
 import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
 import QFormReports from "../../qform-reports";
+import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
+
+import {
+  assignmentTypeApi,
+  setAssignmentType,
+} from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
+import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
+import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
+import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
+import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -124,7 +135,13 @@ function DashboardMainContent() {
 
   const { auth } = useSelector((state) => state);
   const { user } = auth;
+  const loginId = user?.loginId;
+  const roleId = user?.roleId;
   const roles = roleBasedAccess();
+  const assignmentType = useSelector(
+    (state) => state.assignAccountManagerReducer.assignmentType
+  );
+
   // console.log("roles",roles);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -243,12 +260,30 @@ function DashboardMainContent() {
 
       dispatch(fetchMenuList(postBody));
     } else {
-      toastConfig.errorToast("Session Expired");
       dispatch(logout());
+      toastConfig.errorToast("Session Expired");
     }
-  }, [user, dispatch]);
+  }, []);
 
-  // menuListReducer.enableMenu.length===0
+  useEffect(() => {
+    if (!assignmentType && roles?.businessDevelopment) {
+      if (roleId) {
+        dispatch(assignmentTypeApi(roleId)).then((response) => {
+          const assignmentTypes = response?.payload?.assignment_type ?? [];
+
+          if (Array.isArray(assignmentTypes)) {
+            const filteredAssignment = assignmentTypes.find(
+              (item) => item?.role_id === roleId
+            );
+
+            if (filteredAssignment) {
+              dispatch(setAssignmentType(filteredAssignment));
+            }
+          }
+        });
+      }
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     // fetch subscribe product data
@@ -260,7 +295,7 @@ function DashboardMainContent() {
           })
         );
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [location]);
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -297,6 +332,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
                 }}
               >
                 <OnboardMerchant />
@@ -311,6 +347,7 @@ function DashboardMainContent() {
                   viewer: true,
                   verifier: true,
                   accountManager: true,
+                  businessDevelopment: true,
                 }}
               >
                 <InternalDashboard />
@@ -707,7 +744,7 @@ function DashboardMainContent() {
                 <CreateMandate />
               </AuthorizedRoute>
 
-              <AuthorizedRoute //Create Mandate handle by frontend(Old code)
+              {/* <AuthorizedRoute //Create Mandate handle by frontend(Old code)
                 exact
                 path={`${path}/subscription/create-mandate-api`}
                 Component={CreateMandateApi}
@@ -723,7 +760,7 @@ function DashboardMainContent() {
                 roleList={{ merchant: true }}
               >
                 <CreateMandateApiResponse />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exact
@@ -754,6 +791,13 @@ function DashboardMainContent() {
 
               <AuthorizedRoute
                 exact
+                path={`${path}/schedule-transaction`}
+                Component={ScheduleTransaction}
+                roleList={{ merchant: true }}
+              ></AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
                 path={`${path}/transaction-report`}
                 Component={TransactionReport}
                 roleList={{ merchant: true }}
@@ -769,11 +813,6 @@ function DashboardMainContent() {
               >
                 <CreateBulkEmandate />
               </AuthorizedRoute>
-
-
-
-
-
 
               {/* -----------------------------------------------------------------------------------------------------|| */}
 
@@ -819,20 +858,19 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
                 }}
               />
 
-              {
-                roles?.approver && (
-                  <Route
-                    exact
-                    path={`${path}/ratemapping/:loginid`}
-                    Component={ManualRateMapping}
-                  >
-                    <ManualRateMapping />
-                  </Route>
-                )
-              }
+              {roles?.approver && (
+                <Route
+                  exact
+                  path={`${path}/ratemapping/:loginid`}
+                  Component={ManualRateMapping}
+                >
+                  <ManualRateMapping />
+                </Route>
+              )}
 
               <AuthorizedRoute
                 exact
@@ -874,7 +912,11 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/my-merchant`}
                 Component={MyMerchantList}
-                roleList={{ viewer: true, accountManager: true }}
+                roleList={{
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                }}
               >
                 <MyMerchantList />
               </AuthorizedRoute>
@@ -965,7 +1007,6 @@ function DashboardMainContent() {
                 <TotalPayers />
               </AuthorizedRoute>
 
-
               <AuthorizedRoute
                 exaxt
                 path={`${path}/recent-transaction`}
@@ -975,14 +1016,61 @@ function DashboardMainContent() {
                 <RecentTransaction />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exact
+                path={`${path}/mfa`}
+                Component={Mfa}
+                roleList={{
+                  approver: true,
+                }}
+              />
+
+              {/* </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/assigned-merchant`}
+                Component={AssignedMerchant}
+                roleList={{
+                  approver: true,
+                  accountManager: true,
+                  zonalManager: true,
+                  businessDevelopment: true,
+                }}
+              />
+
+              {/* <AuthorizedRoute
+                path={`${path}/assign-business-development`}
+                Component={AssigneBusinessDevelopment}
+                roleList={{
+                  approver: true,
+                  verifier: true
+                }}
+              >
+              </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/update-rolling-reserve`}
+                Component={UpdateRollingReserve}
+                roleList={{ approver: true, verifier: true }}
+              />
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/Disbursement`}
+                Component={Disbursement}
+                roleList={{ approver: true }}
+              ></AuthorizedRoute>
+
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
               </Route>
-            </Switch >
-          </main >
-        </div >
-      </div >
-    </React.Fragment >
+            </Switch>
+          </main>
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
 

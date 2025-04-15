@@ -18,7 +18,7 @@ import {
 import API_URL from "../../../../config";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-import { axiosInstance, axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+
 import Notification from "../../../../_components/reuseable_components/Notification";
 // import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
@@ -35,6 +35,10 @@ import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import toastConfig from "../../../../utilities/toastTypes";
 import { Dashboardservice } from "../../../../services/dashboard.service";
+import {
+  fetchPayModeList,
+  fetchPayStatusList,
+} from "../../../../slices/dashboardSlice";
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -43,12 +47,12 @@ const TransactionHistory = () => {
   const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
+  const { paymode, payStatus } = dashboard;
   const { user } = auth;
+
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   // const { isLoadingTxnHistory, isExportData } = dashboard;
-  const [paymentStatusList, SetPaymentStatusList] = useState([]);
-  const [paymentModeList, SetPaymentModeList] = useState([]);
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [show, setShow] = useState("");
@@ -152,22 +156,6 @@ const TransactionHistory = () => {
     payment_mode: Yup.string().required("Required"),
   });
 
-  const getPaymentStatusList = async () => {
-    await axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST)
-      .then((res) => {
-        SetPaymentStatusList(res.data);
-      })
-      .catch((err) => { });
-  };
-
-  const paymodeList = async () => {
-    await axiosInstanceJWT.get(API_URL.PAY_MODE_LIST)
-      .then((res) => {
-        SetPaymentModeList(res.data);
-      })
-      .catch((err) => { });
-  };
-
   let isExtraDataRequired = false;
   let extraDataObj = {};
   if (user.roleId === 3 || user.roleId === 13) {
@@ -202,19 +190,23 @@ const TransactionHistory = () => {
     setClientCodeList(clientCodeListArr);
   }, [clientCodeListArr]);
 
-
   const tempPayStatus = [{ key: "All", value: "All" }];
-  paymentStatusList.map((item) => {
-    if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+  payStatus.map((item) => {
+    if (
+      item?.payment_status_name !== "CHALLAN_ENQUIRED" &&
+      item?.payment_status_name !== "INITIATED"
+    ) {
       if (item?.is_active) {
-        tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+        tempPayStatus.push({
+          key: item?.payment_status_name,
+          value: item?.payment_status_name,
+        });
       }
-
     }
   });
 
   const tempPaymode = [{ key: "All", value: "All" }];
-  paymentModeList.map((item) => {
+  paymode.map((item) => {
     tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
   });
 
@@ -372,8 +364,8 @@ const TransactionHistory = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    getPaymentStatusList();
-    paymodeList();
+    if (!payStatus.length > 0) dispatch(fetchPayStatusList());
+    if (!paymode.length > 0) dispatch(fetchPayModeList());
     SetTxnList([]);
     setRadioInputVal({});
     return () => {
@@ -724,16 +716,19 @@ const TransactionHistory = () => {
               )}
             </div>
             <div className="form-group col-md-1 col-lg-1">
-              <button
-                className="btn cob-btn-primary btn-sm"
-                onClick={refundModalHandler}
-                disabled={
-                  radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
-                  radioInputVal?.status?.toLocaleLowerCase() !== "settled"
-                }
-              >
-                Refund
-              </button>
+              {/* hide refund button for the selected client code on production */}
+              {user?.clientMerchantDetailsList?.[0].clientCode !== "Utta89" &&
+                <button
+                  className="btn cob-btn-primary btn-sm"
+                  onClick={refundModalHandler}
+                  disabled={
+                    radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
+                    radioInputVal?.status?.toLocaleLowerCase() !== "settled"
+                  }
+                >
+                  Refund
+                </button>
+              }
             </div>
           </div>
         </Form>

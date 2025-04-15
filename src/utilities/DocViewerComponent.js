@@ -5,6 +5,7 @@ import classes from "./utilities.module.css"
 import { saveImage } from "./saveImage";
 
 const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) => {
+
   const getFileType = (url) => {
     if (!url) return 'unsupported';
 

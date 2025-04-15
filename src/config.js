@@ -13,9 +13,11 @@ let url,
   paylinkBaseUrl,
   subscriptionUrl,
   refund_url,
+  mid_url,
   adminAPIURL = "";
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
+  mid_url = "https://merchantonboarding.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
   // kyc_validate = " https://kycvalidator.sabpaisa.in";
   payout_url = "https://payout.sabpaisa.in";
@@ -28,13 +30,13 @@ if (ENV_PROD) {
   refund_url = "https://refundapi.sabpaisa.in/SabPaisaRefundApi";
   qwick_form_url = "https://qwikforms.in";
   report_api_url = "https://reportapi.sabpaisa.in";
-  paylinkBaseUrl = "https://sendpaylink.sabpaisa.in"
-  subscriptionUrl = "https://subscriptionapi.sabpaisa.in/"
-  adminAPIURL = "https://adminapi.sabpaisa.in/api"
-
+  paylinkBaseUrl = "https://sendpaylink.sabpaisa.in";
+  subscriptionUrl = "https://subscriptionapi.sabpaisa.in/";
+  adminAPIURL = "https://adminapi.sabpaisa.in/api";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
+  mid_url = "https://stage-merchantonboarding.sabpaisa.in";
   // url = "http://192.168.2.44:8000";
   // kyc_url = "http://192.168.2.44:8001";
   // kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
@@ -84,18 +86,29 @@ const API_LIVE = {
   BizzAPPForm: `${url}/biz-app-form/`,
   Business_Category_Type: `${url}/auth-service/auth/business-category`,
 
-  ///////////Payment mode for mid
+  ///////////MID service
   GET_PAYMENT_MODE_LIST: `${url}/mid/payment-mode/`,
   GET_ALL_BANK_NAME: `${url}/mid/bank/`,
-  MID_CREATE_API: `${url}/mid/create/`,
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
+  MID_PAYLOAD_BY_MERCHANT_ID: `${url}/mid/get-mid/`,
+
+  MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
+  MID_FETCH_DATA_BY_CLIENT_CODE: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  // https://stage-merchantonboarding.sabpaisa.in
+
+
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
+  ////////////MFA
+  MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
+
+  ////////////Bd Development
 
   SUCCESS_TXN_SUMMARY:
     report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/rest/client_data/GenerateClientFormForCob/",
+  RATE_MAPPING_GenerateClientFormForCob:
+    adminAPIURL + "/rest/client_data/GenerateClientFormForCob/",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE: adminAPIURL + "/clone",
   // https://stage-python-adminapi.sabpaisa.in/api/clone/LPSD1/DOONP11/1234
@@ -103,11 +116,16 @@ const API_LIVE = {
   // https://stage-python-adminapi.sabpaisa.in/api/common-data/3/LPSD1/
   CHECK_PERMISSION_PAYLINK: adminAPIURL + "/common-data/29/",
 
-  BANK_LIST_NB: "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
-  BANK_LIST_DC: "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
-  SUBSCRIBE_FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  BANK_LIST_NB:
+    "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
+  BANK_LIST_DC:
+    "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
+  SUBSCRIBE_FETCH_APP_AND_PLAN:
+    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN:
+    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE:
+    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -181,6 +199,10 @@ const API_LIVE = {
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
   getAllClientCode: `${kyc_url}/kyc/get-all-client-code`, //get APi
 
+  ///////// Bd Development
+
+  BD_DEVELOPMENT: `${kyc_url}/kyc/assignment/assign-bd/`,
+
   getClientCodeByRole: `${kyc_url}/kyc/get-client-code-by-role`,
   saveSubMerchant: `${url}/sub-merchant/create/`,
   getSubMerchants: `${url}/sub-merchant/get/`,
@@ -217,13 +239,14 @@ const API_LIVE = {
   GET_MERCHANT_DATA: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_STATUS: `${kyc_url}/kyc/get-merchant-data/`,
+  // KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   MY_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/created-by/`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
+  // KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  // KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
+  // KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  // KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
+  // KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   // MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
@@ -232,8 +255,11 @@ const API_LIVE = {
   FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
   GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
   ASSIGN_ACCOUNT_MANAGER: `${url}/assigned-account-manager`,
+  GET_ASSIGNMENT_TYPE: `${kyc_url}/kyc/assignment/assignment-type/`,
+  ASSIGN_ROLE_WISE: `${kyc_url}/kyc/assignment/assign/`,
   ACCOUNT_MANAGER_DETAILS: `${url}/account-manager-details`,
   ASSIGN_CLIENT: `${url}/assign-client`,
+  EXPORT_ASSIGNED_MERCHANT: `${kyc_url}/kyc/get-merchant-data/export-assigned-merchant/`,
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
@@ -263,6 +289,8 @@ const API_LIVE = {
   /* Registered Address */
   Registered_Address: `${kyc_url}/kyc/save-registered-address/`,
   /* Registered Address */
+
+  GET_ASSIGNED_MERCHANT: `${kyc_url}/kyc/get-merchant-data/get-by-assigned-id/`,
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
   /* Product catalogue */
   PRODUCT_DETAILS: `${url}/product/product-details`,
@@ -295,6 +323,9 @@ const API_LIVE = {
   REJECT_KYC_TAB: `${kyc_url}/kyc/verify-kyc/tab-reject/`,
   COMPLETE_VERIFICATION: `${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC: `${kyc_url}/kyc/verify-kyc/reject/`,
+
+  //////////////////////update Rolling Reserve
+  UPDATE_ROLLING_RESERVE: `${kyc_url}/kyc/rolling-reserve/save/`,
 
   /////frm(push-merchant-data)
   PUSH_MERCHANT_DATA: `${kyc_url}/kyc/frm/push-merchant-data/`,
@@ -341,6 +372,8 @@ const API_LIVE = {
   UPLOAD_E_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/upload-agreement/`,
   REMOVE_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/remove-agreement-doc/`,
   GET_MERCHANT_AGREEMENT_BY_LOGIN_ID: `${kyc_url}/kyc/upload-merchant-document/get-merchant-agreement-by-login-id/`,
+  BGV_REPORT: `${kyc_url}/kyc/bgv/bgv-upload/`,
+  FETCH_BGV_REPORT: `${kyc_url}/kyc/bgv/get-by-login-id/`,
 
   // refer list
   GET_REFERRAL: `${kyc_url}/kyc/refer-zone/get-referral-zone-mapper/`,
@@ -351,15 +384,8 @@ const API_LIVE = {
   // https://stage-python-adminapi.sabpaisa.in/api/common-data/3/LPSD1/
   //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111
 
-
-
-
   UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/ManageFalg/Flag`,
   // https://stage-python-adminapi.sabpaisa.in/api/ManageFalg/Flag/LPSD1/authtype/Encryption/Abc/
-
-
-
-
 
   GET_WEBSITE_WHITELIST: `${adminAPIURL}/common-data/103`,
 
@@ -455,12 +481,10 @@ const API_LIVE = {
   GET_INFORMATION_BULLETIN: `${url}/get-information-bulletin/?order_by=-id`,
 };
 
-
 export const BACKEND_USER_API = {
   save_ckycr: `${kyc_url}/kyc/ckycr/save-ckycr/`,
-  get_ckycr: `${kyc_url}/kyc/ckycr/get-ckycr/`
-}
-
+  get_ckycr: `${kyc_url}/kyc/ckycr/get-ckycr/`,
+};
 
 const B2B_API_LIVE = {
   challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`,
@@ -489,7 +513,7 @@ export const PAYMENT_LINK = {
   GET_TXN_GRAPH_DATA: `${paylinkBaseUrl}/api/link-dashboard/get-transaction-graph-data/`,
   GET_LINK_DASHBOARD: `${paylinkBaseUrl}/api/link-dashboard/get-dashboard-data/`,
   GET_ALL_TXN: `${paylinkBaseUrl}/api/transaction/get-all-transactions/`,
-  GET_PAYER_DATA: `${paylinkBaseUrl}/api/payer/get-payer/`
+  GET_PAYER_DATA: `${paylinkBaseUrl}/api/payer/get-payer/`,
   // GET_ALL_TRANSACTION_DATA: `${paylinkBaseUrl}/transaction/get-all-transactions/`
 };
 
@@ -502,6 +526,8 @@ export const E_NACH_URL = {
   BULK_CREATE_MANDATE: `${subscriptionUrl}api/mandate/bulk-create-mandates/`,
   REGISTRATION_REPORT: `${subscriptionUrl}api/mandate/mandate-registration-data/`,
   DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
+  SCHEDULE_TRRANSACTION: `${subscriptionUrl}api/mandate/upcoming-mandates/`,
+  USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`,
 };
 
 export const wsConnectUrl = {

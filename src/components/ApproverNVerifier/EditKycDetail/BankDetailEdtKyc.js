@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import Yup from "../../_components/formik/Yup";
-// import FormikController from "../../_components/formik/FormikController";
 import FormikController from "../../../_components/formik/FormikController";
 import Yup from "../../../_components/formik/Yup";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-// import {
-//   kycBankNames,
-//   saveMerchantBankDetais,
-//   ifscValidation,
-//   bankAccountVerification,
-//   getBankId,
-//   kycUserList,
-//   GetKycTabsStatus,
-// } from "../../slices/kycSlice";
+
 import {
   ifscValidation,
   bankAccountVerification,
@@ -28,7 +18,6 @@ import {
 } from "../../../slices/kycSlice";
 
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
-// import gotVerified from "../../assets/images/verified.png";
 import gotVerified from "../../../assets/images/verified.png";
 import { updateSettlementInfo } from "../../../slices/editKycSlice";
 
@@ -36,16 +25,10 @@ function BankDetailEdtKyc(props) {
   const setTab = props.tab;
   const setTitle = props.title;
   const selectedId = props.selectedId;
-  const merchantloginMasterId = props.merchantloginMasterId;
-
-  // const { role } = props;
   const dispatch = useDispatch();
-
   const { kyc, auth } = useSelector((state) => state);
-
-  const { KycTabStatusStore } = kyc;
   const KycList = kyc?.kycUserList;
-  const VerifyKycStatus = KycTabStatusStore?.settlement_info_status;
+
   const { user } = auth;
 
   const [disable, setIsDisable] = useState(false);
@@ -77,8 +60,8 @@ function BankDetailEdtKyc(props) {
       KycList?.merchant_account_details?.accountType === "Current"
         ? 1
         : KycList?.merchant_account_details?.accountType === "Saving"
-        ? 2
-        : "",
+          ? 2
+          : "",
     branch: KycList?.merchant_account_details?.branch,
     isAccountNumberVerified:
       KycList?.merchant_account_details?.account_number !== null ? "1" : "",
@@ -88,7 +71,7 @@ function BankDetailEdtKyc(props) {
     account_holder_name: Yup.string()
       .trim()
       .allowOneSpace()
-      // .required("Required")
+
       .nullable(),
     ifsc_code: Yup.string()
       .allowOneSpace()
@@ -99,22 +82,22 @@ function BankDetailEdtKyc(props) {
       )
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
-      // .required("Required")
+
       .nullable(),
     account_number: Yup.string()
       .allowOneSpace()
       .matches(AccountNoRgex, "Your Account Number is Invalid")
-      // .required("Required")
+
       .nullable(),
     account_type: Yup.string()
-      // .required("Required")
+
       .nullable(),
     branch: Yup.string()
       .trim()
-      // .required("Required")
+
       .nullable(),
     bank_id: Yup.string()
-      // .required("Required")
+
       .nullable(),
     isAccountNumberVerified: Yup.string().required(
       "You need to verify Your Account Number"
@@ -128,7 +111,7 @@ function BankDetailEdtKyc(props) {
         [Yup.ref("account_number"), null],
         "You need to verify Your Account Number"
       )
-      // .required("You need to verify Your Account Number")
+
       .nullable(),
   });
 
@@ -145,7 +128,7 @@ function BankDetailEdtKyc(props) {
           res.payload.status === true &&
           res.payload.valid === true
         ) {
-          // console.log(res?.payload?.bank_name)
+
           setLoading(false);
           const postData = { bank_name: res?.payload?.bank };
           // console.log(postData)
@@ -155,7 +138,7 @@ function BankDetailEdtKyc(props) {
                 setFieldValue("bank_id", resp?.payload[0]?.bankId);
               }
 
-              // console.log(resp?.payload?.bankId)
+
             })
             .catch((err) => {
               // console.log(err?.payload?.bankName)
@@ -252,8 +235,8 @@ function BankDetailEdtKyc(props) {
       values.account_type.toString() === "1"
         ? "Current"
         : values.account_type.toString() === "2"
-        ? "Saving"
-        : "";
+          ? "Saving"
+          : "";
 
     setIsDisable(true);
     dispatch(
@@ -276,7 +259,7 @@ function BankDetailEdtKyc(props) {
         setTab(5);
         setIsDisable(false);
         setTitle("DOCUMENTS UPLOAD");
-        dispatch(kycUserList({ login_id: selectedId }));
+        dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
         dispatch(GetKycTabsStatus({ login_id: selectedId }));
       } else {
         toast.error(res?.payload?.detail);
@@ -346,8 +329,8 @@ function BankDetailEdtKyc(props) {
                     text="text"
                     name="ifsc_code"
                     className="form-control"
-                    // disabled={VerifyKycStatus === "Verified"}
-                    // readOnly={false}
+                  // disabled={VerifyKycStatus === "Verified"}
+                  // readOnly={false}
                   />
 
                   {values?.ifsc_code !== null && loading && (
@@ -409,8 +392,8 @@ function BankDetailEdtKyc(props) {
                     type="text"
                     name="account_number"
                     className="form-control"
-                    // readOnly={false}
-                    // disabled={VerifyKycStatus === "Verified"}
+                  // readOnly={false}
+                  // disabled={VerifyKycStatus === "Verified"}
                   />
 
                   {/* if both values are same then display verified icon */}
@@ -492,8 +475,8 @@ function BankDetailEdtKyc(props) {
                   type="text"
                   name="account_holder_name"
                   className="form-control"
-                  // readOnly={true}
-                  // disabled={true}
+                // readOnly={true}
+                // disabled={true}
                 />
               </div>
 
@@ -507,8 +490,7 @@ function BankDetailEdtKyc(props) {
                   name="account_type"
                   options={selectedType}
                   className="form-select"
-                  // readOnly={false}
-                  // disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>
@@ -522,8 +504,7 @@ function BankDetailEdtKyc(props) {
                   name="bank_id"
                   className="form-control"
                   options={data}
-                  // readOnly={true}
-                  // disabled={true}
+
                 />
               </div>
 
@@ -536,14 +517,13 @@ function BankDetailEdtKyc(props) {
                   type="text"
                   name="branch"
                   className="form-control"
-                  // readOnly={true}
-                  // disabled={true}
+
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                {/* {VerifyKycStatus === "Verified" ? <></> : ( */}
+
                 <button
                   disabled={disable}
                   className="float-lg-right cob-btn-primary text-white btn-sm border-0 mt-4"

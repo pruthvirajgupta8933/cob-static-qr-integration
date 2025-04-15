@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { kycForVerified } from "../../../slices/kycSlice";
+import { kycForVerified, kycListByStatus } from "../../../slices/kycSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "../Onboarderchant/CommentModal";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import ListLayout from "./ListLayout";
 import DateFormatter from "../../../utilities/DateConvert";
+import { KYC_STATUS_VERIFIED } from "../../../utilities/enums";
 
 function VerifiedMerchant({ commonRows }) {
   const dispatch = useDispatch();
-  const verifiedList = useSelector((state) => state.kyc.kycVerifiedList);
+  const verifiedList = useSelector(
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_VERIFIED] || {}
+  );
 
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
@@ -108,7 +111,8 @@ function VerifiedMerchant({ commonRows }) {
   const fetchData = useCallback(
     (startingSerialNumber) => {
       dispatch(
-        kycForVerified({
+        kycListByStatus({
+          orderByField: "-verified_date",
           page: currentPage,
           page_size: pageSize,
           searchquery: searchText,
@@ -123,19 +127,18 @@ function VerifiedMerchant({ commonRows }) {
   return (
     <div className="container-fluid">
       <ListLayout
-        loadingState={loadingState}
+        loadingState={verifiedList?.loading}
         searchData={verfiedMerchant}
         dataCount={dataCount}
         rowData={PendingApprovalData}
         data={data}
         setData={setData}
-        fetchDataCb={kycForVerified}
-        merchantStatus={"Verified"}
-        filterData={
-          {
-            setOnboardTypeFn: setOnboardType
-          }
-        }
+        fetchDataCb={kycListByStatus}
+        merchantStatus={KYC_STATUS_VERIFIED}
+        orderByField="-verified_date"
+        filterData={{
+          setOnboardTypeFn: setOnboardType,
+        }}
       />
       {openCommentModal && (
         <CommentModal

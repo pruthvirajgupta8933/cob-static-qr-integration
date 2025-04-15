@@ -145,7 +145,7 @@ const TotalLinkGenrated = () => {
             name: "Payer Email",
             selector: (row) => row.payer_email,
             sortable: true,
-            width: "170px"
+            width: "200px"
         },
         {
             id: "4",
@@ -298,14 +298,14 @@ const TotalLinkGenrated = () => {
 
     return (
         <section >
-            <div className="container-fluid">
+            <div className="container-fluid p-0">
                 <ActionButtons filterRef={filterRef} setShowFilter={setShowFilter} showFilter={showFilter} setShowCreatePaymentModal={setShowCreatePaymentModal} showCreatePaymentModal={showCreatePaymentModal} setShowAddPayerModal={setShowAddPayerModal} showAddPayerModal={showAddPayerModal} onBackClick={() => window.history.back()}
                     showBackLink={true} />
                 <FilterModal show={showFilter} onClose={() => setShowFilter(false)} filterRef={filterRef} onApply={handleSubmit} />
             </div>
 
             <section className="">
-                <div className="container-fluid mt-3">
+                <div className="container-fluid mt-3 p-0">
                     <div className="card">
                         <div className="card-body">
                             <div className="row align-items-center mb-3">
@@ -319,7 +319,7 @@ const TotalLinkGenrated = () => {
                                                 searchTerm={searchTerm}
                                                 setSearchTerm={setSearchTerm}
                                                 onSearch={handleSubmit}
-                                                placeholder="Search by Name, Email, Mobile"
+                                                placeholder="Name, Email, Mobile"
                                                 loadData={loadData}
 
                                             />

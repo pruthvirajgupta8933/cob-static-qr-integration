@@ -227,15 +227,16 @@ const RegistrationHistory = () => {
     "Mobile",
     "Customer Name",
     "Registration ID",
+    "Bank Message",
     "Registration Status",
     "Consumer ID",
     "Account Holder Name",
     "Account Number",
     "IFSC",
     "Account Type",
-    "Created On",
-    "Start Date",
-    "End Date",
+    "Mandate Registration Date",
+    "Mandate start Date",
+    "Mandate End Date",
     "Frequency",
     "Max Amount",
     "Purpose",
@@ -260,6 +261,7 @@ const RegistrationHistory = () => {
         <td>{mandate.customer_mobile}</td>
         <td>{mandate.customer_name}</td>
         <td>{mandate.registration_id}</td>
+        <td>{mandate.bank_status_message}</td>
         <td>{mandate.registration_status}</td>
         <td>{mandate.consumer_id}</td>
         <td>{mandate.account_holder_name}</td>

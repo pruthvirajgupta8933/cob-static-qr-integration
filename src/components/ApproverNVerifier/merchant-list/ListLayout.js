@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../../_components/table_components/table/Table";
 import SkeletonTable from "../../../_components/table_components/table/skeleton-table";
 import SearchFilter from "../../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage";
-// import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
+import { setKycMasked } from "../../../slices/kycSlice";
 const ListLayout = ({
   loadingState,
   data,
@@ -15,14 +15,15 @@ const ListLayout = ({
   dataCount,
   merchantStatus,
   fetchDataCb,
-  filterData
+  filterData,
+  orderByField,
 }) => {
-  // const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [onboardType, setOnboardType] = useState("");
+  const { isKycMasked } = useSelector((state) => state.kyc);
   const dispatch = useDispatch();
   const searchByText = () => {
     // Set data with the memoized filteredData
@@ -48,7 +49,6 @@ const ListLayout = ({
     },
   ];
 
-
   const filteredData = useMemo(() => {
     return data?.filter((item) =>
       Object.values(item)
@@ -58,35 +58,28 @@ const ListLayout = ({
     );
   }, [data, searchText]);
 
-
-
-  const fetchData = useCallback(
-    () => {
-      dispatch(
-        fetchDataCb({
-          page: currentPage,
-          page_size: pageSize,
-          searchquery: searchText,
-          merchantStatus,
-          isDirect: onboardType,
-        })
-      );
-    },
-    [currentPage, pageSize, searchText, dispatch, onboardType]
-  );
+  const fetchData = useCallback(() => {
+    dispatch(
+      fetchDataCb({
+        orderByField,
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus,
+        isDirect: onboardType,
+        operation: isKycMasked ? "u" : "k",
+      })
+    );
+  }, [currentPage, pageSize, searchText, dispatch, onboardType, isKycMasked]);
 
   useEffect(() => {
     if (typeof fetchDataCb === "function") fetchData();
   }, [fetchData]);
 
-
-
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
-
-
 
   //function for change page size
   const changePageSize = (pageSize) => {
@@ -101,11 +94,9 @@ const ListLayout = ({
     if (fieldType === "dropdown") {
       setSearchByDropDown(true);
       setOnboardType(e);
-      filterData?.setOnboardTypeFn(e)
+      filterData?.setOnboardTypeFn(e);
     }
   };
-
-
 
   return (
     <>
@@ -142,12 +133,32 @@ const ListLayout = ({
           />
         </div>
 
-        <div className="">
+        <div>
           {!loadingState && (
             <MerchnatListExportToxl
               URL={`export-excel/?search=${merchantStatus}&isDirect=${onboardType}`}
               filename={merchantStatus}
             />
+          )}
+        </div>
+        <div className="col-lg-1 col-md-6 mt-4">
+          {!loadingState && (
+            <button
+              className="btn btn-sm mt-2 cob-btn-primary"
+              // disabled={disable}
+              type="button"
+              onClick={() => {
+                dispatch(setKycMasked(!isKycMasked));
+              }}
+            >
+              <i
+                className={`fa ${
+                  isKycMasked ? "fa-eye-slash" : "fa-eye"
+                } text-white pr-1`}
+              />
+              {isKycMasked ? "Unmask" : "Mask"}
+              {/* {loading ? "Downloading..." : "Export"} */}
+            </button>
           )}
         </div>
       </div>

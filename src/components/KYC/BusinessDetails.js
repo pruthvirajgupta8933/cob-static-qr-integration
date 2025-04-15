@@ -369,11 +369,15 @@ function BusinessDetails(props) {
         toastConfig.errorToast(err.response?.data?.detail);
       });
   };
+  // U85500UP2023PTC194333/ U59110CH2025PTC046054
 
   const cinValidationField = (values, key, setFieldValue) => {
     setLoadingForCin(true);
 
-
+    setFieldValue(key, values);
+    setFieldValue("prevCinNumber", "");
+    setFieldValue("cin_data", "");
+    setFieldValue("isCinVerified", "");
     try {
       dispatch(cinValidation({ cin_number: values })).then(res => {
         setLoadingForCin(false);
@@ -531,7 +535,7 @@ function BusinessDetails(props) {
         if (props?.role?.merchant) {
           dispatch(kycUserListForMerchant());
         } else {
-          dispatch(kycUserList({ login_id: merchantloginMasterId }));
+          dispatch(kycUserList({ login_id: merchantloginMasterId, masking: 1 }));
         }
 
         dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
@@ -670,8 +674,9 @@ function BusinessDetails(props) {
                         </span>
                       ) : (
                         <div className="input-group-append">
-                          <a
-                            href={() => false}
+                          <button
+                            type="button"
+                            disabled={loadingForGst}
                             className="btn cob-btn-primary text-white btn-sm"
                             onClick={() => {
                               checkInputIsValid(
@@ -691,7 +696,7 @@ function BusinessDetails(props) {
                             ) : (
                               "Verify"
                             )}
-                          </a>
+                          </button>
                         </div>
                       )}
                     </div>
@@ -761,6 +766,7 @@ function BusinessDetails(props) {
                           <div className="input-group-append">
                             <button
                               href={() => false}
+                              disabled={isLoader}
                               className="btn cob-btn-primary text-white btn-sm"
                               onClick={() => {
                                 checkInputIsValid(
@@ -842,6 +848,7 @@ function BusinessDetails(props) {
                     <div className="input-group-append">
                       <button
                         href={() => false}
+                        disabled={isLoading}
                         className="btn cob-btn-primary text-white btn btn-sm"
                         onClick={() => {
                           checkInputIsValid(
@@ -921,8 +928,9 @@ function BusinessDetails(props) {
                     </span>
                   ) : (
                     <div className="input-group-append">
-                      <a
+                      <button
                         href={() => false}
+                        disabled={loadingForSiganatory}
                         className="btn cob-btn-primary text-white btn-sm"
                         onClick={() => {
                           checkInputIsValid(
@@ -945,7 +953,7 @@ function BusinessDetails(props) {
                         ) : (
                           "Verify"
                         )}
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -1083,9 +1091,11 @@ function BusinessDetails(props) {
                     </span>
                   ) : (
                     <div className="input-group-append">
-                      <a
-                        href={() => false}
+                      <button
+                        type="button"
+
                         className="btn cob-btn-primary text-white btn-sm"
+                        disabled={loadingForCin}
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -1097,6 +1107,7 @@ function BusinessDetails(props) {
                           );
                         }}
                       >
+
                         {loadingForCin ? (
                           <span
                             className="spinner-border spinner-border-sm"
@@ -1107,7 +1118,7 @@ function BusinessDetails(props) {
                         ) : (
                           "Verify"
                         )}
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -1132,16 +1143,14 @@ function BusinessDetails(props) {
                     className="float-lg-right cob-btn-primary text-white btn-sm btn border-0"
                   >
                     {disable && (
-                      <>
-                        <span className="mr-2">
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            ariaHidden="true"
-                          />
-                          <span className="sr-only">Loading...</span>
-                        </span>
-                      </>
+                      <span className="mr-2">
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          ariaHidden="true"
+                        />
+                        <span className="sr-only">Loading...</span>
+                      </span>
                     )}
 
                     {buttonText}

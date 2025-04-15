@@ -8,10 +8,10 @@ import { setDateRange } from "../../../../slices/date-filter-slice/DateFilterSli
 import { useDispatch, useSelector } from "react-redux";
 
 const validationSchema = Yup.object().shape({
-    // fromDate: Yup.date().required("From Date is required"),
-    // toDate: Yup.date()
-    //     .required("To Date is required")
-    //     .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
+    fromDate: Yup.date().required("From Date is required"),
+    toDate: Yup.date()
+        .required("To Date is required")
+        .min(Yup.ref("fromDate"), "To Date cannot be before From Date"),
 });
 
 
@@ -89,6 +89,13 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
 
     if (!show) return null;
 
+    const handleSubmit = (values) => {
+        // console.log(values)
+        onApply(values);
+        dispatch(setDateRange(values));
+        onClose();
+    };
+
     return (
         <div ref={modalRef} className={` ${Classes.filter_modal_open} position-absolute bg-white border shadow p-3 rounded`}>
             <h6>Select Range</h6>
@@ -96,11 +103,7 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 enableReinitialize={true}
-                onSubmit={(values) => {
-                    dispatch(setDateRange(values));
-                    onApply(values);
-                    onClose();
-                }}
+                onSubmit={values => handleSubmit(values)}
             >
                 {({ values, errors, setFieldValue, resetForm }) => (
                     <Form>

@@ -15,7 +15,7 @@ const TransactionTable = ({ data }) => {
     },
 
     {
-      id: "2",
+      id: "1",
       name: "Payer Name",
       selector: (row) => row.payer_name,
       sortable: true,
@@ -42,7 +42,7 @@ const TransactionTable = ({ data }) => {
       width: "180px"
     },
     {
-      id: "41",
+      id: "5",
       name: "Amount",
       sortable: true,
       selector: (row) => row.trans_amount,
@@ -56,14 +56,14 @@ const TransactionTable = ({ data }) => {
       width: "150px"
     },
     {
-      id: "5",
+      id: "7",
       name: "Payment Mode",
       selector: (row) => row.trans_mode,
       sortable: true,
       width: "120px"
     },
     {
-      id: "7",
+      id: "8",
       name: "Status",
       selector: (row) => (
         <p className="p-1 m-0 rounded-1"

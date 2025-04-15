@@ -90,6 +90,13 @@ const chargebackTxnHistory = (paramData) => {
   return axiosInstanceJWT.post(API_URL.ChargeBankTxnHistory, paramData);
 };
 
+const getPayModeList = () => {
+  return axiosInstanceJWT.get(API_URL.PAY_MODE_LIST);
+};
+const getPayStatusList = () => {
+  return axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST);
+};
+
 export const Dashboardservice = {
   successTxnSummary,
   subscriptionplan,
@@ -103,4 +110,6 @@ export const Dashboardservice = {
   chargebackTxnHistory,
   getTxnDataForGraph,
   dowlonadTransactionHistory,
+  getPayModeList,
+  getPayStatusList,
 };

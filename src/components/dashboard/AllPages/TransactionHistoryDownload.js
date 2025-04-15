@@ -12,12 +12,16 @@ import {
   fetchTransactionHistorySlice,
 } from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
-import API_URL from "../../../config";
+
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { axiosInstance, axiosInstanceJWT } from "../../../utilities/axiosInstance";
+
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
+import {
+  fetchPayModeList,
+  fetchPayStatusList,
+} from "../../../slices/dashboardSlice";
 
 function TransactionHistoryDownload() {
   const dispatch = useDispatch();
@@ -25,9 +29,7 @@ function TransactionHistoryDownload() {
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
 
-  const { isLoadingTxnHistory } = dashboard;
-  const [paymentStatusList, SetPaymentStatusList] = useState([]);
-  const [paymentModeList, SetPaymentModeList] = useState([]);
+  const { isLoadingTxnHistory, paymode, payStatus } = dashboard;
 
   const [txnList, SetTxnList] = useState([]);
 
@@ -93,29 +95,6 @@ function TransactionHistoryDownload() {
   //   return diffDays;
   //  }
 
-  const getPaymentStatusList = async () => {
-    await axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST)
-      .then((res) => {
-        // console.log(res)
-        SetPaymentStatusList(res.data);
-      })
-      .catch((err) => {
-        // console.log(err)
-      });
-  };
-
-  const paymodeList = async () => {
-    await axiosInstanceJWT
-      .get(API_URL.PAY_MODE_LIST)
-      .then((res) => {
-        // console.log(res)
-        SetPaymentModeList(res.data);
-      })
-      .catch((err) => {
-        // console.log(err)
-      });
-  };
-
   let isExtraDataRequired = false;
   let extraDataObj = {};
   if (user.roleId === 3 || user.roleId === 13) {
@@ -142,22 +121,25 @@ function TransactionHistoryDownload() {
   //   tempPaymode.push({ key: item.paymodeId, value: item.paymodeName });
   // });
 
-
   const tempPayStatus = [{ key: "All", value: "All" }];
-  paymentStatusList.map((item) => {
-    if (item?.payment_status_name !== "CHALLAN_ENQUIRED" && item?.payment_status_name !== "INITIATED") {
+  payStatus.map((item) => {
+    if (
+      item?.payment_status_name !== "CHALLAN_ENQUIRED" &&
+      item?.payment_status_name !== "INITIATED"
+    ) {
       if (item?.is_active) {
-        tempPayStatus.push({ key: item?.payment_status_name, value: item?.payment_status_name });
+        tempPayStatus.push({
+          key: item?.payment_status_name,
+          value: item?.payment_status_name,
+        });
       }
-
     }
   });
 
   const tempPaymode = [{ key: "All", value: "All" }];
-  paymentModeList.map((item) => {
+  paymode.map((item) => {
     tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
   });
-
 
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
@@ -287,8 +269,8 @@ function TransactionHistoryDownload() {
   }, [currentPage]);
 
   useEffect(() => {
-    getPaymentStatusList();
-    paymodeList();
+    if (!payStatus.length > 0) dispatch(fetchPayStatusList());
+    if (!paymode.length > 0) dispatch(fetchPayModeList());
     SetTxnList([]);
     return () => {
       dispatch(clearTransactionHistory());
@@ -457,8 +439,8 @@ function TransactionHistoryDownload() {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                        // value={startDate}
-                        // onChange={(e)=>setStartDate(e.target.value)}
+                          // value={startDate}
+                          // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 

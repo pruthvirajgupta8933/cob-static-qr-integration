@@ -87,7 +87,7 @@ const MultiUserOnboard = () => {
       kycData?.onboard_type === "Bank Child"
         ? "bank"
         : selectOnboardType.find((type) => type.value === kycData?.onboard_type)
-          ?.key ?? "",
+            ?.key ?? "",
     parentType: "",
     addMerchant: "",
   };
@@ -126,8 +126,8 @@ const MultiUserOnboard = () => {
       );
       setOnboardTypeName(
         initialValues.onboardType ??
-        selectOnboardType.find((type) => type.value === kycData?.onboard_type)
-          ?.key
+          selectOnboardType.find((type) => type.value === kycData?.onboard_type)
+            ?.key
       );
 
       if (
@@ -155,7 +155,13 @@ const MultiUserOnboard = () => {
 
   useEffect(() => {
     if (merchantId)
-      dispatch(kycUserList({ login_id: merchantId, password_required: true }));
+      dispatch(
+        kycUserList({
+          login_id: merchantId,
+          password_required: true,
+          masking: 1,
+        })
+      );
   }, [merchantId]);
   useEffect(() => {
     dispatch(getAllZoneName()).then((res) => {
@@ -187,6 +193,7 @@ const MultiUserOnboard = () => {
       const postData = {
         parent_type: onboardTypeName,
         created_by: loginId,
+        operation: "k",
       };
       dispatch(fetchParentTypeData(postData)).then((res) => {
         setChiledList(res?.payload?.data);
@@ -207,21 +214,21 @@ const MultiUserOnboard = () => {
         </div>
         {(basicDetailsResponse.data?.business_cat_code ??
           Boolean(merchantId)) && (
-            <Prompt
-              message={() => {
-                if (
-                  window.confirm(
-                    "You might have unsaved changes. Are you sure you want to leave?"
-                  )
-                ) {
-                  dispatch(referralOnboardSlice.actions.resetBasicDetails());
-                  dispatch(clearKycState());
-                  return true; // Allow navigation
-                }
-                return false;
-              }}
-            />
-          )}
+          <Prompt
+            message={() => {
+              if (
+                window.confirm(
+                  "You might have unsaved changes. Are you sure you want to leave?"
+                )
+              ) {
+                dispatch(referralOnboardSlice.actions.resetBasicDetails());
+                dispatch(clearKycState());
+                return true; // Allow navigation
+              }
+              return false;
+            }}
+          />
+        )}
         <div className="container-fluid p-0">
           <Formik
             initialValues={initialValues}
@@ -278,14 +285,14 @@ const MultiUserOnboard = () => {
                     </div>
                   )}
                 {onboardTypeName === "referrer" ||
-                  onboardTypeName === "bank" ? (
+                onboardTypeName === "bank" ? (
                   <div className="form-group col-md-3">
                     <label className="form-label">
                       {onboardTypeName === "referrer"
                         ? "Select Referral"
                         : onboardTypeName === "bank"
-                          ? "Select Bank"
-                          : null}
+                        ? "Select Bank"
+                        : null}
                     </label>
                     <select
                       className="form-select"
@@ -299,8 +306,8 @@ const MultiUserOnboard = () => {
                         {onboardTypeName === "referrer"
                           ? "Select"
                           : onboardTypeName === "bank"
-                            ? "Select"
-                            : ""}
+                          ? "Select"
+                          : ""}
                       </option>
                       {childList?.map((data) => (
                         <option value={data?.loginMasterId} key={data?.value}>
@@ -321,18 +328,21 @@ const MultiUserOnboard = () => {
             {selectedValue && (
               <React.Fragment>
                 {onboardTypeName !== "Select" && onboardTypeName && (
-                  <p className={classes.cb_nav}>{`${onboardTypeName === "Select"
-                    ? ""
-                    : ` ${selectOnboardType.find(
-                      (option) => option.key === onboardTypeName
-                    )?.value
-                    }`
-                    }`}</p>
-                )}
-                <p className={classes.cb_nav}>{`${selectedName
-                  ? refferalList.find((i) => i.key === selectedValue)?.value
-                  : ""
+                  <p className={classes.cb_nav}>{`${
+                    onboardTypeName === "Select"
+                      ? ""
+                      : ` ${
+                          selectOnboardType.find(
+                            (option) => option.key === onboardTypeName
+                          )?.value
+                        }`
                   }`}</p>
+                )}
+                <p className={classes.cb_nav}>{`${
+                  selectedName
+                    ? refferalList.find((i) => i.key === selectedValue)?.value
+                    : ""
+                }`}</p>
                 {selectedUserType && (
                   <p className={classes.cb_nav}>{selectedChildName}</p>
                 )}
@@ -368,7 +378,7 @@ const MultiUserOnboard = () => {
               <ReferralOnboardForm
                 zoneCode={selectedValue}
                 referralChild={true}
-                fetchData={() => { }}
+                fetchData={() => {}}
                 referrerLoginId={selectedUserType}
                 marginTopCss={false}
               />

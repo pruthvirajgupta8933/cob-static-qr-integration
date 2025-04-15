@@ -29,29 +29,31 @@ export const DateFormatAlphaNumeric = (date, time = true) => {
 }
 
 export const dateFormatBasic = (dateVal) => {
-  //convert only this format 2024-10-10T12:36:30Z
-  if (!dateVal?.includes("T")) return dateVal;
-  if (!dateVal?.includes("Z")) return DateFormatter(dateVal);
+  if (!dateVal) return dateVal; // Handle null/undefined
+
+  const dateStr = dateVal instanceof Date ? dateVal.toISOString() : dateVal; // Convert Date to string
+
+  if (!dateStr.includes("T")) return dateStr;
+  if (!dateStr.includes("Z")) return DateFormatter(dateStr);
+
   let date;
-  // console.log("dateVal", dateVal)
-  if ((dateVal === null && isNaN(date)) || dateVal === "NA") {
+  if (dateStr === "NA") {
     date = "N/A";
   } else {
-    // Extract date components
-    const sdate = new Date(dateVal);
-    const day = String(sdate?.getUTCDate()).padStart(2, "0");
-    const month = String(sdate?.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-based
-    const year = sdate?.getUTCFullYear();
+    const sdate = new Date(dateStr);
+    const day = String(sdate.getUTCDate()).padStart(2, "0");
+    const month = String(sdate.getUTCMonth() + 1).padStart(2, "0");
+    const year = sdate.getUTCFullYear();
 
-    // Extract time components
-    const hours = String(sdate?.getUTCHours()).padStart(2, "0");
-    const minutes = String(sdate?.getUTCMinutes()).padStart(2, "0");
-    const seconds = String(sdate?.getUTCSeconds()).padStart(2, "0");
-    // Format the date and time
+    const hours = String(sdate.getUTCHours()).padStart(2, "0");
+    const minutes = String(sdate.getUTCMinutes()).padStart(2, "0");
+    const seconds = String(sdate.getUTCSeconds()).padStart(2, "0");
+
     date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
   return date;
 };
+
 
 export default DateFormatter;

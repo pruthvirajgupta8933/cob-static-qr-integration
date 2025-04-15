@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "../../../../_components/table_components/table/Table";
 import DateFormatter from "../../../../utilities/DateConvert";
-// import { useSelector } from "react-redux";
 
 function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
+  const [visibleDataCount, setVisibleDataCount] = useState(10);
+
   let purchaseAmt = 0;
   if (walletDisplayData && Array.isArray(walletDisplayData)) {
     purchaseAmt = walletDisplayData
@@ -20,9 +21,19 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
       );
   }
 
-  // const { manualSubscriptions } = useSelector((state) => state.subscription);
-
   const rowHeader = [
+    {
+      id: "201",
+      name: "Subscribed Id",
+      selector: (row) => row.clientSubscribedPlanDetailsId,
+      grow: 0,
+    },
+    {
+      id: "202",
+      name: "Client Transaction Id",
+      selector: (row) => row.clientTxnId,
+      width: "250px",
+    },
     {
       id: "2",
       name: "Application Name",
@@ -33,13 +44,11 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
       name: "Plan Name",
       selector: (row) => row.planName,
     },
-
     {
       id: "3",
       name: "Purchase Amount",
       selector: (row) => parseFloat(row.purchaseAmount).toFixed(2),
     },
-
     {
       id: "5",
       name: "Subscription Status",
@@ -52,17 +61,32 @@ function WalletDetail({ isLoading, walletDisplayData, walletCommission }) {
     },
   ];
 
+  const handleLoadMore = () => {
+    setVisibleDataCount((prevCount) => prevCount + 10);
+  };
+
   return (
     <div className="row">
       <div className="col-lg-12 my-2">
         <span className="font-size-14">
-          Total Purchase Amount: {purchaseAmt.toFixed(2)} | Commission:{" "}
-          {parseFloat(walletCommission).toFixed(2)} | Wallet Balance:{" "}
+          Total Purchase Amount: {purchaseAmt.toFixed(2)} | Commission: {" "}
+          {parseFloat(walletCommission).toFixed(2)} | Wallet Balance: {" "}
           {(purchaseAmt - parseFloat(walletCommission)).toFixed(2)}
         </span>{" "}
       </div>
       <div className="scroll overflow-auto">
-        <Table row={rowHeader} dataCount={0} data={walletDisplayData} />
+        <Table
+          row={rowHeader}
+          data={walletDisplayData.slice(0, visibleDataCount)}
+        />
+        {visibleDataCount < walletDisplayData.length && (
+          <div className="text-center my-3">
+            <div className="text-primary cursor_pointer" onClick={handleLoadMore}>
+              Load More
+            </div>
+
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { kycForPendingMerchants } from "../../../slices/kycSlice";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  kycForPendingMerchants,
+  kycListByStatus,
+} from "../../../slices/kycSlice";
+import { KYC_STATUS_PENDING } from "../../../utilities/enums";
 import KycDetailsModal from "../Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import CommentModal from "../Onboarderchant/CommentModal";
@@ -15,7 +19,9 @@ const PendindKyc = ({ commonRows }) => {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false);
 
-  const pendindKycList = useSelector((state) => state.kyc.pendingKycuserList);
+  const pendindKycList = useSelector(
+    (state) => state.kyc.kycListByStatus?.[KYC_STATUS_PENDING] || {}
+  );
 
   const [data, setData] = useState([]);
   const [pendingKycData, setPendingKycData] = useState([]);
@@ -108,14 +114,15 @@ const PendindKyc = ({ commonRows }) => {
         </div>
       </div>
       <ListLayout
-        loadingState={loadingState}
+        loadingState={pendindKycList?.loading}
         searchData={pendingKycData}
         dataCount={dataCount}
         rowData={PendindKycRowData}
         data={data}
         setData={setData}
-        merchantStatus={"Pending"}
-        fetchDataCb={kycForPendingMerchants}
+        merchantStatus={KYC_STATUS_PENDING}
+        fetchDataCb={kycListByStatus}
+        orderByField="-id"
       />
     </div>
   );
