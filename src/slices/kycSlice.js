@@ -547,7 +547,7 @@ export const MyMerchantListData = createAsyncThunk(
     if (data?.page) {
       queryParamPayload["page_size"] = data?.page_size;
     }
-
+    queryParamPayload["operation"] = data?.operation;
     queryParamPayload["order_by"] = "-login_id";
     queryParamPayload["search_query"] = searchQuery;
 
