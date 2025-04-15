@@ -49,6 +49,7 @@ const TransactionHistory = () => {
   );
   const { paymode, payStatus } = dashboard;
   const { user } = auth;
+
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   // const { isLoadingTxnHistory, isExportData } = dashboard;
@@ -102,8 +103,8 @@ const TransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -131,8 +132,8 @@ const TransactionHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
   const todayDate = splitDate;
@@ -715,16 +716,19 @@ const TransactionHistory = () => {
               )}
             </div>
             <div className="form-group col-md-1 col-lg-1">
-              <button
-                className="btn cob-btn-primary btn-sm"
-                onClick={refundModalHandler}
-                disabled={
-                  radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
-                  radioInputVal?.status?.toLocaleLowerCase() !== "settled"
-                }
-              >
-                Refund
-              </button>
+              {/* hide refund button for the selected client code on production */}
+              {user?.clientMerchantDetailsList?.[0].clientCode !== "Utta89" &&
+                <button
+                  className="btn cob-btn-primary btn-sm"
+                  onClick={refundModalHandler}
+                  disabled={
+                    radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
+                    radioInputVal?.status?.toLocaleLowerCase() !== "settled"
+                  }
+                >
+                  Refund
+                </button>
+              }
             </div>
           </div>
         </Form>

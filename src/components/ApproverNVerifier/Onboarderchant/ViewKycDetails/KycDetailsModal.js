@@ -66,7 +66,7 @@ const KycDetailsModal = (props) => {
   useEffect(() => {
 
     if (merchantLoginLogin) {
-      dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId }));
+      dispatch(kycUserList({ login_id: merchantKycId?.loginMasterId, masking: 1 }));
     }
   }, [merchantLoginLogin, dispatch]);
 

@@ -86,16 +86,20 @@ const API_LIVE = {
   BizzAPPForm: `${url}/biz-app-form/`,
   Business_Category_Type: `${url}/auth-service/auth/business-category`,
 
-  ///////////Payment mode for mid
+  ///////////MID service
   GET_PAYMENT_MODE_LIST: `${url}/mid/payment-mode/`,
   GET_ALL_BANK_NAME: `${url}/mid/bank/`,
-  MID_CREATE_API: `${url}/mid/create/`,
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
+  MID_PAYLOAD_BY_MERCHANT_ID: `${url}/mid/get-mid/`,
+
+  // MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
+  MID_CREATE_API: `${url}/mid/create/`,
   MID_FETCH_DATA_BY_CLIENT_CODE: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  // https://stage-merchantonboarding.sabpaisa.in
+
 
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
   ////////////MFA
-
   MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
 
   ////////////Bd Development
@@ -236,13 +240,14 @@ const API_LIVE = {
   GET_MERCHANT_DATA: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_STATUS: `${kyc_url}/kyc/get-merchant-data/`,
+  // KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   MY_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/created-by/`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
+  // KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  // KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
+  // KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  // KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
+  // KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   // MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
@@ -523,7 +528,7 @@ export const E_NACH_URL = {
   REGISTRATION_REPORT: `${subscriptionUrl}api/mandate/mandate-registration-data/`,
   DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
   SCHEDULE_TRRANSACTION: `${subscriptionUrl}api/mandate/upcoming-mandates/`,
-  USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`
+  USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`,
 };
 
 export const wsConnectUrl = {

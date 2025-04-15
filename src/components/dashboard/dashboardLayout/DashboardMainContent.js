@@ -119,7 +119,10 @@ import RecentTransaction from "../AllPages/payment-link-solution/recent-transact
 import QFormReports from "../../qform-reports";
 import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
 
-import { assignmentTypeApi, setAssignmentType } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import {
+  assignmentTypeApi,
+  setAssignmentType,
+} from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
 import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
@@ -135,9 +138,8 @@ function DashboardMainContent() {
   const loginId = user?.loginId;
   const roleId = user?.roleId;
   const roles = roleBasedAccess();
-  const assignmentType = useSelector((state) => state.
-    assignAccountManagerReducer.assignmentType
-
+  const assignmentType = useSelector(
+    (state) => state.assignAccountManagerReducer.assignmentType
   );
 
   // console.log("roles",roles);
@@ -263,7 +265,6 @@ function DashboardMainContent() {
     }
   }, []);
 
-
   useEffect(() => {
     if (!assignmentType && roles?.businessDevelopment) {
       if (roleId) {
@@ -284,12 +285,6 @@ function DashboardMainContent() {
     }
   }, [dispatch]);
 
-
-
-
-
-
-
   useEffect(() => {
     // fetch subscribe product data
     try {
@@ -300,7 +295,7 @@ function DashboardMainContent() {
           })
         );
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [location]);
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -309,17 +304,6 @@ function DashboardMainContent() {
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
-
-
-
-
-
-
-
-
-
-
-
 
   // console.log("roles", roles)
   return (
@@ -348,7 +332,7 @@ function DashboardMainContent() {
                   approver: true,
                   viewer: true,
                   accountManager: true,
-                  businessDevelopment: true
+                  businessDevelopment: true,
                 }}
               >
                 <OnboardMerchant />
@@ -363,7 +347,7 @@ function DashboardMainContent() {
                   viewer: true,
                   verifier: true,
                   accountManager: true,
-                  businessDevelopment: true
+                  businessDevelopment: true,
                 }}
               >
                 <InternalDashboard />
@@ -760,7 +744,7 @@ function DashboardMainContent() {
                 <CreateMandate />
               </AuthorizedRoute>
 
-              <AuthorizedRoute //Create Mandate handle by frontend(Old code)
+              {/* <AuthorizedRoute //Create Mandate handle by frontend(Old code)
                 exact
                 path={`${path}/subscription/create-mandate-api`}
                 Component={CreateMandateApi}
@@ -776,7 +760,7 @@ function DashboardMainContent() {
                 roleList={{ merchant: true }}
               >
                 <CreateMandateApiResponse />
-              </AuthorizedRoute>
+              </AuthorizedRoute> */}
 
               <AuthorizedRoute
                 exact
@@ -810,9 +794,7 @@ function DashboardMainContent() {
                 path={`${path}/schedule-transaction`}
                 Component={ScheduleTransaction}
                 roleList={{ merchant: true }}
-              >
-
-              </AuthorizedRoute>
+              ></AuthorizedRoute>
 
               <AuthorizedRoute
                 exact
@@ -831,11 +813,6 @@ function DashboardMainContent() {
               >
                 <CreateBulkEmandate />
               </AuthorizedRoute>
-
-
-
-
-
 
               {/* -----------------------------------------------------------------------------------------------------|| */}
 
@@ -885,17 +862,15 @@ function DashboardMainContent() {
                 }}
               />
 
-              {
-                roles?.approver && (
-                  <Route
-                    exact
-                    path={`${path}/ratemapping/:loginid`}
-                    Component={ManualRateMapping}
-                  >
-                    <ManualRateMapping />
-                  </Route>
-                )
-              }
+              {roles?.approver && (
+                <Route
+                  exact
+                  path={`${path}/ratemapping/:loginid`}
+                  Component={ManualRateMapping}
+                >
+                  <ManualRateMapping />
+                </Route>
+              )}
 
               <AuthorizedRoute
                 exact
@@ -937,7 +912,11 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/my-merchant`}
                 Component={MyMerchantList}
-                roleList={{ viewer: true, accountManager: true, businessDevelopment: true }}
+                roleList={{
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                }}
               >
                 <MyMerchantList />
               </AuthorizedRoute>
@@ -1028,7 +1007,6 @@ function DashboardMainContent() {
                 <TotalPayers />
               </AuthorizedRoute>
 
-
               <AuthorizedRoute
                 exaxt
                 path={`${path}/recent-transaction`}
@@ -1044,12 +1022,8 @@ function DashboardMainContent() {
                 Component={Mfa}
                 roleList={{
                   approver: true,
-
                 }}
               />
-
-
-
 
               {/* </AuthorizedRoute> */}
 
@@ -1057,7 +1031,12 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/assigned-merchant`}
                 Component={AssignedMerchant}
-                roleList={{ approver: true, accountManager: true, zonalManager: true, businessDevelopment: true }}
+                roleList={{
+                  approver: true,
+                  accountManager: true,
+                  zonalManager: true,
+                  businessDevelopment: true,
+                }}
               />
 
               {/* <AuthorizedRoute
@@ -1070,8 +1049,6 @@ function DashboardMainContent() {
               >
               </AuthorizedRoute> */}
 
-
-
               <AuthorizedRoute
                 exact
                 path={`${path}/update-rolling-reserve`}
@@ -1079,25 +1056,21 @@ function DashboardMainContent() {
                 roleList={{ approver: true, verifier: true }}
               />
 
-
               <AuthorizedRoute
                 exact
                 path={`${path}/Disbursement`}
                 Component={Disbursement}
                 roleList={{ approver: true }}
-              >
-
-              </AuthorizedRoute>
-
+              ></AuthorizedRoute>
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />
               </Route>
-            </Switch >
-          </main >
-        </div >
-      </div >
-    </React.Fragment >
+            </Switch>
+          </main>
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
 

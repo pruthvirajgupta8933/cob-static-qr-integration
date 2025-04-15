@@ -78,7 +78,7 @@ const UpdateRollingReserve = () => {
 
         const clientId = selectedOption ? selectedOption.value : null;
         setSelectedClientId(clientId);
-        dispatch(kycUserList({ login_id: clientId }));
+        dispatch(kycUserList({ login_id: clientId, masking: 1 }));
 
 
 
@@ -109,7 +109,7 @@ const UpdateRollingReserve = () => {
         dispatch(updateRollingReserveApi(postData)).then((res) => {
             if (res.meta.requestStatus === "fulfilled") {
                 toastConfig.successToast(res.payload.message);
-                dispatch(kycUserList({ login_id: values?.react_select?.value }));
+                dispatch(kycUserList({ login_id: values?.react_select?.value, masking: 1 }));
                 setSubmitting(false);
             } else {
                 toastConfig.errorToast("Failed to update Rolling Reserve");

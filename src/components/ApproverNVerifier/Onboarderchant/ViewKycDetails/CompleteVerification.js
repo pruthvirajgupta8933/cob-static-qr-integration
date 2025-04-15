@@ -258,7 +258,7 @@ const CompleteVerification = (props) => {
 
             if (resp?.payload?.status_code === 200) {
               toast.success(resp.payload.message);
-              dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId }));
+              dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId, masking: 1 }));
               dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
               pendingVerfyTable();
               closeVerificationModal(false);
@@ -370,7 +370,7 @@ const CompleteVerification = (props) => {
         if (resp?.payload?.status_code === 200) {
           toast.success(resp.payload.message);
           dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
-          dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId }));
+          dispatch(kycUserList({ login_id: selectedUserData?.loginMasterId, masking: 1 }));
           setButtonClick(false);
           setCommetText("");
           setButtonLoader(false)
