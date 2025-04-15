@@ -359,7 +359,7 @@ const AssignedMerchant = () => {
                   </button>
                 </div>
                 <div className="form-group col-lg-1 col-md-3 mt-4">
-                  <button
+                  {/* <button
                     className="btn btn-sm cob-btn-primary"
                     // disabled={disable}
                     type="button"
@@ -374,7 +374,7 @@ const AssignedMerchant = () => {
                     />
                     {isKycMasked ? "Unmask" : "Mask"}
                     {/* {loading ? "Downloading..." : "Export"} */}
-                  </button>
+                  {/* </button> */}
                 </div>
               </>
             )}

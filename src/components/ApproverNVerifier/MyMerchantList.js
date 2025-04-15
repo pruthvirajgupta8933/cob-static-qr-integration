@@ -429,7 +429,7 @@ const MyMerchantList = () => {
             Edit Sub-Merchant
           </button>
         </div>
-        <div className="form-group col-lg-1 col-md-3 mt-2">
+        {/* <div className="form-group col-lg-1 col-md-3 mt-2">
           {!loadingState && (
             <button
               className="btn btn-sm mt-4 cob-btn-primary"
@@ -446,7 +446,7 @@ const MyMerchantList = () => {
               {isKycMasked ? "Unmask" : "Mask"}
             </button>
           )}
-        </div>
+        </div> */}
       </div>
 
       <div>
