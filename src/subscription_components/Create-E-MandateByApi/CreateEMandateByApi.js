@@ -47,7 +47,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         purpose: '',
         redirect_url: '',
         mandate_category: '',
-        untilCancelled: false,
         emi_amount: "",
         amount_type: "",
 
@@ -76,7 +75,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             .matches(/^\d{10}$/, 'Must be a valid 10-digit mobile number')
             .required('Required'),
         customer_email_id: Yup.string().email('Invalid email').required('Required'),
-        untilCancelled: Yup.boolean(),
+
 
         start_date: Yup.date().required('Required'),
         end_date: Yup.date().required('Required'),
@@ -127,7 +126,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
     const AmountType = [
         { key: '', value: 'Select' },
-        { key: "fixed", value: "Fixed" },
+        { key: "Fixed", value: "Fixed" },
         { key: "Variable", value: "Variable" },
 
     ]
@@ -228,6 +227,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 customer_mobile: values.customer_mobile,
                 customer_email_id: values.customer_email_id,
                 start_date: moment(values?.start_date).startOf("day").format("YYYY-MM-DD"),
+                end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
                 max_amount: values.max_amount,
                 frequency: values.frequency,
                 purpose: values.purpose,
@@ -235,15 +235,15 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 mandate_category: mandateCategory,
                 redirect_url: getRedirectUrl(redirectUrl),
                 amount_type: values.amount_type,
-                until_cancel: values.untilCancelled,
+
                 emi_amount: values.emi_amount,
                 customer_type: selectedOption === "customer" ? "customer" : "merchant"
             };
 
-            // Conditionally add `end_date` if untilCancelled is false
-            if (!values.untilCancelled) {
-                postDataS.end_date = moment(values?.end_date).startOf("day").format("YYYY-MM-DD");
-            }
+            // // Conditionally add `end_date` if untilCancelled is false
+            // if (!values.untilCancelled) {
+            //     postDataS.end_date = moment(values?.end_date).startOf("day").format("YYYY-MM-DD");
+            // }
 
             const response = await dispatch(createEmandateByApi(postDataS));
 
@@ -427,12 +427,12 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 className="form-control rounded-datepicker p-2 zindex_DateCalender"
                                                 required={true}
                                                 errorMsg={errors["end_date"]}
-                                                disabled={values.untilCancelled}
+                                                // disabled={values.untilCancelled}
                                                 popperPlacement="top-end"
                                                 minDate={moment().add(4, 'days').toDate()} // disables today and past
                                             // calendarStartDate={moment().add(3, 'days').toDate()} // calendar opens showing 3 days ahead
                                             />
-                                            <div className="form-check mt-2">
+                                            {/* <div className="form-check mt-2">
                                                 <Field
                                                     type="checkbox"
                                                     name="untilCancelled *"
@@ -445,7 +445,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 <label htmlFor="untilCancelled" className="form-check-label ml-1">
                                                     Until Cancelled
                                                 </label>
-                                            </div>
+                                            </div> */}
                                         </div>
 
 
