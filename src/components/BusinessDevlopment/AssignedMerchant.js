@@ -348,7 +348,7 @@ const AssignedMerchant = () => {
             </div>
             {data.length > 0 && (
               <>
-                <div className="form-group col-lg-1 col-md-12 mt-4">
+                <div className="form-group col-lg-1 col-md-3 mt-4">
                   <button
                     className="btn cob-btn-primary btn-sm"
                     type="button"
@@ -358,7 +358,7 @@ const AssignedMerchant = () => {
                     Export
                   </button>
                 </div>
-                <div className="form-group col-lg-1 col-md-12 mt-4">
+                <div className="form-group col-lg-1 col-md-3 mt-4">
                   <button
                     className="btn btn-sm cob-btn-primary"
                     // disabled={disable}
