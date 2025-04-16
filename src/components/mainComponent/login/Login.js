@@ -54,7 +54,7 @@ const Login = () => {
       user?.loginStatus === "Activate"
     ) {
       history.replace("/dashboard");
-      window.localStorage.setItem("openTabs", 1);
+      // window.localStorage.setItem("openTabs", 1);
     } else {
       dispatch(logout());
     }
@@ -122,7 +122,7 @@ const Login = () => {
               if (loginStatus === "Activate" && loginMessage === "success") {
                 setLoading(false);
                 history.replace("/dashboard");
-                window.localStorage.setItem("openTabs", 1);
+                // window.localStorage.setItem("openTabs", 1);
               } else {
                 setLoading(false);
                 toastConfig.errorToast(loginMessage || "Rejected");
@@ -184,7 +184,7 @@ const Login = () => {
                     loginMessage === "success"
                   ) {
                     history.replace("/dashboard");
-                    window.localStorage.setItem("openTabs", 1);
+                    // window.localStorage.setItem("openTabs", 1);
                   } else {
                     toastConfig.errorToast(loginMessage || "Rejected");
                   }
