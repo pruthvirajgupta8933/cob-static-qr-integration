@@ -128,11 +128,12 @@ import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDe
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
+import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
 
 function DashboardMainContent() {
   let history = useHistory();
   let { path } = useRouteMatch();
-
+  useSingleTabGuard();
   const { auth } = useSelector((state) => state);
   const { user } = auth;
   const loginId = user?.loginId;

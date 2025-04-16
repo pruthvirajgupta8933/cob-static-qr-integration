@@ -23,28 +23,6 @@ const App = () => {
     if (expireTime > 0 && expireTime > Date.now()) {
       setLogin(true);
     }
-    const setOpenTab = () => {
-      let openTabs = window.localStorage.getItem("openTabs");
-      if (openTabs && parseInt(openTabs) > 0) {
-        dispatch(logout());
-      } else {
-        window.localStorage.setItem("openTabs", 1);
-      }
-    };
-    const resetOpenTab = () => {
-      let openTabs = window.localStorage.getItem("openTabs");
-      if (openTabs && parseInt(openTabs) > 0) {
-        let tabs = parseInt(openTabs);
-        tabs--;
-        window.localStorage.setItem("openTabs", tabs);
-      }
-    };
-    window.addEventListener("load", setOpenTab);
-    window.addEventListener("unload", resetOpenTab);
-    return () => {
-      window.removeEventListener("load", setOpenTab);
-      window.removeEventListener("unload", resetOpenTab);
-    };
   }, []);
 
   // logout session expireTime if user not idle
