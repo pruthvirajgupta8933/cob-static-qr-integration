@@ -103,7 +103,7 @@ function SpPg() {
       setSelectedPlan(unPaidProduct);
     } else {
       history.replace("/dashboard");
-      window.localStorage.setItem("openTabs", 1);
+      // window.localStorage.setItem("openTabs", 1);
       toastConfig.errorToast("Something went wrong");
       // console.log("redirect to dashboard 1")
     }
@@ -216,7 +216,7 @@ function SpPg() {
       planFilterData?.[0]?.actual_price === ""
     ) {
       history.replace("/dashboard");
-      window.localStorage.setItem("openTabs", 1);
+      // window.localStorage.setItem("openTabs", 1);
       // console.log('redirect to dashboard 2')
     }
 

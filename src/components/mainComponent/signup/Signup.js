@@ -197,7 +197,7 @@ function Signup() {
       userLocalData && userLocalData.loginId !== null ? true : false;
     if (isLoggedInLc) {
       history.replace("/dashboard");
-      window.localStorage.setItem("openTabs", 1);
+      // window.localStorage.setItem("openTabs", 1);
     } else {
       dispatch(logout());
     }
