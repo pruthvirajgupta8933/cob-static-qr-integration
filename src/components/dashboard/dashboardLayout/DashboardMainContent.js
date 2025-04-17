@@ -296,7 +296,7 @@ function DashboardMainContent() {
           })
         );
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [location]);
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -349,6 +349,7 @@ function DashboardMainContent() {
                   verifier: true,
                   accountManager: true,
                   businessDevelopment: true,
+                  zonalManager: true
                 }}
               >
                 <InternalDashboard />
@@ -536,6 +537,8 @@ function DashboardMainContent() {
                   merchant: true,
                   referral: true,
                   accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true,
                   viewer: true,
                 }}
               >
@@ -587,6 +590,8 @@ function DashboardMainContent() {
                   verifier: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
                 }}
               >
                 <AdditionalKYC />
@@ -600,6 +605,8 @@ function DashboardMainContent() {
                   verifier: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
                 }}
               ></AuthorizedRoute>
 
@@ -682,6 +689,8 @@ function DashboardMainContent() {
                   verifier: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
                 }}
               >
                 <MerchantBalance />
@@ -860,6 +869,7 @@ function DashboardMainContent() {
                   viewer: true,
                   accountManager: true,
                   businessDevelopment: true,
+                  zonalManager: true
                 }}
               />
 
@@ -904,6 +914,8 @@ function DashboardMainContent() {
                   verifier: true,
                   viewer: true,
                   accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
                 }}
               >
                 <BizzAppData />
@@ -917,6 +929,7 @@ function DashboardMainContent() {
                   viewer: true,
                   accountManager: true,
                   businessDevelopment: true,
+                  zonalManager: true
                 }}
               >
                 <MyMerchantList />
@@ -935,7 +948,12 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/multi-user-onboard`}
                 Component={MultiUserOnboard}
-                roleList={{ accountManager: true, viewer: true }}
+                roleList={{
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
               >
                 <MultiUserOnboard />
               </AuthorizedRoute>
