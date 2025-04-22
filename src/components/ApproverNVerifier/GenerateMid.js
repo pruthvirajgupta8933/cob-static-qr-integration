@@ -52,13 +52,6 @@ function AssignZone() {
     })
   }, [])
 
-  const initialValuess = {
-    name: "",
-    email: ""
-  };
-
-
-
 
   let initialValues = {
     react_select: "",

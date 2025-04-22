@@ -16,6 +16,7 @@ export const midCreateApi = (obj) => {
     return axiosInstance.post(API_URL.MID_CREATE_API, obj)
 }
 
+
 export const fetchMidPayload = (obj) => {
     return axiosInstanceJWT.post(API_URL.MID_PAYLOAD_BY_MERCHANT_ID, obj)
 }

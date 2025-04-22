@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { MyMerchantListData } from "../../slices/kycSlice";
+import { MyMerchantListData, setKycMasked } from "../../slices/kycSlice";
 import Table from "../../_components/table_components/table/Table";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
@@ -11,7 +11,7 @@ import DateFormatter from "../../utilities/DateConvert";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { v4 as uuidv4 } from "uuid";
-import AgreementUploadTab from '../ApproverNVerifier/Onboarderchant/AgreementUploadTab'
+import AgreementUploadTab from "../ApproverNVerifier/Onboarderchant/AgreementUploadTab";
 import {
   KYC_STATUS_APPROVED,
   KYC_STATUS_NOT_FILLED,
@@ -44,6 +44,7 @@ const MyMerchantList = () => {
   let history = useHistory();
   const dispatch = useDispatch();
 
+  const { isKycMasked } = useSelector((state) => state.kyc);
   const myMerchantListData = useSelector(
     (state) => state.kyc.myMerchnatUserList
   );
@@ -105,10 +106,19 @@ const MyMerchantList = () => {
           created_by: loginId,
           searchquery: searchText,
           kyc_status: kycSearchStatus,
+          operation: isKycMasked ? "u" : "k",
         })
       );
     },
-    [currentPage, pageSize, searchText, dispatch, onboardType, kycSearchStatus]
+    [
+      currentPage,
+      pageSize,
+      searchText,
+      dispatch,
+      onboardType,
+      kycSearchStatus,
+      isKycMasked,
+    ]
   );
 
   useEffect(() => {
@@ -346,7 +356,6 @@ const MyMerchantList = () => {
             setModalState={setOpenDocumentModal}
             tabName={"My Merchant List"}
           />
-
         )}
 
         {openCommentModal && (
@@ -407,7 +416,7 @@ const MyMerchantList = () => {
             changeCurrentPage={changeCurrentPage}
           />
         </div>
-        <div className="form-group col-lg-3 col-md-12 mt-2">
+        <div className="form-group col-lg-2 col-md-3 mt-2">
           <button
             type="button"
             className="approve text-white cob-btn-primary mx-1 mt-4 btn-sm"
@@ -420,6 +429,24 @@ const MyMerchantList = () => {
             Edit Sub-Merchant
           </button>
         </div>
+        {/* <div className="form-group col-lg-1 col-md-3 mt-2">
+          {!loadingState && (
+            <button
+              className="btn btn-sm mt-4 cob-btn-primary"
+              type="button"
+              onClick={() => {
+                dispatch(setKycMasked(!isKycMasked));
+              }}
+            >
+              <i
+                className={`fa ${
+                  isKycMasked ? "fa-eye-slash" : "fa-eye"
+                } text-white pr-1`}
+              />
+              {isKycMasked ? "Unmask" : "Mask"}
+            </button>
+          )}
+        </div> */}
       </div>
 
       <div>

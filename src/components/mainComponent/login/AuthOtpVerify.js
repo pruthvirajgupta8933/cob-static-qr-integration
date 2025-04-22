@@ -37,7 +37,7 @@ function AuthOtpVerify({ updateOtpModal, inputValue }) {
         const { loginStatus, loginMessage } = res.payload.user;
         if (loginStatus === "Activate" && loginMessage === "success") {
           history.replace("/dashboard");
-          window.localStorage.setItem("openTabs", 1);
+          // window.localStorage.setItem("openTabs", 1);
         } else {
           toastConfig.errorToast(loginMessage || "Rejected");
         }

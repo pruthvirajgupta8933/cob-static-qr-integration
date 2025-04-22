@@ -142,7 +142,7 @@ const ListLayout = ({
           )}
         </div>
         <div className="col-lg-1 col-md-6 mt-4">
-          {!loadingState && (
+          {/* {!loadingState && (
             <button
               className="btn btn-sm mt-2 cob-btn-primary"
               // disabled={disable}
@@ -150,16 +150,16 @@ const ListLayout = ({
               onClick={() => {
                 dispatch(setKycMasked(!isKycMasked));
               }}
-            >
-              <i
+            > */}
+          {/* <i
                 className={`fa ${
                   isKycMasked ? "fa-eye-slash" : "fa-eye"
                 } text-white pr-1`}
-              />
-              {isKycMasked ? "Unmask" : "Mask"}
-              {/* {loading ? "Downloading..." : "Export"} */}
-            </button>
-          )}
+              /> */}
+          {/* {isKycMasked ? "Unmask" : "Mask"} */}
+          {/* {loading ? "Downloading..." : "Export"} */}
+          {/* </button>
+          )} */}
         </div>
       </div>
       <div className="scroll overflow-auto">
