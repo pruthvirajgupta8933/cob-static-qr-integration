@@ -98,13 +98,13 @@ function SpPg() {
     //         d?.plan_code === "005"
     //     );
     //   }, [SubscribedPlanData]);
-
+    // console.log(unPaidProduct)
     if (unPaidProduct?.length > 0) {
       setSelectedPlan(unPaidProduct);
     } else {
-      history.replace("/dashboard");
+      // history.replace("/dashboard");
       // window.localStorage.setItem("openTabs", 1);
-      toastConfig.errorToast("Something went wrong");
+      // toastConfig.errorToast("Something went wrong");
       // console.log("redirect to dashboard 1")
     }
 
@@ -190,9 +190,7 @@ function SpPg() {
         // }
         dispatch(updateSubscribeDetails(updatePostData));
         toast.success("Your Transaction is completed");
-        setTimeout(() => {
-          history.replace("/dashboard/profile");
-        }, 2300);
+
       } else {
         toast.error("Your Transaction is not completed");
       }
@@ -266,7 +264,7 @@ function SpPg() {
             <section className="features8 cid-sg6XYTl25a" id="features08-3-">
               <div className="container">
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-lg-6 p-0">
                     <img
                       src={
                         reponseFromServerFlag
@@ -315,22 +313,26 @@ function SpPg() {
                           <h5 className="card-title">
                             Make payment to activate the selected plan.
                           </h5>
-                          <p className="card-title">
-                            Amount : {planFilterData?.[0]?.actual_price} INR
-                          </p>
-                          <p className="card-title">
-                            Plan Name : {planFilterData?.[0]?.plan_name}
-                          </p>
-                          {planFilterData?.length > 0 && (
-                            <button
-                              onClick={() => {
-                                getClientTxnId(planFilterData, auth?.user);
-                              }}
-                              className="btn m-1 cob-btn-primary btn-sm"
-                            >
-                              Pay Now
-                            </button>
-                          )}
+                          {planFilterData?.[0]?.actual_price && <div>
+                            <p className="card-title">
+                              Amount : {planFilterData?.[0]?.actual_price} INR
+                            </p>
+                            <p className="card-title">
+                              Plan Name : {planFilterData?.[0]?.plan_name}
+                            </p>
+                            {planFilterData?.length > 0 && (
+                              <button
+                                onClick={() => {
+                                  getClientTxnId(planFilterData, auth?.user);
+                                }}
+                                className="btn m-1 cob-btn-primary btn-sm"
+                              >
+                                Pay Now
+                              </button>
+                            )}
+                          </div>}
+
+
                           <Link
                             className="btn m-1  cob-btn-primary btn-sm"
                             to="/dashboard"
