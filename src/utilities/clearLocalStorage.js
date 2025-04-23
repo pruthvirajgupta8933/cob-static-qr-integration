@@ -15,4 +15,5 @@ export const clearLocalStore = () => {
   localStorage.removeItem("pay-mode");
   localStorage.removeItem("pay-status");
   localStorage.removeItem("activeTabs");
+  localStorage.removeItem("redirect");
 };
