@@ -196,6 +196,8 @@ function SpPg() {
       } else {
         toast.error("Your Transaction is not completed");
       }
+
+      localStorage.removeItem("redirect");
     }
 
     return () => {
@@ -216,6 +218,7 @@ function SpPg() {
       planFilterData?.[0]?.actual_price === ""
     ) {
       history.replace("/dashboard");
+      toastConfig.warningToast("CD100: Something went wrong, Please try again! ")
       // window.localStorage.setItem("openTabs", 1);
       // console.log('redirect to dashboard 2')
     }
@@ -235,6 +238,7 @@ function SpPg() {
       if (data?.data?.status === 200) {
         setNewClientTxnId(data?.data?.data);
         setIsOpenPg(true);
+        localStorage.setItem("redirect", "pg")
       } else {
         setIsOpenPg(false);
         // console.log("erro")
@@ -244,6 +248,8 @@ function SpPg() {
       // console.log("error")
     }
   };
+
+
 
   // console.log("selectedPlan", selectedPlan)
   // console.log("planFilterData", planFilterData)

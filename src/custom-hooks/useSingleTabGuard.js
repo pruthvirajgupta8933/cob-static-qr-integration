@@ -7,7 +7,8 @@ export default function useSingleTabGuard() {
 
   useEffect(() => {
     const thisTabId = `${Date.now()}-${Math.random()}`;
-
+    const isRedirect = localStorage.getItem("redirect")
+    // console.log("isRedirect", isRedirect, typeof (isRedirect))
     // Add this tab to the active tab list
     const registerTab = () => {
       const currentTabs = JSON.parse(
@@ -30,13 +31,18 @@ export default function useSingleTabGuard() {
         localStorage.getItem("activeTabs") || "[]"
       );
       // If there's more than one tab open, log out
+      // console.log("currentTabs", currentTabs)
       if (currentTabs.length > 1) {
+        // console.log("logout call")
         dispatch(logout());
       }
     };
 
     // Register this tab
-    registerTab();
+    if (isRedirect !== "pg") {
+      registerTab();
+    }
+
 
     // Listen to tab changes
     window.addEventListener("storage", handleStorage);
