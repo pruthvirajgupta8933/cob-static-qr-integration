@@ -23,10 +23,15 @@ import {
 } from "../../../../slices/date-filter-slice/DateFilterSlice";
 
 const PaylinkDashboard = () => {
+  const { graphSelectedCurrentOption } = useSelector(
+    (state) => state.dateFilterSliceReducer
+  );
   const [showFilter, setShowFilter] = useState(false);
   const [showCreatePaymentModal, setShowCreatePaymentModal] = useState(false);
   const [showAddPayerModal, setShowAddPayerModal] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("hourly");
+  const [selectedOption, setSelectedOption] = useState(
+    graphSelectedCurrentOption || "hourly"
+  );
   const { fromDate, toDate } = useSelector(
     (state) => state.dateFilterSliceReducer
   );
