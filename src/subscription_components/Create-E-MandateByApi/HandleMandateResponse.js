@@ -40,9 +40,21 @@ const HandleMandateResponse = ({ merchantType }) => {
 
     return (
         <div className="container-fluid mt-4">
-            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center  mb-4">
-                <h5 >Create Mandate API Response</h5>
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+                <h5>Create Mandate API Response</h5>
+                <a
+                    href="https://sabpaisa.in/"
+                    className="text-decoration-none"
+                    title="Back to Login"
+                >
+                    <button className="btn cob-btn-primary approve text-white btn-sm">
+                        <i className="fa fa-arrow-left me-2 text-white"></i>
+                        Back to Login
+                    </button>
+                </a>
             </div>
+
+
             {merchantType !== "Public" && (
                 <Link to="/dashboard/create-e-mandate" className="btn cob-btn-primary approve text-white mt-3">
                     Create Mandate
