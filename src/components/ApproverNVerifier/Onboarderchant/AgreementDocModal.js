@@ -16,9 +16,7 @@ import Yup from "../../../_components/formik/Yup";
 import DocViewerComponent from "../../../utilities/DocViewerComponent";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 
-
 const AgreementDocModal = (props) => {
-
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
@@ -65,7 +63,7 @@ const AgreementDocModal = (props) => {
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
       .max(200, "Please do not enter more than 200 characters")
-      .required("Add the comment and attached the file, Required")
+      .required("Please add the comments and attach the required file")
       .nullable(),
   });
 
@@ -75,7 +73,10 @@ const AgreementDocModal = (props) => {
     let formData = new FormData();
     formData.append("type", "22");
     formData.append("approver_id", loginId);
-    formData.append("login_id", props?.documentData.documentData?.loginMasterId);
+    formData.append(
+      "login_id",
+      props?.documentData.documentData?.loginMasterId
+    );
     formData.append("modified_by", loginId);
     formData.append("files", attachCommentFile);
     formData.append("comment", values.comments);
@@ -100,7 +101,6 @@ const AgreementDocModal = (props) => {
     }
   };
 
-
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
     return date;
@@ -113,8 +113,6 @@ const AgreementDocModal = (props) => {
       setUploadStatus(true);
     }
   };
-
-
 
   const removeDocument = (id) => {
     const rejectDetails = {
@@ -185,7 +183,6 @@ const AgreementDocModal = (props) => {
             onSubmit={(values, actions) => {
               handleSubmit(values, actions.setSubmitting, actions.resetForm);
             }}
-
             enableReinitialize={true}
           >
             {({ isSubmitting }) => (
@@ -239,8 +236,6 @@ const AgreementDocModal = (props) => {
                   <ErrorMessage name="comments">
                     {(msg) => <p className="text-danger m-0">{msg}</p>}
                   </ErrorMessage>
-
-
                 </div>
               </Form>
             )}
@@ -269,54 +264,55 @@ const AgreementDocModal = (props) => {
                   <tbody>
                     {(commentsList?.length === undefined ||
                       commentsList?.length === 0) && (
-                        <tr>
-                          <td colSpan="4">
-                            <h6 className="font-weight-bold text-center">
-                              No Data found
-                            </h6>
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td colSpan="4">
+                          <h6 className="font-weight-bold text-center">
+                            No Data found
+                          </h6>
+                        </td>
+                      </tr>
+                    )}
 
                     {(commentsList?.length !== undefined ||
                       commentsList?.length > 0) &&
-                      Array.isArray(commentsList)
+                    Array.isArray(commentsList)
                       ? commentsList?.map((remark, i) => (
-                        <tr key={uuidv4()}>
-                          <td style={{ overflowWrap: "anywhere" }}>
-                            {remark?.comment}
-                          </td>
-                          <td>{dateFormatBasic(remark?.created_date)}</td>
-                          <td>
-                            <p
-                              className="text-decoration-underline text-primary cursor_pointer"
-                              onClick={() => docModalToggle(remark)}
-                            >
-                              View Document
-                            </p>
-                          </td>
-                          <td>
-                            <button
-                              aria-label="button"
-                              type="button"
-                              onClick={() => {
-                                if (
-                                  window.confirm(
-                                    "Are you sure you want to delete it?"
-                                  )
-                                ) {
-                                  removeDocument(remark?.document_id);
-                                }
-                              }}
-                            >
-                              <i
-                                className="fa fa-trash-o"
-                                ariaHidden="true"
-                              ></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
+                          <tr key={uuidv4()}>
+                            <td style={{ overflowWrap: "anywhere" }}>
+                              {remark?.comment}
+                            </td>
+                            <td>{dateFormatBasic(remark?.created_date)}</td>
+                            <td>
+                              <p
+                                className="text-decoration-underline text-primary cursor_pointer"
+                                onClick={() => docModalToggle(remark)}
+                              >
+                                View Document
+                              </p>
+                            </td>
+                            <td>
+                              <button
+                                aria-label="button"
+                                type="button"
+                                tooltip="Remove"
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure you want to delete it?"
+                                    )
+                                  ) {
+                                    removeDocument(remark?.document_id);
+                                  }
+                                }}
+                              >
+                                <i
+                                  className="fa fa-trash-o"
+                                  ariaHidden="true"
+                                ></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
                       : []}
                   </tbody>
                 </table>
@@ -326,7 +322,7 @@ const AgreementDocModal = (props) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AgreementDocModal
+export default AgreementDocModal;
