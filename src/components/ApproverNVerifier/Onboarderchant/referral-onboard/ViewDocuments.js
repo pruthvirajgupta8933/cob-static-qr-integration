@@ -37,7 +37,7 @@ const ViewDocuments = () => {
   };
   const removeDoc = (doc_id, doc_type) => {
     const isConfirm = window.confirm(
-      "Are you sure you want to remove this document"
+      "Are you sure you want to remove this document?"
     );
     if (isConfirm) {
       const rejectDetails = {
@@ -100,17 +100,15 @@ const ViewDocuments = () => {
               </td>
               <td>
                 {doc.status !== "Approved" && doc.status !== "Verified" && (
-                  <td>
-                    <button
-                      aria-label="remove-doc"
-                      type="button"
-                      onClick={() => {
-                        removeDoc(doc?.documentId, doc?.type);
-                      }}
-                    >
-                      <i className="fa fa-trash"></i>
-                    </button>
-                  </td>
+                  <button
+                    aria-label="remove-doc"
+                    type="button"
+                    onClick={() => {
+                      removeDoc(doc?.documentId, doc?.type);
+                    }}
+                  >
+                    <i className="fa fa-trash"></i>
+                  </button>
                 )}
               </td>
             </tr>
