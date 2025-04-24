@@ -27,6 +27,7 @@ const CommentModal = (props) => {
   const [editToggle, setEditToggle] = useState({ toggle: false, id: null })
   const [selectViewDoc, setSelectedViewDoc] = useState("#")
   const [updateData, setUpdateData] = useState({})
+  const [errorMessage, setErrorMessage] = useState("")
 
   const dispatch = useDispatch();
 
@@ -134,22 +135,28 @@ const CommentModal = (props) => {
   }
 
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+    setSubmitting(true);
+    setErrorMessage("");
 
-    setSubmitting(true)
     let formData = new FormData();
-    // update comment
+
     if (updateData?.isEdit) {
+      // update comment
       formData.append("files", attachCommentFile);
       formData.append("comment_id", updateData?.id);
       formData.append("comment", values.comments);
 
       try {
-        await dispatch(updateComment(formData))
-        setSubmitting(false)
-
+        await dispatch(updateComment(formData));
+        setUpdateData({});
+        resetUploadFile();
+        setattachCommentFile([]);
+        resetForm();
+        commentUpdate();
       } catch (error) {
-        setSubmitting(false)
-        toast.error(error?.payload?.message || "Someting went wrong!");
+        toast.error(error?.payload?.message || "Something went wrong!");
+      } finally {
+        setSubmitting(false);
       }
 
     } else {
@@ -159,23 +166,29 @@ const CommentModal = (props) => {
       formData.append("client_code", props?.commentData?.clientCode);
       formData.append("comments", values.comments);
       formData.append("merchant_tab", props?.tabName);
+
       try {
-        await dispatch(forSavingComments(formData))
-        setSubmitting(false)
+        const resp = await dispatch(forSavingComments(formData));
+        const responseData = resp?.payload;
+
+        if (responseData?.message?.status === false) {
+          toast.error(responseData?.message?.message || "Something went wrong!");
+          setErrorMessage(responseData?.message?.message);
+        } else {
+          setUpdateData({});
+          resetUploadFile();
+          setattachCommentFile([]);
+          resetForm();
+          commentUpdate();
+        }
       } catch (error) {
-        toast.error(error?.payload?.message || "Someting went wrong!");
-        setSubmitting(false)
+        toast.error(error?.payload?.message || "Something went wrong!");
+      } finally {
+        setSubmitting(false);
       }
-
     }
-
-    setUpdateData({})
-    resetUploadFile();
-    setattachCommentFile([]);
-    resetForm()
-    commentUpdate();
-
   };
+
 
 
 
@@ -216,6 +229,7 @@ const CommentModal = (props) => {
                         placeholder="Enter Comments"
                         id="comments"
                       />
+
                       <div>
                         <label for="file-upload" className="custom-file-upload btn btn-outline-primary m-auto h-full rounded-0 border border-2 border-primary-subtle" style={{ height: "39px" }}>
                           <i className="fa fa-paperclip"></i>
@@ -232,6 +246,9 @@ const CommentModal = (props) => {
                           ></span>
                         )}
                         {updateData?.isEdit ? 'Update' : 'Submit'}</button>
+                    </div>
+                    <div className="w-100">
+                      <p className="text-danger mb-1">{errorMessage}</p>
                     </div>
                     <ErrorMessage name="comments">{msg => <p className="text-danger m-0">{msg}</p>}</ErrorMessage>
                   </div>
