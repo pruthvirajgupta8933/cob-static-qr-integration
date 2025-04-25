@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAllByKycStatus, clearFetchAllByKycStatus } from "../../../slices/kycSlice";
-import toastConfig from "../../../utilities/toastTypes";
-// import ViewMidManagementModal from "../../ApproverNVerifier/ViewMidManagementModal";
 import Table from "../../../_components/table_components/table/Table";
 import SearchFilter from "../../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../../_components/loader";
 import DateFormatter from "../../../utilities/DateConvert";
-import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../../utilities/enums";
 import DateRangeByOneDatePicker from "../../../_components/formik/components/react-datepicker/DateRangeByOneDatePicker";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getMidClientCode } from "../../../services/generate-mid/generate-mid.service";
 import { Form, Formik } from "formik";
+import { subMerchantFetchDetailsApi, deactivateSubMerchantApi, reactivateSubMerchantApi } from "../../../slices/generateMidSlice";
+import FormikController from "../../../_components/formik/FormikController";
+import moment from 'moment';
+import Yup from "../../../_components/formik/Yup";
+
 
 const MidManagement = () => {
 
@@ -22,7 +23,9 @@ const MidManagement = () => {
         return param?.charAt(0).toUpperCase() + param?.slice(1);
     }
     const [data, setData] = useState([]);
+    const { user } = useSelector((state) => state.auth);
     const [assignZone, setAssignzone] = useState([]);
+    const [saveData, setSaveData] = useState('')
     const [dataCount, setDataCount] = useState("");
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,121 +34,243 @@ const MidManagement = () => {
     const [openZoneModal, setOpenModal] = useState(false);
     const [refereshRequired, setRefreshRequired] = useState(false);
     const [serachByDropDown, setSearchByDropDown] = useState(false);
-    const [merchantStatus, setMerchantStatus] = useState(KYC_STATUS_APPROVED);
+
     const [clientCodeList, setCliencodeList] = useState([])
     const [selectedClientId, setSelectedClientId] = useState(null);
     const { kyc } = useSelector((state) => state);
+
+    const { midFetchDetails } = useSelector((state) => state.mid || {});
+    const subMerchantDetails = midFetchDetails?.subMerchantData?.content;
+    const totalCount = midFetchDetails?.subMerchantData?.numberOfElements;
+    const loadingState = midFetchDetails?.loading;
+
+    const initialValues = {
+        react_select: null,
+        status: null,
+        startDate: '',
+        endDate: ''
+    }
+
+    const validationSchema = Yup.object({
+        startDate: Yup.date().required("Required").nullable(),
+        endDate: Yup.date()
+            .min(Yup.ref("startDate"), "End date can't be before Start date")
+            .required("Required"),
+        status: Yup.string().required("Required").nullable(),
+        react_select: Yup.object().required("Required").nullable(),
+    });
+
+
+
+
+
+
+    let clientMerchantDetailsList = [];
+    let clientCode = "";
+
+    clientMerchantDetailsList = user.clientMerchantDetailsList;
+    clientCode = clientMerchantDetailsList[0].clientCode;
+
 
     const { allKycData } = kyc
 
 
     const MidManagementData = [
+        // {
+        //     id: "1",
+        //     name: "S.No",
+        //     selector: (row) => row.sno,
+        //     sortable: true,
+        //     width: "86px",
+        // },
         {
             id: "1",
-            name: "S.No",
-            selector: (row) => row.sno,
-            sortable: true,
-            width: "86px",
-        },
-        {
-            id: "2",
             name: "Client Code",
             selector: (row) => row.clientCode,
             cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
             width: "130px",
         },
+
+
+        {
+            id: "2",
+            name: "Client Name",
+            selector: (row) => row.clientName,
+            cell: (row) => <div className="removeWhiteSpace">{row?.clientName}</div>,
+            width: "130px",
+        },
+
         {
             id: "3",
-            name: "Merchant Name",
-            selector: (row) => row.name,
+            name: "Client PAN No.",
+            selector: (row) => row.clientPanNo,
+            cell: (row) => <div className="removeWhiteSpace">{row?.clientPanNo}</div>,
+            width: "130px",
+        },
+
+
+
+
+        {
+            id: "4",
+            name: "Bank Name",
+            selector: (row) => row.bankName
+            ,
             sortable: true,
             cell: (row) => (
                 <div className="removeWhiteSpace">
-                    {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+                    {row?.bankName}
                 </div>
             ),
             width: "150px",
         },
         {
-            id: "4",
-            name: "Email",
-            selector: (row) => row.emailId,
-            cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+            id: "5",
+            name: "Bank Req ID",
+            selector: (row) => row.bankRequestId,
+            cell: (row) => <div className="removeWhiteSpace">{row?.bankRequestId
+            }</div>,
             width: "220px",
         },
         {
-            id: "5",
-            name: "Contact Number",
-            selector: (row) => row.contactNumber,
+            id: "6",
+            name: "Account Number",
+            selector: (row) => row.
+                clientAccountNumber
+            ,
             cell: (row) => (
-                <div className="removeWhiteSpace">{row?.contactNumber}</div>
+                <div className="removeWhiteSpace">{row?.
+                    clientAccountNumber
+                }</div>
             ),
             width: "150px",
-        },
-        {
-            id: "6",
-            name: "Sourcing Point",
-            selector: (row) => row.sourcing_point,
-            cell: (row) => (
-                <div className="removeWhiteSpace">{row?.sourcing_point}</div>
-            ),
         },
         {
             id: "7",
-            name: "Sourcing Code",
-            selector: (row) => row.sourcing_code,
+            name: "Email",
+            selector: (row) => row.clientEmail,
             cell: (row) => (
-                <div className="removeWhiteSpace">{row?.sourcing_code}</div>
+                <div className="removeWhiteSpace">{row?.clientEmail}</div>
+            ),
+        },
+        {
+            id: "8",
+            name: "Client URL",
+            selector: (row) => row.clientUrl,
+            cell: (row) => (
+                <div className="removeWhiteSpace">{row?.clientUrl}</div>
+            ),
+            width: "150px",
+        },
+
+        {
+            id: "9",
+            name: "Status",
+            selector: (row) => row.onboardStatus,
+            cell: (row) => (
+                <div className="removeWhiteSpace">{row?.onboardStatus}</div>
             ),
             width: "150px",
         },
         {
-            id: "8",
-            name: "Emp. Code",
-            selector: (row) => row.emp_code,
-        },
-        {
-            id: "9",
-            name: "Zone Name",
-            selector: (row) => row.zoneName,
-        },
-        {
             id: "10",
-            name: "KYC Status",
-            selector: (row) => row.status,
+            name: "Dis. Onboard Status",
+            selector: (row) => row.disbursementOnboardingStatus,
+            cell: (row) => (
+                <div className="removeWhiteSpace">{row?.disbursementOnboardingStatus}</div>
+            ),
+            width: "150px",
         },
+
         {
             id: "11",
-            name: "Registered Date",
-            selector: (row) => row.signUpDate,
-            sortable: true,
-            cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
+            name: "Dis. Merchant MID Status",
+            selector: (row) => row.disbursementMerchantMidAdditionStatus,
+            cell: (row) => (
+                <div className="removeWhiteSpace">{row?.disbursementMerchantMidAdditionStatus}</div>
+            ),
             width: "150px",
         },
         {
             id: "12",
-            name: "Onboard Type",
-            selector: (row) => row.isDirect,
-        },
-        {
-            id: "13",
-            name: "Add Sourcing Partner",
+            name: "Disbursement Registration Status",
+            selector: (row) => row.disbursementRegistrationStatus,
             cell: (row) => (
-                <button
-                    type="submit"
-                    onClick={() => {
-                        setModalDisplayData(row);
-                        setOpenModal(true);
-                    }}
-                    className="approve cob-btn-primary btn-sm text-white"
-                    data-toggle="modal"
-                    data-target="#exampleModalCenter"
-                >
-                    Update
-                </button>
+                <div className="removeWhiteSpace">{row?.disbursementRegistrationStatus}</div>
             ),
+            width: "150px",
         },
+
+
+
+
+
+        {
+            id: "10",
+            name: "Action",
+            cell: (row) => (
+                <div className="d-flex gap-2">
+                    <button
+                        type="button"
+                        // onClick={() => {
+                        //     setModalDisplayData(row);
+                        //     setOpenModal(true);
+                        // }}
+                        className="approve cob-btn-primary btn-sm text-white"
+                    >
+                        Update
+                    </button>
+
+                    <button
+                        type="button"
+                        // onClick={() => handleDeactivate(row)}
+                        className="approve cob-btn-primary btn-sm text-white"
+                    >
+                        Deactivate
+                    </button>
+
+                    <button
+                        type="button"
+                        // onClick={() => handleReactivate(row)}
+                        className="approve cob-btn-primary btn-sm text-white"
+                    >
+                        Reactivate
+                    </button>
+                </div>
+            ),
+            width: "250px",
+        }
+
     ];
+
+
+    const handleDeactivate = (row) => {
+        const confirmDeactivate = window.confirm("Are you sure you want to deactivate this?");
+
+        if (confirmDeactivate) {
+            const postData = {
+                action: "D",
+                subMerchantId: row?.subMerchantId,
+                bankName: row?.bankName
+            };
+
+            dispatch(deactivateSubMerchantApi(postData));
+        }
+    };
+
+
+    const handleReactivate = (row) => {
+        const confirmReactivate = window.confirm("Are you sure you want to reactivate this?");
+        if (confirmReactivate) {
+            const postData = {
+                action: "R",
+                subMerchantId: row?.subMerchantId,
+                bankName: row?.bankName
+            };
+            dispatch(reactivateSubMerchantApi(postData));
+        }
+    };
+
 
 
     useEffect(() => {
@@ -158,45 +283,48 @@ const MidManagement = () => {
 
     // console.log("openZoneModal",openZoneModal)
     const dispatch = useDispatch();
+
+
     const selectStatus = [
-        { key: "1", value: KYC_STATUS_NOT_FILLED },
-        { key: "2", value: KYC_STATUS_PENDING },
-        { key: "3", value: KYC_STATUS_PROCESSING },
-        { key: "4", value: KYC_STATUS_VERIFIED },
-        { key: "5", value: KYC_STATUS_APPROVED },
-        { key: "6", value: KYC_STATUS_REJECTED },
+        { key: "", value: "Select Status" },
+        { key: "SUCCESS", value: "SUCCESS" },
+        { key: "FAILED", value: "FAILED" },
+
     ]
 
 
-    const refreshAfterRefer = (d) => { setRefreshRequired(d) }
+
 
     useEffect(() => {
-        dispatch(
-            FetchAllByKycStatus(
-                {
-                    page: currentPage,
-                    page_size: pageSize,
-                    searchquery: searchText,
-                    kycStatus: merchantStatus,
-                    isDirect: ""
-                }
 
-            ));
+        if (saveData) {
+            dispatch(
+                subMerchantFetchDetailsApi(
 
-        return () => {
-            dispatch(clearFetchAllByKycStatus())
+                    {
+                        startDate: saveData.startDate ? moment(saveData.startDate).format('YYYY-MM-DD') : null,
+                        endDate: saveData.endDate ? moment(saveData.endDate).format('YYYY-MM-DD') : null,
+                        clientCode: saveData.react_select?.value || "",
+                        status: saveData.status || "",
+                        page: currentPage,
+                        size: pageSize,
+                        sortOrder: "DSC"
+                    }
+
+                ))
         }
-    }, [searchText, merchantStatus, currentPage, pageSize, refereshRequired])
+
+
+    }, [searchText, currentPage, pageSize, refereshRequired])
 
 
     useEffect(() => {
-        setData(allKycData?.result);
-        setDataCount(allKycData?.count);
-        setAssignzone(allKycData?.result);
+        setData(subMerchantDetails);
+        setDataCount(totalCount);
+        setAssignzone(subMerchantDetails);
+    }, [midFetchDetails])
 
-        allKycData?.error && toastConfig.successToast("Data is not loading, Try again")
 
-    }, [allKycData])
 
 
 
@@ -243,10 +371,27 @@ const MidManagement = () => {
     const options = [
         { value: '', label: 'Select Client Code' },
         ...clientCodeList.map((data) => ({
-            value: data.merchantId,
+            value: data.clientCode,
             label: `${data.clientCode} - ${data.clientName}`
         }))
     ]
+
+
+    const onSubmit = (values) => {
+        setSaveData(values)
+        const payload = {
+            startDate: values.startDate ? moment(values.startDate).format('YYYY-MM-DD') : null,
+            endDate: values.endDate ? moment(values.endDate).format('YYYY-MM-DD') : null,
+            clientCode: values.react_select?.value || "",
+            status: values.status || "",
+            page: currentPage,
+            size: pageSize,
+            sortOrder: "DSC"
+        };
+
+        dispatch(subMerchantFetchDetailsApi(payload));
+    };
+
 
     return (
         <section className="">
@@ -256,22 +401,30 @@ const MidManagement = () => {
                         <h5>
                             MID Management
                         </h5>
-                        <button type="button" className="btn cob-btn-primary btn-sm">
-                            Create MID
-                        </button>
+                        <a
+                            href="/dashboard/generatemid"
+                            className="text-decoration-none"
+
+                        >
+                            <button type="button" className="btn cob-btn-primary btn-sm">
+                                Create MID
+                            </button>
+                        </a>
                     </div>
+
+
 
                     <div className="container-fluid p-0 mt-4">
                         <div className="row">
                             <Formik
-                            //   initialValues={initialValues}
-                            //   validationSchema={validationSchema}
-                            //   onSubmit={onSubmit}
+                                initialValues={initialValues}
+                                validationSchema={validationSchema}
+                                onSubmit={onSubmit}
                             >
                                 {(formik) => (
                                     <Form className="d-flex ">
 
-                                        <div className="form-group col-lg-3 col-md-12 mt-2">
+                                        <div className="form-group col-lg-3 col-md-12 ">
                                             <CustomReactSelect
                                                 name="react_select"
                                                 options={options}
@@ -282,15 +435,43 @@ const MidManagement = () => {
 
                                             />
                                         </div>
-                                        <div className="form-group col-lg-3 col-md-12 mt-2">
-                                            <DateRangeByOneDatePicker />
+                                        <div className="form-group col-lg-3 col-md-12">
+                                            <DateRangeByOneDatePicker
+                                                initialStartDate={formik.values.startDate}
+                                                initialEndDate={formik.values.endDate}
+                                                onDateChange={({ startDate, endDate }) => {
+                                                    formik.setFieldValue("startDate", startDate);
+                                                    formik.setFieldValue("endDate", endDate);
+                                                }}
+                                            />
                                         </div>
-                                        <div className="form-group col-lg-3 col-md-12 mt-2">
-                                            <label className="form-label">Merchant KYC Status</label>
-                                            <select className="form-select" onChange={e => setMerchantStatus(e.target.value)} value={merchantStatus}>
-                                                {selectStatus?.map(item => (<option key={item.key} value={item.value}>{item.value}</option>))}
-                                            </select>
+                                        <div className="form-group col-lg-3 col-md-12 ">
+
+
+                                            <FormikController
+                                                control="select"
+                                                label="Status"
+                                                name="status"
+                                                options={selectStatus}
+                                                className="form-select"
+
+                                            />
                                         </div>
+
+                                        <div className="form-group col-lg-3 col-md-12 mt-4">
+                                            <button
+                                                type="submit"
+                                                className="btn cob-btn-primary approve text-white"
+                                                disabled={loadingState}
+
+                                            >
+                                                {loadingState && (
+                                                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                                                )}
+                                                Submit
+                                            </button>
+                                        </div>
+
                                     </Form>)}
                             </Formik>
 
@@ -298,11 +479,37 @@ const MidManagement = () => {
 
                         </div>
 
+                        {data?.length > 0 &&
+                            <div className="row mt-4">
+
+                                <div className="form-group col-lg-3 ml-2">
+                                    <SearchFilter
+                                        kycSearch={kycSearch}
+                                        searchText={searchText}
+                                        searchByText={searchByText}
+                                        setSearchByDropDown={setSearchByDropDown}
+
+                                    />
+
+                                </div>
+                                {/* } */}
+
+                                <div className="form-group col-lg-3">
+                                    <CountPerPageFilter
+                                        pageSize={pageSize}
+                                        dataCount={dataCount}
+                                        changePageSize={changePageSize}
+                                    />
+                                </div>
+                                {/* } */}
+                            </div>
+                        }
+
 
                         <div className="">
                             <div className="scroll overflow-auto">
-                                <h6>Total Count : {dataCount}</h6>
-                                {!allKycData?.loading && data?.length !== 0 && (
+                                {data && <h6>Total Count : {dataCount}</h6>}
+                                {!midFetchDetails?.loading && data?.length !== 0 && (
                                     <Table
                                         row={MidManagementData}
                                         data={data}
@@ -313,12 +520,13 @@ const MidManagement = () => {
                                     />
                                 )}
                             </div>
-                            <CustomLoader loadingState={allKycData?.loading} />
-                            {data?.length == 0 && !allKycData?.loading && (
+                            <CustomLoader loadingState={loadingState} />
+                            {data?.length == 0 && !loadingState && (
                                 <h5 className="text-center font-weight-bold">No Data Found</h5>
                             )}
                         </div>
                     </div>
+
                 </div>
 
             </main>

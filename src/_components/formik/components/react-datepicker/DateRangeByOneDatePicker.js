@@ -33,7 +33,7 @@ const DateRangeByOneDatePicker = ({
                 dateFormat={dateFormat}
                 placeholderText={placeholderText}
                 isClearable
-                className="form-control"
+                className="form-control "
             />
         </div>
 
