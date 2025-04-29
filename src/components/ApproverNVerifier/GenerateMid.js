@@ -118,68 +118,74 @@ function AssignZone() {
   }
 
 
-  console.log(createMidData)
+
 
   const modalBody = () => {
     return (
       <div className="container-fluid p-0">
-        <div className="modal-body p-0">
+        <div className="modal-body px-4 py-3">
           <div className="container">
 
-            <h6> Payment Mode: {formValues?.mode_name}</h6>
-            <h6> Bank: {formValues?.bank_name}</h6>
 
-            <div className="">
-              {createMidData.onboardStatus !== 'SUCCESS' && (
+            <div className="mb-4">
+              <h6> Payment Mode: {formValues?.mode_name}</h6>
+              <h6> Bank: {formValues?.bank_name}</h6>
+            </div>
+
+
+            {createMidData.onboardStatus !== 'SUCCESS' && (
+              <div className="text-center">
                 <button
                   type="button"
+                  // className="btn btn-primary px-4 py-2"
                   className="submit-btn cob-btn-primary text-white mt-3"
                   disabled={disable}
-                  onClick={() => handleSubmit()}
+                  onClick={handleSubmit}
                 >
                   {disable && (
                     <span
-                      className="spinner-border spinner-border-sm mr-1"
+                      className="spinner-border spinner-border-sm me-2"
                       role="status"
-                      ariaHidden="true"
+                      aria-hidden="true"
                     ></span>
                   )}
                   Confirm
                 </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
+
+
         {loading ? (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border spinner-border-sm" role="status">
-              <span className="sr-only">Loading...</span>
+          <div className="d-flex justify-content-center py-4">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
             </div>
           </div>
         ) : (
           createMidData?.onboardStatus && (
-            <div className="d-flex w-full justify-content-center">
-              <div className="card p-3  my-5">
+            <div className="d-flex justify-content-center">
+              <div className="card shadow-sm w-100 my-4 mx-2">
                 <div className="card-body">
-                  <div className="my-3">
-                    <h6>Onboard Status : {createMidData?.onboardStatus}</h6>
-                    <h6>Disbursement Registration Status : {createMidData?.disbursementRegistrationStatus}</h6>
-
+                  <div className="mb-4">
+                    <h6 >Onboard Status: {createMidData?.onboardStatus}</h6>
+                    <h6 >Disbursement Registration Status: {createMidData?.disbursementRegistrationStatus}</h6>
                   </div>
-                  <div>
 
-                    <table className="table table-bordered">
-                      <thead>
+                  <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                      <thead className="table-light">
                         <tr>
                           <th>Name</th>
                           <th>Value</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {Object.keys(createMidData)?.map((item, index) => (
+                        {Object.entries(createMidData)?.map(([key, value], index) => (
                           <tr key={index}>
-                            <td>{item}</td>
-                            <td>{createMidData?.[item]}</td>
+                            <td className="fw-medium">{key}</td>
+                            <td>{String(value)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -191,10 +197,9 @@ function AssignZone() {
           )
         )}
       </div>
-    )
+    );
+  };
 
-
-  }
 
   const onSubmit = (values) => {
     // console.log("Values", values)
@@ -285,7 +290,7 @@ function AssignZone() {
       <main className="">
         <div className="">
           <div className="">
-            <h5>MID Generation</h5>
+            <h5 className="">MID Generation</h5>
           </div>
           <div className="container-fluid p-0">
             <Formik

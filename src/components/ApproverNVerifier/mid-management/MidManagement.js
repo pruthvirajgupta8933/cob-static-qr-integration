@@ -15,6 +15,7 @@ import { subMerchantFetchDetailsApi, deactivateSubMerchantApi, reactivateSubMerc
 import FormikController from "../../../_components/formik/FormikController";
 import moment from 'moment';
 import Yup from "../../../_components/formik/Yup";
+import { toast } from "react-toastify";
 
 
 const MidManagement = () => {
@@ -28,6 +29,7 @@ const MidManagement = () => {
     const [saveData, setSaveData] = useState('')
     const [dataCount, setDataCount] = useState("");
     const [searchText, setSearchText] = useState("");
+    console.log("searchText", searchText)
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [modalDisplayData, setModalDisplayData] = useState({});
@@ -223,7 +225,7 @@ const MidManagement = () => {
 
                     <button
                         type="button"
-                        // onClick={() => handleDeactivate(row)}
+                        onClick={() => handleDeactivate(row)}
                         className="approve cob-btn-primary btn-sm text-white"
                     >
                         Deactivate
@@ -231,7 +233,7 @@ const MidManagement = () => {
 
                     <button
                         type="button"
-                        // onClick={() => handleReactivate(row)}
+                        onClick={() => handleReactivate(row)}
                         className="approve cob-btn-primary btn-sm text-white"
                     >
                         Reactivate
@@ -250,11 +252,20 @@ const MidManagement = () => {
         if (confirmDeactivate) {
             const postData = {
                 action: "D",
-                subMerchantId: row?.subMerchantId,
-                bankName: row?.bankName
+                clientVirtualAdd: row?.clientVirtualAdd,
+                bankName: row?.bankName,
+                clientCode: row?.clientCode
+
             };
 
-            dispatch(deactivateSubMerchantApi(postData));
+            dispatch(deactivateSubMerchantApi(postData)).then((resp) => {
+
+
+                if (resp?.meta?.requestStatus === "fulfilled") {
+                    toast.success(resp?.payload?.description)
+                }
+
+            });
         }
     };
 
@@ -264,8 +275,9 @@ const MidManagement = () => {
         if (confirmReactivate) {
             const postData = {
                 action: "R",
-                subMerchantId: row?.subMerchantId,
-                bankName: row?.bankName
+                bankName: row?.bankName,
+                clientVirtualAdd: row?.clientVirtualAdd,
+                clientCode: row?.clientCode
             };
             dispatch(reactivateSubMerchantApi(postData));
         }
@@ -315,7 +327,7 @@ const MidManagement = () => {
         }
 
 
-    }, [searchText, currentPage, pageSize, refereshRequired])
+    }, [currentPage, pageSize, refereshRequired])
 
 
     useEffect(() => {
@@ -340,16 +352,32 @@ const MidManagement = () => {
 
 
 
+    // const searchByText = (text) => {
+    //     // console.log("search by text")
+    //     setData(
+    //         assignZone?.filter((item) =>
+    //             Object.values(item)
+    //                 .join(" ")
+    //                 .toLowerCase()
+    //                 .includes(searchText?.toLocaleLowerCase())
+    //         )
+    //     );
+    // };
+
     const searchByText = (text) => {
-        // console.log("search by text")
-        setData(
-            assignZone?.filter((item) =>
-                Object.values(item)
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(searchText?.toLocaleLowerCase())
-            )
-        );
+        if (searchText?.length !== 0) {
+            setData(
+                assignZone?.filter((item) =>
+                    Object.values(item)
+                        .join(" ")
+                        .toLowerCase()
+                        .includes(searchText?.toLocaleLowerCase())
+                )
+            );
+        } else {
+            setData(subMerchantDetails)
+        }
+
     };
 
     //function for change current page
@@ -398,7 +426,7 @@ const MidManagement = () => {
             <main className="">
                 <div className="">
                     <div className="d-flex justify-content-between">
-                        <h5>
+                        <h5 className="ml-3">
                             MID Management
                         </h5>
                         <a
@@ -422,9 +450,9 @@ const MidManagement = () => {
                                 onSubmit={onSubmit}
                             >
                                 {(formik) => (
-                                    <Form className="d-flex ">
+                                    <Form className="d-flex">
 
-                                        <div className="form-group col-lg-3 col-md-12 ">
+                                        <div className="position-relative col-lg-3 col-md-12">
                                             <CustomReactSelect
                                                 name="react_select"
                                                 options={options}
@@ -432,10 +460,10 @@ const MidManagement = () => {
                                                 filterOption={createFilter({ ignoreAccents: false })}
                                                 label="Client Code"
                                                 onChange={handleSelectChange}
-
                                             />
                                         </div>
-                                        <div className="form-group col-lg-3 col-md-12">
+
+                                        <div className="form-group col-lg-3 col-md-12 date_range_picker zindexforDropdown">
                                             <DateRangeByOneDatePicker
                                                 initialStartDate={formik.values.startDate}
                                                 initialEndDate={formik.values.endDate}
@@ -488,6 +516,7 @@ const MidManagement = () => {
                                         searchText={searchText}
                                         searchByText={searchByText}
                                         setSearchByDropDown={setSearchByDropDown}
+                                        searchTextByApiCall={false}
 
                                     />
 
