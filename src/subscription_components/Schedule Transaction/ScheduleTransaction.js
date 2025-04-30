@@ -4,7 +4,6 @@ import moment from "moment";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import CustomLoader from "../../_components/loader";
 import TableWithPagination from "../../utilities/tableWithPagination/TableWithPagination";
 import CustomModal from "../../_components/custom_modal";
@@ -27,7 +26,6 @@ const SchedulueTransaction = () => {
     const [pageCount, setPageCount] = useState(Math.ceil(dataCount / pageSize));
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedMandate, setSelectedMandate] = useState(null);
-
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
     if (splitDate[1].length === 1) splitDate[1] = "0" + splitDate[1];
@@ -41,6 +39,8 @@ const SchedulueTransaction = () => {
     useEffect(() => {
         setPageCount(Math.ceil(dataCount / pageSize));
     }, [dataCount, pageSize]);
+
+
 
     useEffect(() => {
         const postDataS = {
@@ -81,7 +81,7 @@ const SchedulueTransaction = () => {
         "Bank Message", "Registration Status", "Consumer ID", "Account Holder Name",
         "Account Number", "IFSC", "Account Type", "Next Transaction Date",
         "Mandate start Date", "Mandate End Date", "Frequency", "Max Amount",
-        "Purpose", "Amount Type", "Transaction Schedule",
+        "Purpose", "Amount Type", "EMI Amount", "Transaction Schedule",
     ];
 
     const renderRow = (mandate, index) => {
@@ -106,6 +106,7 @@ const SchedulueTransaction = () => {
                 <td>{mandate?.max_amount}</td>
                 <td>{mandate?.purpose}</td>
                 <td>{mandate?.amount_type}</td>
+                <td>{mandate?.emi_amount}</td>
                 <td>
                     <button
                         className="btn cob-btn-primary approve text-white btn-sm"
@@ -130,9 +131,10 @@ const SchedulueTransaction = () => {
         };
 
         dispatch(mandateTransactionSchedule(payload)).then((resp) => {
+
             setSubmitting(false);
             if (resp?.meta?.requestStatus === "fulfilled") {
-                toast.success(resp.payload.message);
+                toast.success(resp?.payload?.data?.message);
                 setModalToggle(false);
             } else {
                 toast.error(resp.payload || "Transaction scheduling failed.");
@@ -143,16 +145,17 @@ const SchedulueTransaction = () => {
     const modalbody = () => {
         if (!selectedMandate) return null;
 
-        const isFixed = selectedMandate.amount_type?.toLowerCase() === "fixed";
+        const isFixed = selectedMandate?.amount_type?.toLowerCase() === "fixed";
         const emiAmount = selectedMandate?.emi_amount || 0;
 
+
         const initialValues = {
-            emi_amount: emiAmount,
+            trans_amount: emiAmount,
 
         };
 
         const validationSchema = Yup.object({
-            emi_amount: Yup.number().required("Transaction Amount is required"),
+            trans_amount: Yup.number().required("Transaction Amount is required"),
         });
 
         return (
@@ -166,27 +169,27 @@ const SchedulueTransaction = () => {
                     <Form>
                         <div className="row">
                             <div className="col-md-4 mb-3">
-                                <label>Registration ID</label>
+                                <label className="font-weight-bold">Registration ID</label>
                                 <p className="form-control-plaintext">{selectedMandate?.registration_id}</p>
                             </div>
                             <div className="col-md-4 mb-3">
-                                <label>Next Transaction Date</label>
+                                <label className="font-weight-bold">Next Transaction Date</label>
                                 <p className="form-control-plaintext">{selectedMandate?.actual_next_transaction_date}</p>
                             </div>
                             <div className="col-md-4 mb-3">
-                                <label>Max Amount</label>
+                                <label className="font-weight-bold">Max Amount</label>
                                 <p className="form-control-plaintext">{selectedMandate?.max_amount}</p>
                             </div>
                             <div className="col-md-6 mb-3">
-                                <label>Amount Type</label>
+                                <label className="font-weight-bold">Amount Type</label>
                                 <p className="form-control-plaintext">{selectedMandate?.amount_type}</p>
                             </div>
 
 
                             <div className="col-md-6 mb-3">
-                                <label>Transaction Amount</label>
+                                <label className="font-weight-bold">Transaction Amount</label>
                                 <FormikController
-                                    type="number"
+                                    type="text"
                                     name="trans_amount"
                                     className="form-control"
                                     control="input"
