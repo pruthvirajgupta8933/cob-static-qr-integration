@@ -196,7 +196,7 @@ const AssignedMerchant = () => {
       width: "110px",
       cell: (row) => (
         <div>
-          {(roles?.accountManager || roles.viewer) && (
+          {(roles?.accountManager || roles.viewer || roles.businessDevelopment || roles.zonalManager) && (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -227,7 +227,7 @@ const AssignedMerchant = () => {
       width: "170px",
       cell: (row) => (
         <div className="d-flex">
-          {roles?.viewer === true || roles?.accountManager === true ? (
+          {(roles?.viewer || roles?.accountManager || roles.businessDevelopment || roles.zonalManager) ? (
             <>
               {row?.login_id?.master_client_id?.clientCode && (
                 <button
@@ -310,10 +310,10 @@ const AssignedMerchant = () => {
         type: role?.accountManager
           ? "account_manager"
           : role?.businessDevelopment
-          ? "business_development_manager"
-          : role?.zonalManager
-          ? "zonal_manager"
-          : "",
+            ? "business_development_manager"
+            : role?.zonalManager
+              ? "zonal_manager"
+              : "",
       })
     ).then((res) => {
       const blob = new Blob([res?.payload], {

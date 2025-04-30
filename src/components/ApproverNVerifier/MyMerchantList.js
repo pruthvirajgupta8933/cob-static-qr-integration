@@ -240,7 +240,7 @@ const MyMerchantList = () => {
       width: "110px",
       cell: (row) => (
         <div>
-          {(roles?.accountManager || roles.viewer) && (
+          {(roles?.accountManager || roles.viewer || roles.businessDevelopment || roles.zonalManager) && (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -272,7 +272,7 @@ const MyMerchantList = () => {
       width: "170px",
       cell: (row) => (
         <div className="d-flex">
-          {roles?.viewer === true || roles?.accountManager === true ? (
+          {(roles?.viewer || roles?.accountManager || roles.businessDevelopment || roles.zonalManager) ? (
             <>
               {row?.login_id?.master_client_id?.clientCode && (
                 <button
