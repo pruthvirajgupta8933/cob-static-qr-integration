@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
+import CountPerPage from '../../subscription_components/countPerPage/CountPerPage';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faSearch, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage"
+// import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage"
 
 const TableWithPagination = ({
     headers,
@@ -55,7 +56,7 @@ const TableWithPagination = ({
 
                 <div className="table-responsive scroll overflow-auto">
                     <table className="table ">
-                        <thead className="table-primary">
+                        <thead className="">
                             {apiHasData && (
                                 <tr>
                                     {headers?.map((header, index) => (
@@ -116,11 +117,18 @@ const TableWithPagination = ({
                             />
                         </div>
                         <div className="col-lg-6 d-flex justify-content-end">
-                            <CountPerPageFilter
+                            {/* <CountPerPageFilter
                                 pageSize={pageSize}
                                 dataCount={dataCount}
                                 changePageSize={changePageSize}
                                 changeCurrentPage={changeCurrentPage}
+                            /> */}
+
+                            <CountPerPage
+                                pageSize={pageSize}
+                                dataCount={dataCount}
+                                changePageSize={changePageSize}
+
                             />
                         </div>
                     </div>
