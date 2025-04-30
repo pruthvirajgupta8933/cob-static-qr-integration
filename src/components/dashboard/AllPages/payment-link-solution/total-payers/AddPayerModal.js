@@ -45,7 +45,7 @@ const AddPayerModal = ({ componentState, loadDataFn, onClose }) => {
       .max(10, "Too long"),
     payer_email: Yup.string()
       .email("Enter valid email")
-      .length(5, 50, "Email should be between 5 to 50 characters")
+      // .length(5, 50, "Email should be between 5 to 50 characters")
       .required("Required")
       .allowOneSpace(),
     client_code: Yup.string().required("Required"),
