@@ -49,7 +49,7 @@ function CreatePaymentLink({ componentState, onClose }) {
     loadUser();
   }, [clientCode]);
 
-  const validFrom = moment().add(5, "minutes").toDate();
+  const validFrom = moment().add(1, "minutes").toDate();
   const validTo = moment(validFrom).add(24, "hours").toDate();
 
   const initialValues = {
@@ -122,8 +122,8 @@ function CreatePaymentLink({ componentState, onClose }) {
     } catch (error) {
       toastConfig.errorToast(
         error.response?.data?.detail ||
-          error.response?.data?.message ||
-          "Something went wrong."
+        error.response?.data?.message ||
+        "Something went wrong."
       );
       setDisable(false);
       resetForm();
@@ -271,8 +271,8 @@ function CreatePaymentLink({ componentState, onClose }) {
                               const updatedModes = e.target.checked
                                 ? [...values.communication_mode, "email"]
                                 : values.communication_mode.filter(
-                                    (mode) => mode !== "email"
-                                  );
+                                  (mode) => mode !== "email"
+                                );
                               setFieldValue("communication_mode", updatedModes);
                             }}
                           />
@@ -293,8 +293,8 @@ function CreatePaymentLink({ componentState, onClose }) {
                               const updatedModes = e.target.checked
                                 ? [...values.communication_mode, "sms"]
                                 : values.communication_mode.filter(
-                                    (mode) => mode !== "sms"
-                                  );
+                                  (mode) => mode !== "sms"
+                                );
                               setFieldValue("communication_mode", updatedModes);
                             }}
                           />
