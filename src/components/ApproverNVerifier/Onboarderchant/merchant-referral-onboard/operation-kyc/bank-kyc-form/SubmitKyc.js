@@ -44,7 +44,7 @@ function SubmitKyc({ isEditableInput, editKyc }) {
 
 
   const onSubmit = async (value) => {
-
+    console.log(kycData?.clientCode)
     if (!kycData?.clientCode) {
       const clientFullName = kycData?.name;
       const clientMobileNo = kycData?.contactNumber;
