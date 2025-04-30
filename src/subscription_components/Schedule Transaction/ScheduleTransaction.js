@@ -189,7 +189,7 @@ const SchedulueTransaction = () => {
                             <div className="col-md-6 mb-3">
                                 <label className="font-weight-bold">Transaction Amount</label>
                                 <FormikController
-                                    type="test"
+                                    type="text"
                                     name="trans_amount"
                                     className="form-control"
                                     control="input"
