@@ -90,8 +90,8 @@ function ApprovedMerchant({ commonRows }) {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -119,8 +119,8 @@ function ApprovedMerchant({ commonRows }) {
       cell: (row) => (
         <div className="d-flex">
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white m-1"
@@ -176,9 +176,9 @@ function ApprovedMerchant({ commonRows }) {
     [currentPage, pageSize, searchText, dispatch, onboardType]
   );
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [fetchData]);
 
   /////////////////////////////////////Search filter
 

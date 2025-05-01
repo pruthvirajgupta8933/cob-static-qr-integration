@@ -9,9 +9,11 @@ import { createFilter } from 'react-select';
 import CustomModal from "../../_components/custom_modal";
 import Yup from "../../_components/formik/Yup";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
-
+import { Link } from "react-router-dom"
 import toastConfig from "../../utilities/toastTypes";
 import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlice";
+import moment from "moment";
+
 
 function AssignZone() {
 
@@ -19,17 +21,28 @@ function AssignZone() {
   const [disable, setDisable] = useState(false)
   const midState = useSelector(state => state.mid)
 
-  const midPayloadData = midState?.midPayload
-  const validationSchema = Yup.object().shape({
-    mode_name: Yup.string()
-      .required("Required")
-      .allowOneSpace(),
-    react_select: Yup.object().required("Required").nullable(),
-    bank_name: Yup.string()
-      .required("Required")
-      .allowOneSpace(),
-  });
+  const MidPayloadUpdate = (payload) => {
+    // clientOwnershipType
+    let clientOwnershipType = ""
+    if (payload?.clientOwnershipType?.toLowerCase() === "proprietorship") {
+      clientOwnershipType = "PROPRIETARY"
+    } else if (payload?.clientOwnershipType?.toLowerCase() === "private ltd") {
+      clientOwnershipType = "PRIVATE"
+    } else if (payload?.clientOwnershipType === "public limited") {
+      clientOwnershipType = "PUBLIC"
+    }
 
+    let reqPayload = {
+      ...payload,
+      clientOwnershipType: clientOwnershipType,
+      "clientVirtualAdd": payload.clientVirtualAdd?.replaceAll(/\s/g, ''),
+      collectionModes: "UPI",
+      fatherNameOnPan: "FatherName",
+      clientDob: moment(payload.clientDob, "YYYY-MM-DD").format("DD/MM/YYYY"),
+      clientDoi: moment(payload.clientDoi, "YYYY-MM-DD").format("DD/MM/YYYY")
+    }
+    return reqPayload
+  }
 
   useEffect(() => {
 
@@ -38,13 +51,6 @@ function AssignZone() {
       setCliencodeList(resp?.data?.result)
     })
   }, [])
-
-  const initialValuess = {
-    name: "",
-    email: ""
-  };
-
-
 
 
   let initialValues = {
@@ -62,8 +68,9 @@ function AssignZone() {
   const [formValues, setFormValues] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const [createMidData, setCreateMidData] = useState("")
+  const [createMidData, setCreateMidData] = useState({})
   const [show, Setshow] = useState(false)
+
 
 
   useEffect(() => {
@@ -111,102 +118,88 @@ function AssignZone() {
   }
 
 
+
+
   const modalBody = () => {
     return (
       <div className="container-fluid p-0">
-        <div className="modal-body p-0">
+        <div className="modal-body px-4 py-3">
           <div className="container">
-            <h6>MID request data :</h6>
-            <p> Payment Mode: {formValues?.mode_name}</p>
-            <p> Bank: {formValues?.bank_name}</p>
-
-            {/* <div className="my-5">
-           
-              {Object.keys(midPayloadData?.data)?.map((item, index) => (
-                <p key={index}>{item} : {midPayloadData?.data[item]}</p>
-              ))}
-            </div> */}
 
 
-            <div className="">
-              {createMidData.onboardStatus !== 'SUCCESS' && (
+            <div className="mb-4">
+              <h6> Payment Mode: {formValues?.mode_name}</h6>
+              <h6> Bank: {formValues?.bank_name}</h6>
+            </div>
+
+
+            {createMidData.onboardStatus !== 'SUCCESS' && (
+              <div className="text-center">
                 <button
                   type="button"
+                  // className="btn btn-primary px-4 py-2"
                   className="submit-btn cob-btn-primary text-white mt-3"
                   disabled={disable}
-                  onClick={() => handleSubmit()}
+                  onClick={handleSubmit}
                 >
                   {disable && (
                     <span
-                      className="spinner-border spinner-border-sm mr-1"
+                      className="spinner-border spinner-border-sm me-2"
                       role="status"
-                      ariaHidden="true"
+                      aria-hidden="true"
                     ></span>
                   )}
                   Confirm
                 </button>
-              )}
-            </div>
-
+              </div>
+            )}
           </div>
         </div>
+
+
         {loading ? (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border spinner-border-sm" role="status">
-              <span className="sr-only">Loading...</span>
+          <div className="d-flex justify-content-center py-4">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
             </div>
           </div>
         ) : (
-
-          createMidData?.description && (
+          createMidData?.onboardStatus && (
             <div className="d-flex justify-content-center">
-              <div className="card bg-warning text-center">
+              <div className="card shadow-sm w-100 my-4 mx-2">
                 <div className="card-body">
-                  <div>
-                    <h6>{createMidData?.description}</h6>
+                  <div className="mb-4">
+                    <h6 >Onboard Status: {createMidData?.onboardStatus}</h6>
+                    <h6 >Disbursement Registration Status: {createMidData?.disbursementRegistrationStatus}</h6>
+                  </div>
+
+                  <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                      <thead className="table-light">
+                        <tr>
+                          <th>Name</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.entries(createMidData)?.map(([key, value], index) => (
+                          <tr key={index}>
+                            <td className="fw-medium">{key}</td>
+                            <td>{String(value)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
           )
         )}
-
-        {createMidData?.onboardStatus === "SUCCESS" &&
-          <table class="table mt-3">
-            <thead>
-              <tr>
-                <th scope="col">Client Code</th>
-                <th>Client Name</th>
-                <th scope="col">Bank Name</th>
-                <th>MID</th>
-                <th scope="col">Account Number</th>
-                <th>Payment Mode</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td >{createMidData?.clientCode}</td>
-                <td>{createMidData?.clientName}</td>
-                <td>{createMidData?.bankName}</td>
-                <td>{createMidData?.subMerchantId}</td>
-                <td>{createMidData?.clientAccountNumber}</td>
-                {/* <td>{createMidData?.clientEmail}</td> */}
-                <td>{createMidData?.paymentMode}</td>
-                <td>{createMidData?.onboardStatus}</td>
-              </tr>
-
-            </tbody>
-          </table>
-        }
-
-
       </div>
+    );
+  };
 
-    )
-
-
-  }
 
   const onSubmit = (values) => {
     // console.log("Values", values)
@@ -228,7 +221,9 @@ function AssignZone() {
 
     try {
       let reqPayload = await fetchMidPayload(midData);
-      reqPayload = reqPayload?.data?.result
+
+      reqPayload = MidPayloadUpdate(reqPayload?.data?.result)
+
       let createMidResp = dispatch(createMidApi(reqPayload))
       createMidResp.then((resp) => {
         console.log(resp)
@@ -280,12 +275,31 @@ function AssignZone() {
     //   });
   };
 
+  const validationSchema = Yup.object().shape({
+    mode_name: Yup.string()
+      .required("Required")
+      .allowOneSpace(),
+    react_select: Yup.object().required("Required").nullable(),
+    bank_name: Yup.string()
+      .required("Required")
+      .allowOneSpace(),
+  });
+
   return (
     <section className="">
       <main className="">
         <div className="">
-          <div className="">
-            <h5>MID Generation</h5>
+          <div className="d-flex justify-content-between">
+            <h5 className="ml-3">MID Generation</h5>
+            <Link
+              to="/dashboard/mid-management"
+              className="text-decoration-none"
+
+            >
+              <button type="button" className="btn cob-btn-primary btn-sm">
+                View MID
+              </button>
+            </Link>
           </div>
           <div className="container-fluid p-0">
             <Formik
