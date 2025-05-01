@@ -16,7 +16,7 @@ import FormikController from "../../../_components/formik/FormikController";
 import moment from 'moment';
 import Yup from "../../../_components/formik/Yup";
 import { toast } from "react-toastify";
-
+import { Link } from "react-router-dom"
 
 const MidManagement = () => {
 
@@ -212,7 +212,7 @@ const MidManagement = () => {
             name: "Action",
             cell: (row) => (
                 <div className="d-flex gap-2">
-                    <button
+                    {/* <button
                         type="button"
                         // onClick={() => {
                         //     setModalDisplayData(row);
@@ -221,7 +221,7 @@ const MidManagement = () => {
                         className="approve cob-btn-primary btn-sm text-white"
                     >
                         Update
-                    </button>
+                    </button> */}
 
                     <button
                         type="button"
@@ -448,19 +448,20 @@ const MidManagement = () => {
         <section className="">
             <main className="">
                 <div className="">
+
                     <div className="d-flex justify-content-between">
                         <h5 className="ml-3">
                             MID Management
                         </h5>
-                        <a
-                            href="/dashboard/generatemid"
+                        <Link
+                            to="/dashboard/generatemid"
                             className="text-decoration-none"
 
                         >
                             <button type="button" className="btn cob-btn-primary btn-sm">
                                 Create MID
                             </button>
-                        </a>
+                        </Link>
                     </div>
 
 

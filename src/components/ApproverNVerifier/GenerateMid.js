@@ -9,7 +9,7 @@ import { createFilter } from 'react-select';
 import CustomModal from "../../_components/custom_modal";
 import Yup from "../../_components/formik/Yup";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
-
+import { Link } from "react-router-dom"
 import toastConfig from "../../utilities/toastTypes";
 import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlice";
 import moment from "moment";
@@ -289,8 +289,17 @@ function AssignZone() {
     <section className="">
       <main className="">
         <div className="">
-          <div className="">
-            <h5 className="">MID Generation</h5>
+          <div className="d-flex justify-content-between">
+            <h5 className="ml-3">MID Generation</h5>
+            <Link
+              to="/dashboard/mid-management"
+              className="text-decoration-none"
+
+            >
+              <button type="button" className="btn cob-btn-primary btn-sm">
+                View MID
+              </button>
+            </Link>
           </div>
           <div className="container-fluid p-0">
             <Formik
