@@ -129,6 +129,7 @@ import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/U
 import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
+import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -853,6 +854,12 @@ function DashboardMainContent() {
                 <GenerateMid />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exact
+                path={`${path}/mid-management`}
+                Component={MidManagement}
+                roleList={{ bank: true, approver: true }}
+              />
               <AuthorizedRoute
                 exact
                 path={`${path}/bank-onboarding`}

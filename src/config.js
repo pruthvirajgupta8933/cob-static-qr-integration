@@ -92,9 +92,11 @@ const API_LIVE = {
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
   MID_PAYLOAD_BY_MERCHANT_ID: `${url}/mid/get-mid/`,
 
-  // MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
-  MID_CREATE_API: `${url}/mid/create/`,
+  MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
   MID_FETCH_DATA_BY_CLIENT_CODE: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  SUBMERCHANT_FETCH_DETAILS: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  SUBMERCHANT_DEACTIVATE: `${mid_url}/submerchant_onboarding/submerchant/deactivate`,
+  REACTIVATE_SUBMERCHANT: `${mid_url}/submerchant_onboarding/submerchant/reactivate`,
   // https://stage-merchantonboarding.sabpaisa.in
 
 
