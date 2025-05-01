@@ -261,8 +261,17 @@ const MidManagement = () => {
             dispatch(deactivateSubMerchantApi(postData)).then((resp) => {
 
 
+
                 if (resp?.meta?.requestStatus === "fulfilled") {
-                    toast.success(resp?.payload?.description)
+                    if (resp.payload.
+                        onboardStatus === "DEACTIVATED"
+                    ) {
+                        toast.success(resp?.payload?.description)
+                    }
+                    else {
+                        toast.success(resp?.payload?.udf10)
+
+                    }
                 }
 
             });
@@ -279,7 +288,21 @@ const MidManagement = () => {
                 clientVirtualAdd: row?.clientVirtualAdd,
                 clientCode: row?.clientCode
             };
-            dispatch(reactivateSubMerchantApi(postData));
+            dispatch(reactivateSubMerchantApi(postData)).then((resp) => {
+                if (resp?.meta?.requestStatus === "fulfilled") {
+                    if (resp.payload.
+                        onboardStatus === "REACTIVATED"
+                    ) {
+                        toast.success(resp?.payload?.description)
+                    }
+                    else {
+                        toast.success(resp?.payload?.udf10)
+
+                    }
+                }
+
+            }
+            )
         }
     };
 
