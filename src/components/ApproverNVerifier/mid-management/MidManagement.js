@@ -17,6 +17,9 @@ import moment from 'moment';
 import Yup from "../../../_components/formik/Yup";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom"
+import CustomModal from "../../../_components/custom_modal";
+import ViewMidManagementModal from "./ViewMidManagementModal";
+import UpdateMidDetailsModal from "./UpdateMidDetailsModal";
 
 const MidManagement = () => {
 
@@ -29,13 +32,16 @@ const MidManagement = () => {
     const [saveData, setSaveData] = useState('')
     const [dataCount, setDataCount] = useState("");
     const [searchText, setSearchText] = useState("");
-    console.log("searchText", searchText)
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [modalDisplayData, setModalDisplayData] = useState({});
     const [openZoneModal, setOpenModal] = useState(false);
     const [refereshRequired, setRefreshRequired] = useState(false);
     const [serachByDropDown, setSearchByDropDown] = useState(false);
+    const [showDetails, setShowDetails] = useState({})
+    const [openUpdateModal, setOpenUpdateModal] = useState(false);
+    const [selectedMerchantId, setSelectedMerchantId] = useState('');
+    console.log("selectedMerchantId", selectedMerchantId)
 
     const [clientCodeList, setCliencodeList] = useState([])
     const [selectedClientId, setSelectedClientId] = useState(null);
@@ -74,7 +80,7 @@ const MidManagement = () => {
     clientCode = clientMerchantDetailsList[0].clientCode;
 
 
-    const { allKycData } = kyc
+
 
 
     const MidManagementData = [
@@ -225,6 +231,29 @@ const MidManagement = () => {
 
                     <button
                         type="button"
+                        onClick={() => {
+                            setModalDisplayData(row);
+                            setOpenModal(true);
+                        }}
+                        className="approve cob-btn-primary btn-sm text-white"
+                    >
+                        View Details
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setShowDetails(row);
+                            setOpenUpdateModal(true);
+                        }}
+                        className="approve cob-btn-primary btn-sm text-white"
+                    >
+                        Update
+                    </button>
+
+
+                    <button
+                        type="button"
                         onClick={() => handleDeactivate(row)}
                         className="approve cob-btn-primary btn-sm text-white"
                     >
@@ -244,6 +273,8 @@ const MidManagement = () => {
         }
 
     ];
+
+
 
 
     const handleDeactivate = (row) => {
@@ -409,7 +440,13 @@ const MidManagement = () => {
     };
 
     const handleSelectChange = (selectedOption) => {
-        setSelectedClientId(selectedOption ? selectedOption.value : null)
+        const value = selectedOption.value
+        const selectedClient = clientCodeList.find(client => client.clientCode === value);
+        if (selectedClient) {
+            setSelectedMerchantId(selectedClient.merchantId);
+        } else {
+            setSelectedMerchantId('');
+        }
     }
 
 
@@ -585,13 +622,21 @@ const MidManagement = () => {
             </main>
             <div>
 
-                {/* {openZoneModal === true && (
-                    <ViewMidManagementModal
-                        userData={modalDisplayData}
-                        setOpenModal={setOpenModal}
-                        refreshAfterRefer={refreshAfterRefer}
-                    />
-                )} */}
+
+                <ViewMidManagementModal
+                    userData={modalDisplayData}
+                    setOpenModal={setOpenModal}
+                    openZoneModal={openZoneModal}
+
+                />
+                <UpdateMidDetailsModal
+                    userDetails={showDetails}
+                    setOpenUpdateModal={setOpenUpdateModal}
+                    openUpdateModal={openUpdateModal}
+                    selectedMerchantId={selectedMerchantId}
+
+                />
+
             </div>
         </section>
     );

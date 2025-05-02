@@ -5,7 +5,8 @@ import {
   fetchMidPayload,
   midCreateApi,
   reactivateSubMerchant,
-  subMerchantDetails
+  subMerchantDetails,
+  updateSubmerchantApi
 } from "../services/generate-mid/generate-mid.service";
 import { setMessage } from "./message";
 import { getErrorMessage } from "../utilities/errorUtils";
@@ -115,6 +116,25 @@ export const reactivateSubMerchantApi = createAsyncThunk(
     }
   }
 );
+
+export const updateSubmerchant = createAsyncThunk(
+  "mid/updateSubmerchant",
+  async (dataObj, thunkAPI) => {
+    try {
+      const response = await updateSubmerchantApi(dataObj);
+      return response.data;
+    } catch (error) {
+      const message = getErrorMessage(error);
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
+
+
+
 
 // Slice
 export const generateMidSlice = createSlice({
