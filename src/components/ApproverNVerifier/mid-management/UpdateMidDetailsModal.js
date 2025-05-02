@@ -26,8 +26,9 @@ const UpdateMidDetailsModal = ({ userDetails, setOpenUpdateModal, openUpdateModa
             clientOwnershipType = "PRIVATE"
         } else if (payload?.clientOwnershipType === "public limited") {
             clientOwnershipType = "PUBLIC"
-        }
-        else {
+        } else if (payload?.clientOwnershipType?.toLowerCase() === "ngo") {
+            clientOwnershipType = "TRUST"
+        } else {
             clientOwnershipType = payload?.clientOwnershipType?.toUpperCase()
         }
 
