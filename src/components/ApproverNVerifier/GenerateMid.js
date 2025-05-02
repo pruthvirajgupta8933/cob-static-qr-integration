@@ -35,6 +35,9 @@ function AssignZone() {
     } else if (payload?.clientOwnershipType === "public limited") {
       clientOwnershipType = "PUBLIC"
     }
+    else {
+      clientOwnershipType = payload?.clientOwnershipType?.toUpperCase()
+    }
 
     let reqPayload = {
       ...payload,
@@ -266,7 +269,7 @@ function AssignZone() {
       setRequestPayload(reqPayload);
       let createMidResp = dispatch(createMidApi(reqPayload))
       createMidResp.then((resp) => {
-        console.log(resp)
+
         if (resp?.meta?.requestStatus === "fulfilled") {
           Setshow(true)
           setCreateMidData(resp?.payload)

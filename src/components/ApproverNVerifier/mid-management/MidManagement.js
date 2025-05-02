@@ -41,7 +41,7 @@ const MidManagement = () => {
     const [showDetails, setShowDetails] = useState({})
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
     const [selectedMerchantId, setSelectedMerchantId] = useState('');
-    console.log("selectedMerchantId", selectedMerchantId)
+
 
     const [clientCodeList, setCliencodeList] = useState([])
     const [selectedClientId, setSelectedClientId] = useState(null);
@@ -84,13 +84,13 @@ const MidManagement = () => {
 
 
     const MidManagementData = [
-        // {
-        //     id: "1",
-        //     name: "S.No",
-        //     selector: (row) => row.sno,
-        //     sortable: true,
-        //     width: "86px",
-        // },
+        {
+            id: "781",
+            name: "Sub Merchant Id",
+            selector: (row) => row.subMerchantId,
+            sortable: true,
+            width: "150px",
+        },
         {
             id: "1",
             name: "Client Code",
@@ -201,7 +201,7 @@ const MidManagement = () => {
         },
         {
             id: "12",
-            name: "Disbursement Registration Status",
+            name: "Dis. Registration Status",
             selector: (row) => row.disbursementRegistrationStatus,
             cell: (row) => (
                 <div className="removeWhiteSpace">{row?.disbursementRegistrationStatus}</div>
@@ -385,10 +385,20 @@ const MidManagement = () => {
 
 
     useEffect(() => {
-        setData(subMerchantDetails);
-        setDataCount(totalCount);
-        setAssignzone(subMerchantDetails);
-    }, [midFetchDetails])
+        const shouldClear = localStorage.getItem("clearMidData");
+
+        if (shouldClear === "true") {
+            setData([]);
+            setDataCount(0);
+            setAssignzone([]);
+            localStorage.removeItem("clearMidData"); // clear flag
+        } else {
+            setData(subMerchantDetails);
+            setDataCount(totalCount);
+            setAssignzone(subMerchantDetails);
+        }
+    }, [midFetchDetails]);
+
 
 
 
@@ -480,6 +490,11 @@ const MidManagement = () => {
         dispatch(subMerchantFetchDetailsApi(payload));
     };
 
+    const handleCreateMidClick = () => {
+        localStorage.setItem("clearMidData", "true");
+    };
+
+
 
     return (
         <section className="">
@@ -494,8 +509,9 @@ const MidManagement = () => {
                             to="/dashboard/generatemid"
                             className="text-decoration-none"
 
+
                         >
-                            <button type="button" className="btn cob-btn-primary btn-sm">
+                            <button type="button" className="btn cob-btn-primary btn-sm" onClick={handleCreateMidClick} >
                                 Create MID
                             </button>
                         </Link>
@@ -598,7 +614,7 @@ const MidManagement = () => {
 
                         <div className="">
                             <div className="scroll overflow-auto">
-                                {data && <h6>Total Count : {dataCount}</h6>}
+                                {data?.length !== 0 && <h6>Total Count : {dataCount}</h6>}
                                 {!midFetchDetails?.loading && data?.length !== 0 && (
                                     <Table
                                         row={MidManagementData}

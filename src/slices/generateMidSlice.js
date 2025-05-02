@@ -190,6 +190,7 @@ export const generateMidSlice = createSlice({
         state.midFetchDetails.loading = true;
         state.midFetchDetails.error = null;
         state.midFetchDetails.subMerchantData = null;
+
       })
       .addCase(subMerchantFetchDetailsApi.fulfilled, (state, action) => {
         state.midFetchDetails.loading = false;

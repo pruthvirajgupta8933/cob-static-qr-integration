@@ -27,6 +27,9 @@ const UpdateMidDetailsModal = ({ userDetails, setOpenUpdateModal, openUpdateModa
         } else if (payload?.clientOwnershipType === "public limited") {
             clientOwnershipType = "PUBLIC"
         }
+        else {
+            clientOwnershipType = payload?.clientOwnershipType?.toUpperCase()
+        }
 
         let reqPayload = {
             ...payload,
@@ -57,14 +60,17 @@ const UpdateMidDetailsModal = ({ userDetails, setOpenUpdateModal, openUpdateModa
             let reqPayload = await fetchMidPayload(midData);
 
             reqPayload = MidPayloadUpdate(reqPayload?.data?.result)
+            // in case of update, we need to set the action as "U"
+            reqPayload.action = "U"
             setRequestPayload(reqPayload)
 
             let createMidResp = dispatch(updateSubmerchant(reqPayload))
             createMidResp.then((resp) => {
-                console.log(resp)
+
                 if (resp?.meta?.requestStatus === "fulfilled") {
                     Setshow(true)
-                    setResponseDetail(resp?.payload)
+                    // setResponseDetail(resp?.payload)
+                    toastConfig.successToast(resp?.payload?.udf10)
                     // setCreateMidData(resp?.payload)
                     setDisable(false)
                     setLoading(false)
@@ -147,7 +153,7 @@ const UpdateMidDetailsModal = ({ userDetails, setOpenUpdateModal, openUpdateModa
                 </div>
 
 
-                {loading ? (
+                {/* {loading ? (
                     <div className="d-flex justify-content-center py-4">
                         <div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -186,7 +192,7 @@ const UpdateMidDetailsModal = ({ userDetails, setOpenUpdateModal, openUpdateModa
                             </div>
                         </div>
                     )
-                )}
+                )} */}
             </div>
         );
     }
