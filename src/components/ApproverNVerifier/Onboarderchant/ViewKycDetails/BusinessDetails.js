@@ -535,7 +535,6 @@ const BusinessDetails = (props) => {
 
 
       <>
-        {console.log("factumData", factumData)}
         {factumData && (
           <ViewKycCollapse
             title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
