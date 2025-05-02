@@ -32,10 +32,11 @@ function AssignZone() {
       clientOwnershipType = "PROPRIETARY"
     } else if (payload?.clientOwnershipType?.toLowerCase() === "private ltd") {
       clientOwnershipType = "PRIVATE"
-    } else if (payload?.clientOwnershipType === "public limited") {
+    } else if (payload?.clientOwnershipType?.toLowerCase() === "public limited") {
       clientOwnershipType = "PUBLIC"
-    }
-    else {
+    } else if (payload?.clientOwnershipType?.toLowerCase() === "ngo") {
+      clientOwnershipType = "TRUST"
+    } else {
       clientOwnershipType = payload?.clientOwnershipType?.toUpperCase()
     }
 
