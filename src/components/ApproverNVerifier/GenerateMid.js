@@ -15,21 +15,29 @@ import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlic
 import moment from "moment";
 
 
+
 function AssignZone() {
 
   const [clientCodeList, setCliencodeList] = useState([])
   const [disable, setDisable] = useState(false)
   const midState = useSelector(state => state.mid)
+  const [requestPayload, setRequestPayload] = useState(null);
+
 
   const MidPayloadUpdate = (payload) => {
+
     // clientOwnershipType
     let clientOwnershipType = ""
     if (payload?.clientOwnershipType?.toLowerCase() === "proprietorship") {
       clientOwnershipType = "PROPRIETARY"
     } else if (payload?.clientOwnershipType?.toLowerCase() === "private ltd") {
       clientOwnershipType = "PRIVATE"
-    } else if (payload?.clientOwnershipType === "public limited") {
+    } else if (payload?.clientOwnershipType?.toLowerCase() === "public limited") {
       clientOwnershipType = "PUBLIC"
+    } else if (payload?.clientOwnershipType?.toLowerCase() === "ngo") {
+      clientOwnershipType = "TRUST"
+    } else {
+      clientOwnershipType = payload?.clientOwnershipType?.toUpperCase()
     }
 
     let reqPayload = {
@@ -70,6 +78,11 @@ function AssignZone() {
 
   const [createMidData, setCreateMidData] = useState({})
   const [show, Setshow] = useState(false)
+  const [showFullJson, setShowFullJson] = useState(false);
+
+
+
+
 
 
 
@@ -130,6 +143,9 @@ function AssignZone() {
             <div className="mb-4">
               <h6> Payment Mode: {formValues?.mode_name}</h6>
               <h6> Bank: {formValues?.bank_name}</h6>
+              <h6>Client Code: {formValues?.react_select?.label}</h6>
+
+
             </div>
 
 
@@ -151,10 +167,35 @@ function AssignZone() {
                   )}
                   Confirm
                 </button>
+
               </div>
             )}
+
+
+            {requestPayload && (
+
+              <div>
+                <h6>Request payload</h6>
+                <pre className={`bg-light p-3 rounded ${showFullJson ? '' : 'overflow-auto'} mb-2`} style={{ maxHeight: showFullJson ? 'none' : '200px' }}>
+                  {JSON.stringify(requestPayload, null, 2)}
+                </pre>
+
+                <a
+                  className="text-primary text-decoration-underline"
+                  role="button"
+                  onClick={() => setShowFullJson(!showFullJson)}
+                >
+                  {showFullJson ? "Show Less" : "Show More"}
+                </a>
+              </div>
+            )}
+
+
+
+
           </div>
         </div>
+
 
 
         {loading ? (
@@ -222,11 +263,14 @@ function AssignZone() {
     try {
       let reqPayload = await fetchMidPayload(midData);
 
+
       reqPayload = MidPayloadUpdate(reqPayload?.data?.result)
 
+
+      setRequestPayload(reqPayload);
       let createMidResp = dispatch(createMidApi(reqPayload))
       createMidResp.then((resp) => {
-        console.log(resp)
+
         if (resp?.meta?.requestStatus === "fulfilled") {
           Setshow(true)
           setCreateMidData(resp?.payload)
@@ -366,7 +410,7 @@ function AssignZone() {
 
 
       <CustomModal modalBody={modalBody} headerTitle={"MID Generation Request"} modalToggle={openZoneModal}
-        fnSetModalToggle={setOpenModal} />
+        fnSetModalToggle={setOpenModal} setRequestPayload={setRequestPayload} resetPayload={true} Setshow={Setshow} />
 
 
     </section>
