@@ -97,6 +97,7 @@ const API_LIVE = {
   SUBMERCHANT_FETCH_DETAILS: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
   SUBMERCHANT_DEACTIVATE: `${mid_url}/submerchant_onboarding/submerchant/deactivate`,
   REACTIVATE_SUBMERCHANT: `${mid_url}/submerchant_onboarding/submerchant/reactivate`,
+  UPDATE_SUBMERCHANT_API: `${mid_url}/submerchant_onboarding/submerchant/update `,
   // https://stage-merchantonboarding.sabpaisa.in
 
 

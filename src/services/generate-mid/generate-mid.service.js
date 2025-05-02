@@ -29,6 +29,12 @@ export const deactivateSubMerchant = (obj) => {
     return axiosInstance.post(API_URL.SUBMERCHANT_DEACTIVATE, obj)
 }
 
+export const updateSubmerchantApi = (obj) => {
+    return axiosInstance.post(API_URL.UPDATE_SUBMERCHANT_API, obj)
+}
+
+
+
 export const reactivateSubMerchant = (obj) => {
     return axiosInstance.post(API_URL.REACTIVATE_SUBMERCHANT, obj)
 }
