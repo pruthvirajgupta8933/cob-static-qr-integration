@@ -858,7 +858,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/mid-management`}
                 Component={MidManagement}
-                roleList={{ bank: true, approver: true }}
+                roleList={{ approver: true, verifier: true }}
               />
               <AuthorizedRoute
                 exact
