@@ -423,6 +423,7 @@ const TransactionHistory = () => {
 
       const excelHeaderRow = [
         // "S.No",
+        "PG Trans ID",
         "Trans ID",
         "Client Trans ID",
         "Challan Number / VAN",
@@ -471,6 +472,7 @@ const TransactionHistory = () => {
       reportData.forEach((item, index) => {
         const {
           // srNo = index + 1,
+          pg_txn_id = "",
           txn_id = "",
           client_txn_id = "",
           challan_no = "",
@@ -516,6 +518,7 @@ const TransactionHistory = () => {
 
         excelArr.push([
           // srNo,
+          pg_txn_id,
           txn_id,
           client_txn_id,
           challan_no,
@@ -762,16 +765,22 @@ const TransactionHistory = () => {
       width: "95px",
     },
     {
+      id: "1232",
+      name: "PG Transaction ID",
+      selector: (row) => row.pg_txn_id,
+      width: "150px",
+    },
+    {
       id: "2",
       name: "Transaction ID",
       selector: (row) => row.txn_id,
-      width: "130px",
+      width: "150px",
     },
     {
       id: "3",
       name: "Client Transaction ID",
       selector: (row) => row.client_txn_id,
-      width: "130px",
+      width: "200px",
     },
     {
       id: "4",
