@@ -423,7 +423,7 @@ const TransactionHistory = () => {
 
       const excelHeaderRow = [
         // "S.No",
-        "PG Trans ID",
+        "RRN / UTR",
         "Trans ID",
         "Client Trans ID",
         "Challan Number / VAN",
@@ -766,7 +766,7 @@ const TransactionHistory = () => {
     },
     {
       id: "1232",
-      name: "PG Transaction ID",
+      name: "RRN / UTR",
       selector: (row) => row.pg_txn_id,
       width: "150px",
     },
