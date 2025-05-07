@@ -104,6 +104,10 @@ const AdvancePanValidate = ({ selectedDocType }) => {
               <span>{panInfo?.dob}</span>
             </div>
             <div className="col-md-6 p-2">
+              <span className="font-weight-bold mb-1">Father Name : </span>
+              <span>{panInfo?.father_name}</span>
+            </div>
+            <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">Aadhaar Linked : </span>
               <span className="text-capitalize">
                 {panInfo?.aadhaar_linked?.toString()}

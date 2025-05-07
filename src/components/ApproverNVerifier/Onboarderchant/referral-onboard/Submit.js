@@ -43,14 +43,15 @@ const Submit = ({ disableForm, setInfoModal }) => {
     const clientFullName = basicDetailsResponse?.data?.name ?? kycData?.name;
     const clientMobileNo =
       basicDetailsResponse?.data?.mobileNumber ?? kycData?.contactNumber;
+    console.log("clientFullName", clientFullName)
+    console.log("clientMobileNo", clientMobileNo)
     // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
 
     // check client code is existing
     let newClientCode;
-    // const checkClientCode = await authService.checkClintCode({
-    //   client_code: arrayOfClientCode,
-    // });
+
     const checkClientCode = await generateAndSaveClientCode(clientFullName, clientMobileNo)
+    console.log("checkClientCode", checkClientCode)
     if (
       checkClientCode?.data?.clientCode !== "" &&
       checkClientCode?.data?.status === true
@@ -59,7 +60,7 @@ const Submit = ({ disableForm, setInfoModal }) => {
     } else {
       newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
     }
-
+    console.log("newClientCode", newClientCode)
     const data = {
       loginId:
         basicDetailsResponse.data?.loginMasterId ?? kycData?.loginMasterId,
@@ -67,6 +68,7 @@ const Submit = ({ disableForm, setInfoModal }) => {
       clientCode: newClientCode,
     };
 
+    console.log("data", data)
     try {
       const clientCreated = await axiosInstanceJWT.post(
         API_URL.AUTH_CLIENT_CREATE,
@@ -90,6 +92,7 @@ const Submit = ({ disableForm, setInfoModal }) => {
     setSubmitLoader(true);
     const isClientCodeCreated =
       Boolean(kycData?.clientCode) || createClientCode();
+    console.log("isClientCodeCreated", isClientCodeCreated)
     if (isClientCodeCreated) {
       dispatch(
         saveKycConsent({
