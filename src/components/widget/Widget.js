@@ -1,462 +1,403 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import * as Yup from 'yup';
-
-import FormikController from '../../_components/formik/FormikController';
-import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
-import { toast } from "react-toastify";
-import hljs from 'highlight.js';
-import { WIDGET_SCRIPT_URL } from '../../config';
-import Yup from '../../_components/formik/Yup';
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { Formik, Form, Field, FieldArray } from 'formik';
+import { toast } from 'react-toastify';
+import Splogo from "../../assets/images/sp-logo.png";
+import "./widget.css";
+import widgetService from "../../services/widget.service";
 
 function MyForm() {
     const dispatch = useDispatch();
-    const codeSnippetRef = useRef(null);
-    const [isCopied, setIsCopied] = useState(false);
-    const [show, setShow] = useState(true)
-    const [isLoading, setIsLoading] = useState(true)
-    const { user } = useSelector((state) => state.auth);
-    const widgetDetail = useSelector((state) => state?.widget?.widgetDetail?.data)
-    const activeStatus = widgetDetail?.status
+    const [step, setStep] = useState(1);
+    const [nextParamId, setNextParamId] = useState(12); // Param ID starts at 12
 
-    let clientMerchantDetailsList = [];
-    let clientCode = "";
-    if (user && user.clientMerchantDetailsList === null) {
+    const stepTitles = ['Basic Info', 'Button Details', 'Client Params', 'Amount Type', 'Submit'];
 
-    } else {
-        clientMerchantDetailsList = user.clientMerchantDetailsList;
-        clientCode = clientMerchantDetailsList[0].clientCode;
-    }
     const initialValues = {
-        client_name: widgetDetail?.client_name || '',
-        client_code: clientCode,
-        client_type: widgetDetail?.client_type || '',
-        client_url: widgetDetail?.client_url || '',
-        return_url: widgetDetail?.return_url || '',
-        image_URL: widgetDetail?.image_URL || '',
-        position: widgetDetail?.position || '',
-        company_name: widgetDetail?.company_name || '',
-        description: widgetDetail?.description || ''
+        client_name: '',
+        client_code: '',
+        client_type: '',
+        client_url: '',
+        return_url: '',
+        image_URL: '',
+        position: '',
+        company_name: '',
+        description: '',
+        button_style: { button_color: '', size: '', border_radius: '', title: '' },
+        button_type: '',
+        amount_type: {
+            amount_type: '',
+            options: [{ item: '', amount: '' }],
+            default_amount: '',
+            static_amount: false
+        },
+        client_params: [
+            { param_id: nextParamId, label: '', mandatory: false, input_type: 'text', options: [], date: '' }
+        ]
     };
 
-    useEffect(() => {
-        dispatch(widgetDetails(clientCode))
-            .then(() => {
-                setIsLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching widget details:', error);
-                setIsLoading(false);
-            });
-    }, [dispatch, clientCode, activeStatus]);
+    const nextStep = () => setStep(prev => prev + 1);
+    const prevStep = () => setStep(prev => prev - 1);
 
+    const handleSubmit = async (values) => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const clientMerchantDetailsList = user?.clientMerchantDetailsList;
+        const transformedValues = {
+            client_data: {
+                client_name: clientMerchantDetailsList[0].clientName,
+                client_code: clientMerchantDetailsList[0].clientCode,
+                client_type: clientMerchantDetailsList[0].clientType,
+                client_url: values.client_url,
+                return_url: values.return_url,
+                image_URL: values.image_URL,
+                position: "top",
+                company_name: values.company_name,
+                description: values.description,
+                button_style: values.button_style,
+                button_type: values.button_type
+            },
+            amount_type: values.amount_type,
+            client_params: values.client_params
+        };
+        try {
 
-    const validationSchema = Yup.object().shape({
-        client_name: Yup.string().required('Client Name is required'),
-        client_code: Yup.string().required('Client Code is required'),
-        client_type: Yup.string().required('Client Type is required'),
-        client_url: Yup.string().url('Invalid URL').required('Client URL is required'),
-        return_url: Yup.string().url('Invalid URL').required('Return URL is required'),
-        image_URL: Yup.string().url('Invalid URL').required('Return URL is required'),
-        position: Yup.string().required('Position is required'),
-        company_name: Yup.string().required('Company Name is required'),
-        description: Yup.string()
-    });
-
-
-
-
-
-    const handleSubmit = (values) => {
-        const postData = {
-            "client_name": values.client_name,
-            "client_code": clientCode,
-            "client_type": values.client_type,
-            "client_url": values.client_url,
-            "return_url": values.return_url,
-            "image_URL": values.image_URL,
-            "position": values.position,
-            "company_name": values.company_name,
-            "description": values.description
+            const response = await widgetService.createClientkey(transformedValues);
+            if (response?.status == 200) {
+                toast.success(`${response?.data?.message}`);
+                setStep(1);
+            }
         }
-        dispatch(
-            widgetClientKeys(postData)
-        )
-            .then((res) => {
+        catch (err) {
+            toast.error(`Something went wrong.`);
 
-                if (
-                    res?.meta?.requestStatus === "fulfilled"
-
-                ) {
-
-
-                    dispatch(widgetDetails(clientCode))
-
-                    setShow(false)
-                    toast.success(res.payload?.message);
-
-                } else {
-                    toast.error(res?.payload ?? "Somthing went wrong");
-                }
-            }).catch((error) => {
-                toast.error(error?.res?.data.message);
-
-
-            })
-
-
-    };
-
-    const copyToClipboard = () => {
-        if (codeSnippetRef.current) {
-            const codeSnippet = codeSnippetRef.current.innerText;
-            navigator.clipboard.writeText(codeSnippet)
-                .then(() => {
-                    setIsCopied(true);
-
-                    // Reset the copy status after a delay (e.g., 2 seconds)
-                    setTimeout(() => {
-                        setIsCopied(false);
-                    }, 1000);
-                })
-                .catch((error) => {
-                    console.error('Error copying code to clipboard:', error);
-                });
         }
 
+    };
+
+    const [buttonTitle, setButtonTitle] = useState("Pay Now");
+    const [buttonColor, setButtonColor] = useState("");
+    // ✅ Centralized Handle Change Function
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        const fieldValue = type === 'checkbox' ? checked : value;
+
+        if (name == "button_style.title") {
+            setButtonTitle(fieldValue);
+        }
+        if (name == "button_style.button_color") {
+            setButtonColor(fieldValue);
+        }
 
     };
 
+    // ✅ Helper to use setFieldValue with logging
+    const customHandleChange = (e, setFieldValue) => {
+        handleChange(e);
+        setFieldValue(e.target.name, e.target.type === 'checkbox' ? e.target.checked : e.target.value);
+    };
 
-    useEffect(() => {
-        hljs.highlightAll();
-    }, []);
+
 
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col-lg-6">
-                    <h5 className="">Create Widget</h5>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                        enableReinitialize={true}
-                    >
-                        {({
+        <div className="container mt-5">
+            <h3 className="text-center mb-4">Create Widget</h3>
 
-                        }) => (
-                            <Form>
-                                <div className="row mt-3">
-                                    <div className="col-lg-6 col-sm-12 col-md-12">
-                                        <label className="col-form-label mt-0 p-2" >
-                                            Client Name<span className="text-danger">*</span>
-                                        </label>
+            <div className="mb-5">
+                <div className="position-relative d-flex justify-content-between align-items-center mx-auto" style={{ maxWidth: '720px' }}>
+                    {stepTitles.map((title, index) => {
+                        const isActive = step === index + 1;
+                        const isCompleted = step > index + 1;
 
-                                        <FormikController
-                                            control="input"
-                                            type="text"
-                                            name="client_name"
+                        return (
+                            <div key={index} className="text-center position-relative" style={{ zIndex: 2 }}>
+                                <div className={`rounded-circle d-flex justify-content-center align-items-center mx-auto mb-2 
+                                    ${isActive ? 'bg-primary text-white shadow' : isCompleted ? 'bg-success text-white' : 'bg-secondary-subtle text-dark'}`}
+                                    style={{
+                                        width: '26px', height: '26px', fontSize: '0.8rem', border: '2px solid white'
+                                    }}>
+                                    {isCompleted ? <i className="bi bi-check-lg" style={{ fontSize: '0.9rem' }}></i> : index + 1}
+                                </div>
+                                <div className={`small ${isActive ? 'text-primary fw-bold' : 'text-muted'}`} style={{ fontSize: '0.75rem' }}>{title}</div>
+                                {index < stepTitles.length - 1 && (
+                                    <div className="position-absolute top-50 start-100 translate-middle-y" style={{
+                                        height: '2px', width: '100%', backgroundColor: step > index + 1 ? '#198754' : '#ced4da', zIndex: 1
+                                    }} />
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                {({ values, setFieldValue, handleBlur }) => (
+                    <Form>
+                        {step === 1 && (
+                            <div className="row">
+                                {["client_url", "return_url", "image_URL", "company_name"].map(field => (
+                                    <div className="col-md-6 mb-3" key={field}>
+                                        <Field
+                                            name={field}
                                             className="form-control"
-                                            placeholder="Enter client name"
-                                            disabled={activeStatus === "Active" || activeStatus === "Pending"}
-
+                                            placeholder={field.replace('_', ' ')}
+                                            onChange={(e) => customHandleChange(e, setFieldValue)}
+                                            onBlur={handleBlur}
                                         />
                                     </div>
+                                ))}
+                            </div>
+                        )}
 
-                                    <div className="col-sm-6 col-md-6 col-lg-6" >
-                                        <label className="col-form-label mt-0 p-2 " >
-                                            Client Code<span style={{ color: "red" }}>*</span>
-                                        </label>
-
-                                        <FormikController
-                                            control="input"
-                                            type="text"
-                                            name="client_code"
-                                            placeholder="Enter client code"
-                                            disabled={activeStatus === "Active" || activeStatus === "Pending"}
-                                            className="form-control"
-
-
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2" >
-                                            Client Type<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
+                        {step === 2 && (
+                            <>
+                                <h5 className="mb-4">Button Style</h5>
+                                <div className="d-flex justify-content-between flex-wrap gap-4">
+                                    <div style={{ flex: 1, minWidth: "280px", maxWidth: "400px" }}>
+                                        <div className="mb-3">
+                                            <label className="form-label">Button Title</label>
                                             <Field
-                                                type="text"
-                                                name="client_type"
-                                                placeholder="Enter client type"
+                                                name="button_style.title"
                                                 className="form-control"
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                                placeholder="Enter Button Title"
+                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                onBlur={handleBlur}
                                             />
                                         </div>
 
-                                        {
-                                            <ErrorMessage name="client_type">
-                                                {(msg) => (
-                                                    <span className="abhitest- errortxt- text-danger">
-                                                        {msg}
-                                                    </span>
-                                                )}
-                                            </ErrorMessage>
-                                        }
-                                    </div>
-
-                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Website URL (e.g., https://www.example.com)">
-                                            Client URL<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
+                                        <div className="mb-3">
+                                            <label className="form-label">Button Color</label>
                                             <Field
-                                                type="text"
-                                                name="client_url"
-                                                placeholder="Enter client url"
-                                                className="form-control"
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
-
-                                            />
-
-
-                                        </div>
-
-                                        {<ErrorMessage name="client_url">
-                                            {(msg) => (
-                                                <span className="abhitest- errortxt- text-danger">
-                                                    {msg}
-                                                </span>
-                                            )}
-                                        </ErrorMessage>
-                                        }
-
-
-                                    </div>
-
-
-
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Response URL">
-                                            Return URL<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
-                                            <Field
-                                                type="text"
-                                                name="return_url"
-                                                className="form-control"
-                                                placeholder="Enter return url"
-
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
-                                            />
-                                        </div>
-
-                                        {
-                                            <ErrorMessage name="return_url">
-                                                {(msg) => (
-                                                    <span className="abhitest- errortxt- text-danger">
-                                                        {msg}
-                                                    </span>
-                                                )}
-                                            </ErrorMessage>
-                                        }
-                                    </div>
-                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2" data-tip="Enter image URL (e.g., https://www.example.com/image.jpg)">
-                                            Image URL<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
-                                            <Field
-                                                type="text"
-                                                name="image_URL"
-                                                className="form-control"
-                                                placeholder="Enter image url"
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
-
-                                            />
-
-
-                                        </div>
-
-                                        {<ErrorMessage name="image_URL">
-                                            {(msg) => (
-                                                <span className="abhitest- errortxt- text-danger">
-                                                    {msg}
-                                                </span>
-                                            )}
-                                        </ErrorMessage>
-                                        }
-
-                                    </div>
-
-                                </div>
-
-
-                                <div className="row">
-                                    <div className="col-sm-6 col-md-6 col-lg-6">
-                                        <label className="col-form-label mt-0 p-2" data-tip="Left/Right/Center">
-                                            Position<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
-                                            <Field
-                                                type="text"
-                                                name="position"
-                                                className="form-control"
-                                                placeholder="Enter position"
-
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
-                                            />
-                                        </div>
-
-                                        {
-                                            <ErrorMessage name="position">
-                                                {(msg) => (
-                                                    <span className="abhitest- errortxt- text-danger">
-                                                        {msg}
-                                                    </span>
-                                                )}
-                                            </ErrorMessage>
-                                        }
-                                    </div>
-                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2">
-                                            Company Name<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
-                                            <Field
-                                                type="text"
-                                                name="company_name"
-                                                className="form-control"
-                                                placeholder="Enter company name"
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
-                                            />
-                                        </div>
-
-                                        {<ErrorMessage name="company_name">
-                                            {(msg) => (
-                                                <span className="abhitest- errortxt- text-danger">
-                                                    {msg}
-                                                </span>
-                                            )}
-                                        </ErrorMessage>
-                                        }
-
-                                    </div>
-
-                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
-                                        <label className="col-form-label mt-0 p-2">
-                                            Description<span style={{ color: "red" }}>*</span>
-                                        </label>
-                                        <div className="input-group">
-                                            <Field
-                                                type="text"
-                                                name="description"
-                                                className="form-control"
-                                                placeholder="Enter description"
-                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
-                                            />
-                                        </div>
-
-                                        {<ErrorMessage name="description">
-                                            {(msg) => (
-                                                <span className="abhitest- errortxt- text-danger">
-                                                    {msg}
-                                                </span>
-                                            )}
-                                        </ErrorMessage>
-                                        }
-
-                                    </div>
-
-                                </div>
-                                {!(activeStatus === "Active" || activeStatus === "Pending") && (
-                                    <div className="row mt-4">
-                                        <div className="col-sm-12 col-md-12 col-lg-12 col-form-label d-flex justify-content-center">
-
-                                            <button
-                                                disabled={activeStatus === "Active" ? true : false}
-                                                type="submit"
-                                                className="btn btn-sm  cob-btn-primary text-white"
-                                                style={{ width: "150px", height: "40px" }}
+                                                as="select"
+                                                name="button_style.button_color"
+                                                className="form-select"
+                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                onBlur={handleBlur}
                                             >
+                                                <option value="">Select Button Color</option>
+                                                <option value="#BE3D2A">Red</option>
+                                                <option value="#3F7D58">Green</option>
+                                                <option value="#2a53ee">Blue</option>
+                                            </Field>
+                                        </div>
 
-                                                Generate Script
-                                            </button>
-
+                                        <div className="mb-3">
+                                            <label className="form-label">Button Type</label>
+                                            <Field
+                                                as="select"
+                                                name="button_type"
+                                                className="form-select"
+                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                onBlur={handleBlur}
+                                            >
+                                                <option value="">Select Button Type</option>
+                                                <option value="quickpay">Quick Pay</option>
+                                                <option value="donationpay">Donation Pay</option>
+                                            </Field>
                                         </div>
                                     </div>
+
+                                    <div>
+                                        <h6 className="mb-3">Button Preview</h6>
+                                        <div className="widget-cross" style={{ backgroundColor: buttonColor }}>
+                                            <div style={{ cursor: "pointer" }} className="my-flex-container">
+                                                <img src={Splogo} className="logo-img" alt="SabPaisa Logo" />
+                                                <div>
+                                                    <div className="pay-now-title" style={{ fontStyle: 'italic' }}>{buttonTitle}</div>
+                                                    <div className="secured-by" style={{ fontSize: '10px', marginLeft: '5px' }}>
+                                                        Secured By SabPaisa
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {step === 3 && (
+                            <>
+                                <h5>Client Params</h5>
+                                <FieldArray name="client_params">
+                                    {({ push, remove }) => (
+                                        <>
+                                            {values.client_params.map((param, idx) => (
+                                                <div key={idx} className="border p-3 mb-3 rounded">
+                                                    <div className="row">
+                                                        <div className="col-md-6 mb-2">
+                                                            <Field
+                                                                name={`client_params[${idx}].label`}
+                                                                className="form-control"
+                                                                placeholder="Label"
+                                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                                onBlur={handleBlur}
+                                                            />
+                                                        </div>
+                                                        <div className="col-md-6 mb-2">
+                                                            <Field
+                                                                as="select"
+                                                                name={`client_params[${idx}].input_type`}
+                                                                className="form-control"
+                                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                                onBlur={handleBlur}
+                                                            >
+                                                                <option value="text">Text</option>
+                                                                <option value="number">Number</option>
+                                                                <option value="dropdown">Dropdown</option>
+                                                                <option value="checkbox">Checkbox</option>
+                                                                <option value="date">Date</option>
+                                                            </Field>
+                                                        </div>
+                                                    </div>
+
+                                                    {param.input_type === 'dropdown' && (
+                                                        <FieldArray name={`client_params[${idx}].options`}>
+                                                            {({ push: pushOpt, remove: removeOpt }) => (
+                                                                <>
+                                                                    {(param.options || []).map((opt, oIdx) => (
+                                                                        <div key={oIdx} className="d-flex mb-2">
+                                                                            <Field
+                                                                                name={`client_params[${idx}].options[${oIdx}]`}
+                                                                                className="form-control me-2"
+                                                                                placeholder={`Option ${oIdx + 1}`}
+                                                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                                                onBlur={handleBlur}
+                                                                            />
+                                                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => removeOpt(oIdx)}>x</button>
+                                                                        </div>
+                                                                    ))}
+                                                                    <button type="button" className="btn btn-primary btn-sm" onClick={() => pushOpt('')}>+ Add Option</button>
+                                                                </>
+                                                            )}
+                                                        </FieldArray>
+                                                    )}
+
+                                                    <div className="form-check mt-2">
+                                                        <Field
+                                                            type="checkbox"
+                                                            name={`client_params[${idx}].mandatory`}
+                                                            className="form-check-input"
+                                                            onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                            onBlur={handleBlur}
+                                                        />
+                                                        <label className="form-check-label">Mandatory</label>
+                                                    </div>
+                                                    <button type="button" className="btn btn-danger btn-sm mt-2" onClick={() => remove(idx)}>Remove Param</button>
+                                                </div>
+                                            ))}
+                                            {/* <button type="button" className="btn btn-primary btn-sm" onClick={() => push({ param_id: '12' + Date.now(), label: '', mandatory: false, input_type: 'text', options: [], date: '' })}>
+                                                + Add Param
+                                            </button> */}
+                                            <button type="button" className="btn btn-primary btn-sm"
+                                                onClick={() => {
+                                                    push({ param_id: nextParamId, label: '', mandatory: false, input_type: 'text', options: [], date: '' });
+                                                    setNextParamId(prev => prev + 1);
+                                                }}>
+                                                + Add Param
+                                            </button>
+                                        </>
+                                    )}
+                                </FieldArray>
+                            </>
+                        )}
+
+                        {step === 4 && (
+                            <>
+                                <h5>Amount Type</h5>
+                                <div className="mb-3">
+                                    <Field
+                                        as="select"
+                                        name="amount_type.amount_type"
+                                        className="form-control"
+                                        onChange={(e) => customHandleChange(e, setFieldValue)}
+                                        onBlur={handleBlur}
+                                    >
+                                        <option value="">Select Amount Type</option>
+                                        <option value="Donation">Donation</option>
+                                        <option value="Quickpay">Quickpay</option>
+                                    </Field>
+                                </div>
+
+                                {values.amount_type.amount_type === 'Donation' && (
+                                    <FieldArray name="amount_type.options">
+                                        {({ push, remove }) => (
+                                            <>
+                                                {values.amount_type.options.map((option, idx) => (
+                                                    <div key={idx} className="row mb-2">
+                                                        <div className="col">
+                                                            <Field
+                                                                name={`amount_type.options[${idx}].item`}
+                                                                className="form-control"
+                                                                placeholder="Item"
+                                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                                onBlur={handleBlur}
+                                                            />
+                                                        </div>
+                                                        <div className="col">
+                                                            <Field
+                                                                name={`amount_type.options[${idx}].amount`}
+                                                                type="number"
+                                                                className="form-control"
+                                                                placeholder="Amount"
+                                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                                onBlur={handleBlur}
+                                                            />
+                                                        </div>
+                                                        <div className="col-auto">
+                                                            <button type="button" className="btn btn-danger btn-sm" onClick={() => remove(idx)}>Remove</button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                                <button type="button" className="btn btn-primary btn-sm" onClick={() => push({ item: '', amount: '' })}>+ Add Option</button>
+                                            </>
+                                        )}
+                                    </FieldArray>
                                 )}
 
-                            </Form>
+                                {values.amount_type.amount_type === 'Quickpay' && (
+                                    <>
+                                        <Field
+                                            name="amount_type.default_amount"
+                                            type="number"
+                                            className="form-control mb-2"
+                                            placeholder="Default Amount"
+                                            onChange={(e) => customHandleChange(e, setFieldValue)}
+                                            onBlur={handleBlur}
+                                        />
+                                        <div className="form-check">
+                                            <Field
+                                                type="checkbox"
+                                                name="amount_type.static_amount"
+                                                className="form-check-input"
+                                                onChange={(e) => customHandleChange(e, setFieldValue)}
+                                                onBlur={handleBlur}
+                                            />
+                                            <label className="form-check-label">Static Amount</label>
+                                        </div>
+                                    </>
+                                )}
+                            </>
                         )}
-                    </Formik>
-                </div>
-                <div className="col-lg-6">
-                    {isLoading ? (
-                        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        </div>
-                    ) : (
-                        activeStatus === "Active" ? (
-                            <React.Fragment>
-                                <div className="code-snippet">
-                                    <div className="d-flex justify-content-end align-items-center mb-3">
-                                        <span
-                                            className="input-group-text"
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={copyToClipboard}
-                                            data-tip={isCopied ? "Copied!" : "Copy"}
-                                        >
-                                            <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
-                                        </span>
-                                    </div>
-                                    <pre className='scroll-overflow'>
-                                        <code className="html" ref={(node) => {
-                                            if (node) {
-                                                codeSnippetRef.current = node;
-                                                hljs.highlightBlock(node);
-                                            }
-                                        }}>
-                                            &lt;div id="sabpaisa" client_code="{clientCode}" client_key="{widgetDetail?.client_key}"&gt;&lt;/div&gt; {'\n'}
-                                            &lt;script src={WIDGET_SCRIPT_URL.SCRIPT_URL}&gt;&lt;/script&gt; {'\n'}
-                                        </code>
-                                    </pre>
-                                </div>
-                                <div className="instructions mt-2">
-                                    <h6>
-                                        Instruction : To use this widget, please copy the following <span className="ml-1 mr-1"></span>
-                                        <span className="html-tag">&lt;div&gt;</span> and
-                                        <span className="ml-1 mr-1"></span>
-                                        <span className="html-tag">&lt;script&gt;</span>
-                                        <span className="ml-1 mr-1">into the &lt;body&gt; tag of your HTML document.</span>
-                                    </h6>
-                                </div>
-                            </React.Fragment>
-                        ) : (
-                            activeStatus === "Pending" && (
-                                <div className="alert alert-warning alertcss ml-3" role="alert">
-                                    Thank you for your registration with our new product, "Widget".Please bear with us.Your "Access Key" will be generated below, post approval from us!
-                                </div>
-                            ))
-                    )}
-                </div>
 
-            </div>
+                        {step === 5 && (
+                            <div className="text-center">
+                                <h5 className="mb-4">Review & Submit</h5>
+                                <button type="submit" className="btn btn-success">Submit</button>
+                            </div>
+                        )}
+
+                        <div className="d-flex justify-content-between mt-4">
+                            {step > 1 ? (
+                                <button type="button" className="btn btn-outline-secondary" onClick={prevStep}>← Back</button>
+                            ) : <div />}
+                            {step < 5 ? (
+                                <button type="button" className="btn btn-primary ms-auto" onClick={nextStep}>Next →</button>
+                            ) : null}
+                        </div>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 }
 
 export default MyForm;
-
-
-
-
