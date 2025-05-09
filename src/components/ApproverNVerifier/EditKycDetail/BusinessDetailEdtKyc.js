@@ -22,6 +22,7 @@ import gotVerified from "../../../assets/images/verified.png";
 import { isNull } from "lodash";
 import { udyamValidate } from "../../../services/kyc/kyc-validate/kyc-validate.service";
 import toastConfig from "../../../utilities/toastTypes";
+import { cinValidation } from "../../../slices/kycValidatorSlice";
 
 function BusinessDetailEdtKyc(props) {
   const setTab = props.tab;
@@ -33,23 +34,27 @@ function BusinessDetailEdtKyc(props) {
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
-  const { allTabsValidate } = kyc;
+  const { allTabsValidate, KycTabStatusStore } = kyc;
 
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
+
   const KycList = kyc?.kycUserList;
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status;
 
 
   const buttonText = "Save and Next";
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingForCin, setLoadingForCin] = useState(false);
   const [loadingForGst, setLoadingForGst] = useState(false);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
   const [isLoader, setIsloader] = useState(false);
   const [udyamResponseData, setUdyamResponseData] = useState({});
+  const readOnly = false;
 
   const busiAuthFirstName =
     BusinessDetailsStatus.AuthPanValidation?.first_name === null
@@ -115,6 +120,10 @@ function BusinessDetailEdtKyc(props) {
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
+    cin_number: KycList?.cin ?? "",
+    cin_data: {},
+    prevCinNumber: KycList?.cin ?? "",
+    isCinVerified: KycList?.cin ? true : false
   };
 
 
@@ -218,6 +227,7 @@ function BusinessDetailEdtKyc(props) {
         .matches(reqexPinCode, "Pin Code is Invalid")
 
         .nullable(),
+      cin_number: Yup.string().nullable(),
       operational_address: Yup.string()
         .allowOneSpace()
         .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
@@ -385,6 +395,46 @@ function BusinessDetailEdtKyc(props) {
     });
   };
 
+  const cinValidationField = (values, key, setFieldValue) => {
+    setLoadingForCin(true);
+
+    setFieldValue(key, values);
+    setFieldValue("prevCinNumber", "");
+    setFieldValue("cin_data", "");
+    setFieldValue("isCinVerified", "");
+    try {
+      dispatch(cinValidation({ cin_number: values })).then(res => {
+        console.log("res?.payload", res?.payload)
+        setLoadingForCin(false);
+        // console.log(res)
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true &&
+          res.payload.valid === true
+        ) {
+          setFieldValue(key, values);
+          setFieldValue("prevCinNumber", values);
+          setFieldValue("cin_data", res?.payload);
+          setFieldValue("isCinVerified", true);
+          // console.log(res?.payload)
+          // setCinData(res?.payload);
+          // setCinStatus(res.payload.status);
+        } else {
+          setLoadingForCin(false);
+          toastConfig.errorToast(
+            res?.payload?.data?.message ?? res?.payload?.data?.detail ?? "Something went wrong"
+          );
+        }
+      }).catch(error => {
+        setLoadingForCin(false);
+      })
+
+    } catch (error) {
+      setLoadingForCin(false);
+    }
+
+  };
+
   const checkInputIsValid = async (
     err,
     val,
@@ -429,6 +479,10 @@ function BusinessDetailEdtKyc(props) {
       udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
       setIsloader(true);
     }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "cin_number") {
+      cinValidationField(val[key], "cin_number", setFieldValue);
+      setLoadingForCin(true);
+    }
   };
 
   const onSubmit = (values) => {
@@ -447,6 +501,7 @@ function BusinessDetailEdtKyc(props) {
       "operational_address",
       "is_udyam",
       "udyam_data",
+      "cin_number"
     ].some((field) => !values[field]);
 
 
@@ -478,6 +533,8 @@ function BusinessDetailEdtKyc(props) {
       modified_by: loginId,
       is_udyam: JSON.parse(values.registerd_with_udyam),
       udyam_data: udyamResponseData,
+      cin_number: values?.cin_number,
+      cin_data: values?.cin_data,
     };
 
 
@@ -956,6 +1013,77 @@ function BusinessDetailEdtKyc(props) {
               </div>
             </div>
             <div className="row">
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  CIN
+                </label>
+                <div className="input-group">
+                  <Field
+                    type="text"
+                    name="cin_number"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
+                    onChange={(e) => {
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("cin_number", uppercaseValue); // Set the uppercase value to form state
+                      setFieldValue("isCinVerified", false);
+                    }}
+                  />
+                  {values?.cin_number &&
+                    values?.isCinVerified &&
+                    !errors.hasOwnProperty("cin_number") &&
+                    !errors.hasOwnProperty("prevCinNumber") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : (
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+
+                        className="btn cob-btn-primary text-white btn-sm"
+                        disabled={loadingForCin}
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "cin_number",
+                            setFieldValue
+                          );
+                        }}
+                      >
+
+                        {loadingForCin ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                          >
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                        ) : (
+                          "Verify"
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {errors?.cin_number && (
+                  <span className="text-danger mb-0 d-flex">
+                    {errors?.cin_number}
+                  </span>
+                )}
+              </div>
               <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   State<span className="text-danger">*</span>
@@ -981,6 +1109,8 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
+
+
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
