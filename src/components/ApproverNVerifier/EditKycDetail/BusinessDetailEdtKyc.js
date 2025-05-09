@@ -404,6 +404,7 @@ function BusinessDetailEdtKyc(props) {
     setFieldValue("isCinVerified", "");
     try {
       dispatch(cinValidation({ cin_number: values })).then(res => {
+        console.log("res?.payload", res?.payload)
         setLoadingForCin(false);
         // console.log(res)
         if (
