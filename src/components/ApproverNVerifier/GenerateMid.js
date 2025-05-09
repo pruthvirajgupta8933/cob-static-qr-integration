@@ -43,9 +43,9 @@ function AssignZone() {
     let reqPayload = {
       ...payload,
       clientOwnershipType: clientOwnershipType,
-      "clientVirtualAdd": payload.clientVirtualAdd?.replaceAll(/\s/g, ''),
+      clientVirtualAdd: payload.clientVirtualAdd?.replaceAll(/\s/g, ''),
       collectionModes: "UPI",
-      fatherNameOnPan: "FatherName",
+      fatherNameOnPan: payload?.fatherNameOnPan || payload?.clientName,
       clientDob: moment(payload.clientDob, "YYYY-MM-DD").format("DD/MM/YYYY"),
       clientDoi: moment(payload.clientDoi, "YYYY-MM-DD").format("DD/MM/YYYY")
     }
