@@ -17,6 +17,7 @@ import { DatePicker } from "rsuite";
 function CreatePaymentLink({ componentState, onClose }) {
   const [disable, setDisable] = useState(false);
   const [payerData, setPayerData] = useState([]);
+  const [isSchedule, setIsSchedule] = useState(false);
   const { user } = useSelector((state) => state.auth);
 
   let clientMerchantDetailsList = user.clientMerchantDetailsList || [];
@@ -55,61 +56,83 @@ function CreatePaymentLink({ componentState, onClose }) {
   const initialValues = {
     valid_from: validFrom,
     valid_to: validTo,
-    payer_account_number: "12345678901234",
+    valid_from_date: moment(validFrom).format("YYYY-MM-DD"),
+    valid_from_time: moment(validFrom).format("HH:mm"),
+    valid_to_date: moment(validTo).format("YYYY-MM-DD"),
+    valid_to_time: moment(validTo).format("HH:mm"),
     total_amount: "",
     purpose: "",
+    schedule: false,
     is_link_date_validity: true,
     is_partial_payment_accepted: false,
     payer: componentState?.id ?? "",
     client_request_id: uuidv4(),
   };
 
-  const validationSchema = Yup.object().shape({
-    valid_from: Yup.date()
-      .min(new Date(), "Start date can't be before today")
-      .required("Start Date Required")
-      .nullable(),
-    valid_to: Yup.date()
-      .test(
-        "is-greater",
-        "End date must be after start date",
-        function (value) {
-          const { valid_from } = this.parent;
-          if (value && valid_from) {
-            return moment(value).diff(moment(valid_from), "minutes") > 0;
+  const getValidationSchema = (schedule) =>
+    Yup.object().shape({
+      ...(schedule && {
+        valid_from_date: Yup.string().required("Start Date Required"),
+        valid_from_time: Yup.string().required("Start Time Required"),
+        valid_to_date: Yup.string().required("End Date Required"),
+        valid_to_time: Yup.string().required("End Time Required"),
+        valid_to: Yup.mixed().test(
+          "is-greater",
+          "End date/time must be after start date/time",
+          function () {
+            const { valid_from_date, valid_from_time, valid_to_date, valid_to_time } =
+              this.parent;
+            const from = moment(
+              `${valid_from_date} ${valid_from_time}`,
+              "YYYY-MM-DD HH:mm"
+            );
+            const to = moment(
+              `${valid_to_date} ${valid_to_time}`,
+              "YYYY-MM-DD HH:mm"
+            );
+            return to.isAfter(from);
           }
-        }
-      )
-      .required("End Date Required")
-      .nullable(),
-    total_amount: Yup.number()
-      .typeError("Only numbers are allowed")
-      .min(1, "Enter Valid Amount")
-      .max(1000000, "Limit Exceed")
-      .required("Required"),
-    purpose: Yup.string()
-      .max(200, "Max 200 characters allowed")
-      .required("Enter Remark"),
-    payer: Yup.string().required("Payer is required"),
-    communication_mode: Yup.array()
-      .min(1, "At least one communication method is required")
-      .required("At least one communication method is required"),
-  });
+        ),
+      }),
+      total_amount: Yup.number()
+        .typeError("Only numbers are allowed")
+        .min(1, "Enter Valid Amount")
+        .max(1000000, "Limit Exceed")
+        .required("Required"),
+      purpose: Yup.string()
+        .max(200, "Max 200 characters allowed")
+        .required("Enter Remark"),
+      payer: Yup.string().required("Payer is required"),
+      communication_mode: Yup.array()
+        .min(1, "At least one communication method is required")
+        .required("At least one communication method is required"),
+    });
 
   const onSubmit = async (values, resetForm) => {
     setDisable(true);
-    const formattedValidFrom = moment(values.valid_from).format(
-      "YYYY-MM-DD HH:mm"
-    );
-    const formattedValidTo = moment(values.valid_to).format("YYYY-MM-DD HH:mm");
-
-    const postData = {
+    let postData = {
       ...values,
-      valid_from: formattedValidFrom,
-      valid_to: formattedValidTo,
       client_request_id: uuidv4(),
       communication_mode: values.communication_mode,
     };
+
+    if (values.schedule) {
+      const combinedValidFrom = moment(
+        `${values.valid_from_date} ${values.valid_from_time}`,
+        "YYYY-MM-DD HH:mm"
+      );
+      const combinedValidTo = moment(
+        `${values.valid_to_date} ${values.valid_to_time}`,
+        "YYYY-MM-DD HH:mm"
+      );
+      postData.valid_from = combinedValidFrom.format("YYYY-MM-DD HH:mm");
+      postData.valid_to = combinedValidTo.format("YYYY-MM-DD HH:mm");
+      postData.schedule = true;
+    } else {
+      delete postData.valid_from;
+      delete postData.valid_to;
+      postData.schedule = false;
+    }
 
     try {
       const response = await paymentLinkService.createPaymentLink(postData);
@@ -132,11 +155,12 @@ function CreatePaymentLink({ componentState, onClose }) {
 
   return (
     <div className="mymodals modal fade show" style={{ display: "block" }}>
-      <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div className="modal-content">
           <Formik
             initialValues={{ ...initialValues, communication_mode: ["email"] }}
-            validationSchema={validationSchema}
+            validationSchema={getValidationSchema(isSchedule)}
+            enableReinitialize
             onSubmit={(values, { resetForm, setErrors }) => {
               if (values.communication_mode.length === 0) {
                 setErrors({
@@ -146,7 +170,6 @@ function CreatePaymentLink({ componentState, onClose }) {
                 return;
               }
               onSubmit(values, resetForm);
-              //   resetForm();
             }}
           >
             {({ setFieldValue, values, errors, touched }) => (
@@ -164,63 +187,94 @@ function CreatePaymentLink({ componentState, onClose }) {
                   </button>
                 </div>
                 <div className="modal-body">
+                  <nav className="nav nav-pills nav-justified my-4">
+                    <a
+                      href="#"
+                      className={`nav-link  ${!isSchedule ? "active" : "bg-primary-subtle"}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsSchedule(false);
+                        setFieldValue("schedule", false);
+                      }}
+                    >
+                      Upto 24 Hours
+                    </a>
+                    <a
+                      href="#"
+                      className={`nav-link  ${isSchedule ? "active" : "bg-primary-subtle"}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsSchedule(true);
+                        setFieldValue("schedule", true);
+                      }}
+                    >
+                      Schedule
+                    </a>
+                  </nav>
                   <Form>
-                    <div className="form-row mb-3">
-                      <div className="col-lg-6 col-md-12 col-sm-12">
-                        <label>Start Date</label>
-                        {/* <DatePicker
-                                                    format="yyyy-MM-dd HH:mm"
-                                                    value={values.valid_from}
-                                                    onChange={(date) => setFieldValue("valid_from", date)}
-                                                    className="w-100"
-                                                    placement="bottomStart"
-                                                    placeholder="Select Start Date"
-                                                    showMeridian={false}
-                                                /> */}
-                        <CustomDatePicker
-                          // label="Start Date"
-                          value={values.valid_from}
-                          onChange={(date) => setFieldValue("valid_from", date)}
-                          error={
-                            errors.valid_from && touched.valid_from
-                              ? errors.valid_from
-                              : ""
-                          }
-                          placeholder="Select Start Date"
-                        />
-                        {/* 
-                                                {errors.valid_from && touched.valid_from && (
-                                                    <div className="text-danger">{errors.valid_from}</div>
-                                                )} */}
-                      </div>
+                    {isSchedule && (
+                      <div className="form-row mb-3">
 
-                      <div className="col-lg-6 col-md-12 col-sm-12">
-                        {/* <label>End Date</label> */}
-                        {/* <DatePicker
-                                                    format="yyyy-MM-dd HH:mm"
-                                                    value={values.valid_to}
-                                                    onChange={(date) => setFieldValue("valid_to", date)}
-                                                    className="w-100"
-                                                    placement="auto"
-                                                    placeholder="Select End Date"
-                                                    showMeridian={false}
-                                                /> */}
-                        <CustomDatePicker
-                          label="End Date"
-                          value={values.valid_to}
-                          onChange={(date) => setFieldValue("valid_to", date)}
-                          error={
-                            errors.valid_to && touched.valid_to
-                              ? errors.valid_to
-                              : ""
-                          }
-                          placeholder="Select End Date"
-                        />
-                        {/* {errors.valid_to && touched.valid_to && (
-                                                    <div className="text-danger">{errors.valid_to}</div>
-                                                )} */}
+                        <div className="col-lg-6 col-md-12 col-sm-12 d-flex  justify-content-between">
+                          <div style={{ width: "58%" }}>
+                            <label>Start Date</label>
+                            <CustomDatePicker
+                              value={values.valid_from_date}
+                              onChange={(date) =>
+                                setFieldValue("valid_from_date", moment(date).format("YYYY-MM-DD"))
+                              }
+                              error={
+                                errors.valid_from_date && touched.valid_from_date
+                                  ? errors.valid_from_date
+                                  : ""
+                              }
+                              placeholder="Select Start Date"
+                            />
+                          </div>
+
+                          <div style={{ width: "38%" }}>
+                            <label>Start Time</label>
+                            <input
+                              type="time"
+                              className="form-control"
+                              value={values.valid_from_time}
+                              onChange={(e) => setFieldValue("valid_from_time", e.target.value)}
+                              placeholder="Select Start Time"
+                            />
+                          </div>
+
+                        </div>
+
+                        <div className="col-lg-6 col-md-12 col-sm-12 d-flex  justify-content-between">
+                          <div style={{ width: "58%" }}>
+                            <label>End Date</label>
+                            <CustomDatePicker
+                              value={values.valid_to_date}
+                              onChange={(date) =>
+                                setFieldValue("valid_to_date", moment(date).format("YYYY-MM-DD"))
+                              }
+                              error={
+                                errors.valid_to_date && touched.valid_to_date
+                                  ? errors.valid_to_date
+                                  : ""
+                              }
+                              placeholder="Select End Date"
+                            />
+                          </div>
+
+                          <div style={{ width: "38%" }}>
+                            <label>End Time</label>
+                            <input
+                              type="time"
+                              className="form-control"
+                              value={values.valid_to_time}
+                              onChange={(e) => setFieldValue("valid_to_time", e.target.value)}
+                              placeholder="Select End Time"
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     <div className="row">
                       <div className="col-lg-6">
