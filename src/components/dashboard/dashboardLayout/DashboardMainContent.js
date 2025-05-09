@@ -978,7 +978,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/edit-kyc-detail`}
                 Component={EditKycDetail}
-                roleList={{ verifier: true }}
+                roleList={{ verifier: true, approver: true }}
               >
                 <EditKycDetail />
               </AuthorizedRoute>

@@ -118,7 +118,7 @@ function BusinessDetails(props) {
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
     pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
-
+    father_name: KycList?.father_name ?? "",
     authorized_person_dob: KycList?.authorized_person_dob ?? "",
 
     cin_number: KycList?.cin ?? "",
@@ -215,6 +215,7 @@ function BusinessDetails(props) {
         .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
         .required("Required")
         .nullable(),
+      father_name: Yup.string(),
       city_id: Yup.string()
         .allowOneSpace()
         .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
@@ -435,6 +436,7 @@ function BusinessDetails(props) {
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
         setFieldValue("authorized_person_dob", res?.payload?.dob)
+        setFieldValue("father_name", res?.payload?.father_name)
 
         toast.success(res.payload.message);
       } else {
@@ -521,6 +523,7 @@ function BusinessDetails(props) {
       udyam_data: udyamResponseData,
       cin_number: values?.cin_number,
       cin_data: values?.cin_data,
+      father_name: values?.father_name
     };
 
     // console.log("postData", postData)
