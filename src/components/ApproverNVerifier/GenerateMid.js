@@ -43,6 +43,7 @@ function AssignZone() {
     let reqPayload = {
       ...payload,
       clientOwnershipType: clientOwnershipType,
+      paymentMode: payload?.bankName === "INDIAN" ? "UPI" : payload?.paymentMode,
       clientVirtualAdd: payload.clientVirtualAdd?.replaceAll(/\s/g, ''),
       collectionModes: "UPI",
       fatherNameOnPan: payload?.fatherNameOnPan || payload?.clientName,
@@ -143,7 +144,7 @@ function AssignZone() {
             <div className="mb-4">
               <h6> Payment Mode: {formValues?.mode_name}</h6>
               <h6> Bank: {formValues?.bank_name}</h6>
-              <h6>Client Code: {formValues?.react_select?.label}</h6>
+              <h6> Client Code: {formValues?.react_select?.label}</h6>
 
 
             </div>
