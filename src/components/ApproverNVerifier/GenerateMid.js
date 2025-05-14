@@ -43,7 +43,6 @@ function AssignZone() {
     let reqPayload = {
       ...payload,
       clientOwnershipType: clientOwnershipType,
-      paymentMode: payload?.bankName === "INDIAN" ? "UPI" : payload?.paymentMode,
       clientVirtualAdd: payload.clientVirtualAdd?.replaceAll(/\s/g, ''),
       collectionModes: "UPI",
       fatherNameOnPan: payload?.fatherNameOnPan || payload?.clientName,
