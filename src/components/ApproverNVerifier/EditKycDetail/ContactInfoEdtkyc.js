@@ -48,7 +48,7 @@ function ContactInfoEdtkyc(props) {
   const dispatch = useDispatch()
   const [disable, setIsDisable] = useState(false)
   const proofIdList = useSelector((state) => state.kyc.kycIdList);
-  console.log("proofIdList", proofIdList);
+
   const [aadhaarVerificationLoader, setAadhaarVerificationLoader] =
     useState(false);
 
@@ -477,7 +477,7 @@ function ContactInfoEdtkyc(props) {
                           e.target[e.target.selectedIndex].text
                         );
                       }}
-                      disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
 
                     >
                       <option value="">Select ID Proof</option>
@@ -601,7 +601,7 @@ function ContactInfoEdtkyc(props) {
                   type="text"
                   name="developer_name"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
 
                 />
                 <ErrorMessage name="developer_name">
@@ -621,7 +621,7 @@ function ContactInfoEdtkyc(props) {
                   type="text"
                   name="developer_contact"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
+
 
                 />
                 <ErrorMessage name="developer_contact">
