@@ -1022,7 +1022,7 @@ function BusinessDetailEdtKyc(props) {
                     type="text"
                     name="cin_number"
                     className="form-control"
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
+
                     readOnly={readOnly}
                     onChange={(e) => {
                       const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
