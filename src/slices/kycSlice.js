@@ -518,10 +518,8 @@ export const kycForNotFilled = createAsyncThunk(
     const searchQuery = data?.searchquery;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_NOT_FILLED}&search=${
-          data.merchantStatus
-        }&search_query=${searchQuery}&page=${
-          searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_NOT_FILLED}&search=${data.merchantStatus
+        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -539,6 +537,9 @@ export const MyMerchantListData = createAsyncThunk(
     let apiUrl = "";
 
     const searchQuery = data?.searchquery;
+    const kycStatus = data.kyc_status;
+    console.log("kycStatus", kycStatus)
+    console.log("data", data)
 
     if (data?.page) {
       queryParamPayload["page"] = data?.page;
@@ -550,6 +551,7 @@ export const MyMerchantListData = createAsyncThunk(
     queryParamPayload["operation"] = data?.operation;
     queryParamPayload["order_by"] = "-login_id";
     queryParamPayload["search_query"] = searchQuery;
+    queryParamPayload["kyc_status"] = kycStatus;
 
     apiUrl = getQueryStr(API_URL.MY_MERCHANT_LIST, queryParamPayload);
     const response = await axiosInstanceJWT
@@ -572,10 +574,8 @@ export const kycForPendingMerchants = createAsyncThunk(
 
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${
-          data.merchantStatus
-        }&search_query=${searchQuery}&page=${
-          searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${data.merchantStatus
+        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -595,10 +595,8 @@ export const kycForRejectedMerchants = createAsyncThunk(
     const searchQuery = data?.searchquery;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${
-          data.merchantStatus
-        }&search_query=${searchQuery}&page=${
-          searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${data.merchantStatus
+        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`,
         {
           headers: {},
@@ -622,10 +620,8 @@ export const kycForPending = createAsyncThunk(
 
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PROCESSING}&search=${
-          data.merchantStatus
-        }&search_query=${searchQuery}&page=${
-          searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_PROCESSING}&search=${data.merchantStatus
+        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -666,10 +662,8 @@ export const kycForVerified = createAsyncThunk(
 
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_VERIFIED}&search=${
-          data.merchantStatus
-        }&search_query=${searchQuery}&page=${
-          searchQuery ? 1 : requestParam
+        `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus
+        }&search_query=${searchQuery}&page=${searchQuery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
@@ -721,10 +715,8 @@ export const kycForApproved = createAsyncThunk(
     // console.log("isDirect",isDirect)
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_APPROVED}&search=${
-          data.merchantStatus
-        }&search_query=${searchquery}&page=${
-          searchquery ? 1 : requestParam
+        `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus
+        }&search_query=${searchquery}&page=${searchquery ? 1 : requestParam
         }&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {

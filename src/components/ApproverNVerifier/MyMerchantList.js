@@ -105,7 +105,7 @@ const MyMerchantList = () => {
           page_size: pageSize,
           created_by: loginId,
           searchquery: searchText,
-          kyc_status: kycSearchStatus,
+          kyc_status: kycSearchStatus.toLowerCase() === "all" ? "" : kycSearchStatus,
           operation: isKycMasked ? "u" : "k",
         })
       );
