@@ -109,30 +109,40 @@ function CreatePaymentLink({ componentState, onClose }) {
     });
 
   const onSubmit = async (values, resetForm) => {
-    console.log("values", values)
     setDisable(true);
-    let postData = {
+
+    // Clone values to avoid mutating the original object
+    const postData = {
       ...values,
       client_request_id: uuidv4(),
       communication_mode: values.communication_mode,
+      schedule: isSchedule,
     };
 
-    if (values.schedule) {
+    // Always remove time fields (they are only used for combining)
+    delete postData.valid_from_time;
+    delete postData.valid_to_time;
+
+
+    if (isSchedule) {
+
       const combinedValidFrom = moment(
         `${values.valid_from_date} ${values.valid_from_time}`,
-        "YYYY-MM-DD"
+        "YYYY-MM-DD HH:mm"
       );
       const combinedValidTo = moment(
         `${values.valid_to_date} ${values.valid_to_time}`,
-        "YYYY-MM-DD"
+        "YYYY-MM-DD HH:mm"
       );
-      postData.valid_from = combinedValidFrom.format("YYYY-MM-DD ");
-      postData.valid_to = combinedValidTo.format("YYYY-MM-DD");
-      postData.schedule = true;
+
+      postData.valid_from = combinedValidFrom.format("YYYY-MM-DD HH:mm");
+      postData.valid_to = combinedValidTo.format("YYYY-MM-DD HH:mm");
     } else {
+      // If schedule is false, remove date fields also
+      delete postData.valid_from_date;
+      delete postData.valid_to_date;
       delete postData.valid_from;
       delete postData.valid_to;
-      postData.schedule = false;
     }
 
     try {
@@ -153,6 +163,10 @@ function CreatePaymentLink({ componentState, onClose }) {
       resetForm();
     }
   };
+
+
+
+
 
   return (
     <div className="mymodals modal fade show" style={{ display: "block" }}>
@@ -191,7 +205,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                   <nav className="my-4 d-flex justify-content-center gap-3">
                     <a
                       href="#"
-                      className={`btn fw-semibold px-4 btn-sm text-center flex-fill ${!isSchedule ? "btn-primary text-white" : "btn-outline-primary"
+                      className={`btn fw-semibold px-4 btn-sm text-center flex-fill ${!isSchedule ? "btn cob-btn-primary text-white text-white" : "btn-outline-primary"
                         }`}
                       style={{ maxWidth: "200px" }}
                       onClick={(e) => {
@@ -204,7 +218,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                     </a>
                     <a
                       href="#"
-                      className={`btn fw-semibold px-4 btn-sm text-center flex-fill ${isSchedule ? "btn-primary text-white" : "btn-outline-primary"
+                      className={`btn fw-semibold px-4 btn-sm text-center flex-fill ${isSchedule ? "btn cob-btn-primary text-white" : "btn-outline-primary"
                         }`}
                       style={{ maxWidth: "200px" }}
                       onClick={(e) => {
