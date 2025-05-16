@@ -98,7 +98,8 @@ function Home() {
     roles.verifier === true ||
     roles.viewer === true ||
     roles.accountManager === true ||
-    roles.businessDevelopment === true
+    roles.businessDevelopment === true ||
+    roles.zonalManager === true
   ) {
     return <Redirect to={`${path}/Internal-dashboard`} />;
   }
