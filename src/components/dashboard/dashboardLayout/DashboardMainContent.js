@@ -268,24 +268,27 @@ function DashboardMainContent() {
   }, []);
 
   useEffect(() => {
-    if (!assignmentType && roles?.businessDevelopment) {
-      if (roleId) {
-        dispatch(assignmentTypeApi(roleId)).then((response) => {
-          const assignmentTypes = response?.payload?.assignment_type ?? [];
+    const shouldFetch =
+      !assignmentType && (roles?.businessDevelopment || roles?.zonalManager);
 
-          if (Array.isArray(assignmentTypes)) {
-            const filteredAssignment = assignmentTypes.find(
-              (item) => item?.role_id === roleId
-            );
+    if (shouldFetch && roleId) {
+      dispatch(assignmentTypeApi(roleId)).then((response) => {
+        const assignmentTypes = response?.payload?.assignment_type ?? [];
 
-            if (filteredAssignment) {
-              dispatch(setAssignmentType(filteredAssignment));
-            }
+        if (Array.isArray(assignmentTypes)) {
+          const filteredAssignment = assignmentTypes.find(
+            (item) => item?.role_id === roleId
+          );
+
+
+          if (filteredAssignment) {
+            dispatch(setAssignmentType(filteredAssignment));
           }
-        });
-      }
+        }
+      });
     }
-  }, [dispatch]);
+  }, [dispatch, assignmentType, roleId, roles]);
+
 
   useEffect(() => {
     // fetch subscribe product data

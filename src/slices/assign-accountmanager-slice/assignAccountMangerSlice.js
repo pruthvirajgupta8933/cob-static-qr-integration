@@ -135,6 +135,7 @@ export const assignAccountManagerSlice = createSlice({
       const filteredAssignment = assignmentTypes.find(
         (item) => item.role_id === action.meta.arg
       );
+      console.log("filteredAssignment", filteredAssignment);
       state.assignmentType = filteredAssignment || null;
     });
   },
