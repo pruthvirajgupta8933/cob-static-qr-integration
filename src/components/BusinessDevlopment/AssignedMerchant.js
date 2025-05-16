@@ -86,6 +86,7 @@ const AssignedMerchant = () => {
         (item) => item.role_id === roleId
       );
 
+
       if (filteredAssignment) {
         const queryParams = {
           page: currentPage,

@@ -13,11 +13,13 @@ function InternalDashboard() {
     const { user } = useSelector((state) => state.auth);
     const loginId = user?.loginId;
     const assignmentType = useSelector((state) => state.
-        assignAccountManagerReducer?.assignmentType?.
-        value
+        assignAccountManagerReducer?.assignmentType?.value
+
 
 
     );
+
+    console.log("assignmentType ", assignmentType)
 
     const assigneMerchantList = useSelector(
         (state) => state.merchantAssignedReducer.assignedMerchantList
@@ -54,7 +56,7 @@ function InternalDashboard() {
 
 
     useEffect(() => {
-        if (!roles.businessDevelopment) return;
+        if (!roles.businessDevelopment && !roles.zonalManager) return;
 
         const queryParams = {
             page: 1,
@@ -67,7 +69,8 @@ function InternalDashboard() {
         };
 
         dispatch(getAssignedMerchantData({ queryParams, payload }));
-    }, [roles.businessDevelopment, assignmentType, loginId, dispatch]);
+    }, [roles.businessDevelopment, roles.zonalManager, assignmentType, loginId, dispatch]);
+
 
 
 
@@ -94,7 +97,7 @@ function InternalDashboard() {
                 </div>
             )}
 
-            {(roles.businessDevelopment) && (
+            {(roles.businessDevelopment || roles.zonalManager) && (
                 <div className="col-lg-4">
                     <div className="card webColorBg1">
                         <div className="card-body">
