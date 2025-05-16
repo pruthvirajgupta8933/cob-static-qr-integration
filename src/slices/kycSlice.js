@@ -538,8 +538,7 @@ export const MyMerchantListData = createAsyncThunk(
 
     const searchQuery = data?.searchquery;
     const kycStatus = data.kyc_status;
-    console.log("kycStatus", kycStatus)
-    console.log("data", data)
+
 
     if (data?.page) {
       queryParamPayload["page"] = data?.page;
