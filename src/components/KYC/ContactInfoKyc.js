@@ -590,16 +590,19 @@ function ContactInfoKyc(props) {
   // handle input toggle if id proof type is null then show dropdown else show input field
 
   useEffect(() => {
-
     let IdProofName = ""
-    if (KycList?.id_proof_type === null) {
-      setIdProofInputToggle(false);
-      IdProofName = proofIdList.data?.find(
-        (item) => item?.id === 1
-      );
-      setIdType(1);
+    if (KycList?.id_proof_type === null || KycList?.id_proof_type === undefined) {
+      // If id_proof_type is null or undefined
+      setIdProofInputToggle(true);
+
+      // Find the default proof with id 1 as fallback
+      // IdProofName = proofIdList.data?.find(item => item?.id === 1);
+
+      // Optionally set the type to 1 (default)
+      // setIdType(1);
 
     } else {
+
       setIdProofInputToggle(false);
       setIdType(KycList?.id_proof_type);
       IdProofName = proofIdList.data?.find(
@@ -652,8 +655,8 @@ function ContactInfoKyc(props) {
               <div className="col-lg-6 col-sm-12 col-md-12">
                 <label className="d-flex justify-content-between col-form-label mt-0 p-2">
                   <span>
-                    ID Proof ({selectedIdProofName})
-                    <span className="text-danger"> *</span>
+                    {selectedIdProofName && (<>ID Proof ({selectedIdProofName})
+                      <span className="text-danger"> *</span></>)}
                   </span>
                   <span
                     className="text-decoration-underline text-primary cursor_pointer small"
