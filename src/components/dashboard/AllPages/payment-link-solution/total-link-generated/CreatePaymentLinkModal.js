@@ -101,7 +101,9 @@ function CreatePaymentLink({ componentState, onClose }) {
         .required("Required"),
       purpose: Yup.string()
         .max(200, "Max 200 characters allowed")
+        .matches(/^[a-zA-Z0-9\s]*$/, "Only alphabets and numbers are allowed")
         .required("Enter Remark"),
+
       payer: Yup.string().required("Payer is required"),
       communication_mode: Yup.array()
         .min(1, "At least one communication method is required")
@@ -170,7 +172,7 @@ function CreatePaymentLink({ componentState, onClose }) {
 
   return (
     <div className="mymodals modal fade show" style={{ display: "block" }}>
-      <div className="modal-dialog modal-md modal-dialog-centered" role="document">
+      <div className="modal-dialog modal-lg model_custom_w modal-dialog-centered" role="document">
         <div className="modal-content">
           <Formik
             initialValues={{ ...initialValues, communication_mode: ["email"] }}
@@ -202,7 +204,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <nav className="my-4 d-flex justify-content-center gap-3">
+                  <nav className="my-2 mb-4 d-flex justify-content-center gap-3">
                     <a
                       href="#"
                       className={`btn fw-semibold px-4 btn-sm text-center flex-fill ${!isSchedule ? "btn cob-btn-primary text-white text-white" : "btn-outline-primary"
