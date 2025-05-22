@@ -115,6 +115,8 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
         fixedHeaderScrollHeight={fixedHeaderScrollHeight}
         theme="solarized"
         customStyles={customStyles}
+        noDataComponent={<div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>No data found</div>}
+
         {...rest}
 
       // fixedHeader={true}
@@ -122,30 +124,31 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
       // selectableRows
       />{" "}
 
+      <div className="mt-3">
+        {dataCount > 0 && (
+          <ReactPaginate
 
-      {dataCount > 0 && (
-        <ReactPaginate
-
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          breakLabel={"..."}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination justify-content-center mb-0"}
-          activeClassName={"active"}
-          previousLinkClassName={"page-link"}
-          nextLinkClassName={"page-link"}
-          disabledClassName={"disabled"}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          forcePage={currentPage - 1}
-        // className="mt-5"
-        />
-      )}
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={window.innerWidth < 500 ? 3 : 5}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination justify-content-center mb-0"}
+            activeClassName={"active"}
+            previousLinkClassName={"page-link"}
+            nextLinkClassName={"page-link"}
+            disabledClassName={"disabled"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            forcePage={currentPage - 1}
+          // className="mt-5"
+          />
+        )}
+      </div>
     </>
   );
 };

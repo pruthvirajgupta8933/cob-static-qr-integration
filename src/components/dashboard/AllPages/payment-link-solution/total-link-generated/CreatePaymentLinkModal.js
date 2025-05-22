@@ -207,7 +207,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                   <nav className="my-2 mb-4 d-flex justify-content-center gap-3">
                     <a
                       href="#"
-                      className={`btn  px-4 btn-sm text-center flex-fill ${!isSchedule ? "btn cob-btn-primary text-white text-white" : "btn-outline-primary"
+                      className={`btn px-4 btn-sm text-center flex-fill ${!isSchedule ? "btn cob-btn-primary text-white text-white" : "btn-outline-primary"
                         }`}
                       style={{ maxWidth: "200px" }}
                       onClick={(e) => {
@@ -220,7 +220,7 @@ function CreatePaymentLink({ componentState, onClose }) {
                     </a>
                     <a
                       href="#"
-                      className={`btn  px-4 btn-sm text-center flex-fill ${isSchedule ? "btn cob-btn-primary text-white" : "btn-outline-primary"
+                      className={`btn px-4 btn-sm text-center flex-fill ${isSchedule ? "btn cob-btn-primary text-white" : "btn-outline-primary"
                         }`}
                       style={{ maxWidth: "200px" }}
                       onClick={(e) => {
