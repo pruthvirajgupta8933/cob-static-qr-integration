@@ -235,7 +235,7 @@ const RegistrationHistory = () => {
     "IFSC",
     "Account Type",
     "Mandate Registration Date",
-    "Mandate start Date",
+    "Mandate Start Date",
     "Mandate End Date",
     "Frequency",
     "Max Amount",
