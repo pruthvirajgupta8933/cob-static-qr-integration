@@ -38,7 +38,7 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
         setGstStatus(res.payload.status);
         setGstinData(res?.payload);
       } else {
-        toast.error(res?.payload?.message ?? res?.payload?.data?.detail);
+        toast.error(res?.payload?.data?.message ?? res?.payload?.data?.detail);
       }
     } catch (error) {
       setIsLoading(false);
