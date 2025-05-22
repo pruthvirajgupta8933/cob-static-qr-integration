@@ -437,7 +437,7 @@ const Login = () => {
                       Don’t have an account with SabPaisa?
                       <a
                         className="text-primary text-decoration-underline"
-                        href={`https://sabpaisa.in/pricing/`}
+                        href={`https://sabpaisa.in`}
                       >
                         {" "}
                         Sign Up
