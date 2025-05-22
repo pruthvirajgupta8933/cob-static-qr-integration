@@ -80,7 +80,7 @@ const SchedulueTransaction = () => {
         "S.NO", "Email", "Mobile", "Customer Name", "Registration ID",
         "Bank Message", "Registration Status", "Consumer ID", "Account Holder Name",
         "Account Number", "IFSC", "Account Type", "Next Transaction Date",
-        "Mandate start Date", "Mandate End Date", "Frequency", "Max Amount",
+        "Mandate Start Date", "Mandate End Date", "Frequency", "Max Amount",
         "Purpose", "Amount Type", "EMI Amount", "Transaction Schedule",
     ];
 

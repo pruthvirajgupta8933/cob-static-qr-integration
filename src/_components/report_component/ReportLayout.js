@@ -19,18 +19,16 @@ const ReportLayout = ({
   const [selectedData, setSelectedData] = useState();
   const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     setSelectedData(data);
-    // setShowData(data);
-    // SetTxnList(data);
     setPaginatedData(_(data).slice(0).take(pageSize).value());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+
   useEffect(() => {
     setPaginatedData(_(selectedData).slice(0).take(pageSize).value());
-    // setPageCount(
-    //   showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
-    // );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSize, selectedData]);
 
   useEffect(() => {
@@ -40,7 +38,6 @@ const ReportLayout = ({
       .take(pageSize)
       .value();
     setPaginatedData(paginatedPost);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
@@ -51,7 +48,7 @@ const ReportLayout = ({
           Object.values(txnItme)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText.toLowerCase())
         )
       );
     } else {
@@ -60,75 +57,84 @@ const ReportLayout = ({
   }, [searchText]);
 
   return (
-    <div>
-      <h5>{title}</h5>
-      <section>
-        <div className="container-fluid p-0 mt-4">
-          {form}
-          <hr className="hr" />
-          {data?.length > 0 && (
-            <div className="form-row">
-              {showSearch && (
-                <div className="form-group col-md-3">
-                  <label>Search</label>
-                  <input
-                    type="text"
-                    label="Search"
-                    name="search"
-                    placeholder="Search Here"
-                    className="form-control"
-                    onChange={(e) => {
-                      SetSearchText(e.target.value);
-                    }}
-                  />
-                </div>
-              )}
-              {showCountPerPage && (
-                <div className="form-group col-md-3">
-                  <label>Count Per Page</label>
-                  <select
-                    value={pageSize}
-                    rel={pageSize}
-                    className="form-select"
-                    onChange={(e) => setPageSize(parseInt(e.target.value))}
-                  >
-                    <DropDownCountPerPage datalength={data.length} />
-                  </select>
+    <div className="container-fluid mt-4">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
+        <h5>{title}</h5>
+      </div>
+
+      <div className="card shadow-sm mb-4">
+        <div className="card-body">
+          <section>
+            <div className="container-fluid p-0 mt-4">
+              {form}
+              <hr className="hr" />
+              {data?.length > 0 && (
+                <div className="form-row">
+                  {showSearch && (
+                    <div className="form-group col-md-3">
+                      <label>Search</label>
+                      <input
+                        type="text"
+                        label="Search"
+                        name="search"
+                        placeholder="Search Here"
+                        className="form-control"
+                        onChange={(e) => {
+                          SetSearchText(e.target.value);
+                        }}
+                      />
+                    </div>
+                  )}
+                  {showCountPerPage && (
+                    <div className="form-group col-md-3">
+                      <label>Count Per Page</label>
+                      <select
+                        value={pageSize}
+                        rel={pageSize}
+                        className="form-select"
+                        onChange={(e) => setPageSize(parseInt(e.target.value))}
+                      >
+                        <DropDownCountPerPage datalength={data.length} />
+                      </select>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
+          </section>
+
+          <section className="flleft w-100">
+            <div className="container-fluid p-0 my-3">
+              {data?.length > 0 && (
+                <h6>
+                  <strong>Total Record</strong> : {data.length}
+                  {dataSummary?.map((summary, index) => (
+                    <span className="px-2" key={index}>
+                      | <strong className="px-1">{summary.name}:</strong>
+                      <span>{summary.value}</span>
+                    </span>
+                  ))}
+                </h6>
+              )}
+              <div className="overflow-auto">
+                <Table
+                  row={rowData}
+                  data={paginatedata}
+                  dataCount={data?.length || 0}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={(page) => setCurrentPage(page)}
+                  onRowClick={(row) =>
+                    typeof onRowClick === "function" && onRowClick(row)
+                  }
+                />
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
-      <section className="flleft w-100">
-        <div className="container-fluid p-0 my-3 ">
-          {data?.length > 0 && (
-            <h6>
-              <strong>Total Record</strong> : {data.length}
-              {dataSummary?.map((summary) => (
-                <span className="px-2">
-                  |<strong className="px-1">{summary.name} : </strong>
-                  <span>{summary.value}</span>
-                </span>
-              ))}
-            </h6>
-          )}
-          <div className="overflow-auto">
-            <Table
-              row={rowData}
-              data={paginatedata}
-              dataCount={data?.length || 0}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              changeCurrentPage={(page) => setCurrentPage(page)}
-              onRowClick={(row) =>
-                typeof onRowClick === "function" && onRowClick(row)
-              }
-            />
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };
+
 export default ReportLayout;
