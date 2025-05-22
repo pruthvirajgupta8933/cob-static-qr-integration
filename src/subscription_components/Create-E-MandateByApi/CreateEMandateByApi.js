@@ -69,15 +69,19 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
     const validationSchema = Yup.object({
         consumer_id: Yup.string().required('Required'),
-        customer_name: Yup.string().required('Required'),
+        customer_name: Yup.string()
+            .matches(/^[a-zA-Z0-9. ]+$/, "Only alphanumeric characters and dots are allowed")
+            .max(100, "Maximum 100 characters are allowed")
+            .required('Required'),
+
         customer_mobile: Yup.string()
             .matches(/^\d{10}$/, 'Must be a valid 10-digit mobile number')
             .required('Required'),
-        customer_email_id: Yup.string().email('Invalid email').required('Required'),
+        customer_email_id: Yup.string().email('Invalid email').max(100, "Maximum 100 characters are allowed").required('Required'),
 
 
         start_date: Yup.date().required('Required'),
-        end_date: Yup.date().required('Required'),
+        end_date: Yup.date().min(Yup.ref("start_date"), "End date can't be before Start date").required('Required'),
 
         max_amount: Yup.number()
             .typeError('Max amount must be a number')
@@ -115,11 +119,11 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             { key: "WEEK", value: "Weekly" },
             { key: "MNTH", value: "Monthly" },
             { key: "QURT", value: "Quarterly" },
-            { key: "MIAN", value: "Half-yearly" },
+            { key: "MIAN", value: "Half-Yearly" },
             { key: "YEAR", value: "Yearly" },
             { key: "BIMN", value: "Bi-Monthly" },
             { key: "OOFF", value: "Sequence" },
-            { key: "RCUR", value: "Reoccurring" }
+            { key: "RCUR", value: "Recurring" }
 
         ]
 
@@ -133,20 +137,20 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     useEffect(() => {
         const apiResponse = {
             "data": [
-                { "id": 1, "code": "U005", "description": "Utility Bill payment mobile telephone broadband", "sorting": 1 },
-                { "id": 2, "code": "B001", "description": "Bill Payment Credit card", "sorting": 2 },
-                { "id": 3, "code": "A001", "description": "API mandate", "sorting": 3 },
+                { "id": 1, "code": "U005", "description": "Utility Bill Payment Mobile Telephone Broadband", "sorting": 1 },
+                { "id": 2, "code": "B001", "description": "Bill Payment Credit Card", "sorting": 2 },
+                { "id": 3, "code": "A001", "description": "API Mandate", "sorting": 3 },
                 { "id": 4, "code": "D001", "description": "Destination Bank Mandate", "sorting": 4 },
-                { "id": 5, "code": "I002", "description": "Insurance other payment", "sorting": 5 },
-                { "id": 6, "code": "L002", "description": "Loan amount security", "sorting": 6 },
-                { "id": 7, "code": "E001", "description": "Education fees", "sorting": 7 },
+                { "id": 5, "code": "I002", "description": "Insurance Other Payment", "sorting": 5 },
+                { "id": 6, "code": "L002", "description": "Loan Amount Security", "sorting": 6 },
+                { "id": 7, "code": "E001", "description": "Education Fees", "sorting": 7 },
                 { "id": 8, "code": "I001", "description": "Insurance Premium", "sorting": 8 },
-                { "id": 9, "code": "L001", "description": "Loan instalment payment", "sorting": 9 },
+                { "id": 9, "code": "L001", "description": "Loan Instalment Payment", "sorting": 9 },
                 { "id": 10, "code": "M001", "description": "Mutual Fund Payment", "sorting": 10 },
                 { "id": 12, "code": "U099", "description": "Others", "sorting": 12 },
                 { "id": 13, "code": "T002", "description": "TReDS", "sorting": 13 },
                 { "id": 14, "code": "T001", "description": "Tax Payment", "sorting": 14 },
-                { "id": 17, "code": "U006", "description": "Utility Bill payment water", "sorting": 17 }
+                { "id": 17, "code": "U006", "description": "Utility Bill Payment Water", "sorting": 17 }
             ]
         };
         setPurposeListDate(apiResponse?.data)
