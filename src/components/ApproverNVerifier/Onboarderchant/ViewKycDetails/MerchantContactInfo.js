@@ -92,7 +92,7 @@ function MerchantContactInfo(props) {
     {
       label: `ID Proof (${idProofName ? idProofName.id_type : "Aadhaar"})`,
       value: selectedUserData?.aadharNumber,
-      verified: 1
+      verified: selectedUserData?.aadharNumber && 1
     },
     {
       label: "Contact Number",
