@@ -334,6 +334,7 @@ const API_LIVE = {
   /////frm(push-merchant-data)
   PUSH_MERCHANT_DATA: `${kyc_url}/kyc/frm/push-merchant-data/`,
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
+  FRM_SINGLE_SCREENING: `${kyc_url}/kyc/frm/single-screening/`,
 
   ///EDIT KYC FORM
   UPDATE_CONATCT_INFO: `${kyc_url}/kyc/update-kyc/general-info/`,
