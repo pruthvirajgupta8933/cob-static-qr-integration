@@ -155,7 +155,6 @@ const ChallanTransactReport = () => {
         })
       )
 
-
     }
 
   }, [currentPage, pageSize]);
@@ -204,7 +203,7 @@ const ChallanTransactReport = () => {
         client_code: saveData?.clientCode,
       })
     ).then((res) => {
-      
+
       const blob = new Blob([res?.payload?.data], {
         type:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
