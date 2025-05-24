@@ -59,7 +59,7 @@ import Beneficiary from "../../../payout/Beneficiary";
 import MISReport from "../../../payout/MISReport";
 import MakePayment from "../../../payout/MakePayment";
 import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
-import ChallanTransactReport from "../../../B2B_components/ChallanTransactReport";
+import ChallanTransactReport from "../../../b2b-components/ChallanTransactReport";
 // import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
 import { isNull, reject } from "lodash";
