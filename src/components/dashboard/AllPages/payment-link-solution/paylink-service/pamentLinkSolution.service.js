@@ -7,7 +7,7 @@ import EnsurePaymentLinkApiKey from "../ensure-payment-link-api-key/EnsurePaymen
 
 
 const user = JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
-const clientCode = user?.clientMerchantDetailsList[0]?.clientCode;
+const clientCode = user?.clientMerchantDetailsList?.[0]?.clientCode;
 
 
 const addPayer = async (postData) => {
