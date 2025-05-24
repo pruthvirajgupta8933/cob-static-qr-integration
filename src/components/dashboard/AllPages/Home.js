@@ -26,6 +26,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import { graphDate } from "../../../utilities/graphDate";
 import PasswordExpiry from "../../../_components/reuseable_components/PasswordExpiry";
 import paymentLinkService from "../../../services/create-payment-link/paymentLink.service";
+import EnsurePaymentLinkApiKey from "./payment-link-solution/ensure-payment-link-api-key/EnsurePaymentLinkApiKey";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -66,19 +67,21 @@ function Home() {
 
       // paylink api key
 
-      async function getPaymentLinkApiKey() {
-        try {
-          const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
-          sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
-        } catch (error) {
+      // async function getPaymentLinkApiKey() {
+      //   try {
+      //     const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
+      //     sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
+      //   } catch (error) {
 
-        }
+      //   }
 
-      }
+      // }
 
-      if (!sessionStorage.getItem('paymentLinkApiKey')) {
-        getPaymentLinkApiKey();
-      }
+      // if (!sessionStorage.getItem('paymentLinkApiKey')) {
+      //   getPaymentLinkApiKey();
+      // }
+
+      EnsurePaymentLinkApiKey(clientCode)
 
 
     }
