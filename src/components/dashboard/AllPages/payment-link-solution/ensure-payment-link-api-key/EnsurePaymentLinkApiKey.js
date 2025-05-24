@@ -10,7 +10,7 @@ const EnsurePaymentLinkApiKey = async (clientCode) => {
             sessionStorage.setItem("paymentLinkApiKey", apiKey);
         } catch (error) {
             console.error("Failed to fetch Payment Link API Key", error);
-            throw new Error("API Key required but could not be fetched");
+
         }
     }
 

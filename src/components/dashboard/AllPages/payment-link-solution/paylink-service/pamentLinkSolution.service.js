@@ -4,19 +4,11 @@ import { axiosInstanceJWT } from "../../../../../utilities/axiosInstance";
 import { PAYMENT_LINK } from "../../../../../config";
 import { getQueryStr } from "../../../../../utilities/generateURLQueryParams";
 import EnsurePaymentLinkApiKey from "../ensure-payment-link-api-key/EnsurePaymentLinkApiKey";
-// import { useSelector } from "react-redux";
 
-// const clientCode = user?.clientMerchantDetailsList[0]?.clientCode;
-
-// const { auth} = useSelector(
-//     (state) => state
-//   );
-
-//   const { user } = auth;
 
 const user = JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
 const clientCode = user?.clientMerchantDetailsList[0]?.clientCode;
-console.log("user", user);
+
 
 const addPayer = async (postData) => {
     const url = `${PAYMENT_LINK.CREATE_PAYER}`;
