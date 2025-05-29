@@ -139,6 +139,7 @@ const API_LIVE = {
   PAY_MODE_LIST: report_api_url + "/masters/paymentModeMaster/",
 
   GetMerchantTxnHistory: `${report_api_url}/transactions/getMerchantTransactionHistory/`,
+  getMerchantTransactionExcelHistory: `${report_api_url}/transactions/getMerchantTransactionExcelHistory/`,
   merchantTxnHistoryBit: `${report_api_url}/transactions/getMerchantTransactionHistoryBit/`,
   merchantTxnHistoryWhole: `${report_api_url}/transactions/getMerchantTransactionHistoryWhole/`,
   branchTransactionView: `${report_api_url}/transactions/branchTransactionView/`,
