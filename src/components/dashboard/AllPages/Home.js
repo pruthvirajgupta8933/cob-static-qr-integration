@@ -199,7 +199,8 @@ function Home() {
       {/* TODO: refactor it */}
       {/* KYC container start from here */}
       {/* {console.log("kyc.kycUserList?.latitude", kyc?.kycUserList?.latitude)} */}
-      {kyc?.kycUserList?.latitude === null &&
+
+      {/* {kyc?.kycUserList?.latitude === null &&
         kyc?.kycUserList?.longitude === null && (
           <div className="row">
             <div
@@ -228,7 +229,7 @@ function Home() {
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
       {/* password expire notification component */}
       <PasswordExpiry />
