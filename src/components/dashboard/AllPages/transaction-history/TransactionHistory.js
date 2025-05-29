@@ -421,32 +421,52 @@ const TransactionHistory = () => {
 
   const exportToExcelFn = async () => {
     setExportReportLoader(true);
-    setDisable(true);
-
-    await axiosInstanceJWT
-      .post(API_URL?.getMerchantTransactionExcelHistory, filterState)
-      .then((res) => {
-        if (res.status === 200) {
-          const data = res?.data;
-
-          if (data.status) {
-            window.open(
-              data?.download_url,
-              // '_top'
-              "_blank" // <- This is what makes it open in a new window.
-            );
-          } else {
-            toastConfig.warningToast("Server Error, File not found");
-          }
-          setExportReportLoader(false);
-          setDisable(false);
-        }
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Something went wrong.");
-        setExportReportLoader(false);
-        setDisable(false);
+    try {
+      const res = await axiosInstanceJWT.post(API_URL?.getMerchantTransactionExcelHistory, filterState, {
+        responseType: 'blob',
       });
+
+      if (res.status === 200) {
+        const disposition = res.headers['content-disposition'];
+        const filenameMatch = disposition && disposition.match(/filename="(.+)"/);
+        const filename = filenameMatch ? filenameMatch[1] : 'Transaction history.csv';
+
+        const blob = new Blob([res.data], { type: 'text/csv' });
+
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+
+        document.body.appendChild(link);
+        link.click();
+
+        window.URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+
+
+      } else {
+        toastConfig.errorToast("Failed to download CSV");
+      }
+    } catch (err) {
+      if (err.response && err.response.data) {
+        const errorBlob = new Blob([err.response.data], { type: 'application/json' });
+        const reader = new FileReader();
+        reader.onload = function () {
+          try {
+            const errorData = JSON.parse(reader.result);
+            toastConfig.errorToast(errorData.message || "Something went wrong.");
+          } catch (e) {
+            toastConfig.errorToast("Something went wrong");
+          }
+        };
+        reader.readAsText(errorBlob);
+      } else {
+        toastConfig.errorToast("Something went wrong. Please try again.");
+      }
+    } finally {
+      setExportReportLoader(false);
+      setDisable(false);
+    }
   };
 
 
