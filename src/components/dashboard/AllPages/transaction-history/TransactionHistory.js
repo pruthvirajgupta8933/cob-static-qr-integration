@@ -429,7 +429,7 @@ const TransactionHistory = () => {
       if (res.status === 200) {
         const disposition = res.headers['content-disposition'];
         const filenameMatch = disposition && disposition.match(/filename="(.+)"/);
-        const filename = filenameMatch ? filenameMatch[1] : 'Transaction-History.csv';
+        const filename = filenameMatch ? filenameMatch[1] : 'Transaction-History.xlsx';
 
         const blob = new Blob([res.data], { type: 'text/csv' });
 
