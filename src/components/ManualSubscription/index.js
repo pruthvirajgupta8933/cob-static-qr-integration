@@ -12,6 +12,7 @@ import {
 import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
 import DateFormatter from "../../utilities/DateConvert";
 import CustomModal from "../../_components/custom_modal";
+import CardLayout from "../../utilities/CardLayout";
 
 const ManualSubscription = () => {
   const subscriptionPlans = useSelector(
@@ -168,81 +169,78 @@ const ManualSubscription = () => {
   };
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <h5>Manual Subscription</h5>
+
+    <CardLayout title="Manual Subscription">
+
+
+      <div className="row my-4">
+        <div className="col-3">
+          <button
+            onClick={() => {
+              setModalDisplayData();
+              setOpenModal(true);
+            }}
+            className="approve cob-btn-primary btn-sm text-white"
+          >
+            Create New Subscription
+          </button>
         </div>
-        <div className="container-fluid p-0">
-          <div className="row my-4">
-            <div className="col-3">
-              <button
-                onClick={() => {
-                  setModalDisplayData();
-                  setOpenModal(true);
-                }}
-                className="approve cob-btn-primary btn-sm text-white"
-              >
-                Create New Subscription
-              </button>
-            </div>
-            <div className="col-4">
-              <ReactSelect
-                className="zindexforDropdown"
-                onChange={handleSelectChange}
-                value={
-                  selectedClientId
-                    ? { value: selectedClientId, label: selectedClientId }
-                    : null
-                }
-                options={options}
-                placeholder="Search by Client Code"
-                filterOption={createFilter({ ignoreAccents: false })}
-              />
-            </div>
-          </div>
-          <div className="scroll overflow-auto">
-            {subscriptionPlans?.result?.length > 0 ? (
-              <h6>Total Count : {subscriptionPlans.result?.length}</h6>
-            ) : (
-              ""
-            )}
-            {subscriptionPlans?.result?.length === 0 && (
-              <h5 className="text-center font-weight-bold mt-5">
-                No Data Found
-              </h5>
-            )}
-            {!subscriptionPlans?.loading &&
-              subscriptionPlans?.result?.length > 0 && (
-                <Table
-                  row={rowData}
-                  data={subscriptionPlans?.result}
-                  dataCount={subscriptionPlans?.result?.length}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              )}
-          </div>
-          <CustomLoader loadingState={subscriptionPlans?.loading} />
-          {openModal && (
-            <CustomModal
-              modalBody={() => (
-                <SubscriptionModal
-                  data={modalDisplayData}
-                  setOpenModal={setOpenModal}
-                />
-              )}
-              headerTitle={`${
-                modalDisplayData ? "Edit" : "Create"
-              } Subscription`}
-              modalToggle={openModal}
-              fnSetModalToggle={setOpenModal}
+        <div className="col-4">
+          <ReactSelect
+            className="zindexforDropdown"
+            onChange={handleSelectChange}
+            value={
+              selectedClientId
+                ? { value: selectedClientId, label: selectedClientId }
+                : null
+            }
+            options={options}
+            placeholder="Search by Client Code"
+            filterOption={createFilter({ ignoreAccents: false })}
+          />
+        </div>
+      </div>
+      <div className="scroll overflow-auto">
+        {subscriptionPlans?.result?.length > 0 ? (
+          <h6>Total Count : {subscriptionPlans.result?.length}</h6>
+        ) : (
+          ""
+        )}
+        {subscriptionPlans?.result?.length === 0 && (
+          <h5 className="text-center font-weight-bold mt-5">
+            No Data Found
+          </h5>
+        )}
+        {!subscriptionPlans?.loading &&
+          subscriptionPlans?.result?.length > 0 && (
+            <Table
+              row={rowData}
+              data={subscriptionPlans?.result}
+              dataCount={subscriptionPlans?.result?.length}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
             />
           )}
-        </div>
-      </main>
-    </section>
+      </div>
+      <CustomLoader loadingState={subscriptionPlans?.loading} />
+      {openModal && (
+        <CustomModal
+          modalBody={() => (
+            <SubscriptionModal
+              data={modalDisplayData}
+              setOpenModal={setOpenModal}
+            />
+          )}
+          headerTitle={`${modalDisplayData ? "Edit" : "Create"
+            } Subscription`}
+          modalToggle={openModal}
+          fnSetModalToggle={setOpenModal}
+        />
+      )}
+
+
+    </CardLayout>
   );
 };
 export default ManualSubscription;

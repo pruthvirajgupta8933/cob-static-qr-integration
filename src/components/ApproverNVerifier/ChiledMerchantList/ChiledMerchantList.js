@@ -10,6 +10,7 @@ import CustomLoader from '../../../_components/loader';
 import { dateFormatBasic } from '../../../utilities/DateConvert';
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage"
 import SearchFilter from '../../../_components/table_components/filters/SearchFilter';
+import CardLayout from '../../../utilities/CardLayout';
 
 const ChiledMerchantList = () => {
     const [clientCodeByRole, setClientCodeByRole] = useState([]);
@@ -204,114 +205,107 @@ const ChiledMerchantList = () => {
     };
 
     return (
-        <section className="">
-            <main className="">
-                <div className="">
-                    <div className="">
-                        <h5 className="">Chiled Merchant List</h5>
-                    </div>
+        <CardLayout title="Chiled Merchant List">
+            <Formik
+                initialValues={initialValues}
+                onSubmit={(values) => {
 
+                }}
+                enableReinitialize={true}
+            >
+                {(formik) => (
+                    <Form className="">
+                        <div className="row">
+                            <div className="col-lg-3">
+                                <FormikController
+                                    control="select"
+                                    label="Onboard Type"
+                                    name="referrer_type"
+                                    className="form-select"
+                                    options={referrerType}
+                                    onChange={(e) => {
+                                        const selectedValue = e.target.value;
+                                        formik.setFieldValue("referrer_type", selectedValue);
+                                        setRole(selectedValue);
+                                        setClientCodeByRole([]);
+                                        setSelectedClientId(null);
+                                    }}
+                                />
+                            </div>
 
-
-                    <div className="container-fluid p-0">
-                        <Formik
-                            initialValues={initialValues}
-                            onSubmit={(values) => {
-                                console.log("Form Submitted", values);
-                            }}
-                            enableReinitialize={true}
-                        >
-                            {(formik) => (
-                                <Form className="mt-5">
-                                    <div className="row">
-                                        <div className="col-lg-3">
-                                            <FormikController
-                                                control="select"
-                                                label="Onboard Type"
-                                                name="referrer_type"
-                                                className="form-select"
-                                                options={referrerType}
-                                                onChange={(e) => {
-                                                    const selectedValue = e.target.value;
-                                                    formik.setFieldValue("referrer_type", selectedValue);
-                                                    setRole(selectedValue);
-                                                    setClientCodeByRole([]);
-                                                    setSelectedClientId(null);
-                                                }}
-                                            />
-                                        </div>
-
-                                        {role && clientCodeByRole.length > 0 && (
-                                            <div className="col-lg-3">
-                                                <label className="form-label">{`Select ${role === 'bank' ? 'Bank' : 'Referrer'}`}</label>
-                                                <ReactSelect
-                                                    className="zindexforDropdown"
-                                                    onChange={handleSelectChange}
-                                                    value={
-                                                        selectedClientId
-                                                            ? clientCodeByRole.find(option => option.value === selectedClientId)
-                                                            : null
-                                                    }
-                                                    options={clientCodeByRole}
-                                                    placeholder="Select Client Code"
-                                                    filterOption={createFilter({ ignoreAccents: false })}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                </Form>
+                            {role && clientCodeByRole.length > 0 && (
+                                <div className="col-lg-3">
+                                    <label className="form-label">{`Select ${role === 'bank' ? 'Bank' : 'Referrer'}`}</label>
+                                    <ReactSelect
+                                        className="zindexforDropdown"
+                                        onChange={handleSelectChange}
+                                        value={
+                                            selectedClientId
+                                                ? clientCodeByRole.find(option => option.value === selectedClientId)
+                                                : null
+                                        }
+                                        options={clientCodeByRole}
+                                        placeholder="Select Client Code"
+                                        filterOption={createFilter({ ignoreAccents: false })}
+                                    />
+                                </div>
                             )}
-                        </Formik>
-                    </div>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
 
+
+
+
+
+            {
+                data?.length > 0 &&
+                <div className="row mt-5">
+
+                    <div className="form-group col-lg-3 col-md-12 mt-2">
+                        <SearchFilter
+                            kycSearch={kycSearch}
+                            searchText={searchText}
+                            searchByText={searchByText}
+                            setSearchByDropDown={setSearchByDropDown}
+                            searchTextByApiCall={false}
+                        />
+                    </div>
+                    <div className="form-group col-lg-3 col-md-12 mt-2">
+                        <CountPerPageFilter
+                            pageSize={pageSize}
+                            dataCount={dataCount}
+                            currentPage={currentPage}
+                            changePageSize={changePageSize}
+                            changeCurrentPage={changeCurrentPage}
+                        />
+                    </div>
 
 
                 </div>
-                {data?.length > 0 &&
-                    <div className="row mt-5">
-
-                        <div className="form-group col-lg-3 col-md-12 mt-2">
-                            <SearchFilter
-                                kycSearch={kycSearch}
-                                searchText={searchText}
-                                searchByText={searchByText}
-                                setSearchByDropDown={setSearchByDropDown}
-                                searchTextByApiCall={false}
-                            />
-                        </div>
-                        <div className="form-group col-lg-3 col-md-12 mt-2">
-                            <CountPerPageFilter
-                                pageSize={pageSize}
-                                dataCount={dataCount}
-                                currentPage={currentPage}
-                                changePageSize={changePageSize}
-                                changeCurrentPage={changeCurrentPage}
-                            />
-                        </div>
-
-
-                    </div>}
-                <div className="mt-5">
-                    <div className="scroll overflow-auto">
-                        {data?.length > 0 && <h6>Total Count : {dataCount}</h6>}
-                        {!loadingState && data?.length > 0 && (
-                            <Table
-                                row={chiledMerchantListData}
-                                data={data}
-                                dataCount={dataCount}
-                                pageSize={pageSize}
-                                currentPage={currentPage}
-                                changeCurrentPage={changeCurrentPage}
-                            />
-                        )}
-                    </div>
-                    <CustomLoader loadingState={loadingState} />
-                    {data?.length === 0 && !loadingState && (
-                        <h6 className="text-center font-weight-bold">No Data Found</h6>
+            }
+            <div className="mt-5">
+                <div className="scroll overflow-auto">
+                    {data?.length > 0 && <h6>Total Count : {dataCount}</h6>}
+                    {!loadingState && (
+                        <Table
+                            row={chiledMerchantListData}
+                            data={data}
+                            dataCount={dataCount}
+                            pageSize={pageSize}
+                            currentPage={currentPage}
+                            changeCurrentPage={changeCurrentPage}
+                        />
                     )}
                 </div>
-            </main>
-        </section>
+                <CustomLoader loadingState={loadingState} />
+                {/* {data?.length === 0 && !loadingState && (
+                    <h6 className="text-center font-weight-bold">No Data Found</h6>
+                )} */}
+            </div>
+
+        </CardLayout >
     );
 };
 

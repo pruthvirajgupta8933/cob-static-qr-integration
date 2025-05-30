@@ -13,6 +13,7 @@ import { merchantTab } from "../../../slices/approverVerifierTabSlice";
 import classes from "../approver.module.css";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import DateFormatter from "../../../utilities/DateConvert";
+import CardLayout from "../../../utilities/CardLayout";
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
@@ -146,116 +147,111 @@ const Approver = () => {
   };
 
   return (
-    <section>
-      <main>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-6">
-              <h5>Merchant List</h5>
-            </div>
+    <CardLayout
+      title="Merchant List">
+
+
+      <section>
+        <div className="row mt-4">
+          <div className="col-lg-12 mb-4">
+            <ul className="nav nav-tabs approv">
+              <li className="nav-item ">
+                <a
+                  href={() => false}
+                  className={`nav-link  ${currenTab === 1
+                    ? `${classes.active_tab} active`
+                    : "inactive"
+                    } ${classes.cursor_pointer}`}
+                  onClick={() => handleTabClick(1)}
+                >
+                  Not Filled KYC
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href={() => false}
+                  className={`nav-link  ${currenTab === 2
+                    ? `${classes.active_tab} active`
+                    : "inactive"
+                    } ${classes.cursor_pointer}`}
+                  onClick={() => handleTabClick(2)}
+                >
+                  Pending KYC
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href={() => false}
+                  className={`nav-link  ${currenTab === 3
+                    ? `${classes.active_tab} active`
+                    : "inactive"
+                    } ${classes.cursor_pointer}`}
+                  onClick={() => handleTabClick(3)}
+                >
+                  Pending Verification
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href={() => false}
+                  className={`nav-link  ${currenTab === 4
+                    ? `${classes.active_tab} active`
+                    : "inactive"
+                    } ${classes.cursor_pointer}`}
+                  onClick={() => handleTabClick(4)}
+                >
+                  Pending Approval
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href={() => false}
+                  className={`nav-link  ${currenTab === 5
+                    ? `${classes.active_tab} active`
+                    : "inactive"
+                    } ${classes.cursor_pointer}`}
+                  onClick={() => handleTabClick(5)}
+                >
+                  Approved
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href={() => false}
+                  className={`nav-link  ${currenTab === 6 ? classes.active_tab : "inactive"
+                    } ${classes.cursor_pointer}`}
+                  onClick={() => handleTabClick(6)}
+                >
+                  Rejected
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <section>
-            <div className="row mt-5">
-              <div className="col-lg-12 mb-4">
-                <ul className="nav nav-tabs approv">
-                  <li className="nav-item ">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 1
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(1)}
-                    >
-                      Not Filled KYC
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 2
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(2)}
-                    >
-                      Pending KYC
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 3
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(3)}
-                    >
-                      Pending Verification
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 4
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(4)}
-                    >
-                      Pending Approval
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 5
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(5)}
-                    >
-                      Approved
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 6 ? classes.active_tab : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(6)}
-                    >
-                      Rejected
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <div className="row">
-
-              {(currenTab === 1 && <NotFilledKYC />) ||
-                (currenTab === 2 && <PendindKyc commonRows={commonRows} />) ||
-                (currenTab === 3 && (
-                  <PendingVerification commonRows={commonRows} />
-                )) ||
-                (currenTab === 4 && (
-                  <VerifiedMerchant commonRows={commonRows} />
-                )) ||
-                (currenTab === 5 && (
-                  <ApprovedMerchant commonRows={commonRows} />
-                )) ||
-                (currenTab === 6 && (
-                  <RejectedKYC commonRows={commonRows} />
-                )) || <NotFilledKYC />}
-            </div>
-          </section>
         </div>
-      </main>
-    </section>
+      </section>
+
+      <section>
+        <div className="row">
+
+          {(currenTab === 1 && <NotFilledKYC />) ||
+            (currenTab === 2 && <PendindKyc commonRows={commonRows} />) ||
+            (currenTab === 3 && (
+              <PendingVerification commonRows={commonRows} />
+            )) ||
+            (currenTab === 4 && (
+              <VerifiedMerchant commonRows={commonRows} />
+            )) ||
+            (currenTab === 5 && (
+              <ApprovedMerchant commonRows={commonRows} />
+            )) ||
+            (currenTab === 6 && (
+              <RejectedKYC commonRows={commonRows} />
+            )) || <NotFilledKYC />}
+        </div>
+      </section>
+
+
+    </CardLayout>
   );
 };
 
