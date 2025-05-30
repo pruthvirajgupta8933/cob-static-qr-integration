@@ -95,7 +95,8 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                         businessctgcode: business_cat_type,
                         referralcode: merchant_parent_id,
                         mesaagebypassflag: '1',
-                        forcesuccessflag: '1'
+                        forcesuccessflag: '1',
+                        masterName: 'NA'
                     };
                     console.log("Run6- Call api with the Post Data for the rate mapping", inputData)
                     // step 3 - Post date for the ratemapping
