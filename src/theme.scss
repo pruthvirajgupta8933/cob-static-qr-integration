@@ -132,3 +132,13 @@ input {
 .model_custom_w {
     width: 650px;
 }
+
+.custom_hover_primary {
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.custom_hover_primary:hover {
+    color: #0d6efd;
+    cursor: pointer;
+}

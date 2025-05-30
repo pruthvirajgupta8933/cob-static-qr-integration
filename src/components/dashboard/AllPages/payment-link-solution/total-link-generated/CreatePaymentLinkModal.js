@@ -192,7 +192,7 @@ function CreatePaymentLink({ componentState, onClose }) {
             {({ setFieldValue, values, errors, touched }) => (
               <Form>
                 <div className="modal-header">
-                  <h6 className="fw-bold">Create Payment Link</h6>
+                  <h6 >Create Payment Link</h6>
                   <button
                     type="button"
                     className="close"
