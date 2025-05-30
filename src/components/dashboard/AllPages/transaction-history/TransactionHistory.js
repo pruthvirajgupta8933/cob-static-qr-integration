@@ -429,9 +429,9 @@ const TransactionHistory = () => {
       if (res.status === 200) {
         const disposition = res.headers['content-disposition'];
         const filenameMatch = disposition && disposition.match(/filename="(.+)"/);
-        const filename = filenameMatch ? filenameMatch[1] : 'Transaction-History.csv';
+        const filename = filenameMatch ? filenameMatch[1] : 'Transaction-History.xlsx';
 
-        const blob = new Blob([res.data], { type: 'text/csv' });
+        const blob = new Blob([res.data], { type: 'text/xlsx' });
 
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
@@ -445,7 +445,7 @@ const TransactionHistory = () => {
 
 
       } else {
-        toastConfig.errorToast("Failed to download CSV");
+        toastConfig.errorToast("Failed to download");
       }
     } catch (err) {
       if (err.response && err.response.data) {
