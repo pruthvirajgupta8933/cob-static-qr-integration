@@ -537,7 +537,7 @@ const BusinessDetails = (props) => {
       <>
         {factumData && (
           <ViewKycCollapse
-            title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
+            title={isCollapseOpen === 3 && "Screening Data"}
             formContent={
               <>
                 <div className="table-responsive table_maxheight m-3">
