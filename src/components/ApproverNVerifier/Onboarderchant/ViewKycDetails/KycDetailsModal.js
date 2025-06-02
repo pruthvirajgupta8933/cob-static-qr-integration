@@ -335,7 +335,7 @@ const KycDetailsModal = (props) => {
             </div>
           )}
 
-          {kycBusinessCategoryFactumStatus !== null && (
+          {/* {kycBusinessCategoryFactumStatus !== null && (
             <div className="row mb-4 border p-1">
               <h6>Business Category Factum Validation Status</h6>
               <p>
@@ -343,7 +343,7 @@ const KycDetailsModal = (props) => {
                 <strong>{kycBusinessCategoryFactumStatus ? "True" : "False"}</strong>
               </p>
             </div>
-          )}
+          )} */}
 
           <SubscribeProductList SubscribedPlanData={SubscribedPlanData} />
           {/* allow this component for types of user role */}
