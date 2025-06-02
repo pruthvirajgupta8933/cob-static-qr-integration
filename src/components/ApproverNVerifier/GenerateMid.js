@@ -288,6 +288,7 @@ function AssignZone() {
       toastConfig.errorToast(error?.response?.data?.detail || error?.response?.data?.message);
       Setshow(false)
       setDisable(false)
+      setLoading(false)
 
     }
 
