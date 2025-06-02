@@ -19,17 +19,12 @@ function InternalDashboard() {
 
     );
 
-    console.log("assignmentType ", assignmentType)
-
     const assigneMerchantList = useSelector(
         (state) => state.merchantAssignedReducer.assignedMerchantList
     );
 
 
-
     useEffect(() => {
-
-
         // approved data 
         {
             (roles.verifier
