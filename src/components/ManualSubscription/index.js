@@ -38,7 +38,6 @@ const ManualSubscription = () => {
     setCurrentPage(page);
   };
 
-  //function for change page size
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
@@ -169,23 +168,20 @@ const ManualSubscription = () => {
   };
 
   return (
-
     <CardLayout title="Manual Subscription">
-
-
-      <div className="row my-4">
-        <div className="col-3">
+      <div className="row my-4 align-items-center">
+        <div className="col-lg-3 col-md-6 col-sm-12 mb-3 mb-md-0">
           <button
             onClick={() => {
               setModalDisplayData();
               setOpenModal(true);
             }}
-            className="approve cob-btn-primary btn-sm text-white"
+            className="approve cob-btn-primary btn-sm text-white "
           >
             Create New Subscription
           </button>
         </div>
-        <div className="col-4">
+        <div className="col-lg-4 col-md-6 col-sm-12">
           <ReactSelect
             className="zindexforDropdown"
             onChange={handleSelectChange}
@@ -207,9 +203,7 @@ const ManualSubscription = () => {
           ""
         )}
         {subscriptionPlans?.result?.length === 0 && (
-          <h5 className="text-center font-weight-bold mt-5">
-            No Data Found
-          </h5>
+          <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
         )}
         {!subscriptionPlans?.loading &&
           subscriptionPlans?.result?.length > 0 && (
@@ -232,14 +226,11 @@ const ManualSubscription = () => {
               setOpenModal={setOpenModal}
             />
           )}
-          headerTitle={`${modalDisplayData ? "Edit" : "Create"
-            } Subscription`}
+          headerTitle={`${modalDisplayData ? "Edit" : "Create"} Subscription`}
           modalToggle={openModal}
           fnSetModalToggle={setOpenModal}
         />
       )}
-
-
     </CardLayout>
   );
 };

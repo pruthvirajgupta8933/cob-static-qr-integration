@@ -167,7 +167,7 @@ function FrmMerchantList() {
           />}
         </div>
 
-        <div className="form-group col-lg-3 col-md-12 mt-2">
+        <div className="form-group col-lg-3 col-md-6 col-sm-12 mt-2">
           <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
@@ -179,7 +179,7 @@ function FrmMerchantList() {
       <div>
         <div className="scroll overflow-auto">
           <h6>Total Count : {dataCount}</h6>
-          {!loadingState && data?.length !== 0 && (
+          {!loadingState && (
             <Table
               row={PendingVerificationData}
               data={data}
@@ -191,9 +191,9 @@ function FrmMerchantList() {
           )}
         </div>
         {loadingState && <SkeletonTable />}
-        {data?.length == 0 && !loadingState && (
+        {/* {data?.length == 0 && !loadingState && (
           <h6 className="text-center font-weight-bold">No Data Found</h6>
-        )}
+        )} */}
       </div>
     </div>
   );

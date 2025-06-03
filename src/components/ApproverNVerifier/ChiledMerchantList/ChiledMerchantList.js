@@ -216,7 +216,7 @@ const ChiledMerchantList = () => {
                 {(formik) => (
                     <Form className="">
                         <div className="row">
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 col-md-6 col-sm-12 mb-3 mb-md-0">
                                 <FormikController
                                     control="select"
                                     label="Onboard Type"

@@ -376,7 +376,7 @@ function AssignZone() {
                   label="Payment Mode"
                 />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12 mt-3 mt-md-0 ">
 
                 <FormikController
                   control="select"

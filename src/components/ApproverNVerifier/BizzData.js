@@ -232,7 +232,7 @@ const BizzAppData = () => {
                   errorMsg={formik.errors["start_date"]}
                 />
               </div>
-              <div className="form-group col-md-3 ml-3">
+              <div className="form-group col-md-3">
                 <FormikController
                   control="date"
                   label="End Date"
@@ -289,7 +289,7 @@ const BizzAppData = () => {
         )}
       </Formik>
       {FormData.length === 0 && show === true && (
-        <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
+        <div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>No data found</div>
       )}
       <div className="col-md-12 mt-4">
         <div className="scroll overflow-auto">

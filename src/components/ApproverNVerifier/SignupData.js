@@ -322,7 +322,7 @@ const SignupData = () => {
                   errorMsg={formik.errors["from_date"]}
                 />
               </div>
-              <div className="form-group col-md-3 ml-3">
+              <div className="form-group col-md-3 ">
                 <FormikController
                   control="date"
                   label="End Date"
@@ -372,7 +372,7 @@ const SignupData = () => {
       {filterSignupData?.length !== 0 &&
         <div className="row mt-4">
           {/* {signupData.length === 0 ? "" : */}
-          <div className="form-group col-lg-3 ml-2">
+          <div className="form-group col-lg-3 ">
             <SearchFilter
               kycSearch={kycSearch}
               searchText={searchText}
@@ -392,7 +392,7 @@ const SignupData = () => {
           </div>
           {/* } */}
         </div>}
-      <div className="container-fluid ">
+      <div className="container p-0 ">
         <div className="scroll overflow-auto">
           {signupData.length === 0 ? "" : <h6>Total Count : {dataCount}</h6>}
           {/* {buttonClicked === true && signupData.length === 0 && <h5 className="text-center font-weight-bold mt-5">

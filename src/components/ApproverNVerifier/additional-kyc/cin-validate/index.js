@@ -62,7 +62,7 @@ const ValidateCIN = ({ selectedDocType }) => {
         <div className="form-group">
           <button
             type="button"
-            className="btn cob-btn-primary text-white btn-sm ml-1"
+            className="btn cob-btn-primary text-white btn-sm ml-3"
             onClick={handleCinSubmit}
             disabled={isLoading}
           >
