@@ -61,12 +61,11 @@ export const rateMappingFn = (loginId, parentClientCode) => {
 
 
                 let parent_login_id, parent_name = "NA"
-
-                if (onboard_type === "Bank Child") {
+                if (onboard_type === "Bank Child" || onboard_type === "Bank Child Sub Merchant") {
                     // if the onboard type is bank child then we need to get the parent bank login id and parent bank name
                     parent_login_id = merchantData?.result?.loginMasterId?.parent_bank_login_id ?? ""
                     parent_name = merchantData?.result?.loginMasterId?.parent_bank_name ?? ""
-                } else if (onboard_type === "Referrer Child") {
+                } else if (onboard_type === "Referrer Child" || onboard_type === "Referrer Child Sub Merchant") {
                     // if the onboard type is referrer child then we need to get the parent referral and parent referral name
                     parent_login_id = merchantData?.result?.loginMasterId?.parent_referral ?? ""
                     parent_name = merchantData?.result?.loginMasterId?.parent_referral_name ?? ""
