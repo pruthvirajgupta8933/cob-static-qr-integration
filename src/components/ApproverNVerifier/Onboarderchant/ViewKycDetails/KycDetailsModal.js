@@ -191,21 +191,21 @@ const KycDetailsModal = (props) => {
         const data = resp.payload;
 
 
-        const factum = data.filter(item => item?.factum_validation === true);
-        const nonFactum = data.filter(item => item?.factum_validation === false);
+        // const factum = data.filter(item => item?.factum_validation === true);
+        // const nonFactum = data.filter(item => item?.factum_validation === false);
 
 
-        const formattedFactum = factum.map(item => ({
-          value: item.category_id,
-          label: item.category_name,
-          factum_validation: item.factum_validation
-        }));
+        // const formattedFactum = factum.map(item => ({
+        //   value: item.category_id,
+        //   label: item.category_name,
+        //   factum_validation: item.factum_validation
+        // }));
 
-        const formattedNonFactum = nonFactum.map(item => ({
-          value: item.category_id,
-          label: item.category_name,
-          factum_validation: item.factum_validation
-        }));
+        // const formattedNonFactum = nonFactum.map(item => ({
+        //   value: item.category_id,
+        //   label: item.category_name,
+        //   factum_validation: item.factum_validation
+        // }));
 
         // // Save into state
         // setFactumCategories(formattedFactum);

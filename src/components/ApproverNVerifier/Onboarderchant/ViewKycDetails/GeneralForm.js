@@ -25,7 +25,10 @@ const GeneralForm = ({ role }) => {
     const currenTab = parseInt(verifierApproverTab?.currenTab);
 
     useEffect(() => {
-        dispatch(businessCategoryType());
+
+        if (approverDashboard?.businessCategoryType?.length === 0) {
+            dispatch(businessCategoryType());
+        }
         // set parent client code
         axiosInstanceJWT.get(API_URL.fetchParentClientCodes)
             .then((resp) => {
