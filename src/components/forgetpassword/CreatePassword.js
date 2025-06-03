@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import Yup from "../../_components/formik/Yup";
 import ThanksCard from "./ThanksCard";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 const CreatePassword = (props) => {
   const { auth } = useSelector((state) => state);
@@ -16,8 +17,8 @@ const CreatePassword = (props) => {
     password: Yup.string()
       .required("Password Required")
       .matches(
-        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+        Regex.password,
+        RegexMsg.password
       ),
     confirmpassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")

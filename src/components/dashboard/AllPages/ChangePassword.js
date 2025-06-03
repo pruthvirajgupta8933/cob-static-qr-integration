@@ -9,6 +9,7 @@ import { logout } from "../../../slices/auth";
 import {
   Link
 } from "react-router-dom";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 
 function ChangePassword() {
   const dispatch = useDispatch();
@@ -70,8 +71,8 @@ function ChangePassword() {
     new_password: Yup.string()
       .required("New Password Required")
       .matches(
-        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+        Regex.password,
+        RegexMsg.password
       ).allowOneSpace(),
 
     confirm_password: Yup.string()
