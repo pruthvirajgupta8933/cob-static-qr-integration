@@ -47,8 +47,8 @@ const FORM_VALIDATION = Yup.object().shape({
     .allowOneSpace()
     .required("Password Required")
     .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
+      Regex.password,
+      RegexMsg.password
     ),
   confirmpasswordd: Yup.string()
     .allowOneSpace()

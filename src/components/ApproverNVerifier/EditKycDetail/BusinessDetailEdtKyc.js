@@ -462,8 +462,7 @@ function BusinessDetailEdtKyc(props) {
       setIsLoading(true);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
-      // auth signatory pan
-      // console.log("dfdfdf")
+
       authValidation(
         val[key],
         "signatory_pan",
@@ -683,8 +682,8 @@ function BusinessDetailEdtKyc(props) {
                         </span>
                       ) : (
                         <div className="input-group-append">
-                          <a
-                            href={() => false}
+                          <button
+                            type="button"
                             className="btn cob-btn-primary text-white btn-sm"
                             onClick={() => {
                               checkInputIsValid(
@@ -704,7 +703,7 @@ function BusinessDetailEdtKyc(props) {
                             ) : (
                               "Verify"
                             )}
-                          </a>
+                          </button>
                         </div>
                       )}
                     </div>
@@ -753,7 +752,7 @@ function BusinessDetailEdtKyc(props) {
                         ) : (
                           <div className="input-group-append">
                             <button
-                              href={() => false}
+                              type="button"
                               className="btn cob-btn-primary text-white btn-sm"
                               onClick={() => {
                                 checkInputIsValid(
@@ -833,7 +832,7 @@ function BusinessDetailEdtKyc(props) {
                   ) : (
                     <div className="input-group-append">
                       <button
-                        href={() => false}
+                        type="button"
                         className="btn cob-btn-primary text-white btn btn-sm"
                         onClick={() => {
                           checkInputIsValid(
@@ -913,8 +912,8 @@ function BusinessDetailEdtKyc(props) {
                     </span>
                   ) : (
                     <div className="input-group-append">
-                      <a
-                        href={() => false}
+                      <button
+                        type="button"
                         className="btn cob-btn-primary text-white btn-sm"
                         onClick={() => {
                           checkInputIsValid(
@@ -937,7 +936,7 @@ function BusinessDetailEdtKyc(props) {
                         ) : (
                           "Verify"
                         )}
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -1048,7 +1047,6 @@ function BusinessDetailEdtKyc(props) {
                     <div className="input-group-append">
                       <button
                         type="button"
-
                         className="btn cob-btn-primary text-white btn-sm"
                         disabled={loadingForCin}
                         onClick={() => {

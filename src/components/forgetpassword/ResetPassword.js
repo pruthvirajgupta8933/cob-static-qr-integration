@@ -5,7 +5,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import API_URL from "../../config";
 import Yup from "../../_components/formik/Yup";
-import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
@@ -16,8 +17,8 @@ const ResetPassword = (props) => {
       .allowOneSpace()
       .required("Password Required")
       .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+        Regex.password,
+        RegexMsg.password
       ),
     confirmpassword: Yup.string()
       .allowOneSpace()
