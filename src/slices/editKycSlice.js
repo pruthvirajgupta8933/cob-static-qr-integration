@@ -7,6 +7,7 @@ import {
   uploadDocumentApi,
 } from "../services/editKycForm/editKyc-service";
 import { setMessage } from "./message";
+import { getErrorMessage } from "../utilities/errorUtils";
 
 const initialState = {
   postdata: {},
@@ -43,13 +44,7 @@ export const updateBusinessOverViewEditDetails = createAsyncThunk(
       // thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString() ||
-        error.request.toString();
+      const message = getErrorMessage(error)
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }
