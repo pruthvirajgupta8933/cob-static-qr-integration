@@ -8,12 +8,12 @@ import toastConfig from '../../../../utilities/toastTypes';
 import { Regex, RegexMsg } from '../../../../_components/formik/ValidationRegex';
 
 
-function SaveLocation({ role }) {
+function SaveLocation({ role, propCurrentTab }) {
 
     const [loadingState, setLoadingState] = useState(false);
 
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-    const currenTab = parseInt(verifierApproverTab?.currenTab);
+    const currenTab = propCurrentTab || parseInt(verifierApproverTab?.currenTab);
 
 
     const { kyc, auth } = useSelector(state => state)
@@ -30,6 +30,7 @@ function SaveLocation({ role }) {
         longitude: Yup.string().matches(Regex.longitudeRegex, RegexMsg.longitudeRegex).required("Required").nullable()
     })
 
+  
     const handleSubmit = (v) => {
         setLoadingState(true)
         const saveCord = {

@@ -38,7 +38,7 @@ function ContactInfoEdtkyc(props) {
 
   const selectedId = props.selectedId
   const { auth, kyc } = useSelector((state) => state);
-  console.log("kyc", kyc);
+  // console.log("kyc", kyc);
   const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
