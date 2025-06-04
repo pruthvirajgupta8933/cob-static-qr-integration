@@ -13,6 +13,7 @@ import {
     assignAccountMangerApi,
     assignManagerDetails,
 } from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import CardLayout from "../../../utilities/CardLayout";
 
 const Mfa = () => {
     const [clientCodeList, setCliencodeList] = useState([]);
@@ -93,67 +94,60 @@ const Mfa = () => {
     { key: "false", value: "Deactive" }
     ]
     return (
-        <section className="">
-            <main className="">
-                <div className="">
-                    <div className="">
-                        <h5 className="">MFA</h5>
-                    </div>
-                    <div className="container-fluid p-0">
-                        <Formik
-                            initialValues={initialValues}
-                            validationSchema={validationSchema}
-                            onSubmit={onSubmit}
-                            enableReinitialize={true}
-                        >
-                            {(formik) => (
-                                <Form className="row mt-5">
-                                    <div className="row">
-                                        <div className="col-lg-3">
-                                            <CustomReactSelect
-                                                name="react_select"
-                                                options={options}
-                                                placeholder="Select Client Code"
-                                                filterOption={createFilter({ ignoreAccents: false })}
-                                                label="Client Code"
-                                                onChange={handleChange}
-                                            />
+        <CardLayout title="MFA Management">
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+                enableReinitialize={true}
+            >
+                {(formik) => (
+                    <Form >
+                        <div className="row">
+                            <div className="col-lg-3">
+                                <CustomReactSelect
+                                    name="react_select"
+                                    options={options}
+                                    placeholder="Select Client Code"
+                                    filterOption={createFilter({ ignoreAccents: false })}
+                                    label="Client Code"
+                                    onChange={handleChange}
+                                />
 
-                                        </div>
-                                        <div className="col-lg-3">
-                                            <FormikController
-                                                control="select"
-                                                name="mfa"
-                                                options={mfaAssign}
-                                                className="form-select"
-                                                label="MFA Status"
-                                            />
-                                        </div>
-                                        <div className="col-lg-3 mt-4">
-                                            <button
-                                                type="submit"
-                                                className="btn cob-btn-primary approve text-white"
-                                                disabled={disable}
-                                            >
-                                                {disable && (
-                                                    <span
-                                                        className="spinner-border spinner-border-sm mr-1"
-                                                        role="status"
-                                                        ariaHidden="true"
-                                                    ></span>
-                                                )}
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </Form>
-                            )}
-                        </Formik>
-                    </div>
-                </div>
-                <div></div>
-            </main>
-        </section>
+                            </div>
+                            <div className="col-lg-3">
+                                <FormikController
+                                    control="select"
+                                    name="mfa"
+                                    options={mfaAssign}
+                                    className="form-select"
+                                    label="MFA Status"
+                                />
+                            </div>
+                            <div className="col-lg-3 mt-4">
+                                <button
+                                    type="submit"
+                                    className="btn cob-btn-primary approve text-white"
+                                    disabled={disable}
+                                >
+                                    {disable && (
+                                        <span
+                                            className="spinner-border spinner-border-sm mr-1"
+                                            role="status"
+                                            ariaHidden="true"
+                                        ></span>
+                                    )}
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+
+
+        </CardLayout>
+
     );
 };
 

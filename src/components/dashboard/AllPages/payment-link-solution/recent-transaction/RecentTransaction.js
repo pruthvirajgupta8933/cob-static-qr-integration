@@ -400,12 +400,12 @@ const RecentTransaction = () => {
 
             <div className="card-body">
               <div className="scroll overflow-auto">
-                {buttonClicked && payerData?.length === 0 && (
+                {/* {buttonClicked && payerData?.length === 0 && (
                   <h5 className="text-center font-weight-bold mt-5">
                     No Data Found
                   </h5>
-                )}
-                {!loadingState && filterData?.length !== 0 && (
+                )} */}
+                {!loadingState && (
                   <Table
                     row={rowData}
                     data={payerData}

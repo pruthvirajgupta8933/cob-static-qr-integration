@@ -66,7 +66,7 @@ const ValidateCredReport = ({ selectedDocType }) => {
         <div className="form-group">
           <button
             type="button"
-            className="btn cob-btn-primary text-white btn-sm"
+            className="btn cob-btn-primary text-white btn-sm ml-3 ml-md-0"
             onClick={handleTxnIdSubmit}
             disabled={isLoading}
           >

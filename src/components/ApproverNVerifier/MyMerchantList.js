@@ -25,7 +25,7 @@ import toastConfig from "../../utilities/toastTypes";
 import { stringEnc } from "../../utilities/encodeDecode";
 import SubMerchant from "./Onboarderchant/SubMerchant";
 import CustomModal from "../../_components/custom_modal";
-
+import ReportLayout from "../../utilities/CardLayout";
 const MyMerchantList = () => {
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoading);
@@ -345,10 +345,8 @@ const MyMerchantList = () => {
   };
 
   return (
-    <div className="container-fluid p-0">
-      <div className="mb-5">
-        <h5 className="">My Merchant List</h5>
-      </div>
+    <ReportLayout title="My Merchant List">
+
       <div className="form-row">
         {openDocumentModal && (
           <AgreementUploadTab
@@ -485,8 +483,9 @@ const MyMerchantList = () => {
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center">No data Found</h6>
         )}
+
       </div>
-    </div>
+    </ReportLayout>
   );
 };
 
