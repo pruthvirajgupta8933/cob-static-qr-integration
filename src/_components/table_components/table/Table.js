@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import DataTable, { createTheme } from "react-data-table-component";
+import CustomLoader from "../../../_components/loader"
 import "./index.css";
 // import SkeletonTable from "./skeleton-table";
 
@@ -72,7 +73,7 @@ const customStyles = {
   },
 };
 
-const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data, onRowClick, fixedHeaderScrollHeight, ...rest }) => {
+const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data, loadingState, onRowClick, fixedHeaderScrollHeight, ...rest }) => {
   const fixedHeaderFooter = {
     header: true,
     footer: true,
@@ -115,8 +116,15 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
         fixedHeaderScrollHeight={fixedHeaderScrollHeight}
         theme="solarized"
         customStyles={customStyles}
-        noDataComponent={<div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>No data found</div>}
-
+        noDataComponent={
+          loadingState ? (
+            <CustomLoader loadingState={loadingState} />
+          ) : (
+            <div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>
+              No data found
+            </div>
+          )
+        }
         {...rest}
 
       // fixedHeader={true}

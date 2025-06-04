@@ -147,6 +147,7 @@ const API_LIVE = {
 
   /* Settlement Report */
   SettlementReport: report_api_url + "/transactions/GetSettledTxnHistory/",
+  SettlementReportExcel: report_api_url + "/transactions/GetSettledTxnExcelHistory/",
   SettlementSummaryReport: report_api_url + "/transactions/SettledGroupedView/",
   ChargeBankTxnHistory:
     report_api_url + "/transactions/GetChargebackTxnHistory/",

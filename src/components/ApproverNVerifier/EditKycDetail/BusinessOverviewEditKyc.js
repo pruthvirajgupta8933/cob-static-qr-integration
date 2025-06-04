@@ -237,6 +237,7 @@ function BusinessOverviewEditKyc(props) {
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
+        console.log(res.payload)
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
           toast.success(res.payload.message);
           setTab(3);
@@ -245,10 +246,13 @@ function BusinessOverviewEditKyc(props) {
           // dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
           setIsDisabled(false);
         } else {
-          toast.error(res?.payload?.detail);
+
+          toast.error(res?.payload);
           setIsDisabled(false);
         }
-      });
+      }).catch((err)=>{
+        console.log(err)
+      })
     }
 
   };
