@@ -96,6 +96,11 @@ const getPayModeList = () => {
 const getPayStatusList = () => {
   return axiosInstanceJWT.get(API_URL.GET_PAYMENT_STATUS_LIST);
 };
+const exportSettlementReportNew = (postData) => {
+  return axiosInstanceJWT.post(API_URL.SettlementReportExcel, postData, {
+    responseType: "arraybuffer",
+  });
+}
 
 export const Dashboardservice = {
   successTxnSummary,
@@ -112,4 +117,5 @@ export const Dashboardservice = {
   dowlonadTransactionHistory,
   getPayModeList,
   getPayStatusList,
+  exportSettlementReportNew
 };
