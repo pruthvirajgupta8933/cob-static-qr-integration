@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import store from "./store";
+import store, { persistor } from "./store"; // Import persistor
 // import "./index.css";
+import { PersistGate } from 'redux-persist/integration/react'; // Import PersistGate
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
@@ -14,11 +15,12 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 
 ReactDOM.render(
-
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}> {/* Wrap with PersistGate */}
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById("root")
 );

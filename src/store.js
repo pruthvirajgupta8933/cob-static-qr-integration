@@ -1,4 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { combineReducers } from 'redux';
+
+
 import authReducer from "./slices/auth";
 import messageReducer from "./slices/message";
 import { dashboardReducer } from "./slices/dashboardSlice";
@@ -112,9 +126,37 @@ const reducer = {
 
 };
 
+const rootPersistConfig = {
+  key: 'cob-root',
+  storage,
+  version: 1, // Increment this version number when you change the structure of your state
+  whitelist: [
+    // 'auth',
+    //  'dashboard', 'kyc', 'widget', 'verifierApproverTab', 'signupData', 'mid', 'frm', 'themeReducer', 'kycOperationReducer', 'payout', 'menuListReducer', 'productCatalogueSlice', 'ReferralMidReducer', 'challanReducer', 'merchantReportSlice', 'createMandate', 'Reports', 'DebitReports', 'createEmandateByApiSliceReducer', 'registrationHisorySliceReducer', 'scheduleTransactionSliceReducer'
+    ], // Only persist these slices
+ 
+  // blacklist: ['message', 'verifierApproverTab', 'kycOperationReducer', 'bankDashboardReducer', 'infoBulletinReducer', 'paymentLinkSliceReducer', 'merchantAssignedReducer', 'dateFilterSliceReducer', 'paymentLinkSolutionSliceReducer', 'qForm'] // Do not persist these slices
+
+};
+
+// Combine all your reducers into a single rootReducer
+const rootReducer = combineReducers(reducer);
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+
 const store = configureStore({
-  reducer: reducer,
-  devTools: true,
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types for serializability checks, as redux-persist uses them
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  devTools: process.env.NODE_ENV !== 'production', // Enable DevTools only in development
 });
 
+export const persistor = persistStore(store);
+
+// To maintain the default export if other parts of your application expect it:
 export default store;
