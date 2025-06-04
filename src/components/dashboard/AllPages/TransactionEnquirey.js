@@ -151,7 +151,7 @@ const TransactionEnquirey = React.memo(() => {
           ...prev,
           loadingState: false,
           show: false,
-          errMessage: "Data Not Found",
+          errMessage: "No ",
         }));
       }
     } catch (e) {
@@ -159,7 +159,7 @@ const TransactionEnquirey = React.memo(() => {
         ...prev,
         loadingState: false,
         show: false,
-        errMessage: "Data Not Found",
+        errMessage: "No data found",
       }));
     } finally {
       setState((prev) => ({ ...prev, disable: false }));
@@ -308,7 +308,8 @@ const TransactionEnquirey = React.memo(() => {
           )}
         {state.errMessage && (
           <div className="col">
-            <h5 className=" text-center">{state.errMessage}</h5>
+
+            <div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>{state.errMessage}</div>
           </div>
         )}
       </div>

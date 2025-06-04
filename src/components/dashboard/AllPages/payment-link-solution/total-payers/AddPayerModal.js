@@ -118,7 +118,7 @@ const AddPayerModal = ({ componentState, loadDataFn, onClose }) => {
             {({ errors }) => (
               <>
                 <div className="modal-header">
-                  <h6 className="fw-bold">
+                  <h6 >
                     {editPayerModal?.isEditable ? "Edit Payer" : "Add Payer"}
                   </h6>
                   <button

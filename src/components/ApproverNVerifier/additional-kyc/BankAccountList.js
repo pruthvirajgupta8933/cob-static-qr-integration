@@ -90,7 +90,7 @@ const BankAccountList = ({ selectedDocType }) => {
                   <div className="form-group">
                     <button
                       type="submit"
-                      className="btn cob-btn-primary text-white btn-sm"
+                      className="btn cob-btn-primary text-white btn-sm mt-3 mt-md-0"
                       disabled={buttonDisable}
                     >
                       {isLoading ? (

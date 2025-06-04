@@ -12,6 +12,7 @@ import FormikController from "../../_components/formik/FormikController";
 import { fetchSignupData } from "../../slices/signupDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../_components/formik/Yup";
+import CardLayout from "../../utilities/CardLayout";
 
 
 const validationSchema = Yup.object({
@@ -22,7 +23,7 @@ const validationSchema = Yup.object({
 });
 
 const SignupData = () => {
- const [signupData, setSignupData] = useState([]);
+  const [signupData, setSignupData] = useState([]);
   const [filterSignupData, setFilterSignupData] = useState([]);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -60,7 +61,7 @@ const SignupData = () => {
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
     setSearchText(e);
-    
+
   };
 
   const searchByText = (text) => {
@@ -76,7 +77,7 @@ const SignupData = () => {
       setPageSize(0);
     }
 
-  
+
   };
 
   useEffect(() => {
@@ -293,133 +294,127 @@ const SignupData = () => {
   ];
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div >
-            <h5 className="">Signup Data</h5>
-          </div>
 
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values, { resetForm }) => {
-              handleSubmit(values);
-            }}
-            enableReinitialize={true}
-          >
-            {(formik) => (
-              <Form className="row mt-5">
-                <div className="row">
-                  <div className="form-group  col-md-3 ">
-                    <FormikController
-                      control="date"
-                      label="From Date"
-                      id="from_date"
-                      name="from_date"
-                      value={formik.values.from_date ? new Date(formik.values.from_date) : null}
-                      onChange={date => formik.setFieldValue('from_date', date)}
-                      format="dd-MM-y"
-                      clearIcon={null}
-                      className="form-control rounded-0 p-0"
-                      required={true}
-                      errorMsg={formik.errors["from_date"]}
-                    />
-                  </div>
-                  <div className="form-group col-md-3 ml-3">
-                    <FormikController
-                      control="date"
-                      label="End Date"
-                      id="to_date"
-                      name="to_date"
-                      value={formik.values.to_date ? new Date(formik.values.to_date) : null}
-                      onChange={date => formik.setFieldValue('to_date', date)}
-                      format="dd-MM-y"
-                      clearIcon={null}
-                      className="form-control rounded-0 p-0"
-                      required={true}
-                      errorMsg={formik.errors["to_date"]}
-                    />
-                  </div>
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        className="btn cob-btn-primary approve text-white"
-                        disabled={disable}
-                      >
-                        {disable && (
-                          <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                        )} 
-                        Submit
-                      </button>
-                      {signupData?.length > 0 ? (
-                        <button
-                          className="btn cob-btn-primary  approve  text-white ml-3"
-                          type="button"
-                          onClick={() => exportToExcelFn()}
-                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                        >
-                          Export
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </div>
+    <CardLayout title="Signup Data">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values, { resetForm }) => {
+          handleSubmit(values);
+        }}
+        enableReinitialize={true}
+      >
+        {(formik) => (
+          <Form className="row ">
+            <div className="row">
+              <div className="form-group  col-md-3 ">
+                <FormikController
+                  control="date"
+                  label="From Date"
+                  id="from_date"
+                  name="from_date"
+                  value={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                  onChange={date => formik.setFieldValue('from_date', date)}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
+                  errorMsg={formik.errors["from_date"]}
+                />
+              </div>
+              <div className="form-group col-md-3 ">
+                <FormikController
+                  control="date"
+                  label="End Date"
+                  id="to_date"
+                  name="to_date"
+                  value={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                  onChange={date => formik.setFieldValue('to_date', date)}
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
+                  errorMsg={formik.errors["to_date"]}
+                />
+              </div>
+              <div className="row">
+                <div className="col-md-4">
+                  <button
+                    type="submit"
+                    className="btn cob-btn-primary approve text-white"
+                    disabled={disable}
+                  >
+                    {disable && (
+                      <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                    )}
+                    Submit
+                  </button>
+                  {signupData?.length > 0 ? (
+                    <button
+                      className="btn cob-btn-primary  approve  text-white ml-3"
+                      type="button"
+                      onClick={() => exportToExcelFn()}
+                      style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                    >
+                      Export
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
-              </Form>
-            )}
-          </Formik>
-
-          {/* {!loadingState && signupData?.length !== 0 && ( */}
-          {filterSignupData?.length !== 0 &&
-          <div className="row mt-4">
-            {/* {signupData.length === 0 ? "" : */}
-              <div className="form-group col-lg-3 ml-2">
-                <SearchFilter
-                  kycSearch={kycSearch}
-                  searchText={searchText}
-                  searchByText={searchByText}
-                  setSearchByDropDown={setSearchByDropDown}
-                />
-
               </div>
-              {/* } */}
-            {/* {signupData.length === 0 ? "" : */}
-              <div className="form-group col-lg-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={dataCount}
-                  changePageSize={changePageSize}
-                />
-              </div>
-              {/* } */}
-          </div>}
-          <div className="container-fluid ">
-            <div className="scroll overflow-auto">
-              {signupData.length === 0 ? "" : <h6>Total Count : {dataCount}</h6>}
-              {buttonClicked === true && signupData.length === 0 && <h5 className="text-center font-weight-bold mt-5">
-                No Data Found
-              </h5>}
-              {!loadingState && signupData?.length !== 0 && (
-                <Table
-                  row={rowSignUpData}
-                  data={signupData}
-                  dataCount={dataCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              )}
             </div>
-            <CustomLoader loadingState={loadingState} />
-          </div>
+          </Form>
+        )}
+      </Formik>
 
-          {/* )} */}
+      {/* {!loadingState && signupData?.length !== 0 && ( */}
+      {filterSignupData?.length !== 0 &&
+        <div className="row mt-4">
+          {/* {signupData.length === 0 ? "" : */}
+          <div className="form-group col-lg-3 ">
+            <SearchFilter
+              kycSearch={kycSearch}
+              searchText={searchText}
+              searchByText={searchByText}
+              setSearchByDropDown={setSearchByDropDown}
+            />
+
+          </div>
+          {/* } */}
+          {/* {signupData.length === 0 ? "" : */}
+          <div className="form-group col-lg-3">
+            <CountPerPageFilter
+              pageSize={pageSize}
+              dataCount={dataCount}
+              changePageSize={changePageSize}
+            />
+          </div>
+          {/* } */}
+        </div>}
+      <div className="container p-0 ">
+        <div className="scroll overflow-auto">
+          {signupData.length === 0 ? "" : <h6>Total Count : {dataCount}</h6>}
+          {/* {buttonClicked === true && signupData.length === 0 && <h5 className="text-center font-weight-bold mt-5">
+            No Data Found
+          </h5>} */}
+          {!loadingState && (
+            <Table
+              row={rowSignUpData}
+              data={signupData}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
+          )}
         </div>
-      </main>
-    </section>
+        <CustomLoader loadingState={loadingState} />
+      </div>
+
+
+
+    </CardLayout>
   );
 };
 

@@ -10,6 +10,7 @@ import FormikController from "../../_components/formik/FormikController";
 import { getQformList, getQformTxnList } from "../../slices/qform-reports";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
+import CardLayout from "../../utilities/CardLayout"
 const QFormReports = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -38,7 +39,7 @@ const QFormReports = () => {
     endDate: Yup.date().required("Required"),
   });
 
-  const exportToExcelFn = async () => {};
+  const exportToExcelFn = async () => { };
   const submitHandler = (values, { setSubmitting }) => {
     setTxnList([]);
     const payload = {
@@ -68,7 +69,8 @@ const QFormReports = () => {
     }
   };
   return (
-    <div>
+    <CardLayout title="Form Wise Report">
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -189,7 +191,8 @@ const QFormReports = () => {
           </table>
         )}
       </div>
-    </div>
+
+    </CardLayout >
   );
 };
 

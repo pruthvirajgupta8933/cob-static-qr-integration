@@ -12,6 +12,7 @@ import DateFormatter from "../../utilities/DateConvert";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import { exportToExcelOnboard } from "../../services/kyc/export-data.service";
 import Yup from "../../_components/formik/Yup";
+import CardLayout from "../../utilities/CardLayout";
 
 const OnboardedReport = () => {
   const [searchingData, setSearchingData] = useState([]);
@@ -186,115 +187,109 @@ const OnboardedReport = () => {
   };
 
   return (
+    <CardLayout title="Onboarded Report" >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values, { resetForm }) => {
+          handleSubmit(values);
+        }}
+        enableReinitialize={true}
+      >
+        {(formik) => (
+          <Form className="row ">
+            <div className="form-group col-md-3">
+              <FormikController
+                control="select"
+                label="Merchant KYC Status"
+                name="status"
+                options={selectStatus}
+                className="form-select"
+              />
+              {formik.handleChange(
+                "status",
+                setSelectedvalue(formik?.values?.status)
+              )}
+            </div>
 
-    <section className="">
-      <div className="">
-        <div className="">
-          <h5 className="">
-            Onboarded Report
-          </h5>
-        </div>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => {
-            handleSubmit(values);
-          }}
-          enableReinitialize={true}
-        >
-          {(formik) => (
-            <Form className="row mt-5">
-              <div className="form-group col-md-3">
-                <FormikController
-                  control="select"
-                  label="Merchant KYC Status"
-                  name="status"
-                  options={selectStatus}
-                  className="form-select"
-                />
-                {formik.handleChange(
-                  "status",
-                  setSelectedvalue(formik?.values?.status)
-                )}
-              </div>
-
-              <div className="form-group col-md-3">
-                <button
-                  type="submit"
-                  className="btn cob-btn-primary mt-4 approve text-white btn-sm"
-                  disabled={disabled}
-                >
-                  {disabled && (
-                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                  )} {/* Show spinner if disabled */}
-                  Search
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-
-        {!searchingData?.length === 0 && (
-          <h6 className="text-center font-weight-bold">No Data Found</h6>
+            <div className="form-group col-md-3">
+              <button
+                type="submit"
+                className="btn cob-btn-primary mt-4 approve text-white btn-sm"
+                disabled={disabled}
+              >
+                {disabled && (
+                  <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                )} {/* Show spinner if disabled */}
+                Search
+              </button>
+            </div>
+          </Form>
         )}
+      </Formik>
 
-        {!loading && result?.length !== 0 && (
-          <>
-            <div className="row">
-              <div className="form-group col-lg-3">
-                <SearchFilter
-                  kycSearch={kycSearch}
-                  searchText={searchText}
-                  searchByText={searchByText}
-                  setSearchByDropDown={setSearchByDropDown}
-                  searchTextByApiCall={false}
-                />
-              </div>
+      {!searchingData?.length === 0 && (
+        <h6 className="text-center font-weight-bold">No Data Found</h6>
+      )}
 
-              <div className="form-group col-lg-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
+      {!loading && result?.length !== 0 && (
+        <>
+          <div className="row">
+            <div className="form-group col-lg-3">
+              <SearchFilter
+                kycSearch={kycSearch}
+                searchText={searchText}
+                searchByText={searchByText}
+                setSearchByDropDown={setSearchByDropDown}
+                searchTextByApiCall={false}
+              />
+            </div>
+
+            <div className="form-group col-lg-3">
+              <CountPerPageFilter
+                pageSize={pageSize}
+                dataCount={count}
+                currentPage={currentPage}
+                changePageSize={changePageSize}
+                changeCurrentPage={changeCurrentPage}
+              />
+            </div>
+            <div className="form-group col-lg-3">
+              <button
+                className="btn btn-sm text-white mt-4 cob-btn-primary "
+                type="button"
+                onClick={() => exportToExcelFn()}
+                disabled={exportDisable}
+              >
+                {exportDisable && (
+                  <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                )}
+                Export
+              </button>
+            </div>
+          </div>
+
+          <div className="container p-0">
+            <div className="scroll overflow-auto">
+              <h6>Total Count : {count}</h6>
+              {!loading && searchingData?.length !== 0 && (
+                <Table
+                  row={rowSignUpData}
+                  data={searchingData}
                   dataCount={count}
+                  pageSize={pageSize}
                   currentPage={currentPage}
-                  changePageSize={changePageSize}
                   changeCurrentPage={changeCurrentPage}
                 />
-              </div>
-              <div className="form-group col-lg-3">
-                <button
-                  className="btn btn-sm text-white mt-4 cob-btn-primary "
-                  type="button"
-                  onClick={() => exportToExcelFn()}
-                  disabled={exportDisable}
-                >
-                  {exportDisable && (
-                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                  )}
-                  Export
-                </button>
-              </div>
+              )}
             </div>
+            <CustomLoader loadingState={loading} />
+          </div>
+        </>
+      )}
 
-            <div className="container p-0">
-              <div className="scroll overflow-auto">
-                <h6>Total Count : {count}</h6>
-                {!loading && searchingData?.length !== 0 && (
-                  <Table
-                    row={rowSignUpData}
-                    data={searchingData}
-                    dataCount={count}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                  />
-                )}
-              </div>
-              <CustomLoader loadingState={loading} />
-            </div>
-          </>
-        )}
-      </div>
-    </section>
+
+    </CardLayout>
   );
 };
 
