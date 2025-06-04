@@ -10,6 +10,7 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
 import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import CardLayout from "../../utilities/CardLayout";
 
 const ReferZone = () => {
 
@@ -222,69 +223,62 @@ const ReferZone = () => {
   };
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="">
-            <h5>
-              Provision of Sourcing Partner
-            </h5>
-          </div>
-
-          <div className="container-fluid p-0 mt-4">
-            <div className="row">
-              <div className="form-group col-lg-3 col-md-12 mt-2">
-                <SearchFilter
-                  kycSearch={kycSearch}
-                  searchText={searchText}
-                  searchByText={searchByText}
-                  setSearchByDropDown={setSearchByDropDown}
-                  searchTextByApiCall={true}
-                />
-              </div>
-
-              <div className="form-group col-lg-3 col-md-12 mt-2">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={dataCount}
-                  currentPage={currentPage}
-                  changePageSize={changePageSize}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              </div>
-
-              <div className="form-group col-lg-3 col-md-12 mt-2">
-                <label className="form-label">Merchant KYC Status</label>
-                <select className="form-select" onChange={e => setMerchantStatus(e.target.value)} value={merchantStatus}>
-                  {selectStatus?.map(item => (<option key={item.key} value={item.value}>{item.value}</option>))}
-                </select>
-              </div>
-            </div>
+    <CardLayout title="Provision of Sourcing Partner">
 
 
-            <div className="">
-              <div className="scroll overflow-auto">
-                <h6>Total Count : {dataCount}</h6>
-                {!allKycData?.loading && data?.length !== 0 && (
-                  <Table
-                    row={ReferZoneData}
-                    data={data}
-                    dataCount={dataCount}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                  />
-                )}
-              </div>
-              <CustomLoader loadingState={allKycData?.loading} />
-              {data?.length == 0 && !allKycData?.loading && (
-                <h5 className="text-center font-weight-bold">No Data Found</h5>
-              )}
-            </div>
-          </div>
+      <div className="row">
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+            searchTextByApiCall={true}
+          />
         </div>
 
-      </main>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          />
+        </div>
+
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <label className="form-label">Merchant KYC Status</label>
+          <select className="form-select" onChange={e => setMerchantStatus(e.target.value)} value={merchantStatus}>
+            {selectStatus?.map(item => (<option key={item.key} value={item.value}>{item.value}</option>))}
+          </select>
+        </div>
+
+
+
+        <div className="">
+          <div className="scroll overflow-auto">
+            <h6>Total Count : {dataCount}</h6>
+            {!allKycData?.loading && data?.length !== 0 && (
+              <Table
+                row={ReferZoneData}
+                data={data}
+                dataCount={dataCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
+            )}
+          </div>
+          <CustomLoader loadingState={allKycData?.loading} />
+          {data?.length == 0 && !allKycData?.loading && (
+            <h5 className="text-center font-weight-bold">No Data Found</h5>
+          )}
+        </div>
+      </div>
+
+
+
       <div>
 
         {openZoneModal === true && (
@@ -295,7 +289,8 @@ const ReferZone = () => {
           />
         )}
       </div>
-    </section>
+
+    </CardLayout>
   );
 };
 

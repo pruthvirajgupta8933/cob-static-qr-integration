@@ -14,6 +14,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { updateRollingReserveApi } from "./UpdateRollingReserveSlice/UpdateRollingReserveSlice";
 import { kycUserList, clearKycState } from "../../../slices/kycSlice";
 import CustomLoader from "../../../_components/loader";
+import CardLayOut from "../../../utilities/CardLayout";
 
 
 
@@ -127,146 +128,134 @@ const UpdateRollingReserve = () => {
         })),
     ];
     return (
-        <section className="">
-            <main className="">
-                <div className="">
-                    <div className="">
-                        <h5 className="">Update Rolling Reserve</h5>
-                    </div>
-                    <div className="container-fluid p-0 mt-4">
-                        <div className="card">
-
-                            <div className="card-body">
-                                <Formik
-                                    initialValues={initialValues}
-                                    validationSchema={validationSchema}
-                                    onSubmit={onSubmit}
-                                >
-                                    {(formik) => (
-                                        <Form>
-                                            <div className="row mt-3">
-                                                <div className="col-lg-3">
-                                                    <CustomReactSelect
-                                                        name="react_select"
-                                                        options={options}
-                                                        placeholder="Select Client Code"
-                                                        filterOption={createFilter({ ignoreAccents: false })}
-                                                        label="Client Code"
-                                                        onChange={handleChange}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {selectedClientId && (
-                                                <div>
-                                                    <div className="row">
-                                                        <div className="col-md-4 g-3">
-                                                            <FormikController
-                                                                control="select"
-                                                                name="period_code"
-                                                                options={rollingReservePeriodOption}
-                                                                className="form-select"
-                                                                label="Rolling Reserve Period"
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-4 g-3">
-                                                            <FormikController
-                                                                control="select"
-                                                                name="rolling_reserve_type"
-                                                                options={amtTypeOptions}
-                                                                className="form-select"
-                                                                label="RR Amount Type"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-4 g-3">
-                                                            <FormikController
-                                                                control="input"
-                                                                type="number"
-                                                                name="rr_amount"
-                                                                className="form-control"
-                                                                label="Rolling Reserve"
-                                                                onChange={(e) => {
-                                                                    formik.setFieldValue("rr_amount", e.target.value);
-                                                                    formik.setStatus(false);
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-4 g-3">
-                                                            <FormikController
-                                                                control="select"
-                                                                name="business_cat_type"
-                                                                options={businessCategoryOption}
-                                                                className="form-select"
-                                                                label="Business Category"
-                                                                onChange={(e) => {
-                                                                    formik.setFieldValue("business_cat_type", e.target.value);
-                                                                    formik.setStatus(false);
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="row mt-3">
-                                                        <div className="col-md-4">
-                                                            <button type="submit" className="btn cob-btn-primary approve text-white" disabled={formik.isSubmitting}>
-                                                                {formik?.isSubmitting && (
-                                                                    <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
-                                                                )}
-                                                                Save
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </Form>
-                                    )}
-
-
-                                </Formik>
-
+        <CardLayOut title="Update Rolling Reserve">
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+            >
+                {(formik) => (
+                    <Form>
+                        <div className="row mt-3">
+                            <div className="col-lg-3">
+                                <CustomReactSelect
+                                    name="react_select"
+                                    options={options}
+                                    placeholder="Select Client Code"
+                                    filterOption={createFilter({ ignoreAccents: false })}
+                                    label="Client Code"
+                                    onChange={handleChange}
+                                />
                             </div>
                         </div>
-                    </div>
-                    <div className="row mt-4">
-                        <CustomLoader loadingState={loadingState} />
-                        {KycList?.result?.loginMasterId && (
 
-                            <div className="col-md-12">
+                        {selectedClientId && (
+                            <div>
+                                <div className="row">
+                                    <div className="col-md-4 g-3">
+                                        <FormikController
+                                            control="select"
+                                            name="period_code"
+                                            options={rollingReservePeriodOption}
+                                            className="form-select"
+                                            label="Rolling Reserve Period"
+                                        />
+                                    </div>
+                                    <div className="col-md-4 g-3">
+                                        <FormikController
+                                            control="select"
+                                            name="rolling_reserve_type"
+                                            options={amtTypeOptions}
+                                            className="form-select"
+                                            label="RR Amount Type"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4 g-3">
+                                        <FormikController
+                                            control="input"
+                                            type="number"
+                                            name="rr_amount"
+                                            className="form-control"
+                                            label="Rolling Reserve"
+                                            onChange={(e) => {
+                                                formik.setFieldValue("rr_amount", e.target.value);
+                                                formik.setStatus(false);
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="col-md-4 g-3">
+                                        <FormikController
+                                            control="select"
+                                            name="business_cat_type"
+                                            options={businessCategoryOption}
+                                            className="form-select"
+                                            label="Business Category"
+                                            onChange={(e) => {
+                                                formik.setFieldValue("business_cat_type", e.target.value);
+                                                formik.setStatus(false);
+                                            }}
+                                        />
+                                    </div>
+                                </div>
 
-
-                                <div className="card">
-
-
-                                    <div className="card-body">
-                                        <table className="table table-bordered table-responsive-sm mb-0">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Rolling Reserve</strong></td>
-                                                    <td>{KycList?.rolling_reserve || "NA"}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Rolling Reserve Type</strong></td>
-                                                    <td>{KycList?.
-                                                        rolling_reserve_type || "NA"}</td>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
+                                <div className="row mt-3">
+                                    <div className="col-md-4">
+                                        <button type="submit" className="btn cob-btn-primary approve text-white" disabled={formik.isSubmitting}>
+                                            {formik?.isSubmitting && (
+                                                <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+                                            )}
+                                            Save
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         )}
+                    </Form>
+                )}
+
+
+            </Formik>
+
+
+            <div className="row mt-4">
+                <CustomLoader loadingState={loadingState} />
+                {KycList?.result?.loginMasterId && (
+
+                    <div className="col-md-12">
+
+
+                        <div className="card">
+
+
+                            <div className="card-body">
+                                <table className="table table-bordered table-responsive-sm mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Rolling Reserve</strong></td>
+                                            <td>{KycList?.rolling_reserve || "NA"}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Rolling Reserve Type</strong></td>
+                                            <td>{KycList?.
+                                                rolling_reserve_type || "NA"}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
+                )}
+            </div>
 
 
 
 
-                </div>
-                <div></div>
-            </main>
-        </section >
+
+
+        </CardLayOut>
     );
 };
 

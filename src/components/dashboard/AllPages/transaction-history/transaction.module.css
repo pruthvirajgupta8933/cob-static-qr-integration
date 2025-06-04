@@ -9,3 +9,12 @@
 .table_layout_fixed td {
     word-wrap: break-word;
 }
+
+
+.offcanvas {
+    z-index: 1050;
+}
+
+.cursor_pointer {
+    cursor: pointer;
+}

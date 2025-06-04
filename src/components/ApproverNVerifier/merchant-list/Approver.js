@@ -13,13 +13,15 @@ import { merchantTab } from "../../../slices/approverVerifierTabSlice";
 import classes from "../approver.module.css";
 import { getAllCLientCodeSlice } from "../../../slices/approver-dashboard/approverDashboardSlice";
 import DateFormatter from "../../../utilities/DateConvert";
+import CardLayout from "../../../utilities/CardLayout";
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
-
   const dispatch = useDispatch();
+
+
   const commonRows = [
     {
       id: "1",
@@ -32,22 +34,21 @@ const Approver = () => {
       id: "2",
       name: "Client Code",
       selector: (row) => row.clientCode,
-      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+      cell: (row) => <div className="text-nowrap text-truncate">{row?.clientCode}</div>, // Bootstrap text utility
       width: "130px",
     },
     {
       id: "3",
       name: "Company Name",
       selector: (row) => row.companyName,
-      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+      cell: (row) => <div className="text-nowrap text-truncate">{row?.companyName}</div>,
       width: "180px",
     },
-
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
-      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      cell: (row) => <div className="text-nowrap text-truncate">{row?.emailId}</div>,
       width: "220px",
     },
     {
@@ -55,7 +56,7 @@ const Approver = () => {
       name: "Contact Number",
       selector: (row) => row.contactNumber,
       cell: (row) => (
-        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+        <div className="text-nowrap text-truncate">{row?.contactNumber}</div>
       ),
       width: "150px",
     },
@@ -69,7 +70,7 @@ const Approver = () => {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
+      cell: (row) => <div className="text-nowrap">{DateFormatter(row.signUpDate)}</div>,
       width: "150px",
     },
     {
@@ -93,7 +94,7 @@ const Approver = () => {
       name: "Submitted Date",
       selector: (row) => row.updated_on,
       sortable: true,
-      cell: (row) => <div>{DateFormatter(row.updated_on)}</div>,
+      cell: (row) => <div className="text-nowrap">{DateFormatter(row.updated_on)}</div>,
       width: "150px",
     },
     {
@@ -107,7 +108,6 @@ const Approver = () => {
       selector: (row) => row.risk_category_name,
       width: "150px",
     },
-
     {
       id: "15",
       name: "MCC",
@@ -115,147 +115,119 @@ const Approver = () => {
       width: "150px",
     },
   ];
-  // let history = useHistory();
-
-  // let roles = roleBasedAccess();
 
   const loggedUser = roleBasedAccess();
 
+
   useEffect(() => {
-    if (loggedUser?.approver || loggedUser?.verifier || loggedUser?.viewer) {
-      // console.log(" valid")
-    } else {
-      // console.log("not valid")
+    if (!loggedUser?.approver && !loggedUser?.verifier && !loggedUser?.viewer) {
       dispatch(logout());
     }
-  }, [loggedUser]);
+  }, [loggedUser, dispatch]);
 
+  // Callback to fetch all client codes
+  const fetchAllClientCode = useCallback(() => {
+    dispatch(getAllCLientCodeSlice());
+  }, [dispatch]);
 
-  const fetchAllClientCode = useCallback(() => dispatch(getAllCLientCodeSlice()), [loggedUser])
 
   useEffect(() => {
-    fetchAllClientCode()
-  }, []);
+    fetchAllClientCode();
+  }, [fetchAllClientCode]);
 
-
-
-
-
-  const handleTabClick = (currenTab) => {
-    dispatch(merchantTab(currenTab));
+  const handleTabClick = (newTab) => {
+    dispatch(merchantTab(newTab));
   };
 
   return (
-    <section>
-      <main>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-6">
-              <h5>Merchant List</h5>
-            </div>
+    <CardLayout title="Merchant List">
+      <section>
+        <div className="row mt-4">
+          <div className="col-12 mb-4">
+
+            <ul className="nav nav-tabs flex-nowrap overflow-auto pb-2">
+              <li className="nav-item flex-shrink-0">
+                <a
+                  href="#not-filled-kyc"
+                  className={`nav-link ${currenTab === 1 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                  onClick={(e) => { e.preventDefault(); handleTabClick(1); }}
+                >
+                  Not Filled KYC
+                </a>
+              </li>
+              <li className="nav-item flex-shrink-0">
+                <a
+                  href="#pending-kyc"
+                  className={`nav-link ${currenTab === 2 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                  onClick={(e) => { e.preventDefault(); handleTabClick(2); }}
+                >
+                  Pending KYC
+                </a>
+              </li>
+              <li className="nav-item flex-shrink-0">
+                <a
+                  href="#pending-verification"
+                  className={`nav-link ${currenTab === 3 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                  onClick={(e) => { e.preventDefault(); handleTabClick(3); }}
+                >
+                  Pending Verification
+                </a>
+              </li>
+              <li className="nav-item flex-shrink-0">
+                <a
+                  href="#pending-approval"
+                  className={`nav-link ${currenTab === 4 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                  onClick={(e) => { e.preventDefault(); handleTabClick(4); }}
+                >
+                  Pending Approval
+                </a>
+              </li>
+              <li className="nav-item flex-shrink-0">
+                <a
+                  href="#approved"
+                  className={`nav-link ${currenTab === 5 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                  onClick={(e) => { e.preventDefault(); handleTabClick(5); }}
+                >
+                  Approved
+                </a>
+              </li>
+              <li className="nav-item flex-shrink-0">
+                <a
+                  href="#rejected"
+                  className={`nav-link ${currenTab === 6 ? `${classes.active_tab} active` : "inactive"} ${classes.cursor_pointer}`}
+                  onClick={(e) => { e.preventDefault(); handleTabClick(6); }}
+                >
+                  Rejected
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <section>
-            <div className="row mt-5">
-              <div className="col-lg-12 mb-4">
-                <ul className="nav nav-tabs approv">
-                  <li className="nav-item ">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 1
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(1)}
-                    >
-                      Not Filled KYC
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 2
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(2)}
-                    >
-                      Pending KYC
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 3
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(3)}
-                    >
-                      Pending Verification
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 4
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(4)}
-                    >
-                      Pending Approval
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 5
-                        ? `${classes.active_tab} active`
-                        : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(5)}
-                    >
-                      Approved
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href={() => false}
-                      className={`nav-link  ${currenTab === 6 ? classes.active_tab : "inactive"
-                        } ${classes.cursor_pointer}`}
-                      onClick={() => handleTabClick(6)}
-                    >
-                      Rejected
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <div className="row">
-
-              {(currenTab === 1 && <NotFilledKYC />) ||
-                (currenTab === 2 && <PendindKyc commonRows={commonRows} />) ||
-                (currenTab === 3 && (
-                  <PendingVerification commonRows={commonRows} />
-                )) ||
-                (currenTab === 4 && (
-                  <VerifiedMerchant commonRows={commonRows} />
-                )) ||
-                (currenTab === 5 && (
-                  <ApprovedMerchant commonRows={commonRows} />
-                )) ||
-                (currenTab === 6 && (
-                  <RejectedKYC commonRows={commonRows} />
-                )) || <NotFilledKYC />}
-            </div>
-          </section>
         </div>
-      </main>
-    </section>
+      </section>
+
+      <section>
+        <div className="row">
+          <div className="col-12">
+
+            {(currenTab === 1 && <NotFilledKYC />) ||
+              (currenTab === 2 && <PendindKyc commonRows={commonRows} />) ||
+              (currenTab === 3 && (
+                <PendingVerification commonRows={commonRows} />
+              )) ||
+              (currenTab === 4 && (
+                <VerifiedMerchant commonRows={commonRows} />
+              )) ||
+              (currenTab === 5 && (
+                <ApprovedMerchant commonRows={commonRows} />
+              )) ||
+              (currenTab === 6 && (
+                <RejectedKYC commonRows={commonRows} />
+              )) || <NotFilledKYC />
+            }
+          </div>
+        </div>
+      </section>
+    </CardLayout>
   );
 };
 

@@ -214,7 +214,7 @@ const TransactionHistory = () => {
   });
 
   // const pagination = (pageNo) => {
-  //     setCurrentPage(pageNo);
+  //    setCurrentPage(pageNo);
   // };
 
   const submitHandler = (values) => {
@@ -344,7 +344,7 @@ const TransactionHistory = () => {
   };
 
   useEffect(() => {
-    // Remove initiated from transaction history response
+
     let TxnListArrUpdated = dashboard.transactionHistory;
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
@@ -470,186 +470,7 @@ const TransactionHistory = () => {
   };
 
 
-  //   const exportToExcelFn = async () => {
-  //     try {
-  //       setExportReportLoader(true);
 
-  //       const fileName = "Transactions-Report";
-  //       console.log(filterState)
-  // //       {
-  // //   "clientCode": "all",
-  // //   "paymentStatus": "all",
-  // //   "paymentMode": "all",
-  // //   "fromDate": "2025-09-04",
-  // //   "endDate": "2025-09-04",
-  // //   "length": "10",
-  // //   "page": "1",
-  // //   "noOfClient": "1",
-  // //   "search":""
-  // // }
-  //       // exportToSpreadsheet(excelArr, fileName, handleExportLoading);
-  //       setExportReportLoader(false);
-  //     } catch (error) {
-  //       setExportReportLoader(false);
-  //       toastConfig.errorToast("Error: Export transaction report");
-  //     }
-  //   };
-  // const exportToExcelFn = async () => {
-  //   try {
-  //     setExportReportLoader(true);
-  //     const resp = await Dashboardservice.exportTransactionReport(filterState);
-  //     const reportData = resp.data;
-
-  //     const excelHeaderRow = [
-  //       // "S.No",
-  //       "RRN / UTR",
-  //       "Trans ID",
-  //       "Client Trans ID",
-  //       "Challan Number / VAN",
-  //       "Amount",
-  //       "Currency Type",
-  //       "Transaction Date",
-  //       "Transaction Complete Date",
-  //       "Payment Status",
-  //       "Payee First Name",
-  //       "Payee Last Name",
-  //       "Payee Mob number",
-  //       "Payee Email",
-  //       "Client Code",
-  //       "Payment Mode",
-  //       "Payee Address",
-  //       "Encrypted PAN",
-  //       "Udf1",
-  //       "Udf2",
-  //       "Udf3",
-  //       "Udf4",
-  //       "Udf5",
-  //       "Udf6",
-  //       "Udf7",
-  //       "Udf8",
-  //       "Udf9",
-  //       "Udf10",
-  //       "Udf11",
-  //       "Udf12",
-  //       "Udf13",
-  //       "Udf14",
-  //       "Udf15",
-  //       "Udf16",
-  //       "Udf17",
-  //       "Udf18",
-  //       "Udf19",
-  //       "Udf20",
-  //       "Gr.No",
-  //       "Bank Response",
-  //       "IFSC Code",
-  //       "Payer Account No",
-  //       "Bank Txn Id",
-  //     ];
-
-  //     const excelArr = [excelHeaderRow]; // assuming excelHeaderRow is defined elsewhere
-
-  //     reportData.forEach((item, index) => {
-  //       const {
-  //         // srNo = index + 1,
-  //         pg_txn_id = "",
-  //         txn_id = "",
-  //         client_txn_id = "",
-  //         challan_no = "",
-  //         payee_amount = "",
-  //         amount_type = "",
-  //         trans_date = "",
-  //         trans_complete_date = "",
-  //         status = "",
-  //         payee_first_name = "",
-  //         payee_lst_name = "",
-  //         payee_mob = "",
-  //         payee_email = "",
-  //         client_code = "",
-  //         payment_mode = "",
-  //         payee_address = "",
-  //         encrypted_pan = "",
-  //         udf1 = "",
-  //         udf2 = "",
-  //         udf3 = "",
-  //         udf4 = "",
-  //         udf5 = "",
-  //         udf6 = "",
-  //         udf7 = "",
-  //         udf8 = "",
-  //         udf9 = "",
-  //         udf10 = "",
-  //         udf11 = "",
-  //         udf12 = "",
-  //         udf13 = "",
-  //         udf14 = "",
-  //         udf15 = "",
-  //         udf16 = "",
-  //         udf17 = "",
-  //         udf18 = "",
-  //         udf19 = "",
-  //         udf20 = "",
-  //         gr_number = "",
-  //         bank_message = "",
-  //         ifsc_code = "",
-  //         payer_acount_number = "",
-  //         bank_txn_id = "",
-  //       } = item;
-
-  //       excelArr.push([
-  //         // srNo,
-  //         pg_txn_id,
-  //         txn_id,
-  //         client_txn_id,
-  //         challan_no,
-  //         payee_amount ? Number.parseFloat(payee_amount) : "",
-  //         amount_type,
-  //         dateFormatBasic(trans_date),
-  //         dateFormatBasic(trans_complete_date),
-  //         status,
-  //         payee_first_name,
-  //         payee_lst_name,
-  //         payee_mob,
-  //         payee_email,
-  //         client_code,
-  //         payment_mode,
-  //         payee_address,
-  //         encrypted_pan,
-  //         udf1,
-  //         udf2,
-  //         udf3,
-  //         udf4,
-  //         udf5,
-  //         udf6,
-  //         udf7,
-  //         udf8,
-  //         udf9,
-  //         udf10,
-  //         udf11,
-  //         udf12,
-  //         udf13,
-  //         udf14,
-  //         udf15,
-  //         udf16,
-  //         udf17,
-  //         udf18,
-  //         udf19,
-  //         udf20,
-  //         gr_number,
-  //         bank_message,
-  //         ifsc_code,
-  //         payer_acount_number,
-  //         bank_txn_id,
-  //       ]);
-  //     });
-
-  //     const fileName = "Transactions-Report";
-  //     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
-  //     setExportReportLoader(false);
-  //   } catch (error) {
-  //     setExportReportLoader(false);
-  //     toastConfig.errorToast("Error: Export transaction report");
-  //   }
-  // };
 
   // handle transaction detail modal and display the selected record
   const transactionDetailModalHandler = (transactionData) => {
@@ -847,18 +668,45 @@ const TransactionHistory = () => {
       id: "1232",
       name: "RRN / UTR",
       selector: (row) => row.pg_txn_id,
+      cell: (row) => (
+        <div
+          // className="text-primary"
+          // style={{ cursor: "pointer" }}
+          className="custom_hover_primary"
+          onClick={() => transactionDetailModalHandler(row)}
+        >
+          {row.pg_txn_id}
+        </div>
+      ),
       width: "150px",
     },
     {
       id: "2",
       name: "Transaction ID",
       selector: (row) => row.txn_id,
+      cell: (row) => (
+        <div
+          className="custom_hover_primary"
+          onClick={() => transactionDetailModalHandler(row)}
+        >
+          {row.txn_id}
+        </div>
+      ),
       width: "150px",
     },
     {
       id: "3",
       name: "Client Transaction ID",
       selector: (row) => row.client_txn_id,
+      cell: (row) => (
+        <div
+          className="custom_hover_primary"
+
+          onClick={() => transactionDetailModalHandler(row)}
+        >
+          {row.client_txn_id}
+        </div>
+      ),
       width: "200px",
     },
     {
@@ -936,7 +784,7 @@ const TransactionHistory = () => {
         )}
         {transactionDetailModal && (
           <TransactionDetailModal
-            fnSetModalToggle={() => setTransactionDetailModal()}
+            fnSetModalToggle={() => setTransactionDetailModal(false)}
             transactionData={selectedTransaction}
           />
         )}
@@ -948,7 +796,8 @@ const TransactionHistory = () => {
           data={txnList}
           rowData={rowData}
           form={form}
-          onRowClick={transactionDetailModalHandler}
+
+          // onRowClick={transactionDetailModalHandler}
           showSearch
           showCountPerPage
         />

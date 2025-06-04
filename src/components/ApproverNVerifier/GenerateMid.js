@@ -13,7 +13,7 @@ import { Link } from "react-router-dom"
 import toastConfig from "../../utilities/toastTypes";
 import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlice";
 import moment from "moment";
-
+import CustomCardLayout from "../../utilities/CardLayout"
 
 
 function AssignZone() {
@@ -331,90 +331,91 @@ function AssignZone() {
   });
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="d-flex justify-content-between">
-            <h5 className="ml-3">MID Generation</h5>
-            <Link
-              to="/dashboard/mid-management"
-              className="text-decoration-none"
+    <CustomCardLayout title="MID Generation">
 
-            >
-              <button type="button" className="btn cob-btn-primary btn-sm">
-                View MID
-              </button>
-            </Link>
-          </div>
-          <div className="container-fluid p-0">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {(formik) => (
-                <Form className="mt-5">
-                  <div className="row">
-                    <div className="col-lg-3">
-                      <CustomReactSelect
-                        name="react_select"
-                        options={options}
-                        placeholder="Select Client Code"
-                        filterOption={createFilter({ ignoreAccents: false })}
-                        label="Client Code"
-                        onChange={handleSelectChange}
 
-                      />
-                    </div>
+      <div className="d-flex justify-content-between">
+        <div></div>
+        <Link
+          to="/dashboard/mid-management"
+          className="text-decoration-none"
 
-                    <div className="col-lg-3">
+        >
+          <button type="button" className="btn cob-btn-primary btn-sm">
+            View MID
+          </button>
+        </Link>
+      </div>
 
-                      <FormikController
-                        control="select"
-                        name="mode_name"
-                        options={merchantData}
-                        className="form-select"
-                        label="Payment Mode"
-                      />
-                    </div>
-                    <div className="col-lg-3">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {(formik) => (
+          <Form >
+            <div className="row">
+              <div className="col-lg-3">
+                <CustomReactSelect
+                  name="react_select"
+                  options={options}
+                  placeholder="Select Client Code"
+                  filterOption={createFilter({ ignoreAccents: false })}
+                  label="Client Code"
+                  onChange={handleSelectChange}
 
-                      <FormikController
-                        control="select"
-                        name="bank_name"
-                        options={bankName}
-                        className="form-select"
-                        label="Bank"
-                      />
+                />
+              </div>
 
-                    </div>
-                    <div className="col-lg-3 mt-4">
-                      <button
-                        type="submit"
+              <div className="col-lg-3">
 
-                        className="approve cob-btn-primary "
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </div>
-        <div>
-        </div>
-      </main>
+                <FormikController
+                  control="select"
+                  name="mode_name"
+                  options={merchantData}
+                  className="form-select"
+                  label="Payment Mode"
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 col-sm-12 mt-3 mt-md-0 ">
+
+                <FormikController
+                  control="select"
+                  name="bank_name"
+                  options={bankName}
+                  className="form-select"
+                  label="Bank"
+                />
+
+              </div>
+              <div className="col-lg-3 mt-4">
+                <button
+                  type="submit"
+
+                  className="approve cob-btn-primary "
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+
+
+      <div>
+      </div>
+
 
 
       <CustomModal modalBody={modalBody} headerTitle={"MID Generation Request"} modalToggle={openZoneModal}
         fnSetModalToggle={setOpenModal} setRequestPayload={setRequestPayload} resetPayload={true} Setshow={Setshow} />
 
 
-    </section>
+
+    </CustomCardLayout>
   );
 }
 

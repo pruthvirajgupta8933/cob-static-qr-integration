@@ -9,6 +9,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import DateFormatter from "../../utilities/DateConvert";
+import CardLayout from "../../utilities/CardLayout";
 
 function AssignZone() {
 
@@ -184,74 +185,70 @@ function AssignZone() {
   ];
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="">
-            <h5 className="">Configuration</h5>
-          </div>
+    <CardLayout title="Configuration">
 
-          <div className="row mt-5">
+      <div className="row">
 
-            <div className="form-group col-lg-3 col-md-12 mt-2">
-              <SearchFilter
-                kycSearch={kycSearch}
-                searchText={searchText}
-                searchByText={searchByText}
-                setSearchByDropDown={setSearchByDropDown}
-                searchTextByApiCall={true}
-              />
-            </div>
-            <div className="form-group col-lg-3 col-md-12 mt-2">
-              <CountPerPageFilter
-                pageSize={pageSize}
-                dataCount={dataCount}
-                currentPage={currentPage}
-                changePageSize={changePageSize}
-                changeCurrentPage={changeCurrentPage}
-              />
-            </div>
-            <div className="form-group col-lg-3 col-md-12 mt-2">
-              <SearchbyDropDown
-                kycSearch={kycSearch}
-                searchText={searchText}
-                isSearchByDropDown={isSearchByDropDown}
-                notFilledData={assignZone}
-                setData={setData}
-                setSearchByDropDown={setSearchByDropDown}
-                optionSearchData={optionSearchData}
-              />
-            </div>
-
-          </div>
-          <div className="">
-            <div className="scroll overflow-auto">
-              <h6>Total Count : {dataCount}</h6>
-              {!loadingState && data?.length !== 0 && (
-                <Table
-                  row={AssignZoneData}
-                  data={data}
-                  dataCount={dataCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              )}
-            </div>
-            <CustomLoader loadingState={loadingState} />
-            {data?.length === 0 && !loadingState && (
-              <h6 className="text-center font-weight-bold">No Data Found</h6>
-            )}
-          </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+            searchTextByApiCall={true}
+          />
         </div>
-        <div>
-          {openZoneModal === true && (
-            <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
-              setOpenZoneModal={setOpenModal} />
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          />
+        </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchbyDropDown
+            kycSearch={kycSearch}
+            searchText={searchText}
+            isSearchByDropDown={isSearchByDropDown}
+            notFilledData={assignZone}
+            setData={setData}
+            setSearchByDropDown={setSearchByDropDown}
+            optionSearchData={optionSearchData}
+          />
+        </div>
+
+      </div>
+      <div className="">
+        <div className="scroll overflow-auto">
+          {Array.isArray(data) && data.length > 0 && <h6>Total Count: {dataCount}</h6>}
+
+          {!loadingState && (
+            <Table
+              row={AssignZoneData}
+              data={data}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
           )}
         </div>
-      </main>
-    </section>
+        <CustomLoader loadingState={loadingState} />
+        {/* {data?.length === 0 && !loadingState && (
+          <h6 className="text-center font-weight-bold">No Data Found</h6>
+        )} */}
+      </div>
+
+      <div>
+        {openZoneModal === true && (
+          <ViewZoneModal userData={modalDisplayData} openZoneModal={openZoneModal}
+            setOpenZoneModal={setOpenModal} />
+        )}
+      </div>
+
+    </CardLayout>
   );
 }
 

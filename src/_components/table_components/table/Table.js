@@ -101,7 +101,9 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
   };
 
   return (
+
     <>
+
       <DataTable
         className="bg-white border-0 "
         columns={row}
@@ -131,6 +133,7 @@ const Table = ({ dataCount, pageSize, changeCurrentPage, currentPage, row, data,
       // pagination
       // selectableRows
       />{" "}
+
 
       <div className="mt-3">
         {dataCount > 0 && (
