@@ -118,7 +118,7 @@ function InternalDashboard() {
                             </div>
                             <div className="card-footer d-flex justify-content-between">
                                 <h6>Total Approved</h6>
-                                <div className="d-flex align-items-center justify-content-center py-2">
+                                <div className="d-flex align-items-center justify-content-center ">
                                     {approved ? ( // Check if Approved is available
                                         <h6>{approved}</h6> // If available, display the value
                                     ) : (
