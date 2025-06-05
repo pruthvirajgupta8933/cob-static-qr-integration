@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import classes from "../../approver.module.css";
 import OperationKycModalForOnboard from "./operation-kyc/OperationKycModalForOnboard";
+import ReportLayout from "../../../../utilities/CardLayout";
 
 function BankMerchantOnboard({ zoneCode, referrerLoginId, heading, edit }) {
   const [currentTab, setCurrentTab] = useState(1);
@@ -9,58 +10,57 @@ function BankMerchantOnboard({ zoneCode, referrerLoginId, heading, edit }) {
   };
 
   return (
-    <section>
-      <main>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-6">
-              <h5>
-                {heading === false ? (
-                  ""
-                ) : (
-                  <h5 className=""> Bank Merchant Onboard</h5>
-                )}
-              </h5>
+    <ReportLayout title="Bank Merchant Onboard">
+
+
+      <div className="row">
+        <div className="col-6">
+          <h5>
+            {heading === false ? (
+              ""
+            ) : (
+              null
+            )}
+          </h5>
+        </div>
+      </div>
+      {heading === false ? (
+        <></>
+      ) : (
+        <section>
+          <div className="row mt-5">
+            <div className="col-lg-12 mb-4">
+              <ul className="nav nav-tabs approv">
+                <li className="nav-item ">
+                  <a
+                    href={() => false}
+                    className={`nav-link ${currentTab === 1 && "active-tab"
+                      } ${classes.cursor_pointer}`}
+                    onClick={() => handleTabClick(1)}
+                  >
+                    Add Bank Merchant
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-          {heading === false ? (
-            <></>
-          ) : (
-            <section>
-              <div className="row mt-5">
-                <div className="col-lg-12 mb-4">
-                  <ul className="nav nav-tabs approv">
-                    <li className="nav-item ">
-                      <a
-                        href={() => false}
-                        className={`nav-link ${
-                          currentTab === 1 && "active-tab"
-                        } ${classes.cursor_pointer}`}
-                        onClick={() => handleTabClick(1)}
-                      >
-                        Add Bank Merchant
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </section>
+        </section>
+      )}
+      <section>
+        <div className="row">
+          {currentTab === 1 && (
+            <OperationKycModalForOnboard
+              zoneCode={zoneCode}
+              bankLoginId={referrerLoginId}
+              editKyc={edit}
+            />
           )}
-          <section>
-            <div className="row">
-              {currentTab === 1 && (
-                <OperationKycModalForOnboard
-                  zoneCode={zoneCode}
-                  bankLoginId={referrerLoginId}
-                  editKyc={edit}
-                />
-              )}
-            </div>
-          </section>
         </div>
-      </main>
-    </section>
-    // </ThemeContext.Provider>
+      </section>
+
+
+    </ReportLayout>
+
   );
 }
 export default BankMerchantOnboard;

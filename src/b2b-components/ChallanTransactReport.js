@@ -19,6 +19,7 @@ import CountPerPageFilter from "../../src/_components/table_components/filters/C
 import SearchFilter from "../_components/table_components/filters/SearchFilter";
 import CustomLoader from "../_components/loader";
 import { saveAs } from 'file-saver';
+import ReportLayout from "../utilities/CardLayout";
 
 
 const ChallanTransactReport = () => {
@@ -213,153 +214,143 @@ const ChallanTransactReport = () => {
   };
 
   return (
-
-
-    <section className="">
-
-      <main className="">
-        <div className="">
-          <div className="mb-5">
-            <h5 className="">Transaction History</h5>
-          </div>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              handleSubmit(values);
-            }}
-            enableReinitialize={true}
-          >
-            {(formik) => (
-              <Form>
-                <div className="row">
-                  <div className="form-group  col-md-3 ">
-                    <FormikController
-                      control="select"
-                      label="Client Code"
-                      name="clientCode"
-                      className="form-select mr-4 mb-3"
-                      options={clientCodeOption}
-                    />
-                  </div>
-                  <div className="form-group col-md-3 ml-3">
-                    <FormikController
-                      control="input"
-                      type="date"
-                      label="From Date"
-                      name="from_date"
-                      className="form-control mr-4 mb-3"
-                    // value={startDate}
-                    // onChange={(e)=>setStartDate(e.target.value)}
-                    />
-
-                  </div>
-
-
-                  <div className="form-group col-md-3 ml-3">
-                    <FormikController
-                      control="input"
-                      type="date"
-                      label="End Date"
-                      name="to_date"
-                      className="form-control mr-4 mb-3"
-                    />
-                  </div>
-
-
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        className="btn cob-btn-primary approve text-white">
-                        Search
-                      </button>
-                      {data?.length > 0 ? (
-                        <button
-                          className="btn cob-btn-primary  approve  text-white ml-3"
-                          type="button"
-                          onClick={() => exportToExcelFn()}
-                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                        >
-                          Export
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Form>
-            )}
-          </Formik>
-          {data?.length === 0 && <h5 className="text-center font-weight-bold mt-5">
-            No Data Found
-          </h5>}
-
-
-          {data?.length !== 0 && (
-            <>
-              <div className="row mt-4">
-
-                <div className="form-group col-lg-3 mr-3">
-                  <SearchFilter
-                    kycSearch={kycSearch}
-                    searchText={searchText}
-                    searchByText={searchByText}
-                    setSearchByDropDown={setSearchByDropDown}
-                    searchTextByApiCall={false}
-                  />
-                  {/* <div></div> */}
-                </div>
-
-                <div className="form-group col-lg-3">
-                  <CountPerPageFilter
-                    pageSize={pageSize}
-                    dataCount={dataCount}
-                    clientCode={saveData?.clientCode}
-                    currentPage={currentPage}
-                    changePageSize={changePageSize}
-                    changeCurrentPage={changeCurrentPage}
-                  />
-                </div>
+    <ReportLayout title="Transaction History">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          handleSubmit(values);
+        }}
+        enableReinitialize={true}
+      >
+        {(formik) => (
+          <Form>
+            <div className="row">
+              <div className="form-group  col-md-3 ">
+                <FormikController
+                  control="select"
+                  label="Client Code"
+                  name="clientCode"
+                  className="form-select mr-4 mb-3"
+                  options={clientCodeOption}
+                />
               </div>
-              <div className="container-fluid ">
-                <div className="scroll overflow-auto">
-                  <div className="mb-2">
-                    <p className="d-inline mr-3 total_records_fontSize" >Total Record(s): {dataCount}</p>
-                    <p className="d-inline total_records_fontSize">GMV (INR): {dataCountGmv}</p>
-                  </div>
+              <div className="form-group col-md-3 ml-3">
+                <FormikController
+                  control="input"
+                  type="date"
+                  label="From Date"
+                  name="from_date"
+                  className="form-control mr-4 mb-3"
+                // value={startDate}
+                // onChange={(e)=>setStartDate(e.target.value)}
+                />
 
-                  {!loadingState && data?.length !== 0 && (
-                    <Table
-                      row={rowData}
-                      data={data}
-                      dataCount={dataCount}
-                      pageSize={pageSize}
-                      currentPage={currentPage}
-                      changeCurrentPage={changeCurrentPage}
+              </div>
 
-                    />
+
+              <div className="form-group col-md-3 ml-3">
+                <FormikController
+                  control="input"
+                  type="date"
+                  label="End Date"
+                  name="to_date"
+                  className="form-control mr-4 mb-3"
+                />
+              </div>
+
+
+              <div className="row">
+                <div className="col-md-4">
+                  <button
+                    type="submit"
+                    className="btn cob-btn-primary approve text-white">
+                    Search
+                  </button>
+                  {data?.length > 0 ? (
+                    <button
+                      className="btn cob-btn-primary  approve  text-white ml-3"
+                      type="button"
+                      onClick={() => exportToExcelFn()}
+                      style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                    >
+                      Export
+                    </button>
+                  ) : (
+                    <></>
                   )}
-
-
                 </div>
-                {loadingState && data?.length !== 0 && (
-                  <div
-                    className="d-flex justify-content-center align-items-center"
-                    style={{ minHeight: "200px" }}
-                  >
-                    <CustomLoader loadingState={loadingState} />
-                  </div>
-                )}
-
               </div>
-            </>
-          )}
-        </div>
-      </main>
-    </section>
+            </div>
+          </Form>
+        )}
+      </Formik>
+      {data?.length === 0 && <h6 className="text-center  mt-5">
+        No Data Found
+      </h6>}
+
+
+      {data?.length !== 0 && (
+        <>
+          <div className="row mt-4">
+
+            <div className="form-group col-lg-3 mr-3">
+              <SearchFilter
+                kycSearch={kycSearch}
+                searchText={searchText}
+                searchByText={searchByText}
+                setSearchByDropDown={setSearchByDropDown}
+                searchTextByApiCall={false}
+              />
+              {/* <div></div> */}
+            </div>
+
+            <div className="form-group col-lg-3">
+              <CountPerPageFilter
+                pageSize={pageSize}
+                dataCount={dataCount}
+                clientCode={saveData?.clientCode}
+                currentPage={currentPage}
+                changePageSize={changePageSize}
+                changeCurrentPage={changeCurrentPage}
+              />
+            </div>
+          </div>
+          <div className="container-fluid ">
+            <div className="scroll overflow-auto">
+              <div className="mb-2">
+                <p className="d-inline mr-3 total_records_fontSize" >Total Record(s): {dataCount}</p>
+                <p className="d-inline total_records_fontSize">GMV (INR): {dataCountGmv}</p>
+              </div>
+
+              {!loadingState && data?.length !== 0 && (
+                <Table
+                  row={rowData}
+                  data={data}
+                  dataCount={dataCount}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={changeCurrentPage}
+
+                />
+              )}
+
+
+            </div>
+            {loadingState && data?.length !== 0 && (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "200px" }}
+              >
+                <CustomLoader loadingState={loadingState} />
+              </div>
+            )}
+
+          </div>
+        </>
+      )}
+
+    </ReportLayout>
 
 
   );

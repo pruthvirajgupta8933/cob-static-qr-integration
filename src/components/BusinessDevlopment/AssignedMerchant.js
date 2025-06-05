@@ -23,7 +23,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { setKycMasked } from "../../slices/kycSlice";
+import ReportLayout from "../../utilities/CardLayout";
 
 const AssignedMerchant = () => {
   const roles = roleBasedAccess();
@@ -324,43 +324,41 @@ const AssignedMerchant = () => {
     });
   };
   return (
-    <section>
-      <main>
-        <div>
-          <h5>Assigned Merchant</h5>
-          <div className="row mt-5">
-            <div className="form-group col-lg-3 col-md-12 mt-1">
-              <SearchFilter
-                kycSearch={kycSearch}
-                searchText={searchText}
-                searchByText={searchByText}
-                setSearchByDropDown={setSearchByDropDown}
-                searchTextByApiCall={true}
-              />
+    <ReportLayout title="Assigned Merchant">
+
+      <div className="row mt-5">
+        <div className="form-group col-lg-3 col-md-12 mt-1">
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+            searchTextByApiCall={true}
+          />
+        </div>
+        <div className="form-group col-lg-3 col-md-12 mt-1">
+          <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            currentPage={currentPage}
+            changePageSize={changePageSize}
+            changeCurrentPage={changeCurrentPage}
+          />
+        </div>
+        {data.length > 0 && (
+          <>
+            <div className="form-group col-lg-1 col-md-3 mt-4">
+              <button
+                className="btn cob-btn-primary btn-sm"
+                type="button"
+                onClick={() => exportToExcelFn()}
+                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+              >
+                Export
+              </button>
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-1">
-              <CountPerPageFilter
-                pageSize={pageSize}
-                dataCount={dataCount}
-                currentPage={currentPage}
-                changePageSize={changePageSize}
-                changeCurrentPage={changeCurrentPage}
-              />
-            </div>
-            {data.length > 0 && (
-              <>
-                <div className="form-group col-lg-1 col-md-3 mt-4">
-                  <button
-                    className="btn cob-btn-primary btn-sm"
-                    type="button"
-                    onClick={() => exportToExcelFn()}
-                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                  >
-                    Export
-                  </button>
-                </div>
-                <div className="form-group col-lg-1 col-md-3 mt-4">
-                  {/* <button
+            <div className="form-group col-lg-1 col-md-3 mt-4">
+              {/* <button
                     className="btn btn-sm cob-btn-primary"
                     // disabled={disable}
                     type="button"
@@ -375,60 +373,60 @@ const AssignedMerchant = () => {
                     />
                     {isKycMasked ? "Unmask" : "Mask"}
                     {/* {loading ? "Downloading..." : "Export"} */}
-                  {/* </button> */}
-                </div>
-              </>
-            )}
-          </div>
-          <div>
-            <div className="scroll overflow-auto">
-              <h6>Total Count : {dataCount}</h6>
-              {!loadingState && data.length > 0 && (
-                <Table
-                  row={AssinedMerchantData}
-                  data={data}
-                  dataCount={dataCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              )}
+              {/* </button> */}
             </div>
-            {loadingState && <SkeletonTable />}
-            {data.length === 0 && !loadingState && (
-              <h6 className="text-center font-weight-bold">No Data Found</h6>
-            )}
-            {openDocumentModal && (
-              <AgreementUploadTab
-                documentData={commentId}
-                isModalOpen={openDocumentModal}
-                setModalState={setOpenDocumentModal}
-                tabName={"Assigned Merchant"}
-              />
-            )}
-
-            {openCommentModal && (
-              <CommentModal
-                commentData={{
-                  clientCode: commentId?.clientCode,
-                  clientName: commentId?.clientName,
-                }}
-                isModalOpen={openCommentModal}
-                setModalState={setOpenCommentModal}
-                tabName={"Assigned Merchant"}
-              />
-            )}
-            {isOpenModal && (
-              <KycDetailsModal
-                kycId={kycIdClick}
-                handleModal={setIsModalOpen}
-                isOpenModal={isOpenModal}
-              />
-            )}
-          </div>
+          </>
+        )}
+      </div>
+      <div>
+        <div className="scroll overflow-auto">
+          <h6>Total Count : {dataCount}</h6>
+          {!loadingState && data.length > 0 && (
+            <Table
+              row={AssinedMerchantData}
+              data={data}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
+          )}
         </div>
-      </main>
-    </section>
+        {loadingState && <SkeletonTable />}
+        {data.length === 0 && !loadingState && (
+          <h6 className="text-center font-weight-bold">No Data Found</h6>
+        )}
+        {openDocumentModal && (
+          <AgreementUploadTab
+            documentData={commentId}
+            isModalOpen={openDocumentModal}
+            setModalState={setOpenDocumentModal}
+            tabName={"Assigned Merchant"}
+          />
+        )}
+
+        {openCommentModal && (
+          <CommentModal
+            commentData={{
+              clientCode: commentId?.clientCode,
+              clientName: commentId?.clientName,
+            }}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Assigned Merchant"}
+          />
+        )}
+        {isOpenModal && (
+          <KycDetailsModal
+            kycId={kycIdClick}
+            handleModal={setIsModalOpen}
+            isOpenModal={isOpenModal}
+          />
+        )}
+      </div>
+    </ReportLayout>
+
+
   );
 };
 

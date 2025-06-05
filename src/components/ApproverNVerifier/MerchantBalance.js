@@ -4,6 +4,7 @@ import WalletDetail from "../dashboard/AllPages/Profile/WalletDetail"
 import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice"
 import { getSubscribedDetails } from "../../slices/merchant-slice/productCatalogueSlice"
 import ReactSelect, { createFilter } from 'react-select';
+import ReportLayout from "../../utilities/CardLayout"
 
 const MerchantBalance = () => {
   const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const MerchantBalance = () => {
       const postData = {
         clientCode: selectedOption.value
       };
-     dispatch(merchantSubscribedPlanData(postData));
+      dispatch(merchantSubscribedPlanData(postData));
     }
   };
 
@@ -44,39 +45,33 @@ const MerchantBalance = () => {
   ]
 
   return (
-
-    <section className="">
-      <main className="">
-        <div className="">
-          <h5 className="">Subscription Wallet</h5>
-        </div>
-        <div className="container-fluid p-0">
-          <div className="row mt-5">
-            <div className="col-lg-3 col-md-4">
-              <div className="form-group">
-                <label className="form-label">Client Code</label>
-                <ReactSelect
-                  className="zindexforDropdown"
-                  onChange={handleSelectChange}
-                  value={selectedClientId ? { value: selectedClientId, label: selectedClientId } : null}
-                  options={options}
-                  placeholder="Select Client Code"
-                  filterOption={createFilter({ ignoreAccents: false })}
-                />
-              </div>
-            </div>
+    <ReportLayout title="Subscription Wallet">
+      <div className="row">
+        <div className="col-lg-3 col-md-4">
+          <div className="form-group">
+            <label className="form-label">Client Code</label>
+            <ReactSelect
+              className="zindexforDropdown"
+              onChange={handleSelectChange}
+              value={selectedClientId ? { value: selectedClientId, label: selectedClientId } : null}
+              options={options}
+              placeholder="Select Client Code"
+              filterOption={createFilter({ ignoreAccents: false })}
+            />
           </div>
-          <div>
-            {selectedClientId &&
-              <WalletDetail walletDisplayData={SubscribedPlanData} walletCommission={walletCommission} isLoading={isLoading} />
-
-            }
-          </div>
-
         </div>
+      </div>
+      <div>
+        {selectedClientId &&
+          <WalletDetail walletDisplayData={SubscribedPlanData} walletCommission={walletCommission} isLoading={isLoading} />
 
-      </main>
-    </section>
+        }
+      </div>
+
+
+
+
+    </ReportLayout>
 
   )
 

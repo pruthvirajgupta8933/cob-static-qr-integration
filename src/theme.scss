@@ -132,3 +132,32 @@ input {
 .model_custom_w {
     width: 650px;
 }
+
+.custom_hover_primary {
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.custom_hover_primary:hover {
+    color: #0d6efd;
+    cursor: pointer;
+}
+
+.customBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    z-index: 1040;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    transition: background 0.3s ease-in-out;
+    overflow: auto;
+}
+
+.backdropShow {
+    background: rgba(0, 0, 0, 0.5);
+}

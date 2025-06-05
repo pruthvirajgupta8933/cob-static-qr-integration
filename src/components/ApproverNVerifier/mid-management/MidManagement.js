@@ -6,7 +6,6 @@ import SearchFilter from "../../../_components/table_components/filters/SearchFi
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../../_components/loader";
 import DateFormatter from "../../../utilities/DateConvert";
-import DateRangeByOneDatePicker from "../../../_components/formik/components/react-datepicker/DateRangeByOneDatePicker";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getMidClientCode } from "../../../services/generate-mid/generate-mid.service";
@@ -20,6 +19,7 @@ import { Link } from "react-router-dom"
 import CustomModal from "../../../_components/custom_modal";
 import ViewMidManagementModal from "./ViewMidManagementModal";
 import UpdateMidDetailsModal from "./UpdateMidDetailsModal";
+import CardLayout from "../../../utilities/CardLayout";
 
 const MidManagement = () => {
 
@@ -52,17 +52,27 @@ const MidManagement = () => {
     const totalCount = midFetchDetails?.subMerchantData?.numberOfElements;
     const loadingState = midFetchDetails?.loading;
 
+    let now = moment().format("YYYY-M-D");
+    let splitDate = now.split("-");
+    if (splitDate[1].length === 1) {
+        splitDate[1] = "0" + splitDate[1];
+    }
+    if (splitDate[2].length === 1) {
+        splitDate[2] = "0" + splitDate[2];
+    }
+    splitDate = splitDate.join("-");
+
     const initialValues = {
         react_select: null,
         status: null,
-        startDate: '',
-        endDate: ''
+        from_date: splitDate,
+        to_date: splitDate
     }
 
     const validationSchema = Yup.object({
-        startDate: Yup.date().required("Required").nullable(),
-        endDate: Yup.date()
-            .min(Yup.ref("startDate"), "End date can't be before Start date")
+        from_date: Yup.date().required("Required").nullable(),
+        to_date: Yup.date()
+            .min(Yup.ref("from_date"), "End date can't be before Start date")
             .required("Required"),
         status: Yup.string().required("Required").nullable(),
         react_select: Yup.object().required("Required").nullable(),
@@ -368,8 +378,8 @@ const MidManagement = () => {
                 subMerchantFetchDetailsApi(
 
                     {
-                        startDate: saveData.startDate ? moment(saveData.startDate).format('YYYY-MM-DD') : null,
-                        endDate: saveData.endDate ? moment(saveData.endDate).format('YYYY-MM-DD') : null,
+                        startDate: saveData.from_date ? moment(saveData.from_date).format('YYYY-MM-DD') : null,
+                        endDate: saveData.to_date ? moment(saveData.to_date).format('YYYY-MM-DD') : null,
                         clientCode: saveData.react_select?.value || "",
                         status: saveData.status || "",
                         page: currentPage,
@@ -478,8 +488,8 @@ const MidManagement = () => {
     const onSubmit = (values) => {
         setSaveData(values)
         const payload = {
-            startDate: values.startDate ? moment(values.startDate).format('YYYY-MM-DD') : null,
-            endDate: values.endDate ? moment(values.endDate).format('YYYY-MM-DD') : null,
+            startDate: values.from_date ? moment(values.from_date).format('YYYY-MM-DD') : null,
+            endDate: values.to_date ? moment(values.to_date).format('YYYY-MM-DD') : null,
             clientCode: values.react_select?.value || "",
             status: values.status || "",
             page: currentPage,
@@ -487,7 +497,17 @@ const MidManagement = () => {
             sortOrder: "DSC"
         };
 
-        dispatch(subMerchantFetchDetailsApi(payload));
+        dispatch(subMerchantFetchDetailsApi(payload)).then((resp) => {
+
+console.log(resp)
+            if (resp?.meta?.requestStatus === "fulfilled") {
+
+            } else {
+                
+                toast.error(resp.payload);
+            }
+
+        });
     };
 
     const handleCreateMidClick = () => {
@@ -497,145 +517,148 @@ const MidManagement = () => {
 
 
     return (
-        <section className="">
-            <main className="">
-                <div className="">
+        <CardLayout title="MID Management">
+            <div className="d-flex justify-content-between">
+                <div></div>
+                <Link to="/dashboard/generatemid"
+                    className="text-decoration-none"
+                >
+                    <button type="button" className="btn cob-btn-primary btn-sm" onClick={handleCreateMidClick} >
+                        Generate MID
+                    </button>
+                </Link>
+            </div>
+            <div className="row">
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={onSubmit}
+                >
+                    {(formik) => (
+                        <Form className="d-flex flex-wrap">
 
-                    <div className="d-flex justify-content-between">
-                        <h5 className="ml-3">
-                            MID Management
-                        </h5>
-                        <Link
-                            to="/dashboard/generatemid"
-                            className="text-decoration-none"
-
-
-                        >
-                            <button type="button" className="btn cob-btn-primary btn-sm" onClick={handleCreateMidClick} >
-                                Create MID
-                            </button>
-                        </Link>
-                    </div>
-
-
-
-                    <div className="container-fluid p-0 mt-4">
-                        <div className="row">
-                            <Formik
-                                initialValues={initialValues}
-                                validationSchema={validationSchema}
-                                onSubmit={onSubmit}
-                            >
-                                {(formik) => (
-                                    <Form className="d-flex">
-
-                                        <div className="position-relative col-lg-3 col-md-12">
-                                            <CustomReactSelect
-                                                name="react_select"
-                                                options={options}
-                                                placeholder="Select Client Code"
-                                                filterOption={createFilter({ ignoreAccents: false })}
-                                                label="Client Code"
-                                                onChange={handleSelectChange}
-                                            />
-                                        </div>
-
-                                        <div className="form-group col-lg-3 col-md-12 date_range_picker zindexforDropdown">
-                                            <DateRangeByOneDatePicker
-                                                initialStartDate={formik.values.startDate}
-                                                initialEndDate={formik.values.endDate}
-                                                onDateChange={({ startDate, endDate }) => {
-                                                    formik.setFieldValue("startDate", startDate);
-                                                    formik.setFieldValue("endDate", endDate);
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="form-group col-lg-3 col-md-12 ">
-
-
-                                            <FormikController
-                                                control="select"
-                                                label="Status"
-                                                name="status"
-                                                options={selectStatus}
-                                                className="form-select"
-
-                                            />
-                                        </div>
-
-                                        <div className="form-group col-lg-3 col-md-12 mt-4">
-                                            <button
-                                                type="submit"
-                                                className="btn cob-btn-primary approve text-white"
-                                                disabled={loadingState}
-
-                                            >
-                                                {loadingState && (
-                                                    <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                                                )}
-                                                Submit
-                                            </button>
-                                        </div>
-
-                                    </Form>)}
-                            </Formik>
-
-
-
-                        </div>
-
-                        {data?.length > 0 &&
-                            <div className="row mt-4">
-
-                                <div className="form-group col-lg-3 ml-2">
-                                    <SearchFilter
-                                        kycSearch={kycSearch}
-                                        searchText={searchText}
-                                        searchByText={searchByText}
-                                        setSearchByDropDown={setSearchByDropDown}
-                                        searchTextByApiCall={false}
-
-                                    />
-
-                                </div>
-                                {/* } */}
-
-                                <div className="form-group col-lg-3">
-                                    <CountPerPageFilter
-                                        pageSize={pageSize}
-                                        dataCount={dataCount}
-                                        changePageSize={changePageSize}
-                                    />
-                                </div>
-                                {/* } */}
+                            <div className="position-relative col-lg-3 col-md-6 col-sm-12">
+                                <CustomReactSelect
+                                    name="react_select"
+                                    options={options}
+                                    placeholder="Select Client Code"
+                                    filterOption={createFilter({ ignoreAccents: false })}
+                                    label="Client Code"
+                                    onChange={handleSelectChange}
+                                />
                             </div>
-                        }
 
-
-                        <div className="">
-                            <div className="scroll overflow-auto">
-                                {data?.length !== 0 && <h6>Total Count : {dataCount}</h6>}
-                                {!midFetchDetails?.loading && data?.length !== 0 && (
-                                    <Table
-                                        row={MidManagementData}
-                                        data={data}
-                                        dataCount={dataCount}
-                                        pageSize={pageSize}
-                                        currentPage={currentPage}
-                                        changeCurrentPage={changeCurrentPage}
-                                    />
-                                )}
+                            <div className="form-group col-lg-3 col-md-6 col-sm-12 ">
+                                <FormikController
+                                    control="date"
+                                    label="From Date"
+                                    id="from_date"
+                                    name="from_date"
+                                    value={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                                    onChange={date => formik.setFieldValue('from_date', date)}
+                                    format="dd-MM-y"
+                                    clearIcon={null}
+                                    className="form-control rounded-0 p-0"
+                                    required={true}
+                                    errorMsg={formik.errors["from_date"]}
+                                />
                             </div>
-                            <CustomLoader loadingState={loadingState} />
-                            {data?.length == 0 && !loadingState && (
-                                <h5 className="text-center font-weight-bold">No Data Found</h5>
-                            )}
-                        </div>
-                    </div>
+                            <div className="form-group col-lg-3 col-md-6 col-sm-12 ">
+                                <FormikController
+                                    control="date"
+                                    label="End Date"
+                                    id="to_date"
+                                    name="to_date"
+                                    value={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                                    onChange={date => formik.setFieldValue('to_date', date)}
+                                    format="dd-MM-y"
+                                    clearIcon={null}
+                                    className="form-control rounded-0 p-0"
+                                    required={true}
+                                    errorMsg={formik.errors["to_date"]}
+                                />
+                            </div>
 
+                            <div className="form-group col-lg-3 col-md-6 col-sm-12 ">
+                                <FormikController
+                                    control="select"
+                                    label="Status"
+                                    name="status"
+                                    options={selectStatus}
+                                    className="form-select"
+
+                                />
+                            </div>
+
+                            <div className=" ml-3">
+                                <button
+                                    type="submit"
+                                    className="btn cob-btn-primary approve text-white"
+                                    disabled={loadingState}
+
+                                >
+                                    {loadingState && (
+                                        <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                                    )}
+                                    Submit
+                                </button>
+                            </div>
+
+                        </Form>)}
+                </Formik>
+
+
+
+            </div>
+
+            {data?.length > 0 &&
+                <div className="row mt-4">
+
+                    <div className="form-group col-lg-3 ml-2">
+                        <SearchFilter
+                            kycSearch={kycSearch}
+                            searchText={searchText}
+                            searchByText={searchByText}
+                            setSearchByDropDown={setSearchByDropDown}
+                            searchTextByApiCall={false}
+
+                        />
+
+                    </div>
+                    {/* } */}
+
+                    <div className="form-group col-lg-3">
+                        <CountPerPageFilter
+                            pageSize={pageSize}
+                            dataCount={dataCount}
+                            changePageSize={changePageSize}
+                        />
+                    </div>
+                    {/* } */}
                 </div>
+            }
 
-            </main>
+
+            <div className="">
+                <div className="scroll overflow-auto">
+                    {Array.isArray(data) && data.length > 0 && <h6>Total Count: {dataCount}</h6>}
+
+                    {!midFetchDetails?.loading && (
+                        <Table
+                            row={MidManagementData}
+                            data={data}
+                            dataCount={dataCount}
+                            pageSize={pageSize}
+                            currentPage={currentPage}
+                            changeCurrentPage={changeCurrentPage}
+                        />
+                    )}
+                </div>
+                <CustomLoader loadingState={loadingState} />
+                {/* {data?.length == 0 && !loadingState && (
+                    <h5 className="text-center font-weight-bold">No Data Found</h5>
+                )} */}
+            </div>
             <div>
 
 
@@ -654,7 +677,8 @@ const MidManagement = () => {
                 />
 
             </div>
-        </section>
+
+        </CardLayout>
     );
 };
 

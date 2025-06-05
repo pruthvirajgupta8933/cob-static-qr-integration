@@ -82,7 +82,7 @@ export const subMerchantFetchDetailsApi = createAsyncThunk(
       const response = await subMerchantDetails(dataObj);
       return response.data;
     } catch (error) {
-      const message = getErrorMessage(error);
+      const message = error?.response?.data?.error || getErrorMessage(error);
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue(message);
     }

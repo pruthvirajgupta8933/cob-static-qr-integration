@@ -17,6 +17,7 @@ import moment from "moment";
 import { saveAs } from "file-saver";
 import Blob from "blob";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
+import ReportLayout from "../../../utilities/CardLayout";
 
 function ClientList() {
   const convertDate = (yourDate) => {
@@ -304,77 +305,79 @@ function ClientList() {
   };
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="d-flex justify-content-between">
-            <h5 className="">Client List</h5>
-            {user?.roleId === 13 && user.loginId !== 27458 && (
-              <div className="col-lg-2 col-md-3 col-sm-4 mb-md-0">
-                <button
-                  className="btn btn-sm cob-btn-primary w-100"
-                  onClick={() => setModalToggle(true)}
-                >
-                  Add Child Client
-                </button>
-              </div>
-            )}
+
+    <ReportLayout title="Client List">
+
+
+
+      <div className="d-flex justify-content-between">
+
+        {user?.roleId === 13 && user.loginId !== 27458 && (
+          <div className="col-lg-2 col-md-3 col-sm-4 mb-md-0">
+            <button
+              className="btn btn-sm cob-btn-primary w-100"
+              onClick={() => setModalToggle(true)}
+            >
+              Add Child Client
+            </button>
           </div>
-          <section className="">
-            <div className="container-fluid p-0">
-              <div className="row mt-4">
-                <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
-                  <SearchFilter
-                    kycSearch={kycSearch}
-                    searchText={searchText}
-                    searchByText={searchByText}
-                    setSearchByDropDown={setSearchByDropDown}
-                  />
-                </div>
-                <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
-                  <CountPerPageFilter
-                    pageSize={pageSize}
-                    dataCount={dataCount}
-                    changePageSize={changePageSize}
-                  />
-                </div>
-
-                <div className="col-lg-1 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
-                  {data.length > 0 && (
-                    <button
-                      className="btn btn-sm cob-btn-primary"
-                      type="button"
-                      disabled={disable}
-                      onClick={() => exportToExcelFn()}
-                    >
-                      <i className="fa fa-download" />{" "}
-                      {loading ? "Downloading..." : "Export"}
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {!loadingState && data?.length !== 0 && (
-                <>
-                  <div className="col-lg-12 mt-5 mb-2 pl-0 d-flex justify-content-between">
-                    <h6>Totol Record: {dataCount}</h6>
-                  </div>
-                  <Table
-                    row={RefrerChiledList}
-                    dataCount={dataCount}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                    data={data}
-                  />
-                </>
-              )}
-
-              <CustomLoader loadingState={loadingState} />
+        )}
+      </div>
+      <section className="">
+        <div className="container-fluid p-0">
+          <div className="row mt-4">
+            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
+              <SearchFilter
+                kycSearch={kycSearch}
+                searchText={searchText}
+                searchByText={searchByText}
+                setSearchByDropDown={setSearchByDropDown}
+              />
             </div>
-          </section>
+            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
+              <CountPerPageFilter
+                pageSize={pageSize}
+                dataCount={dataCount}
+                changePageSize={changePageSize}
+              />
+            </div>
+
+            <div className="col-lg-1 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
+              {data.length > 0 && (
+                <button
+                  className="btn btn-sm cob-btn-primary"
+                  type="button"
+                  disabled={disable}
+                  onClick={() => exportToExcelFn()}
+                >
+                  <i className="fa fa-download" />{" "}
+                  {loading ? "Downloading..." : "Export"}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {!loadingState && data?.length !== 0 && (
+            <>
+              <div className="col-lg-12 mt-5 mb-2 pl-0 d-flex justify-content-between">
+                <h6>Totol Record: {dataCount}</h6>
+              </div>
+              <Table
+                row={RefrerChiledList}
+                dataCount={dataCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+                data={data}
+              />
+            </>
+          )}
+
+          <CustomLoader loadingState={loadingState} />
         </div>
-      </main>
+      </section>
+
+
 
       <CustomModal
         headerTitle={"Add Child Client"}
@@ -389,7 +392,8 @@ function ClientList() {
         modalToggle={modalToggleFormessage}
         fnSetModalToggle={() => setModalTogalforMessage()}
       />
-    </section>
+
+    </ReportLayout>
   );
 }
 
