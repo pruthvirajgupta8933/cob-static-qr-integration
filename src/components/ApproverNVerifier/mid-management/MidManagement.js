@@ -499,10 +499,11 @@ const MidManagement = () => {
 
         dispatch(subMerchantFetchDetailsApi(payload)).then((resp) => {
 
-
+console.log(resp)
             if (resp?.meta?.requestStatus === "fulfilled") {
 
             } else {
+                
                 toast.error(resp.payload);
             }
 
@@ -523,7 +524,7 @@ const MidManagement = () => {
                     className="text-decoration-none"
                 >
                     <button type="button" className="btn cob-btn-primary btn-sm" onClick={handleCreateMidClick} >
-                        Create MID
+                        Generate MID
                     </button>
                 </Link>
             </div>
