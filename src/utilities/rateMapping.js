@@ -56,7 +56,28 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                 const created_by_email = merchantData?.created_by_email ?? "NA"
                 // const rr_amount = merchantData?.rolling_reserve
                 const business_cat_type = merchantData?.business_category_type ?? ""
-                const merchant_parent_id = merchantData?.merchant_parent_id ?? ""
+
+                const onboard_type = merchantData?.result?.loginMasterId?.onboard_type
+
+
+                let parent_login_id, parent_name = "NA"
+                if (onboard_type === "Bank Child" || onboard_type === "Bank Child Sub Merchant") {
+                    // if the onboard type is bank child then we need to get the parent bank login id and parent bank name
+                    parent_login_id = merchantData?.result?.loginMasterId?.parent_bank_login_id ?? ""
+                    parent_name = merchantData?.result?.loginMasterId?.parent_bank_name ?? ""
+                } else if (onboard_type === "Referrer Child" || onboard_type === "Referrer Child Sub Merchant") {
+                    // if the onboard type is referrer child then we need to get the parent referral and parent referral name
+                    parent_login_id = merchantData?.result?.loginMasterId?.parent_referral ?? ""
+                    parent_name = merchantData?.result?.loginMasterId?.parent_referral_name ?? ""
+                } else {
+                    parent_login_id = merchantData?.result?.loginMasterId?.loginMasterId ?? ""
+                    parent_name = merchantData?.result?.loginMasterId?.name ?? ""
+                }
+
+                console.log("Run3.1- parent bank login id and name", parent_login_id, parent_name, onboard_type)
+
+
+                // const merchant_parent_id = merchantData?.merchant_parent_id ?? ""
 
                 //  Check the client code
                 console.log("Run4- check is client code mapped", clientCode)
@@ -80,22 +101,23 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                         clientName: name,
                         clientLink: "cltLink",
                         stateId: stateId,
-                        bid: "19", // tbd
+                        bid: "19",
                         stateName: "DELHI",
                         bankName: bankName,
                         client_username: emailId,
                         client_password: secret_key,
-                        appId: "10", // tbd
-                        status: "Activate", // tbd
+                        appId: "10",
+                        status: "Activate",
                         client_type: "normal Client",
                         successUrl: "https://sabpaisa.in/",
                         failedUrl: "https://sabpaisa.in/",
                         subscriptionstatus: "Subscribed",
                         businessType: 2,
                         businessctgcode: business_cat_type,
-                        referralcode: merchant_parent_id,
                         mesaagebypassflag: '1',
-                        forcesuccessflag: '1'
+                        forcesuccessflag: '1',
+                        referralcode: parent_login_id, // parent login id
+                        masterName: parent_name  // parent name
                     };
                     console.log("Run6- Call api with the Post Data for the rate mapping", inputData)
                     // step 3 - Post date for the ratemapping

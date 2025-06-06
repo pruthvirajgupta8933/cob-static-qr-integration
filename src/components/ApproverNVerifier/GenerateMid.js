@@ -284,10 +284,11 @@ function AssignZone() {
       })
 
     } catch (error) {
-      console.log("err", error)
-      toastConfig.errorToast(error);
+      // console.log("err", error?.response?.data?.detail || error?.response?.data?.message)
+      toastConfig.errorToast(error?.response?.data?.detail || error?.response?.data?.message);
       Setshow(false)
       setDisable(false)
+      setLoading(false)
 
     }
 

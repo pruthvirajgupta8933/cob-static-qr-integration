@@ -191,21 +191,21 @@ const KycDetailsModal = (props) => {
         const data = resp.payload;
 
 
-        const factum = data.filter(item => item?.factum_validation === true);
-        const nonFactum = data.filter(item => item?.factum_validation === false);
+        // const factum = data.filter(item => item?.factum_validation === true);
+        // const nonFactum = data.filter(item => item?.factum_validation === false);
 
 
-        const formattedFactum = factum.map(item => ({
-          value: item.category_id,
-          label: item.category_name,
-          factum_validation: item.factum_validation
-        }));
+        // const formattedFactum = factum.map(item => ({
+        //   value: item.category_id,
+        //   label: item.category_name,
+        //   factum_validation: item.factum_validation
+        // }));
 
-        const formattedNonFactum = nonFactum.map(item => ({
-          value: item.category_id,
-          label: item.category_name,
-          factum_validation: item.factum_validation
-        }));
+        // const formattedNonFactum = nonFactum.map(item => ({
+        //   value: item.category_id,
+        //   label: item.category_name,
+        //   factum_validation: item.factum_validation
+        // }));
 
         // // Save into state
         // setFactumCategories(formattedFactum);
@@ -335,7 +335,7 @@ const KycDetailsModal = (props) => {
             </div>
           )}
 
-          {kycBusinessCategoryFactumStatus !== null && (
+          {/* {kycBusinessCategoryFactumStatus !== null && (
             <div className="row mb-4 border p-1">
               <h6>Business Category Factum Validation Status</h6>
               <p>
@@ -343,7 +343,7 @@ const KycDetailsModal = (props) => {
                 <strong>{kycBusinessCategoryFactumStatus ? "True" : "False"}</strong>
               </p>
             </div>
-          )}
+          )} */}
 
           <SubscribeProductList SubscribedPlanData={SubscribedPlanData} />
           {/* allow this component for types of user role */}

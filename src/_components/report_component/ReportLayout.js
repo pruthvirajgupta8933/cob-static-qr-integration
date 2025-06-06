@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import _ from "lodash";
 import Table from "../table_components/table/Table";
 import DropDownCountPerPage from "../reuseable_components/DropDownCountPerPage";
+import CustomLoader from "../../_components/loader";
 
 const ReportLayout = ({
   type,
@@ -13,48 +14,55 @@ const ReportLayout = ({
   showSearch,
   showCountPerPage,
   onRowClick,
+  dynamicPagination,
+  page_Size,
+  current_Page,
+  dataCount,
+  change_CurrentPage,
+  change_PageSize,
+  loadingState,
+  totalSettlementAmount
 }) => {
   const [searchText, SetSearchText] = useState("");
-  const [pageSize, setPageSize] = useState(10);
-  const [selectedData, setSelectedData] = useState();
-  const [paginatedata, setPaginatedData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [localPageSize, setLocalPageSize] = useState(10);
+  const [localCurrentPage, setLocalCurrentPage] = useState(1);
+  const [filteredData, setFilteredData] = useState([]);
+  const [paginatedData, setPaginatedData] = useState([]);
+
+  const actualPageSize = dynamicPagination ? page_Size : localPageSize;
+  const actualCurrentPage = dynamicPagination ? current_Page : localCurrentPage;
 
   useEffect(() => {
-    setSelectedData(data);
-    setPaginatedData(_(data).slice(0).take(pageSize).value());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
 
-  useEffect(() => {
-    setPaginatedData(_(selectedData).slice(0).take(pageSize).value());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageSize, selectedData]);
+    let filtered = data;
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(selectedData)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
-    setPaginatedData(paginatedPost);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (searchText !== "") {
-      setSelectedData(
-        data.filter((txnItme) =>
-          Object.values(txnItme)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
-        )
+    if (searchText.trim() !== "") {
+      filtered = data.filter((item) =>
+        Object.values(item)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
       );
-    } else {
-      setSelectedData(data);
     }
-  }, [searchText]);
+
+    setFilteredData(filtered);
+
+
+    if (dynamicPagination) {
+
+      setPaginatedData(filtered);
+    } else {
+      const startIndex = (localCurrentPage - 1) * localPageSize;
+      const paginated = _(filtered).slice(startIndex).take(localPageSize).value();
+      setPaginatedData(paginated);
+    }
+  }, [data, searchText, localCurrentPage, localPageSize, dynamicPagination]);
+
+  const handleLocalPageSizeChange = (e) => {
+    const newSize = parseInt(e.target.value);
+    setLocalPageSize(newSize);
+    setLocalCurrentPage(1); // reset to first page
+  };
 
   return (
     <div className="container-fluid mt-4">
@@ -75,26 +83,32 @@ const ReportLayout = ({
                       <label>Search</label>
                       <input
                         type="text"
-                        label="Search"
-                        name="search"
                         placeholder="Search Here"
                         className="form-control"
                         onChange={(e) => {
                           SetSearchText(e.target.value);
+                          if (!dynamicPagination) setLocalCurrentPage(1);
                         }}
+                        value={searchText}
                       />
                     </div>
                   )}
+
                   {showCountPerPage && (
                     <div className="form-group col-md-3">
                       <label>Count Per Page</label>
                       <select
-                        value={pageSize}
-                        rel={pageSize}
+                        value={actualPageSize}
                         className="form-select"
-                        onChange={(e) => setPageSize(parseInt(e.target.value))}
+                        onChange={(e) =>
+                          dynamicPagination
+                            ? change_PageSize(parseInt(e.target.value))
+                            : handleLocalPageSizeChange(e)
+                        }
                       >
-                        <DropDownCountPerPage datalength={data.length} />
+                        <DropDownCountPerPage
+                          datalength={dynamicPagination ? dataCount : filteredData?.length}
+                        />
                       </select>
                     </div>
                   )}
@@ -106,27 +120,35 @@ const ReportLayout = ({
           <section className="flleft w-100">
             <div className="container-fluid p-0 my-3">
               {data?.length > 0 && (
-                <h6>
-                  <strong>Total Record</strong> : {data.length}
+                <h6 className="mb-2">
+                  <p className="d-inline me-3 mb-0">
+                    Total Record: {dynamicPagination ? dataCount : filteredData?.length || 0}
+                  </p>
                   {dataSummary?.map((summary, index) => (
-                    <span className="px-2" key={index}>
-                      | <strong className="px-1">{summary.name}:</strong>
+                    <p className="d-inline me-3 mb-0" key={index}>
+                      | <span className="px-1">{summary.name}:</span>
                       <span>{summary.value}</span>
-                    </span>
+                    </p>
                   ))}
                 </h6>
               )}
+
               <div className="overflow-auto">
                 <Table
                   row={rowData}
-                  data={paginatedata}
-                  dataCount={data?.length || 0}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={(page) => setCurrentPage(page)}
+                  data={paginatedData}
+                  dataCount={dynamicPagination ? dataCount : filteredData?.length || 0}
+                  pageSize={actualPageSize}
+                  currentPage={actualCurrentPage}
+                  changeCurrentPage={(page) =>
+                    dynamicPagination
+                      ? change_CurrentPage(page)
+                      : setLocalCurrentPage(page)
+                  }
                   onRowClick={(row) =>
                     typeof onRowClick === "function" && onRowClick(row)
                   }
+                  loadingState={loadingState}
                 />
               </div>
             </div>

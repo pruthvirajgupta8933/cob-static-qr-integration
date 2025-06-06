@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { Formik, Form } from "formik";
 import Table from "../../../_components/table_components/table/Table";
 import FormikController from "../../../_components/formik/FormikController";
@@ -26,6 +26,11 @@ import CustomModal from "../../../_components/custom_modal";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 import CustomLoader from "../../../_components/loader";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
+import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
+import API_URL from "../../../config";
+import toastConfig from "../../../utilities/toastTypes";
+import { Callbacks } from "jquery";
+
 
 const SettlementReportNew = () => {
   const dispatch = useDispatch();
@@ -33,15 +38,18 @@ const SettlementReportNew = () => {
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [pageSize, setPageSize] = useState(10);
-  const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showData, setShowData] = useState([]);
-  const [updateTxnList, setUpdateTxnList] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [filterState, setFilterState] = useState(null);
+  const [exportReportLoader, setExportReportLoader] = useState(false);
+  const [exportDisable, setExportDisable] = useState(false);
+  const [dataCount, setDataCount] = useState(0);
+  const [loadingState, setLoadingState] = useState(false);
+  const [runapi, setRunApi] = useState(false);
+  const [totalSettlementAmount, setSettlementAmount] = useState(0);
 
   const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
     (state) => state
@@ -49,16 +57,16 @@ const SettlementReportNew = () => {
   const { user } = auth;
   const { isLoadingTxnHistory, settlementSummaryReport } = dashboard;
   const { refrerChiledList } = merchantReferralOnboardReducer;
-  // console.log("refrerChiledList", refrerChiledList)
+
   const roles = roleBasedAccess();
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
-  if (splitDate[1].length === 1) {
+  if (splitDate[1]?.length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
-  if (splitDate[2].length === 1) {
+  if (splitDate[2]?.length === 1) {
     splitDate[2] = "0" + splitDate[2];
   }
   splitDate = splitDate.join("-");
@@ -121,7 +129,7 @@ const SettlementReportNew = () => {
     fnVal = "name";
     clientCodeListArr = clientCodeData;
   }
-  // let clientCodeListArr = roles?.merchant ===true ? clientMerchantDetailsList : clientCodeData
+
   const clientCodeOption = convertToFormikSelectJson(
     fnKey,
     fnVal,
@@ -141,7 +149,7 @@ const SettlementReportNew = () => {
   if (
     roles.merchant === true &&
     clientCodeListArr &&
-    clientCodeListArr.length > 0 &&
+    clientCodeListArr?.length > 0 &&
     clientCodeListArr[0] &&
     clientCodeListArr[0][fnKey]
   ) {
@@ -254,23 +262,23 @@ const SettlementReportNew = () => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      if (
-        showData.length < 1 &&
-        (updateTxnList.length > 0 || updateTxnList.length === 0)
-      ) {
-        setDataFound(true);
-      } else {
-        setDataFound(false);
-      }
-    });
-  }, [showData, updateTxnList]);
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-  };
+    setDataFound(txnList?.length === 0);
+  }, [txnList]);
+
+
+  useEffect(() => {
+    if (runapi) {
+      setLoadingState(true);
+      dispatch(fetchSettlementReportSlice(filterState)).then((resp) => {
+        setLoadingState(true);
+
+      });
+    }
+  }, [pageSize, currentPage, dispatch]);
 
   const onSubmitHandler = async (values) => {
+    setLoadingState(true)
     let strClientCode,
       clientCodeArrLength = "";
     if (values.clientCode === "All") {
@@ -278,67 +286,84 @@ const SettlementReportNew = () => {
       clientCodeListArr?.map((item) => {
         allClientCode.push(item.client_code);
       });
-      clientCodeArrLength = allClientCode.length.toString();
+      clientCodeArrLength = allClientCode?.length.toString();
       strClientCode = allClientCode.join().toString();
     } else {
       strClientCode = values.clientCode;
       clientCodeArrLength = "1";
     }
-    const paramData = {
+
+    const newFilterState = {
       clientCode: strClientCode,
       fromDate: moment(values.fromDate).startOf("day").format("YYYY-MM-DD"),
       endDate: moment(values.endDate).startOf("day").format("YYYY-MM-DD"),
       noOfClient: clientCodeArrLength,
       rpttype: values.rpttype,
+      page: currentPage,
+      length: pageSize,
     };
+
+    setFilterState(newFilterState);
+    setCurrentPage(1)
+
 
     isButtonClicked(true);
     setIsDisable(true);
 
     try {
-      const res = await dispatch(fetchSettlementReportSlice(paramData));
-
+      const res = await dispatch(fetchSettlementReportSlice(newFilterState));
       const ApiStatus = res?.meta?.requestStatus;
-      const ApiPayload = res?.payload;
+      setRunApi(true)
 
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
       }
-
-      // if (ApiStatus === "fulfilled" && ApiPayload?.length < 1) {
-      //     toast.info("No data found");
-      // }
+      setLoadingState(false)
     } catch (error) {
       toast.error("An error occurred");
+      setLoadingState(false)
+    } finally {
+      setIsDisable(false);
     }
-
-    setIsDisable(false);
   };
 
   useEffect(() => {
-    // Remove initiated from transaction history response
-    const TxnListArrUpdated = dashboard.settlementReport;
-    setUpdateTxnList(TxnListArrUpdated);
-    setShowData(TxnListArrUpdated);
+    const TxnListArrUpdated = dashboard?.settlementReport?.results;
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dashboard]);
+    setDataCount(dashboard?.settlementReport?.count);
+    setSettlementAmount(dashboard?.settlementReport?.total_settlement_amount);
+    // When search text changes, filter the current txnList
+    if (searchText !== "") {
+      const filteredData = TxnListArrUpdated?.filter((txnItem) =>
+        Object.values(txnItem)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchText.toLocaleLowerCase())
+      );
+      SetTxnList(filteredData);
+    } else {
+      SetTxnList(TxnListArrUpdated);
+    }
+  }, [dashboard, searchText]);
 
-  useEffect(() => {
-    setPaginatedData(_(showData).slice(0).take(pageSize).value());
-    setPageCount(
-      showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
-    );
-  }, [pageSize, showData]);
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
-    setPaginatedData(paginatedPost);
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+    if (filterState) {
+      setFilterState((prev) => ({ ...prev, page: page }));
+    }
+  };
+
+
+  const changePageSize = (size) => {
+    setPageSize(size);
+    setCurrentPage(1); // Reset to first page when page size changes
+
+    if (filterState) {
+      setFilterState((prev) => ({ ...prev, length: size, page: 1 }));
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -346,189 +371,73 @@ const SettlementReportNew = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (searchText !== "") {
-      setShowData(
-        updateTxnList.filter((txnItme) =>
-          Object.values(txnItme)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        )
-      );
-    } else {
-      setShowData(updateTxnList);
+  const exportToExcelFn = async () => {
+    if (!filterState) {
+      toast.info("Please perform a search first to export data.");
+      return;
     }
-  }, [searchText]);
+    setExportReportLoader(true);
+    setExportDisable(true);
+    try {
+      const res = await axiosInstanceJWT.post(
+        API_URL.SettlementReportExcel,
+        { ...filterState, page: 0, length: 0 },
+        {
+          responseType: "blob",
+        }
+      );
 
-  const pages = _.range(1, pageCount + 1);
+      if (res.status === 200) {
+        const disposition = res.headers["content-disposition"];
+        const filenameMatch =
+          disposition && disposition.match(/filename="(.+)"/);
+        const filename = filenameMatch
+          ? filenameMatch[1]
+          : "Settlement-Report.xlsx"; // Changed default filename
 
-  const exportToExcelFn = () => {
-    const excelHeaderRow = [
-      "SR NO",
-      "TRANSACTION ID",
-      "CLIENT TRANSACTION ID",
-      "CHALLAN NO",
-      // 'PG PAY MODE',
-      "PAYEE AMOUNT",
-      "TRANSACTION DATE",
-      "TRANSACTION COMPLETE DATE",
-      "STATUS",
-      "PAYEE FIRST NAME",
-      "PAYEE LAST NAME",
-      "PAYEE MOBILE",
-      "PAYEE EMAIL",
-      "CLIENT CODE",
-      "PAYMENT MODE",
-      "PAYEE ADDRESS",
+        const blob = new Blob([res.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }); // Correct MIME type for Excel
 
-      "CLIENT NAME",
-      "GR NUMBER",
-      // 'PAID AMOUNT',
-      // 'ACT AMOUNT',
-      // 'PAG RESPONSE CODE',
-      // 'RESP MSG',
-      "BANK MESSAGE",
-      "FEE FORWARD",
-      "IFSC CODE",
-      "PAYER ACOUNT NUMBER",
-      "BANK TXN ID",
-      // 'PG RETURN AMOUNT',
-      // 'P CONVCHARGES',
-      // 'P EP CHARGES',
-      // 'P GST',
-      "SETTLEMENT DATE",
-      "SETTLEMENT AMOUNT",
-      "SETTLEMENT STATUS",
-      // 'SETTLEMENT BY',
-      "SETTLEMENT BANK REF",
-      "SETTLEMENT REMARKS",
-      "SETTLEMENT UTR",
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
 
-      "UDF1",
-      "UDF2",
-      "UDF3",
-      "UDF4",
-      "UDF5",
-      "UDF6",
-      "UDF7",
-      "UDF8",
-      "UDF9",
-      "UDF10",
-      "UDF11",
-      "UDF12",
-      "UDF13",
-      "UDF14",
-      "UDF15",
-      "UDF16",
-      "UDF17",
-      "UDF18",
-      "UDF19",
-      "UDF20",
-    ];
-    const excelArr = [excelHeaderRow];
-    // eslint-disable-next-line array-callback-return
-    txnList.map((item, index) => {
-      const allowDataToShow = {
-        srNo: item.srNo === null ? "" : index + 1,
-        txn_id: item.txn_id === null ? "" : item.txn_id,
-        client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-        challan_no: item.challan_no === null ? "" : item.challan_no,
-        // 'pg_pay_mode': item.pg_pay_mode === null ? "" : item.pg_pay_mode,
-        payee_amount:
-          item.payee_amount === null
-            ? ""
-            : Number.parseFloat(item.payee_amount),
-        trans_date:
-          item.trans_date === null ? "" : dateFormatBasic(item.trans_date),
-        trans_complete_date:
-          item.trans_complete_date === null
-            ? ""
-            : dateFormatBasic(item.trans_complete_date),
-        status: item.status === null ? "" : item.status,
-        payee_first_name:
-          item.payee_first_name === null ? "" : item.payee_first_name,
-        payee_lst_name: item.payee_lst_name === null ? "" : item.payee_lst_name,
-        payee_mob: item.payee_mob === null ? "" : item.payee_mob,
-        payee_email: item.payee_email === null ? "" : item.payee_email,
-        client_code: item.client_code === null ? "" : item.client_code,
-        payment_mode: item.payment_mode === null ? "" : item.payment_mode,
-        payee_address: item.payee_address === null ? "" : item.payee_address,
+        document.body.appendChild(link);
+        link.click();
 
-        client_name: item.client_name === null ? "" : item.client_name,
-        gr_number: item.gr_number === null ? "" : item.gr_number,
-
-        bank_message: item.bank_message === null ? "" : item.bank_message,
-        fee_forward: item.fee_forward === null ? "" : item.fee_forward,
-        ifsc_code: item.ifsc_code === null ? "" : item.ifsc_code,
-        payer_acount_number:
-          item.payer_acount_number === null ? "" : item.payer_acount_number,
-        bank_txn_id: item.bank_txn_id === null ? "" : item.bank_txn_id,
-
-        settlement_date:
-          item.settlement_date === null
-            ? ""
-            : dateFormatBasic(item.settlement_date),
-        settlement_amount:
-          item.settlement_amount === null
-            ? ""
-            : Number.parseFloat(item.settlement_amount),
-        settlement_status:
-          item.settlement_status === null ? "" : item.settlement_status,
-        // 'settlement_by': item.settlement_by === null ? "" : item.settlement_by,
-        settlement_bank_ref:
-          item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
-        settlement_remarks:
-          item.settlement_remarks === null ? "" : item.settlement_remarks,
-        settlement_utr: item.settlement_utr === null ? "" : item.settlement_utr,
-
-        udf1: item.udf1 === null ? "" : item.udf1,
-        udf2: item.udf2 === null ? "" : item.udf2,
-        udf3: item.udf3 === null ? "" : item.udf3,
-        udf4: item.udf4 === null ? "" : item.udf4,
-        udf5: item.udf5 === null ? "" : item.udf5,
-        udf6: item.udf6 === null ? "" : item.udf6,
-        udf7: item.udf7 === null ? "" : item.udf7,
-        udf8: item.udf8 === null ? "" : item.udf8,
-        udf9: item.udf9 === null ? "" : item.udf9,
-        udf10: item.udf10 === null ? "" : item.udf10,
-        udf11: item.udf11 === null ? "" : item.udf11,
-        udf12: item.udf12 === null ? "" : item.udf12,
-        udf13: item.udf13 === null ? "" : item.udf13,
-        udf14: item.udf14 === null ? "" : item.udf14,
-        udf15: item.udf15 === null ? "" : item.udf15,
-        udf16: item.udf16 === null ? "" : item.udf16,
-        udf17: item.udf17 === null ? "" : item.udf17,
-        udf18: item.udf18 === null ? "" : item.udf18,
-        udf19: item.udf19 === null ? "" : item.udf19,
-        udf20: item.udf20 === null ? "" : item.udf20,
-      };
-
-      excelArr.push(Object.values(allowDataToShow));
-    });
-    const totalRow = [];
-    totalRow[22] = "Total Settlement Amount";
-    totalRow[23] = txnList.reduce(
-      (sum, item) => item.settlement_amount + sum,
-      0
-    );
-    excelArr.push([]);
-    excelArr.push(totalRow);
-
-    const fileName = "Settlement-Report";
-
-    let handleExportLoading = (state) => {
-      // console.log(state)
-      if (state) {
-        alert("Exporting Excel File, Please wait...");
+        window.URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+        toastConfig.successToast("Report exported successfully!");
+      } else {
+        toastConfig.errorToast("Failed to download report.");
       }
-      return state;
-    };
-    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+    } catch (err) {
+      if (err.response && err.response.data) {
+        const errorBlob = new Blob([err.response.data], {
+          type: "application/json",
+        });
+        const reader = new FileReader();
+        reader.onload = function () {
+          try {
+            const errorData = JSON.parse(reader.result);
+            toastConfig.errorToast(errorData.message || "Something went wrong.");
+          } catch (e) {
+            toastConfig.errorToast("Something went wrong.");
+          }
+        };
+        reader.readAsText(errorBlob);
+      } else {
+        toastConfig.errorToast("Something went wrong. Please try again.");
+      }
+    } finally {
+      setExportReportLoader(false);
+      setExportDisable(false);
+    }
   };
 
   const settlementAmount = txnList?.reduce((prevVal, currVal) => {
-    return prevVal + parseFloat(currVal.settlement_amount, 2);
+    return prevVal + parseFloat(currVal.settlement_amount || 0);
   }, 0);
 
   const getTransactionSummary = (values) => {
@@ -554,6 +463,11 @@ const SettlementReportNew = () => {
   };
 
   const exportSummaryToExcel = () => {
+    if (!settlementSummaryReport?.data || settlementSummaryReport.data.length === 0) {
+      toast.info("No summary data to export.");
+      return;
+    }
+
     const excelHeaderRow = [
       "SR NO",
       "CLIENT CODE",
@@ -565,88 +479,93 @@ const SettlementReportNew = () => {
     ];
     if (user?.loginId === 31706) excelHeaderRow.push("UDF13");
     const excelArr = [excelHeaderRow];
-    // eslint-disable-next-line array-callback-return
+
     settlementSummaryReport.data?.map((item, index) => {
       const allowDataToShow = {
-        srNo: item.srNo === null ? "" : index + 1,
-        client_code: item.client_code === null ? "" : item.client_code,
-        client_name: item.client_name === null ? "" : item.client_name,
-        settlement_amount:
-          item.settlement_amount === null ? "" : item.settlement_amount,
-        // 'pg_pay_mode': item.pg_pay_mode === null ? "" : item.pg_pay_mode,
-        settlement_date:
-          item.settlement_date === null
-            ? ""
-            : dateFormatBasic(item.settlement_date),
-        settlement_by: item.settlement_by === null ? "" : item.settlement_by,
-        txn_count: item.txn_count === null ? "" : item.txn_count,
+        srNo: index + 1, // Ensure sequential numbering for SR NO
+        client_code: item.client_code || "",
+        client_name: item.client_name || "",
+        settlement_amount: item.settlement_amount || "",
+        settlement_date: item.settlement_date
+          ? dateFormatBasic(item.settlement_date)
+          : "",
+        settlement_by: item.settlement_by || "",
+        txn_count: item.txn_count || "",
       };
-      if (user?.loginId === 31706) allowDataToShow.udf13 = item.udf13;
+      if (user?.loginId === 31706) allowDataToShow.udf13 = item.udf13 || "";
       excelArr.push(Object.values(allowDataToShow));
     });
-    const fileName = "Settlement-Txn-Summary-Report";
-    // console.log(fileName);
-
     let handleExportLoading = (state) => {
-      // console.log(state)
       if (state) {
-        alert("Exporting Excel File, Please wait...");
+        alert("Exporting Excel File, Please wait...")
       }
-      return state;
-    };
+      return state
+    }
+    const fileName = "Settlement-Txn-Summary-Report";
     exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
+
   const modalBody = () => {
     if (settlementSummaryReport?.loading)
       return <CustomLoader loadingState={settlementSummaryReport?.loading} />;
     else if (settlementSummaryReport?.data?.length === 0)
-      return <h6>Data not found</h6>;
+      return <h6>No data found for the summary.</h6>;
     return (
       <>
-        <h6>
-          <span>
-            <strong>Total Record</strong> :&nbsp;
-            {settlementSummaryReport.data?.length} |
-            <strong> Total Settlement Amount (INR)</strong> :&nbsp;
+        <h6 className="d-flex align-items-center flex-wrap gap-2 m-0">
+          <p className="mb-0 me-3">Total Record: {settlementSummaryReport.data?.length}</p>
+          <p className="mb-0 me-3">|</p>
+          <p className="mb-0">
+            Total Settlement Amount (INR):{" "}
             {settlementSummaryReport.data
-              ?.reduce((amt, data) => (amt += data.settlement_amount), 0)
+              ?.reduce((amt, data) => amt + (data.settlement_amount || 0), 0)
               .toFixed(2)}
-          </span>
+          </p>
         </h6>
-        <table className="table table-bordered">
-          <thead>
-            <th>S.R. No.</th>
-            <th>Client Code</th>
-            <th>Client Name</th>
-            <th>Settlement Amount</th>
-            <th>Settlement Date</th>
-            <th>Settlement By</th>
-            <th>Transaction Count</th>
-            {user?.loginId === 31706 && <th>UDF13</th>}
-          </thead>
-          {settlementSummaryReport.data?.map((item) => (
-            <tr>
-              <td>{item.SrNo}</td>
-              <td>{item.client_code}</td>
-              <td>{item.client_name}</td>
-              <td>{item.settlement_amount}</td>
-              <td>{dateFormatBasic(item.settlement_date)}</td>
-              <td>{item.settlement_by}</td>
-              <td>{item.txn_count}</td>
-              {user?.loginId === 31706 && <td>{item.udf13}</td>}
-            </tr>
-          ))}
-        </table>
+
+        <div className="table-responsive mt-2"> {/* Added responsive class for better modal table display */}
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>S.R. No.</th>
+                <th>Client Code</th>
+                <th>Client Name</th>
+                <th>Settlement Amount</th>
+                <th>Settlement Date</th>
+                <th>Settlement By</th>
+                <th>Transaction Count</th>
+                {user?.loginId === 31706 && <th>UDF13</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {settlementSummaryReport.data?.map((item, index) => (
+                <tr key={index}> {/* Added key for list items */}
+                  <td>{index + 1}</td> {/* Corrected S.R. No. */}
+                  <td>{item.client_code}</td>
+                  <td>{item.client_name}</td>
+                  <td>{Number(item.settlement_amount).toFixed(2)}</td>
+                  <td>{dateFormatBasic(item.settlement_date)}</td>
+                  <td>{item.settlement_by}</td>
+                  <td>{item.txn_count}</td>
+                  {user?.loginId === 31706 && <td>{item.udf13}</td>}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </>
     );
   };
   const form = (
+
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmitHandler}
     >
+
       {(formik) => (
+
         <Form>
           <div className="form-row">
             <div className="form-group col-lg-3">
@@ -656,6 +575,7 @@ const SettlementReportNew = () => {
                 name="clientCode"
                 className="form-select rounded-0 mt-0"
                 options={clientCodeOption}
+
               />
             </div>
             <div className="form-group col-lg-3">
@@ -675,8 +595,11 @@ const SettlementReportNew = () => {
                 className="form-control rounded-0 p-0"
                 required={true}
                 errorMsg={formik.errors["fromDate"]}
+
               />
+
             </div>
+
             <div className="form-group col-lg-3">
               <FormikController
                 control="date"
@@ -695,58 +618,79 @@ const SettlementReportNew = () => {
               />
             </div>
           </div>
-
           <div className="form-row">
             <div className="form-group col-md-1 mr-2">
               <button
                 disabled={disable}
                 className="btn cob-btn-primary text-white btn-sm"
                 type="submit"
+
               >
                 {disable && (
                   <span
                     className="spinner-border spinner-border-sm mr-1"
                     role="status"
                     ariaHidden="true"
+
                   ></span>
+
                 )}{" "}
-                {/* Show spinner if disabled */}
                 Search{" "}
               </button>
             </div>
+
             {txnList?.length > 0 ? (
+
               <>
+
                 <div className="form-group col-md-1 ml-1">
                   <button
                     className="btn cob-btn-primary text-white btn-sm"
                     style={{ backgroundColor: "rgb(1, 86, 179)" }}
                     type="button"
                     onClick={() => exportToExcelFn()}
+                    disabled={exportReportLoader}
                   >
-                    Export{" "}
+                    <i className="fa fa-download"></i>
+                    {exportReportLoader ? " Loading..." : " Export"}
                   </button>
                 </div>
-                <div className="form-group col-md-1 ml-1">
+                <div className="form-group col-md-1 ml-2">
                   <button
                     className="btn cob-btn-primary text-white btn-sm"
                     style={{ backgroundColor: "rgb(1, 86, 179)" }}
                     type="button"
+
                     onClick={() => getTransactionSummary(formik.values)}
+
                   >
+
                     Settlement Summary
+
                   </button>
+
                 </div>
+
               </>
+
             ) : (
+
               <></>
+
             )}
+
           </div>
+
         </Form>
+
       )}
+
     </Formik>
+
   );
   return (
     <section className="ant-layout">
+
       <main>
         <div>
           <ReportLayout
@@ -755,19 +699,24 @@ const SettlementReportNew = () => {
             data={txnList}
             rowData={rowData}
             form={form}
+            dataCount={dataCount}
             dataSummary={[
               {
                 name: "Settlement Amount (INR)",
-                value: txnList
-                  ?.reduce((prevVal, currVal) => {
-                    return prevVal + parseFloat(currVal.settlement_amount, 2);
-                  }, 0)
-                  .toFixed(2),
-              },
+                value: totalSettlementAmount?.toFixed(2),
+              }
             ]}
             showSearch
             showCountPerPage
+            dynamicPagination={true}
+            page_Size={pageSize}
+            current_Page={currentPage}
+            change_CurrentPage={changeCurrentPage}
+            change_PageSize={changePageSize}
+            loadingState={loadingState}
+          // totalSettlementAmount={totalSettlementAmount}
           />
+
           {showModal && (
             <CustomModal
               modalBody={modalBody}
@@ -794,6 +743,6 @@ const SettlementReportNew = () => {
       </main>
     </section>
   );
-};
+}
 
 export default SettlementReportNew;

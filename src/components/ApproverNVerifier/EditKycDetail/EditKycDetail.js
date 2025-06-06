@@ -12,6 +12,8 @@ import { createFilter } from 'react-select';
 import { Form, Formik } from 'formik';
 import { kycUserList } from "../../../slices/kycSlice";
 import ViewDocument from "./ViewDocument";
+import SaveLocation from "../Onboarderchant/ViewKycDetails/SaveLocation";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 
 
@@ -50,6 +52,9 @@ function EditKycDetail() {
       label: `${data.clientCode} - ${data.name}`
     }))
   ];
+
+  
+    const roles = roleBasedAccess();
 
   return (
     <section className="ant-layout NunitoSans-Regular">
@@ -114,6 +119,12 @@ function EditKycDetail() {
             }} >
 
               View Document</a>
+             <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 7 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+              SetTab(7);
+              setTitle("Update Location");
+            }} >
+
+              Update Location</a>
           </div>
 
           <div className="tab-content w-100 overflow-auto" id="v-pills-tabContent">
@@ -159,6 +170,8 @@ function EditKycDetail() {
                   )) ||
                   (tab === 6 && (
                     <ViewDocument selectedId={selectedId} />
+                  )) || (tab === 7 && (
+                    <SaveLocation role={roles} propCurrentTab={3}  />
                   )) || <ContactInfoEdtkyc
 
                     tab={SetTab}
