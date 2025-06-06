@@ -339,6 +339,7 @@ function ClientList() {
                 pageSize={pageSize}
                 dataCount={dataCount}
                 changePageSize={changePageSize}
+                changeCurrentPage={changeCurrentPage}
               />
             </div>
 
