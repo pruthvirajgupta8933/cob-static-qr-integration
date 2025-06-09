@@ -314,8 +314,9 @@ function TransactionSummery() {
                 }, 0)
                 .toFixed(2),
             },
-            loadingState = { isLoading }
+
           ]}
+          loadingState={isLoading}
         />
         {/* <section className="">
           <div className="container-fluid p-0"> */}
