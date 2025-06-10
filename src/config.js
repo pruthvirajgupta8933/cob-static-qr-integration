@@ -535,6 +535,7 @@ export const E_NACH_URL = {
   DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
   SCHEDULE_TRRANSACTION: `${subscriptionUrl}api/mandate/upcoming-mandates/`,
   USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`,
+  SETTLEMENT_TRANSACTION: `${subscriptionUrl}api/transaction/all/`
 };
 
 export const wsConnectUrl = {

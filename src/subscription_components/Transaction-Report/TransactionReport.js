@@ -117,7 +117,7 @@ const TransactionReport = () => {
         // setDisableView(false);
         // setViewLoader(false);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [pageSize, currentPage]);
 
   const handleSearchChange = (value) => {
@@ -156,6 +156,7 @@ const TransactionReport = () => {
     "Trans Date",
     "Created On",
     "Bank Message",
+    "EMI Amount"
   ];
 
   const renderRow = (row, index) => (
@@ -168,6 +169,7 @@ const TransactionReport = () => {
       <td>{DateFormatter(row.trans_date)}</td>
       <td>{DateFormatter(row.created_on)}</td>
       <td>{row.bank_message}</td>
+      <td>{row?.emi_amount}</td>
     </tr>
   );
 
@@ -313,7 +315,7 @@ const TransactionReport = () => {
                   </div>
                   <div className="col-lg-1">
                     <button
-                      className="btn cob-btn-primary approve text-white mt-4 w-100"
+                      className="btn cob-btn-primary approve text-white mt-4 "
                       type="submit"
                     >
                       {viewDataLoader ? (
@@ -329,7 +331,7 @@ const TransactionReport = () => {
                   {dataCount > 0 && (
                     <div className="col-lg-1">
                       <button
-                        className="btn cob-btn-primary approve text-white mt-4 w-100"
+                        className="btn cob-btn-primary approve text-white mt-4"
                         type="button"
                         disabled={isExporting}
                         onClick={() => handleExport(formik.values)}

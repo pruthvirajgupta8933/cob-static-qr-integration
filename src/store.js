@@ -44,6 +44,7 @@ import { merchantAssignedReducer } from "./components/BusinessDevlopment/busines
 import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
 import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDevelopment/bdSlice.js/bdSlice";
 import { scheduleTransactionSliceReducer } from "./slices/subscription-slice/scheduleTransactionSlice";
+import { updateSettlementApiSliceReducer } from "./slices/subscription-slice/updateSettlementSlice";
 
 const reducer = {
   auth: authReducer,
@@ -75,6 +76,7 @@ const reducer = {
   createEmandateByApiSliceReducer: createEmandateByApiSliceReducer,
   registrationHisorySliceReducer: registrationHisorySliceReducer,
   scheduleTransactionSliceReducer: scheduleTransactionSliceReducer,
+  updateSettlementApiSliceReducer: updateSettlementApiSliceReducer,
 
   // approver
   approverDashboard: approverDashboardSlice,
