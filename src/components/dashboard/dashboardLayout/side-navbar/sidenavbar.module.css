@@ -59,3 +59,122 @@
     /* height: fit-content; */
   }
 }
+
+
+/* sidenavbar.module.css */
+
+/* --- Base styles for the desktop sidebar --- */
+.sidebar_cob {
+  transition: all 0.3s ease;
+  /* Smooth transition for width changes */
+  position: fixed;
+  height: 100%;
+  z-index: 1000;
+  /* Ensure it's above main content */
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  padding-top: 56px;
+  /* Adjust based on your fixed header height */
+  overflow-x: hidden;
+  /* Hide horizontal scrollbar if content overflows */
+}
+
+/* --- Styles for the desktop sidebar when expanded --- */
+.sidebar_expanded {
+  width: 250px;
+  /* Full width for expanded state */
+}
+
+/* --- Styles for the desktop sidebar when collapsed (icons only) --- */
+.sidebar_collapsed {
+  width: 60px;
+  /* Narrow width for collapsed state */
+  overflow: hidden;
+  /* Crucial: Hides text that overflows the narrow width */
+}
+
+/* Hide text content within the collapsed desktop sidebar */
+.sidebar_collapsed .nav-link span,
+.sidebar_collapsed .sidebar-heading span {
+  display: none !important;
+  /* Force hide text when collapsed */
+}
+
+/* Adjust alignment for icons in collapsed desktop sidebar */
+.sidebar_collapsed .nav-link {
+  text-align: center;
+  padding-left: 0.5rem !important;
+  /* Adjust padding for centered icons */
+  padding-right: 0.5rem !important;
+}
+
+.sidebar_collapsed .sidebar-heading {
+  justify-content: center !important;
+  /* Center the icons/toggles in collapsed headings */
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+/* Ensure the toggle icon in headings remains visible and centered */
+.sidebar_collapsed .sidebar-heading .link-secondary {
+  display: flex !important;
+  /* Ensure the div holding the icon is always flexible */
+  justify-content: center;
+  /* Center the +/- icon if it's the only thing left */
+  margin-left: 0 !important;
+  /* Remove any margin that might push it */
+}
+
+
+/* --- General styles for menu links and headings --- */
+.sidebar_menu {
+  white-space: nowrap;
+  /* Prevent text from wrapping */
+  overflow: hidden;
+  /* Hide overflow when text is potentially clipped */
+  text-overflow: ellipsis;
+  /* Add ellipsis if text is too long (though hidden here) */
+  padding-left: 1rem;
+  /* Default padding for links when expanded */
+}
+
+.selected_memu {
+  background-color: #e9ecef;
+  /* Example: highlight selected menu item */
+  color: #007bff;
+  /* Example: highlight selected menu item */
+}
+
+.submenu_border {
+  border-left: 1px solid #dee2e6;
+  /* Example border for submenus */
+  padding-left: 0.5rem;
+}
+
+.hide-menu-nav {
+  display: none !important;
+  /* For sub-menu collapse/expand, your original logic */
+}
+
+.nav_link {
+  /* Any specific styles for general nav links */
+}
+
+/* --- Mobile Offcanvas Specific Styles --- */
+/* (These will override/complement Bootstrap's default offcanvas styles) */
+.sidebar_cob_mobile {
+  /* Inherits most offcanvas styling from Bootstrap */
+  padding-top: 0;
+  /* Offcanvas typically doesn't need top padding from a fixed header */
+}
+
+/* Ensure the mobile offcanvas is completely hidden on desktop screens */
+@media (min-width: 768px) {
+  #sidebarMenuMobile {
+    display: none !important;
+    /* Crucial: ensures it's not visible on desktop */
+  }
+}

@@ -310,7 +310,7 @@ const TotalLinkGenrated = () => {
                         <div className="card-body">
                             <div className="row align-items-center mb-3">
                                 <div className="col-md-6">
-                                    <h5 className="mb-0">Total Links Generated</h5>
+                                    <h6 className="mb-0">Total Links Generated</h6>
                                 </div>
                                 {filterData?.length !== 0 && (
                                     <div className="col-md-6 d-flex justify-content-end gap-3 ">

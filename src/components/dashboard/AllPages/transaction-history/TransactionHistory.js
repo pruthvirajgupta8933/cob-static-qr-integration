@@ -796,6 +796,7 @@ const TransactionHistory = () => {
           data={txnList}
           rowData={rowData}
           form={form}
+          loadingState={disable}
 
           // onRowClick={transactionDetailModalHandler}
           showSearch
