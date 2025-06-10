@@ -130,6 +130,7 @@ import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
 import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
+import EnachSettlementReport from "../../../subscription_components/settlement-report-enach/EnachSettlementReport";
 import IdleTimerContainer from "../../../utilities/IdleTimer";
 
 function DashboardMainContent() {
@@ -262,8 +263,8 @@ function DashboardMainContent() {
       };
 
 
-      if(!menuListReducer?.enableMenu?.length){
-          dispatch(fetchMenuList(postBody));
+      if (!menuListReducer?.enableMenu?.length) {
+        dispatch(fetchMenuList(postBody));
       }
 
     } else {
@@ -806,6 +807,29 @@ function DashboardMainContent() {
               >
                 <RegistrationHistory />
               </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/registaration-history`}
+                Component={RegistrationHistory}
+                roleList={{ merchant: true }}
+              >
+                <RegistrationHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/e-nach-settlement-report`}
+                Component={EnachSettlementReport}
+                roleList={{ merchant: true }}
+              >
+
+              </AuthorizedRoute>
+
+
+
+
 
               <AuthorizedRoute
                 exact

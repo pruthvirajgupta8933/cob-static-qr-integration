@@ -74,7 +74,12 @@ const CreatePassword = (props) => {
           setShow(false)
           setLoading(false)
         }
+      }).catch((error) => {
+        toast.error(error.response.data.message);
+        setShow(false)
+        setLoading(false)
       });
+
   };
 
   return (

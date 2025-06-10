@@ -15,6 +15,7 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
 import DateFormatter from "../../../utilities/DateConvert";
 import moment from "moment";
+import { is } from "date-fns/locale";
 
 function TransactionSummery() {
   const dispatch = useDispatch();
@@ -86,8 +87,8 @@ function TransactionSummery() {
     const type = userRole.bank
       ? "bank"
       : userRole.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -116,13 +117,13 @@ function TransactionSummery() {
   useEffect(() => {
     search !== ""
       ? SetShowData(
-          txnList.filter((txnItme) =>
-            Object.values(txnItme)
-              .join(" ")
-              .toLowerCase()
-              .includes(search.toLocaleLowerCase())
-          )
+        txnList.filter((txnItme) =>
+          Object.values(txnItme)
+            .join(" ")
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase())
         )
+      )
       : SetShowData(txnList);
   }, [search]);
 
@@ -313,7 +314,9 @@ function TransactionSummery() {
                 }, 0)
                 .toFixed(2),
             },
+
           ]}
+          loadingState={isLoading}
         />
         {/* <section className="">
           <div className="container-fluid p-0"> */}
@@ -371,7 +374,7 @@ function TransactionSummery() {
                   </h6>
                 </div>
               )} */}
-        {isLoading ? <ProgressBar /> : <></>}
+        {/* {isLoading ? <ProgressBar /> : <></>} */}
         {/* </div>
           </div>
         </section> */}
