@@ -39,7 +39,7 @@
     "react-google-recaptcha": "^3.1.0",
     "react-hot-toast": "^2.5.1",
     "react-icons": "^4.9.0",
-    "react-idle-timer": "^4.6.4",
+    "react-idle-timer": "^5.7.2",
     "react-modal": "^3.14.4",
     "react-otp-input": "^2.4.0",
     "react-paginate": "^8.2.0",

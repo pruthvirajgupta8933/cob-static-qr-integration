@@ -130,6 +130,7 @@ import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
 import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
+import IdleTimerContainer from "../../../utilities/IdleTimer";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -263,7 +264,7 @@ function DashboardMainContent() {
       dispatch(fetchMenuList(postBody));
     } else {
       dispatch(logout());
-      toastConfig.errorToast("Session Expired");
+      toastConfig.errorToast("Session Expired, You have been logged out.");
     }
   }, []);
 
@@ -313,14 +314,13 @@ function DashboardMainContent() {
   // console.log("roles", roles)
   return (
     <React.Fragment>
+
       <DashboardHeader />
       <div className="container-fluid">
         <div className="row dashboard_bg">
           <SideNavbar />
-
-          <main
-            className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}
-          >
+          <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}>
+            <IdleTimerContainer />
             <Switch>
               <Route exact path={path}>
                 <Home />

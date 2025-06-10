@@ -129,8 +129,9 @@ const reducer = {
 const rootPersistConfig = {
   key: 'cob-root',
   storage,
-  version: 1, // Increment this version number when you change the structure of your state
+  version: 1.1, // Increment this version number when you change the structure of your state
   whitelist: [
+    menuListReducer
     // 'auth',
     //  'dashboard', 'kyc', 'widget', 'verifierApproverTab', 'signupData', 'mid', 'frm', 'themeReducer', 'kycOperationReducer', 'payout', 'menuListReducer', 'productCatalogueSlice', 'ReferralMidReducer', 'challanReducer', 'merchantReportSlice', 'createMandate', 'Reports', 'DebitReports', 'createEmandateByApiSliceReducer', 'registrationHisorySliceReducer', 'scheduleTransactionSliceReducer'
     ], // Only persist these slices
