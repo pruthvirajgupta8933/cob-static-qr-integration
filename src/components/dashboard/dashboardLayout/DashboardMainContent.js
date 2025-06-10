@@ -130,12 +130,13 @@ import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
 import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
 import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
 import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
+import IdleTimerContainer from "../../../utilities/IdleTimer";
 
 function DashboardMainContent() {
   let history = useHistory();
   let { path } = useRouteMatch();
   useSingleTabGuard();
-  const { auth } = useSelector((state) => state);
+  const { auth, menuListReducer } = useSelector((state) => state);
   const { user } = auth;
   const loginId = user?.loginId;
   const roleId = user?.roleId;
@@ -260,10 +261,14 @@ function DashboardMainContent() {
         LoginId: user?.loginId,
       };
 
-      dispatch(fetchMenuList(postBody));
+
+      if(!menuListReducer?.enableMenu?.length){
+          dispatch(fetchMenuList(postBody));
+      }
+
     } else {
       dispatch(logout());
-      toastConfig.errorToast("Session Expired");
+      toastConfig.errorToast("Session Expired, You have been logged out.");
     }
   }, []);
 
@@ -313,14 +318,13 @@ function DashboardMainContent() {
   // console.log("roles", roles)
   return (
     <React.Fragment>
+
       <DashboardHeader />
       <div className="container-fluid">
         <div className="row dashboard_bg">
           <SideNavbar />
-
-          <main
-            className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}
-          >
+          <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}>
+            <IdleTimerContainer />
             <Switch>
               <Route exact path={path}>
                 <Home />

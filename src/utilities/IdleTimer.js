@@ -1,109 +1,122 @@
-import React, { useState, useRef, useEffect } from 'react'
-import IdleTimer from 'react-idle-timer'
-import Modal from 'react-modal'
-import { useDispatch } from 'react-redux'
-import { logout } from '../slices/auth'
-import { TIMEOUT } from '../config'
+import React, { useState, useRef, useEffect } from "react";
+import { useIdleTimer } from "react-idle-timer";
+// import Modal from 'react-modal';
+import { useDispatch } from "react-redux";
+import { logout } from "../slices/auth";
+import { TIMEOUT } from "../config";
+import moment from "moment";
+import CustomModal from "../_components/custom_modal";
+import toastConfig from "./toastTypes";
+// import { Modal } from 'bootstrap';
 
+// Set the app element for Modal (for accessibility)
+// Modal.setAppElement('#root');
 
-
-// console.log(TIMEOUT)
-Modal.setAppElement('#root')
-
-function IdleTimerContainer(props) {
-
+function IdleTimerContainer() {
   const dispatch = useDispatch();
-  const { fnLogout } = props
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const idleTimerRef = useRef(null)
-  const sessionTimeoutRef = useRef(null)
+  // const { fnLogout } = props;
+  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const idleTimerRef = useRef(null);
+  // const sessionTimeoutRef = useRef(null);
 
+  const timeout = TIMEOUT;
+  const [remaining, setRemaining] = useState(timeout);
+  const [elapsed, setElapsed] = useState(0);
+  const [lastActive, setLastActive] = useState(+new Date());
+  const [isIdle, setIsIdle] = useState(false);
 
-  const onIdle = () => {
-    setModalIsOpen(true)
-    sessionTimeoutRef.current = setTimeout(logOut, 10000)
-  }
+  const handleOnActive = () => setIsIdle(false);
+  const handleOnIdle = () => setIsIdle(true);
 
+  const {
+    reset,
+    pause,
+    resume,
+    getRemainingTime,
+    getLastActiveTime,
+    getElapsedTime,
+  } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive,
+    onIdle: handleOnIdle,
+  });
 
-
-
-  const logOut = () => {
-    setModalIsOpen(false)
-    setIsLoggedIn(false)
-    fnLogout(false)
-    dispatch(logout())
-    clearTimeout(sessionTimeoutRef.current)
-    // console.log('User has been logged out')
-  }
-  const stayActive = () => {
-    setModalIsOpen(false)
-    clearTimeout(sessionTimeoutRef.current)
-    // console.log('User is active')
-  }
-
-  const onAction = e => {
-    // console.log("user did something");
-    if (isLoggedIn) {
-
-      localStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
-      // console.log("log-1")
-      // console.log("date-1",Date.now())
-      // console.log("date-2",Date.now() + 1000*10 )
-    }
-  };
+  const handleReset = () => reset();
+  const handlePause = () => pause();
+  const handleResume = () => resume();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      localStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
-      // console.log("log-2")
-      // console.log(Date.now())
+    setRemaining(getRemainingTime());
+    setLastActive(getLastActiveTime());
+    setElapsed(getElapsedTime());
+
+    const intervalId = setInterval(() => {
+      setRemaining(getRemainingTime());
+      setLastActive(getLastActiveTime());
+      setElapsed(getElapsedTime());
+    }, 1000);
+
+    // Cleanup function to clear the interval
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Perform logout action
+  const logOut = () => {
+    // setModalIsOpen(false);
+    // setIsLoggedIn(false);
+    // fnLogout(false);
+    dispatch(logout());
+    // clearTimeout(sessionTimeoutRef.current);
+  };
+
+  // Set expired time in localStorage and clean up when necessary
+  useEffect(() => {
+    if (isIdle) {
+      logOut();
+     toastConfig.errorToast("Session Expired, You have been logged out due to inactivity.");
     }
 
-
-    return () => {
-      localStorage.removeItem("expiredTime")
-      //   console.log("run fall back function")
-    }
+  }, [isIdle]);
 
 
-  }, [isLoggedIn])
+const modalBody = () => (
+    <div className="text-danger">
+      <p className="m-0">You have been idle for a while!</p>
+      <p>You will be logged out soon</p>
+      <div className="d-flex justify-content-between">
+      {/* <button type="button" className="btn btn-danger btn-sm" onClick={logOut}>Log me out</button>
+      <button type="button" className="btn cob-btn-primary btn-sm" onClick={stayActive}>Keep me signed in</button> */}
+      </div>
+
+    </div>
+  );
+
 
 
   return (
     <div>
-      {/* {isLoggedIn ? <h2>Hello Abhishek</h2> : <h2>Hello Guest</h2>} */}
-      <IdleTimer
-        ref={idleTimerRef}
-        timeout={1000 * TIMEOUT}
-        onIdle={onIdle}
-        onAction={onAction}
-        crossTab={{
-          type: 'simulate'
-        }}
 
-      />
-      <Modal isOpen={modalIsOpen}>
+      <CustomModal modalBody={modalBody} headerTitle={"Session Timeout Warning"} modalToggle={isIdle}
+        fnSetModalToggle={setIsIdle}  />
 
-        {/* <div className="" tabIndex={-1} role="dialog"> */}
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">You've been idle for a while!</h5>
-
-            </div>
-            <div className="modal-body">
-              <p>You will be logged out soon</p>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={logOut}>Log me out</button>
-              <button type="button" className="btn  cob-btn-primary " onClick={stayActive}>Keep me signed in</button>
-            </div>
-          </div>
-        </div>
-      </Modal>
+{/* 
+      <div>
+        <h1>Timeout: {timeout}ms</h1>
+        <h1>Time Remaining: {remaining}</h1>
+        <h1>Time Elapsed: {elapsed}</h1>
+        <h1>
+          Last Active: {moment(lastActive).format("MM-DD-YYYY HH:mm:ss.SSS")}
+        </h1>
+        <h1>Idle: {isIdle.toString()}</h1>
+      </div>
+      <div>
+        <button onClick={handleReset}>RESET</button>
+        <button onClick={handlePause}>PAUSE</button>
+        <button onClick={handleResume}>RESUME</button>
+      </div> */}
     </div>
-  )
+  );
 }
 
-export default IdleTimerContainer
+export default IdleTimerContainer;
