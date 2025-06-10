@@ -81,10 +81,8 @@ const TableWithPagination = ({
                             ) : (
                                 <tr>
                                     <td colSpan={headers.length} className="text-center">
-                                        <div className="d-flex justify-content-center align-items-center h-100 mt-5">
-                                            <h6 className="alert alert-warning">
-                                                No Data Found
-                                            </h6>
+                                        <div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>
+                                            No data found
                                         </div>
                                     </td>
                                 </tr>

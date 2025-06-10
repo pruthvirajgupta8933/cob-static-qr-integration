@@ -355,7 +355,7 @@ const RecentTransaction = () => {
             <div className="px-3 py-3">
               <div className="row align-items-center">
                 <div className="col-md-4">
-                  <h5 className="mb-0">Recent Transaction</h5>
+                  <h6 className="mb-0">Recent Transaction</h6>
                 </div>
                 <div className="col-md-8 d-flex justify-content-end">
                   <div className="me-3 mt-4">
