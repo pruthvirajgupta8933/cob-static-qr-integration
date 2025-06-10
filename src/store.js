@@ -12,8 +12,8 @@ import {
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import { combineReducers } from 'redux';
 
-
-import authReducer from "./slices/auth";
+// import from "./slices/auth";
+import authReducer, { logout } from "./slices/auth";
 import messageReducer from "./slices/message";
 import { dashboardReducer } from "./slices/dashboardSlice";
 import { reducerSubscription } from "./slices/subscription";
@@ -131,22 +131,48 @@ const rootPersistConfig = {
   storage,
   version: 1.1, // Increment this version number when you change the structure of your state
   whitelist: [
-    menuListReducer
-    // 'auth',
-    //  'dashboard', 'kyc', 'widget', 'verifierApproverTab', 'signupData', 'mid', 'frm', 'themeReducer', 'kycOperationReducer', 'payout', 'menuListReducer', 'productCatalogueSlice', 'ReferralMidReducer', 'challanReducer', 'merchantReportSlice', 'createMandate', 'Reports', 'DebitReports', 'createEmandateByApiSliceReducer', 'registrationHisorySliceReducer', 'scheduleTransactionSliceReducer'
-    ], // Only persist these slices
- 
-  // blacklist: ['message', 'verifierApproverTab', 'kycOperationReducer', 'bankDashboardReducer', 'infoBulletinReducer', 'paymentLinkSliceReducer', 'merchantAssignedReducer', 'dateFilterSliceReducer', 'paymentLinkSolutionSliceReducer', 'qForm'] // Do not persist these slices
-
+    // 'auth', 
+    // 'dashboard', 
+    // 'kyc', 
+    // 'widget', 
+    // 'verifierApproverTab', 
+    // 'signupData', 
+    // 'mid', 
+    // 'frm', 
+    // 'themeReducer', 
+    // 'kycOperationReducer', 
+    // 'payout', 
+    'menuListReducer', 
+    // 'productCatalogueSlice', 
+    // 'ReferralMidReducer', 
+    // 'challanReducer', 
+    // 'merchantReportSlice', 
+    // 'createMandate', 
+    // 'Reports', 
+    // 'DebitReports', 
+    // 'createEmandateByApiSliceReducer', 
+    // 'registrationHisorySliceReducer', 
+    // 'scheduleTransactionSliceReducer'
+  ], // Only persist these slices
 };
 
 // Combine all your reducers into a single rootReducer
 const rootReducer = combineReducers(reducer);
 
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+const rootReducerWithLogout = (state, action) => {
+  // console.log("Action Type:", action.type); // Log the action type
+  // console.log("Logout Fulfilled Type:", logout.fulfilled.type); // Log the logout fulfilled type
+
+  if (action.type === logout.fulfilled.type) { // Compare action.type with logout.fulfilled.type
+    state = undefined; // Reset the state
+  }
+  return rootReducer(state, action);
+};
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducerWithLogout);
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: persistedReducer, // Use the persistedReducer
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

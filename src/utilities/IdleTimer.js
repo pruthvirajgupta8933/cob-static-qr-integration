@@ -51,14 +51,15 @@ function IdleTimerContainer() {
     setLastActive(getLastActiveTime());
     setElapsed(getElapsedTime());
 
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       setRemaining(getRemainingTime());
       setLastActive(getLastActiveTime());
       setElapsed(getElapsedTime());
     }, 1000);
-  }, []);
 
-;
+    // Cleanup function to clear the interval
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Perform logout action
   const logOut = () => {

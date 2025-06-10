@@ -136,7 +136,7 @@ function DashboardMainContent() {
   let history = useHistory();
   let { path } = useRouteMatch();
   useSingleTabGuard();
-  const { auth } = useSelector((state) => state);
+  const { auth, menuListReducer } = useSelector((state) => state);
   const { user } = auth;
   const loginId = user?.loginId;
   const roleId = user?.roleId;
@@ -261,7 +261,11 @@ function DashboardMainContent() {
         LoginId: user?.loginId,
       };
 
-      dispatch(fetchMenuList(postBody));
+
+      if(!menuListReducer?.enableMenu?.length){
+          dispatch(fetchMenuList(postBody));
+      }
+
     } else {
       dispatch(logout());
       toastConfig.errorToast("Session Expired, You have been logged out.");
