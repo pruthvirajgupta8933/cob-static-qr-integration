@@ -252,7 +252,7 @@ const API_LIVE = {
   // KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
   // KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   // KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
-  // KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   // MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
