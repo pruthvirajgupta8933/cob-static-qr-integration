@@ -373,6 +373,7 @@ const RecentTransaction = () => {
                       options={tempPayStatus}
                       filterBy={"payment_status"}
                       value={paymentStatus}
+                      label="Payment Status"
                     />
                   </div>
                   <div className="me-3 mt-4">

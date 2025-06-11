@@ -60,7 +60,8 @@ const TableWithPagination = ({
                             {apiHasData && (
                                 <tr>
                                     {headers?.map((header, index) => (
-                                        <th key={index} className="text-nowrap">
+                                        <th key={index} className="text-nowrap" style={{ fontWeight: 'normal' }}>
+
                                             {header}
                                         </th>
                                     ))}
@@ -115,12 +116,7 @@ const TableWithPagination = ({
                             />
                         </div>
                         <div className="col-lg-6 d-flex justify-content-end">
-                            {/* <CountPerPageFilter
-                                pageSize={pageSize}
-                                dataCount={dataCount}
-                                changePageSize={changePageSize}
-                                changeCurrentPage={changeCurrentPage}
-                            /> */}
+
 
                             <CountPerPage
                                 pageSize={pageSize}
