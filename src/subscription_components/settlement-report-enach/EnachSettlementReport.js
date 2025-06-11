@@ -99,6 +99,7 @@ const EnachSettlementReport = () => {
                 .format("YYYY-MM-DD"),
             page: currentPage,
             page_size: pageSize,
+            client_code: clientCode
 
         };
 
@@ -177,6 +178,7 @@ const EnachSettlementReport = () => {
             end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
             page: currentPage,
             page_size: pageSize,
+            client_code: clientCode
 
         };
 
