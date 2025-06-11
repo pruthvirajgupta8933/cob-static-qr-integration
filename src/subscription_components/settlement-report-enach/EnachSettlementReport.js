@@ -143,26 +143,28 @@ const EnachSettlementReport = () => {
     const headers = [
         "S.NO",
         "Transaction ID",
-        "Transaction Status",
         "Trans Amount",
-        "Bank Txn ID",
+        "Settlement Amount",
+        "UTR No.",
         "Trans Date",
-        "Created On",
-        "Bank Message",
-        "EMI Amount"
+        "Settlement Date",
+
+
     ];
 
     const renderRow = (row, index) => (
         <tr key={index} className="text-nowrap">
             <td>{index + 1}</td>
             <td>{row.transaction_id}</td>
-            <td>{row.trans_status}</td>
             <td>{row.trans_amount}</td>
-            <td>{row.bank_transaction_id}</td>
-            <td>{DateFormatter(row.trans_date)}</td>
-            <td>{DateFormatter(row.created_on)}</td>
-            <td>{row.bank_message}</td>
-            <td>{row.emi_amount}</td>
+            <td>{row.settlement_amount}</td>
+            <td>{row.utr_number}</td>
+            <td>{(row.trans_date)}</td>
+            <td>{DateFormatter(row.settlement_date)}</td>
+
+
+
+
         </tr>
     );
 
@@ -268,6 +270,7 @@ const EnachSettlementReport = () => {
                                         <button
                                             className="btn cob-btn-primary approve text-white mt-4 "
                                             type="submit"
+                                            disabled={viewDataLoader}
                                         >
                                             {viewDataLoader ? (
                                                 <span
