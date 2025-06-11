@@ -21,6 +21,11 @@ const initialState = {
   isLoadingState: false,
 
   kycUserList: {},
+  kycApprovedList: {
+    results: [],
+    count: 0,
+
+  },
   kycListByStatus: {
     ["Not-Filled"]: { count: 0, results: [], loading: false, error: false },
     ["Processing"]: { count: 0, results: [], loading: false, error: false },
