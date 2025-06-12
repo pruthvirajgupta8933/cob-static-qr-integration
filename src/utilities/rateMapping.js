@@ -58,6 +58,7 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                 const business_cat_type = merchantData?.business_category_type ?? ""
 
                 const onboard_type = merchantData?.result?.loginMasterId?.onboard_type
+                const mcc = merchantData?.result?.mcc_code?.mcc
 
 
                 let parent_login_id, parent_name = "NA"
@@ -117,7 +118,8 @@ export const rateMappingFn = (loginId, parentClientCode) => {
                         mesaagebypassflag: '1',
                         forcesuccessflag: '1',
                         referralcode: parent_login_id, // parent login id
-                        masterName: parent_name  // parent name
+                        masterName: parent_name,  // parent name
+                        clientMcc:mcc
                     };
                     console.log("Run6- Call api with the Post Data for the rate mapping", inputData)
                     // step 3 - Post date for the ratemapping
