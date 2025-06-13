@@ -120,6 +120,9 @@ function BusinessDetailEdtKyc(props) {
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
+    pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
+    father_name: KycList?.father_name ?? "",
+    authorized_person_dob: KycList?.authorized_person_dob ?? "",
     cin_number: KycList?.cin ?? "",
     cin_data: {},
     prevCinNumber: KycList?.cin ?? "",
@@ -263,8 +266,7 @@ function BusinessDetailEdtKyc(props) {
       advancePanValidation({
         pan_number: values,
       })
-    )
-      .then((res) => {
+    ).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" &&
           res.payload.status === true &&
@@ -316,7 +318,7 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("pan_card", res?.payload?.pan);
         setFieldValue("prev_pan_card", res?.payload?.pan);
         setFieldValue("isPanVerified", 1);
-        advancePanValidation({ pan_number: res?.payload?.pan })
+        dispatch(advancePanValidation({ pan_number: res?.payload?.pan }))
           .then((res) => {
             if (res.payload?.dob)
               setFieldValue("pan_dob_or_doi", res.payload?.dob);
@@ -385,7 +387,8 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("authorized_person_dob", res?.payload?.dob);
+        setFieldValue("father_name", res?.payload?.father_name);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);
@@ -528,12 +531,16 @@ function BusinessDetailEdtKyc(props) {
       pin_code: values.pin_code,
       city_id: values.city_id,
       state_id: values.state_id,
+      registered_business_address: values.registered_business_address, // Added missing value
       operational_address: values.operational_address,
       modified_by: loginId,
       is_udyam: JSON.parse(values.registerd_with_udyam),
       udyam_data: udyamResponseData,
-      cin_number: values?.cin_number,
-      cin_data: values?.cin_data,
+      udyam_number: values.udyam_number, // Added missing value
+      cin_number: values.cin_number,
+      cin_data: values.cin_data,
+      father_name: values.father_name, // Added missing value
+      authorized_person_dob: values.authorized_person_dob, // Added missing value
     };
 
 
@@ -794,7 +801,7 @@ function BusinessDetailEdtKyc(props) {
             </div>
 
             <div className="row">
-              <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="col-sm-12 col-md-3 col-lg-3">
 
                 <label className="col-form-label p-2">
                   Business PAN<span className="text-danger">*</span>
@@ -877,8 +884,20 @@ function BusinessDetailEdtKyc(props) {
                   </p>
                 )}
               </div>
+                
+              <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                 Business Pan DOB or DOI<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  // type="date"
+                  name="pan_dob_or_doi"
+                  className="form-control"
 
-              <div className="col-sm-12 col-md-6 col-lg-6">
+                />
+              </div>
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   Authorized Signatory PAN
                   <span className="text-danger">*</span>
@@ -957,6 +976,20 @@ function BusinessDetailEdtKyc(props) {
                   </span>
                 )}
               </div>
+
+               <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                  Authorized Person's DOB<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  // type="date"
+                  name="authorized_person_dob"
+                  className="form-control"
+
+                />
+              </div>
+
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -972,7 +1005,7 @@ function BusinessDetailEdtKyc(props) {
                 />
               </div>
 
-              <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   PAN Owner's Name<span className="text-danger">*</span>
                 </label>
@@ -984,6 +1017,19 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
+               <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                  Father's Name<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="father_name"
+                  className="form-control"
+
+                />
+              </div>
+
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -998,21 +1044,8 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
-              <div className="col-sm-12 col-md-6 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  City<span className="text-danger">*</span>
-                </label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="city_id"
-                  className="form-control"
-
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12 col-md-6 col-lg-6">
+            
+   <div className="col-sm-12 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
                   CIN
                 </label>
@@ -1082,6 +1115,21 @@ function BusinessDetailEdtKyc(props) {
                   </span>
                 )}
               </div>
+
+            </div>
+            <div className="row">
+                <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                  City<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="city_id"
+                  className="form-control"
+
+                />
+              </div>
               <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   State<span className="text-danger">*</span>
@@ -1110,6 +1158,8 @@ function BusinessDetailEdtKyc(props) {
 
 
             </div>
+        
+
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                 <button
