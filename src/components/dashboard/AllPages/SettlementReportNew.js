@@ -709,10 +709,10 @@ const SettlementReportNew = () => {
             showSearch
             showCountPerPage
             dynamicPagination={true}
-            page_Size={pageSize}
-            current_Page={currentPage}
-            change_CurrentPage={changeCurrentPage}
-            change_PageSize={changePageSize}
+            page_size={pageSize}
+            current_page={currentPage}
+            change_currentPage={changeCurrentPage}
+            change_pageSize={changePageSize}
             loadingState={loadingState}
           // totalSettlementAmount={totalSettlementAmount}
           />

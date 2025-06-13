@@ -311,7 +311,8 @@ const CompleteVerification = (props) => {
                 refer_by: approverDashboard?.generalFormData?.refer_by,
                 business_category_type: approverDashboard?.generalFormData?.business_cat_type,
                 rolling_reserve_type: approverDashboard?.generalFormData?.rolling_reserve_type,
-                period_code: approverDashboard?.generalFormData?.period_code
+                period_code: approverDashboard?.generalFormData?.period_code,
+                ratemapping_client_code: approverDashboard?.generalFormData?.parent_client_code
               };
             }
 

@@ -1,29 +1,22 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
-import Yup from "../../../../_components/formik/Yup";
+import * as Yup from "yup";
 import ReportLayout from "../../../../_components/report_component/ReportLayout";
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
   clearTransactionHistory,
-  // exportTxnHistory,
-  exportTxnLoadingState,
   fetchTransactionHistoryDetailSlice,
   fetchTransactionHistorySlice,
+  fetchPayModeList,
+  fetchPayStatusList,
 } from "../../../../slices/dashboardSlice";
 import API_URL from "../../../../config";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
-
-import Notification from "../../../../_components/reuseable_components/Notification";
-// import exportToSpreadsheet from "../../../../utilities/exportToSpreadsheet"
-import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
 import moment from "moment";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -34,53 +27,45 @@ import ExportTransactionHistory from "./ExportTransactionHistory";
 import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import toastConfig from "../../../../utilities/toastTypes";
-import { Dashboardservice } from "../../../../services/dashboard.service";
-import {
-  fetchPayModeList,
-  fetchPayStatusList,
-} from "../../../../slices/dashboardSlice";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
-
-// import API_URL from "../"
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const roles = roleBasedAccess();
+
   const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
-  const { paymode, payStatus } = dashboard;
+  const { paymode, payStatus, transactionHistory } = dashboard;
   const { user } = auth;
-
   const { refrerChiledList } = merchantReferralOnboardReducer;
+
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
-  // const { isLoadingTxnHistory, isExportData } = dashboard;
-  const [txnList, SetTxnList] = useState([]);
-  const [searchText, SetSearchText] = useState("");
-  const [show, setShow] = useState("");
+
+  const [transactionList, setTransactionList] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [showTable, setShowTable] = useState(false);
   const [pageSize, setPageSize] = useState(10);
-  const [paginatedata, setPaginatedData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showData, setShowData] = useState([]);
-  const [updateTxnList, setUpdateTxnList] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [clientCodeList, setClientCodeList] = useState([]);
-  const [buttonClicked, isButtonClicked] = useState(false);
-  const [disable, setDisable] = useState(false);
+  const [filteredTransactionData, setFilteredTransactionData] = useState([]);
+  const [selectedClientCodeList, setSelectedClientCodeList] = useState([]);
+  const [isSearchButtonClicked, setIsSearchButtonClicked] = useState(false);
+  const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [radioInputVal, setRadioInputVal] = useState({});
-  const [refundModal, setRefundModal] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [downloadData, setDownloadData] = useState({});
-  const [transactionDetailModal, setTransactionDetailModal] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState({});
-  const [filterState, setFilterState] = useState([]);
+  const [selectedRefundTransaction, setSelectedRefundTransaction] = useState({});
+  const [showRefundModal, setShowRefundModal] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportFilterData, setExportFilterData] = useState({});
+  const [showTransactionDetailModal, setShowTransactionDetailModal] = useState(false);
+  const [selectedTransactionDetail, setSelectedTransactionDetail] = useState({});
+  const [currentFilterState, setCurrentFilterState] = useState(null);
   const [duration, setDuration] = useState("today");
-  const [exportReportLoader, setExportReportLoader] = useState(false);
+  const [isExportReportLoading, setIsExportReportLoading] = useState(false);
+  const [transactionCount, setTransactionCount] = useState(0);
 
-  const durations = [
+  const durationOptions = [
     { key: "today", value: "Today" },
     { key: "yesterday", value: "Yesterday" },
     { key: "last7Days", value: "Last 7 days" },
@@ -91,349 +76,313 @@ const TransactionHistory = () => {
     { key: "custom", value: "Custom Date" },
   ];
 
-  let now = moment().format("YYYY-M-D");
-  let splitDate = now.split("-");
-  if (splitDate[1].length === 1) {
-    splitDate[1] = "0" + splitDate[1];
-  }
-  if (splitDate[2].length === 1) {
-    splitDate[2] = "0" + splitDate[2];
-  }
-  splitDate = splitDate.join("-");
+  const todayFormatted = moment().format("YYYY-MM-DD");
 
-  const fetchData = () => {
-    const roleType = roles;
-    const type = roleType.bank
+  const fetchClientData = useCallback(() => {
+    const roleType = roles.bank
       ? "bank"
-      : roleType.referral
+      : roles.referral
         ? "referrer"
         : "default";
-    if (type !== "default") {
-      let postObj = {
-        type: type, // Set the type based on roleType
-        login_id: auth?.user?.loginId,
-      };
-      dispatch(fetchChildDataList(postObj));
+    if (roleType !== "default") {
+      dispatch(fetchChildDataList({ type: roleType, login_id: user?.loginId }));
     }
-  };
+  }, [dispatch, roles, user?.loginId]);
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchClientData();
+  }, [fetchClientData]);
 
-  let clientMerchantDetailsList = [];
-  if (
-    user &&
-    user?.clientMerchantDetailsList === null &&
-    user?.roleId !== 3 &&
-    user?.roleId !== 13
-  ) {
-    history.push("/dashboard/profile");
-  } else {
-    clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  }
+  useEffect(() => {
+    if (
+      user &&
+      user?.clientMerchantDetailsList === null &&
+      user?.roleId !== 3 &&
+      user?.roleId !== 13
+    ) {
+      history.push("/dashboard/profile");
+    }
+  }, [user, history]);
 
-  const clientcode_rolebased = roles.bank
-    ? "All"
-    : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
-
-  const clientCode = clientcode_rolebased;
-  const todayDate = splitDate;
-
-  // const indexMemo = useMemo(() => (currentPage - 1) * pageSize, [pageSize, currentPage])
+  const clientCodeRoleBased = useMemo(() => {
+    if (roles.bank) return "All";
+    if (roles.merchant) return user?.clientMerchantDetailsList?.[0]?.clientCode;
+    return "";
+  }, [roles, user?.clientMerchantDetailsList]);
 
   const initialValues = {
-    clientCode: clientCode,
-    fromDate: todayDate,
-    endDate: todayDate,
+    clientCode: clientCodeRoleBased,
+    fromDate: todayFormatted,
+    endDate: todayFormatted,
     transaction_status: "All",
     payment_mode: "All",
+    duration: "today",
   };
 
   const validationSchema = Yup.object({
-    // fromDate: Yup.date().required("Required"), //not needed since we already provide values from code
     clientCode: Yup.string().required("Client code not found"),
     endDate: Yup.date().required("Required"),
     transaction_status: Yup.string().required("Required"),
     payment_mode: Yup.string().required("Required"),
   });
 
-  let isExtraDataRequired = false;
-  let extraDataObj = {};
-  if (user.roleId === 3 || user.roleId === 13) {
-    isExtraDataRequired = true;
-    extraDataObj = { key: "All", value: "All" };
-  }
+  const { clientCodeOption, processedClientCodeList } = useMemo(() => {
+    let isExtraDataRequired = false;
+    let extraDataObj = {};
+    if (user.roleId === 3 || user.roleId === 13) {
+      isExtraDataRequired = true;
+      extraDataObj = { key: "All", value: "All" };
+    }
 
-  const forClientCode = true;
+    let fnKey, fnVal;
+    let clientCodeListForConversion = [];
 
-  let fnKey,
-    fnVal = "";
-  let clientCodeListArr = [];
-  if (roles?.merchant === true) {
-    fnKey = "clientCode";
-    fnVal = "clientName";
-    clientCodeListArr = clientMerchantDetailsList;
-  } else {
-    fnKey = "client_code";
-    fnVal = "name";
-    clientCodeListArr = clientCodeData;
-  }
-  const clientCodeOption = convertToFormikSelectJson(
-    fnKey,
-    fnVal,
-    clientCodeListArr,
-    extraDataObj,
-    isExtraDataRequired,
-    forClientCode
-  );
+    if (roles?.merchant === true) {
+      fnKey = "clientCode";
+      fnVal = "clientName";
+      clientCodeListForConversion = user?.clientMerchantDetailsList;
+    } else {
+      fnKey = "client_code";
+      fnVal = "name";
+      clientCodeListForConversion = clientCodeData;
+    }
+    const convertedOptions = convertToFormikSelectJson(
+      fnKey,
+      fnVal,
+      clientCodeListForConversion,
+      extraDataObj,
+      isExtraDataRequired,
+      true
+    );
+    return { clientCodeOption: convertedOptions, processedClientCodeList: clientCodeListForConversion };
+  }, [clientCodeData, roles, user]);
 
   useEffect(() => {
-    setClientCodeList(clientCodeListArr);
-  }, [clientCodeListArr]);
+    setSelectedClientCodeList(processedClientCodeList);
+  }, [processedClientCodeList]);
 
-  const tempPayStatus = [{ key: "All", value: "All" }];
-  payStatus.map((item) => {
-    if (
-      item?.payment_status_name !== "CHALLAN_ENQUIRED" &&
-      item?.payment_status_name !== "INITIATED"
-    ) {
-      if (item?.is_active) {
+  const memoizedPayStatusOptions = useMemo(() => {
+    const tempPayStatus = [{ key: "All", value: "All" }];
+    payStatus.forEach((item) => {
+      if (
+        item?.payment_status_name !== "CHALLAN_ENQUIRED" &&
+        item?.payment_status_name !== "INITIATED" &&
+        item?.is_active
+      ) {
         tempPayStatus.push({
           key: item?.payment_status_name,
           value: item?.payment_status_name,
         });
       }
+    });
+    return tempPayStatus;
+  }, [payStatus]);
+
+  const memoizedPaymodeOptions = useMemo(() => {
+    const tempPaymode = [{ key: "All", value: "All" }];
+    paymode.forEach((item) => {
+      tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
+    });
+    return tempPaymode;
+  }, [paymode]);
+
+  const validateDateRange = useCallback((fromDate, toDate) => {
+    if (!fromDate || !toDate) {
+      toastConfig.errorToast("Please select both start and end dates.");
+      return false;
     }
-  });
 
-  const tempPaymode = [{ key: "All", value: "All" }];
-  paymode.map((item) => {
-    tempPaymode.push({ key: item.paymode_id, value: item.paymode_name });
-  });
+    const date1 = new Date(fromDate);
+    const date2 = new Date(toDate);
 
-  // const pagination = (pageNo) => {
-  //    setCurrentPage(pageNo);
-  // };
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const submitHandler = (values) => {
-    setDownloadData(values);
-    const currDate = new Date();
-    const getLastMonthDays = (month) => {
-      let days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-      if (currDate.getFullYear() % 4 === 0) {
-        if (
-          currDate.getFullYear() % 100 === 0 &&
-          currDate.getFullYear() % 400 !== 0
-        )
-          days[1] = 28;
-        else days[1] = 29;
-      }
-      return days[month];
-    };
-    switch (duration) {
-      case "yesterday": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 1);
-        values.endDate = new Date().setDate(new Date().getDate() - 1);
-        break;
-      }
-      case "last7Days": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 6);
-        break;
-      }
-      case "currentMonth": {
-        values.fromDate = currDate.setDate(1);
-        break;
-      }
-      case "lastMonth": {
-        values.fromDate = new Date(
-          currDate.getFullYear(),
-          currDate.getMonth() - 1,
-          1
-        );
-        values.endDate = new Date(
-          currDate.getFullYear(),
-          currDate.getMonth() - 1,
-          getLastMonthDays(currDate.getMonth() - 1)
-        );
-        break;
-      }
-      case "last3Month": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 89);
-        break;
-      }
-      case "last6Month": {
-        values.fromDate = currDate.setDate(currDate.getDate() - 179);
-        break;
-      }
-      case "today":
-      case "custom":
-      case "default":
-        break;
+    const allowedTxnViewDays = 180;
+
+    if (diffDays < 0 || diffDays > allowedTxnViewDays) {
+      toastConfig.errorToast(`Please choose a maximum duration of ${allowedTxnViewDays} days.`);
+      setIsFormDisabled(false);
+      return false;
     }
-    setRefundModal(false);
-    setRadioInputVal({});
+    return true;
+  }, []);
 
-    isButtonClicked(true);
-    setDisable(true);
-    const { fromDate, endDate, transaction_status, payment_mode } = values;
-
-    const dateRangeValid = checkValidation(fromDate, endDate);
-    if (dateRangeValid) {
-      let strClientCode,
-        clientCodeArrLength = "";
-      if (values.clientCode === "All") {
-        const allClientCode = [];
-        clientCodeListArr?.map((item) => {
-          allClientCode.push(item.client_code);
-        });
-        clientCodeArrLength = allClientCode.length.toString();
-        strClientCode = allClientCode.join().toString();
-      } else {
-        strClientCode = values.clientCode;
-        clientCodeArrLength = "1";
-      }
-
-      let paramData = {
-        clientCode: strClientCode,
-        paymentStatus: transaction_status,
-        paymentMode: payment_mode,
-        fromDate: moment(fromDate).startOf("day").format("YYYY-MM-DD"),
-        endDate: moment(endDate).startOf("day").format("YYYY-MM-DD"),
-        length: "0",
-        page: "0",
-        noOfClient: clientCodeArrLength,
+  const submitHandler = useCallback(
+    (values) => {
+      setExportFilterData(values);
+      const currDate = new Date();
+      const getLastMonthDays = (month) => {
+        let days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (currDate.getFullYear() % 4 === 0) {
+          if (
+            currDate.getFullYear() % 100 === 0 &&
+            currDate.getFullYear() % 400 !== 0
+          )
+            days[1] = 28;
+          else days[1] = 29;
+        }
+        return days[month];
       };
 
-      // console.log(paramData,"this is paramdata value")
-      setFilterState(paramData);
-      dispatch(fetchTransactionHistorySlice(paramData)).then((res) => {
-        setDisable(false);
-      });
-    }
-  };
-  const checkValidation = (fromDate, toDate) => {
-    let flag = true;
+      let fromDate = values.fromDate;
+      let endDate = values.endDate;
 
-    if (!fromDate || !toDate) {
-      alert("Please select both start and end dates.");
-      flag = false;
-    } else {
-      const date1 = new Date(fromDate);
-      const date2 = new Date(toDate);
-
-      const diffTime = Math.abs(date2 - date1);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      let allowedTxnViewDays = 180;
-
-      // if (user?.roleId === 3) {
-      //   allowedTxnViewDays = 92;
-      //   monthAllowed = 3;
-      // }
-
-      if (diffDays < 0 || diffDays > allowedTxnViewDays) {
-        flag = false;
-        alert(`Please choose a maximum duration of 180 days.`);
-        setDisable(false);
+      switch (duration) {
+        case "yesterday": {
+          fromDate = moment().subtract(1, "days").toDate();
+          endDate = moment().subtract(1, "days").toDate();
+          break;
+        }
+        case "last7Days": {
+          fromDate = moment().subtract(6, "days").toDate();
+          endDate = moment().toDate();
+          break;
+        }
+        case "currentMonth": {
+          fromDate = moment().startOf("month").toDate();
+          endDate = moment().toDate();
+          break;
+        }
+        case "lastMonth": {
+          fromDate = moment().subtract(1, "month").startOf("month").toDate();
+          endDate = moment().subtract(1, "month").endOf("month").toDate();
+          break;
+        }
+        case "last3Month": {
+          fromDate = moment().subtract(89, "days").toDate();
+          endDate = moment().toDate();
+          break;
+        }
+        case "last6Month": {
+          fromDate = moment().subtract(179, "days").toDate();
+          endDate = moment().toDate();
+          break;
+        }
+        case "today":
+        case "custom":
+        default:
+          break;
       }
-    }
 
-    return flag;
-  };
+      setShowRefundModal(false);
+      setSelectedRefundTransaction({});
+      setIsSearchButtonClicked(true);
+      setIsFormDisabled(true);
+
+      const dateRangeValid = validateDateRange(fromDate, endDate);
+      if (dateRangeValid) {
+        let clientCodeString;
+        let numberOfClients;
+        if (values.clientCode === "All") {
+          const allClientCodes = selectedClientCodeList.map(
+            (item) => item.client_code
+          );
+          numberOfClients = allClientCodes.length.toString();
+          clientCodeString = allClientCodes.join(",");
+        } else {
+          clientCodeString = values.clientCode;
+          numberOfClients = "1";
+        }
+
+        const paramData = {
+          clientCode: clientCodeString,
+          paymentStatus: values.transaction_status,
+          paymentMode: values.payment_mode,
+          fromDate: moment(fromDate).startOf("day").format("YYYY-MM-DD"),
+          endDate: moment(endDate).endOf("day").format("YYYY-MM-DD"),
+          length: pageSize,
+          page: currentPage,
+          noOfClient: numberOfClients,
+        };
+
+        setCurrentFilterState(paramData);
+        dispatch(fetchTransactionHistorySlice(paramData)).then(() => {
+          setIsFormDisabled(false);
+        });
+      } else {
+        setIsFormDisabled(false);
+      }
+    },
+    [
+      duration,
+      validateDateRange,
+      pageSize,
+      currentPage,
+      selectedClientCodeList,
+      dispatch,
+    ]
+  );
 
   useEffect(() => {
+    const transactionListUpdated = transactionHistory?.results;
+    setTransactionList(transactionListUpdated);
+    setTransactionCount(transactionHistory?.count);
+    setFilteredTransactionData(transactionListUpdated);
+  }, [transactionHistory]);
 
-    let TxnListArrUpdated = dashboard.transactionHistory;
-    setUpdateTxnList(TxnListArrUpdated);
-    setShowData(TxnListArrUpdated);
-    SetTxnList(TxnListArrUpdated);
-    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
-  }, [dashboard]);
 
-  useEffect(() => {
-    setPaginatedData(_(showData).slice(0).take(pageSize).value());
-    setPageCount(
-      showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
-    );
-  }, [pageSize, showData]);
 
   useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
-    setPaginatedData(paginatedPost);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (!payStatus.length > 0) dispatch(fetchPayStatusList());
-    if (!paymode.length > 0) dispatch(fetchPayModeList());
-    SetTxnList([]);
-    setRadioInputVal({});
+    if (!payStatus.length) dispatch(fetchPayStatusList());
+    if (!paymode.length) dispatch(fetchPayModeList());
+    setTransactionList([]);
+    setSelectedRefundTransaction({});
     return () => {
       dispatch(clearTransactionHistory());
     };
-  }, []);
+  }, [dispatch, payStatus.length, paymode.length]);
 
   useEffect(() => {
-    txnList.length > 0 ? setShow(true) : setShow(false);
-  }, [txnList]);
+    setShowTable(transactionList?.length > 0);
+  }, [transactionList]);
 
   useEffect(() => {
     if (searchText !== "") {
-      setShowData(
-        updateTxnList.filter((txnItme) =>
-          Object.values(txnItme)
+      setFilteredTransactionData(
+        transactionList.filter((txnItem) =>
+          Object.values(txnItem)
             .join(" ")
             .toLowerCase()
             .includes(searchText.toLocaleLowerCase())
         )
       );
     } else {
-      setShowData(updateTxnList);
+      setFilteredTransactionData(transactionList);
     }
-  }, [searchText]);
+  }, [searchText, transactionList]);
 
-  const getSearchTerm = (e) => {
-    SetSearchText(e.target.value);
-  };
-
-  const today = new Date();
-  const lastThreeMonth = new Date(today);
-  lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
-  lastThreeMonth.toLocaleDateString("en-IN");
-
-  const refundModalHandler = (e) => {
+  const handleRefundModalOpen = useCallback((e) => {
     e.preventDefault();
-    setRefundModal(true);
-  };
+    setShowRefundModal(true);
+  }, []);
 
-  let handleExportLoading = (state) => {
-    // console.log(state)
-    if (state) {
-      alert("Exporting Excel File, Please wait...");
+  const exportToExcel = useCallback(async () => {
+    if (!currentFilterState) {
+      toastConfig.infoToast("Please perform a search first to export data.");
+      return;
     }
-    dispatch(exportTxnLoadingState(state));
-    return state;
-  };
-
-
-  const exportToExcelFn = async () => {
-    setExportReportLoader(true);
+    setIsExportReportLoading(true);
     try {
-      const res = await axiosInstanceJWT.post(API_URL?.getMerchantTransactionExcelHistory, filterState, {
-        responseType: 'blob',
-      });
+      const response = await axiosInstanceJWT.post(
+        API_URL?.getMerchantTransactionExcelHistory,
+        { ...currentFilterState, page: 0, length: 0 },
+        {
+          responseType: "blob",
+        }
+      );
 
-      if (res.status === 200) {
-        const disposition = res.headers['content-disposition'];
-        const filenameMatch = disposition && disposition.match(/filename="(.+)"/);
-        const filename = filenameMatch ? filenameMatch[1] : 'Transaction-History.xlsx';
+      if (response.status === 200) {
+        const disposition = response.headers["content-disposition"];
+        const filenameMatch =
+          disposition && disposition.match(/filename="(.+)"/);
+        const filename = filenameMatch
+          ? filenameMatch[1]
+          : "Transaction-History.xlsx";
 
-        const blob = new Blob([res.data], { type: 'text/xlsx' });
+        const blob = new Blob([response.data], { type: "text/xlsx" });
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = filename;
 
@@ -442,14 +391,15 @@ const TransactionHistory = () => {
 
         window.URL.revokeObjectURL(link.href);
         document.body.removeChild(link);
-
-
+        toastConfig.successToast("Report exported successfully!");
       } else {
         toastConfig.errorToast("Failed to download");
       }
     } catch (err) {
       if (err.response && err.response.data) {
-        const errorBlob = new Blob([err.response.data], { type: 'application/json' });
+        const errorBlob = new Blob([err.response.data], {
+          type: "application/json",
+        });
         const reader = new FileReader();
         reader.onload = function () {
           try {
@@ -464,34 +414,63 @@ const TransactionHistory = () => {
         toastConfig.errorToast("Something went wrong. Please try again.");
       }
     } finally {
-      setExportReportLoader(false);
-      setDisable(false);
+      setIsExportReportLoading(false);
+      setIsFormDisabled(false);
     }
-  };
+  }, [currentFilterState]);
+
+  const handleTransactionDetailModal = useCallback(
+    (transactionData) => {
+      dispatch(fetchTransactionHistoryDetailSlice({ txn_id: transactionData.txn_id }))
+        .then((res) => setSelectedTransactionDetail(res?.payload))
+        .catch(() => toastConfig.errorToast("Error occurred while fetching details"));
+      setShowTransactionDetailModal(true);
+    },
+    [dispatch]
+  );
 
 
+  const handleDurationChange = useCallback(
+    ({ value, setFieldValue }) => {
+      setDuration(value);
+      setFieldValue("duration", value);
+      setFieldValue("fromDate", new Date());
+      setFieldValue("endDate", new Date());
+    },
+    []
+  );
 
+  const handleChangeCurrentPage = useCallback(
+    (page) => {
+      setCurrentPage(page);
+      if (currentFilterState) {
+        setIsFormDisabled(true);
+        const newFilterState = { ...currentFilterState, page: page, length: pageSize };
+        setCurrentFilterState(newFilterState);
+        dispatch(fetchTransactionHistorySlice(newFilterState)).then(() => {
+          setIsFormDisabled(false);
+        });
+      }
+    },
+    [currentFilterState, pageSize, dispatch]
+  );
 
-  // handle transaction detail modal and display the selected record
-  const transactionDetailModalHandler = (transactionData) => {
-    dispatch(
-      fetchTransactionHistoryDetailSlice({
-        txn_id: transactionData.txn_id,
-      })
-    )
-      .then((res) => setSelectedTransaction(res?.payload))
-      .catch((e) =>
-        toastConfig.errorToast("Error occured while fetching details")
-      );
-    setTransactionDetailModal(true);
-  };
+  const handleChangePageSize = useCallback(
+    (size) => {
+      setPageSize(size);
+      setCurrentPage(1);
+      if (currentFilterState) {
+        setIsFormDisabled(true);
+        const newFilterState = { ...currentFilterState, length: size, page: 1 };
+        setCurrentFilterState(newFilterState);
+        dispatch(fetchTransactionHistorySlice(newFilterState)).then(() => {
+          setIsFormDisabled(false);
+        });
+      }
+    },
+    [currentFilterState, dispatch]
+  );
 
-  const handleDurationChange = ({ value, setFieldValue }) => {
-    setDuration(value);
-    setFieldValue("duration", value);
-    setFieldValue("fromDate", new Date());
-    setFieldValue("endDate", new Date());
-  };
   const form = (
     <Formik
       initialValues={initialValues}
@@ -518,7 +497,7 @@ const TransactionHistory = () => {
                 label="Select Duration"
                 name="duration"
                 className="form-select rounded"
-                options={durations}
+                options={durationOptions}
                 onChange={(e) =>
                   handleDurationChange({
                     value: e.target.value,
@@ -576,7 +555,7 @@ const TransactionHistory = () => {
                 label="Transactions Status"
                 name="transaction_status"
                 className="form-select rounded mt-0"
-                options={tempPayStatus}
+                options={memoizedPayStatusOptions}
               />
             </div>
 
@@ -586,7 +565,7 @@ const TransactionHistory = () => {
                 label="Payment Mode"
                 name="payment_mode"
                 className="form-select rounded mt-0"
-                options={tempPaymode}
+                options={memoizedPaymodeOptions}
               />
             </div>
           </div>
@@ -595,9 +574,9 @@ const TransactionHistory = () => {
               <button
                 className="btn btn-sm cob-btn-primary text-white"
                 type="submit"
-                disabled={disable}
+                disabled={isFormDisabled}
               >
-                {disable && (
+                {isFormDisabled && (
                   <span
                     className="spinner-border spinner-border-sm mr-1"
                     role="status"
@@ -606,50 +585,49 @@ const TransactionHistory = () => {
                 )}
                 Search
               </button>
-              {txnList?.length > 0 && (
+              {transactionList?.length > 0 && (
                 <button
                   type="button"
                   className="btn btn-sm text-white cob-btn-primary mx-2"
-                  onClick={() => exportToExcelFn()}
-                  disabled={exportReportLoader}
+                  onClick={exportToExcel}
+                  disabled={isExportReportLoading}
                 >
                   <i className="fa fa-download"></i>
-                  {exportReportLoader ? " Loading..." : " Export"}
+                  {isExportReportLoading ? " Loading..." : " Export"}
                 </button>
               )}
             </div>
             <div className="form-group col-md-1 col-lg-1">
-              {/* hide refund button for the selected client code on production */}
-              {user?.clientMerchantDetailsList?.[0].clientCode !== "Utta89" &&
+              {user?.clientMerchantDetailsList?.[0].clientCode !== "Utta89" && (
                 <button
                   className="btn cob-btn-primary btn-sm"
-                  onClick={refundModalHandler}
+                  onClick={handleRefundModalOpen}
                   disabled={
-                    radioInputVal?.status?.toLocaleLowerCase() !== "success" &&
-                    radioInputVal?.status?.toLocaleLowerCase() !== "settled"
+                    selectedRefundTransaction?.status?.toLocaleLowerCase() !==
+                    "success" &&
+                    selectedRefundTransaction?.status?.toLocaleLowerCase() !==
+                    "settled"
                   }
                 >
                   Refund
                 </button>
-              }
+              )}
             </div>
           </div>
         </Form>
       )}
     </Formik>
   );
+
   const rowData = [
     {
       id: "1",
-      name: radioInputVal?.status ? (
-        <p
-          className="text-primary m-0 user_info"
-          onClick={() => setRadioInputVal({})}
-        >
+      name: selectedRefundTransaction?.status ? (
+        <p className="text-primary m-0 user_info" onClick={() => setSelectedRefundTransaction({})}>
           Unselect
         </p>
       ) : (
-        <span className="font-weight-bold m-0 user_info">Select</span>
+        <span className="m-0 user_info">Select</span>
       ),
       cell: (row) =>
         (row?.status?.toLocaleLowerCase() === "success" ||
@@ -658,8 +636,8 @@ const TransactionHistory = () => {
             name="refund_request"
             value={row.txn_id}
             type="radio"
-            onClick={(e) => setRadioInputVal(row)}
-            checked={row.txn_id === radioInputVal?.txn_id}
+            onClick={() => setSelectedRefundTransaction(row)}
+            checked={row.txn_id === selectedRefundTransaction?.txn_id}
           />
         ),
       width: "95px",
@@ -670,10 +648,8 @@ const TransactionHistory = () => {
       selector: (row) => row.pg_txn_id,
       cell: (row) => (
         <div
-          // className="text-primary"
-          // style={{ cursor: "pointer" }}
           className="custom_hover_primary"
-          onClick={() => transactionDetailModalHandler(row)}
+          onClick={() => handleTransactionDetailModal(row)}
         >
           {row.pg_txn_id}
         </div>
@@ -687,7 +663,7 @@ const TransactionHistory = () => {
       cell: (row) => (
         <div
           className="custom_hover_primary"
-          onClick={() => transactionDetailModalHandler(row)}
+          onClick={() => handleTransactionDetailModal(row)}
         >
           {row.txn_id}
         </div>
@@ -701,8 +677,7 @@ const TransactionHistory = () => {
       cell: (row) => (
         <div
           className="custom_hover_primary"
-
-          onClick={() => transactionDetailModalHandler(row)}
+          onClick={() => handleTransactionDetailModal(row)}
         >
           {row.client_txn_id}
         </div>
@@ -772,20 +747,21 @@ const TransactionHistory = () => {
       width: "130px",
     },
   ];
+
   return (
     <section className="">
       <div className="profileBarStatus">
-        {refundModal && (
+        {showRefundModal && (
           <TransactionRefund
-            refundModal={refundModal}
-            setRefundModal={setRefundModal}
-            radioInputVal={radioInputVal}
+            refundModal={showRefundModal}
+            setRefundModal={setShowRefundModal}
+            radioInputVal={selectedRefundTransaction}
           />
         )}
-        {transactionDetailModal && (
+        {showTransactionDetailModal && (
           <TransactionDetailModal
-            fnSetModalToggle={() => setTransactionDetailModal(false)}
-            transactionData={selectedTransaction}
+            fnSetModalToggle={() => setShowTransactionDetailModal(false)}
+            transactionData={selectedTransactionDetail}
           />
         )}
       </div>
@@ -793,21 +769,26 @@ const TransactionHistory = () => {
         <ReportLayout
           type="transaction_history"
           title="Transaction History"
-          data={txnList}
+          data={transactionList}
           rowData={rowData}
           form={form}
-          loadingState={disable}
-
-          // onRowClick={transactionDetailModalHandler}
+          loadingState={isFormDisabled}
           showSearch
           showCountPerPage
+          dataCount={transactionCount}
+          dynamicPagination={true}
+          page_size={pageSize}
+          current_page={currentPage}
+          change_currentPage={handleChangeCurrentPage}
+          change_pageSize={handleChangePageSize}
+
         />
         <ExportTransactionHistory
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-          downloadData={downloadData}
-          checkValidation={checkValidation}
-          clientCodeListArr={clientCodeListArr}
+          openModal={showExportModal}
+          setOpenModal={setShowExportModal}
+          downloadData={exportFilterData}
+          checkValidation={validateDateRange}
+          clientCodeListArr={selectedClientCodeList}
         />
       </main>
     </section>

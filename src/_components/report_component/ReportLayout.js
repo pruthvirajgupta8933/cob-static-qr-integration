@@ -15,11 +15,11 @@ const ReportLayout = ({
   showCountPerPage,
   onRowClick,
   dynamicPagination,
-  page_Size,
-  current_Page,
+  page_size,
+  current_page,
   dataCount,
-  change_CurrentPage,
-  change_PageSize,
+  change_currentPage,
+  change_pageSize,
   loadingState,
   totalSettlementAmount
 }) => {
@@ -29,8 +29,8 @@ const ReportLayout = ({
   const [filteredData, setFilteredData] = useState([]);
   const [paginatedData, setPaginatedData] = useState([]);
 
-  const actualPageSize = dynamicPagination ? page_Size : localPageSize;
-  const actualCurrentPage = dynamicPagination ? current_Page : localCurrentPage;
+  const actualPageSize = dynamicPagination ? page_size : localPageSize;
+  const actualCurrentPage = dynamicPagination ? current_page : localCurrentPage;
 
   useEffect(() => {
 
@@ -102,7 +102,7 @@ const ReportLayout = ({
                         className="form-select"
                         onChange={(e) =>
                           dynamicPagination
-                            ? change_PageSize(parseInt(e.target.value))
+                            ? change_pageSize(parseInt(e.target.value))
                             : handleLocalPageSizeChange(e)
                         }
                       >
@@ -142,7 +142,7 @@ const ReportLayout = ({
                   currentPage={actualCurrentPage}
                   changeCurrentPage={(page) =>
                     dynamicPagination
-                      ? change_CurrentPage(page)
+                      ? change_currentPage(page)
                       : setLocalCurrentPage(page)
                   }
                   onRowClick={(row) =>

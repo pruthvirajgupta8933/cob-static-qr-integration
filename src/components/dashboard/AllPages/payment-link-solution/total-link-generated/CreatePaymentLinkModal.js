@@ -97,7 +97,7 @@ function CreatePaymentLink({ componentState, onClose }) {
       total_amount: Yup.number()
         .typeError("Only numbers are allowed")
         .min(1, "Enter Valid Amount")
-        .max(1000000, "Limit Exceed")
+        .max(100000000, "Limit Exceed")
         .required("Required"),
       purpose: Yup.string()
         .max(200, "Max 200 characters allowed")
