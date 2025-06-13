@@ -231,12 +231,12 @@ function BusinessDetailEdtKyc(props) {
 
         .nullable(),
       cin_number: Yup.string().nullable(),
-      operational_address: Yup.string()
+      registered_business_address: Yup.string()
         .allowOneSpace()
         .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
 
         .wordLength("Word character length exceeded")
-        .max(120, "Address Max length exceeded, 120 charactes are allowed")
+        // .max(120, "Address Max length exceeded, 120 charactes are allowed")
         .nullable(),
       registerd_with_gst: Yup.boolean().nullable(),
       registerd_with_udyam: Yup.boolean().nullable(),
@@ -267,28 +267,28 @@ function BusinessDetailEdtKyc(props) {
         pan_number: values,
       })
     ).then((res) => {
-        if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.status === true &&
-          res.payload.valid === true
-        ) {
-          const fullNameByPan = trimFullName(
-            res?.payload?.first_name,
-            res?.payload?.last_name
-          );
-          setFieldValue(key, fullNameByPan);
-          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
-          setFieldValue("pan_card", values);
-          setFieldValue("prev_pan_card", values);
-          setFieldValue("isPanVerified", 1);
-          toast.success(res?.payload?.message);
-          setIsLoading(false);
-        } else {
-          setFieldValue(key, "");
-          setIsLoading(false);
-          toast.error(res?.payload?.message ?? res.payload.data?.message);
-        }
-      })
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        const fullNameByPan = trimFullName(
+          res?.payload?.first_name,
+          res?.payload?.last_name
+        );
+        setFieldValue(key, fullNameByPan);
+        setFieldValue("pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("pan_card", values);
+        setFieldValue("prev_pan_card", values);
+        setFieldValue("isPanVerified", 1);
+        toast.success(res?.payload?.message);
+        setIsLoading(false);
+      } else {
+        setFieldValue(key, "");
+        setIsLoading(false);
+        toast.error(res?.payload?.message ?? res.payload.data?.message);
+      }
+    })
       .catch((err) => {
         console.log("err", err);
       });
@@ -489,35 +489,32 @@ function BusinessDetailEdtKyc(props) {
 
   const onSubmit = (values) => {
 
-    const emptyFields = [
-      "company_name",
-      "gst_number",
-      "registerd_with_gst",
-      "gst_number",
-      "pan_card",
-      "signatory_pan",
-      "name_on_pancard",
-      "pin_code",
-      "city_id",
-      "state_id",
-      "operational_address",
-      "is_udyam",
-      "udyam_data",
-      "cin_number"
-    ].some((field) => !values[field]);
+    // const emptyFields = [
+    //   "company_name",
+    //   "gst_number",
+    //   "registerd_with_gst",
+    //   "gst_number",
+    //   "pan_card",
+    //   "signatory_pan",
+    //   "name_on_pancard",
+    //   "pin_code",
+    //   "city_id",
+    //   "state_id",
+    //   "operational_address",
+    //   "is_udyam",
+    //   "udyam_data",
+    //   "cin_number"
+    // ].some((field) => !values[field]);
 
 
-    if (emptyFields) {
-      const confirmSubmit = window.confirm(
-        "Some fields are empty. Are you sure you want to proceed?"
-      );
-
-      if (!confirmSubmit) {
-        return;
-      }
+    const confirmSubmit = window.confirm(
+      "Are you sure you want to proceed?"
+    );
+    if (!confirmSubmit) {
+      return;
     }
 
-
+    
     setIsDisable(true);
     const postData = {
       login_id: selectedId,
@@ -884,10 +881,10 @@ function BusinessDetailEdtKyc(props) {
                   </p>
                 )}
               </div>
-                
+
               <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
-                 Business Pan DOB or DOI<span className="text-danger">*</span>
+                  Business Pan DOB or DOI<span className="text-danger">*</span>
                 </label>
                 <FormikController
                   control="input"
@@ -977,7 +974,7 @@ function BusinessDetailEdtKyc(props) {
                 )}
               </div>
 
-               <div className="col-sm-12 col-md-3 col-lg-3">
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   Authorized Person's DOB<span className="text-danger">*</span>
                 </label>
@@ -1017,7 +1014,7 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
-               <div className="col-sm-12 col-md-3 col-lg-3">
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   Father's Name<span className="text-danger">*</span>
                 </label>
@@ -1039,13 +1036,13 @@ function BusinessDetailEdtKyc(props) {
                 <FormikController
                   control="input"
                   type="text"
-                  name="operational_address"
+                  name="registered_business_address"
                   className="form-control"
 
                 />
               </div>
-            
-   <div className="col-sm-12 col-md-6 col-lg-6">
+
+              <div className="col-sm-12 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
                   CIN
                 </label>
@@ -1118,7 +1115,7 @@ function BusinessDetailEdtKyc(props) {
 
             </div>
             <div className="row">
-                <div className="col-sm-12 col-md-3 col-lg-3">
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   City<span className="text-danger">*</span>
                 </label>
@@ -1158,7 +1155,7 @@ function BusinessDetailEdtKyc(props) {
 
 
             </div>
-        
+
 
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
