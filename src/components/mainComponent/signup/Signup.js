@@ -25,6 +25,7 @@ import arrow_two from "../../../assets/images/arrow_two.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+import { APP_ENV } from "../../../config";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -66,7 +67,9 @@ const FORM_VALIDATION = Yup.object().shape({
     [true],
     "Please accept the terms & conditions and privacy policy to proceed further"
   ),
-  reCaptcha: Yup.string().required("Required").nullable(),
+  reCaptcha: APP_ENV
+    ? Yup.string().required("Please complete the reCAPTCHA").nullable()
+    : Yup.string().notRequired().nullable(),
 });
 
 function Signup() {
