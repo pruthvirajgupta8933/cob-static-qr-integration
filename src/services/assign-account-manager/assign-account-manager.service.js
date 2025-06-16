@@ -23,9 +23,13 @@ const assignRoleWise = (payload) => {
 };
 const exportAssignedMerchant = (payload) => {
   return axiosInstanceJWT.get(
-    `${API_URL.EXPORT_ASSIGNED_MERCHANT}?login_id=${payload.login_id}&type=${payload.type}`
+    `${API_URL.EXPORT_ASSIGNED_MERCHANT}?login_id=${payload.login_id}&type=${payload.type}`,
+    {
+      responseType: "arraybuffer",
+    }
   );
 };
+
 
 const assignAccountMangerService = {
   assignAccountMangerApi,
