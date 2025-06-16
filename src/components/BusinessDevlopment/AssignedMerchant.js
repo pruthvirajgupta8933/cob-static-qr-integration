@@ -47,6 +47,7 @@ const AssignedMerchant = () => {
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [kycIdClick, setKycIdClick] = useState([]);
+  const [disable, setDisable] = useState(false);
   const { isKycMasked } = useSelector((state) => state.kyc);
 
   useEffect(() => {
@@ -295,16 +296,22 @@ const AssignedMerchant = () => {
     },
   ];
   const exportToExcelFn = () => {
+
     const role = roleBasedAccess();
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
+
+    // Pad month and day with zero if needed
     if (splitDate[1].length === 1) {
       splitDate[1] = "0" + splitDate[1];
     }
     if (splitDate[2].length === 1) {
       splitDate[2] = "0" + splitDate[2];
     }
+
     splitDate = splitDate.join("-");
+    setDisable(true)
+
     dispatch(
       exportAssignedMerchant({
         login_id: loginId,
@@ -320,14 +327,18 @@ const AssignedMerchant = () => {
       const blob = new Blob([res?.payload], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      saveAs(blob, `Assigned_Merchant_REPORT_${splitDate}.csv`);
+      setDisable(false)
+
+
+      saveAs(blob, `Assigned_Merchant_REPORT_${splitDate}.xlsx`);
     });
   };
+
   return (
     <ReportLayout title="Assigned Merchant">
 
-      <div className="row mt-5">
-        <div className="form-group col-lg-3 col-md-12 mt-1">
+      <div className="row ">
+        <div className="form-group col-lg-3 col-md-12">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -336,7 +347,7 @@ const AssignedMerchant = () => {
             searchTextByApiCall={true}
           />
         </div>
-        <div className="form-group col-lg-3 col-md-12 mt-1">
+        <div className="form-group col-lg-3 col-md-12">
           <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
@@ -353,7 +364,11 @@ const AssignedMerchant = () => {
                 type="button"
                 onClick={() => exportToExcelFn()}
                 style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                disabled={disable}
               >
+                {disable && (
+                  <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                )}
                 Export
               </button>
             </div>
