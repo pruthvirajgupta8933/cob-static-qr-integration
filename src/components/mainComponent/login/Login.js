@@ -18,6 +18,8 @@ import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
 import { Encrypt } from "../../../utilities/aes";
 import keyConfig from "../../../key.config";
+import { APP_ENV } from "../../../config";
+
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -28,7 +30,9 @@ const INITIAL_FORM_STATE = {
 const validationSchema = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username").allowOneSpace(),
   userPassword: Yup.string().required("Please enter password").allowOneSpace(),
-  reCaptcha: Yup.string().required("Required").nullable(),
+  reCaptcha: APP_ENV  
+    ? Yup.string().required("Please complete the reCAPTCHA").nullable()
+    : Yup.string().notRequired().nullable(),
 });
 
 const Login = () => {
