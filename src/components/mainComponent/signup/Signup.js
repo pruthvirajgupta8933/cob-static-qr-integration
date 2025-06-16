@@ -156,13 +156,13 @@ function Signup() {
       emaill,
       passwordd,
       business_cat_code,
-      reCaptcha,
+      // reCaptcha,
     } = formData;
 
-    if (!reCaptcha) {
-      alert("Please complete the CAPTCHA");
-      return;
-    }
+    // if (!reCaptcha) {
+    //   alert("Please complete the CAPTCHA");
+    //   return;
+    // }
 
     setBtnDisable(true);
 
@@ -533,7 +533,6 @@ function Signup() {
                         <ErrorMessage name="reCaptcha">
                           {(msg) => <p className="text-danger">{msg}</p>}
                         </ErrorMessage>
-
                         <div className={`form-row ${classes.form_row_cob}`}>
                           <div className="form-group col-lg-12">
                             <button
