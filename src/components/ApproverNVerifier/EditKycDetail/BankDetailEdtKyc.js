@@ -149,9 +149,12 @@ function BankDetailEdtKyc(props) {
           // toast.success(res?.payload?.message);
         } else {
           setLoading(false);
-          toast.error(res?.payload?.message);
+          // console.log("res", res)
+          toast.error(res?.payload?.message || res?.data?.message);
         }
-      });
+      }).catch(err => {
+        // console.log(err)
+      })
     }
   };
 
@@ -186,9 +189,10 @@ function BankDetailEdtKyc(props) {
         ifscValidationNo(ifscCode, setFieldValue);
       } else {
         setLoading(false);
-        toast.error(res?.payload?.message);
+        // console.log(res)
+        toast.error(res?.payload);
       }
-    });
+    }).catch(err => console.log("err", err))
   };
 
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
@@ -213,23 +217,17 @@ function BankDetailEdtKyc(props) {
   // TODO: remove the bank list api and update with the response from the bank name api
   const onSubmit = (values) => {
     // Check if any required fields are empty
-    const emptyFields = [
-      "account_holder_name",
-      "account_number",
-      "ifsc_code",
-      "bank_id",
-      "branch",
-    ].some((field) => !values[field]);
-
-    if (emptyFields) {
+    const isEmptyValue = Object.keys(values).filter(item => values[item] === "");
+    if (isEmptyValue.length > 0) {
       const confirmSubmit = window.confirm(
-        "Some fields are empty. Are you sure you want to proceed?"
+        `Some fields are empty. These values will not be saved. Do you still want to proceed with submitting the form? 
+        ${isEmptyValue.map(item => `\n ${item}`).join(", ")} will not be saved.`
       );
-
       if (!confirmSubmit) {
         return; // Exit the function if the user cancels
       }
     }
+
 
     let selectedChoice =
       values.account_type.toString() === "1"

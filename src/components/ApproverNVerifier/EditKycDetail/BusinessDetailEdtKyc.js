@@ -28,7 +28,7 @@ function BusinessDetailEdtKyc(props) {
   const setTab = props.tab;
   const setTitle = props.title;
   const selectedId = props.selectedId;
-  const merchantloginMasterId = props.merchantloginMasterId;
+  // const merchantloginMasterId = props.merchantloginMasterId;
 
   const reqexPinCode = /^[1-9][0-9]{5}$/;
   const dispatch = useDispatch();
@@ -333,9 +333,12 @@ function BusinessDetailEdtKyc(props) {
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "");
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload?.data?.message);
         setLoadingForGst(false);
       }
+    }).catch((err) => {
+      setLoadingForGst(false);
+      toastConfig.errorToast(err?.response?.data?.detail ?? "Something went wrong");
     });
   };
 
@@ -391,7 +394,7 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("father_name", res?.payload?.father_name);
         toast.success(res.payload.message);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload?.message ?? res.payload.data?.message);
         setLoadingForSignatory(false);
         // setIsLoading(false)
       }
@@ -489,32 +492,17 @@ function BusinessDetailEdtKyc(props) {
 
   const onSubmit = (values) => {
 
-    // const emptyFields = [
-    //   "company_name",
-    //   "gst_number",
-    //   "registerd_with_gst",
-    //   "gst_number",
-    //   "pan_card",
-    //   "signatory_pan",
-    //   "name_on_pancard",
-    //   "pin_code",
-    //   "city_id",
-    //   "state_id",
-    //   "operational_address",
-    //   "is_udyam",
-    //   "udyam_data",
-    //   "cin_number"
-    // ].some((field) => !values[field]);
-
-
-    const confirmSubmit = window.confirm(
-      "Are you sure you want to proceed?"
-    );
-    if (!confirmSubmit) {
-      return;
+    const isEmptyValue = Object.keys(values).filter(item => values[item] === "");
+    if (isEmptyValue.length > 0) {
+      const confirmSubmit = window.confirm(
+        `Some fields are empty. These values will not be saved. Do you still want to proceed with submitting the form? 
+        ${isEmptyValue.map(item => `\n ${item}`).join(", ")} will not be saved.`
+      );
+      if (!confirmSubmit) {
+        return; // Exit the function if the user cancels
+      }
     }
 
-    
     setIsDisable(true);
     const postData = {
       login_id: selectedId,
