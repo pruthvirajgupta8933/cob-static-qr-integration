@@ -83,7 +83,7 @@ const PaylinkDashboard = () => {
           setDashboardTxnData(res.payload.transaction_graph_data);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, []);
 
   const filterOptionHandler = ({ fromDate, toDate }) => {
@@ -125,7 +125,7 @@ const PaylinkDashboard = () => {
           setDashboardTxnData(res.payload.transaction_graph_data);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const lineChartGraphHandler = (currentSelectionOption) => {
@@ -146,7 +146,7 @@ const PaylinkDashboard = () => {
           setDashboardTxnData(res.payload.transaction_graph_data);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   return (
@@ -169,7 +169,7 @@ const PaylinkDashboard = () => {
         />
       </div>
 
-      <div className="row mt-2 ">
+      <div className="row mt-4 ">
         <div className="col-12 col-md-12 col-lg-8">
           <div className="row gap-2 gap-lg-0 d-flex flex-row">
             <div className="col-12 col-md-12 col-lg-4">

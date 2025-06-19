@@ -30,9 +30,6 @@ const SchedulueTransaction = () => {
     const [filterFromDate, setFilterFromDate] = useState("");
     const [isScheduling, setIsScheduling] = useState(false);
     const [isDateFilterSubmitting, setIsDateFilterSubmitting] = useState(false); // New state for date filter loader
-
-
-
     const handlePageChange = (selectedItem) => setCurrentPage(selectedItem.selected + 1);
 
     useEffect(() => {

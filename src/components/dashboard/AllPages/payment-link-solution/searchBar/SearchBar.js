@@ -9,11 +9,9 @@ const SearchBar = ({
 }) => {
     const [error, setError] = useState("");
 
-
-
     const handleClear = async () => {
         await setSearchTerm("");
-        setError(""); // Clear any existing error
+        setError("");
         loadData({ clearSearchState: true });
     };
 
@@ -22,13 +20,13 @@ const SearchBar = ({
             setError("Please enter a search term.");
             return;
         }
-        setError(""); // Clear error when valid input is given
+        setError("");
         onSearch();
-
     };
 
     return (
-        <div>
+        <div className="mb-1">
+            <label className="form-label mb-1">Search</label>
             <div className="input-group">
                 <input
                     type="text"
@@ -40,16 +38,23 @@ const SearchBar = ({
                 />
 
                 {searchTerm && (
-                    <button className="btn btn-outline-secondary" onClick={handleClear}>
+                    <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={handleClear}
+                    >
                         <i className="fa fa-times"></i>
                     </button>
                 )}
 
-                <span className="input-group-text" onClick={handleSearch}>
+                <span
+                    className="input-group-text"
+                    role="button"
+                    onClick={handleSearch}
+                >
                     <i className="fa fa-search"></i>
                 </span>
             </div>
-
 
             {error && <p className="text-danger mt-1">{error}</p>}
         </div>
