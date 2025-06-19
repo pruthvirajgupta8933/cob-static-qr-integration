@@ -376,62 +376,60 @@ const SettlementReportNew = () => {
       toast.info("Please perform a search first to export data.");
       return;
     }
-    setExportReportLoader(true);
+
     setExportDisable(true);
+
     try {
-      const res = await axiosInstanceJWT.post(
-        API_URL.SettlementReportExcel,
-        { ...filterState, page: 0, length: 0 },
+      const res = await transactionHistoryExport(
         {
-          responseType: "blob",
+          client_code: filterState.client_code,
+          start_date: filterState.start_date,
+          end_date: filterState.end_date,
+          transaction_status: filterState.transaction_status,
+        },
+        {
+          responseType: "blob", // important for downloading file
         }
       );
 
       if (res.status === 200) {
         const disposition = res.headers["content-disposition"];
-        const filenameMatch =
-          disposition && disposition.match(/filename="(.+)"/);
-        const filename = filenameMatch
-          ? filenameMatch[1]
-          : "Settlement-Report.xlsx"; // Changed default filename
+        const filenameMatch = disposition && disposition.match(/filename="?([^"]+)"?/);
+        const filename = filenameMatch ? filenameMatch[1] : "Transaction-History-Report.xlsx";
 
         const blob = new Blob([res.data], {
           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        }); // Correct MIME type for Excel
+        });
 
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = filename;
-
         document.body.appendChild(link);
         link.click();
-
         window.URL.revokeObjectURL(link.href);
         document.body.removeChild(link);
-        toastConfig.successToast("Report exported successfully!");
+
+        toast.success("Report exported successfully!");
       } else {
-        toastConfig.errorToast("Failed to download report.");
+        toast.error("Failed to download report.");
       }
     } catch (err) {
       if (err.response && err.response.data) {
-        const errorBlob = new Blob([err.response.data], {
-          type: "application/json",
-        });
+        const errorBlob = new Blob([err.response.data], { type: "application/json" });
         const reader = new FileReader();
         reader.onload = function () {
           try {
             const errorData = JSON.parse(reader.result);
-            toastConfig.errorToast(errorData.message || "Something went wrong.");
+            toast.error(errorData.message || "Something went wrong.");
           } catch (e) {
-            toastConfig.errorToast("Something went wrong.");
+            toast.error("Something went wrong.");
           }
         };
         reader.readAsText(errorBlob);
       } else {
-        toastConfig.errorToast("Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
       }
     } finally {
-      setExportReportLoader(false);
       setExportDisable(false);
     }
   };
