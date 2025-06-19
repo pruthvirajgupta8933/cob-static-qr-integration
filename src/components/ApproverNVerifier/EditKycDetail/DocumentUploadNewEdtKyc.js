@@ -64,11 +64,14 @@ const DocumentUploadNewEdtKyc = (props) => {
 
 
   useEffect(() => {
-    dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
-      .then((resp) => {
-        setDocTypeList(resp?.payload);
-      })
-      .catch((err) => { });
+    if (businessType) {
+      dispatch(documentsUpload({ businessType, is_udyam: KycList?.is_udyam }))
+        .then((resp) => {
+          setDocTypeList(resp?.payload);
+        })
+        .catch((err) => { });
+    }
+
   }, [dispatch, businessType, KycList?.is_udyam]);
 
   useEffect(() => {
@@ -161,7 +164,7 @@ const DocumentUploadNewEdtKyc = (props) => {
           {values.option === 'A' && (
             <div className="mt-4">
               <div className="overflow-auto" style={{ maxHeight: '250px' }}>
-                {docTypeList.map((doc, index) => (
+                {docTypeList && docTypeList?.map((doc, index) => (
                   <div className="row mb-3 align-items-center font-weight-bold" key={index}>
                     <div className="col-4">
                       <label>{doc?.name}</label>
@@ -194,11 +197,11 @@ const DocumentUploadNewEdtKyc = (props) => {
                   </div>
                 ))}
               </div>
-              {docTypeList.some(doc => doc?.name?.toLowerCase().split(" ").includes("others")) && (
+              {docTypeList?.some(doc => doc?.name?.toLowerCase().split(" ").includes("others")) && (
                 <div className="row mb-3 align-items-center font-weight-bold mt-3">
                   <div onClick={() => {
                     setFieldValue('option', "B");
-                    const otherDoc = docTypeList.find(doc => doc?.name?.toLowerCase().split(" ").includes("others"));
+                    const otherDoc = docTypeList?.find(doc => doc?.name?.toLowerCase().split(" ").includes("others"));
                     setOtherDocTypeId(otherDoc?.id);
                   }}>
                     <label className='text-primary btn cob-btn-primary'>
