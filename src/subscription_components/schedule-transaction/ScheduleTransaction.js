@@ -27,9 +27,14 @@ const SchedulueTransaction = () => {
     const [pageCount, setPageCount] = useState(Math.ceil(dataCount / pageSize));
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedMandate, setSelectedMandate] = useState(null);
+
+
     const [filterFromDate, setFilterFromDate] = useState("");
     const [isScheduling, setIsScheduling] = useState(false);
     const [isDateFilterSubmitting, setIsDateFilterSubmitting] = useState(false); // New state for date filter loader
+
+
+
     const handlePageChange = (selectedItem) => setCurrentPage(selectedItem.selected + 1);
 
     useEffect(() => {
@@ -96,6 +101,7 @@ const SchedulueTransaction = () => {
         "Mode",
         "Frequency",
         "Bank Reference Number",
+        "Transaction Schedule",
 
     ];
 
@@ -120,6 +126,17 @@ const SchedulueTransaction = () => {
                 <td>{showValue(mandate?.mode)}</td>
                 <td>{showValue(mandate?.frequency)}</td>
                 <td>{showValue(mandate?.bank_reference_number)}</td>
+                <td>
+                    <button
+                        className="btn cob-btn-primary approve text-white btn-sm"
+                        onClick={() => {
+                            setSelectedMandate(mandate);
+                            setModalToggle(true);
+                        }}
+                    >
+                        Schedule Transaction
+                    </button>
+                </td>
             </tr>
         );
     };
@@ -246,6 +263,8 @@ const SchedulueTransaction = () => {
     });
 
     const handleDateFilterSubmit = (values) => {
+
+
         setIsDateFilterSubmitting(true);
         setCurrentPage(1);
         setFilterFromDate(values.from_date || "");
@@ -256,7 +275,9 @@ const SchedulueTransaction = () => {
         };
 
         if (values.from_date) {
-            const formattedDate = new Date(values.from_date).toISOString().split("T")[0];
+            // Format date to YYYY-MM-DD in local time
+            const dateObj = new Date(values.from_date);
+            const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
             postDataS.from_date = formattedDate;
         }
 
@@ -274,6 +295,7 @@ const SchedulueTransaction = () => {
             })
             .catch(() => setIsDateFilterSubmitting(false));
     };
+
 
 
     return (
@@ -294,17 +316,6 @@ const SchedulueTransaction = () => {
                             <Form>
                                 <div className="row">
                                     <div className="col-md-3">
-                                        {/* <label htmlFor="from_date" className="form-label">
-                                            From Date
-                                        </label> */}
-                                        {/* <FormikController
-                                            control="input"
-                                            type="date"
-                                            name="from_date"
-                                            id="from_date"
-                                            className="form-control"
-                                        /> */}
-
                                         <FormikController
                                             control="date"
                                             label="From Date"
@@ -325,14 +336,12 @@ const SchedulueTransaction = () => {
                                             errorMsg={formik.errors["from_date"]}
                                             popperPlacement="top-end"
                                         />
-                                        {/* <ErrorMessage name="from_date">
-                                            {(msg) => <p className="text-danger mt-1">{msg}</p>}
-                                        </ErrorMessage> */}
+
                                     </div>
-                                    <div className="col-md-3 mt-4">
+                                    <div className="col-md-3 mt-3">
                                         <button
                                             type="submit"
-                                            className="btn cob-btn-primary approve text-white"
+                                            className="btn cob-btn-primary approve text-white btn-sm mt-2 "
                                             disabled={isDateFilterSubmitting}
                                         >
                                             {isDateFilterSubmitting ? (

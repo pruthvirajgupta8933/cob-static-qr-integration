@@ -30,6 +30,7 @@ import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import API_URL from "../../../config";
 import toastConfig from "../../../utilities/toastTypes";
 import { Callbacks } from "jquery";
+import { Dashboardservice } from "../../../services/dashboard.service";
 
 
 const SettlementReportNew = () => {
@@ -380,7 +381,7 @@ const SettlementReportNew = () => {
     setExportDisable(true);
 
     try {
-      const res = await transactionHistoryExport(
+      const res = await Dashboardservice.exportSettlementReportNew(
         {
           client_code: filterState.client_code,
           start_date: filterState.start_date,
