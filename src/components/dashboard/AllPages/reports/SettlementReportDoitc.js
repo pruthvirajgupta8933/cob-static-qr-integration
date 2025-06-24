@@ -23,7 +23,7 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReactPaginate from "react-paginate";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
-import CardLayout from "../../../../utilities/CardLayout"
+import CardLayout from "../../../../utilities/CardLayout";
 
 const SettlementReportDoitc = () => {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const SettlementReportDoitc = () => {
   const roles = roleBasedAccess();
   const { auth, merchantReportSlice, merchantReferralOnboardReducer } =
     useSelector((state) => state);
+  // console.log("merchantReportSlice", merchantReportSlice)
 
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
@@ -42,13 +43,14 @@ const SettlementReportDoitc = () => {
 
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0); // pagination starts from 0 for react-paginate
   const [showData, setShowData] = useState([]);
   const [updateTxnList, setUpdateTxnList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false);
+  const [dataCount, setDatacount] = useState(0);
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -151,8 +153,8 @@ const SettlementReportDoitc = () => {
     });
   }, [showData, updateTxnList]);
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected); // react-paginate gives selected page index (0-based)
   };
 
   const onSubmitHandler = (values) => {
@@ -179,12 +181,14 @@ const SettlementReportDoitc = () => {
     };
 
     setIsDisable(true);
+    isButtonClicked(true); // Set buttonClicked to true when form is submitted
     dispatch(settledTransactionHistoryDoitc(paramData)).then((res) => {
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
         setIsDisable(false);
+        isButtonClicked(false); // Reset buttonClicked on error
       }
       if (ApiStatus === "fulfilled") {
         setIsDisable(false);
@@ -192,37 +196,31 @@ const SettlementReportDoitc = () => {
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
         toast.error("No Data Found");
         setIsDisable(false);
+        isButtonClicked(false); // Reset buttonClicked if no data found
       }
     });
   };
 
   useEffect(() => {
-    // Remove initiated from transaction history response
     const TxnListArrUpdated =
-      merchantReportSlice?.settledTransactionHistoryDoitc.data.
-        results;
+      merchantReportSlice?.settledTransactionHistoryDoitc?.data
+
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
-    // exportToExcelFn()
+
+    setCurrentPage(0); // Reset current page to 0 when data changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [merchantReportSlice]);
+  }, [merchantReportSlice.settledTransactionHistoryDoitc.data]);
 
   useEffect(() => {
-    setPaginatedData(_(showData).slice(0).take(pageSize).value());
     setPageCount(
       showData?.length > 0 ? Math.ceil(showData?.length / pageSize) : 0
     );
-  }, [pageSize, showData]);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize;
+    const startIndex = currentPage * pageSize;
     const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [pageSize, showData, currentPage]); // Added currentPage to dependency array
 
   useEffect(() => {
     return () => {
@@ -243,13 +241,8 @@ const SettlementReportDoitc = () => {
     } else {
       setShowData(updateTxnList);
     }
-  }, [searchText]);
-
-  // const pages = _.range(1, pageCount + 1);
-
-  // const convertDate = (yourDate) => {
-  //   return yourDate ? moment(yourDate).format("YYYY-MM-DD HH:mm:ss") : "N/A";
-  // };
+    setCurrentPage(0); // Reset current page when search text changes
+  }, [searchText, updateTxnList]);
 
   const exportToExcelFn = (exportType) => {
     const excelHeaderRow = [
@@ -264,13 +257,11 @@ const SettlementReportDoitc = () => {
       "Client Code",
       "Payment Mode",
       "Client Name",
-
       "Settlement Status",
       "Settlement Date",
       "Settlement Amount",
       "Refund Status",
       "Refunded Date",
-
       "Refunded Amount",
       "Track Id",
       "Chargeback Status",
@@ -279,9 +270,8 @@ const SettlementReportDoitc = () => {
       "Remarks",
     ];
     const excelArr = [excelHeaderRow];
-    // console.log("txnList",txnList)
-    // eslint-disable-next-line array-callback-return
-    merchantReportSlice?.settledTransactionHistoryDoitc?.data?.result?.map(
+
+    merchantReportSlice?.settledTransactionHistoryDoitc?.data?.map(
       (item, index) => {
         const allowDataToShow = {
           srNo: item.SrNo === null ? "null" : item.SrNo,
@@ -325,7 +315,6 @@ const SettlementReportDoitc = () => {
             item.charge_back_amount === null
               ? "null"
               : Number.parseFloat(item.charge_back_amount),
-
           refund_reason:
             item.refund_reason === null ? "null" : item.refund_reason,
         };
@@ -334,8 +323,6 @@ const SettlementReportDoitc = () => {
       }
     );
 
-    // Function to convert data to CSV format
-    //exportType = csv/ csv-ms-excel
     function arrayToCSV(data, exportType) {
       const csv = data
         .map((row) =>
@@ -356,7 +343,6 @@ const SettlementReportDoitc = () => {
       return csv;
     }
 
-    // Function to download CSV file
     function downloadCSV(data, filename, exportType) {
       const csv = arrayToCSV(data, exportType);
       const blob = new Blob([csv], {
@@ -367,11 +353,9 @@ const SettlementReportDoitc = () => {
 
     const fileName = "Settlement-Report";
     let handleExportLoading = (state) => {
-      // console.log(state)
       if (state) {
         alert("Exporting Excel File, Please wait...");
       }
-      // dispatch(exportTxnLoadingState(state))
       return state;
     };
 
@@ -385,7 +369,7 @@ const SettlementReportDoitc = () => {
   };
 
   return (
-    < CardLayout title="Settlement Report" >
+    <CardLayout title="Settlement Report">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -514,12 +498,10 @@ const SettlementReportDoitc = () => {
         <> </>
       )}
 
-
-
       <section className="">
         <div className="container-fluid mt-5">
           {txnList?.length > 0 ? (
-            <h6>Total Record : {txnList?.length} </h6>
+            <h6>Total Record : {txnList.length} </h6>
           ) : (
             <></>
           )}
@@ -532,7 +514,6 @@ const SettlementReportDoitc = () => {
                     <th> Sr. No. </th>
                     <th> Trans ID</th>
                     <th> Client Trans ID </th>
-
                     <th> Amount </th>
                     <th> Transaction Date </th>
                     <th> Payment Status </th>
@@ -564,7 +545,6 @@ const SettlementReportDoitc = () => {
                         <td>{item.SrNo}</td>
                         <td>{item.txn_id}</td>
                         <td>{item.client_txn_id}</td>
-
                         <td>
                           {Number.parseFloat(item.payee_amount).toFixed(2)}
                         </td>
@@ -592,7 +572,10 @@ const SettlementReportDoitc = () => {
                         <td>{item.chargeback_status}</td>
                         <td>{item.charge_back_date}</td>
                         <td>
-                          {item.charge_back_amount && Number.parseFloat(item.charge_back_amount).toFixed(2)}
+                          {item.charge_back_amount &&
+                            Number.parseFloat(item.charge_back_amount).toFixed(
+                              2
+                            )}
                         </td>
                         <td>{item.refund_reason}</td>
                       </tr>
@@ -612,9 +595,7 @@ const SettlementReportDoitc = () => {
                   pageCount={pageCount}
                   marginPagesDisplayed={2} // using this we can set how many number we can show after ...
                   pageRangeDisplayed={5}
-                  onPageChange={(selectedItem) =>
-                    setCurrentPage(selectedItem.selected + 1)
-                  }
+                  onPageChange={handlePageClick} // Changed the handler
                   containerClassName={"pagination justify-content-center"}
                   activeClassName={"active"}
                   previousLinkClassName={"page-link"}
@@ -640,16 +621,16 @@ const SettlementReportDoitc = () => {
                 </div>
               </div>
             ) : buttonClicked && dataFound ? (
-              <div className="showMsg">Data Not Found</div>
+              <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                <div className="showMsg">Data Not Found</div>
+              </div>
+
             ) : (
               <></>
             )}
           </div>
         </div>
       </section>
-
-
-
     </CardLayout>
   );
 };
