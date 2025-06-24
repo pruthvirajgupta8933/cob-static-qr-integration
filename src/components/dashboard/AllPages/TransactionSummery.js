@@ -63,16 +63,19 @@ function TransactionSummery() {
   // dispatch action when client code change
   useEffect(() => {
     // console.log("user", user)
-    const objParam = {
-      fromdate: moment(fromDate).format("YYYY-MM-DD"),
-      todate: moment(toDate).format("YYYY-MM-DD"),
-      dttype,
-      clientcodelst: strClientCode,
-      clientNo: clientCodeArrLength,
-    };
+    if (strClientCode) {
+      const objParam = {
+        fromdate: moment(fromDate).format("YYYY-MM-DD"),
+        todate: moment(toDate).format("YYYY-MM-DD"),
+        dttype,
+        clientcodelst: strClientCode,
+        clientNo: clientCodeArrLength,
+      };
 
-    if (dttype !== "6") dispatch(successTxnSummary(objParam));
-  }, [dttype]);
+      if (dttype !== "6") dispatch(successTxnSummary(objParam));
+    }
+
+  }, [dttype, strClientCode]);
 
   //make client code array
   if (clientCodeData !== null && clientCodeData?.length > 0) {
