@@ -91,8 +91,8 @@ function AssignZone() {
       .then(response => {
 
         const data = convertToFormikSelectJson(
-          "mode_name",
           "mid_mode_name",
+          "mode_name",
           response?.data?.result
         )
         setMerchantData(data);
