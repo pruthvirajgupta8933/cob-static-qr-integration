@@ -31,6 +31,7 @@ const SettlementReportDoitc = () => {
   const roles = roleBasedAccess();
   const { auth, merchantReportSlice, merchantReferralOnboardReducer } =
     useSelector((state) => state);
+
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
@@ -198,9 +199,8 @@ const SettlementReportDoitc = () => {
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated =
-      merchantReportSlice.settledTransactionHistoryDoitc.data.
+      merchantReportSlice?.settledTransactionHistoryDoitc.data.
         results;
-    console.log("TxnListArrUpdated", TxnListArrUpdated);
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
@@ -281,7 +281,7 @@ const SettlementReportDoitc = () => {
     const excelArr = [excelHeaderRow];
     // console.log("txnList",txnList)
     // eslint-disable-next-line array-callback-return
-    merchantReportSlice?.settledTransactionHistoryDoitc?.data?.map(
+    merchantReportSlice?.settledTransactionHistoryDoitc?.data?.result?.map(
       (item, index) => {
         const allowDataToShow = {
           srNo: item.SrNo === null ? "null" : item.SrNo,
