@@ -95,7 +95,7 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
                       {key.replace("_", " ")}:
                     </span>
                     {typeof value === "boolean" ? (
-                      <span>{value.toString()}</span>
+                      <span>{value?.toString()}</span>
                     ) : (
                       <span>&nbsp;{value}</span>
                     )}

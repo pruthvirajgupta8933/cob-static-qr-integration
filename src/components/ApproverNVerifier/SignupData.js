@@ -351,7 +351,7 @@ const SignupData = () => {
                   </button>
                   {signupData?.length > 0 ? (
                     <button
-                      className="btn cob-btn-primary  approve  text-white ml-3"
+                      className="btn cob-btn-primary approve text-white ml-3"
                       type="button"
                       onClick={() => exportToExcelFn()}
                       style={{ backgroundColor: "rgb(1, 86, 179)" }}

@@ -36,7 +36,7 @@ const Emandate = () => {
       // console.log(details.mandateStartDate)
       const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
       const postData = {
-        clientCode: details.clientCode.toString(),
+        clientCode: details.clientCode?.toString(),
         mandateRegistrationId: details.mandateRegistrationId,
         umrn: details.umrnNumber,
         paymentMode: details.authenticationMode,
@@ -44,7 +44,7 @@ const Emandate = () => {
         mandateFrequency: details.frequency,
         mandateStatus: details.regestrationStatus,
         purchasAmount: details.mandateMaxAmount,
-        clientId: clientId.toString(),
+        clientId: clientId?.toString(),
         clientName: clientName,
         applicationId: selectedPlan.applicationId,
         applicationName: selectedPlan.applicationName,

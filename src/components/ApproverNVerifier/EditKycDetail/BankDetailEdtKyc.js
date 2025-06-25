@@ -230,9 +230,9 @@ function BankDetailEdtKyc(props) {
 
 
     let selectedChoice =
-      values.account_type.toString() === "1"
+      values.account_type?.toString() === "1"
         ? "Current"
-        : values.account_type.toString() === "2"
+        : values.account_type?.toString() === "2"
           ? "Saving"
           : "";
 

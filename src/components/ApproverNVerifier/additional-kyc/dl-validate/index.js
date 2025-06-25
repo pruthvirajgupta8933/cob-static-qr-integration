@@ -109,7 +109,7 @@ const ValidateDrivingLicense = () => {
                   {key.replace("_", " ")}:
                 </span>
                 {typeof value === "boolean" ? (
-                  <span>&nbsp;{value.toString()}</span>
+                  <span>&nbsp;{value?.toString()}</span>
                 ) : (
                   <span>&nbsp;{value}</span>
                 )}

@@ -2,7 +2,6 @@ const ENV_PROD = false; // For proudction make it true, don't change in the loca
 let url,
   kyc_url,
   b2b_url,
-  // kyc_validate,
   payout_url,
   webSocketUrl,
   widget_url,

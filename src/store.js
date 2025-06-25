@@ -144,7 +144,7 @@ const rootPersistConfig = {
     // 'themeReducer', 
     // 'kycOperationReducer', 
     // 'payout', 
-    'menuListReducer', 
+    'menuListReducer',
     // 'productCatalogueSlice', 
     // 'ReferralMidReducer', 
     // 'challanReducer', 

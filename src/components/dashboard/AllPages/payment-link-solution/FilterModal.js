@@ -119,7 +119,7 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
         onSubmit={(values) => handleSubmit(values)}
       >
         {({ values, errors, setFieldValue, resetForm }) => (
-          <Form>
+          <Form className="mt-3">
             <div className="d-flex flex-wrap gap-2">
               {[
                 { id: "today", label: "Today" },
@@ -186,7 +186,7 @@ const FilterModal = ({ show, onClose, filterRef, onApply }) => {
               </div>
             </div>
 
-            <div className="mt-5 d-flex justify-content-end gap-5">
+            <div className="mt-2 d-flex justify-content-end gap-5">
               <button
                 type="button"
                 className="btn btn-sm btn-outline-primary"

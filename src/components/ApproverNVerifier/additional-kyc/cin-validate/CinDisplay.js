@@ -12,7 +12,7 @@ function CinDisplay({ cinData }) {
                                 <span className="font-weight-bold mb-1">
                                     {key.replaceAll("_", " ")}:
                                 </span>
-                                <span>&nbsp; {cinData[key].toString()}</span>
+                                <span>&nbsp; {cinData[key]?.toString()}</span>
                             </div>
                         ) : (
                             <div className="col-md-12 p-2 text-uppercase" key={key}>
@@ -30,7 +30,7 @@ function CinDisplay({ cinData }) {
                                                                 {subkey.replace(/([a-z])([A-Z])/g, "$1 $2")}
                                                                 :
                                                             </span>
-                                                            <span>&nbsp; {data[subkey].toString()}</span>
+                                                            <span>&nbsp; {data[subkey]?.toString()}</span>
                                                         </div>
                                                     )
                                             )}
