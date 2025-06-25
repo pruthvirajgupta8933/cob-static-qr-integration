@@ -239,7 +239,7 @@ function ContactInfoEdtkyc(props) {
               <button
                 // href={() => false}
                 type='button'
-                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 10 || errors?.id_number
                   ? "disabled"
                   : ""
                   }`}
