@@ -30,7 +30,7 @@ const INITIAL_FORM_STATE = {
 const validationSchema = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username").allowOneSpace(),
   userPassword: Yup.string().required("Please enter password").allowOneSpace(),
-  reCaptcha: false
+  reCaptcha: APP_ENV
     ? Yup.string().required("Please complete the reCAPTCHA").nullable()
     : Yup.string().notRequired().nullable(),
 });
@@ -322,18 +322,18 @@ const Login = () => {
                             className="form-control"
                             maxLength={255}
                             id="clientUserId"
-                            // onCopy={(e) => {
-                            //   e.preventDefault();
-                            //   return false;
-                            // }}
-                            // onCut={(e) => {
-                            //   e.preventDefault();
-                            //   return false;
-                            // }}
-                            // onPaste={(e) => {
-                            //   e.preventDefault();
-                            //   return false;
-                            // }}
+                            onCopy={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
+                            onCut={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
+                            onPaste={(e) => {
+                              e.preventDefault();
+                              return false;
+                            }}
                             placeholder="Enter your username"
                             type="text"
                             name="clientUserId"
@@ -356,18 +356,18 @@ const Login = () => {
                               className="form-control border-right-0"
                               maxLength={255}
                               id="userPassword"
-                              // onCopy={(e) => {
-                              //   e.preventDefault();
-                              //   return false;
-                              // }}
-                              // onCut={(e) => {
-                              //   e.preventDefault();
-                              //   return false;
-                              // }}
-                              // onPaste={(e) => {
-                              //   e.preventDefault();
-                              //   return false;
-                              // }}
+                              onCopy={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
+                              onCut={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
+                              onPaste={(e) => {
+                                e.preventDefault();
+                                return false;
+                              }}
                               placeholder="Enter your password"
                               type={showPassword ? "text" : "password"}
                               name="userPassword"
