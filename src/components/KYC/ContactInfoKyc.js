@@ -138,9 +138,9 @@ function ContactInfoKyc(props) {
         .required("Required")
         .nullable(),
       otherwise: Yup.string().when("id_proof_type", {
-        is: 4, // Case: id_proof_type = 4
+        is: 4, // Case: id_proof_type = 4 
         then: Yup.string()
-          .min(14, "Minimum 14 digits are required")
+          .min(10, "Minimum 10 digits are required")
           .required("Required")
           .nullable(),
         otherwise: Yup.string().when("id_proof_type", {
