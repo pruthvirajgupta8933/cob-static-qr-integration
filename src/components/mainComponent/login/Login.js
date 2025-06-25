@@ -30,7 +30,7 @@ const INITIAL_FORM_STATE = {
 const validationSchema = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username").allowOneSpace(),
   userPassword: Yup.string().required("Please enter password").allowOneSpace(),
-  reCaptcha: APP_ENV  
+  reCaptcha: APP_ENV
     ? Yup.string().required("Please complete the reCAPTCHA").nullable()
     : Yup.string().notRequired().nullable(),
 });
