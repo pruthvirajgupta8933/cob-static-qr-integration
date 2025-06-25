@@ -140,7 +140,7 @@ function ContactInfoKyc(props) {
       otherwise: Yup.string().when("id_proof_type", {
         is: 4, // Case: id_proof_type = 4 
         then: Yup.string()
-          .min(10, "Minimum 10 digits are required")
+          // .min(10, "Minimum 10 digits are required")
           .required("Required")
           .nullable(),
         otherwise: Yup.string().when("id_proof_type", {
@@ -510,7 +510,7 @@ function ContactInfoKyc(props) {
               <button
                 // href={() => false}
                 type='button'
-                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
+                className={`btn cob-btn-primary btn-sm ${errors?.id_number
                   ? "disabled"
                   : ""
                   }`}
