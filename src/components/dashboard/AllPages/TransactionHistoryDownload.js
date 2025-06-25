@@ -161,8 +161,8 @@ function TransactionHistoryDownload() {
         clientMerchantDetailsList?.map((item) => {
           allClientCode.push(item.clientCode);
         });
-        clientCodeArrLength = allClientCode.length.toString();
-        strClientCode = allClientCode.join().toString();
+        clientCodeArrLength = allClientCode.length?.toString();
+        strClientCode = allClientCode.join()?.toString();
       } else {
         strClientCode = clientCode;
         clientCodeArrLength = "1";
@@ -439,8 +439,8 @@ function TransactionHistoryDownload() {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                          // value={startDate}
-                          // onChange={(e)=>setStartDate(e.target.value)}
+                        // value={startDate}
+                        // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 

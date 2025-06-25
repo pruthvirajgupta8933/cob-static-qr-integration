@@ -40,6 +40,7 @@ function TransactionSummery() {
   const { isLoading, successTxnsumry } = dashboard;
   const { user } = auth;
 
+
   let clientCodeArr = [];
   let totalSuccessTxn = 0;
   let totalAmt = 0;
@@ -53,8 +54,8 @@ function TransactionSummery() {
       allClientCode.push(item.client_code);
     });
 
-    clientCodeArrLength = allClientCode.length.toString();
-    strClientCode = allClientCode.join().toString();
+    clientCodeArrLength = allClientCode.length?.toString();
+    strClientCode = allClientCode.join()?.toString();
   } else {
     strClientCode = user?.clientMerchantDetailsList[0]?.clientCode;
     clientCodeArrLength = "1";
@@ -62,16 +63,19 @@ function TransactionSummery() {
   // dispatch action when client code change
   useEffect(() => {
     // console.log("user", user)
-    const objParam = {
-      fromdate: moment(fromDate).format("YYYY-MM-DD"),
-      todate: moment(toDate).format("YYYY-MM-DD"),
-      dttype,
-      clientcodelst: strClientCode,
-      clientNo: clientCodeArrLength,
-    };
+    if (strClientCode) {
+      const objParam = {
+        fromdate: moment(fromDate).format("YYYY-MM-DD"),
+        todate: moment(toDate).format("YYYY-MM-DD"),
+        dttype,
+        clientcodelst: strClientCode,
+        clientNo: clientCodeArrLength,
+      };
 
-    if (dttype !== "6") dispatch(successTxnSummary(objParam));
-  }, [dttype]);
+      if (dttype !== "6") dispatch(successTxnSummary(objParam));
+    }
+
+  }, [dttype, strClientCode]);
 
   //make client code array
   if (clientCodeData !== null && clientCodeData?.length > 0) {
@@ -103,8 +107,8 @@ function TransactionSummery() {
 
   // filter api response data with client code
   useEffect(() => {
-    if (successTxnsumry?.length > 0) {
-      let filterData = successTxnsumry?.filter((txnsummery) => {
+    if (successTxnsumry?.results?.length > 0) {
+      let filterData = successTxnsumry?.results?.filter((txnsummery) => {
         if (clientCodeArr.includes(txnsummery.client_code)) {
           return clientCodeArr.includes(txnsummery.client_code);
         }

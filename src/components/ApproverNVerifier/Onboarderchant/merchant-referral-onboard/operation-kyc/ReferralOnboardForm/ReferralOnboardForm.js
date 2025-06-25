@@ -275,7 +275,7 @@ function ReferralOnboardForm({
         if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {
           newClientCode = resp3?.data?.clientCode;
         } else {
-          newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+          newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
         }
 
         const data = {

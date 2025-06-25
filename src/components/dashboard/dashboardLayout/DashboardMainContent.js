@@ -127,7 +127,8 @@ import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
-import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
+// import ScheduleTransaction from "../../../subscription_components/schedule-transaction/ScheduleTransaction";
+import SchedulueTransaction from "../../../subscription_components/schedule-transaction/ScheduleTransaction";
 import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
 import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
 import EnachSettlementReport from "../../../subscription_components/settlement-report-enach/EnachSettlementReport";
@@ -178,7 +179,7 @@ function DashboardMainContent() {
       ) {
         newClientCode = stepRespOne?.data?.clientCode;
       } else {
-        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+        newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
       }
 
       // update new client code in db
@@ -834,7 +835,7 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/schedule-transaction`}
-                Component={ScheduleTransaction}
+                Component={SchedulueTransaction}
                 roleList={{ merchant: true }}
               ></AuthorizedRoute>
 

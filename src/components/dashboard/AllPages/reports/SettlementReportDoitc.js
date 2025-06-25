@@ -23,6 +23,7 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReactPaginate from "react-paginate";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
+import CardLayout from "../../../../utilities/CardLayout";
 
 const SettlementReportDoitc = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ const SettlementReportDoitc = () => {
   const roles = roleBasedAccess();
   const { auth, merchantReportSlice, merchantReferralOnboardReducer } =
     useSelector((state) => state);
+  // console.log("merchantReportSlice", merchantReportSlice)
+
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
@@ -40,17 +43,18 @@ const SettlementReportDoitc = () => {
 
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0); // pagination starts from 0 for react-paginate
   const [showData, setShowData] = useState([]);
   const [updateTxnList, setUpdateTxnList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false);
+  const [dataCount, setDatacount] = useState(0);
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
-  if (splitDate[1].length === 1) {
+  if (splitDate[1]?.length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
   if (splitDate[2].length === 1) {
@@ -139,8 +143,8 @@ const SettlementReportDoitc = () => {
   useEffect(() => {
     setTimeout(() => {
       if (
-        showData.length < 1 &&
-        (updateTxnList.length > 0 || updateTxnList.length === 0)
+        showData?.length < 1 &&
+        (updateTxnList?.length > 0 || updateTxnList?.length === 0)
       ) {
         setDataFound(true);
       } else {
@@ -149,8 +153,8 @@ const SettlementReportDoitc = () => {
     });
   }, [showData, updateTxnList]);
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected); // react-paginate gives selected page index (0-based)
   };
 
   const onSubmitHandler = (values) => {
@@ -161,7 +165,7 @@ const SettlementReportDoitc = () => {
       clientCodeListArr?.map((item) => {
         allClientCode.push(item.client_code);
       });
-      clientCodeArrLength = allClientCode.length?.toString();
+      clientCodeArrLength = allClientCode?.length?.toString();
       strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = values.clientCode;
@@ -177,12 +181,14 @@ const SettlementReportDoitc = () => {
     };
 
     setIsDisable(true);
+    isButtonClicked(true); // Set buttonClicked to true when form is submitted
     dispatch(settledTransactionHistoryDoitc(paramData)).then((res) => {
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
         setIsDisable(false);
+        isButtonClicked(false); // Reset buttonClicked on error
       }
       if (ApiStatus === "fulfilled") {
         setIsDisable(false);
@@ -190,36 +196,31 @@ const SettlementReportDoitc = () => {
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
         toast.error("No Data Found");
         setIsDisable(false);
+        isButtonClicked(false); // Reset buttonClicked if no data found
       }
     });
   };
 
   useEffect(() => {
-    // Remove initiated from transaction history response
     const TxnListArrUpdated =
-      merchantReportSlice.settledTransactionHistoryDoitc.data;
+      merchantReportSlice?.settledTransactionHistoryDoitc?.data
+
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
-    // exportToExcelFn()
+
+    setCurrentPage(0); // Reset current page to 0 when data changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [merchantReportSlice]);
+  }, [merchantReportSlice.settledTransactionHistoryDoitc.data]);
 
   useEffect(() => {
-    setPaginatedData(_(showData).slice(0).take(pageSize).value());
     setPageCount(
-      showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
+      showData?.length > 0 ? Math.ceil(showData?.length / pageSize) : 0
     );
-  }, [pageSize, showData]);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize;
+    const startIndex = currentPage * pageSize;
     const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [pageSize, showData, currentPage]); // Added currentPage to dependency array
 
   useEffect(() => {
     return () => {
@@ -240,13 +241,8 @@ const SettlementReportDoitc = () => {
     } else {
       setShowData(updateTxnList);
     }
-  }, [searchText]);
-
-  // const pages = _.range(1, pageCount + 1);
-
-  // const convertDate = (yourDate) => {
-  //   return yourDate ? moment(yourDate).format("YYYY-MM-DD HH:mm:ss") : "N/A";
-  // };
+    setCurrentPage(0); // Reset current page when search text changes
+  }, [searchText, updateTxnList]);
 
   const exportToExcelFn = (exportType) => {
     const excelHeaderRow = [
@@ -261,13 +257,11 @@ const SettlementReportDoitc = () => {
       "Client Code",
       "Payment Mode",
       "Client Name",
-
       "Settlement Status",
       "Settlement Date",
       "Settlement Amount",
       "Refund Status",
       "Refunded Date",
-
       "Refunded Amount",
       "Track Id",
       "Chargeback Status",
@@ -276,8 +270,7 @@ const SettlementReportDoitc = () => {
       "Remarks",
     ];
     const excelArr = [excelHeaderRow];
-    // console.log("txnList",txnList)
-    // eslint-disable-next-line array-callback-return
+
     merchantReportSlice?.settledTransactionHistoryDoitc?.data?.map(
       (item, index) => {
         const allowDataToShow = {
@@ -322,7 +315,6 @@ const SettlementReportDoitc = () => {
             item.charge_back_amount === null
               ? "null"
               : Number.parseFloat(item.charge_back_amount),
-
           refund_reason:
             item.refund_reason === null ? "null" : item.refund_reason,
         };
@@ -331,15 +323,13 @@ const SettlementReportDoitc = () => {
       }
     );
 
-    // Function to convert data to CSV format
-    //exportType = csv/ csv-ms-excel
     function arrayToCSV(data, exportType) {
       const csv = data
         .map((row) =>
           row
             .map((val) => {
               if (typeof val === "number") {
-                if (val?.toString().length >= 14) {
+                if (val?.toString()?.length >= 14) {
                   return `${val?.toString()};`;
                 }
                 return val?.toString();
@@ -353,7 +343,6 @@ const SettlementReportDoitc = () => {
       return csv;
     }
 
-    // Function to download CSV file
     function downloadCSV(data, filename, exportType) {
       const csv = arrayToCSV(data, exportType);
       const blob = new Blob([csv], {
@@ -364,11 +353,9 @@ const SettlementReportDoitc = () => {
 
     const fileName = "Settlement-Report";
     let handleExportLoading = (state) => {
-      // console.log(state)
       if (state) {
         alert("Exporting Excel File, Please wait...");
       }
-      // dispatch(exportTxnLoadingState(state))
       return state;
     };
 
@@ -382,278 +369,269 @@ const SettlementReportDoitc = () => {
   };
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <div className="">
-            <h5 className="">Settlement Report</h5>
-          </div>
-          <section className="">
-            <div className="container-fluid mt-5 p-0">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmitHandler}
-              >
-                {(formik) => (
-                  <Form>
-                    <div className="form-row">
-                      <div className="form-group col-md-3">
-                        <FormikController
-                          control="select"
-                          label="Client Code"
-                          name="clientCode"
-                          className="form-select rounded-0 mt-0"
-                          options={clientCodeOption}
-                        />
-                      </div>
+    <CardLayout title="Settlement Report">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmitHandler}
+      >
+        {(formik) => (
+          <Form>
+            <div className="form-row">
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="select"
+                  label="Client Code"
+                  name="clientCode"
+                  className="form-select rounded-0 mt-0"
+                  options={clientCodeOption}
+                />
+              </div>
 
-                      <div className="form-group col-md-3">
-                        <FormikController
-                          control="input"
-                          type="date"
-                          label="From Date"
-                          name="fromDate"
-                          className="form-control rounded-0"
-                        />
-                      </div>
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="input"
+                  type="date"
+                  label="From Date"
+                  name="fromDate"
+                  className="form-control rounded-0"
+                />
+              </div>
 
-                      <div className="form-group col-md-3">
-                        <FormikController
-                          control="input"
-                          type="date"
-                          label="End Date"
-                          name="endDate"
-                          className="form-control rounded-0"
-                        />
-                      </div>
-                    </div>
-                    <div className="form-row">
-                      <div className="form-group col-md-1">
-                        <button
-                          disabled={disable}
-                          className=" btn cob-btn-primary btn-sm"
-                          type="submit"
-                        >
-                          Search{" "}
-                        </button>
-                      </div>
-                      {txnList?.length > 0 ? (
-                        <div className="form-group col-md-1">
-                          <div className="dropdown form-group">
-                            <button
-                              className="btn btn-primary btn-sm dropdown-toggle"
-                              type="button"
-                              id="dropdownMenu2"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            >
-                              Export
-                            </button>
-                            <div
-                              className="dropdown-menu bg-light p-2"
-                              aria-labelledby="dropdownMenu2"
-                            >
-                              <button
-                                className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
-                                type="button"
-                                onClick={() => exportToExcelFn("csv")}
-                              >
-                                CSV
-                              </button>
-                              <button
-                                className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
-                                type="button"
-                                onClick={() => exportToExcelFn("csv-ms-excel")}
-                              >
-                                CSV for MS-Excel
-                              </button>
-                              <button
-                                className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
-                                type="button"
-                                onClick={() => exportToExcelFn("xlxs")}
-                              >
-                                Excel
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-              <hr className="hr" />
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="input"
+                  type="date"
+                  label="End Date"
+                  name="endDate"
+                  className="form-control rounded-0"
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-1">
+                <button
+                  disabled={disable}
+                  className=" btn cob-btn-primary btn-sm"
+                  type="submit"
+                >
+                  Search{" "}
+                </button>
+              </div>
               {txnList?.length > 0 ? (
-                <div className="form-row">
-                  <div className="form-group col-md-3">
-                    <label>Search</label>
-                    <input
-                      type="text"
-                      label="Search"
-                      name="search"
-                      placeholder="Search Here"
-                      className="form-control rounded-0"
-                      onChange={(e) => {
-                        SetSearchText(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-3">
-                    <label>Count Per Page</label>
-                    <select
-                      value={pageSize}
-                      rel={pageSize}
-                      className="form-select rounded-0"
-                      onChange={(e) => setPageSize(parseInt(e.target.value))}
+                <div className="form-group col-md-1">
+                  <div className="dropdown form-group">
+                    <button
+                      className="btn btn-primary btn-sm dropdown-toggle"
+                      type="button"
+                      id="dropdownMenu2"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
                     >
-                      <DropDownCountPerPage datalength={txnList.length} />
-                    </select>
+                      Export
+                    </button>
+                    <div
+                      className="dropdown-menu bg-light p-2"
+                      aria-labelledby="dropdownMenu2"
+                    >
+                      <button
+                        className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
+                        type="button"
+                        onClick={() => exportToExcelFn("csv")}
+                      >
+                        CSV
+                      </button>
+                      <button
+                        className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
+                        type="button"
+                        onClick={() => exportToExcelFn("csv-ms-excel")}
+                      >
+                        CSV for MS-Excel
+                      </button>
+                      <button
+                        className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left"
+                        type="button"
+                        onClick={() => exportToExcelFn("xlxs")}
+                      >
+                        Excel
+                      </button>
+                    </div>
                   </div>
                 </div>
               ) : (
-                <> </>
-              )}
-            </div>
-          </section>
-
-          <section className="">
-            <div className="container-fluid mt-5">
-              {txnList.length > 0 ? (
-                <h6>Total Record : {txnList.length} </h6>
-              ) : (
                 <></>
               )}
-
-              <div className="overflow-auto">
-                <table className="table table-bordered">
-                  <thead>
-                    {txnList.length > 0 ? (
-                      <tr>
-                        <th> Sr. No. </th>
-                        <th> Trans ID</th>
-                        <th> Client Trans ID </th>
-
-                        <th> Amount </th>
-                        <th> Transaction Date </th>
-                        <th> Payment Status </th>
-                        <th> Payer First Name</th>
-                        <th> Client Code </th>
-                        <th> Payment Mode </th>
-                        <th> Client Name </th>
-                        <th> Settlement Status </th>
-                        <th> Settlement Date </th>
-                        <th> Settlement Amount</th>
-                        <th> Refund Status</th>
-                        <th> Refunded Date</th>
-                        <th> Refunded Amount</th>
-                        <th> Track Id</th>
-                        <th> Chargeback Status</th>
-                        <th> Charged Date</th>
-                        <th> Charged Amount</th>
-                        <th> Remarks</th>
-                      </tr>
-                    ) : (
-                      <></>
-                    )}
-                  </thead>
-                  <tbody>
-                    {txnList.length > 0 &&
-                      paginatedata.map((item, i) => {
-                        return (
-                          <tr key={uuidv4()}>
-                            <td>{item.SrNo}</td>
-                            <td>{item.txn_id}</td>
-                            <td>{item.client_txn_id}</td>
-
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
-                            <td>{dateFormatBasic(item?.trans_date)}</td>
-                            <td>{item.status}</td>
-                            <td>{item.payee_first_name}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.paymode_name}</td>
-                            <td>{item.client_name}</td>
-                            <td>{item.settlement_status}</td>
-                            <td>{dateFormatBasic(item.settlement_date)}</td>
-                            <td>
-                              {Number.parseFloat(
-                                item.settlement_amount
-                              ).toFixed(2)}
-                            </td>
-                            <td>{item.refund_status}</td>
-                            <td>{item.refund_process_on}</td>
-                            <td>
-                              {Number.parseFloat(item.refunded_amount).toFixed(
-                                2
-                              )}
-                            </td>
-                            <td>{item.refund_track_id}</td>
-                            <td>{item.chargeback_status}</td>
-                            <td>{item.charge_back_date}</td>
-                            <td>
-                              {item.charge_back_amount && Number.parseFloat(item.charge_back_amount).toFixed(2)}
-                            </td>
-                            <td>{item.refund_reason}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-
-              <div>
-                {txnList.length > 0 ? (
-                  <div className="d-flex justify-content-center mt-2">
-                    <ReactPaginate
-                      previousLabel={"Previous"}
-                      nextLabel={"Next"}
-                      breakLabel={"..."}
-                      pageCount={pageCount}
-                      marginPagesDisplayed={2} // using this we can set how many number we can show after ...
-                      pageRangeDisplayed={5}
-                      onPageChange={(selectedItem) =>
-                        setCurrentPage(selectedItem.selected + 1)
-                      }
-                      containerClassName={"pagination justify-content-center"}
-                      activeClassName={"active"}
-                      previousLinkClassName={"page-link"}
-                      nextLinkClassName={"page-link"}
-                      disabledClassName={"disabled"}
-                      breakClassName={"page-item"}
-                      breakLinkClassName={"page-link"}
-                      pageClassName={"page-item"}
-                      pageLinkClassName={"page-link"}
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="container">
-                {merchantReportSlice.settledTransactionHistoryDoitc.loading ? (
-                  <div className="col-lg-12 col-md-12">
-                    <div className="text-center">
-                      <div className="spinner-border" role="status">
-                        <span className="sr-only">Loading...</span>
-                      </div>
-                    </div>
-                  </div>
-                ) : buttonClicked && dataFound ? (
-                  <div className="showMsg">Data Not Found</div>
-                ) : (
-                  <></>
-                )}
-              </div>
             </div>
-          </section>
+          </Form>
+        )}
+      </Formik>
+      <hr className="hr" />
+      {txnList?.length > 0 ? (
+        <div className="form-row">
+          <div className="form-group col-md-3">
+            <label>Search</label>
+            <input
+              type="text"
+              label="Search"
+              name="search"
+              placeholder="Search Here"
+              className="form-control rounded-0"
+              onChange={(e) => {
+                SetSearchText(e.target.value);
+              }}
+            />
+          </div>
+          <div className="form-group col-md-3">
+            <label>Count Per Page</label>
+            <select
+              value={pageSize}
+              rel={pageSize}
+              className="form-select rounded-0"
+              onChange={(e) => setPageSize(parseInt(e.target.value))}
+            >
+              <DropDownCountPerPage datalength={txnList?.length} />
+            </select>
+          </div>
         </div>
-      </main>
-    </section>
+      ) : (
+        <> </>
+      )}
+
+      <section className="">
+        <div className="container-fluid mt-5">
+          {txnList?.length > 0 ? (
+            <h6>Total Record : {txnList.length} </h6>
+          ) : (
+            <></>
+          )}
+
+          <div className="overflow-auto">
+            <table className="table table-bordered">
+              <thead>
+                {txnList?.length > 0 ? (
+                  <tr>
+                    <th> Sr. No. </th>
+                    <th> Trans ID</th>
+                    <th> Client Trans ID </th>
+                    <th> Amount </th>
+                    <th> Transaction Date </th>
+                    <th> Payment Status </th>
+                    <th> Payer First Name</th>
+                    <th> Client Code </th>
+                    <th> Payment Mode </th>
+                    <th> Client Name </th>
+                    <th> Settlement Status </th>
+                    <th> Settlement Date </th>
+                    <th> Settlement Amount</th>
+                    <th> Refund Status</th>
+                    <th> Refunded Date</th>
+                    <th> Refunded Amount</th>
+                    <th> Track Id</th>
+                    <th> Chargeback Status</th>
+                    <th> Charged Date</th>
+                    <th> Charged Amount</th>
+                    <th> Remarks</th>
+                  </tr>
+                ) : (
+                  <></>
+                )}
+              </thead>
+              <tbody>
+                {txnList?.length > 0 &&
+                  paginatedata.map((item, i) => {
+                    return (
+                      <tr key={uuidv4()}>
+                        <td>{item.SrNo}</td>
+                        <td>{item.txn_id}</td>
+                        <td>{item.client_txn_id}</td>
+                        <td>
+                          {Number.parseFloat(item.payee_amount).toFixed(2)}
+                        </td>
+                        <td>{dateFormatBasic(item?.trans_date)}</td>
+                        <td>{item.status}</td>
+                        <td>{item.payee_first_name}</td>
+                        <td>{item.client_code}</td>
+                        <td>{item.paymode_name}</td>
+                        <td>{item.client_name}</td>
+                        <td>{item.settlement_status}</td>
+                        <td>{dateFormatBasic(item.settlement_date)}</td>
+                        <td>
+                          {Number.parseFloat(
+                            item.settlement_amount
+                          ).toFixed(2)}
+                        </td>
+                        <td>{item.refund_status}</td>
+                        <td>{item.refund_process_on}</td>
+                        <td>
+                          {Number.parseFloat(item.refunded_amount).toFixed(
+                            2
+                          )}
+                        </td>
+                        <td>{item.refund_track_id}</td>
+                        <td>{item.chargeback_status}</td>
+                        <td>{item.charge_back_date}</td>
+                        <td>
+                          {item.charge_back_amount &&
+                            Number.parseFloat(item.charge_back_amount).toFixed(
+                              2
+                            )}
+                        </td>
+                        <td>{item.refund_reason}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            {txnList?.length > 0 ? (
+              <div className="d-flex justify-content-center mt-2">
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2} // using this we can set how many number we can show after ...
+                  pageRangeDisplayed={5}
+                  onPageChange={handlePageClick} // Changed the handler
+                  containerClassName={"pagination justify-content-center"}
+                  activeClassName={"active"}
+                  previousLinkClassName={"page-link"}
+                  nextLinkClassName={"page-link"}
+                  disabledClassName={"disabled"}
+                  breakClassName={"page-item"}
+                  breakLinkClassName={"page-link"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+          <div className="container">
+            {merchantReportSlice.settledTransactionHistoryDoitc.loading ? (
+              <div className="col-lg-12 col-md-12">
+                <div className="text-center">
+                  <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            ) : buttonClicked && dataFound ? (
+              <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                <div className="showMsg">Data Not Found</div>
+              </div>
+
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      </section>
+    </CardLayout>
   );
 };
 
