@@ -103,7 +103,7 @@ function MerchantSummary() {
           allClientCode.push(item.client_code);
         }
       });
-      strClientCode = allClientCode.join().toString();
+      strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = objData.clientCode;
     }

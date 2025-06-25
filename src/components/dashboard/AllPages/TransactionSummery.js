@@ -54,8 +54,8 @@ function TransactionSummery() {
       allClientCode.push(item.client_code);
     });
 
-    clientCodeArrLength = allClientCode.length.toString();
-    strClientCode = allClientCode.join().toString();
+    clientCodeArrLength = allClientCode.length?.toString();
+    strClientCode = allClientCode.join()?.toString();
   } else {
     strClientCode = user?.clientMerchantDetailsList[0]?.clientCode;
     clientCodeArrLength = "1";

@@ -179,7 +179,7 @@ function DashboardMainContent() {
       ) {
         newClientCode = stepRespOne?.data?.clientCode;
       } else {
-        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+        newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
       }
 
       // update new client code in db
