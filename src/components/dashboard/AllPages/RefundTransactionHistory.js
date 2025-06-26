@@ -289,8 +289,8 @@ const RefundTransactionHistory = () => {
       clientCodeListArr?.map((item) => {
         allClientCode.push(item.client_code);
       });
-      clientCodeArrLength = allClientCode.length.toString();
-      strClientCode = allClientCode.join().toString();
+      clientCodeArrLength = allClientCode.length?.toString();
+      strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = values.clientCode;
       clientCodeArrLength = "1";

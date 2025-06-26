@@ -21,7 +21,7 @@ export const saveCkycr = createAsyncThunk(
                     error.response.data &&
                     error.response.data.message) ||
                 error.message ||
-                error.toString();
+                error?.toString();
             // thunkAPI.dispatch(setMessage(message));
             return thunkAPI.rejectWithValue(message);
         }
@@ -39,7 +39,7 @@ export const fetchCkycr = createAsyncThunk(
                     error.response.data &&
                     error.response.data.message) ||
                 error.message ||
-                error.toString();
+                error?.toString();
             // thunkAPI.dispatch(setMessage(message));
             return thunkAPI.rejectWithValue(message);
         }

@@ -144,7 +144,7 @@ function SideNavbar() {
 
 
           {/* display menu for selected merchant */}
-          {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
+          {enableSettlementReport.includes(auth?.user?.loginId?.toString()) && (
             <ul className="nav flex-column mt-3 " role="menu">
               <li className="nav-item ml-1" role="menuitem">
                 <Link
@@ -161,7 +161,7 @@ function SideNavbar() {
             </ul>
           )}
           {/* display menu for selected merchant */}
-          {branchTransactionMenu.includes(auth?.user?.loginId.toString()) && (
+          {branchTransactionMenu.includes(auth?.user?.loginId?.toString()) && (
             <ul className="nav flex-column mt-3 " role="menu">
               <li className="nav-item ml-1" role="menuitem">
                 <Link

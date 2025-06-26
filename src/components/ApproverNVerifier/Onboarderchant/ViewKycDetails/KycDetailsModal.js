@@ -371,14 +371,14 @@ const KycDetailsModal = (props) => {
 
       {/* {console.log(triggerRateMapping, selectedUserData?.loginMasterId, generalFormData?.parent_client_code, !isProductRateMapRestrict, !isUserRateMapRestrict, APP_ENV)} */}
       {/* {console.log(generalFormData)} */}
-      {triggerRateMapping && selectedUserData?.loginMasterId && generalFormData?.parent_client_code && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
+      {/* {triggerRateMapping && selectedUserData?.loginMasterId && generalFormData?.parent_client_code && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
         <div className="container">
           <DefaultRateMapping
             merchantLoginId={selectedUserData?.loginMasterId}
             parent_client_code={generalFormData?.parent_client_code}
           />
         </div>
-      )}
+      )} */}
     </>
   ), [
     rateMappingSlice,

@@ -91,7 +91,7 @@ const TransactionHistory = () => {
 
   useEffect(() => {
     fetchClientData();
-  }, [fetchClientData]);
+  }, []);
 
   useEffect(() => {
     if (

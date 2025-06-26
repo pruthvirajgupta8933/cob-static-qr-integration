@@ -67,10 +67,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       "",
     id_number:
       kycData?.aadharNumber ?? basicDetailsResponse?.data?.aadhar_number ?? "",
-    isIdProofVerified:
-      kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
-        ? 1
-        : "",
+    // isIdProofVerified:
+    //   kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
+    //     ? 1
+    //     : "",
+    isIdProofVerified: 1,
     isPanVerified:
       kycData?.signatoryPAN ||
         kycData?.panCard ||
@@ -362,15 +363,26 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
           }
           onChange={(e) => {
             setFieldValue("id_number", e.target.value);
-            setFieldValue("isIdProofVerified", "");
+            // setFieldValue("isIdProofVerified", "");
           }}
           disabled={
             disableForm ||
             (edit ? disableForm : !idType || kycData?.id_proof_type)
           }
         />
-
-        {values.id_number && values.isIdProofVerified ? (
+        {values.id_number && values.isIdProofVerified &&
+          <span className="success input-group-append">
+            <img
+              src={verifiedIcon}
+              alt=""
+              title=""
+              width={"20px"}
+              height={"20px"}
+              className="btn-outline-secondary"
+            />
+          </span>
+        }
+        {/* {values.id_number && values.isIdProofVerified ? (
           <span className="success input-group-append">
             <img
               src={verifiedIcon}
@@ -407,7 +419,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
               )}
             </a>
           </div>
-        )}
+        )} */}
         {aadhaarNumberVerifyToggle && (
           <AadhaarVerficationModal
             formikFields={{

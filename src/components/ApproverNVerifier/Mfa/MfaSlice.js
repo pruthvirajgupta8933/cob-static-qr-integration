@@ -28,7 +28,7 @@ export const updateMfaStatus = createAsyncThunk(
                     error.response.data &&
                     error.response.data.message) ||
                 error.message ||
-                error.toString() || error.request.toString();
+                error?.toString() || error.request?.toString();
             thunkAPI.dispatch(setMessage(message));
             return thunkAPI.rejectWithValue(message);
 

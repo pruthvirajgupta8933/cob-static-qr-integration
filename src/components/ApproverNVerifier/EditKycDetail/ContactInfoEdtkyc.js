@@ -239,7 +239,7 @@ function ContactInfoEdtkyc(props) {
               <button
                 // href={() => false}
                 type='button'
-                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 14 || errors?.id_number
+                className={`btn cob-btn-primary btn-sm ${values.id_number?.length < 10 || errors?.id_number
                   ? "disabled"
                   : ""
                   }`}
@@ -266,9 +266,11 @@ function ContactInfoEdtkyc(props) {
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
       ) {
-        setOtpLoader(false);
+
         setFieldVal("oldIdNumber", voterId);
         setFieldVal("isIdProofVerified", 1);
+      } else {
+        toast.error(res?.payload);
       }
     } catch (error) {
       toast.error(res?.payload?.message);
@@ -305,21 +307,19 @@ function ContactInfoEdtkyc(props) {
 
   const handleSubmitContact = (values) => {
 
-    const emptyFields = ['name', 'contact_number', 'email_id', 'aadhar_number', 'developer_contact', 'developer_name', 'id_proof_type'].some(
-      (field) => !values[field]
-    );
-
-    if (emptyFields) {
+    const isEmptyValue = Object.keys(values).filter(item => values[item] === "");
+    if (isEmptyValue.length > 0) {
       const confirmSubmit = window.confirm(
-        "Some fields are empty. Are you sure you want to proceed?"
+        `Some fields are empty. These values will not be saved. Do you still want to proceed with submitting the form? 
+        ${isEmptyValue.map(item => `\n ${item}`).join(", ")} will not be saved.`
       );
-
       if (!confirmSubmit) {
         return; // Exit the function if the user cancels
       }
     }
 
     setIsDisable(true);
+
     dispatch(
       updateContactInfoEditDetails({
         login_id: selectedId,
