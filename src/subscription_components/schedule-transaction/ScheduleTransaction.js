@@ -1,8 +1,7 @@
-// All existing imports remain the same
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import CustomLoader from "../../_components/loader";
 import TableWithPagination from "../../utilities/tableWithPagination/TableWithPagination";
@@ -13,7 +12,6 @@ import {
 } from "../../slices/subscription-slice/scheduleTransactionSlice";
 import { ErrorMessage, Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
-
 
 const SchedulueTransaction = () => {
     const dispatch = useDispatch();
@@ -27,13 +25,12 @@ const SchedulueTransaction = () => {
     const [pageCount, setPageCount] = useState(Math.ceil(dataCount / pageSize));
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedMandate, setSelectedMandate] = useState(null);
-
+    const { user } = useSelector((state) => state.auth);
+    const { clientCode } = user.clientMerchantDetailsList[0];
 
     const [filterFromDate, setFilterFromDate] = useState("");
     const [isScheduling, setIsScheduling] = useState(false);
-    const [isDateFilterSubmitting, setIsDateFilterSubmitting] = useState(false); // New state for date filter loader
-
-
+    const [isDateFilterSubmitting, setIsDateFilterSubmitting] = useState(false);
 
     const handlePageChange = (selectedItem) => setCurrentPage(selectedItem.selected + 1);
 
@@ -43,16 +40,20 @@ const SchedulueTransaction = () => {
 
     const fetchData = (page, size, fromDate = "") => {
         setIsLoading(true);
-        const postDataS = {
+        const queryParams = {
             page: page,
             page_size: size,
         };
+        const payloadData = {
+            client_code: clientCode,
+            is_admin: false
+        };
 
         if (fromDate) {
-            postDataS.from_date = new Date(fromDate).toISOString().split("T")[0];;
+            queryParams.from_date = new Date(fromDate).toISOString().split("T")[0];
         }
 
-        dispatch(scheduleTransactionData(postDataS))
+        dispatch(scheduleTransactionData({ queryParams, payloadData }))
             .then((resp) => {
                 if (resp?.meta?.requestStatus === "fulfilled") {
                     setFilteredMandates(resp.payload.data.results);
@@ -69,7 +70,7 @@ const SchedulueTransaction = () => {
 
     useEffect(() => {
         fetchData(currentPage, pageSize, filterFromDate);
-    }, [pageSize, currentPage,]);
+    }, [pageSize, currentPage]);
 
     const handleSearchChange = (value) => {
         setSearchQuery(value);
@@ -102,9 +103,7 @@ const SchedulueTransaction = () => {
         "Frequency",
         "Bank Reference Number",
         "Transaction Schedule",
-
     ];
-
 
     const renderRow = (mandate, index) => {
         const showValue = (value) => value ? value : "NA";
@@ -140,8 +139,6 @@ const SchedulueTransaction = () => {
             </tr>
         );
     };
-
-
 
     const handleSubmit = (values) => {
         setIsScheduling(true);
@@ -242,6 +239,7 @@ const SchedulueTransaction = () => {
             </Formik>
         );
     };
+
     let now = moment().format("YYYY-M-D");
     let splitDate = now.split("-");
     if (splitDate[1].length === 1) {
@@ -263,25 +261,27 @@ const SchedulueTransaction = () => {
     });
 
     const handleDateFilterSubmit = (values) => {
-
-
         setIsDateFilterSubmitting(true);
         setCurrentPage(1);
         setFilterFromDate(values.from_date || "");
 
-        const postDataS = {
+        const queryParams = {
             page: 1,
             page_size: pageSize,
         };
+        const payloadData = {
+            client_code: clientCode,
+            is_admin: false
+        };
+
 
         if (values.from_date) {
-            // Format date to YYYY-MM-DD in local time
             const dateObj = new Date(values.from_date);
             const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-            postDataS.from_date = formattedDate;
+            queryParams.from_date = formattedDate;
         }
 
-        dispatch(scheduleTransactionData(postDataS))
+        dispatch(scheduleTransactionData({ queryParams, payloadData }))
             .then((resp) => {
                 if (resp?.meta?.requestStatus === "fulfilled") {
                     setFilteredMandates(resp.payload.data.results);
@@ -295,8 +295,6 @@ const SchedulueTransaction = () => {
             })
             .catch(() => setIsDateFilterSubmitting(false));
     };
-
-
 
     return (
         <div className="container-fluid mt-4">
@@ -336,7 +334,6 @@ const SchedulueTransaction = () => {
                                             errorMsg={formik.errors["from_date"]}
                                             popperPlacement="top-end"
                                         />
-
                                     </div>
                                     <div className="col-md-3 mt-3">
                                         <button
