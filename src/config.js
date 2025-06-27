@@ -153,6 +153,7 @@ const API_LIVE = {
   RefundTxnHistory: report_api_url + "/transactions/GetRefundTxnHistory/",
   GET_DOITC_SETTLED_TXN_HISTORY:
     report_api_url + "/transactions/GetDOITCSettledTxnHistory/",
+  EXPORT_DOITC_SETTLED_TXN_HISTORY: report_api_url + "/transactions/GetDOITCSettledTxnExcelHistory/",
   GET_DOITC_MERCHANT_TXN_HISTORY:
     report_api_url + "/transactions/GetDOITCMerchantTxnHistory/",
 

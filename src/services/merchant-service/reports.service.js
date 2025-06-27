@@ -12,6 +12,9 @@ export const fetchTransactionHistoryDoitc = (paramData) => {
 export const fetchSettledTransactionHistoryDsoitc = (paramData) => {
   return axiosInstanceJWT.post(API_URL.GET_DOITC_SETTLED_TXN_HISTORY, paramData);
 }
+export const fetchExportDsoitcData = (paramData) => {
+  return axiosInstanceJWT.post(API_URL.EXPORT_DOITC_SETTLED_TXN_HISTORY, paramData, { responseType: 'arraybuffer' });
+}
 
 
 
