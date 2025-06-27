@@ -299,7 +299,7 @@ const SchedulueTransaction = () => {
     return (
         <div className="container-fluid mt-4">
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
-                <h5>Schedule Transactionn</h5>
+                <h5>Schedule Transaction</h5>
             </div>
 
             <div className="card mb-4">
