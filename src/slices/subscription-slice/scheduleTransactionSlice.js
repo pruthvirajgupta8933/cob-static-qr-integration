@@ -7,13 +7,12 @@ const initialState = {};
 
 export const scheduleTransactionData = createAsyncThunk(
     "scheduleTransaction/scheduleTransactionData",
-    async (requestParam, thunkAPI) => {
+    async ({ queryParams, payloadData }, thunkAPI) => {
         try {
-            const data = await scheduleTransactionApi(requestParam);
+            const data = await scheduleTransactionApi(queryParams, payloadData);
             return data;
         } catch (error) {
             const message = getErrorMessage(error)
-
             return thunkAPI.rejectWithValue(message);
         }
     }
