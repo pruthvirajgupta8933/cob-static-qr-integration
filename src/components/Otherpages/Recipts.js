@@ -230,7 +230,7 @@ const Recipts = () => {
                               verticalAlign: "top",
                             }}
                           >
-                            {data.client_txn_Id}
+                            {data.client_txn_id}
                           </td>
                         </tr>
 
