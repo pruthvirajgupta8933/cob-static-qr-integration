@@ -54,6 +54,7 @@
     "recharts": "^2.15.1",
     "redux-persist": "^6.0.0",
     "rsuite": "^5.79.0",
+    "sabpaisa-encryption-package-gcm": "^2.0.9",
     "sass": "^1.70.0",
     "styled-components": "^4.4.1",
     "uuid": "^9.0.0",
