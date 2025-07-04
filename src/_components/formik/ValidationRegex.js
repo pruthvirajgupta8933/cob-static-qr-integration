@@ -1,7 +1,7 @@
 export const Regex = {
   acceptAlphabet: /^[aA-zZ\s]+$/,
   acceptAlphaNumericDot: /^[a-zA-Z0-9. ]+$/,
-  acceptAlphaWithComma: /^[a-zA-Z,.\s]+$/,
+  acceptAlphaWithComma: /^[a-zA-Z0-9,.\s]+$/, // accept alphabets, numbers, comma, dot and space
   acceptNumber: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
   acceptAlphaNumeric: /^[a-zA-Z0-9\s*]+$/, // alphanumeric with *
   alphaBetwithhyphon: /[a-zA-Z._^%$#!~@,-]+/,
@@ -62,7 +62,7 @@ export const RegexMsg = {
   pinRegex: "Invalid PIN code",
   latitudeRegex: "Invalid Latitude",
   longitudeRegex: "Invalid Longitude",
-  acceptAlphaWithComma: "Please enter valid characters",
+  acceptAlphaWithComma: "Please enter valid characters, Accept alphabets, numbers, comma, dot",
 };
 
 // if word length more then 20 char. then throw error

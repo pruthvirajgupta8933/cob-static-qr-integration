@@ -16,7 +16,8 @@ import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
-import { Encrypt } from "../../../utilities/aes";
+// import { Encrypt } from "../../../utilities/aes";
+import { encrypt } from "sabpaisa-encryption-package-gcm";
 import keyConfig from "../../../key.config";
 import { APP_ENV } from "../../../config";
 
@@ -87,13 +88,14 @@ const Login = () => {
       });
   };
 
-  const handleLogin = (formValue) => {
+  const handleLogin = async (formValue) => {
     const { clientUserId, userPassword } = formValue;
 
     setLoading(true);
 
+
     const encQuery = {
-      query: Encrypt(
+      query: await encrypt(
         JSON.stringify({
           clientUserId: clientUserId,
           userPassword: userPassword,
@@ -151,11 +153,11 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const enableSocialLogin = (flag, response) => {
+  const enableSocialLogin = async (flag, response) => {
     if (flag) {
       const username = response?.profileObj?.email;
       const encQuery = {
-        query: Encrypt(
+        query: encrypt(
           JSON.stringify({ clientUserId: username, is_social: true }),
           keyConfig.LOGIN_AUTH_KEY,
           keyConfig.LOGIN_AUTH_IV
