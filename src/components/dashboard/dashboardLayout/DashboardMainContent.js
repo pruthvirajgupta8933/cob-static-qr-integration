@@ -133,6 +133,7 @@ import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
 import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
 import EnachSettlementReport from "../../../subscription_components/settlement-report-enach/EnachSettlementReport";
 import IdleTimerContainer from "../../../utilities/IdleTimer";
+import AdminAuthRegister from "../../ApproverNVerifier/admin-auth-register/AdminAuthRegister";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -706,6 +707,10 @@ function DashboardMainContent() {
                 <MerchantBalance />
               </AuthorizedRoute>
 
+
+
+
+
               <AuthorizedRoute
                 exact
                 path={`${path}/q-form-reports`}
@@ -1113,6 +1118,16 @@ function DashboardMainContent() {
                 Component={UpdateRollingReserve}
                 roleList={{ approver: true, verifier: true }}
               />
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/admin-auth-register`}
+                Component={AdminAuthRegister}
+                roleList={{ approver: true }}
+              >
+                <AdminAuthRegister />
+              </AuthorizedRoute>
 
               <AuthorizedRoute
                 exact
