@@ -78,8 +78,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     website: Yup.string()
       .allowOneSpace()
       .matches(Regex.urlFormate, RegexMsg.urlFormate)
-      .nullable()
-      .required("Website is required"),
+      .nullable(),
     is_pan_verified: Yup.string().nullable(),
     platform_id: Yup.string().required("Select the platform").nullable(),
     expected_transactions: Yup.string().trim().required("Required").nullable(),
@@ -199,7 +198,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     };
     const postData = {
       website_app_url: value.website,
-      is_website_url: "True",
+      is_website_url: value.website ? "True" : "False",
       pan_card: value.pan_card,
       pan_dob_or_doi: value.pan_dob_or_doi,
       authorized_person_dob: value.authorized_person_dob,
