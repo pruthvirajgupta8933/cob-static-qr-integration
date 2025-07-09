@@ -1,11 +1,8 @@
 @import url("../src/assets/fonts/Sofia/sofia.css");
 
-
-
 html {
   overflow-y: scroll;
 }
-
 
 body {
   font-family: "Sofia-Pro-Regular";
@@ -27,7 +24,7 @@ body {
 
 /* Apply primary button styles */
 .btn-sm.cob-btn-primary:not(.client_code_not_available) {
-  background-color: #286ECD !important;
+  background-color: #286ecd !important;
   color: whitesmoke !important;
 }
 
@@ -51,14 +48,12 @@ table tbody td {
   text-wrap: balance;
 }
 
-
 .bg-auth {
-  background-color: #FAFDFF;
-
+  background-color: #fafdff;
 }
 
 .bg-screen-color {
-  background-color: #EFF2FF;
+  background-color: #eff2ff;
 }
 
 .bg-body-sp {
@@ -79,7 +74,6 @@ select {
 .removeWhiteSpace {
   padding-top: 10px;
   padding-bottom: 10px;
-
 }
 
 .login-form,
@@ -91,7 +85,6 @@ select {
 .not-allowed {
   cursor: not-allowed;
 }
-
 
 .profile-img-card {
   width: 96px;
@@ -151,7 +144,6 @@ select {
   color: #495057;
   font-size: 16px;
   line-height: 1.6;
-
 }
 
 .instructions {
@@ -169,9 +161,6 @@ select {
   margin-left: "8px";
 }
 
-
-
-
 .displayErrorMessage {
   display: flex;
   padding: 10px;
@@ -181,15 +170,9 @@ select {
   width: 100%;
 }
 
-
-
-
-
 .zindexforDropdown {
   z-index: 999;
-
 }
-
 
 .displayErrorMessage p {
   background: palevioletred;
@@ -199,7 +182,6 @@ select {
 /* As per figma css */
 
 .desktop-sidenave-typography {
-
   font-size: 16px !important;
   font-weight: 400 !important;
   line-height: 24px !important;
@@ -213,7 +195,6 @@ select {
 
 /* For Desktop View */
 @media screen and (min-width: 1024px) {
-
   .login-float-right {
     float: right !important;
   }
@@ -239,8 +220,6 @@ select {
   .login-float-none {
     float: none;
   }
-
-
 }
 
 /* For iPhone 4 Portrait or Landscape View */
@@ -277,22 +256,20 @@ select {
 }
 
 .font-sofia-medium {
-  font-family: 'Sofia-Pro-Medium';
+  font-family: "Sofia-Pro-Medium";
 }
 
 .maskedInput {
-  -webkit-text-security: disc
+  -webkit-text-security: disc;
 }
-
 
 /* grid */
 @media (max-width: 576px) {
   .col-xs-2 {
     flex: 0 0 auto;
-    width: 10.666667%
+    width: 10.666667%;
   }
 }
-
 
 /* end  grid */
 
@@ -323,13 +300,10 @@ select {
   visibility: visible;
 }
 
-
-
 /* input tooltip  */
 
 [data-tip] {
   position: relative;
-
 }
 
 [data-tip]:before {
@@ -374,6 +348,50 @@ select {
   display: block;
 }
 
+/* tooltip 2 */
+/* Tooltip container */
+.tooltip-custom-sp {
+  position: relative;
+  display: inline-block;
+}
+
+/* Custom Tooltip */
+.custom-tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 999;
+  white-space: normal; /* Allow content wrapping */
+  max-width: auto; /* Make the width dynamic based on the content */
+  min-width: 150px; /* Optional: Minimum width for small content */
+  word-wrap: break-word; /* Allow the tooltip content to wrap */
+}
+
+/* Display the custom tooltip when hovering over the icon */
+.tooltip-on-hover:hover + .custom-tooltip {
+  display: block;
+}
+
+/* Tooltip arrow */
+.custom-tooltip::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #333;
+}
+
+/* end tooltip 2 */
 
 /* display none unwanted div */
 .modal-backdrop {
@@ -384,41 +402,32 @@ select {
 
 /* Primary */
 .cob-btn-primary {
-  background-color: #286ECD !important;
+  background-color: #286ecd !important;
   color: whitesmoke !important;
-
 }
 
 .cob-btn-primary :hover {
   background-color: #1d88fb;
   color: whitesmoke !important;
-
-
 }
-
-
 
 /* secondary */
 
 .cob-btn-secondary {
-  background-color: #FF8800 !important;
+  background-color: #ff8800 !important;
 }
 
 .cob-btn-secondary :hover {
   background-color: #f48566;
-
 }
 
 .align-items-center {
   -ms-flex-align: center !important;
 }
 
-
 .text_primary_color {
-  color: #023677
+  color: #023677;
 }
-
-
 
 .fs-12 {
   font-size: 12px;
@@ -427,8 +436,6 @@ select {
 .fs-10 {
   font-size: 10px;
 }
-
-
 
 /* datepicker css */
 
@@ -443,18 +450,13 @@ select {
 
 .react-date-picker {
   padding: 3px 2px 2px 4px !important;
-  ;
 }
-
-
 
 /* sidenav bar */
 
 .hide-menu-nav {
   display: none !important;
 }
-
-
 
 /* cursor */
 
@@ -466,7 +468,7 @@ select {
   cursor: context-menu;
 }
 
-.font_Size input[type="radio"]+label {
+.font_Size input[type="radio"] + label {
   font-weight: bold;
 }
 
@@ -492,14 +494,12 @@ select {
   z-index: 9999 !important;
 }
 
-
 /* icon eye */
 
 .fa-eye,
 .fa-eye-slash {
-  color: #377CCF;
+  color: #377ccf;
 }
-
 
 /* start Hide Scroll Bar */
 .scroll-bar-hide {
@@ -516,9 +516,6 @@ select {
 
 /* end Hide Scroll Bar */
 
-
-
-
 /* horizontal line */
 .hr_line {
   display: flex;
@@ -533,7 +530,6 @@ select {
   margin: 0px 4px 10px 4px;
 }
 
-
 .hr_line_or {
   display: flex;
   flex-direction: row;
@@ -547,18 +543,12 @@ select {
   margin: 0px 4px 8px 4px;
 }
 
-
-
-
-
 /* horizontal line */
-
 
 /* mansha */
 #sp_manshaChabot {
   position: absolute;
   z-index: 9999 !important;
 }
-
 
 /* end mansha */

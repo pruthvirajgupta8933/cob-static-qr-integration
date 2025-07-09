@@ -809,7 +809,7 @@ const TransactionHistory = () => {
         </Formik>
 
         {showTable && (
-          <div className="row mt-3">
+          <div className="row my-4">
             <div className="col-lg-3">
               <SearchByApiPayload
                 onSubmitSearch={handlePayloadSearchSubmit}

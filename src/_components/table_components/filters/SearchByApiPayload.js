@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as bootstrap from 'bootstrap';
+
 
 const SearchByApiPayload = ({ onSubmitSearch, clearFilter, value }) => {
     const [searchQueryText, setSearchQueryText] = useState(value);
@@ -16,12 +16,7 @@ const SearchByApiPayload = ({ onSubmitSearch, clearFilter, value }) => {
         }
     }, [value]);
 
-    useEffect(() => {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    }, []);
+
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -48,7 +43,22 @@ const SearchByApiPayload = ({ onSubmitSearch, clearFilter, value }) => {
     return (
         <React.Fragment>
             <label htmlFor="searchPayload" className="form-label">
-                Search
+                <span className="ml-1 tooltip-custom-sp">
+                    {"Search"}
+                    <i className="fa fa-exclamation-circle tooltip-on-hover" aria-hidden="true"></i>
+                    <div className="custom-tooltip tooltip-on-hover-display">
+                        {/* Use JSX-friendly <br /> tags */}
+                        <p>
+                            Search by :-
+                            <br /> Transaction ID
+                            <br /> Client Transaction ID
+                            <br /> RRN/UTR
+                            <br /> Payer Email
+                            <br /> Payee Mobile
+                            <br /> Payee First Name
+                        </p>
+                    </div>
+                </span>
             </label>
             <form onSubmit={handleSearchSubmit}>
                 <div className="input-group mb-0">
@@ -61,13 +71,15 @@ const SearchByApiPayload = ({ onSubmitSearch, clearFilter, value }) => {
                         placeholder="Type your search query"
                         data-bs-toggle="tooltip"
                         data-bs-html="true"
-                        title="<div class='text-start'>
-                        Search by :- </br>
-                        Transaction ID </br>
-                        Client Transaction ID</br>
-                        RRN/UTR</br>
-                        Payer Email</br>
-                        Payee Mobile<br/>Payee First Name </div>"
+                    // title=
+
+                    // "<div class='text-start'>
+                    // Search by :- </br>
+                    // Transaction ID </br>
+                    // Client Transaction ID</br>
+                    // RRN/UTR</br>
+                    // Payer Email</br>
+                    // Payee Mobile<br/>Payee First Name </div>"
                     />
                     <div className="input-group-append">
                         <button className="btn btn-outline-secondary" type="submit" title="search">
