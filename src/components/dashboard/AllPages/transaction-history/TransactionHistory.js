@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import ReportLayout from "../../../../_components/report_component/ReportLayout";
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
@@ -28,6 +27,10 @@ import TransactionDetailModal from "./TransactionDetailModal";
 import { dateFormatBasic } from "../../../../utilities/DateConvert";
 import toastConfig from "../../../../utilities/toastTypes";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import Table from "../../../../_components/table_components/table/Table";
+import CardLayout from "../../../../utilities/CardLayout";
+import SearchByApiPayload from "../../../../_components/table_components/filters/SearchByApiPayload";
+import CountPerPageFilter from "../../../../_components/table_components/filters/CountPerPage";
 
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -44,7 +47,7 @@ const TransactionHistory = () => {
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
   const [transactionList, setTransactionList] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [payloadSearchText, setPayloadSearchText] = useState("");
   const [showTable, setShowTable] = useState(false);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,12 +61,14 @@ const TransactionHistory = () => {
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
   const [exportFilterData, setExportFilterData] = useState({});
-  const [showTransactionDetailModal, setShowTransactionDetailModal] = useState(false);
+  const [showTransactionDetailModal, setShowTransactionDetailModal] =
+    useState(false);
   const [selectedTransactionDetail, setSelectedTransactionDetail] = useState({});
   const [currentFilterState, setCurrentFilterState] = useState(null);
   const [duration, setDuration] = useState("today");
   const [isExportReportLoading, setIsExportReportLoading] = useState(false);
   const [transactionCount, setTransactionCount] = useState(0);
+  const [loadingState, setLoadingState] = useState(false);
 
   const durationOptions = [
     { key: "today", value: "Today" },
@@ -75,8 +80,6 @@ const TransactionHistory = () => {
     { key: "last6Month", value: "Last 180 days" },
     { key: "custom", value: "Custom Date" },
   ];
-
-  const todayFormatted = moment().format("YYYY-MM-DD");
 
   const fetchClientData = useCallback(() => {
     const roleType = roles.bank
@@ -112,8 +115,8 @@ const TransactionHistory = () => {
 
   const initialValues = {
     clientCode: clientCodeRoleBased,
-    fromDate: todayFormatted,
-    endDate: todayFormatted,
+    fromDate: new Date(),
+    endDate: new Date(),
     transaction_status: "All",
     payment_mode: "All",
     duration: "today",
@@ -121,7 +124,6 @@ const TransactionHistory = () => {
 
   const validationSchema = Yup.object({
     clientCode: Yup.string().required("Client code not found"),
-    endDate: Yup.date().required("Required"),
     transaction_status: Yup.string().required("Required"),
     payment_mode: Yup.string().required("Required"),
   });
@@ -154,7 +156,10 @@ const TransactionHistory = () => {
       isExtraDataRequired,
       true
     );
-    return { clientCodeOption: convertedOptions, processedClientCodeList: clientCodeListForConversion };
+    return {
+      clientCodeOption: convertedOptions,
+      processedClientCodeList: clientCodeListForConversion,
+    };
   }, [clientCodeData, roles, user]);
 
   useEffect(() => {
@@ -201,62 +206,109 @@ const TransactionHistory = () => {
     const allowedTxnViewDays = 180;
 
     if (diffDays < 0 || diffDays > allowedTxnViewDays) {
-      toastConfig.errorToast(`Please choose a maximum duration of ${allowedTxnViewDays} days.`);
+      toastConfig.errorToast(
+        `Please choose a maximum duration of ${allowedTxnViewDays} days.`
+      );
       setIsFormDisabled(false);
       return false;
     }
     return true;
   }, []);
 
+  const fetchTransactions = useCallback(
+    (payload) => {
+      setIsSearchButtonClicked(true);
+      setIsFormDisabled(true);
+      setLoadingState(true);
+
+      const dateRangeValid = validateDateRange(moment(payload.fromDate).toDate(), moment(payload.endDate).toDate());
+      if (dateRangeValid) {
+        let clientCodeString;
+        let numberOfClients;
+        if (payload.clientCode === "All") {
+          const allClientCodes = selectedClientCodeList.map(
+            (item) => item.client_code
+          );
+          numberOfClients = allClientCodes.length.toString();
+          clientCodeString = allClientCodes.join(",");
+        } else {
+          clientCodeString = payload.clientCode;
+          numberOfClients = "1";
+        }
+
+        const finalParamData = {
+          clientCode: clientCodeString,
+          paymentStatus: payload.paymentStatus,
+          paymentMode: payload.paymentMode,
+          fromDate: payload.fromDate,
+          endDate: payload.endDate,
+          length: payload.length,
+          page: payload.page,
+          noOfClient: numberOfClients,
+          search: payload.search,
+        };
+
+        setCurrentFilterState(finalParamData);
+        setExportFilterData(finalParamData);
+
+        dispatch(fetchTransactionHistorySlice(finalParamData)).then(() => {
+          setIsFormDisabled(false);
+          setShowRefundModal(false);
+          setSelectedRefundTransaction({});
+          setLoadingState(false);
+        });
+      } else {
+        setIsFormDisabled(false);
+        setLoadingState(false);
+      }
+    },
+    [
+      validateDateRange,
+      selectedClientCodeList,
+      dispatch,
+    ]
+  );
+
   const submitHandler = useCallback(
     (values) => {
-      setExportFilterData(values);
-      const currDate = new Date();
-      const getLastMonthDays = (month) => {
-        let days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        if (currDate.getFullYear() % 4 === 0) {
-          if (
-            currDate.getFullYear() % 100 === 0 &&
-            currDate.getFullYear() % 400 !== 0
-          )
-            days[1] = 28;
-          else days[1] = 29;
-        }
-        return days[month];
-      };
+      setDuration(values.duration);
+      setStartDate(values.fromDate);
+      setEndDate(values.endDate);
+      setPayloadSearchText("");
+      setCurrentPage(1); // Reset to first page on new search
 
-      let fromDate = values.fromDate;
-      let endDate = values.endDate;
+      let fromDateCalculated = moment(values.fromDate);
+      let endDateCalculated = moment(values.endDate);
 
-      switch (duration) {
+      switch (values.duration) {
         case "yesterday": {
-          fromDate = moment().subtract(1, "days").toDate();
-          endDate = moment().subtract(1, "days").toDate();
+          fromDateCalculated = moment().subtract(1, "days");
+          endDateCalculated = moment().subtract(1, "days");
           break;
         }
         case "last7Days": {
-          fromDate = moment().subtract(6, "days").toDate();
-          endDate = moment().toDate();
+          fromDateCalculated = moment().subtract(6, "days");
+          endDateCalculated = moment();
           break;
         }
         case "currentMonth": {
-          fromDate = moment().startOf("month").toDate();
-          endDate = moment().toDate();
+          fromDateCalculated = moment().startOf("month");
+          endDateCalculated = moment();
           break;
         }
         case "lastMonth": {
-          fromDate = moment().subtract(1, "month").startOf("month").toDate();
-          endDate = moment().subtract(1, "month").endOf("month").toDate();
+          fromDateCalculated = moment().subtract(1, "month").startOf("month");
+          endDateCalculated = moment().subtract(1, "month").endOf("month");
           break;
         }
         case "last3Month": {
-          fromDate = moment().subtract(89, "days").toDate();
-          endDate = moment().toDate();
+          fromDateCalculated = moment().subtract(89, "days");
+          endDateCalculated = moment();
           break;
         }
         case "last6Month": {
-          fromDate = moment().subtract(179, "days").toDate();
-          endDate = moment().toDate();
+          fromDateCalculated = moment().subtract(179, "days");
+          endDateCalculated = moment();
           break;
         }
         case "today":
@@ -265,63 +317,64 @@ const TransactionHistory = () => {
           break;
       }
 
-      setShowRefundModal(false);
-      setSelectedRefundTransaction({});
-      setIsSearchButtonClicked(true);
-      setIsFormDisabled(true);
+      const fullFormPayload = {
+        clientCode: values.clientCode,
+        paymentStatus: values.transaction_status,
+        paymentMode: values.payment_mode,
+        fromDate: fromDateCalculated.startOf("day").format("YYYY-MM-DD"),
+        endDate: endDateCalculated.endOf("day").format("YYYY-MM-DD"),
+        duration: values.duration,
+        length: pageSize,
+        page: 1,
+        search: "",
+      };
 
-      const dateRangeValid = validateDateRange(fromDate, endDate);
-      if (dateRangeValid) {
-        let clientCodeString;
-        let numberOfClients;
-        if (values.clientCode === "All") {
-          const allClientCodes = selectedClientCodeList.map(
-            (item) => item.client_code
-          );
-          numberOfClients = allClientCodes.length.toString();
-          clientCodeString = allClientCodes.join(",");
-        } else {
-          clientCodeString = values.clientCode;
-          numberOfClients = "1";
-        }
-
-        const paramData = {
-          clientCode: clientCodeString,
-          paymentStatus: values.transaction_status,
-          paymentMode: values.payment_mode,
-          fromDate: moment(fromDate).startOf("day").format("YYYY-MM-DD"),
-          endDate: moment(endDate).endOf("day").format("YYYY-MM-DD"),
-          length: pageSize,
-          page: currentPage,
-          noOfClient: numberOfClients,
-        };
-
-        setCurrentFilterState(paramData);
-        dispatch(fetchTransactionHistorySlice(paramData)).then(() => {
-          setIsFormDisabled(false);
-        });
-      } else {
-        setIsFormDisabled(false);
-      }
+      fetchTransactions(fullFormPayload);
     },
-    [
-      duration,
-      validateDateRange,
-      pageSize,
-      currentPage,
-      selectedClientCodeList,
-      dispatch,
-    ]
+    [fetchTransactions, pageSize]
   );
+
+  const handlePayloadSearchSubmit = useCallback(
+    (searchQuery) => {
+      if (!currentFilterState) {
+        toastConfig.errorToast("Please perform a main search first.");
+        return;
+      }
+      setPayloadSearchText(searchQuery);
+
+      const payloadForSearch = {
+        ...currentFilterState,
+        search: searchQuery,
+        page: 1,
+      };
+
+      fetchTransactions(payloadForSearch);
+    },
+    [currentFilterState, fetchTransactions]
+  );
+
+  const handleClearPayloadFilter = useCallback(() => {
+    setPayloadSearchText("");
+    if (!currentFilterState) {
+      return;
+    }
+
+    const payloadForClear = {
+      ...currentFilterState,
+      search: "",
+      page: 1,
+    };
+
+    fetchTransactions(payloadForClear);
+  }, [currentFilterState, fetchTransactions]);
 
   useEffect(() => {
     const transactionListUpdated = transactionHistory?.results;
     setTransactionList(transactionListUpdated);
     setTransactionCount(transactionHistory?.count);
     setFilteredTransactionData(transactionListUpdated);
+    setShowTable(transactionListUpdated && transactionListUpdated.length > 0);
   }, [transactionHistory]);
-
-
 
   useEffect(() => {
     if (!payStatus.length) dispatch(fetchPayStatusList());
@@ -332,25 +385,6 @@ const TransactionHistory = () => {
       dispatch(clearTransactionHistory());
     };
   }, [dispatch, payStatus.length, paymode.length]);
-
-  useEffect(() => {
-    setShowTable(transactionList?.length > 0);
-  }, [transactionList]);
-
-  useEffect(() => {
-    if (searchText !== "") {
-      setFilteredTransactionData(
-        transactionList.filter((txnItem) =>
-          Object.values(txnItem)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        )
-      );
-    } else {
-      setFilteredTransactionData(transactionList);
-    }
-  }, [searchText, transactionList]);
 
   const handleRefundModalOpen = useCallback((e) => {
     e.preventDefault();
@@ -421,7 +455,9 @@ const TransactionHistory = () => {
 
   const handleTransactionDetailModal = useCallback(
     (transactionData) => {
-      dispatch(fetchTransactionHistoryDetailSlice({ txn_id: transactionData.txn_id }))
+      dispatch(
+        fetchTransactionHistoryDetailSlice({ txn_id: transactionData.txn_id })
+      )
         .then((res) => setSelectedTransactionDetail(res?.payload))
         .catch(() => toastConfig.errorToast("Error occurred while fetching details"));
       setShowTransactionDetailModal(true);
@@ -429,194 +465,64 @@ const TransactionHistory = () => {
     [dispatch]
   );
 
-
   const handleDurationChange = useCallback(
     ({ value, setFieldValue }) => {
       setDuration(value);
       setFieldValue("duration", value);
-      setFieldValue("fromDate", new Date());
-      setFieldValue("endDate", new Date());
+      // Reset dates to default for "today" or custom (new Date()), other durations will be calculated on submit
+      if (value === "today" || value === "custom") {
+        setStartDate(new Date());
+        setEndDate(new Date());
+        setFieldValue("fromDate", new Date());
+        setFieldValue("endDate", new Date());
+      } else {
+        // For other durations, clear the date pickers visually if they were previously set by custom
+        setStartDate(null);
+        setEndDate(null);
+        setFieldValue("fromDate", null);
+        setFieldValue("endDate", null);
+      }
     },
     []
   );
 
   const handleChangeCurrentPage = useCallback(
     (page) => {
-      setCurrentPage(page);
-      if (currentFilterState) {
-        setIsFormDisabled(true);
-        const newFilterState = { ...currentFilterState, page: page, length: pageSize };
-        setCurrentFilterState(newFilterState);
-        dispatch(fetchTransactionHistorySlice(newFilterState)).then(() => {
-          setIsFormDisabled(false);
-        });
+      if (!currentFilterState) {
+        toastConfig.errorToast("Please perform a main search first.");
+        return;
       }
+      setCurrentPage(page);
+      setLoadingState(true);
+      setIsFormDisabled(true);
+      const payloadForPagination = {
+        ...currentFilterState,
+        page: page,
+        length: pageSize,
+      };
+      fetchTransactions(payloadForPagination);
     },
-    [currentFilterState, pageSize, dispatch]
+    [currentFilterState, pageSize, fetchTransactions]
   );
 
   const handleChangePageSize = useCallback(
     (size) => {
-      setPageSize(size);
-      setCurrentPage(1);
-      if (currentFilterState) {
-        setIsFormDisabled(true);
-        const newFilterState = { ...currentFilterState, length: size, page: 1 };
-        setCurrentFilterState(newFilterState);
-        dispatch(fetchTransactionHistorySlice(newFilterState)).then(() => {
-          setIsFormDisabled(false);
-        });
+      if (!currentFilterState) {
+        toastConfig.errorToast("Please perform a main search first.");
+        return;
       }
+      setPageSize(size);
+      setCurrentPage(1); // Always reset to page 1 when page size changes
+      setLoadingState(true);
+      setIsFormDisabled(true);
+      const payloadForPageSize = {
+        ...currentFilterState,
+        length: size,
+        page: 1,
+      };
+      fetchTransactions(payloadForPageSize);
     },
-    [currentFilterState, dispatch]
-  );
-
-  const form = (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={submitHandler}
-    >
-      {(formik) => (
-        <Form>
-          <div className="form-row mt-4">
-            {(roles?.bank || roles?.referral) && (
-              <div className="form-group col-md-4 col-lg-2 col-sm-12">
-                <FormikController
-                  control="select"
-                  label="Client Code"
-                  name="clientCode"
-                  className="form-select rounded"
-                  options={clientCodeOption}
-                />
-              </div>
-            )}
-            <div className="form-group col-md-3 col-lg-2 col-sm-12">
-              <FormikController
-                control="select"
-                label="Select Duration"
-                name="duration"
-                className="form-select rounded"
-                options={durationOptions}
-                onChange={(e) =>
-                  handleDurationChange({
-                    value: e.target.value,
-                    setFieldValue: formik.setFieldValue,
-                  })
-                }
-              />
-            </div>
-            {duration === "custom" && (
-              <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
-                <label htmlFor="dateRange" className="form-label">
-                  Start Date - End Date
-                </label>
-                <div
-                  className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
-                >
-                  <DatePicker
-                    id="dateRange"
-                    selectsRange={true}
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={(update) => {
-                      const [start, end] = update;
-                      setStartDate(start);
-                      setEndDate(end);
-                      formik.setFieldValue("fromDate", start);
-                      formik.setFieldValue("endDate", end);
-                    }}
-                    dateFormat="dd-MM-yyyy"
-                    placeholderText="Select Date Range"
-                    className={`form-control rounded p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
-                    showPopperArrow={false}
-                    popperClassName={classes.custom_datepicker_popper}
-                  />
-                  <div
-                    className="input-group-append"
-                    onClick={() => {
-                      document.getElementById("dateRange").click();
-                    }}
-                  >
-                    <span
-                      className={`input-group-text ${classes.calendar_input_border}`}
-                    >
-                      {" "}
-                      <FaCalendarAlt />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div className="form-group col-md-3 col-lg-2 col-sm-12">
-              <FormikController
-                control="select"
-                label="Transactions Status"
-                name="transaction_status"
-                className="form-select rounded mt-0"
-                options={memoizedPayStatusOptions}
-              />
-            </div>
-
-            <div className="form-group col-md-3 col-lg-2 col-sm-12">
-              <FormikController
-                control="select"
-                label="Payment Mode"
-                name="payment_mode"
-                className="form-select rounded mt-0"
-                options={memoizedPaymodeOptions}
-              />
-            </div>
-          </div>
-          <div className="row d-flex justify-content-between">
-            <div className="form-group col-md-6 col-lg-6">
-              <button
-                className="btn btn-sm cob-btn-primary text-white"
-                type="submit"
-                disabled={isFormDisabled}
-              >
-                {isFormDisabled && (
-                  <span
-                    className="spinner-border spinner-border-sm mr-1"
-                    role="status"
-                    ariaHidden="true"
-                  ></span>
-                )}
-                Search
-              </button>
-              {transactionList?.length > 0 && (
-                <button
-                  type="button"
-                  className="btn btn-sm text-white cob-btn-primary mx-2"
-                  onClick={exportToExcel}
-                  disabled={isExportReportLoading}
-                >
-                  <i className="fa fa-download"></i>
-                  {isExportReportLoading ? " Loading..." : " Export"}
-                </button>
-              )}
-            </div>
-            <div className="form-group col-md-1 col-lg-1">
-              {user?.clientMerchantDetailsList?.[0].clientCode !== "Utta89" && (
-                <button
-                  className="btn cob-btn-primary btn-sm"
-                  onClick={handleRefundModalOpen}
-                  disabled={
-                    selectedRefundTransaction?.status?.toLocaleLowerCase() !==
-                    "success" &&
-                    selectedRefundTransaction?.status?.toLocaleLowerCase() !==
-                    "settled"
-                  }
-                >
-                  Refund
-                </button>
-              )}
-            </div>
-          </div>
-        </Form>
-      )}
-    </Formik>
+    [currentFilterState, fetchTransactions]
   );
 
   const rowData = [
@@ -738,7 +644,7 @@ const TransactionHistory = () => {
       name: "Payer Email",
       selector: (row) => row.payee_email,
       sortable: true,
-      width: "130px",
+      width: "200px",
     },
     {
       id: "11",
@@ -748,50 +654,223 @@ const TransactionHistory = () => {
     },
   ];
 
-  return (
-    <section className="">
-      <div className="profileBarStatus">
-        {showRefundModal && (
-          <TransactionRefund
-            refundModal={showRefundModal}
-            setRefundModal={setShowRefundModal}
-            radioInputVal={selectedRefundTransaction}
-          />
-        )}
-        {showTransactionDetailModal && (
-          <TransactionDetailModal
-            fnSetModalToggle={() => setShowTransactionDetailModal(false)}
-            transactionData={selectedTransactionDetail}
-          />
-        )}
-      </div>
-      <main>
-        <ReportLayout
-          type="transaction_history"
-          title="Transaction History"
-          data={transactionList}
-          rowData={rowData}
-          form={form}
-          loadingState={isFormDisabled}
-          showSearch
-          showCountPerPage
-          dataCount={transactionCount}
-          dynamicPagination={true}
-          page_size={pageSize}
-          current_page={currentPage}
-          change_currentPage={handleChangeCurrentPage}
-          change_pageSize={handleChangePageSize}
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
 
-        />
-        <ExportTransactionHistory
-          openModal={showExportModal}
-          setOpenModal={setShowExportModal}
-          downloadData={exportFilterData}
-          checkValidation={validateDateRange}
-          clientCodeListArr={selectedClientCodeList}
-        />
-      </main>
-    </section>
+  return (
+    <CardLayout title="Transaction History">
+      <section className="">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitHandler}
+        >
+          {(formik) => (
+            <Form>
+              <div className="form-row mt-4">
+                {(roles?.bank || roles?.referral) && (
+                  <div className="form-group col-md-4 col-lg-2 col-sm-12">
+                    <FormikController
+                      control="select"
+                      label="Client Code"
+                      name="clientCode"
+                      className="form-select rounded"
+                      options={clientCodeOption}
+                    />
+                  </div>
+                )}
+                <div className="form-group col-md-3 col-lg-2 col-sm-12">
+                  <FormikController
+                    control="select"
+                    label="Select Duration"
+                    name="duration"
+                    className="form-select rounded"
+                    options={durationOptions}
+                    onChange={(e) =>
+                      handleDurationChange({
+                        value: e.target.value,
+                        setFieldValue: formik.setFieldValue,
+                      })
+                    }
+                  />
+                </div>
+                {duration === "custom" && (
+                  <div className="form-group col-md-6 col-lg-4 col-xl-3 col-sm-12 ">
+                    <label htmlFor="dateRange" className="form-label">
+                      Start Date - End Date
+                    </label>
+                    <div
+                      className={`input-group mb-3 d-flex justify-content-between bg-white ${classes.calendar_border}`}
+                    >
+                      <DatePicker
+                        id="dateRange"
+                        selectsRange={true}
+                        startDate={startDate}
+                        endDate={endDate}
+                        onChange={(update) => {
+                          const [start, end] = update;
+                          setStartDate(start);
+                          setEndDate(end);
+                          formik.setFieldValue("fromDate", start);
+                          formik.setFieldValue("endDate", end);
+                        }}
+                        dateFormat="dd-MM-yyyy"
+                        placeholderText="Select Date Range"
+                        className={`form-control rounded p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
+                        showPopperArrow={false}
+                        popperClassName={classes.custom_datepicker_popper}
+                      />
+                      <div
+                        className="input-group-append"
+                        onClick={() => {
+                          document.getElementById("dateRange").click();
+                        }}
+                      >
+                        <span
+                          className={`input-group-text ${classes.calendar_input_border}`}
+                        >
+                          {" "}
+                          <FaCalendarAlt />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="form-group col-md-3 col-lg-2 col-sm-12">
+                  <FormikController
+                    control="select"
+                    label="Transactions Status"
+                    name="transaction_status"
+                    className="form-select rounded mt-0"
+                    options={memoizedPayStatusOptions}
+                  />
+                </div>
+
+                <div className="form-group col-md-3 col-lg-2 col-sm-12">
+                  <FormikController
+                    control="select"
+                    label="Payment Mode"
+                    name="payment_mode"
+                    className="form-select rounded mt-0"
+                    options={memoizedPaymodeOptions}
+                  />
+                </div>
+              </div>
+              <div className="row d-flex justify-content-between">
+                <div className="form-group col-md-6 col-lg-6">
+                  <button
+                    className="btn btn-sm cob-btn-primary text-white"
+                    type="submit"
+                    disabled={isFormDisabled}
+                  >
+                    {isFormDisabled && (
+                      <span
+                        className="spinner-border spinner-border-sm mr-1"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    )}
+                    Search
+                  </button>
+                  {transactionList?.length > 0 && (
+                    <button
+                      type="button"
+                      className="btn btn-sm text-white cob-btn-primary mx-2"
+                      onClick={exportToExcel}
+                      disabled={isExportReportLoading}
+                    >
+                      <i className="fa fa-download"></i>
+                      {isExportReportLoading ? " Loading..." : " Export"}
+                    </button>
+                  )}
+                </div>
+                <div className="form-group col-md-1 col-lg-1">
+                  {user?.clientMerchantDetailsList?.[0].clientCode !==
+                    "Utta89" && (
+                      <button
+                        className="btn cob-btn-primary btn-sm"
+                        onClick={handleRefundModalOpen}
+                        disabled={
+                          selectedRefundTransaction?.status?.toLocaleLowerCase() !==
+                          "success" &&
+                          selectedRefundTransaction?.status?.toLocaleLowerCase() !==
+                          "settled"
+                        }
+                      >
+                        Refund
+                      </button>
+                    )}
+                </div>
+              </div>
+            </Form>
+          )}
+        </Formik>
+
+        {showTable && (
+          <div className="row my-4">
+            <div className="col-lg-3">
+              <SearchByApiPayload
+                onSubmitSearch={handlePayloadSearchSubmit}
+                clearFilter={handleClearPayloadFilter}
+                value={payloadSearchText}
+              />
+            </div>
+            <div className="col-lg-3">
+              <CountPerPageFilter
+                pageSize={pageSize}
+                dataCount={transactionCount}
+                changePageSize={handleChangePageSize}
+                changeCurrentPage={changeCurrentPage}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="profileBarStatus">
+          {showRefundModal && (
+            <TransactionRefund
+              refundModal={showRefundModal}
+              setRefundModal={setShowRefundModal}
+              radioInputVal={selectedRefundTransaction}
+            />
+          )}
+          {showTransactionDetailModal && (
+            <TransactionDetailModal
+              fnSetModalToggle={() => setShowTransactionDetailModal(false)}
+              transactionData={selectedTransactionDetail}
+            />
+          )}
+        </div>
+        <main>
+          <div className="container p-0 ">
+            <div className="scroll overflow-auto">
+              {transactionCount > 0 && <h6 className="mt-2">Total Count : {transactionCount}</h6>}
+
+              <Table
+                row={rowData}
+                data={filteredTransactionData}
+                dataCount={transactionCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={handleChangeCurrentPage}
+                changePageSize={handleChangePageSize}
+                loadingState={loadingState}
+              />
+            </div>
+
+          </div>
+          <ExportTransactionHistory
+            openModal={showExportModal}
+            setOpenModal={setShowExportModal}
+            downloadData={exportFilterData}
+            checkValidation={validateDateRange}
+            clientCodeListArr={selectedClientCodeList}
+          />
+        </main>
+      </section>
+    </CardLayout>
   );
 };
 

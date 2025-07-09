@@ -338,6 +338,11 @@ const API_LIVE = {
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
   FRM_SINGLE_SCREENING: `${kyc_url}/kyc/frm/single-screening/`,
 
+  //Admin-auth-register
+
+  ADMIN_AUTH_REGISTER: `${url}/auth-service/admin/auth/register/`,
+  APPLICATION_ALLOWED: `${url}/applications/get-all/`,
+
   ///EDIT KYC FORM
   UPDATE_CONATCT_INFO: `${kyc_url}/kyc/update-kyc/general-info/`,
   UPDATE_BUSINESS_INFO: `${kyc_url}/kyc/update-kyc/business-info/`,
