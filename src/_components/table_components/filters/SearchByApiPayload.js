@@ -43,9 +43,9 @@ const SearchByApiPayload = ({ onSubmitSearch, clearFilter, value }) => {
     return (
         <React.Fragment>
             <label htmlFor="searchPayload" className="form-label">
-                <span className="ml-1 tooltip-custom-sp">
+                <span className="tooltip-custom-sp">
                     {"Search"}
-                    <i className="fa fa-exclamation-circle tooltip-on-hover" aria-hidden="true"></i>
+                    <i className="fa fa-exclamation-circle tooltip-on-hover ml-1" aria-hidden="true"></i>
                     <div className="custom-tooltip tooltip-on-hover-display">
                         {/* Use JSX-friendly <br /> tags */}
                         <p>
