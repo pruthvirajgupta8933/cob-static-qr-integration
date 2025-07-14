@@ -18,7 +18,11 @@ const TableWithPagination = ({
     changePageSize,
     searchQuery,
     onSearchChange,
-    changeCurrentPage
+    changeCurrentPage,
+    isExport,
+    onClickExport,
+    disable
+
 }) => {
     const apiHasData = dataCount > 0; // Check if API has data
     const hasSearchResults = data?.length > 0; // Check if search results exist
@@ -50,6 +54,20 @@ const TableWithPagination = ({
                                     <FontAwesomeIcon icon={faSearch} />
                                 </span> */}
                             </div>
+                            {isExport &&
+                                <button
+                                    className="btn cob-btn-primary approve text-white  btn-sm ms-3 d-flex align-items-center"
+                                    type="button"
+                                    onClick={onClickExport}
+                                    disabled={disable}
+                                >
+                                    {disable && (
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    )}
+                                    Export
+                                </button>
+
+                            }
                         </div>
                     </div>
                 )}
