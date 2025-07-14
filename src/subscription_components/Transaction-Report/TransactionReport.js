@@ -175,12 +175,12 @@ const TransactionReport = () => {
 
   const handleExport = (values) => {
     let postDataS = {
-      start_date: moment(values?.from_date).startOf("day").format("YYYY-MM-DD"),
-      end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
+      start_date: moment(savedValues?.from_date).startOf("day").format("YYYY-MM-DD"),
+      end_date: moment(savedValues?.end_date).startOf("day").format("YYYY-MM-DD"),
       registration_status:
-        values.registration_status.toLowerCase() === "all"
+        savedValues.registration_status.toLowerCase() === "all"
           ? ""
-          : values.registration_status,
+          : savedValues.registration_status,
     };
     setExporting(true);
     dispatch(transactionReport(postDataS))
@@ -328,7 +328,7 @@ const TransactionReport = () => {
                       View
                     </button>
                   </div>
-                  {dataCount > 0 && (
+                  {/* {dataCount > 0 && (
                     <div className="col-lg-1">
                       <button
                         className="btn cob-btn-primary approve text-white mt-4"
@@ -346,7 +346,7 @@ const TransactionReport = () => {
                         Export
                       </button>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </Form>
             )}
@@ -368,6 +368,9 @@ const TransactionReport = () => {
           changePageSize={setPageSize}
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
+          disable={isExporting}
+          onClickExport={handleExport}
+          isExport={true}
         />
       )}
     </div>

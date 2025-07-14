@@ -89,6 +89,7 @@ const RegistrationHistory = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     let postDataS = {
       start_date: moment(savedValues?.from_date)
         .startOf("day")
@@ -120,6 +121,7 @@ const RegistrationHistory = () => {
         // setViewLoader(false);
       })
       .catch(() => {
+        setIsLoading(false);
         // setDisableView(false);
         // setViewLoader(false);
         // toast.error("Something went wrong");
@@ -189,14 +191,14 @@ const RegistrationHistory = () => {
       });
   };
 
-  const handleExport = (values) => {
+  const handleExport = () => {
     let postDataS = {
-      start_date: moment(values?.from_date).startOf("day").format("YYYY-MM-DD"),
-      end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
+      start_date: moment(savedValues?.from_date).startOf("day").format("YYYY-MM-DD"),
+      end_date: moment(savedValues?.end_date).startOf("day").format("YYYY-MM-DD"),
       registration_status:
-        values.registration_status.toLowerCase() === "all"
+        savedValues.registration_status.toLowerCase() === "all"
           ? ""
-          : values.registration_status,
+          : savedValues.registration_status,
     };
     setExporting(true);
     dispatch(registrationHistoryReport(postDataS))
@@ -372,7 +374,7 @@ const RegistrationHistory = () => {
                       View
                     </button>
                   </div>
-                  {dataCount > 0 && (
+                  {/* {dataCount > 0 && (
                     <div className="col-lg-1">
                       <button
                         className="btn cob-btn-primary approve text-white mt-4 "
@@ -390,7 +392,7 @@ const RegistrationHistory = () => {
                         Export
                       </button>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </Form>
             )}
@@ -412,6 +414,9 @@ const RegistrationHistory = () => {
           changePageSize={setPageSize}
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
+          disable={isExporting}
+          onClickExport={handleExport}
+          isExport={true}
         />
       )}
     </div>

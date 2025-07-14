@@ -48,12 +48,11 @@ const TransactionHistory = () => {
 
   const [transactionList, setTransactionList] = useState([]);
   const [payloadSearchText, setPayloadSearchText] = useState("");
-  const [showTable, setShowTable] = useState(false);
+  const [isSearchButtonClicked, setIsSearchButtonClicked] = useState(false);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredTransactionData, setFilteredTransactionData] = useState([]);
   const [selectedClientCodeList, setSelectedClientCodeList] = useState([]);
-  const [isSearchButtonClicked, setIsSearchButtonClicked] = useState(false);
   const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -220,6 +219,9 @@ const TransactionHistory = () => {
       setIsSearchButtonClicked(true);
       setIsFormDisabled(true);
       setLoadingState(true);
+      setTransactionList([]);
+      setFilteredTransactionData([]);
+      setTransactionCount(0);
 
       const dateRangeValid = validateDateRange(moment(payload.fromDate).toDate(), moment(payload.endDate).toDate());
       if (dateRangeValid) {
@@ -275,7 +277,7 @@ const TransactionHistory = () => {
       setStartDate(values.fromDate);
       setEndDate(values.endDate);
       setPayloadSearchText("");
-      setCurrentPage(1); // Reset to first page on new search
+      setCurrentPage(1);
 
       let fromDateCalculated = moment(values.fromDate);
       let endDateCalculated = moment(values.endDate);
@@ -373,7 +375,6 @@ const TransactionHistory = () => {
     setTransactionList(transactionListUpdated);
     setTransactionCount(transactionHistory?.count);
     setFilteredTransactionData(transactionListUpdated);
-    setShowTable(transactionListUpdated && transactionListUpdated.length > 0);
   }, [transactionHistory]);
 
   useEffect(() => {
@@ -469,14 +470,12 @@ const TransactionHistory = () => {
     ({ value, setFieldValue }) => {
       setDuration(value);
       setFieldValue("duration", value);
-      // Reset dates to default for "today" or custom (new Date()), other durations will be calculated on submit
       if (value === "today" || value === "custom") {
         setStartDate(new Date());
         setEndDate(new Date());
         setFieldValue("fromDate", new Date());
         setFieldValue("endDate", new Date());
       } else {
-        // For other durations, clear the date pickers visually if they were previously set by custom
         setStartDate(null);
         setEndDate(null);
         setFieldValue("fromDate", null);
@@ -512,7 +511,7 @@ const TransactionHistory = () => {
         return;
       }
       setPageSize(size);
-      setCurrentPage(1); // Always reset to page 1 when page size changes
+      setCurrentPage(1);
       setLoadingState(true);
       setIsFormDisabled(true);
       const payloadForPageSize = {
@@ -808,7 +807,7 @@ const TransactionHistory = () => {
           )}
         </Formik>
 
-        {showTable && (
+        {((isSearchButtonClicked && transactionCount > 0) || payloadSearchText) && (
           <div className="row my-4">
             <div className="col-lg-3">
               <SearchByApiPayload

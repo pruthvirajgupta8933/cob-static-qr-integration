@@ -15,6 +15,8 @@ import {
     transactionReport,
 } from "../../slices/subscription-slice/registrationHistorySlice";
 import { settlementHistory } from "../../slices/subscription-slice/updateSettlementSlice";
+import { E_NACH_URL } from "../../config";
+import { axiosInstanceEmandateAuthApiKey } from "../../utilities/axiosInstance";
 
 const EnachSettlementReport = () => {
     const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const EnachSettlementReport = () => {
     const [savedValues, setSavedValues] = useState();
     const [viewDataLoader, setViewDataLoader] = useState(false);
     const [userListData, setUserListData] = useState([]);
-    const [isExporting, setExporting] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
 
     const { user } = useSelector((state) => state.auth);
     let clientMerchantDetailsList = [];
@@ -111,7 +113,7 @@ const EnachSettlementReport = () => {
                     setDataCount(resp?.payload?.data?.count);
                     setIsLoading(false);
                 } else {
-                    toast.error(resp.payload?.detail || "Failed to fetch data");
+                    // toast.error(resp.payload?.detail);
                     setIsLoading(false);
                 }
                 // setDisableView(false);
@@ -142,7 +144,10 @@ const EnachSettlementReport = () => {
 
     const headers = [
         "S.NO",
+        "Customer Name",
+        "Consumer ID",
         "Transaction ID",
+        "Principal Amount",
         "Trans Amount",
         "Settlement Amount",
         "UTR No.",
@@ -150,12 +155,17 @@ const EnachSettlementReport = () => {
         "Settlement Date",
 
 
+
     ];
 
     const renderRow = (row, index) => (
         <tr key={index} className="text-nowrap">
             <td>{index + 1}</td>
+            <td>{row.customer_name}</td>
+            <td>{row.consumer_id}</td>
+
             <td>{row.transaction_id}</td>
+            <td>{row.prinicpal_amount}</td>
             <td>{row.trans_amount}</td>
             <td>{row.settlement_amount}</td>
             <td>{row.utr_number}</td>
@@ -193,18 +203,62 @@ const EnachSettlementReport = () => {
                     setViewDataLoader(false);
                     setIsLoading(false);
                 } else {
-                    toast.error(resp.payload?.detail || "Failed to fetch data");
+                    // toast.error(resp.payload?.detail);
                     setViewDataLoader(false);
                 }
                 // setDisableView(false);
                 // setViewLoader(false);
             })
             .catch(() => {
+                setIsLoading(false);
+                setViewDataLoader(false);
                 // setDisableView(false);
                 // setViewLoader(false);
                 // toast.error("Something went wrong");
             });
     };
+
+
+    const exportToExcelFn = () => {
+        setIsExporting(true);
+
+        const postDataS = {
+            start_date: moment(savedValues?.from_date).startOf("day").format("YYYY-MM-DD"),
+            end_date: moment(savedValues?.end_date).startOf("day").format("YYYY-MM-DD"),
+            page: currentPage,
+            page_size: pageSize,
+            client_code: savedValues?.client_code,
+            download: 1,
+        };
+
+        const url = `${E_NACH_URL.SETTLEMENT_TRANSACTION}?download=1`;
+
+        axiosInstanceEmandateAuthApiKey.post(url, postDataS, {
+            responseType: 'blob',
+        })
+            .then((response) => {
+                const blob = new Blob([response.data], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                });
+
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'settlement_history.xlsx');
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error(error);
+
+            })
+            .finally(() => {
+                setIsExporting(false);
+            });
+    };
+
     return (
         <div className="container-fluid mt-4">
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
@@ -266,7 +320,7 @@ const EnachSettlementReport = () => {
                                     </div>
 
 
-                                    <div className="col-lg-1">
+                                    <div className="col-lg-1 me-1">
                                         <button
                                             className="btn cob-btn-primary approve text-white mt-4 "
                                             type="submit"
@@ -281,7 +335,27 @@ const EnachSettlementReport = () => {
                                             ) : null}
                                             View
                                         </button>
+
                                     </div>
+                                    {/* {dataCount > 0 && (
+                                        <div className="col-lg-1">
+                                            <button
+                                                className="btn cob-btn-primary approve text-white mt-4"
+                                                type="button"
+                                                disabled={isExporting}
+                                                onClick={() => exportToExcelFn(formik.values)}
+                                            >
+                                                {isExporting && (
+                                                    <span
+                                                        className="spinner-border spinner-border-sm mr-2"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                    ></span>
+                                                )}
+                                                Export
+                                            </button>
+                                        </div>
+                                    )} */}
 
                                 </div>
                             </Form>
@@ -304,6 +378,9 @@ const EnachSettlementReport = () => {
                     changePageSize={setPageSize}
                     searchQuery={searchQuery}
                     onSearchChange={handleSearchChange}
+                    disable={isExporting}
+                    onClickExport={exportToExcelFn}
+                    isExport={true}
                 />
             )}
         </div>
