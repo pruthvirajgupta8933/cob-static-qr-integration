@@ -6,6 +6,8 @@ import Splogo from "../../assets/images/sp-logo.png";
 import "./widget.css";
 import widgetService from "../../services/widget.service";
 
+import CardLayout from "../../utilities/CardLayout"
+
 function MyForm() {
     const dispatch = useDispatch();
     const [step, setStep] = useState(1);
@@ -99,8 +101,7 @@ function MyForm() {
 
 
     return (
-        <div className="container mt-5">
-            <h3 className="text-center mb-4">Create Widget</h3>
+        <CardLayout title="Create Widget" maxWidth="800px" center={true}  >
 
             <div className="mb-5">
                 <div className="position-relative d-flex justify-content-between align-items-center mx-auto" style={{ maxWidth: '720px' }}>
@@ -132,14 +133,19 @@ function MyForm() {
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {({ values, setFieldValue, handleBlur }) => (
                     <Form>
+
                         {step === 1 && (
                             <div className="row">
                                 {["client_url", "return_url", "image_URL", "company_name"].map(field => (
-                                    <div className="col-md-6 mb-3" key={field}>
+                                    <div className="col-md-6 mb-4" key={field}>
+                                        <label htmlFor={field} className="form-label mb-2">
+                                            {field.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                        </label>
                                         <Field
                                             name={field}
+                                            id={field}
                                             className="form-control"
-                                            placeholder={field.replace('_', ' ')}
+                                            placeholder={`Enter ${field.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`}
                                             onChange={(e) => customHandleChange(e, setFieldValue)}
                                             onBlur={handleBlur}
                                         />
@@ -284,10 +290,8 @@ function MyForm() {
                                                     <button type="button" className="btn btn-danger btn-sm mt-2" onClick={() => remove(idx)}>Remove Param</button>
                                                 </div>
                                             ))}
-                                            {/* <button type="button" className="btn btn-primary btn-sm" onClick={() => push({ param_id: '12' + Date.now(), label: '', mandatory: false, input_type: 'text', options: [], date: '' })}>
-                                                + Add Param
-                                            </button> */}
-                                            <button type="button" className="btn btn-primary btn-sm"
+
+                                            <button type="button" className="btn cob-btn-primary approve text-white btn-sm"
                                                 onClick={() => {
                                                     push({ param_id: nextParamId, label: '', mandatory: false, input_type: 'text', options: [], date: '' });
                                                     setNextParamId(prev => prev + 1);
@@ -302,12 +306,13 @@ function MyForm() {
 
                         {step === 4 && (
                             <>
-                                <h5>Amount Type</h5>
+                                <label>Amount Type</label>
+
                                 <div className="mb-3">
                                     <Field
                                         as="select"
                                         name="amount_type.amount_type"
-                                        className="form-control"
+                                        className="form-control form-select"
                                         onChange={(e) => customHandleChange(e, setFieldValue)}
                                         onBlur={handleBlur}
                                     >
@@ -347,7 +352,7 @@ function MyForm() {
                                                         </div>
                                                     </div>
                                                 ))}
-                                                <button type="button" className="btn btn-primary btn-sm" onClick={() => push({ item: '', amount: '' })}>+ Add Option</button>
+                                                <button type="button" className="mt-2 btn cob-btn-primary approve text-white ms-auto btn-sm" onClick={() => push({ item: '', amount: '' })}>+ Add Option</button>
                                             </>
                                         )}
                                     </FieldArray>
@@ -381,22 +386,23 @@ function MyForm() {
                         {step === 5 && (
                             <div className="text-center">
                                 <h5 className="mb-4">Review & Submit</h5>
-                                <button type="submit" className="btn btn-success">Submit</button>
+                                <button type="submit" className="btn cob-btn-primary approve text-white">Submit</button>
                             </div>
                         )}
 
                         <div className="d-flex justify-content-between mt-4">
                             {step > 1 ? (
-                                <button type="button" className="btn btn-outline-secondary" onClick={prevStep}>← Back</button>
+                                <button type="button" className="btn btn-outline-secondary btn-sm" onClick={prevStep}>← Back</button>
                             ) : <div />}
                             {step < 5 ? (
-                                <button type="button" className="btn btn-primary ms-auto" onClick={nextStep}>Next →</button>
+                                <button type="button" className="btn cob-btn-primary approve text-white ms-auto" onClick={nextStep}>Next →</button>
                             ) : null}
                         </div>
                     </Form>
                 )}
             </Formik>
-        </div>
+
+        </CardLayout>
     );
 }
 
