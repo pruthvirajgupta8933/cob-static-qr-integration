@@ -228,6 +228,9 @@ const RegistrationHistory = () => {
     "Email",
     "Mobile",
     "Customer Name",
+    "Total EMI",
+    "Success EMI",
+    "Failed EMI",
     "Registration ID",
     "Bank Message",
     "Registration Status",
@@ -262,6 +265,10 @@ const RegistrationHistory = () => {
         <td>{mandate.customer_email_id}</td>
         <td>{mandate.customer_mobile}</td>
         <td>{mandate.customer_name}</td>
+        <td>{mandate.total_emis}</td>
+        <td>{mandate.success_emi}</td>
+        <td>{mandate.failed_emi}</td>
+
         <td>{mandate.registration_id}</td>
         <td>{mandate.bank_status_message}</td>
         <td>{mandate.registration_status}</td>
