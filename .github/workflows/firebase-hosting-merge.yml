@@ -10,9 +10,9 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    # --- FIX APPLIED HERE: NPM_TOKEN moved to job level ---
+    # --- FIX APPLIED HERE: NPM_AUTH_TOKEN moved to job level ---
     env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # This pulls the NPM_TOKEN from your GitHub repository secrets
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # This pulls the NPM_AUTH_TOKEN from your GitHub repository secrets
     # --- END FIX ---
     steps:
       - uses: actions/checkout@v2
@@ -27,17 +27,17 @@ jobs:
       - name: Configure npm for private packages
         run: |
           # Using printf for a cleaner .npmrc creation
-          # The NPM_TOKEN is now available here because it's defined at the job level
+          # The NPM_AUTH_TOKEN is now available here because it's defined at the job level
           printf "@cto_sabpaisa:registry=https://registry.npmjs.org/\n" > .npmrc
-          printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n" >> .npmrc
+          printf "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}\n" >> .npmrc
 
       # --- START: Debugging Steps (REMOVE THESE AFTER FIXING) ---
-      - name: Debug - Check NPM_TOKEN environment variable (should be set and not empty now)
+      - name: Debug - Check NPM_AUTH_TOKEN environment variable (should be set and not empty now)
         run: |
-          if [ -n "$NPM_TOKEN" ]; then
-            echo "NPM_TOKEN is set and not empty."
+          if [ -n "$NPM_AUTH_TOKEN" ]; then
+            echo "NPM_AUTH_TOKEN is set and not empty."
           else
-            echo "NPM_TOKEN is NOT set or is empty."
+            echo "NPM_AUTH_TOKEN is NOT set or is empty."
           fi
 
       - name: Debug - Display .npmrc content (should be clean now)
