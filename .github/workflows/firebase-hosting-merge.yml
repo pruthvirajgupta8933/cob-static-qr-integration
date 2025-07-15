@@ -10,6 +10,10 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    # --- FIX APPLIED HERE: NPM_TOKEN moved to job level ---
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # This pulls the NPM_TOKEN from your GitHub repository secrets
+    # --- END FIX ---
     steps:
       - uses: actions/checkout@v2
 
@@ -17,30 +21,27 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # IMPORTANT: Confirm this matches your project's Node.js version
+          node-version: '20' # IMPORTANT: Confirm this matches your project's Node.js version
 
       # Configure .npmrc with your private registry and token
       - name: Configure npm for private packages
         run: |
-          echo "@cto_sabpaisa:registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # This pulls the NPM_TOKEN from your GitHub repository secrets
+          # Using printf for a cleaner .npmrc creation
+          # The NPM_TOKEN is now available here because it's defined at the job level
+          printf "@cto_sabpaisa:registry=https://registry.npmjs.org/\n" > .npmrc
+          printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n" >> .npmrc
 
       # --- START: Debugging Steps (REMOVE THESE AFTER FIXING) ---
-      - name: Debug - Check NPM_TOKEN environment variable
-        run: |
-          echo "NPM_TOKEN is set: ${{ secrets.NPM_TOKEN != '' }}"
-        # To see if the token value is being passed (use with extreme caution, it will be visible in logs)
-        # run: echo "NPM_TOKEN value: ${{ secrets.NPM_TOKEN }}"
+      - name: Debug - Check NPM_TOKEN environment variable (should be true now)
+        run: echo "NPM_TOKEN is set: ${{ env.NPM_TOKEN != '' }}"
 
-      - name: Debug - Display .npmrc content
+      - name: Debug - Display .npmrc content (should be clean now)
         run: cat .npmrc
 
-      - name: Debug - Check npm whoami (should be sabpaisa_npm or similar)
+      - name: Debug - Check npm whoami (should succeed now)
         run: npm whoami
 
-      - name: Debug - Check npm config for registry
+      - name: Debug - Check npm config for registry (should show correct registries)
         run: npm config get registry && npm config get @cto_sabpaisa:registry
       # --- END: Debugging Steps ---
 
