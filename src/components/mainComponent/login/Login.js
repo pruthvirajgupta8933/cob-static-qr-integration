@@ -17,10 +17,10 @@ import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
 // import { Encrypt } from "../../../utilities/aes";
-import { encrypt } from "sabpaisa-encryption-package-gcm";
+// import { encrypt } from "sabpaisa-encryption-package-gcm";
 import keyConfig from "../../../key.config";
 import { APP_ENV } from "../../../config";
-
+import { encrypt } from "@cto_sabpaisa/sabpaisa-aes-256-encryption";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",

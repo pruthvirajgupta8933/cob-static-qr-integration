@@ -1,22 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import { successTxnSummary } from "../../../slices/dashboardSlice";
-import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
+// import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 // import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import classes from "./allpage.module.css";
 import toastConfig from "../../../utilities/toastTypes";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
-import DateFormatter from "../../../utilities/DateConvert";
+// import DateFormatter from "../../../utilities/DateConvert";
 import moment from "moment";
-import { is } from "date-fns/locale";
-
+// import { is } from "date-fns/locale";
+// import SkeletonTable from "../../../_components/table_components/table/skeleton-table";
 function TransactionSummery() {
   const dispatch = useDispatch();
   // const { path } = useRouteMatch();
@@ -237,8 +237,7 @@ function TransactionSummery() {
           </div>
         </div>
       )}
-      <div className={`col-lg-3 ${dttype === "6" && "mt-4"}`}>
-        {/* <label>Search</label> */}
+      {userRole.merchant !== true && <div className={`col-lg-3 ${dttype === "6" && "mt-4"}`}>
         <input
           type="text"
           className="form-control "
@@ -247,8 +246,8 @@ function TransactionSummery() {
           }}
           placeholder="Search from here"
         />
-      </div>
-      {txnList.length > 0 ? (
+      </div>}
+      {txnList.length > 0 && !isLoading ? (
         <div className={`col-md-3 ${dttype === "6" && "mt-4"}`}>
           <button
             className="btn cob-btn-primary text-white btn-sm"
@@ -303,7 +302,7 @@ function TransactionSummery() {
   return (
     <section className="">
       <main>
-        <ReportLayout
+        {<ReportLayout
           type="txnSummary"
           title="Transaction Summary"
           data={showData}
@@ -321,7 +320,8 @@ function TransactionSummery() {
 
           ]}
           loadingState={isLoading}
-        />
+        />}
+        {/* {isLoading && <SkeletonTable />} */}
         {/* <section className="">
           <div className="container-fluid p-0"> */}
         {/* <div className="row mt-4">

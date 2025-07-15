@@ -118,40 +118,44 @@ const ReportLayout = ({
           </section>
 
           <section className="flleft w-100">
-            <div className="container-fluid p-0 my-3">
-              {data?.length > 0 && (
-                <h6 className="mb-2">
-                  <p className="d-inline me-3 mb-0">
-                    Total Record: {dynamicPagination ? dataCount : filteredData?.length || 0}
-                  </p>
-                  {dataSummary?.map((summary, index) => (
-                    <p className="d-inline me-3 mb-0" key={index}>
-                      | <span className="px-1">{summary.name}:</span>
-                      <span>{summary.value}</span>
+            {loadingState ? (
+              <CustomLoader loadingState={loadingState} />
+            ) : (
+              <div className="container-fluid p-0 my-3">
+                {data?.length > 0 && (
+                  <h6 className="mb-2">
+                    <p className="d-inline me-3 mb-0">
+                      Total Record: {dynamicPagination ? dataCount : filteredData?.length || 0}
                     </p>
-                  ))}
-                </h6>
-              )}
+                    {dataSummary?.map((summary, index) => (
+                      <p className="d-inline me-3 mb-0" key={index}>
+                        | <span className="px-1">{summary.name}:</span>
+                        <span>{summary.value}</span>
+                      </p>
+                    ))}
+                  </h6>
+                )}
 
-              <div className="overflow-auto">
-                <Table
-                  row={rowData}
-                  data={paginatedData}
-                  dataCount={dynamicPagination ? dataCount : filteredData?.length || 0}
-                  pageSize={actualPageSize}
-                  currentPage={actualCurrentPage}
-                  changeCurrentPage={(page) =>
-                    dynamicPagination
-                      ? change_currentPage(page)
-                      : setLocalCurrentPage(page)
-                  }
-                  onRowClick={(row) =>
-                    typeof onRowClick === "function" && onRowClick(row)
-                  }
-                  loadingState={loadingState}
-                />
+                <div className="overflow-auto">
+                  <Table
+                    row={rowData}
+                    data={paginatedData}
+                    dataCount={dynamicPagination ? dataCount : filteredData?.length || 0}
+                    pageSize={actualPageSize}
+                    currentPage={actualCurrentPage}
+                    changeCurrentPage={(page) =>
+                      dynamicPagination
+                        ? change_currentPage(page)
+                        : setLocalCurrentPage(page)
+                    }
+                    onRowClick={(row) =>
+                      typeof onRowClick === "function" && onRowClick(row)
+                    }
+                    loadingState={loadingState}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </section>
         </div>
       </div>

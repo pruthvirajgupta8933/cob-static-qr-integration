@@ -29,6 +29,7 @@ const SchedulueTransaction = () => {
     const { clientCode } = user.clientMerchantDetailsList[0];
 
     const [filterFromDate, setFilterFromDate] = useState("");
+    const [filterToDate, setFilterToDate] = useState("");
     const [isScheduling, setIsScheduling] = useState(false);
     const [isDateFilterSubmitting, setIsDateFilterSubmitting] = useState(false);
 
@@ -38,7 +39,7 @@ const SchedulueTransaction = () => {
         setPageCount(Math.ceil(dataCount / pageSize));
     }, [dataCount, pageSize]);
 
-    const fetchData = (page, size, fromDate = "") => {
+    const fetchData = (page, size, fromDate = "", toDate = "") => {
         setIsLoading(true);
         const queryParams = {
             page: page,
@@ -51,6 +52,9 @@ const SchedulueTransaction = () => {
 
         if (fromDate) {
             queryParams.from_date = new Date(fromDate).toISOString().split("T")[0];
+        }
+        if (toDate) {
+            queryParams.to_date = new Date(toDate).toISOString().split("T")[0];
         }
 
         dispatch(scheduleTransactionData({ queryParams, payloadData }))
@@ -69,7 +73,7 @@ const SchedulueTransaction = () => {
     };
 
     useEffect(() => {
-        fetchData(currentPage, pageSize, filterFromDate);
+        fetchData(currentPage, pageSize, filterFromDate, filterToDate);
     }, [pageSize, currentPage]);
 
     const handleSearchChange = (value) => {
@@ -94,6 +98,7 @@ const SchedulueTransaction = () => {
         "Account Type",
         "IFSC",
         "Registration ID",
+        "Prinicipal Amount",
         "Registration Status",
         "Consumer ID",
         "Max Amount",
@@ -117,6 +122,7 @@ const SchedulueTransaction = () => {
                 <td>{showValue(mandate?.account_type)}</td>
                 <td>{showValue(mandate?.ifsc_code)}</td>
                 <td>{showValue(mandate?.registration_id)}</td>
+                <td>{showValue(mandate?.prinicipal_amount)}</td>
                 <td>{showValue(mandate?.registration_status)}</td>
                 <td>{showValue(mandate?.consumer_id)}</td>
                 <td>{showValue(mandate?.max_amount)}</td>
@@ -152,7 +158,7 @@ const SchedulueTransaction = () => {
             if (resp?.meta?.requestStatus === "fulfilled") {
                 toast.success(resp?.payload?.data?.message);
                 setModalToggle(false);
-                fetchData(currentPage, pageSize, filterFromDate);
+                fetchData(currentPage, pageSize, filterFromDate, filterToDate);
             } else {
                 toast.error(resp.payload || "Transaction scheduling failed.");
             }
@@ -254,16 +260,25 @@ const SchedulueTransaction = () => {
 
     const initialDateFilterValues = {
         from_date: todayDate,
+        to_date: todayDate,
     };
 
     const validationDateFilterSchema = Yup.object({
         from_date: Yup.date().nullable().notRequired(),
+        to_date: Yup.date()
+            .nullable()
+            .notRequired()
+            .min(
+                Yup.ref('from_date'),
+                "To Date cannot be before From Date"
+            ),
     });
 
     const handleDateFilterSubmit = (values) => {
         setIsDateFilterSubmitting(true);
         setCurrentPage(1);
         setFilterFromDate(values.from_date || "");
+        setFilterToDate(values.to_date || "");
 
         const queryParams = {
             page: 1,
@@ -279,6 +294,11 @@ const SchedulueTransaction = () => {
             const dateObj = new Date(values.from_date);
             const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
             queryParams.from_date = formattedDate;
+        }
+        if (values.to_date) {
+            const dateObj = new Date(values.to_date);
+            const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+            queryParams.to_date = formattedDate;
         }
 
         dispatch(scheduleTransactionData({ queryParams, payloadData }))
@@ -332,6 +352,28 @@ const SchedulueTransaction = () => {
                                             className="form-control rounded-datepicker p-2 zindex_DateCalender"
                                             required={true}
                                             errorMsg={formik.errors["from_date"]}
+                                            popperPlacement="top-end"
+                                        />
+                                    </div>
+                                    <div className="col-md-3">
+                                        <FormikController
+                                            control="date"
+                                            label="To Date"
+                                            id="to_date"
+                                            name="to_date"
+                                            value={
+                                                formik.values.to_date
+                                                    ? new Date(formik.values.to_date)
+                                                    : null
+                                            }
+                                            onChange={(date) =>
+                                                formik.setFieldValue("to_date", date)
+                                            }
+                                            format="dd-MM-y"
+                                            clearIcon={null}
+                                            className="form-control rounded-datepicker p-2 zindex_DateCalender"
+                                            required={true}
+                                            errorMsg={formik.errors["to_date"]}
                                             popperPlacement="top-end"
                                         />
                                     </div>
