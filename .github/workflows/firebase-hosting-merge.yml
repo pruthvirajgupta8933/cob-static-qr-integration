@@ -6,21 +6,46 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - cob-nf-staging
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      # Ensure Node.js is set up for a consistent environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # IMPORTANT: Confirm this matches your project's Node.js version
+
       # Configure .npmrc with your private registry and token
       - name: Configure npm for private packages
         run: |
           echo "@cto_sabpaisa:registry=https://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
         env:
-          # This pulls the NPM_TOKEN from your GitHub repository secrets
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # --- END: Added steps for private npm package installation ---
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # This pulls the NPM_TOKEN from your GitHub repository secrets
+
+      # --- START: Debugging Steps (REMOVE THESE AFTER FIXING) ---
+      - name: Debug - Check NPM_TOKEN environment variable
+        run: echo "NPM_TOKEN is set: ${{ env.NPM_TOKEN != '' }}" # This will print true/false, but not the token value for security
+        # To see if the token value is being passed (use with extreme caution, it will be visible in logs)
+        # run: echo "NPM_TOKEN value: ${{ secrets.NPM_TOKEN }}"
+
+      - name: Debug - Display .npmrc content
+        run: cat .npmrc
+
+      - name: Debug - Check npm whoami (should be sabpaisa_npm or similar)
+        run: npm whoami
+
+      - name: Debug - Check npm config for registry
+        run: npm config get registry && npm config get @cto_sabpaisa:registry
+      # --- END: Debugging Steps ---
+
+      # This step will now use the .npmrc configuration to install your private package
       - run: npm install --legacy-peer-deps && CI=false npm run build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
