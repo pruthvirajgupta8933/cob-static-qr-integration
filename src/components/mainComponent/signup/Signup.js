@@ -24,6 +24,8 @@ import arrow_one from "../../../assets/images/arrow_one.png";
 import arrow_two from "../../../assets/images/arrow_two.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+import { APP_ENV } from "../../../config";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -58,14 +60,16 @@ const FORM_VALIDATION = Yup.object().shape({
     .required("Password Required")
     .allowOneSpace()
     .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
+      Regex.password,
+      RegexMsg.password
     ),
   terms_and_condition: Yup.boolean().oneOf(
     [true],
     "Please accept the terms & conditions and privacy policy to proceed further"
   ),
-  reCaptcha: Yup.string().required("Required").nullable(),
+  reCaptcha: APP_ENV
+    ? Yup.string().required("Please complete the reCAPTCHA").nullable()
+    : Yup.string().notRequired().nullable(),
 });
 
 function Signup() {
@@ -152,13 +156,13 @@ function Signup() {
       emaill,
       passwordd,
       business_cat_code,
-      reCaptcha,
+      // reCaptcha,
     } = formData;
 
-    if (!reCaptcha) {
-      alert("Please complete the CAPTCHA");
-      return;
-    }
+    // if (!reCaptcha) {
+    //   alert("Please complete the CAPTCHA");
+    //   return;
+    // }
 
     setBtnDisable(true);
 
@@ -529,7 +533,6 @@ function Signup() {
                         <ErrorMessage name="reCaptcha">
                           {(msg) => <p className="text-danger">{msg}</p>}
                         </ErrorMessage>
-
                         <div className={`form-row ${classes.form_row_cob}`}>
                           <div className="form-group col-lg-12">
                             <button

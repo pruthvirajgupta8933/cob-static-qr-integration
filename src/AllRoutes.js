@@ -20,7 +20,7 @@ const ViewTransactionDetails = React.lazy(() =>
 const UrlNotFound = React.lazy(() =>
   import("./components/dashboard/UrlNotFound")
 );
-const BizzForm = React.lazy(() => import("./components/BizzAppForm/BizzForm"));
+const BizzForm = React.lazy(() => import("./components/bizz-app-form/BizzForm"));
 // const PrivacyPolicy = React.lazy(() => import('./TermsOfService/PrivacyPolicy'));
 // const TermsAndConditions = React.lazy(() => import('./TermsOfService/TermsAndConditions'));
 const Login = React.lazy(() =>
@@ -132,6 +132,8 @@ function AllRoutes() {
         </Suspense>
       </Route>
     </Switch>
+
+
   );
 }
 

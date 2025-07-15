@@ -1,5 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slices/auth";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { combineReducers } from 'redux';
+
+// import from "./slices/auth";
+import authReducer, { logout } from "./slices/auth";
 import messageReducer from "./slices/message";
 import { dashboardReducer } from "./slices/dashboardSlice";
 import { reducerSubscription } from "./slices/subscription";
@@ -44,6 +58,7 @@ import { merchantAssignedReducer } from "./components/BusinessDevlopment/busines
 import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
 import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDevelopment/bdSlice.js/bdSlice";
 import { scheduleTransactionSliceReducer } from "./slices/subscription-slice/scheduleTransactionSlice";
+import { updateSettlementApiSliceReducer } from "./slices/subscription-slice/updateSettlementSlice";
 
 const reducer = {
   auth: authReducer,
@@ -75,6 +90,7 @@ const reducer = {
   createEmandateByApiSliceReducer: createEmandateByApiSliceReducer,
   registrationHisorySliceReducer: registrationHisorySliceReducer,
   scheduleTransactionSliceReducer: scheduleTransactionSliceReducer,
+  updateSettlementApiSliceReducer: updateSettlementApiSliceReducer,
 
   // approver
   approverDashboard: approverDashboardSlice,
@@ -112,9 +128,64 @@ const reducer = {
 
 };
 
+const rootPersistConfig = {
+  key: 'cob-root',
+  storage,
+  version: 1.1, // Increment this version number when you change the structure of your state
+  whitelist: [
+    // 'auth', 
+    // 'dashboard', 
+    // 'kyc', 
+    // 'widget', 
+    // 'verifierApproverTab', 
+    // 'signupData', 
+    // 'mid', 
+    // 'frm', 
+    // 'themeReducer', 
+    // 'kycOperationReducer', 
+    // 'payout', 
+    'menuListReducer',
+    // 'productCatalogueSlice', 
+    // 'ReferralMidReducer', 
+    // 'challanReducer', 
+    // 'merchantReportSlice', 
+    // 'createMandate', 
+    // 'Reports', 
+    // 'DebitReports', 
+    // 'createEmandateByApiSliceReducer', 
+    // 'registrationHisorySliceReducer', 
+    // 'scheduleTransactionSliceReducer'
+  ], // Only persist these slices
+};
+
+// Combine all your reducers into a single rootReducer
+const rootReducer = combineReducers(reducer);
+
+const rootReducerWithLogout = (state, action) => {
+  // console.log("Action Type:", action.type); // Log the action type
+  // console.log("Logout Fulfilled Type:", logout.fulfilled.type); // Log the logout fulfilled type
+
+  if (action.type === logout.fulfilled.type) { // Compare action.type with logout.fulfilled.type
+    state = undefined; // Reset the state
+  }
+  return rootReducer(state, action);
+};
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducerWithLogout);
+
 const store = configureStore({
-  reducer: reducer,
-  devTools: true,
+  reducer: persistedReducer, // Use the persistedReducer
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types for serializability checks, as redux-persist uses them
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  devTools: process.env.NODE_ENV !== 'production', // Enable DevTools only in development
 });
 
+export const persistor = persistStore(store);
+
+// To maintain the default export if other parts of your application expect it:
 export default store;

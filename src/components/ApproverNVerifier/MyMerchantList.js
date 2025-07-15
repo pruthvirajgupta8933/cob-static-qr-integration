@@ -25,7 +25,7 @@ import toastConfig from "../../utilities/toastTypes";
 import { stringEnc } from "../../utilities/encodeDecode";
 import SubMerchant from "./Onboarderchant/SubMerchant";
 import CustomModal from "../../_components/custom_modal";
-
+import ReportLayout from "../../utilities/CardLayout";
 const MyMerchantList = () => {
   const roles = roleBasedAccess();
   const loadingState = useSelector((state) => state.kyc.isLoading);
@@ -105,7 +105,7 @@ const MyMerchantList = () => {
           page_size: pageSize,
           created_by: loginId,
           searchquery: searchText,
-          kyc_status: kycSearchStatus,
+          kyc_status: kycSearchStatus.toLowerCase() === "all" ? "" : kycSearchStatus,
           operation: isKycMasked ? "u" : "k",
         })
       );
@@ -240,7 +240,7 @@ const MyMerchantList = () => {
       width: "110px",
       cell: (row) => (
         <div>
-          {(roles?.accountManager || roles.viewer) && (
+          {(roles?.accountManager || roles.viewer || roles.businessDevelopment || roles.zonalManager) && (
             <button
               type="button"
               className="approve text-white  cob-btn-primary  btn-sm "
@@ -258,6 +258,7 @@ const MyMerchantList = () => {
                   ? true
                   : false
               }
+
             >
               Upload
             </button>
@@ -271,7 +272,7 @@ const MyMerchantList = () => {
       width: "170px",
       cell: (row) => (
         <div className="d-flex">
-          {roles?.viewer === true || roles?.accountManager === true ? (
+          {(roles?.viewer || roles?.accountManager || roles.businessDevelopment || roles.zonalManager) ? (
             <>
               {row?.login_id?.master_client_id?.clientCode && (
                 <button
@@ -344,10 +345,8 @@ const MyMerchantList = () => {
   };
 
   return (
-    <div className="container-fluid p-0">
-      <div className="mb-5">
-        <h5 className="">My Merchant List</h5>
-      </div>
+    <ReportLayout title="My Merchant List">
+
       <div className="form-row">
         {openDocumentModal && (
           <AgreementUploadTab
@@ -484,8 +483,9 @@ const MyMerchantList = () => {
         {data?.length == 0 && !loadingState && (
           <h6 className="text-center">No data Found</h6>
         )}
+
       </div>
-    </div>
+    </ReportLayout>
   );
 };
 

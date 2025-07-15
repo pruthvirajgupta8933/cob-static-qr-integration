@@ -197,6 +197,58 @@ const BusinessDetails = (props) => {
   ];
 
 
+  // const factumData = {
+  //   "apiStatus": 200,
+  //   "message": "Success",
+  //   "data": [
+  //     {
+  //       "NISPRIT SERVICES PRIVATE LIMITED": [
+  //         {
+  //           "status": true,
+  //           "entityId": "string",
+  //           "entitysource": "string",
+  //           "sanctionreferencename": "string",
+  //           "matchedNationalId": "string",
+  //           "macthedDob": "string",
+  //           "matchedName": "string",
+  //           "matchedAddress": "string",
+  //           "RiskScore": 1073741824,
+  //           "messge": "string"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "AMAN ANAND": [{
+  //         "status": true,
+  //         "entityId": "string",
+  //         "entitysource": "string",
+  //         "sanctionreferencename": "string",
+  //         "matchedNationalId": "string",
+  //         "macthedDob": "string",
+  //         "matchedName": "string",
+  //         "matchedAddress": "string",
+  //         "RiskScore": 1073741824,
+  //         "messge": "string"
+  //       }]
+  //     },
+  //     {
+  //       "OM PRAKASH PASWAN": [{
+  //         "status": true,
+  //         "entityId": "string",
+  //         "entitysource": "string",
+  //         "sanctionreferencename": "string",
+  //         "matchedNationalId": "string",
+  //         "macthedDob": "string",
+  //         "matchedName": "string",
+  //         "matchedAddress": "string",
+  //         "RiskScore": 1073741824,
+  //         "messge": "string"
+  //       }]
+  //     }
+  //   ],
+  //   "timestamp": "2025-05-02T12:34:30.266323874",
+  //   "traceId": "6641469a-6e40-4554-b0cd-fb831d25ef02"
+  // }
 
   return (
     <div className="row mb-4 border p-1">
@@ -483,40 +535,65 @@ const BusinessDetails = (props) => {
 
 
       <>
-        {Array.isArray(factumData) && (
+        {factumData && (
           <ViewKycCollapse
-            title={isCollapseOpen === 3 ? "Factum Data" : "Factum Data"}
+            title={"Screening Data"}
             formContent={
               <>
                 <div className="table-responsive table_maxheight m-3">
-                  <table className="table table-striped">
+                  <table className="table ">
                     <tbody>
-                      {factumData?.map((data, index) => (
-                        <React.Fragment key={index}>
-                          {Object.keys(data)?.map((key, idx) => (
-                            <tr key={idx}>
-                              <th>{key}</th>
-                              <td>
-                                {typeof data[key] === "object" ? (
-                                  <div>
-                                    {Object.entries(data[key])?.map(
-                                      ([objKey, objValue], objIdx) => (
-                                        <div key={objIdx} className="mb-1">
-                                          <span className="fw-bold">
-                                            {objKey}:{" "}
-                                          </span>
-                                          <span>{objValue}</span>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                ) : (
-                                  <div>{data[key]}</div>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </React.Fragment>
+                      {Object.entries(factumData).map(([key, value], index) => (
+                        <tr key={index}>
+                          <th>{key}</th>
+                          <td>
+                            {Array.isArray(value) ? (
+                              <table className="table ">
+                                <tbody>
+                                  {value.map((item, itemIndex) => (
+                                    <tr key={itemIndex}>
+                                      <td colSpan="2">
+                                        <table className="table">
+                                          <tbody>
+                                            {Object.entries(item).map(([subKey, subValue], subIndex) => (
+                                              <tr key={subIndex}>
+                                                <th>{subKey}</th>
+                                                <td>
+                                                  {Array.isArray(subValue) ? (
+                                                    <table className="table ">
+                                                      <tbody>
+                                                        {subValue.map((nestedItem, nestedIndex) => (
+                                                          <tr key={nestedIndex}>
+                                                            {Object.entries(nestedItem).map(
+                                                              ([nestedKey, nestedValue], nestedInnerIndex) => (
+                                                                <tr key={nestedInnerIndex}>
+                                                                  <th>{nestedKey}</th>
+                                                                  <td>{nestedValue}</td>
+                                                                </tr>
+                                                              )
+                                                            )}
+                                                          </tr>
+                                                        ))}
+                                                      </tbody>
+                                                    </table>
+                                                  ) : (
+                                                    subValue
+                                                  )}
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            ) : (
+                              value
+                            )}
+                          </td>
+                        </tr>
                       ))}
                     </tbody>
                   </table>

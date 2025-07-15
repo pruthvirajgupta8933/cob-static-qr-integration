@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "../../components/dashboard/css/Home.css"
 
-const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle, modalSize }) => {
+const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle, modalSize, setRequestPayload, resetPayload, Setshow }) => {
 
 
   const handleEscapeKey = (event) => {
@@ -17,6 +17,14 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
       window.removeEventListener("keydown", handleEscapeKey);
     };
   }, []);
+
+  const handleClick = () => {
+    fnSetModalToggle(false);
+    if (resetPayload) {
+      setRequestPayload(null);
+      Setshow(false)
+    }
+  };
 
   return (
     <div
@@ -36,7 +44,7 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
             <button
               type="button"
               className="close"
-              onClick={() => fnSetModalToggle(false)}
+              onClick={() => handleClick()}
             >
               <span ariaHidden="true">&times;</span>
             </button>

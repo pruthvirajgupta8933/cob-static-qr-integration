@@ -6,10 +6,10 @@ import { getQueryStr } from "../../../utilities/generateURLQueryParams";
 
 
 
-export const scheduleTransactionApi = (postData) => {
+export const scheduleTransactionApi = (queryParams, payloadData) => {
     const url = `${E_NACH_URL.SCHEDULE_TRRANSACTION}`;
-    const apiUrl = getQueryStr(url, postData);
-    return axiosInstanceEmandateAuthApiKey.post(apiUrl);
+    const apiUrl = getQueryStr(url, queryParams);
+    return axiosInstanceEmandateAuthApiKey.post(apiUrl, payloadData);
 };
 
 export const userWiseTransactionSchedule = (requestParam) => {

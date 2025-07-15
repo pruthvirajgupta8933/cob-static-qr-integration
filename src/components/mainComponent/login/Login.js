@@ -16,8 +16,11 @@ import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
-import { Encrypt } from "../../../utilities/aes";
+// import { Encrypt } from "../../../utilities/aes";
+import { encrypt } from "sabpaisa-encryption-package-gcm";
 import keyConfig from "../../../key.config";
+import { APP_ENV } from "../../../config";
+
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -28,7 +31,9 @@ const INITIAL_FORM_STATE = {
 const validationSchema = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username").allowOneSpace(),
   userPassword: Yup.string().required("Please enter password").allowOneSpace(),
-  reCaptcha: Yup.string().required("Required").nullable(),
+  reCaptcha: APP_ENV
+    ? Yup.string().required("Please complete the reCAPTCHA").nullable()
+    : Yup.string().notRequired().nullable(),
 });
 
 const Login = () => {
@@ -83,13 +88,14 @@ const Login = () => {
       });
   };
 
-  const handleLogin = (formValue) => {
+  const handleLogin = async (formValue) => {
     const { clientUserId, userPassword } = formValue;
 
     setLoading(true);
 
+
     const encQuery = {
-      query: Encrypt(
+      query: await encrypt(
         JSON.stringify({
           clientUserId: clientUserId,
           userPassword: userPassword,
@@ -147,11 +153,11 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const enableSocialLogin = (flag, response) => {
+  const enableSocialLogin = async (flag, response) => {
     if (flag) {
       const username = response?.profileObj?.email;
       const encQuery = {
-        query: Encrypt(
+        query: encrypt(
           JSON.stringify({ clientUserId: username, is_social: true }),
           keyConfig.LOGIN_AUTH_KEY,
           keyConfig.LOGIN_AUTH_IV
@@ -437,7 +443,7 @@ const Login = () => {
                       Don’t have an account with SabPaisa?
                       <a
                         className="text-primary text-decoration-underline"
-                        href={`https://sabpaisa.in/pricing/`}
+                        href={`https://sabpaisa.in`}
                       >
                         {" "}
                         Sign Up

@@ -38,7 +38,7 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
         setGstStatus(res.payload.status);
         setGstinData(res?.payload);
       } else {
-        toast.error(res?.payload?.message ?? res?.payload?.data?.detail);
+        toast.error(res?.payload?.data?.message ?? res?.payload?.data?.detail);
       }
     } catch (error) {
       setIsLoading(false);
@@ -69,7 +69,7 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
             <div className="form-group">
               <button
                 type="button"
-                className="btn cob-btn-primary text-white btn-sm"
+                className="btn cob-btn-primary text-white btn-sm ml-3 ml-md-0"
                 onClick={() => handleGstinSubmit(initialValuesForGSTIN)}
                 disabled={isLoading}
               >
@@ -95,7 +95,7 @@ const GstinAdditionalKyc = ({ selectedDocType }) => {
                       {key.replace("_", " ")}:
                     </span>
                     {typeof value === "boolean" ? (
-                      <span>{value.toString()}</span>
+                      <span>{value?.toString()}</span>
                     ) : (
                       <span>&nbsp;{value}</span>
                     )}

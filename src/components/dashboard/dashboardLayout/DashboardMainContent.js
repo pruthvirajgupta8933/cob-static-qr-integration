@@ -59,7 +59,7 @@ import Beneficiary from "../../../payout/Beneficiary";
 import MISReport from "../../../payout/MISReport";
 import MakePayment from "../../../payout/MakePayment";
 import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
-import ChallanTransactReport from "../../../B2B_components/ChallanTransactReport";
+import ChallanTransactReport from "../../../b2b-components/ChallanTransactReport";
 // import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
 import { isNull, reject } from "lodash";
@@ -127,14 +127,19 @@ import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
 import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
 import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
 import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
-import ScheduleTransaction from "../../../subscription_components/Schedule Transaction/ScheduleTransaction";
+// import ScheduleTransaction from "../../../subscription_components/schedule-transaction/ScheduleTransaction";
+import SchedulueTransaction from "../../../subscription_components/schedule-transaction/ScheduleTransaction";
 import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
+import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
+import EnachSettlementReport from "../../../subscription_components/settlement-report-enach/EnachSettlementReport";
+import IdleTimerContainer from "../../../utilities/IdleTimer";
+import AdminAuthRegister from "../../ApproverNVerifier/admin-auth-register/AdminAuthRegister";
 
 function DashboardMainContent() {
   let history = useHistory();
   let { path } = useRouteMatch();
   useSingleTabGuard();
-  const { auth } = useSelector((state) => state);
+  const { auth, menuListReducer } = useSelector((state) => state);
   const { user } = auth;
   const loginId = user?.loginId;
   const roleId = user?.roleId;
@@ -175,7 +180,7 @@ function DashboardMainContent() {
       ) {
         newClientCode = stepRespOne?.data?.clientCode;
       } else {
-        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+        newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
       }
 
       // update new client code in db
@@ -259,32 +264,39 @@ function DashboardMainContent() {
         LoginId: user?.loginId,
       };
 
-      dispatch(fetchMenuList(postBody));
+
+      if (!menuListReducer?.enableMenu?.length) {
+        dispatch(fetchMenuList(postBody));
+      }
+
     } else {
       dispatch(logout());
-      toastConfig.errorToast("Session Expired");
+      toastConfig.errorToast("Session Expired, You have been logged out.");
     }
   }, []);
 
   useEffect(() => {
-    if (!assignmentType && roles?.businessDevelopment) {
-      if (roleId) {
-        dispatch(assignmentTypeApi(roleId)).then((response) => {
-          const assignmentTypes = response?.payload?.assignment_type ?? [];
+    const shouldFetch =
+      !assignmentType && (roles?.businessDevelopment || roles?.zonalManager);
 
-          if (Array.isArray(assignmentTypes)) {
-            const filteredAssignment = assignmentTypes.find(
-              (item) => item?.role_id === roleId
-            );
+    if (shouldFetch && roleId) {
+      dispatch(assignmentTypeApi(roleId)).then((response) => {
+        const assignmentTypes = response?.payload?.assignment_type ?? [];
 
-            if (filteredAssignment) {
-              dispatch(setAssignmentType(filteredAssignment));
-            }
+        if (Array.isArray(assignmentTypes)) {
+          const filteredAssignment = assignmentTypes.find(
+            (item) => item?.role_id === roleId
+          );
+
+
+          if (filteredAssignment) {
+            dispatch(setAssignmentType(filteredAssignment));
           }
-        });
-      }
+        }
+      });
     }
-  }, [dispatch]);
+  }, [dispatch, assignmentType, roleId, roles]);
+
 
   useEffect(() => {
     // fetch subscribe product data
@@ -309,14 +321,13 @@ function DashboardMainContent() {
   // console.log("roles", roles)
   return (
     <React.Fragment>
+
       <DashboardHeader />
       <div className="container-fluid">
         <div className="row dashboard_bg">
           <SideNavbar />
-
-          <main
-            className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}
-          >
+          <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}>
+            <IdleTimerContainer />
             <Switch>
               <Route exact path={path}>
                 <Home />
@@ -696,6 +707,10 @@ function DashboardMainContent() {
                 <MerchantBalance />
               </AuthorizedRoute>
 
+
+
+
+
               <AuthorizedRoute
                 exact
                 path={`${path}/q-form-reports`}
@@ -799,10 +814,33 @@ function DashboardMainContent() {
                 <RegistrationHistory />
               </AuthorizedRoute>
 
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/registaration-history`}
+                Component={RegistrationHistory}
+                roleList={{ merchant: true }}
+              >
+                <RegistrationHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/e-nach-settlement-report`}
+                Component={EnachSettlementReport}
+                roleList={{ merchant: true }}
+              >
+
+              </AuthorizedRoute>
+
+
+
+
+
               <AuthorizedRoute
                 exact
                 path={`${path}/schedule-transaction`}
-                Component={ScheduleTransaction}
+                Component={SchedulueTransaction}
                 roleList={{ merchant: true }}
               ></AuthorizedRoute>
 
@@ -853,6 +891,12 @@ function DashboardMainContent() {
                 <GenerateMid />
               </AuthorizedRoute>
 
+              <AuthorizedRoute
+                exact
+                path={`${path}/mid-management`}
+                Component={MidManagement}
+                roleList={{ approver: true, verifier: true }}
+              />
               <AuthorizedRoute
                 exact
                 path={`${path}/bank-onboarding`}
@@ -971,7 +1015,7 @@ function DashboardMainContent() {
                 exact
                 path={`${path}/edit-kyc-detail`}
                 Component={EditKycDetail}
-                roleList={{ verifier: true }}
+                roleList={{ verifier: true, approver: true }}
               >
                 <EditKycDetail />
               </AuthorizedRoute>
@@ -1074,6 +1118,16 @@ function DashboardMainContent() {
                 Component={UpdateRollingReserve}
                 roleList={{ approver: true, verifier: true }}
               />
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/admin-auth-register`}
+                Component={AdminAuthRegister}
+                roleList={{ approver: true }}
+              >
+                <AdminAuthRegister />
+              </AuthorizedRoute>
 
               <AuthorizedRoute
                 exact

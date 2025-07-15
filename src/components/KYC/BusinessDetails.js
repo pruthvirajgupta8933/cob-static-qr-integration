@@ -118,7 +118,7 @@ function BusinessDetails(props) {
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
     pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
-
+    father_name: KycList?.father_name ?? "",
     authorized_person_dob: KycList?.authorized_person_dob ?? "",
 
     cin_number: KycList?.cin ?? "",
@@ -215,6 +215,7 @@ function BusinessDetails(props) {
         .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
         .required("Required")
         .nullable(),
+      father_name: Yup.string(),
       city_id: Yup.string()
         .allowOneSpace()
         .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
@@ -304,7 +305,7 @@ function BusinessDetails(props) {
       gstValidation({
         gst_number: values,
         fetchFilings: false,
-        fy: "2018-19",
+        fy: "2022-23",
       })
     ).then((res) => {
 
@@ -315,19 +316,22 @@ function BusinessDetails(props) {
       ) {
         const fullName = trimFullName(res?.payload?.trade_name, "");
         setFieldValue(key, fullName);
+
+        // verify the pan number get by GST, need to fetch DOI based on pan number.
+        // panValidate(res?.payload?.pan, "company_name", setFieldValue)
+
         setFieldValue("gst_number", values);
         setFieldValue("prevGstNumber", values);
-
         setFieldValue("pan_card", res?.payload?.pan);
         setFieldValue("prev_pan_card", res?.payload?.pan);
         setFieldValue("isPanVerified", 1);
-        advancePanValidation({ pan_number: res?.payload?.pan })
+        // console.log({ pan_number: res?.payload?.pan })
+        dispatch(advancePanValidation({ pan_number: res?.payload?.pan }))
           .then((res) => {
-            if (res.payload?.dob)
+            if (res.payload?.dob) {
               setFieldValue("pan_dob_or_doi", res.payload?.dob);
-            else toastConfig.warningToast("Please verify PAN as well");
-          })
-          .catch((err) => toastConfig.errorToast(err.message));
+            }
+          }).catch((err) => toastConfig.errorToast(err.message));
 
         setFieldValue("registerd_with_gst", true);
         setFieldValue("registerd_with_udyam", false);
@@ -369,7 +373,6 @@ function BusinessDetails(props) {
         toastConfig.errorToast(err.response?.data?.detail);
       });
   };
-  // U85500UP2023PTC194333/ U59110CH2025PTC046054
 
   const cinValidationField = (values, key, setFieldValue) => {
     setLoadingForCin(true);
@@ -433,6 +436,7 @@ function BusinessDetails(props) {
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
         setFieldValue("authorized_person_dob", res?.payload?.dob)
+        setFieldValue("father_name", res?.payload?.father_name)
 
         toast.success(res.payload.message);
       } else {
@@ -519,6 +523,7 @@ function BusinessDetails(props) {
       udyam_data: udyamResponseData,
       cin_number: values?.cin_number,
       cin_data: values?.cin_data,
+      father_name: values?.father_name
     };
 
     // console.log("postData", postData)

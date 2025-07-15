@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Formik, Field } from "formik";
+import { Form, Formik, Field, ErrorMessage } from "formik";
 import { isNull } from "lodash";
 import { toast } from "react-toastify";
 import FormikController from "../../../../../../_components/formik/FormikController";
@@ -177,7 +177,7 @@ function ReferralOnboardForm({
     password: Yup.string().when("isPasswordReq", {
       is: true,
       then: Yup.string()
-        .matches(Regex.userNameRegex, RegexMsg.userNameRegex)
+        .matches(Regex.password, RegexMsg.password)
         .required("Required"),
       otherwise: Yup.string(),
     }),
@@ -275,7 +275,7 @@ function ReferralOnboardForm({
         if (resp3?.data?.clientCode !== "" && resp3?.data?.status === true) {
           newClientCode = resp3?.data?.clientCode;
         } else {
-          newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+          newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
         }
 
         const data = {
@@ -510,6 +510,7 @@ function ReferralOnboardForm({
                           name="password"
                           placeholder="Create Password"
                           className="form-control"
+                          displayMsgOutside={true}
                         />
                         <div className="input-group-append">
                           <span
@@ -521,6 +522,11 @@ function ReferralOnboardForm({
                           </span>
                         </div>
                       </div>
+
+                      <ErrorMessage name={"password"}>
+                        {(msg) => <p className="text-danger">{msg}</p>}
+                      </ErrorMessage>
+
                     </div>
                   </div>
 

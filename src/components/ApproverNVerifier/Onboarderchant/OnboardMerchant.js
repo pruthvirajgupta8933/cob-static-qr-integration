@@ -18,7 +18,7 @@ import { createSubMerchant } from "../../../slices/approver-dashboard/approverDa
 import toastConfig from "../../../utilities/toastTypes";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import FormikController from "../../../_components/formik/FormikController";
-
+import ReportLayout from "../../../utilities/CardLayout";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -47,8 +47,8 @@ const FORM_VALIDATION = Yup.object().shape({
     .allowOneSpace()
     .required("Password Required")
     .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character"
+      Regex.password,
+      RegexMsg.password
     ),
   confirmpasswordd: Yup.string()
     .allowOneSpace()
@@ -219,296 +219,298 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
   }, [isUserRegistered]);
 
   return (
-    <React.Fragment>
-      {heading === false ? (
-        <></>
-      ) : (
-        <div className="logmod__heading">
-          <div className="mb-2">
-            <h5>Onboard Merchant</h5>
+
+    <ReportLayout title="Onboard Merchant">
+
+      <React.Fragment>
+        {heading === false ? (
+          <></>
+        ) : (
+          <div className="logmod__heading">
+
           </div>
-        </div>
-      )}
-      <Formik
-        initialValues={{
-          fullname: "",
-          mobilenumber: "",
-          emaill: "",
-          passwordd: "",
-          business_cat_code: "",
-          confirmpasswordd: "",
-          roleId: "",
-          zone_code: "",
-          terms_and_condition: false,
-          developer_name: "",
-          developer_contact: "",
-        }}
-        validationSchema={validator ?? FORM_VALIDATION}
-        onSubmit={(values, { resetForm }) => {
-          clientLoginId
-            ? handleSubMerchant(values, { resetForm })
-            : handleRegistration(values, { resetForm });
-        }}
-      >
-        {(formik) => (
-          <Form className={`${heading === false ? "row g-3" : "row g-3 mt-4"}`}>
-            {zoneCode ? (
+        )}
+        <Formik
+          initialValues={{
+            fullname: "",
+            mobilenumber: "",
+            emaill: "",
+            passwordd: "",
+            business_cat_code: "",
+            confirmpasswordd: "",
+            roleId: "",
+            zone_code: "",
+            terms_and_condition: false,
+            developer_name: "",
+            developer_contact: "",
+          }}
+          validationSchema={validator ?? FORM_VALIDATION}
+          onSubmit={(values, { resetForm }) => {
+            clientLoginId
+              ? handleSubMerchant(values, { resetForm })
+              : handleRegistration(values, { resetForm });
+          }}
+        >
+          {(formik) => (
+            <Form className={`${heading === false ? "row g-3" : "row g-3 mt-4"}`}>
+              {zoneCode ? (
+                <div className="col-md-6">
+                  <label
+                    htmlFor="full-name"
+                    className="form-label font-weight-bold"
+                  >
+                    Full Name
+                    {zoneCode && <span style={{ color: "red" }}>*</span>}
+                  </label>
+                  <Field
+                    className="form-control"
+                    maxLength={230}
+                    id="fullname"
+                    placeholder="Full name of merchant"
+                    type="text"
+                    name="fullname"
+                    size={50}
+                  />
+                  <ErrorMessage name="fullname">
+                    {(msg) => <p className="text-danger"> {msg} </p>}
+                  </ErrorMessage>
+                </div>
+              ) : (
+                <div className="col-md-6">
+                  <label
+                    htmlFor="username"
+                    className="form-label font-weight-bold"
+                  >
+                    UserName
+                  </label>
+                  <Field
+                    className="form-control"
+                    maxLength={230}
+                    id="username"
+                    placeholder="Username"
+                    type="text"
+                    name="username"
+                    size={50}
+                  />
+                  <ErrorMessage name="username">
+                    {(msg) => <p className="text-danger"> {msg} </p>}
+                  </ErrorMessage>
+                </div>
+              )}
               <div className="col-md-6">
-                <label
-                  htmlFor="full-name"
-                  className="form-label font-weight-bold"
-                >
-                  Full Name
+                <label htmlFor="mobile" className="form-label font-weight-bold">
+                  Mobile Number
                   {zoneCode && <span style={{ color: "red" }}>*</span>}
                 </label>
                 <Field
                   className="form-control"
-                  maxLength={230}
-                  id="fullname"
-                  placeholder="Full name of merchant"
+                  maxLength={10}
+                  id="mobilenumber"
+                  placeholder="Mobile number"
+                  name="mobilenumber"
                   type="text"
-                  name="fullname"
-                  size={50}
+                  pattern="\d{10}"
+                  size={10}
+                  onKeyDown={(e) =>
+                    ["e", "E", "+", "-", "."].includes(e.key) &&
+                    e.preventDefault()
+                  }
                 />
-                <ErrorMessage name="fullname">
-                  {(msg) => <p className="text-danger"> {msg} </p>}
-                </ErrorMessage>
-              </div>
-            ) : (
-              <div className="col-md-6">
-                <label
-                  htmlFor="username"
-                  className="form-label font-weight-bold"
-                >
-                  UserName
-                </label>
-                <Field
-                  className="form-control"
-                  maxLength={230}
-                  id="username"
-                  placeholder="Username"
-                  type="text"
-                  name="username"
-                  size={50}
-                />
-                <ErrorMessage name="username">
-                  {(msg) => <p className="text-danger"> {msg} </p>}
-                </ErrorMessage>
-              </div>
-            )}
-            <div className="col-md-6">
-              <label htmlFor="mobile" className="form-label font-weight-bold">
-                Mobile Number
-                {zoneCode && <span style={{ color: "red" }}>*</span>}
-              </label>
-              <Field
-                className="form-control"
-                maxLength={10}
-                id="mobilenumber"
-                placeholder="Mobile number"
-                name="mobilenumber"
-                type="text"
-                pattern="\d{10}"
-                size={10}
-                onKeyDown={(e) =>
-                  ["e", "E", "+", "-", "."].includes(e.key) &&
-                  e.preventDefault()
-                }
-              />
-              {
-                <ErrorMessage name="mobilenumber">
-                  {(msg) => <p className="text-danger">{msg}</p>}
-                </ErrorMessage>
-              }
-            </div>
-            <div className="col-md-6">
-              <label
-                htmlFor="user-email"
-                className="form-label font-weight-bold"
-              >
-                Email ID
-                {zoneCode && <span style={{ color: "red" }}>*</span>}
-              </label>
-              <Field
-                className="form-control"
-                maxLength={255}
-                id="email"
-                placeholder="Enter your email"
-                name="emaill"
-                size={50}
-              />
-              {
-                <ErrorMessage name="emaill">
-                  {(msg) => <p className="text-danger">{msg}</p>}
-                </ErrorMessage>
-              }
-            </div>
-            {zoneCode && (
-              <div className="col-md-6">
-                <label
-                  htmlFor="business_category"
-                  className="form-label font-weight-bold"
-                >
-                  Business Category
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <Field
-                  name="business_cat_code"
-                  className="form-select"
-                  component="select"
-                >
-                  <option
-                    type="text"
-                    className="form-control"
-                    id="businesscode"
-                  >
-                    Select business
-                  </option>
-                  {businessCode?.map((business, i) => (
-                    <option value={business.category_id} key={uuidv4()}>
-                      {business.category_name}
-                    </option>
-                  ))}
-                </Field>
                 {
-                  <ErrorMessage name="business_cat_code">
+                  <ErrorMessage name="mobilenumber">
                     {(msg) => <p className="text-danger">{msg}</p>}
                   </ErrorMessage>
                 }
               </div>
-            )}
-            <div className="col-md-6">
-              <label htmlFor="user-pw" className="form-label font-weight-bold">
-                Create Password
-                {zoneCode && <span style={{ color: "red" }}>*</span>}
-              </label>
-              <div className="input-group">
+              <div className="col-md-6">
+                <label
+                  htmlFor="user-email"
+                  className="form-label font-weight-bold"
+                >
+                  Email ID
+                  {zoneCode && <span style={{ color: "red" }}>*</span>}
+                </label>
                 <Field
                   className="form-control"
                   maxLength={255}
-                  id="user-pws"
-                  placeholder="Password"
-                  name="passwordd"
-                  type={passwordType.showPasswords ? "text" : "password"}
+                  id="email"
+                  placeholder="Enter your email"
+                  name="emaill"
                   size={50}
-                  autoComplete="off"
                 />
-
-                <span
-                  className="input-group-text"
-                  onClick={togglePassword}
-                  id="basic-addon2"
-                >
-                  {passwordType.showPasswords ? (
-                    <i className="fa fa-eye" ariaHidden="true"></i>
-                  ) : (
-                    <i className="fa fa-eye-slash" ariaHidden="true"></i>
-                  )}
-                </span>
+                {
+                  <ErrorMessage name="emaill">
+                    {(msg) => <p className="text-danger">{msg}</p>}
+                  </ErrorMessage>
+                }
               </div>
-              {
-                <ErrorMessage name="passwordd">
-                  {(msg) => <p className="text-danger">{msg}</p>}
-                </ErrorMessage>
-              }
-            </div>
-
-            {zoneCode && (
+              {zoneCode && (
+                <div className="col-md-6">
+                  <label
+                    htmlFor="business_category"
+                    className="form-label font-weight-bold"
+                  >
+                    Business Category
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <Field
+                    name="business_cat_code"
+                    className="form-select"
+                    component="select"
+                  >
+                    <option
+                      type="text"
+                      className="form-control"
+                      id="businesscode"
+                    >
+                      Select business
+                    </option>
+                    {businessCode?.map((business, i) => (
+                      <option value={business.category_id} key={uuidv4()}>
+                        {business.category_name}
+                      </option>
+                    ))}
+                  </Field>
+                  {
+                    <ErrorMessage name="business_cat_code">
+                      {(msg) => <p className="text-danger">{msg}</p>}
+                    </ErrorMessage>
+                  }
+                </div>
+              )}
               <div className="col-md-6">
-                <label
-                  htmlFor="user-cpw"
-                  className="form-label font-weight-bold"
-                >
-                  Confirm Password
+                <label htmlFor="user-pw" className="form-label font-weight-bold">
+                  Create Password
                   {zoneCode && <span style={{ color: "red" }}>*</span>}
                 </label>
                 <div className="input-group">
                   <Field
                     className="form-control"
                     maxLength={255}
-                    id="user-cpw"
-                    placeholder="Re-enter the password"
-                    type={valuesIn.showPassword ? "text" : "password"}
-                    name="confirmpasswordd"
+                    id="user-pws"
+                    placeholder="Password"
+                    name="passwordd"
+                    type={passwordType.showPasswords ? "text" : "password"}
                     size={50}
+                    autoComplete="off"
                   />
 
                   <span
                     className="input-group-text"
-                    onClick={handleClickShowPassword}
+                    onClick={togglePassword}
                     id="basic-addon2"
                   >
-                    {valuesIn.showPassword ? (
+                    {passwordType.showPasswords ? (
                       <i className="fa fa-eye" ariaHidden="true"></i>
                     ) : (
                       <i className="fa fa-eye-slash" ariaHidden="true"></i>
                     )}
                   </span>
                 </div>
-
                 {
-                  <ErrorMessage name="confirmpasswordd">
+                  <ErrorMessage name="passwordd">
                     {(msg) => <p className="text-danger">{msg}</p>}
                   </ErrorMessage>
                 }
               </div>
-            )}
 
-            <div className="col-md-6">
-              <FormikController
-                control="input"
-                name="developer_name"
-                className="form-control"
-                placeholder="Enter Developer Name"
-                label="Developer Name"
-                autoComplete="off"
+              {zoneCode && (
+                <div className="col-md-6">
+                  <label
+                    htmlFor="user-cpw"
+                    className="form-label font-weight-bold"
+                  >
+                    Confirm Password
+                    {zoneCode && <span style={{ color: "red" }}>*</span>}
+                  </label>
+                  <div className="input-group">
+                    <Field
+                      className="form-control"
+                      maxLength={255}
+                      id="user-cpw"
+                      placeholder="Re-enter the password"
+                      type={valuesIn.showPassword ? "text" : "password"}
+                      name="confirmpasswordd"
+                      size={50}
+                    />
 
-              />
-            </div>
+                    <span
+                      className="input-group-text"
+                      onClick={handleClickShowPassword}
+                      id="basic-addon2"
+                    >
+                      {valuesIn.showPassword ? (
+                        <i className="fa fa-eye" ariaHidden="true"></i>
+                      ) : (
+                        <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                      )}
+                    </span>
+                  </div>
 
-            <div className="col-md-6">
-              <FormikController
-                control="input"
-                name="developer_contact"
-                placeholder="Developer Contact Number"
-                className="form-control"
-                label="Enter Developer Contact Number"
-                autoComplete="off"
+                  {
+                    <ErrorMessage name="confirmpasswordd">
+                      {(msg) => <p className="text-danger">{msg}</p>}
+                    </ErrorMessage>
+                  }
+                </div>
+              )}
 
-              />
-            </div>
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="developer_name"
+                  className="form-control"
+                  placeholder="Enter Developer Name"
+                  label="Developer Name"
+                  autoComplete="off"
 
-            <div className="col-md-9">
-              <button
-                className="cob-btn-primary btn btn-sm text-white disabled1"
-                name="commit"
-                type="submit"
-                width={50}
-                defaultValue="Create Account"
-                disabled={
-                  btnDisable ||
-                    (zoneCode
-                      ? !(formik.isValid && formik.dirty)
-                      : !clientLoginId)
-                    ? true
-                    : false
-                }
-                data-rel={btnDisable}
-              >
-                {btnDisable && (
-                  <span
-                    className="spinner-border spinner-border-sm mr-1"
-                    role="status"
-                    ariaHidden="true"
-                  ></span>
-                )}{" "}
-                {/* Show spinner if disabled */}Submit
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </React.Fragment>
+                />
+              </div>
+
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="developer_contact"
+                  placeholder="Developer Contact Number"
+                  className="form-control"
+                  label="Enter Developer Contact Number"
+                  autoComplete="off"
+
+                />
+              </div>
+
+              <div className="col-md-9">
+                <button
+                  className="cob-btn-primary btn btn-sm text-white disabled1"
+                  name="commit"
+                  type="submit"
+                  width={50}
+                  defaultValue="Create Account"
+                  disabled={
+                    btnDisable ||
+                      (zoneCode
+                        ? !(formik.isValid && formik.dirty)
+                        : !clientLoginId)
+                      ? true
+                      : false
+                  }
+                  data-rel={btnDisable}
+                >
+                  {btnDisable && (
+                    <span
+                      className="spinner-border spinner-border-sm mr-1"
+                      role="status"
+                      ariaHidden="true"
+                    ></span>
+                  )}{" "}
+                  {/* Show spinner if disabled */}Submit
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </React.Fragment>
+    </ReportLayout>
   );
 };
 

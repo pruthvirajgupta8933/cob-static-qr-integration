@@ -250,8 +250,8 @@ const RefundTransactionHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -289,8 +289,8 @@ const RefundTransactionHistory = () => {
       clientCodeListArr?.map((item) => {
         allClientCode.push(item.client_code);
       });
-      clientCodeArrLength = allClientCode.length.toString();
-      strClientCode = allClientCode.join().toString();
+      clientCodeArrLength = allClientCode.length?.toString();
+      strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = values.clientCode;
       clientCodeArrLength = "1";
@@ -552,6 +552,7 @@ const RefundTransactionHistory = () => {
           data={txnList}
           showSearch
           showCountPerPage
+          loadingState={loading}
         />
       </main>
     </section>

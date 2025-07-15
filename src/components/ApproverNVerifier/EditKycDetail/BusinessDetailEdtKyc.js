@@ -22,34 +22,39 @@ import gotVerified from "../../../assets/images/verified.png";
 import { isNull } from "lodash";
 import { udyamValidate } from "../../../services/kyc/kyc-validate/kyc-validate.service";
 import toastConfig from "../../../utilities/toastTypes";
+import { cinValidation } from "../../../slices/kycValidatorSlice";
 
 function BusinessDetailEdtKyc(props) {
   const setTab = props.tab;
   const setTitle = props.title;
   const selectedId = props.selectedId;
-  const merchantloginMasterId = props.merchantloginMasterId;
+  // const merchantloginMasterId = props.merchantloginMasterId;
 
   const reqexPinCode = /^[1-9][0-9]{5}$/;
   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
-  const { allTabsValidate } = kyc;
+  const { allTabsValidate, KycTabStatusStore } = kyc;
 
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
+
   const KycList = kyc?.kycUserList;
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status;
 
 
   const buttonText = "Save and Next";
   const [udyamData, setUdyamData] = useState("");
   const [disable, setIsDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingForCin, setLoadingForCin] = useState(false);
   const [loadingForGst, setLoadingForGst] = useState(false);
   const [loadingForSiganatory, setLoadingForSignatory] = useState(false);
   const [isLoader, setIsloader] = useState(false);
   const [udyamResponseData, setUdyamResponseData] = useState({});
+  const readOnly = false;
 
   const busiAuthFirstName =
     BusinessDetailsStatus.AuthPanValidation?.first_name === null
@@ -115,6 +120,13 @@ function BusinessDetailEdtKyc(props) {
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN,
     isSignatoryPanVerified: KycList?.signatoryPAN?.length > 9 && 1,
+    pan_dob_or_doi: KycList?.pan_dob_or_doi ?? "",
+    father_name: KycList?.father_name ?? "",
+    authorized_person_dob: KycList?.authorized_person_dob ?? "",
+    cin_number: KycList?.cin ?? "",
+    cin_data: {},
+    prevCinNumber: KycList?.cin ?? "",
+    isCinVerified: KycList?.cin ? true : false
   };
 
 
@@ -218,12 +230,13 @@ function BusinessDetailEdtKyc(props) {
         .matches(reqexPinCode, "Pin Code is Invalid")
 
         .nullable(),
-      operational_address: Yup.string()
+      cin_number: Yup.string().nullable(),
+      registered_business_address: Yup.string()
         .allowOneSpace()
         .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
 
         .wordLength("Word character length exceeded")
-        .max(120, "Address Max length exceeded, 120 charactes are allowed")
+        // .max(120, "Address Max length exceeded, 120 charactes are allowed")
         .nullable(),
       registerd_with_gst: Yup.boolean().nullable(),
       registerd_with_udyam: Yup.boolean().nullable(),
@@ -253,30 +266,29 @@ function BusinessDetailEdtKyc(props) {
       advancePanValidation({
         pan_number: values,
       })
-    )
-      .then((res) => {
-        if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.status === true &&
-          res.payload.valid === true
-        ) {
-          const fullNameByPan = trimFullName(
-            res?.payload?.first_name,
-            res?.payload?.last_name
-          );
-          setFieldValue(key, fullNameByPan);
-          setFieldValue("pan_dob_or_doi", res?.payload?.dob);
-          setFieldValue("pan_card", values);
-          setFieldValue("prev_pan_card", values);
-          setFieldValue("isPanVerified", 1);
-          toast.success(res?.payload?.message);
-          setIsLoading(false);
-        } else {
-          setFieldValue(key, "");
-          setIsLoading(false);
-          toast.error(res?.payload?.message ?? res.payload.data?.message);
-        }
-      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        const fullNameByPan = trimFullName(
+          res?.payload?.first_name,
+          res?.payload?.last_name
+        );
+        setFieldValue(key, fullNameByPan);
+        setFieldValue("pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("pan_card", values);
+        setFieldValue("prev_pan_card", values);
+        setFieldValue("isPanVerified", 1);
+        toast.success(res?.payload?.message);
+        setIsLoading(false);
+      } else {
+        setFieldValue(key, "");
+        setIsLoading(false);
+        toast.error(res?.payload?.message ?? res.payload.data?.message);
+      }
+    })
       .catch((err) => {
         console.log("err", err);
       });
@@ -306,7 +318,7 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("pan_card", res?.payload?.pan);
         setFieldValue("prev_pan_card", res?.payload?.pan);
         setFieldValue("isPanVerified", 1);
-        advancePanValidation({ pan_number: res?.payload?.pan })
+        dispatch(advancePanValidation({ pan_number: res?.payload?.pan }))
           .then((res) => {
             if (res.payload?.dob)
               setFieldValue("pan_dob_or_doi", res.payload?.dob);
@@ -321,9 +333,12 @@ function BusinessDetailEdtKyc(props) {
         toast.success(res?.payload?.message);
       } else {
         setFieldValue(key, "");
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload?.data?.message);
         setLoadingForGst(false);
       }
+    }).catch((err) => {
+      setLoadingForGst(false);
+      toastConfig.errorToast(err?.response?.data?.detail ?? "Something went wrong");
     });
   };
 
@@ -375,14 +390,55 @@ function BusinessDetailEdtKyc(props) {
         setFieldValue("prevSignatoryPan", values);
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
-        setFieldValue("signatory_pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("authorized_person_dob", res?.payload?.dob);
+        setFieldValue("father_name", res?.payload?.father_name);
         toast.success(res.payload.message);
       } else {
-        toast.error(res?.payload?.message);
+        toast.error(res?.payload?.message ?? res.payload.data?.message);
         setLoadingForSignatory(false);
         // setIsLoading(false)
       }
     });
+  };
+
+  const cinValidationField = (values, key, setFieldValue) => {
+    setLoadingForCin(true);
+
+    setFieldValue(key, values);
+    setFieldValue("prevCinNumber", "");
+    setFieldValue("cin_data", "");
+    setFieldValue("isCinVerified", "");
+    try {
+      dispatch(cinValidation({ cin_number: values })).then(res => {
+        console.log("res?.payload", res?.payload)
+        setLoadingForCin(false);
+        // console.log(res)
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true &&
+          res.payload.valid === true
+        ) {
+          setFieldValue(key, values);
+          setFieldValue("prevCinNumber", values);
+          setFieldValue("cin_data", res?.payload);
+          setFieldValue("isCinVerified", true);
+          // console.log(res?.payload)
+          // setCinData(res?.payload);
+          // setCinStatus(res.payload.status);
+        } else {
+          setLoadingForCin(false);
+          toastConfig.errorToast(
+            res?.payload?.data?.message ?? res?.payload?.data?.detail ?? "Something went wrong"
+          );
+        }
+      }).catch(error => {
+        setLoadingForCin(false);
+      })
+
+    } catch (error) {
+      setLoadingForCin(false);
+    }
+
   };
 
   const checkInputIsValid = async (
@@ -412,8 +468,7 @@ function BusinessDetailEdtKyc(props) {
       setIsLoading(true);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
-      // auth signatory pan
-      // console.log("dfdfdf")
+
       authValidation(
         val[key],
         "signatory_pan",
@@ -429,37 +484,24 @@ function BusinessDetailEdtKyc(props) {
       udyamValidation(val[key], "udyam_number", setFieldValue, setIsloader);
       setIsloader(true);
     }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "cin_number") {
+      cinValidationField(val[key], "cin_number", setFieldValue);
+      setLoadingForCin(true);
+    }
   };
 
   const onSubmit = (values) => {
 
-    const emptyFields = [
-      "company_name",
-      "gst_number",
-      "registerd_with_gst",
-      "gst_number",
-      "pan_card",
-      "signatory_pan",
-      "name_on_pancard",
-      "pin_code",
-      "city_id",
-      "state_id",
-      "operational_address",
-      "is_udyam",
-      "udyam_data",
-    ].some((field) => !values[field]);
-
-
-    if (emptyFields) {
+    const isEmptyValue = Object.keys(values).filter(item => values[item] === "");
+    if (isEmptyValue.length > 0) {
       const confirmSubmit = window.confirm(
-        "Some fields are empty. Are you sure you want to proceed?"
+        `Some fields are empty. These values will not be saved. Do you still want to proceed with submitting the form? 
+        ${isEmptyValue.map(item => `\n ${item}`).join(", ")} will not be saved.`
       );
-
       if (!confirmSubmit) {
-        return;
+        return; // Exit the function if the user cancels
       }
     }
-
 
     setIsDisable(true);
     const postData = {
@@ -474,10 +516,16 @@ function BusinessDetailEdtKyc(props) {
       pin_code: values.pin_code,
       city_id: values.city_id,
       state_id: values.state_id,
+      registered_business_address: values.registered_business_address, // Added missing value
       operational_address: values.operational_address,
       modified_by: loginId,
       is_udyam: JSON.parse(values.registerd_with_udyam),
       udyam_data: udyamResponseData,
+      udyam_number: values.udyam_number, // Added missing value
+      cin_number: values.cin_number,
+      cin_data: values.cin_data,
+      father_name: values.father_name, // Added missing value
+      authorized_person_dob: values.authorized_person_dob, // Added missing value
     };
 
 
@@ -626,8 +674,8 @@ function BusinessDetailEdtKyc(props) {
                         </span>
                       ) : (
                         <div className="input-group-append">
-                          <a
-                            href={() => false}
+                          <button
+                            type="button"
                             className="btn cob-btn-primary text-white btn-sm"
                             onClick={() => {
                               checkInputIsValid(
@@ -647,7 +695,7 @@ function BusinessDetailEdtKyc(props) {
                             ) : (
                               "Verify"
                             )}
-                          </a>
+                          </button>
                         </div>
                       )}
                     </div>
@@ -696,7 +744,7 @@ function BusinessDetailEdtKyc(props) {
                         ) : (
                           <div className="input-group-append">
                             <button
-                              href={() => false}
+                              type="button"
                               className="btn cob-btn-primary text-white btn-sm"
                               onClick={() => {
                                 checkInputIsValid(
@@ -738,7 +786,7 @@ function BusinessDetailEdtKyc(props) {
             </div>
 
             <div className="row">
-              <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="col-sm-12 col-md-3 col-lg-3">
 
                 <label className="col-form-label p-2">
                   Business PAN<span className="text-danger">*</span>
@@ -776,7 +824,7 @@ function BusinessDetailEdtKyc(props) {
                   ) : (
                     <div className="input-group-append">
                       <button
-                        href={() => false}
+                        type="button"
                         className="btn cob-btn-primary text-white btn btn-sm"
                         onClick={() => {
                           checkInputIsValid(
@@ -822,7 +870,19 @@ function BusinessDetailEdtKyc(props) {
                 )}
               </div>
 
-              <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                  Business Pan DOB or DOI<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  // type="date"
+                  name="pan_dob_or_doi"
+                  className="form-control"
+
+                />
+              </div>
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   Authorized Signatory PAN
                   <span className="text-danger">*</span>
@@ -856,8 +916,8 @@ function BusinessDetailEdtKyc(props) {
                     </span>
                   ) : (
                     <div className="input-group-append">
-                      <a
-                        href={() => false}
+                      <button
+                        type="button"
                         className="btn cob-btn-primary text-white btn-sm"
                         onClick={() => {
                           checkInputIsValid(
@@ -880,7 +940,7 @@ function BusinessDetailEdtKyc(props) {
                         ) : (
                           "Verify"
                         )}
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
@@ -901,6 +961,20 @@ function BusinessDetailEdtKyc(props) {
                   </span>
                 )}
               </div>
+
+              <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                  Authorized Person's DOB<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  // type="date"
+                  name="authorized_person_dob"
+                  className="form-control"
+
+                />
+              </div>
+
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -916,7 +990,7 @@ function BusinessDetailEdtKyc(props) {
                 />
               </div>
 
-              <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   PAN Owner's Name<span className="text-danger">*</span>
                 </label>
@@ -928,6 +1002,19 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
+              <div className="col-sm-12 col-md-3 col-lg-3">
+                <label className="col-form-label mt-0 p-2">
+                  Father's Name<span className="text-danger">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="father_name"
+                  className="form-control"
+
+                />
+              </div>
+
             </div>
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -937,12 +1024,86 @@ function BusinessDetailEdtKyc(props) {
                 <FormikController
                   control="input"
                   type="text"
-                  name="operational_address"
+                  name="registered_business_address"
                   className="form-control"
 
                 />
               </div>
+
               <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  CIN
+                </label>
+                <div className="input-group">
+                  <Field
+                    type="text"
+                    name="cin_number"
+                    className="form-control"
+
+                    readOnly={readOnly}
+                    onChange={(e) => {
+                      const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
+                      setFieldValue("cin_number", uppercaseValue); // Set the uppercase value to form state
+                      setFieldValue("isCinVerified", false);
+                    }}
+                  />
+                  {values?.cin_number &&
+                    values?.isCinVerified &&
+                    !errors.hasOwnProperty("cin_number") &&
+                    !errors.hasOwnProperty("prevCinNumber") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : (
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+                        className="btn cob-btn-primary text-white btn-sm"
+                        disabled={loadingForCin}
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "cin_number",
+                            setFieldValue
+                          );
+                        }}
+                      >
+
+                        {loadingForCin ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                          >
+                            <span className="sr-only">Loading...</span>
+                          </span>
+                        ) : (
+                          "Verify"
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {errors?.cin_number && (
+                  <span className="text-danger mb-0 d-flex">
+                    {errors?.cin_number}
+                  </span>
+                )}
+              </div>
+
+            </div>
+            <div className="row">
+              <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   City<span className="text-danger">*</span>
                 </label>
@@ -954,8 +1115,6 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
-            </div>
-            <div className="row">
               <div className="col-sm-12 col-md-3 col-lg-3">
                 <label className="col-form-label mt-0 p-2">
                   State<span className="text-danger">*</span>
@@ -981,7 +1140,11 @@ function BusinessDetailEdtKyc(props) {
 
                 />
               </div>
+
+
             </div>
+
+
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                 <button

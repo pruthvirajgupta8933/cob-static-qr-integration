@@ -51,7 +51,7 @@ const ValidateVoterCard = () => {
         <div className="form-group">
           <button
             type="button"
-            className="btn cob-btn-primary text-white btn-sm"
+            className="btn cob-btn-primary text-white btn-sm ml-3 ml-md-0"
             onClick={handleVoterSubmit}
             disabled={isLoading}
           >
@@ -77,7 +77,7 @@ const ValidateVoterCard = () => {
                   {key.replace("_", " ")}:
                 </span>
                 {typeof value === "boolean" ? (
-                  <span>{value.toString()}</span>
+                  <span>{value?.toString()}</span>
                 ) : (
                   <span>&nbsp; {value}</span>
                 )}

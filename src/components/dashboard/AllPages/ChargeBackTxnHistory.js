@@ -59,17 +59,7 @@ const ChargeBackTxnHistory = () => {
   }
   splitDate = splitDate.join("-");
 
-  // let clientMerchantDetailsList = [];
-  // if (
-  //   user &&
-  //   user?.clientMerchantDetailsList === null &&
-  //   user?.roleId !== 3 &&
-  //   user?.roleId !== 13
-  // ) {
-  //   history.push("/dashboard/profile");
-  // } else {
-  //   clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  // }
+
 
   const validationSchema = Yup.object({
     clientCode: Yup.string().required("Required"),
@@ -84,8 +74,8 @@ const ChargeBackTxnHistory = () => {
     const type = roleType.bank
       ? "bank"
       : roleType.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -113,8 +103,8 @@ const ChargeBackTxnHistory = () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const clientCode = clientcode_rolebased;
 
@@ -185,8 +175,8 @@ const ChargeBackTxnHistory = () => {
       clientCodeListArr?.map((item) => {
         allClientCode.push(item.client_code);
       });
-      clientCodeArrLength = allClientCode.length.toString();
-      strClientCode = allClientCode.join().toString();
+      clientCodeArrLength = allClientCode.length?.toString();
+      strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = values.clientCode;
       clientCodeArrLength = "1";
@@ -590,193 +580,12 @@ const ChargeBackTxnHistory = () => {
             data={txnList}
             rowData={rowData}
             form={form}
+            loadingState={isLoadingTxnHistory}
           />
-          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          {/* <h5 className="">Chargeback Transaction History</h5> */}
-          {/* </div> */}
-          {/* <section className="">
-            <div className="container-fluid p-0">
-              
-              <hr className="hr" />
-              {txnList?.length > 0 ? (
-                <div className="form-row">
-                  <div className="form-group col-md-3">
-                    <label>Search</label>
-                    <input
-                      type="text"
-                      label="Search"
-                      name="search"
-                      placeholder="Search Here"
-                      className="form-control rounded-0"
-                      onChange={(e) => {
-                        SetSearchText(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-3">
-                    <label>Count Per Page</label>
-                    <select
-                      value={pageSize}
-                      rel={pageSize}
-                      className="form-select rounded-0"
-                      onChange={(e) => setPageSize(parseInt(e.target.value))}
-                    >
-                      <DropDownCountPerPage datalength={txnList.length} />
-                    </select>
-                  </div>
-                </div>
-              ) : (
-                <> </>
-              )}
-            </div>
-          </section> */}
 
           <section className="">
             <div className="container-fluid p-3 my-3 ">
-              {/* {txnList.length > 0 ? (
-                <h6>Total Record : {txnList.length} </h6>
-              ) : (
-                <></>
-              )} */}
 
-              {/* <div className="overflow-auto">
-                <table className="table table-bordered">
-                  <thead>
-                    {txnList.length > 0 ? (
-                      <tr>
-                        <th> S.No </th>
-                        <th> Client Code </th>
-                        <th> Client Name </th>
-                        <th> SP Transaction ID </th>
-                        <th> Client Transaction ID </th>
-                        <th> Amount </th>
-                        <th> ARN </th>
-                        <th> Bank CB Fee </th>
-                        <th> CB Credit Date Txn Reject </th>
-                        <th> Charge Back Amount </th>
-                        <th> Charge Back Credit Date To Merchant </th>
-                        <th> Charge Back Date </th>
-                        <th> Charge Back Debit Amount </th>
-                        <th> Charge Back Remarks </th>
-                        <th> Charge Back Status </th>
-                        <th> Merchant CB Status </th>
-                        <th> Payment Mode </th>
-                        <th> Prearb Date </th>
-                        <th> Status </th>
-                      </tr>
-                    ) : (
-                      <></>
-                    )}
-                  </thead>
-                  <tbody>
-                    {txnList.length > 0 &&
-                      paginatedata.map((item, i) => {
-                        return (
-                          <tr key={uuidv4()}>
-                            <td>{i + 1}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.client_name}</td>
-                            <td>{item.txn_id}</td>
-                            <td>{item.client_txn_id}</td>
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
-                            <td>{item.arn}</td>
-                            <td>{item.bank_cb_fee}</td>
-                            <td>{item.cb_credit_date_txn_reject}</td>
-                            <td>{item.charge_back_amount}</td>
-                            <td>
-                              {dateFormatBasic(
-                                item.charge_back_credit_date_to_merchant
-                              )}
-                            </td>
-                            <td>{dateFormatBasic(item.charge_back_date)}</td>
-                            <td>
-                              {Number.parseFloat(
-                                item.charge_back_debit_amount
-                              ).toFixed(2)}
-                            </td>
-                            <td>{item.charge_back_remarks}</td>
-                            <td>{item.charge_back_status}</td>
-                            <td>{item.merchant_cb_status}</td>
-                            <td>{item.payment_mode}</td>
-                            <td>{dateFormatBasic(item.prearb_date)}</td>
-                            <td>{item.status}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-
-              <div>
-                {txnList.length > 0 ? (
-                  <nav aria-label="Page navigation example">
-                    <ul className="pagination">
-                      <a
-                        className="page-link"
-                        onClick={(prev) =>
-                          setCurrentPage((prev) =>
-                            prev === 1 ? prev : prev - 1
-                          )
-                        }
-                        href={() => false}
-                      >
-                        Previous
-                      </a>
-                      {pages
-                        .slice(currentPage - 1, currentPage + 6)
-                        .map((page, i) => (
-                          <li
-                            key={uuidv4()}
-                            className={
-                              page === currentPage
-                                ? " page-item active"
-                                : "page-item"
-                            }
-                          >
-                            <a
-                              className={`page-link data_${i}`}
-                              href={() => false}
-                              onClick={() => pagination(page)}
-                            >
-                              {" "}
-                              {page}
-                            </a>
-                          </li>
-                        ))}
-                      {pages.length !== currentPage ? (
-                        <a
-                          className="page-link"
-                          onClick={(nex) => {
-                            setCurrentPage((nex) =>
-                              nex === pages.length > 9 ? nex : nex + 1
-                            );
-                          }}
-                          href={() => false}
-                        >
-                          Next
-                        </a>
-                      ) : (
-                        <></>
-                      )}
-                    </ul>
-                  </nav>
-                ) : (
-                  <></>
-                )}
-              </div> */}
-              <div className="container">
-                {isLoadingTxnHistory && (
-                  <div className="col-lg-12 col-md-12">
-                    <div className="text-center">
-                      <div className="spinner-border" role="status">
-                        <span className="sr-only">Loading...</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
           </section>
         </div>

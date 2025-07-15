@@ -69,7 +69,7 @@ const AdvancePanValidate = ({ selectedDocType }) => {
             <div className="form-group">
               <button
                 type="button"
-                className="btn cob-btn-primary text-white btn-sm"
+                className="btn cob-btn-primary text-white btn-sm ml-3 ml-md-0"
                 onClick={() => handlePanSubmit(initialValuesForPAN)}
                 disabled={isLoading}
               >
@@ -102,6 +102,10 @@ const AdvancePanValidate = ({ selectedDocType }) => {
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">DOB : </span>
               <span>{panInfo?.dob}</span>
+            </div>
+            <div className="col-md-6 p-2">
+              <span className="font-weight-bold mb-1">Father Name : </span>
+              <span>{panInfo?.father_name}</span>
             </div>
             <div className="col-md-6 p-2">
               <span className="font-weight-bold mb-1">Aadhaar Linked : </span>

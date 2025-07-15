@@ -14,7 +14,7 @@ const CountPerPage = ({ pageSize, dataCount, changePageSize, currentPage, change
         value={pageSize}
         rel={pageSize}
         onChange={(e) => handlerChange(parseInt(e.target.value), currentPage)}
-        className="form-select form-select-sm"
+        className="form-select"
       >
         <DropDownCountPerPage datalength={dataCount} />
       </select>

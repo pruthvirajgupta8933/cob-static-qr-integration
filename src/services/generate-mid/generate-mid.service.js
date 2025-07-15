@@ -13,12 +13,30 @@ export const fetchBankName = () => {
 
 }
 export const midCreateApi = (obj) => {
-    return axiosInstanceJWT.post(API_URL.MID_CREATE_API, obj)
+    return axiosInstance.post(API_URL.MID_CREATE_API, obj)
 }
 
 
 export const fetchMidPayload = (obj) => {
     return axiosInstanceJWT.post(API_URL.MID_PAYLOAD_BY_MERCHANT_ID, obj)
+}
+
+export const subMerchantDetails = (obj) => {
+    return axiosInstance.post(API_URL.SUBMERCHANT_FETCH_DETAILS, obj)
+
+}
+export const deactivateSubMerchant = (obj) => {
+    return axiosInstance.post(API_URL.SUBMERCHANT_DEACTIVATE, obj)
+}
+
+export const updateSubmerchantApi = (obj) => {
+    return axiosInstance.post(API_URL.UPDATE_SUBMERCHANT_API, obj)
+}
+
+
+
+export const reactivateSubMerchant = (obj) => {
+    return axiosInstance.post(API_URL.REACTIVATE_SUBMERCHANT, obj)
 }
 export const fetchMidDataByClientCode = (obj) => {
     return axiosInstance.post(API_URL.MID_FETCH_DATA_BY_CLIENT_CODE, obj)

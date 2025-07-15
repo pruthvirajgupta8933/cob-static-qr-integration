@@ -11,6 +11,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { transactionEnquireyApi } from "../../../services/transaction-enquirey/transactionEnquirey.service";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
+import CardLayout from "../../../utilities/CardLayout"
 
 const TransactionEnquirey = React.memo(() => {
   const dispatch = useDispatch();
@@ -150,7 +151,7 @@ const TransactionEnquirey = React.memo(() => {
           ...prev,
           loadingState: false,
           show: false,
-          errMessage: "Data Not Found",
+          errMessage: "No ",
         }));
       }
     } catch (e) {
@@ -158,7 +159,7 @@ const TransactionEnquirey = React.memo(() => {
         ...prev,
         loadingState: false,
         show: false,
-        errMessage: "Data Not Found",
+        errMessage: "No data found",
       }));
     } finally {
       setState((prev) => ({ ...prev, disable: false }));
@@ -203,153 +204,118 @@ const TransactionEnquirey = React.memo(() => {
   );
 
   return (
-    <section className="">
-      <main className="">
-        <h5 className="">Transaction Enquiry</h5>
-        <section className="">
-          <div className="card p-4  mt-3">
-            <div className="row">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-              >
-                {(formik) => (
-                  <Form>
-                    <div className="form-row mt-4">
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="select"
-                          label="Client Code"
-                          name="clientCode"
-                          className="form-select  mt-0"
-                          options={clientCodeOption}
-                        />
-                      </div>
-                      <div className="form-group col-lg-3">
-                        <FormikController
-                          control="select"
-                          label="Search By"
-                          name="transaction_from"
-                          className="form-select  mt-0"
-                          onChange={handleSearchByChange(formik)}
-                          options={txnOption}
-                        />
-                      </div>
-                      <div className="form-group col-md-12 col-sm-12 col-lg-3">
-                        <FormikController
-                          control="input"
-                          label="Transaction ID"
-                          name="transaction_id"
-                          placeholder={placeholder}
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="form-group col-md-12 col-sm-12 col-lg-3">
-                        <button
-                          disabled={state.disable}
-                          className="btn btn-sm text-white cob-btn-primary mt-4"
-                          type="submit"
-                        >
-                          {state.disable && (
-                            <span
-                              className="spinner-border spinner-border-sm mr-1"
-                              role="status"
-                              ariaHidden="true"
-                            ></span>
-                          )}
-                          View
-                        </button>
-                      </div>
-                    </div>
-                    {state.show && state.printData.length > 0 && (
-                      <div className=" row ">
-                        {/* <hr></hr> */}
-                        <div className="border-bottom mt-2"></div>
-
-                        <div className="col-auto ms-auto">
-                          <button
-                            Value="click"
-                            onClick={onClick}
-                            className="btn cob-btn-primary text-white mt-4 ml-3 btn-sm"
-                          >
-                            <i className="fa fa-print" ariaHidden="true"></i>{" "}
-                            Print
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* <div className="form-row mt-3">
-                      <div className="form-group col-md-12 col-sm-12 col-lg-5">
-                        <FormikController
-                          control="input"
-                          label="Transaction ID"
-                          lableClassName="font-weight-bold"
-                          name="transaction_id"
-                          placeholder="Enter Transaction ID"
-                          className="form-control"
-                        />
-
-                        <button
-                          disabled={state.disable}
-                          className="btn btn-sm text-white cob-btn-primary mt-4"
-                          type="submit"
-                        >
-                          {state.disable && (
-                            <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
-                          )}
-                          View
-                        </button>
-                        {state.show && state.printData.length > 0 && (
-                          <button
-                            Value="click"
-                            onClick={onClick}
-                            className="btn btn-secondary text-white mt-4 ml-3 btn-sm"
-                          >
-                            <i className="fa fa-print" ariaHidden="true"></i> Print
-                          </button>
-                        )}
-                      </div>
-                    </div> */}
-                  </Form>
-                )}
-              </Formik>
-              <CustomLoader loadingState={state.loadingState} />
-              {!state.loadingState &&
-                state.show &&
-                state.printData.length > 0 && (
-                  <div
-                    className="mt-4 table_scrollar"
-                    style={{ maxHeight: "400px", overflowY: "auto" }}
+    <CardLayout title={"Transaction Enquiry"} >
+      <div className="row">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
+          {(formik) => (
+            <Form>
+              <div className="form-row mt-4">
+                <div className="form-group col-lg-3">
+                  <FormikController
+                    control="select"
+                    label="Client Code"
+                    name="clientCode"
+                    className="form-select  mt-0"
+                    options={clientCodeOption}
+                  />
+                </div>
+                <div className="form-group col-lg-3">
+                  <FormikController
+                    control="select"
+                    label="Search By"
+                    name="transaction_from"
+                    className="form-select  mt-0"
+                    onChange={handleSearchByChange(formik)}
+                    options={txnOption}
+                  />
+                </div>
+                <div className="form-group col-md-12 col-sm-12 col-lg-3">
+                  <FormikController
+                    control="input"
+                    label="Transaction ID"
+                    name="transaction_id"
+                    placeholder={placeholder}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-group col-md-12 col-sm-12 col-lg-3">
+                  <button
+                    disabled={state.disable}
+                    className="btn btn-sm text-white cob-btn-primary mt-4"
+                    type="submit"
                   >
-                    <div className="table-responsive">
-                      <table className="table ">
-                        <tbody>
-                          {state?.printData.map((item, idx) => (
-                            <tr key={idx}>
-                              <th className="table-striped background_color">
-                                {item.key}
-                              </th>
-                              <td>{item.value}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      <PrintDocument data={state.printData} />
-                    </div>
+                    {state.disable && (
+                      <span
+                        className="spinner-border spinner-border-sm mr-1"
+                        role="status"
+                        ariaHidden="true"
+                      ></span>
+                    )}
+                    View
+                  </button>
+                </div>
+              </div>
+              {state.show && state.printData.length > 0 && (
+                <div className=" row ">
+                  {/* <hr></hr> */}
+                  <div className="border-bottom mt-2"></div>
+
+                  <div className="col-auto ms-auto">
+                    <button
+                      Value="click"
+                      onClick={onClick}
+                      className="btn cob-btn-primary text-white mt-4 ml-3 btn-sm"
+                    >
+                      <i className="fa fa-print" ariaHidden="true"></i>{" "}
+                      Print
+                    </button>
                   </div>
-                )}
-              {state.errMessage && (
-                <div className="col">
-                  <h5 className=" text-center">{state.errMessage}</h5>
                 </div>
               )}
+
+
+            </Form>
+          )}
+        </Formik>
+        <CustomLoader loadingState={state.loadingState} />
+        {!state.loadingState &&
+          state.show &&
+          state.printData.length > 0 && (
+            <div
+              className="mt-4 table_scrollar"
+              style={{ maxHeight: "400px", overflowY: "auto" }}
+            >
+              <div className="table-responsive">
+                <table className="table ">
+                  <tbody>
+                    {state?.printData.map((item, idx) => (
+                      <tr key={idx}>
+                        <th className="table-striped background_color">
+                          {item.key}
+                        </th>
+                        <td>{item.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <PrintDocument data={state.printData} />
+              </div>
             </div>
+          )}
+        {state.errMessage && (
+          <div className="col">
+
+            <div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>{state.errMessage}</div>
           </div>
-        </section>
-      </main>
-    </section>
+        )}
+      </div>
+    </CardLayout>
+
+
   );
 });
 

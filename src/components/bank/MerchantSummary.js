@@ -14,6 +14,7 @@ import { fetchBankMerchantSummary } from "../../slices/bank-dashboard-slice/bank
 import Table from "../../_components/table_components/table/Table";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import { dateFormatBasic } from "../../utilities/DateConvert";
+import ReportLayout from "../../utilities/CardLayout";
 
 function MerchantSummary() {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ function MerchantSummary() {
           allClientCode.push(item.client_code);
         }
       });
-      strClientCode = allClientCode.join().toString();
+      strClientCode = allClientCode.join()?.toString();
     } else {
       strClientCode = objData.clientCode;
     }
@@ -248,162 +249,161 @@ function MerchantSummary() {
   ];
 
   return (
-    <section>
-      <main>
-        <h5>Merchant Summary</h5>
-        <section>
-          <div className="container-fluid p-0">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmitHandler}
-            >
-              {(formik) => (
-                <Form>
-                  <div className="form-row mt-4">
-                    <div className="form-group col-md-3">
-                      {!isLoading ? (
-                        <FormikController
-                          control="select"
-                          label="Client Code"
-                          name="clientCode"
-                          className="form-select rounded-0 mt-0"
-                          options={clientCodeOption}
-                        />
-                      ) : (
-                        <p>Loading...</p>
-                      )}
-                    </div>
 
-                    <div className="form-group col-md-3">
-                      <FormikController
-                        control="date"
-                        label="From Date"
-                        id="fromDate"
-                        name="fromDate"
-                        value={
-                          formik.values.fromDate
-                            ? new Date(formik.values.fromDate)
-                            : null
-                        }
-                        onChange={(date) =>
-                          formik.setFieldValue("fromDate", date)
-                        }
-                        format="dd-MM-y"
-                        clearIcon={null}
-                        className="form-control rounded-0 p-0"
-                        required={true}
-                        errorMsg={formik.errors["fromDate"]}
-                      />
-                    </div>
+    <ReportLayout title="Merchant Summary">
 
-                    <div className="form-group col-md-3">
-                      <FormikController
-                        control="date"
-                        label="End Date"
-                        id="endDate"
-                        name="endDate"
-                        value={
-                          formik.values.endDate
-                            ? new Date(formik.values.endDate)
-                            : null
-                        }
-                        onChange={(date) =>
-                          formik.setFieldValue("endDate", date)
-                        }
-                        format="dd-MM-y"
-                        clearIcon={null}
-                        className="form-control rounded-0 p-0"
-                        required={true}
-                        errorMsg={formik.errors["endDate"]}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="form-row">
-                    <div className="form-group col-lg-1">
-                      <button
-                        disabled={reportLoading}
-                        className="btn cob-btn-primary text-white btn-sm"
-                        type="submit"
-                      >
-                        Search
-                      </button>
-                    </div>
-                    {merchantSummary?.count > 0 && (
-                      <div className="form-group col-lg-1">
-                        <button
-                          className="btn btn-sm text-white cob-btn-primary"
-                          type=""
-                          onClick={() => {
-                            exportToExcelFn();
-                          }}
-                        >
-                          <i className="fa fa-download"></i> Export
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </Form>
-              )}
-            </Formik>
-            <hr className="hr" />
-            {merchantSummary?.count > 0 ? (
-              <div className="form-row">
-                <div className="form-group col-md-3">
-                  <label>Search</label>
-                  <input
-                    type="text"
-                    label="Search"
-                    name="search"
-                    placeholder="Search Here"
-                    className="form-control rounded-0"
-                    onChange={(e) => {
-                      SetSearchText(e.target.value);
-                    }}
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmitHandler}
+      >
+        {(formik) => (
+          <Form>
+            <div className="form-row mt-4">
+              <div className="form-group col-md-3">
+                {!isLoading ? (
+                  <FormikController
+                    control="select"
+                    label="Client Code"
+                    name="clientCode"
+                    className="form-select rounded-0 mt-0"
+                    options={clientCodeOption}
                   />
-                </div>
-                <div className="form-group col-md-3">
-                  <label>Count Per Page</label>
-                  <select
-                    value={pageSize}
-                    rel={pageSize}
-                    className="form-select"
-                    onChange={(e) => countPageHandler(parseInt(e.target.value))}
-                  >
-                    <DropDownCountPerPage datalength={merchantSummary?.count} />
-                  </select>
-                </div>
+                ) : (
+                  <p>Loading...</p>
+                )}
               </div>
-            ) : (
-              <> </>
-            )}
-          </div>
-        </section>
 
-        <section className="">
-          <div className="scroll overflow-auto">
-            {!reportLoading && merchantSummary?.count > 0 && (
-              <React.Fragment>
-                <h6>Total Count : {merchantSummary?.count}</h6>
-                <Table
-                  row={tableRow}
-                  data={showData}
-                  dataCount={merchantSummary?.count}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="date"
+                  label="From Date"
+                  id="fromDate"
+                  name="fromDate"
+                  value={
+                    formik.values.fromDate
+                      ? new Date(formik.values.fromDate)
+                      : null
+                  }
+                  onChange={(date) =>
+                    formik.setFieldValue("fromDate", date)
+                  }
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
+                  errorMsg={formik.errors["fromDate"]}
                 />
-              </React.Fragment>
-            )}
+              </div>
+
+              <div className="form-group col-md-3">
+                <FormikController
+                  control="date"
+                  label="End Date"
+                  id="endDate"
+                  name="endDate"
+                  value={
+                    formik.values.endDate
+                      ? new Date(formik.values.endDate)
+                      : null
+                  }
+                  onChange={(date) =>
+                    formik.setFieldValue("endDate", date)
+                  }
+                  format="dd-MM-y"
+                  clearIcon={null}
+                  className="form-control rounded-0 p-0"
+                  required={true}
+                  errorMsg={formik.errors["endDate"]}
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group col-lg-1">
+                <button
+                  disabled={reportLoading}
+                  className="btn cob-btn-primary text-white btn-sm"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </div>
+              {merchantSummary?.count > 0 && (
+                <div className="form-group col-lg-1">
+                  <button
+                    className="btn btn-sm text-white cob-btn-primary"
+                    type=""
+                    onClick={() => {
+                      exportToExcelFn();
+                    }}
+                  >
+                    <i className="fa fa-download"></i> Export
+                  </button>
+                </div>
+              )}
+            </div>
+          </Form>
+        )}
+      </Formik>
+      <hr className="hr" />
+      {merchantSummary?.count > 0 ? (
+        <div className="form-row">
+          <div className="form-group col-md-3">
+            <label>Search</label>
+            <input
+              type="text"
+              label="Search"
+              name="search"
+              placeholder="Search Here"
+              className="form-control rounded-0"
+              onChange={(e) => {
+                SetSearchText(e.target.value);
+              }}
+            />
           </div>
-          {reportLoading && <SkeletonTable />}
-          {merchantSummary?.count === 0 && !reportLoading && (
-            <h6 className="text-center font-weight-bold">No Data Found</h6>
+          <div className="form-group col-md-3">
+            <label>Count Per Page</label>
+            <select
+              value={pageSize}
+              rel={pageSize}
+              className="form-select"
+              onChange={(e) => countPageHandler(parseInt(e.target.value))}
+            >
+              <DropDownCountPerPage datalength={merchantSummary?.count} />
+            </select>
+          </div>
+        </div>
+      ) : (
+        <> </>
+      )}
+
+
+      <section className="">
+        <div className="scroll overflow-auto">
+          {!reportLoading && merchantSummary?.count > 0 && (
+            <React.Fragment>
+              <h6>Total Count : {merchantSummary?.count}</h6>
+              <Table
+                row={tableRow}
+                data={showData}
+                dataCount={merchantSummary?.count}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
+            </React.Fragment>
           )}
-        </section>
-      </main>
-    </section>
+        </div>
+        {reportLoading && <SkeletonTable />}
+        {merchantSummary?.count === 0 && !reportLoading && (
+          <h6 className="text-center font-weight-bold">No Data Found</h6>
+        )}
+      </section>
+
+    </ReportLayout>
   );
 }
 

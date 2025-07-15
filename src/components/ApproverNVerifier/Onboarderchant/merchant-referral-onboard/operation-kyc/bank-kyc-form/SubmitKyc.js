@@ -44,8 +44,8 @@ function SubmitKyc({ isEditableInput, editKyc }) {
 
 
   const onSubmit = async (value) => {
-
-    if ((kycData?.clientCode === null || kycData?.clientCode === undefined) && !editKyc) {
+    console.log(kycData?.clientCode)
+    if (!kycData?.clientCode) {
       const clientFullName = kycData?.name;
       const clientMobileNo = kycData?.contactNumber;
 
@@ -67,7 +67,7 @@ function SubmitKyc({ isEditableInput, editKyc }) {
       ) {
         newClientCode = stepRespOne?.data?.clientCode;
       } else {
-        newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+        newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
       }
 
       // update new client code in db

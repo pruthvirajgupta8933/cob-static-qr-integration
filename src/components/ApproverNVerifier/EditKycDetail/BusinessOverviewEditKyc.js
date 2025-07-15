@@ -193,6 +193,17 @@ function BusinessOverviewEditKyc(props) {
 
   const onSubmit = (values) => {
 
+    const isEmptyValue = Object.keys(values).filter(item => values[item] === "");
+    if (isEmptyValue.length > 0) {
+      const confirmSubmit = window.confirm(
+        `Some fields are empty. These values will not be saved. Do you still want to proceed with submitting the form? 
+        ${isEmptyValue.map(item => `\n ${item}`).join(", ")} will not be saved.`
+      );
+      if (!confirmSubmit) {
+        return; // Exit the function if the user cancels
+      }
+    }
+
     let expectedTxn = values?.expected_transactions?.split("-");
     let numbers = {};
     let maxValueTxn = 0;
@@ -237,6 +248,7 @@ function BusinessOverviewEditKyc(props) {
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
+        console.log(res.payload)
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
           toast.success(res.payload.message);
           setTab(3);
@@ -245,10 +257,13 @@ function BusinessOverviewEditKyc(props) {
           // dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
           setIsDisabled(false);
         } else {
-          toast.error(res?.payload?.detail);
+
+          toast.error(res?.payload);
           setIsDisabled(false);
         }
-      });
+      }).catch((err) => {
+        console.log(err)
+      })
     }
 
   };

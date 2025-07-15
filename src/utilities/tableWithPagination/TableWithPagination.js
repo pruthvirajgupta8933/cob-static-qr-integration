@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
+import CountPerPage from '../../subscription_components/countPerPage/CountPerPage';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faSearch, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage"
+// import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage"
 
 const TableWithPagination = ({
     headers,
@@ -55,11 +56,12 @@ const TableWithPagination = ({
 
                 <div className="table-responsive scroll overflow-auto">
                     <table className="table ">
-                        <thead className="table-primary">
+                        <thead className="">
                             {apiHasData && (
                                 <tr>
                                     {headers?.map((header, index) => (
-                                        <th key={index} className="text-nowrap">
+                                        <th key={index} className="text-nowrap" style={{ fontWeight: 'normal' }}>
+
                                             {header}
                                         </th>
                                     ))}
@@ -80,10 +82,8 @@ const TableWithPagination = ({
                             ) : (
                                 <tr>
                                     <td colSpan={headers.length} className="text-center">
-                                        <div className="d-flex justify-content-center align-items-center h-100 mt-5">
-                                            <h6 className="alert alert-warning">
-                                                No Data Found
-                                            </h6>
+                                        <div style={{ padding: '24px', color: '#999', fontSize: '16px', textAlign: 'center' }}>
+                                            No data found
                                         </div>
                                     </td>
                                 </tr>
@@ -116,11 +116,13 @@ const TableWithPagination = ({
                             />
                         </div>
                         <div className="col-lg-6 d-flex justify-content-end">
-                            <CountPerPageFilter
+
+
+                            <CountPerPage
                                 pageSize={pageSize}
                                 dataCount={dataCount}
                                 changePageSize={changePageSize}
-                                changeCurrentPage={changeCurrentPage}
+
                             />
                         </div>
                     </div>

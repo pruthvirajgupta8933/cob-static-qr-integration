@@ -22,7 +22,7 @@ const CustomDatePicker = ({ label, value, onChange, error, placeholder }) => {
             <label>{label}</label>
             {showDatePicker ? (
                 <DatePicker
-                    format="yyyy-MM-dd HH:mm"
+                    format="yyyy-MM-dd"
                     value={value}
                     onChange={onChange}
                     className="w-100"

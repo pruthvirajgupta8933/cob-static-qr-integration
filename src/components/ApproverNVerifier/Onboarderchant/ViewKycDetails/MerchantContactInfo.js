@@ -6,7 +6,7 @@ import { rejectKycOperation } from "../../../../slices/kycOperationSlice";
 import VerifyRejectBtn from "./VerifyRejectBtn";
 import { GetKycTabsStatus, getKycIDList } from "../../../../slices/kycSlice";
 import { v4 as uuidv4 } from "uuid";
-import { maskedString } from "../../../../utilities/maskedString";
+// import { maskedString } from "../../../../utilities/maskedString";
 import {
   KYC_STATUS_REJECTED,
   KYC_STATUS_VERIFIED,
@@ -35,6 +35,7 @@ function MerchantContactInfo(props) {
   const { user } = auth;
   const { loginId } = user;
   useEffect(() => {
+    if (proofIdList?.data?.length > 0) return;
     dispatch(getKycIDList());
   }, []);
 
@@ -91,7 +92,8 @@ function MerchantContactInfo(props) {
     { label: "Contact Person Name", value: selectedUserData?.name },
     {
       label: `ID Proof (${idProofName ? idProofName.id_type : "Aadhaar"})`,
-      value: maskedString(selectedUserData?.aadharNumber, 7),
+      value: selectedUserData?.aadharNumber,
+      verified: selectedUserData?.aadharNumber && 1
     },
     {
       label: "Contact Number",

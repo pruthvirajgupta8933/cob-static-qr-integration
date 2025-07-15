@@ -7,6 +7,7 @@ import {
   GetKycTabsStatus,
   kycUserList,
   clearKycState,
+  busiCategory // Import busiCategory
 } from "../../../../slices/kycSlice";
 import {
   clearRatemapping,
@@ -32,6 +33,8 @@ import API_URL, { APP_ENV } from "../../../../config";
 import { merchantSubscribedPlanData } from "../../../../slices/merchant-slice/productCatalogueSlice";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import SubscribeProductList from "./SubscribeProductList";
+import { frmSingleScreening } from "../../../../slices/approver-dashboard/frmSlice";
+
 
 const KycDetailsModal = (props) => {
   const {
@@ -43,6 +46,7 @@ const KycDetailsModal = (props) => {
     kycId: merchantKycId,
     isOpenModal,
   } = props;
+
 
   const [docTypeList, setDocTypeList] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false);
@@ -56,6 +60,21 @@ const KycDetailsModal = (props) => {
   const { KycTabStatusStore, KycDocUpload } = kyc;
   const { SubscribedPlanData } = productCatalogueSlice
   const { generalFormData } = approverDashboard;
+  const [kycBusinessCategoryFactumStatus, setKycBusinessCategoryFactumStatus] = useState(null);
+
+  const KycList = kyc.kycUserList;
+  const businessCategoryName = KycList?.business_category_name
+  const factumData = KycList?.factum_data
+
+
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  const currenTab = parseInt(verifierApproverTab?.currenTab);
+
+
+
+
+
+
 
   // const currenTab = parseInt(verifierApproverTab?.currenTab);
   const merchantLoginLogin = useMemo(() => merchantKycId?.loginMasterId, [merchantKycId]);
@@ -86,6 +105,9 @@ const KycDetailsModal = (props) => {
 
 
     }
+
+
+
 
 
 
@@ -159,6 +181,78 @@ const KycDetailsModal = (props) => {
   const startRateMappingHandler = (isAllowed) => {
     setTriggerRateMapping(isAllowed)
   }
+
+
+
+
+  useEffect(() => {
+    dispatch(busiCategory())
+      .then((resp) => {
+        const data = resp.payload;
+
+
+        // const factum = data.filter(item => item?.factum_validation === true);
+        // const nonFactum = data.filter(item => item?.factum_validation === false);
+
+
+        // const formattedFactum = factum.map(item => ({
+        //   value: item.category_id,
+        //   label: item.category_name,
+        //   factum_validation: item.factum_validation
+        // }));
+
+        // const formattedNonFactum = nonFactum.map(item => ({
+        //   value: item.category_id,
+        //   label: item.category_name,
+        //   factum_validation: item.factum_validation
+        // }));
+
+        // // Save into state
+        // setFactumCategories(formattedFactum);
+        // setNonFactumCategories(formattedNonFactum);
+
+        // Filter factum_validation based on businessCategoryName
+        if (businessCategoryName) {
+          const matchedCategory = data.find(item => item?.category_name === businessCategoryName);
+          if (matchedCategory) {
+            setKycBusinessCategoryFactumStatus(matchedCategory?.factum_validation);
+          } else {
+            setKycBusinessCategoryFactumStatus(null);
+          }
+        }
+      })
+      .catch((err) => console.log("Error fetching categories", err));
+  }, [dispatch, businessCategoryName]);
+
+
+
+
+
+  useEffect(() => {
+    if (
+      kycBusinessCategoryFactumStatus &&
+      (factumData === null || factumData === undefined) &&
+      [3, 4, 5].includes(currenTab)
+    ) {
+      const postData = {
+        login_id: merchantKycId?.login_id
+      };
+
+      dispatch(frmSingleScreening(postData)).then((res) => {
+        dispatch(
+          kycUserList({ login_id: merchantKycId?.loginMasterId, masking: 1 })
+        );
+      });
+    }
+  }, [
+    merchantKycId?.login_id,
+    kycBusinessCategoryFactumStatus,
+    factumData,
+
+  ]);
+
+
+
 
 
 
@@ -241,6 +335,15 @@ const KycDetailsModal = (props) => {
             </div>
           )}
 
+          {/* {kycBusinessCategoryFactumStatus !== null && (
+            <div className="row mb-4 border p-1">
+              <h6>Business Category Factum Validation Status</h6>
+              <p>
+                Business Category "{businessCategoryName}" has Factum Validation:{" "}
+                <strong>{kycBusinessCategoryFactumStatus ? "True" : "False"}</strong>
+              </p>
+            </div>
+          )} */}
 
           <SubscribeProductList SubscribedPlanData={SubscribedPlanData} />
           {/* allow this component for types of user role */}
@@ -268,14 +371,14 @@ const KycDetailsModal = (props) => {
 
       {/* {console.log(triggerRateMapping, selectedUserData?.loginMasterId, generalFormData?.parent_client_code, !isProductRateMapRestrict, !isUserRateMapRestrict, APP_ENV)} */}
       {/* {console.log(generalFormData)} */}
-      {triggerRateMapping && selectedUserData?.loginMasterId && generalFormData?.parent_client_code && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
+      {/* {triggerRateMapping && selectedUserData?.loginMasterId && generalFormData?.parent_client_code && !isProductRateMapRestrict && !isUserRateMapRestrict && APP_ENV && (
         <div className="container">
           <DefaultRateMapping
             merchantLoginId={selectedUserData?.loginMasterId}
             parent_client_code={generalFormData?.parent_client_code}
           />
         </div>
-      )}
+      )} */}
     </>
   ), [
     rateMappingSlice,
@@ -290,6 +393,8 @@ const KycDetailsModal = (props) => {
     renderPendingVerification,
     renderApprovedTable,
     renderToPendingKyc,
+    businessCategoryName, // Add businessCategoryName to useCallback dependencies
+    kycBusinessCategoryFactumStatus, // Add kycBusinessCategoryFactumStatus to useCallback dependencies
   ]);
 
   const modalFooter = useCallback(() => (

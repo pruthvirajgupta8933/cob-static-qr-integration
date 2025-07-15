@@ -18,13 +18,11 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     const [pusposeListData, setPurposeListDate] = useState([])
     const [bankDetailsUrl, setBankDetailsUrl] = useState(null);
     const [redirectUrl, setRedirectUrl] = useState('');
-
     const [disable, setDisable] = useState(false)
     const dispatch = useDispatch()
     let now = moment();
     let futureStartDate = now.add(3, 'days').format("YYYY-MM-DD");
     let futureEndDate = moment(futureStartDate).add(3, 'days').format("YYYY-MM-DD"); // 3 days from start date
-
     const { user } = useSelector((state) => state.auth);
     const { clientCode } = user.clientMerchantDetailsList[0];
     // const redirectUrl = '/dashboard/create-mandate-api-response/?consumerId='
@@ -49,6 +47,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         mandate_category: '',
         emi_amount: "",
         amount_type: "",
+        untilCancelled: ""
 
 
     };
@@ -70,15 +69,19 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
     const validationSchema = Yup.object({
         consumer_id: Yup.string().required('Required'),
-        customer_name: Yup.string().required('Required'),
+        customer_name: Yup.string()
+            .matches(/^[a-zA-Z0-9. ]+$/, "Only alphanumeric characters and dots are allowed")
+            .max(100, "Maximum 100 characters are allowed")
+            .required('Required'),
+
         customer_mobile: Yup.string()
             .matches(/^\d{10}$/, 'Must be a valid 10-digit mobile number')
             .required('Required'),
-        customer_email_id: Yup.string().email('Invalid email').required('Required'),
+        customer_email_id: Yup.string().email('Invalid email').max(100, "Maximum 100 characters are allowed").required('Required'),
 
 
         start_date: Yup.date().required('Required'),
-        end_date: Yup.date().required('Required'),
+        end_date: Yup.date().min(Yup.ref("start_date"), "End date can't be before Start date").required('Required'),
 
         max_amount: Yup.number()
             .typeError('Max amount must be a number')
@@ -116,11 +119,11 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             { key: "WEEK", value: "Weekly" },
             { key: "MNTH", value: "Monthly" },
             { key: "QURT", value: "Quarterly" },
-            { key: "MIAN", value: "Half-yearly" },
+            { key: "MIAN", value: "Half-Yearly" },
             { key: "YEAR", value: "Yearly" },
             { key: "BIMN", value: "Bi-Monthly" },
             { key: "OOFF", value: "Sequence" },
-            { key: "RCUR", value: "Reoccurring" }
+            { key: "RCUR", value: "Recurring" }
 
         ]
 
@@ -134,20 +137,20 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     useEffect(() => {
         const apiResponse = {
             "data": [
-                { "id": 1, "code": "U005", "description": "Utility Bill payment mobile telephone broadband", "sorting": 1 },
-                { "id": 2, "code": "B001", "description": "Bill Payment Credit card", "sorting": 2 },
-                { "id": 3, "code": "A001", "description": "API mandate", "sorting": 3 },
+                { "id": 1, "code": "U005", "description": "Utility Bill Payment Mobile Telephone Broadband", "sorting": 1 },
+                { "id": 2, "code": "B001", "description": "Bill Payment Credit Card", "sorting": 2 },
+                { "id": 3, "code": "A001", "description": "API Mandate", "sorting": 3 },
                 { "id": 4, "code": "D001", "description": "Destination Bank Mandate", "sorting": 4 },
-                { "id": 5, "code": "I002", "description": "Insurance other payment", "sorting": 5 },
-                { "id": 6, "code": "L002", "description": "Loan amount security", "sorting": 6 },
-                { "id": 7, "code": "E001", "description": "Education fees", "sorting": 7 },
+                { "id": 5, "code": "I002", "description": "Insurance Other Payment", "sorting": 5 },
+                { "id": 6, "code": "L002", "description": "Loan Amount Security", "sorting": 6 },
+                { "id": 7, "code": "E001", "description": "Education Fees", "sorting": 7 },
                 { "id": 8, "code": "I001", "description": "Insurance Premium", "sorting": 8 },
-                { "id": 9, "code": "L001", "description": "Loan instalment payment", "sorting": 9 },
+                { "id": 9, "code": "L001", "description": "Loan Instalment Payment", "sorting": 9 },
                 { "id": 10, "code": "M001", "description": "Mutual Fund Payment", "sorting": 10 },
                 { "id": 12, "code": "U099", "description": "Others", "sorting": 12 },
                 { "id": 13, "code": "T002", "description": "TReDS", "sorting": 13 },
                 { "id": 14, "code": "T001", "description": "Tax Payment", "sorting": 14 },
-                { "id": 17, "code": "U006", "description": "Utility Bill payment water", "sorting": 17 }
+                { "id": 17, "code": "U006", "description": "Utility Bill Payment Water", "sorting": 17 }
             ]
         };
         setPurposeListDate(apiResponse?.data)
@@ -166,52 +169,9 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     }, []);
 
 
-    // const handleViewSubmit = async (values) => {
-    //     setDisable(true)
-    //     try {
-    //         const filteredPurpose = pusposeListData.filter(
-    //             (item) => item.description === values.purpose
-    //         );
-    //         const mandateCategory = filteredPurpose.length > 0 ? filteredPurpose[0].code : null;
-    //         let postDataS = {
-    //             consumer_id: values.consumer_id,
-    //             customer_name: values.customer_name,
-    //             customer_mobile: values.customer_mobile,
-    //             customer_email_id: values.customer_email_id,
-    //             start_date: moment(values?.start_date).startOf("day").format("YYYY-MM-DD"),
-    //             end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
-    //             max_amount: values.max_amount,
-    //             frequency: values.frequency,
-    //             purpose: values.purpose,
-    //             client_code: clientCode,
-    //             mandate_category: mandateCategory,
-    //             redirect_url: getRedirectUrl(redirectUrl),
-    //         };
-
-    //         const response = await dispatch(createEmandateByApi(postDataS)).unwrap();
-    //         if (response?.
-    //             data?.bank_details_url) {
-    //             toast.success(response.data.message);
-    //             // customer case
-    //             // save link in the state and display / hide the form
-
-    //             // merchant case
-    //             window.location.href = response?.data.bank_details_url;
-    //             setDisable(false)
-    //         }
-    //     } catch (error) {
-    //         setDisable(false)
-
-    //         toast.error(
-    //             error?.response?.data?.message || "Something went wrong. Please try again."
-    //         );
-    //     }
-    // };
 
 
     const handleViewSubmit = async (values) => {
-
-
         setDisable(true);
         try {
             const filteredPurpose = pusposeListData.filter(
@@ -220,14 +180,12 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
             const mandateCategory = filteredPurpose.length > 0 ? filteredPurpose[0].code : null;
 
-            // Base object
             let postDataS = {
                 consumer_id: values.consumer_id,
                 customer_name: values.customer_name,
                 customer_mobile: values.customer_mobile,
                 customer_email_id: values.customer_email_id,
                 start_date: moment(values?.start_date).startOf("day").format("YYYY-MM-DD"),
-                end_date: moment(values?.end_date).startOf("day").format("YYYY-MM-DD"),
                 max_amount: values.max_amount,
                 frequency: values.frequency,
                 purpose: values.purpose,
@@ -235,17 +193,18 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 mandate_category: mandateCategory,
                 redirect_url: getRedirectUrl(redirectUrl),
                 amount_type: values.amount_type,
-
+                until_cancel: values.untilCancelled || false,
                 emi_amount: values.emi_amount,
                 customer_type: selectedOption === "customer" ? "customer" : "merchant"
             };
 
-            // // Conditionally add `end_date` if untilCancelled is false
-            // if (!values.untilCancelled) {
-            //     postDataS.end_date = moment(values?.end_date).startOf("day").format("YYYY-MM-DD");
-            // }
+            // Conditionally add `end_date` if untilCancelled is false
+            if (!values.untilCancelled) {
+                postDataS.end_date = moment(values?.end_date).startOf("day").format("YYYY-MM-DD");
+            }
 
             const response = await dispatch(createEmandateByApi(postDataS));
+
 
             if (response?.payload.data?.bank_details_url) {
                 toast.success(response?.payload.data.message);
@@ -254,6 +213,8 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 } else if (selectedOption === 'merchant') {
                     window.location.href = response?.payload?.data.bank_details_url;
                 }
+            } else {
+                toast.error(response?.payload?.detail);
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Something went wrong.');
@@ -378,23 +339,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                             <FormikController type="text" id="purpose" name="purpose" className="form-select" placeholder="Enter Purpose" control='select' options={dropdownData} />
 
                                         </div>
-                                        {/* <div className="col-md-3">
-                                            <label htmlFor="start_date" className="form-label">Start Date</label>
-                                            <FormikController
-                                                control="date"
-                                                id="from_date"
-                                                name="start_date"
-                                                value={values?.start_date ? new Date(values?.start_date) : null}
-                                                onChange={(date) => setFieldValue("start_date", date)}
-                                                format="dd-MM-y"
-                                                clearIcon={null}
-                                                className="form-control rounded-datepicker p-2 zindex_DateCalender"
-                                                required={true}
-                                                errorMsg={errors["start_date"]}
-                                                popperPlacement="top-end"
-                                                disabled={isFutureTransaction}
-                                            />
-                                        </div> */}
+
                                         <div className="col-md-3">
                                             <label htmlFor="start_date" className="form-label">Start Date</label>
                                             <FormikController
@@ -427,12 +372,12 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 className="form-control rounded-datepicker p-2 zindex_DateCalender"
                                                 required={true}
                                                 errorMsg={errors["end_date"]}
-                                                // disabled={values.untilCancelled}
+                                                disabled={values.untilCancelled}
                                                 popperPlacement="top-end"
                                                 minDate={moment().add(4, 'days').toDate()} // disables today and past
                                             // calendarStartDate={moment().add(3, 'days').toDate()} // calendar opens showing 3 days ahead
                                             />
-                                            {/* <div className="form-check mt-2">
+                                            <div className="form-check mt-2">
                                                 <Field
                                                     type="checkbox"
                                                     name="untilCancelled *"
@@ -445,7 +390,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 <label htmlFor="untilCancelled" className="form-check-label ml-1">
                                                     Until Cancelled
                                                 </label>
-                                            </div> */}
+                                            </div>
                                         </div>
 
 

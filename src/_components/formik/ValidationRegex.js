@@ -1,7 +1,7 @@
 export const Regex = {
   acceptAlphabet: /^[aA-zZ\s]+$/,
   acceptAlphaNumericDot: /^[a-zA-Z0-9. ]+$/,
-  acceptAlphaWithComma: /^[a-zA-Z,.\s]+$/,
+  acceptAlphaWithComma: /^[a-zA-Z0-9,.\s]+$/, // accept alphabets, numbers, comma, dot and space
   acceptNumber: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
   acceptAlphaNumeric: /^[a-zA-Z0-9\s*]+$/, // alphanumeric with *
   alphaBetwithhyphon: /[a-zA-Z._^%$#!~@,-]+/,
@@ -10,7 +10,8 @@ export const Regex = {
   addressForSpecific: /^[#.0-9a-zA-Z\s,-/]+$/,
   phoneNumber: /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
 
-  password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+  password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/,
+
 
   ifscRegex: /^[A-Z]{4}0[A-Z0-9]{6}$/,
   accountNoRgex: /^[a-zA-Z0-9]{2,25}$/,
@@ -47,8 +48,7 @@ export const RegexMsg = {
   address:
     "Address is not in valid format, Special Characters are not allowed (#,$,@ etc)",
   phoneNumber: "Phone number is not valid",
-  password:
-    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special Character",
+  password: "Must Contain 12 Characters, One Uppercase, One Lowercase, One Number and one special Character",
   ifscRegex: "Your IFSC code is Invalid and must be in capital letters",
   accountNoRgex: "Account Number format is invalid",
   multipleSpace: "Invalid input : Extra space not allowed",
@@ -62,7 +62,7 @@ export const RegexMsg = {
   pinRegex: "Invalid PIN code",
   latitudeRegex: "Invalid Latitude",
   longitudeRegex: "Invalid Longitude",
-  acceptAlphaWithComma: "Please enter valid characters",
+  acceptAlphaWithComma: "Please enter valid characters, Accept alphabets, numbers, comma, dot",
 };
 
 // if word length more then 20 char. then throw error

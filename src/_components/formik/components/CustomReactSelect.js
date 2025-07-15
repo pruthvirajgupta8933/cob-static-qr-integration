@@ -21,6 +21,7 @@ const CustomReactSelect = ({ label, onChange, ...props }) => {
         id={props.name}
         value={field.value}
         onChange={handleChange}
+        className="zindexforDropdown"
       />
       {meta.touched && meta.error ? (
         <div className="text-danger">{meta.error}</div>

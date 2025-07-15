@@ -355,57 +355,70 @@ const RecentTransaction = () => {
             <div className="px-3 py-3">
               <div className="row align-items-center">
                 <div className="col-md-4">
-                  <h5 className="mb-0">Recent Transaction</h5>
+                  <h6 className="mb-0">Recent Transaction</h6>
                 </div>
-                <div className="col-md-8 d-flex justify-content-end">
-                  <div className="me-3 mt-4">
-                    <SearchBar
-                      searchTerm={searchTerm}
-                      setSearchTerm={setSearchTerm}
-                      onSearch={formSubmit}
-                      placeholder="Name, Email, Mobile"
-                      loadData={loadData}
-                    />
-                  </div>
-                  <div className="me-3 mt-4">
-                    <SelectFilter
-                      onChange={getFilterData}
-                      options={tempPayStatus}
-                      filterBy={"payment_status"}
-                      value={paymentStatus}
-                    />
-                  </div>
-                  <div className="me-3 mt-4">
-                    <SelectFilter
-                      onChange={getFilterData}
-                      options={tempPaymode}
-                      filterBy={"transaction_status"}
-                      value={transactionMode}
-                    />
-                  </div>
+                <div className="col-md-8">
+                  <div className="d-flex justify-content-end align-items-center gap-2 mt-3 flex-nowrap">
 
-                  <div className="me-3 mt-4">
-                    <CountPerPageFilter
-                      pageSize={pageSize}
-                      dataCount={dataCount}
-                      currentPage={currentPage}
-                      changePageSize={changePageSize}
-                      changeCurrentPage={changeCurrentPage}
-                      enableLable={false}
-                    />
+
+                    <div className="">
+                      <SearchBar
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        onSearch={formSubmit}
+                        placeholder="Name, Email, Mobile"
+                        loadData={loadData}
+                      />
+                    </div>
+
+
+                    <div className="">
+                      <SelectFilter
+                        onChange={getFilterData}
+                        options={tempPayStatus}
+                        filterBy="payment_status"
+                        value={paymentStatus}
+                        label="Payment Status"
+                      />
+                    </div>
+
+
+                    <div className="">
+                      <SelectFilter
+                        onChange={getFilterData}
+                        options={tempPaymode}
+                        filterBy="transaction_status"
+                        value={transactionMode}
+                        label="Payment Mode"
+                      />
+                    </div>
+
+
+                    <div className="">
+                      <CountPerPageFilter
+                        pageSize={pageSize}
+                        dataCount={dataCount}
+                        currentPage={currentPage}
+                        changePageSize={changePageSize}
+                        changeCurrentPage={changeCurrentPage}
+                      />
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
 
+
+
             <div className="card-body">
               <div className="scroll overflow-auto">
-                {buttonClicked && payerData?.length === 0 && (
+                {/* {buttonClicked && payerData?.length === 0 && (
                   <h5 className="text-center font-weight-bold mt-5">
                     No Data Found
                   </h5>
-                )}
-                {!loadingState && filterData?.length !== 0 && (
+                )} */}
+                {!loadingState && (
                   <Table
                     row={rowData}
                     data={payerData}

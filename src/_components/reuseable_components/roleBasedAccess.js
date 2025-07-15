@@ -52,12 +52,12 @@ export const roleBasedAccess = () => {
 
 
     } else if (roleId === 102) {
-        // accountManager
+        // businessDevelopment
         roleAccessObj = { ...roleAccessObj, businessDevelopment: true };
     }
     else if (roleId ===
         103) {
-        // accountManager
+        // zonalManager
         roleAccessObj = { ...roleAccessObj, zonalManager: true };
     }
 

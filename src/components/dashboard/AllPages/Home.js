@@ -15,6 +15,7 @@ import StepProgressBar from "../../../_components/reuseable_components/StepProgr
 import KycAlert from "../../KYC/KycAlert";
 import { isNull } from "lodash";
 import PaymentAlertBox from "./Product Catalogue/PaymentAlertBox";
+import ReportLayout from "../../../utilities/CardLayout";
 
 import moment from "moment";
 import ChartContainer from "../../chart/ChartContainer";
@@ -26,6 +27,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import { graphDate } from "../../../utilities/graphDate";
 import PasswordExpiry from "../../../_components/reuseable_components/PasswordExpiry";
 import paymentLinkService from "../../../services/create-payment-link/paymentLink.service";
+import EnsurePaymentLinkApiKey from "./payment-link-solution/ensure-payment-link-api-key/EnsurePaymentLinkApiKey";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -66,19 +68,21 @@ function Home() {
 
       // paylink api key
 
-      async function getPaymentLinkApiKey() {
-        try {
-          const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
-          sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
-        } catch (error) {
+      // async function getPaymentLinkApiKey() {
+      //   try {
+      //     const response = await paymentLinkService.getPaymentLinkApiKey({ client_code: clientCode });
+      //     sessionStorage.setItem('paymentLinkApiKey', response.data.api_key);
+      //   } catch (error) {
 
-        }
+      //   }
 
-      }
+      // }
 
-      if (!sessionStorage.getItem('paymentLinkApiKey')) {
-        getPaymentLinkApiKey();
-      }
+      // if (!sessionStorage.getItem('paymentLinkApiKey')) {
+      //   getPaymentLinkApiKey();
+      // }
+
+      EnsurePaymentLinkApiKey(clientCode)
 
 
     }
@@ -98,7 +102,8 @@ function Home() {
     roles.verifier === true ||
     roles.viewer === true ||
     roles.accountManager === true ||
-    roles.businessDevelopment === true
+    roles.businessDevelopment === true ||
+    roles.zonalManager === true
   ) {
     return <Redirect to={`${path}/Internal-dashboard`} />;
   }
@@ -195,7 +200,8 @@ function Home() {
       {/* TODO: refactor it */}
       {/* KYC container start from here */}
       {/* {console.log("kyc.kycUserList?.latitude", kyc?.kycUserList?.latitude)} */}
-      {kyc?.kycUserList?.latitude === null &&
+
+      {/* {kyc?.kycUserList?.latitude === null &&
         kyc?.kycUserList?.longitude === null && (
           <div className="row">
             <div
@@ -224,7 +230,7 @@ function Home() {
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
       {/* password expire notification component */}
       <PasswordExpiry />
@@ -279,49 +285,51 @@ function Home() {
       )}
 
       {(roles?.bank || roles?.referral) && (
-        <div className="row">
-          <h5>Dashboard</h5>
-          <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Transaction Overview</h5>
-                <p className="card-text">
-                  Stay updated with a summary of recent transactions. Quickly
-                  identify key details like amounts, statuses, and payment
-                  sources, with options to dive deeper.
-                </p>
+        <ReportLayout title="Dashboard">
+          <div className="row">
+            <h5>Dashboard</h5>
+            <div className="col-lg-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Transaction Overview</h5>
+                  <p className="card-text">
+                    Stay updated with a summary of recent transactions. Quickly
+                    identify key details like amounts, statuses, and payment
+                    sources, with options to dive deeper.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Initiate Payment</h5>
-                <p className="card-text">
-                  Easily send or request payments through a variety of secure
-                  options. Choose from multiple payment methods and get
-                  real-time confirmation on transaction statuses.
-                </p>
+            <div className="col-lg-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Initiate Payment</h5>
+                  <p className="card-text">
+                    Easily send or request payments through a variety of secure
+                    options. Choose from multiple payment methods and get
+                    real-time confirmation on transaction statuses.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Financial Insights</h5>
-                <p className="card-text">
-                  Access powerful tools to analyze your financial activities.
-                  Identify trends, generate custom reports, and forecast future
-                  revenue or expenses to stay ahead of the curve.{" "}
-                </p>
+            <div className="col-lg-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Financial Insights</h5>
+                  <p className="card-text">
+                    Access powerful tools to analyze your financial activities.
+                    Identify trends, generate custom reports, and forecast future
+                    revenue or expenses to stay ahead of the curve.{" "}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ReportLayout>
       )}
-      <hr />
+
       <br />
       {/* static content displaying */}
 

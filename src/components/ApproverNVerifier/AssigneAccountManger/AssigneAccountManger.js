@@ -10,6 +10,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import FormikController from "../../../_components/formik/FormikController";
 import toastConfig from "../../../utilities/toastTypes";
 import { kycUserList } from "../../../slices/kycSlice";
+import CardLayout from "../../../utilities/CardLayout";
 
 const AssigneAccountManger = () => {
   const [clientCodeList, setClientCodeList] = useState([]);
@@ -93,85 +94,82 @@ const AssigneAccountManger = () => {
   }));
 
   return (
-    <section>
-      <main>
-        <h5>Merchant Assignment</h5>
-        <div className="container-fluid p-0">
-          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-            {({ values, setFieldValue, isSubmitting }) => (
-              <Form className="row mt-5">
-                <div className="row">
-                  <div className="col-lg-3 col-md-6 col-12">
-                    <CustomReactSelect
-                      name="react_select"
-                      options={clientOptions}
-                      placeholder="Select Client Code"
-                      filterOption={createFilter({ ignoreAccents: false })}
-                      label="Client Code"
-                      onChange={(selectedOption) => {
-                        setSelectedId(selectedOption);
-                        setFieldValue("react_select", selectedOption);
-                        handleClientChange(selectedOption);
-                      }}
-                    />
-                  </div>
-                  <div className="col-lg-3 col-md-6 col-12">
-                    <CustomReactSelect
-                      name="assignment_type"
-                      options={assignmentType}
-                      placeholder="Select Assignment Type"
-                      filterOption={createFilter({ ignoreAccents: false })}
-                      label="Assignment Type"
-                      onChange={(selectedOption) => {
-                        setFieldValue("assignment_type", selectedOption);
-                        if (selectedOption) {
-                          fetchAccountManagers(selectedOption.role_id);
-                        }
-                      }}
-                    />
-                  </div>
-                  <div className="col-lg-3 col-md-6 col-12">
-                    <FormikController control="select" name="assigned_login_id" options={assignDetails} className="form-select" label="Manager List" />
-                  </div>
-                  <div className="col-lg-3 col-md-6 col-12 mt-4">
-                    <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
-                      {isSubmitting && <span className="spinner-border spinner-border-sm mr-1" role="status"></span>} Assign
-                    </button>
-                  </div>
+    <CardLayout title="Merchant Assignment">
+      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+        {({ values, setFieldValue, isSubmitting }) => (
+          <Form className="row ">
+            <div className="row">
+              <div className="col-lg-3 col-md-6 col-12">
+                <CustomReactSelect
+                  name="react_select"
+                  options={clientOptions}
+                  placeholder="Select Client Code"
+                  filterOption={createFilter({ ignoreAccents: false })}
+                  label="Client Code"
+                  onChange={(selectedOption) => {
+                    setSelectedId(selectedOption);
+                    setFieldValue("react_select", selectedOption);
+                    handleClientChange(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 col-12">
+                <CustomReactSelect
+                  name="assignment_type"
+                  options={assignmentType}
+                  placeholder="Select Assignment Type"
+                  filterOption={createFilter({ ignoreAccents: false })}
+                  label="Assignment Type"
+                  onChange={(selectedOption) => {
+                    setFieldValue("assignment_type", selectedOption);
+                    if (selectedOption) {
+                      fetchAccountManagers(selectedOption.role_id);
+                    }
+                  }}
+                />
+              </div>
+              <div className="col-lg-3 col-md-6 col-12">
+                <FormikController control="select" name="assigned_login_id" options={assignDetails} className="form-select" label="Manager List" />
+              </div>
+              <div className="col-lg-3 col-md-6 col-12 mt-4">
+                <button type="submit" className="btn cob-btn-primary approve text-white" disabled={isSubmitting}>
+                  {isSubmitting && <span className="spinner-border spinner-border-sm mr-1" role="status"></span>} Assign
+                </button>
+              </div>
+            </div>
+            <div className="row mt-4">
+              {KycList?.result?.loginMasterId && (
+                <div className="">
+                  <table className="table table-bordered table-responsive-sm">
+                    <thead>
+                      <tr>
+                        <td className="" colSpan="2">Assigned Manager</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Account Manager Name</td>
+                        <td>{KycList?.result?.loginMasterId?.account_manager_name || "NA"}</td>
+                      </tr>
+                      <tr>
+                        <td>Assigned BD Name</td>
+                        <td>{KycList?.result?.loginMasterId?.assigned_bd_name || "NA"}</td>
+                      </tr>
+                      <tr>
+                        <td>Assigned Zonal Manager</td>
+                        <td>{KycList?.result?.loginMasterId?.assigned_zonal_manager_name || "NA"}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div className="row mt-4">
-                  {KycList?.result?.loginMasterId && (
-                    <div className="">
-                      <table className="table table-bordered table-responsive-sm">
-                        <thead>
-                          <tr>
-                            <td className="" colSpan="2">Assigned Manager</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Account Manager Name</td>
-                            <td>{KycList?.result?.loginMasterId?.account_manager_name || "NA"}</td>
-                          </tr>
-                          <tr>
-                            <td>Assigned BD Name</td>
-                            <td>{KycList?.result?.loginMasterId?.assigned_bd_name || "NA"}</td>
-                          </tr>
-                          <tr>
-                            <td>Assigned Zonal Manager</td>
-                            <td>{KycList?.result?.loginMasterId?.assigned_zonal_manager_name || "NA"}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </main>
-    </section>
+              )}
+            </div>
+          </Form>
+        )}
+      </Formik>
+
+
+    </CardLayout>
   );
 };
 

@@ -66,7 +66,7 @@ const ValidateDrivingLicense = () => {
               }}
             />
           </div>
-          <div className="input-container">
+          <div className="input-container mt-3 mt-md-0">
             <label className="form-label justify-content-start" htmlFor="dob">
               Date Of Birth
             </label>
@@ -109,7 +109,7 @@ const ValidateDrivingLicense = () => {
                   {key.replace("_", " ")}:
                 </span>
                 {typeof value === "boolean" ? (
-                  <span>&nbsp;{value.toString()}</span>
+                  <span>&nbsp;{value?.toString()}</span>
                 ) : (
                   <span>&nbsp;{value}</span>
                 )}

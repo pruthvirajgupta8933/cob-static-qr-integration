@@ -11,6 +11,7 @@ import ValidateVoterCard from "./voter-card-validate";
 import ValidateDrivingLicense from "./dl-validate";
 import ValidateCIN from "./cin-validate";
 import AdvancePanValidate from "./advance-pan-validate";
+import CardLayout from "../../../utilities/CardLayout";
 
 const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
@@ -66,33 +67,29 @@ const AdditionalKYC = () => {
   };
 
   return (
-    <section className="">
-      <main className="">
-        <div className="">
-          <h5>Additional KYC</h5>
+    <CardLayout title="Additional KYC">
+
+      <div className="row">
+        <div className="col-lg-3 col-md-4">
+          <div className="form-group">
+            <label className="form-label">Document Type</label>
+            <select
+              className="form-select"
+              documentType={selectedDocType}
+              onChange={handleChange}
+            >
+              <option value="Select a Document">Select a Document</option>
+              {documentTypeList.map((data) => (
+                <option value={data.value} key={data.value}>
+                  {data.documentType}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="container-fluid mt-5 p-0">
-          <div className="row">
-            <div className="col-lg-3 col-md-4">
-              <div className="form-group">
-                <label className="form-label">Document Type</label>
-                <select
-                  className="form-select"
-                  documentType={selectedDocType}
-                  onChange={handleChange}
-                >
-                  <option value="Select a Document">Select a Document</option>
-                  {documentTypeList.map((data) => (
-                    <option value={data.value} key={data.value}>
-                      {data.documentType}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="mt-4">
-              {renderKycVerification()}
-              {/* {selectedDocType === "1" && (
+        <div className="mt-4">
+          {renderKycVerification()}
+          {/* {selectedDocType === "1" && (
                 <AdditionalKycForPan selectedDocType={selectedDocType} />
               )}
 
@@ -107,8 +104,8 @@ const AdditionalKYC = () => {
               {selectedDocType === "4" && (
                 <UdyamRegistrationList selectedDocType={selectedDocType} />
               )} */}
-            </div>
-            {/* {selectedDocType === "5" && (
+        </div>
+        {/* {selectedDocType === "5" && (
               <FrmVerification />
             )}
             {selectedDocType === "6" && (
@@ -118,10 +115,10 @@ const AdditionalKYC = () => {
             {selectedDocType === "7" && (
               <KycCin />
             )} */}
-          </div>
-        </div>
-      </main>
-    </section>
+      </div>
+
+
+    </CardLayout>
   );
 };
 

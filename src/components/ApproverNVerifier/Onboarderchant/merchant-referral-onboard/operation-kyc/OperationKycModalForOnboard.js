@@ -99,9 +99,9 @@ function OperationKycModalForOnboard({
   const isOnboardStartM = merchantOnboardingProcess?.isOnboardStart || editKyc;
 
   const kycStatusArr = [KYC_STATUS_VERIFIED, KYC_STATUS_APPROVED]
-    .toString()
-    .toLowerCase()
-    .split(",");
+    ?.toString()
+    ?.toLowerCase()
+    ?.split(",");
 
   const isEditableInput = kycStatusArr.includes(
     kycData?.status?.toString().toLowerCase()

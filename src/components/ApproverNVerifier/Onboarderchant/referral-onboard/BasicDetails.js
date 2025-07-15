@@ -67,10 +67,11 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       "",
     id_number:
       kycData?.aadharNumber ?? basicDetailsResponse?.data?.aadhar_number ?? "",
-    isIdProofVerified:
-      kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
-        ? 1
-        : "",
+    // isIdProofVerified:
+    //   kycData?.aadharNumber || basicDetailsResponse?.data?.aadhar_number
+    //     ? 1
+    //     : "",
+    isIdProofVerified: 1,
     isPanVerified:
       kycData?.signatoryPAN ||
         kycData?.panCard ||
@@ -78,6 +79,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
         ? 1
         : "",
     panName: kycData?.nameOnPanCard ?? "",
+    father_name: kycData?.father_name ?? ""
   };
 
   useEffect(() => {
@@ -157,6 +159,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       type === "individual"
         ? Yup.boolean().required("Please verify PAN")
         : null,
+    father_name: Yup.string()
   });
 
   const idProofhandler = (value) => {
@@ -180,6 +183,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
           `${res.payload.first_name} ${res.payload.last_name}`
         );
         setFieldValue("pan_dob_or_doi", res?.payload?.dob);
+        setFieldValue("father_name", res?.payload?.father_name);
         setPanLoader(false);
       } else {
         toast.error(
@@ -248,6 +252,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
       pan_card: values.pan,
       name_on_pan_card: values.panName,
       pan_dob_or_doi: values.pan_dob_or_doi,
+      father_name: values.father_name,
       aadhar_number: values.id_number,
       onboard_type:
         type === "individual" ? "Referrer (Individual)" : "Referrer (Company)",
@@ -358,15 +363,26 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
           }
           onChange={(e) => {
             setFieldValue("id_number", e.target.value);
-            setFieldValue("isIdProofVerified", "");
+            // setFieldValue("isIdProofVerified", "");
           }}
           disabled={
             disableForm ||
             (edit ? disableForm : !idType || kycData?.id_proof_type)
           }
         />
-
-        {values.id_number && values.isIdProofVerified ? (
+        {values.id_number && values.isIdProofVerified &&
+          <span className="success input-group-append">
+            <img
+              src={verifiedIcon}
+              alt=""
+              title=""
+              width={"20px"}
+              height={"20px"}
+              className="btn-outline-secondary"
+            />
+          </span>
+        }
+        {/* {values.id_number && values.isIdProofVerified ? (
           <span className="success input-group-append">
             <img
               src={verifiedIcon}
@@ -403,7 +419,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
               )}
             </a>
           </div>
-        )}
+        )} */}
         {aadhaarNumberVerifyToggle && (
           <AadhaarVerficationModal
             formikFields={{
@@ -577,6 +593,7 @@ const BasicDetails = ({ setCurrentTab, type, zoneCode, edit, disableForm }) => {
                       className="form-control"
                       onChange={(e) => {
                         setFieldValue("isPanVerified", "");
+                        setFieldValue("panName", "");
                         const uppercaseValue = e.target.value.toUpperCase(); // Convert input to uppercase
                         setFieldValue("pan", uppercaseValue); // Set the uppercase value to form state
                       }}

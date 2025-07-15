@@ -59,6 +59,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     billing_label: kycData?.billingLabel ?? "",
     company_name: kycData?.companyName ?? "",
     authorized_person_dob: kycData?.authorized_person_dob ?? "",
+    father_name: kycData?.father_name ?? "",
   };
 
   const tooltipData = {
@@ -77,8 +78,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     website: Yup.string()
       .allowOneSpace()
       .matches(Regex.urlFormate, RegexMsg.urlFormate)
-      .nullable()
-      .required("Website is required"),
+      .nullable(),
     is_pan_verified: Yup.string().nullable(),
     platform_id: Yup.string().required("Select the platform").nullable(),
     expected_transactions: Yup.string().trim().required("Required").nullable(),
@@ -109,6 +109,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
       .nullable(),
     company_name: Yup.string().required("Required").nullable(),
     state_id: Yup.string().required("Required").nullable(),
+    father_name: Yup.string(),
     billing_label: Yup.string()
       .allowOneSpace()
       .min(60, "Please enter more than 60 character")
@@ -197,7 +198,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
     };
     const postData = {
       website_app_url: value.website,
-      is_website_url: "True",
+      is_website_url: value.website ? "True" : "False",
       pan_card: value.pan_card,
       pan_dob_or_doi: value.pan_dob_or_doi,
       authorized_person_dob: value.authorized_person_dob,
@@ -211,6 +212,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
       avg_ticket_size: value.avg_ticket_size,
       expected_transactions: value.expected_transactions,
       name_on_pancard: value.name_on_pancard,
+      father_name: value.father_name
     };
 
     dispatch(businessDetailsSlice(postData))
@@ -262,6 +264,7 @@ function BusinessDetailsOps({ setCurrentTab, isEditableInput }) {
         setFieldValue("name_on_pancard", authName);
         setFieldValue("isSignatoryPanVerified", 1);
         setFieldValue("authorized_person_dob", res?.payload?.dob);
+        setFieldValue("father_name", res?.payload?.father_name);
         toast.success(res.payload.message);
       } else {
         toast.error(res?.payload?.message);

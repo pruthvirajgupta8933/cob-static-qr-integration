@@ -15,6 +15,7 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
 import DateFormatter from "../../../utilities/DateConvert";
 import moment from "moment";
+import { is } from "date-fns/locale";
 
 function TransactionSummery() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function TransactionSummery() {
   const { isLoading, successTxnsumry } = dashboard;
   const { user } = auth;
 
+
   let clientCodeArr = [];
   let totalSuccessTxn = 0;
   let totalAmt = 0;
@@ -52,8 +54,8 @@ function TransactionSummery() {
       allClientCode.push(item.client_code);
     });
 
-    clientCodeArrLength = allClientCode.length.toString();
-    strClientCode = allClientCode.join().toString();
+    clientCodeArrLength = allClientCode.length?.toString();
+    strClientCode = allClientCode.join()?.toString();
   } else {
     strClientCode = user?.clientMerchantDetailsList[0]?.clientCode;
     clientCodeArrLength = "1";
@@ -61,16 +63,19 @@ function TransactionSummery() {
   // dispatch action when client code change
   useEffect(() => {
     // console.log("user", user)
-    const objParam = {
-      fromdate: moment(fromDate).format("YYYY-MM-DD"),
-      todate: moment(toDate).format("YYYY-MM-DD"),
-      dttype,
-      clientcodelst: strClientCode,
-      clientNo: clientCodeArrLength,
-    };
+    if (strClientCode) {
+      const objParam = {
+        fromdate: moment(fromDate).format("YYYY-MM-DD"),
+        todate: moment(toDate).format("YYYY-MM-DD"),
+        dttype,
+        clientcodelst: strClientCode,
+        clientNo: clientCodeArrLength,
+      };
 
-    if (dttype !== "6") dispatch(successTxnSummary(objParam));
-  }, [dttype]);
+      if (dttype !== "6") dispatch(successTxnSummary(objParam));
+    }
+
+  }, [dttype, strClientCode]);
 
   //make client code array
   if (clientCodeData !== null && clientCodeData?.length > 0) {
@@ -86,8 +91,8 @@ function TransactionSummery() {
     const type = userRole.bank
       ? "bank"
       : userRole.referral
-      ? "referrer"
-      : "default";
+        ? "referrer"
+        : "default";
     if (type !== "default") {
       let postObj = {
         type: type, // Set the type based on roleType
@@ -102,8 +107,8 @@ function TransactionSummery() {
 
   // filter api response data with client code
   useEffect(() => {
-    if (successTxnsumry?.length > 0) {
-      let filterData = successTxnsumry?.filter((txnsummery) => {
+    if (successTxnsumry?.results?.length > 0) {
+      let filterData = successTxnsumry?.results?.filter((txnsummery) => {
         if (clientCodeArr.includes(txnsummery.client_code)) {
           return clientCodeArr.includes(txnsummery.client_code);
         }
@@ -116,13 +121,13 @@ function TransactionSummery() {
   useEffect(() => {
     search !== ""
       ? SetShowData(
-          txnList.filter((txnItme) =>
-            Object.values(txnItme)
-              .join(" ")
-              .toLowerCase()
-              .includes(search.toLocaleLowerCase())
-          )
+        txnList.filter((txnItme) =>
+          Object.values(txnItme)
+            .join(" ")
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase())
         )
+      )
       : SetShowData(txnList);
   }, [search]);
 
@@ -313,7 +318,9 @@ function TransactionSummery() {
                 }, 0)
                 .toFixed(2),
             },
+
           ]}
+          loadingState={isLoading}
         />
         {/* <section className="">
           <div className="container-fluid p-0"> */}
@@ -371,7 +378,7 @@ function TransactionSummery() {
                   </h6>
                 </div>
               )} */}
-        {isLoading ? <ProgressBar /> : <></>}
+        {/* {isLoading ? <ProgressBar /> : <></>} */}
         {/* </div>
           </div>
         </section> */}

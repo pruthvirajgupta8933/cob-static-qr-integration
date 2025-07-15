@@ -235,7 +235,7 @@ const RegistrationHistory = () => {
     "IFSC",
     "Account Type",
     "Mandate Registration Date",
-    "Mandate start Date",
+    "Mandate Start Date",
     "Mandate End Date",
     "Frequency",
     "Max Amount",
@@ -358,8 +358,9 @@ const RegistrationHistory = () => {
                   </div>
                   <div className="col-lg-1">
                     <button
-                      className="btn cob-btn-primary approve text-white mt-4 w-100"
+                      className="btn cob-btn-primary approve text-white mt-4 "
                       type="submit"
+                      disabled={viewDataLoader}
                     >
                       {viewDataLoader ? (
                         <span
@@ -374,7 +375,7 @@ const RegistrationHistory = () => {
                   {dataCount > 0 && (
                     <div className="col-lg-1">
                       <button
-                        className="btn cob-btn-primary approve text-white mt-4 w-100"
+                        className="btn cob-btn-primary approve text-white mt-4 "
                         type="button"
                         disabled={isExporting}
                         onClick={() => handleExport(formik.values)}

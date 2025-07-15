@@ -17,6 +17,7 @@ import { DatePicker } from "rsuite";
 function CreatePaymentLink({ componentState, onClose }) {
   const [disable, setDisable] = useState(false);
   const [payerData, setPayerData] = useState([]);
+  const [isSchedule, setIsSchedule] = useState(false);
   const { user } = useSelector((state) => state.auth);
 
   let clientMerchantDetailsList = user.clientMerchantDetailsList || [];
@@ -49,67 +50,102 @@ function CreatePaymentLink({ componentState, onClose }) {
     loadUser();
   }, [clientCode]);
 
-  const validFrom = moment().add(5, "minutes").toDate();
+  const validFrom = moment().add(1, "minutes").toDate();
   const validTo = moment(validFrom).add(24, "hours").toDate();
 
   const initialValues = {
     valid_from: validFrom,
     valid_to: validTo,
-    payer_account_number: "12345678901234",
+    valid_from_date: moment(validFrom).format("YYYY-MM-DD"),
+    valid_from_time: moment(validFrom).format("HH:mm"),
+    valid_to_date: moment(validTo).format("YYYY-MM-DD"),
+    valid_to_time: moment(validTo).format("HH:mm"),
     total_amount: "",
     purpose: "",
+    schedule: false,
     is_link_date_validity: true,
     is_partial_payment_accepted: false,
     payer: componentState?.id ?? "",
     client_request_id: uuidv4(),
   };
 
-  const validationSchema = Yup.object().shape({
-    valid_from: Yup.date()
-      .min(new Date(), "Start date can't be before today")
-      .required("Start Date Required")
-      .nullable(),
-    valid_to: Yup.date()
-      .test(
-        "is-greater",
-        "End date must be after start date",
-        function (value) {
-          const { valid_from } = this.parent;
-          if (value && valid_from) {
-            return moment(value).diff(moment(valid_from), "minutes") > 0;
+  const getValidationSchema = (schedule) =>
+    Yup.object().shape({
+      ...(schedule && {
+        valid_from_date: Yup.string().required("Start Date Required"),
+        valid_from_time: Yup.string().required("Start Time Required"),
+        valid_to_date: Yup.string().required("End Date Required"),
+        valid_to_time: Yup.string().required("End Time Required"),
+        valid_to: Yup.mixed().test(
+          "is-greater",
+          "End date/time must be after start date/time",
+          function () {
+            const { valid_from_date, valid_from_time, valid_to_date, valid_to_time } =
+              this.parent;
+            const from = moment(
+              `${valid_from_date} ${valid_from_time}`,
+              "YYYY-MM-DD HH:mm"
+            );
+            const to = moment(
+              `${valid_to_date} ${valid_to_time}`,
+              "YYYY-MM-DD HH:mm"
+            );
+            return to.isAfter(from);
           }
-        }
-      )
-      .required("End Date Required")
-      .nullable(),
-    total_amount: Yup.number()
-      .typeError("Only numbers are allowed")
-      .min(1, "Enter Valid Amount")
-      .max(1000000, "Limit Exceed")
-      .required("Required"),
-    purpose: Yup.string()
-      .max(200, "Max 200 characters allowed")
-      .required("Enter Remark"),
-    payer: Yup.string().required("Payer is required"),
-    communication_mode: Yup.array()
-      .min(1, "At least one communication method is required")
-      .required("At least one communication method is required"),
-  });
+        ),
+      }),
+      total_amount: Yup.number()
+        .typeError("Only numbers are allowed")
+        .min(1, "Enter Valid Amount")
+        .max(100000000, "Limit Exceed")
+        .required("Required"),
+      purpose: Yup.string()
+        .max(200, "Max 200 characters allowed")
+        .matches(/^[a-zA-Z0-9\s]*$/, "Only alphabets and numbers are allowed")
+        .required("Enter Remark"),
+
+      payer: Yup.string().required("Payer is required"),
+      communication_mode: Yup.array()
+        .min(1, "At least one communication method is required")
+        .required("At least one communication method is required"),
+    });
 
   const onSubmit = async (values, resetForm) => {
     setDisable(true);
-    const formattedValidFrom = moment(values.valid_from).format(
-      "YYYY-MM-DD HH:mm"
-    );
-    const formattedValidTo = moment(values.valid_to).format("YYYY-MM-DD HH:mm");
 
+    // Clone values to avoid mutating the original object
     const postData = {
       ...values,
-      valid_from: formattedValidFrom,
-      valid_to: formattedValidTo,
       client_request_id: uuidv4(),
       communication_mode: values.communication_mode,
+      schedule: isSchedule,
     };
+
+    // Always remove time fields (they are only used for combining)
+    delete postData.valid_from_time;
+    delete postData.valid_to_time;
+
+
+    if (isSchedule) {
+
+      const combinedValidFrom = moment(
+        `${values.valid_from_date} ${values.valid_from_time}`,
+        "YYYY-MM-DD HH:mm"
+      );
+      const combinedValidTo = moment(
+        `${values.valid_to_date} ${values.valid_to_time}`,
+        "YYYY-MM-DD HH:mm"
+      );
+
+      postData.valid_from = combinedValidFrom.format("YYYY-MM-DD HH:mm");
+      postData.valid_to = combinedValidTo.format("YYYY-MM-DD HH:mm");
+    } else {
+      // If schedule is false, remove date fields also
+      delete postData.valid_from_date;
+      delete postData.valid_to_date;
+      delete postData.valid_from;
+      delete postData.valid_to;
+    }
 
     try {
       const response = await paymentLinkService.createPaymentLink(postData);
@@ -122,21 +158,26 @@ function CreatePaymentLink({ componentState, onClose }) {
     } catch (error) {
       toastConfig.errorToast(
         error.response?.data?.detail ||
-          error.response?.data?.message ||
-          "Something went wrong."
+        error.response?.data?.message ||
+        "Something went wrong."
       );
       setDisable(false);
       resetForm();
     }
   };
 
+
+
+
+
   return (
     <div className="mymodals modal fade show" style={{ display: "block" }}>
-      <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-dialog modal-lg model_custom_w modal-dialog-centered" role="document">
         <div className="modal-content">
           <Formik
             initialValues={{ ...initialValues, communication_mode: ["email"] }}
-            validationSchema={validationSchema}
+            validationSchema={getValidationSchema(isSchedule)}
+            enableReinitialize
             onSubmit={(values, { resetForm, setErrors }) => {
               if (values.communication_mode.length === 0) {
                 setErrors({
@@ -146,13 +187,12 @@ function CreatePaymentLink({ componentState, onClose }) {
                 return;
               }
               onSubmit(values, resetForm);
-              //   resetForm();
             }}
           >
             {({ setFieldValue, values, errors, touched }) => (
-              <>
+              <Form>
                 <div className="modal-header">
-                  <h6 className="fw-bold">Create Payment Link</h6>
+                  <h6 >Create Payment Link</h6>
                   <button
                     type="button"
                     className="close"
@@ -164,188 +204,228 @@ function CreatePaymentLink({ componentState, onClose }) {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <Form>
+                  <nav className="my-2 mb-4 d-flex justify-content-center gap-3">
+                    <a
+                      href="#"
+                      className={`btn px-4 btn-sm text-center flex-fill ${!isSchedule ? "btn cob-btn-primary text-white text-white" : "btn-outline-primary"
+                        }`}
+                      style={{ maxWidth: "200px" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsSchedule(false);
+                        setFieldValue("schedule", false);
+                      }}
+                    >
+                      Upto 24 Hours
+                    </a>
+                    <a
+                      href="#"
+                      className={`btn px-4 btn-sm text-center flex-fill ${isSchedule ? "btn cob-btn-primary text-white" : "btn-outline-primary"
+                        }`}
+                      style={{ maxWidth: "200px" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsSchedule(true);
+                        setFieldValue("schedule", true);
+                      }}
+                    >
+                      Schedule
+                    </a>
+                  </nav>
+
+                  {isSchedule && (
                     <div className="form-row mb-3">
-                      <div className="col-lg-6 col-md-12 col-sm-12">
-                        <label>Start Date</label>
-                        {/* <DatePicker
-                                                    format="yyyy-MM-dd HH:mm"
-                                                    value={values.valid_from}
-                                                    onChange={(date) => setFieldValue("valid_from", date)}
-                                                    className="w-100"
-                                                    placement="bottomStart"
-                                                    placeholder="Select Start Date"
-                                                    showMeridian={false}
-                                                /> */}
-                        <CustomDatePicker
-                          // label="Start Date"
-                          value={values.valid_from}
-                          onChange={(date) => setFieldValue("valid_from", date)}
-                          error={
-                            errors.valid_from && touched.valid_from
-                              ? errors.valid_from
-                              : ""
-                          }
-                          placeholder="Select Start Date"
-                        />
-                        {/* 
-                                                {errors.valid_from && touched.valid_from && (
-                                                    <div className="text-danger">{errors.valid_from}</div>
-                                                )} */}
+                      <div className="col-lg-6 col-md-12 col-sm-12 d-flex  justify-content-between">
+                        <div style={{ width: "56%" }}>
+                          <label>Start Date</label>
+                          <CustomDatePicker
+                            value={
+                              values.valid_from_date
+                                ? new Date(values.valid_from_date)
+                                : null
+                            }
+                            onChange={(date) =>
+                              setFieldValue(
+                                "valid_from_date",
+                                moment(date).format("YYYY-MM-DD")
+                              )
+                            }
+                            error={
+                              touched.valid_from_date && errors.valid_from_date
+                                ? errors.valid_from_date
+                                : ""
+                            }
+                            placeholder="Select Start Date"
+                          />
+                        </div>
+
+                        <div style={{ width: "40%" }}>
+                          <label>Start Time</label>
+                          <input
+                            type="time"
+                            className="form-control"
+                            value={values.valid_from_time}
+                            onChange={(e) =>
+                              setFieldValue("valid_from_time", e.target.value)
+                            }
+                            placeholder="Select Start Time"
+                          />
+                        </div>
                       </div>
 
-                      <div className="col-lg-6 col-md-12 col-sm-12">
-                        {/* <label>End Date</label> */}
-                        {/* <DatePicker
-                                                    format="yyyy-MM-dd HH:mm"
-                                                    value={values.valid_to}
-                                                    onChange={(date) => setFieldValue("valid_to", date)}
-                                                    className="w-100"
-                                                    placement="auto"
-                                                    placeholder="Select End Date"
-                                                    showMeridian={false}
-                                                /> */}
-                        <CustomDatePicker
-                          label="End Date"
-                          value={values.valid_to}
-                          onChange={(date) => setFieldValue("valid_to", date)}
-                          error={
-                            errors.valid_to && touched.valid_to
-                              ? errors.valid_to
-                              : ""
-                          }
-                          placeholder="Select End Date"
-                        />
-                        {/* {errors.valid_to && touched.valid_to && (
-                                                    <div className="text-danger">{errors.valid_to}</div>
-                                                )} */}
+                      <div className="col-lg-6 col-md-12 col-sm-12 d-flex  justify-content-between">
+                        <div style={{ width: "56%" }}>
+                          <label>End Date</label>
+                          <CustomDatePicker
+                            value={
+                              values.valid_to_date ? new Date(values.valid_to_date) : null
+                            }
+                            onChange={(date) =>
+                              setFieldValue(
+                                "valid_to_date",
+                                moment(date).format("YYYY-MM-DD")
+                              )
+                            }
+                            error={
+                              touched.valid_to_date && errors.valid_to_date
+                                ? errors.valid_to_date
+                                : ""
+                            }
+                            placeholder="Select End Date"
+                          />
+                        </div>
+
+                        <div style={{ width: "39%" }}>
+                          <label>End Time</label>
+                          <input
+                            type="time"
+                            className="form-control"
+                            value={values.valid_to_time}
+                            onChange={(e) =>
+                              setFieldValue("valid_to_time", e.target.value)
+                            }
+                            placeholder="Select End Time"
+                          />
+                        </div>
                       </div>
                     </div>
+                  )}
 
-                    <div className="row">
-                      <div className="col-lg-6">
-                        <label>Amount</label>
-                        <FormikController
-                          control="input"
-                          type="text"
-                          name="total_amount"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <label>Remark</label>
-                        <FormikController
-                          control="input"
-                          type="text"
-                          name="purpose"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label>Payer</label>
+                  <div className="row">
+                    <div className="col-lg-6">
+                      <label>Amount</label>
                       <FormikController
-                        control="select"
-                        options={payerData}
-                        name="payer"
-                        className="form-select"
+                        control="input"
+                        type="text"
+                        name="total_amount"
+                        className="form-control"
                         required
                       />
                     </div>
-
-                    <div className="form-group">
-                      <label>Communication Mode</label>
-                      <div className="d-flex align-items-center">
-                        <div className="form-check form-check-inline">
-                          <input
-                            type="checkbox"
-                            id="emailCheckbox"
-                            className="form-check-input"
-                            checked={values.communication_mode.includes(
-                              "email"
-                            )}
-                            onChange={(e) => {
-                              const updatedModes = e.target.checked
-                                ? [...values.communication_mode, "email"]
-                                : values.communication_mode.filter(
-                                    (mode) => mode !== "email"
-                                  );
-                              setFieldValue("communication_mode", updatedModes);
-                            }}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="emailCheckbox"
-                          >
-                            Email
-                          </label>
-                        </div>
-                        <div className="form-check form-check-inline">
-                          <input
-                            type="checkbox"
-                            id="smsCheckbox"
-                            className="form-check-input"
-                            checked={values.communication_mode.includes("sms")}
-                            onChange={(e) => {
-                              const updatedModes = e.target.checked
-                                ? [...values.communication_mode, "sms"]
-                                : values.communication_mode.filter(
-                                    (mode) => mode !== "sms"
-                                  );
-                              setFieldValue("communication_mode", updatedModes);
-                            }}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="smsCheckbox"
-                          >
-                            SMS
-                          </label>
-                        </div>
-                      </div>
-
-                      {errors.communication_mode && (
-                        <div className="text-danger mt-0">
-                          {errors.communication_mode}
-                        </div>
-                      )}
+                    <div className="col-lg-6">
+                      <label>Remark</label>
+                      <FormikController
+                        control="input"
+                        type="text"
+                        name="purpose"
+                        className="form-control"
+                        required
+                      />
                     </div>
+                  </div>
 
-                    <div className="row mt-3">
-                      <div className="col-lg-6">
-                        <button
-                          type="button"
-                          className="btn cob-btn-secondary btn-danger text-white btn-sm w-100"
-                          data-dismiss="modal"
-                          onClick={onClose}
-                        >
-                          Cancel
-                        </button>
+                  <div className="form-group">
+                    <label>Payer</label>
+                    <FormikController
+                      control="select"
+                      options={payerData}
+                      name="payer"
+                      className="form-select"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Communication Mode</label>
+                    <div className="d-flex align-items-center">
+                      <div className="form-check form-check-inline">
+                        <input
+                          type="checkbox"
+                          id="emailCheckbox"
+                          className="form-check-input"
+                          checked={values.communication_mode.includes("email")}
+                          onChange={(e) => {
+                            const updatedModes = e.target.checked
+                              ? [...values.communication_mode, "email"]
+                              : values.communication_mode.filter(
+                                (mode) => mode !== "email"
+                              );
+                            setFieldValue("communication_mode", updatedModes);
+                          }}
+                        />
+                        <label className="form-check-label" htmlFor="emailCheckbox">
+                          Email
+                        </label>
                       </div>
-                      <div className="col-lg-6">
-                        <button
-                          type="submit"
-                          disabled={disable}
-                          className="btn cob-btn-primary text-white btn-sm position-relative w-100"
-                        >
-                          {disable && (
-                            <span
-                              className="spinner-border spinner-border-sm mr-1"
-                              role="status"
-                              aria-hidden="true"
-                            ></span>
-                          )}
-                          {disable ? "Submitting..." : "Create Link"}
-                        </button>
+                      <div className="form-check form-check-inline">
+                        <input
+                          type="checkbox"
+                          id="smsCheckbox"
+                          className="form-check-input"
+                          checked={values.communication_mode.includes("sms")}
+                          onChange={(e) => {
+                            const updatedModes = e.target.checked
+                              ? [...values.communication_mode, "sms"]
+                              : values.communication_mode.filter(
+                                (mode) => mode !== "sms"
+                              );
+                            setFieldValue("communication_mode", updatedModes);
+                          }}
+                        />
+                        <label className="form-check-label" htmlFor="smsCheckbox">
+                          SMS
+                        </label>
                       </div>
                     </div>
-                  </Form>
+                    {errors.communication_mode && (
+                      <div className="text-danger mt-0">
+                        {errors.communication_mode}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="row mt-3">
+                    <div className="col-lg-6">
+                      <button
+                        type="button"
+                        className="btn cob-btn-secondary btn-danger text-white btn-sm w-100"
+                        data-dismiss="modal"
+                        onClick={onClose}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <div className="col-lg-6">
+                      <button
+                        type="submit"
+                        disabled={disable}
+                        className="btn cob-btn-primary text-white btn-sm position-relative w-100"
+                      >
+                        {disable && (
+                          <span
+                            className="spinner-border spinner-border-sm mr-1"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        )}
+                        {disable ? "Submitting..." : "Create Link"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </>
+              </Form>
             )}
+
           </Formik>
         </div>
       </div>

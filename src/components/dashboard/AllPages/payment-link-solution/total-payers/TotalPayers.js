@@ -412,7 +412,7 @@ const TotalPayers = () => {
                         <div className="px-3 py-3">
                             <div className="row align-items-center">
                                 <div className="col-md-6">
-                                    <h5 className="mb-0">Total Payer</h5>
+                                    <h6 className="mb-0">Total Payer</h6>
                                 </div>
                                 <div className="col-md-6 d-flex justify-content-end">
 
@@ -448,10 +448,10 @@ const TotalPayers = () => {
 
                         <div className="card-body">
                             <div className="scroll overflow-auto">
-                                {buttonClicked && payerData?.length === 0 && (
+                                {/* {buttonClicked && payerData?.length === 0 && (
                                     <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
-                                )}
-                                {!loadingState && filterData?.length !== 0 && (
+                                )} */}
+                                {!loadingState && (
                                     <Table
                                         row={rowData}
                                         data={payerData}

@@ -53,7 +53,7 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
         <div>
           <div className="form-inline">
             <div className="form-group">
-              <div className="input-container">
+              <div className="input-container ">
                 <input
                   type="text"
                   name="pan_card"
@@ -69,7 +69,7 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
             <div className="form-group">
               <button
                 type="button"
-                className="btn cob-btn-primary text-white btn-sm"
+                className="btn cob-btn-primary text-white btn-sm ml-3 ml-md-0"
                 onClick={() => handlePanSubmit(initialValuesForPAN)}
                 disabled={isLoading}
               >
@@ -95,7 +95,7 @@ const AdditionalKycForPan = ({ selectedDocType }) => {
                       {key.replace("_", " ")}:
                     </span>
                     {typeof value === "boolean" ? (
-                      <span>{value.toString()}</span>
+                      <span>{value?.toString()}</span>
                     ) : (
                       <span>&nbsp; {value}</span>
                     )}

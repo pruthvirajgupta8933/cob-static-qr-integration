@@ -310,7 +310,7 @@ const TotalLinkGenrated = () => {
                         <div className="card-body">
                             <div className="row align-items-center mb-3">
                                 <div className="col-md-6">
-                                    <h5 className="mb-0">Total Links Generated</h5>
+                                    <h6 className="mb-0">Total Links Generated</h6>
                                 </div>
                                 {filterData?.length !== 0 && (
                                     <div className="col-md-6 d-flex justify-content-end gap-3 ">
@@ -337,10 +337,10 @@ const TotalLinkGenrated = () => {
 
                             <div className="card-body">
                                 <div className="scroll overflow-auto">
-                                    {!loadingState && data?.length === 0 && (
+                                    {/* {!loadingState && data?.length === 0 && (
                                         <h5 className="text-center font-weight-bold mt-5">No Data Found</h5>
-                                    )}
-                                    {!loadingState && filterData?.length !== 0 && (
+                                    )} */}
+                                    {!loadingState && (
                                         <Table
                                             row={rowData}
                                             data={data}

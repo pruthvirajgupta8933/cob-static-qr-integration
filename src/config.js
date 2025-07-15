@@ -2,7 +2,6 @@ const ENV_PROD = false; // For proudction make it true, don't change in the loca
 let url,
   kyc_url,
   b2b_url,
-  // kyc_validate,
   payout_url,
   webSocketUrl,
   widget_url,
@@ -92,9 +91,12 @@ const API_LIVE = {
   MID_CLIENT_CODE: `${url}/mid/mid-client-code/`,
   MID_PAYLOAD_BY_MERCHANT_ID: `${url}/mid/get-mid/`,
 
-  // MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
-  MID_CREATE_API: `${url}/mid/create/`,
+  MID_CREATE_API: `${mid_url}/submerchant_onboarding/submerchant/create`,
   MID_FETCH_DATA_BY_CLIENT_CODE: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  SUBMERCHANT_FETCH_DETAILS: `${mid_url}/submerchant_onboarding/submerchant/fetch-details`,
+  SUBMERCHANT_DEACTIVATE: `${mid_url}/submerchant_onboarding/submerchant/deactivate`,
+  REACTIVATE_SUBMERCHANT: `${mid_url}/submerchant_onboarding/submerchant/reactivate`,
+  UPDATE_SUBMERCHANT_API: `${mid_url}/submerchant_onboarding/submerchant/update `,
   // https://stage-merchantonboarding.sabpaisa.in
 
 
@@ -136,6 +138,7 @@ const API_LIVE = {
   PAY_MODE_LIST: report_api_url + "/masters/paymentModeMaster/",
 
   GetMerchantTxnHistory: `${report_api_url}/transactions/getMerchantTransactionHistory/`,
+  getMerchantTransactionExcelHistory: `${report_api_url}/transactions/getMerchantTransactionExcelHistory/`,
   merchantTxnHistoryBit: `${report_api_url}/transactions/getMerchantTransactionHistoryBit/`,
   merchantTxnHistoryWhole: `${report_api_url}/transactions/getMerchantTransactionHistoryWhole/`,
   branchTransactionView: `${report_api_url}/transactions/branchTransactionView/`,
@@ -143,12 +146,14 @@ const API_LIVE = {
 
   /* Settlement Report */
   SettlementReport: report_api_url + "/transactions/GetSettledTxnHistory/",
+  SettlementReportExcel: report_api_url + "/transactions/GetSettledTxnExcelHistory/",
   SettlementSummaryReport: report_api_url + "/transactions/SettledGroupedView/",
   ChargeBankTxnHistory:
     report_api_url + "/transactions/GetChargebackTxnHistory/",
   RefundTxnHistory: report_api_url + "/transactions/GetRefundTxnHistory/",
   GET_DOITC_SETTLED_TXN_HISTORY:
     report_api_url + "/transactions/GetDOITCSettledTxnHistory/",
+  EXPORT_DOITC_SETTLED_TXN_HISTORY: report_api_url + "/transactions/GetDOITCSettledTxnExcelHistory/",
   GET_DOITC_MERCHANT_TXN_HISTORY:
     report_api_url + "/transactions/GetDOITCMerchantTxnHistory/",
 
@@ -247,7 +252,7 @@ const API_LIVE = {
   // KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
   // KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   // KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
-  // KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   // MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
@@ -331,6 +336,12 @@ const API_LIVE = {
   /////frm(push-merchant-data)
   PUSH_MERCHANT_DATA: `${kyc_url}/kyc/frm/push-merchant-data/`,
   MERCHANT_FRM_LIST: `${kyc_url}/kyc/frm/merchant-frm-list/`,
+  FRM_SINGLE_SCREENING: `${kyc_url}/kyc/frm/single-screening/`,
+
+  //Admin-auth-register
+
+  ADMIN_AUTH_REGISTER: `${url}/auth-service/admin/auth/register/`,
+  APPLICATION_ALLOWED: `${url}/applications/get-all/`,
 
   ///EDIT KYC FORM
   UPDATE_CONATCT_INFO: `${kyc_url}/kyc/update-kyc/general-info/`,
@@ -529,6 +540,7 @@ export const E_NACH_URL = {
   DEBIT_TRANSACTION_REPORT: `${subscriptionUrl}api/transaction/transaction-data/`,
   SCHEDULE_TRRANSACTION: `${subscriptionUrl}api/mandate/upcoming-mandates/`,
   USER_WISE_TRANSACTION_SCHEDULE: `${subscriptionUrl}api/transaction/schedule/`,
+  SETTLEMENT_TRANSACTION: `${subscriptionUrl}api/transaction/all/`
 };
 
 export const wsConnectUrl = {
@@ -549,7 +561,7 @@ export default API_URL;
 
 export const APP_ENV = ENV_PROD;
 
-export const TIMEOUT = 300000; // add milisecond
+export const TIMEOUT = 900000; // add milisecond
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";
 
 // COB PG credential

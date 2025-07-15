@@ -8,12 +8,12 @@ import toastConfig from '../../../../utilities/toastTypes';
 import { Regex, RegexMsg } from '../../../../_components/formik/ValidationRegex';
 
 
-function SaveLocation({ role }) {
+function SaveLocation({ role, propCurrentTab }) {
 
     const [loadingState, setLoadingState] = useState(false);
 
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-    const currenTab = parseInt(verifierApproverTab?.currenTab);
+    const currenTab = propCurrentTab || parseInt(verifierApproverTab?.currenTab);
 
 
     const { kyc, auth } = useSelector(state => state)
@@ -29,6 +29,7 @@ function SaveLocation({ role }) {
         latitude: Yup.string().matches(Regex.latitudeRegex, RegexMsg.latitudeRegex).required("Required").nullable(),
         longitude: Yup.string().matches(Regex.longitudeRegex, RegexMsg.longitudeRegex).required("Required").nullable()
     })
+
 
     const handleSubmit = (v) => {
         setLoadingState(true)
@@ -103,7 +104,7 @@ function SaveLocation({ role }) {
                                 {allowChanges &&
                                     <div className="col-md-4 mt-4">
 
-                                        <button className="btn cob-btn-primary btn-sm ml-2" type='submit' disabled={loadingState}>
+                                        <button className="btn cob-btn-primary btn-sm " type='submit' disabled={loadingState}>
                                             {loadingState && <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>}
                                             Update
                                         </button>

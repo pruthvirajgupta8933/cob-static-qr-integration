@@ -25,7 +25,10 @@ const GeneralForm = ({ role }) => {
     const currenTab = parseInt(verifierApproverTab?.currenTab);
 
     useEffect(() => {
-        dispatch(businessCategoryType());
+
+        if (approverDashboard?.businessCategoryType?.length === 0) {
+            dispatch(businessCategoryType());
+        }
         // set parent client code
         axiosInstanceJWT.get(API_URL.fetchParentClientCodes)
             .then((resp) => {
@@ -50,7 +53,7 @@ const GeneralForm = ({ role }) => {
         rr_amount: kyc.kycUserList?.rolling_reserve ?? 0,
         business_cat_type: kyc.kycUserList?.business_category_type,
         rolling_reserve_type: kyc.kycUserList?.rolling_reserve_type,
-        parent_client_code: "",
+        parent_client_code: kyc.kycUserList?.ratemapped_client_code,
         period_code: kyc.kycUserList?.period_code
     }), [kyc.kycUserList]);
 
