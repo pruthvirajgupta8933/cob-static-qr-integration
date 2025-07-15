@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # IMPORTANT: Confirm this matches your project's Node.js version
+          node-version: "20" # IMPORTANT: Confirm this matches your project's Node.js version
 
       # Configure .npmrc with your private registry and token
       - name: Configure npm for private packages
@@ -29,7 +29,8 @@ jobs:
 
       # --- START: Debugging Steps (REMOVE THESE AFTER FIXING) ---
       - name: Debug - Check NPM_TOKEN environment variable
-        run: echo "NPM_TOKEN is set: ${{ env.NPM_TOKEN != '' }}" # This will print true/false, but not the token value for security
+        run: |
+          echo "NPM_TOKEN is set: ${{ secrets.NPM_TOKEN != '' }}"
         # To see if the token value is being passed (use with extreme caution, it will be visible in logs)
         # run: echo "NPM_TOKEN value: ${{ secrets.NPM_TOKEN }}"
 
