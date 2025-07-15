@@ -94,6 +94,9 @@ const SchedulueTransaction = () => {
         "Customer Name",
         "Mobile",
         "Email",
+        "Total EMI",
+        "Success EMI",
+        "Failed EMI",
         "Account Number",
         "Account Type",
         "IFSC",
@@ -118,6 +121,9 @@ const SchedulueTransaction = () => {
                 <td>{showValue(mandate?.customer_name)}</td>
                 <td>{showValue(mandate?.customer_mobile)}</td>
                 <td>{showValue(mandate?.customer_email_id)}</td>
+                <td>{mandate.total_emis}</td>
+                <td>{mandate.success_emi}</td>
+                <td>{mandate.failed_emi}</td>
                 <td>{showValue(mandate?.account_number)}</td>
                 <td>{showValue(mandate?.account_type)}</td>
                 <td>{showValue(mandate?.ifsc_code)}</td>
