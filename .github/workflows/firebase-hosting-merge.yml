@@ -11,6 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      # Configure .npmrc with your private registry and token
+      - name: Configure npm for private packages
+        run: |
+          echo "@cto_sabpaisa:registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+        env:
+          # This pulls the NPM_TOKEN from your GitHub repository secrets
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # --- END: Added steps for private npm package installation ---
       - run: npm install --legacy-peer-deps && CI=false npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
