@@ -5,7 +5,7 @@ import Table from "../../../_components/table_components/table/Table";
 import SearchFilter from "../../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../../_components/loader";
-import DateFormatter from "../../../utilities/DateConvert";
+// import DateFormatter from "../../../utilities/DateConvert";
 import CustomReactSelect from "../../../_components/formik/components/CustomReactSelect";
 import { createFilter } from "react-select";
 import { getMidClientCode } from "../../../services/generate-mid/generate-mid.service";
@@ -16,16 +16,16 @@ import moment from 'moment';
 import Yup from "../../../_components/formik/Yup";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom"
-import CustomModal from "../../../_components/custom_modal";
+// import CustomModal from "../../../_components/custom_modal";
 import ViewMidManagementModal from "./ViewMidManagementModal";
 import UpdateMidDetailsModal from "./UpdateMidDetailsModal";
 import CardLayout from "../../../utilities/CardLayout";
 
 const MidManagement = () => {
 
-    function capitalizeFirstLetter(param) {
-        return param?.charAt(0).toUpperCase() + param?.slice(1);
-    }
+    // function capitalizeFirstLetter(param) {
+    //     return param?.charAt(0).toUpperCase() + param?.slice(1);
+    // }
     const [data, setData] = useState([]);
     const { user } = useSelector((state) => state.auth);
     const [assignZone, setAssignzone] = useState([]);
@@ -44,8 +44,8 @@ const MidManagement = () => {
 
 
     const [clientCodeList, setCliencodeList] = useState([])
-    const [selectedClientId, setSelectedClientId] = useState(null);
-    const { kyc } = useSelector((state) => state);
+    // const [selectedClientId, setSelectedClientId] = useState(null);
+    // const { kyc } = useSelector((state) => state);
 
     const { midFetchDetails } = useSelector((state) => state.mid || {});
     const subMerchantDetails = midFetchDetails?.subMerchantData?.content;
@@ -126,9 +126,18 @@ const MidManagement = () => {
             width: "130px",
         },
 
-
-
-
+        {
+            id: "44",
+            name: "Client Virtual Add",
+            selector: (row) => row.clientVirtualAdd,
+            sortable: true,
+            cell: (row) => (
+                <div className="removeWhiteSpace">
+                    {row?.clientVirtualAdd}
+                </div>
+            ),
+            width: "150px",
+        },
         {
             id: "4",
             name: "Bank Name",
@@ -357,7 +366,6 @@ const MidManagement = () => {
     }, [])
 
 
-    // console.log("openZoneModal",openZoneModal)
     const dispatch = useDispatch();
 
 
@@ -376,7 +384,6 @@ const MidManagement = () => {
         if (saveData) {
             dispatch(
                 subMerchantFetchDetailsApi(
-
                     {
                         startDate: saveData.from_date ? moment(saveData.from_date).format('YYYY-MM-DD') : null,
                         endDate: saveData.to_date ? moment(saveData.to_date).format('YYYY-MM-DD') : null,
@@ -424,19 +431,6 @@ const MidManagement = () => {
         setSearchText(e);
     };
 
-
-
-    // const searchByText = (text) => {
-    //     // console.log("search by text")
-    //     setData(
-    //         assignZone?.filter((item) =>
-    //             Object.values(item)
-    //                 .join(" ")
-    //                 .toLowerCase()
-    //                 .includes(searchText?.toLocaleLowerCase())
-    //         )
-    //     );
-    // };
 
     const searchByText = (text) => {
         if (searchText?.length !== 0) {
@@ -497,17 +491,7 @@ const MidManagement = () => {
             sortOrder: "DSC"
         };
 
-        dispatch(subMerchantFetchDetailsApi(payload)).then((resp) => {
-
-console.log(resp)
-            if (resp?.meta?.requestStatus === "fulfilled") {
-
-            } else {
-                
-                toast.error(resp.payload);
-            }
-
-        });
+        dispatch(subMerchantFetchDetailsApi(payload))
     };
 
     const handleCreateMidClick = () => {

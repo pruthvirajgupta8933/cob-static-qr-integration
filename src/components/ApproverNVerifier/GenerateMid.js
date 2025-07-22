@@ -11,21 +11,25 @@ import Yup from "../../_components/formik/Yup";
 import CustomReactSelect from "../../_components/formik/components/CustomReactSelect";
 import { Link } from "react-router-dom"
 import toastConfig from "../../utilities/toastTypes";
-import { createMidApi, fetchMidPayloadSlice } from "../../slices/generateMidSlice";
+import { createMidApi, fetchMidPayloadSlice, subMerchantFetchDetailsApi } from "../../slices/generateMidSlice";
 import moment from "moment";
 import CustomCardLayout from "../../utilities/CardLayout"
 
 
-function AssignZone() {
+function GenerateMid() {
 
   const [clientCodeList, setCliencodeList] = useState([])
   const [disable, setDisable] = useState(false)
   const midState = useSelector(state => state.mid)
   const [requestPayload, setRequestPayload] = useState(null);
 
+  const { midFetchDetails } = useSelector((state) => state.mid || {});
+  const subMerchantDetails = midFetchDetails?.subMerchantData?.content;
+  const totalCount = midFetchDetails?.subMerchantData?.numberOfElements;
+  const loadingState = midFetchDetails?.loading;
+
 
   const MidPayloadUpdate = (payload) => {
-
     // clientOwnershipType
     let clientOwnershipType = ""
     if (payload?.clientOwnershipType?.toLowerCase() === "proprietorship") {
@@ -53,9 +57,8 @@ function AssignZone() {
   }
 
   useEffect(() => {
-
     getMidClientCode().then((resp) => {
-      // console.log(resp)
+      // h.log(resp)
       setCliencodeList(resp?.data?.result)
     })
   }, [])
@@ -75,21 +78,61 @@ function AssignZone() {
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [formValues, setFormValues] = useState("")
   const [loading, setLoading] = useState(false)
+  const [midLoading, setMidLoading] = useState(false)
 
   const [createMidData, setCreateMidData] = useState({})
   const [show, Setshow] = useState(false)
-  const [showFullJson, setShowFullJson] = useState(false);
+  // const [showFullJson, setShowFullJson] = useState(false);
+
+
+  const fetchClientVpa = (clientCode) => {
+    if (clientCode) {
+      dispatch(
+        subMerchantFetchDetailsApi(
+          {
+            startDate: moment("2023-01-01").format('YYYY-MM-DD'),
+            endDate: moment().format('YYYY-MM-DD'),
+            clientCode: clientCode,
+            status: "SUCCESS",
+            page: 1,
+            size: 1000,
+            sortOrder: "DSC"
+          }
+
+        ))
+    }
+
+  }
 
 
 
+  const createMidHandler = (reqPayload) => {
+    const confirmation = window.confirm("Are you sure you want to create MID?")
+    if (!confirmation) {
+      setMidLoading(false)
+      return
+    }
+    if (reqPayload !== null) {
+      setMidLoading(true)
+      let createMidResp = dispatch(createMidApi(reqPayload))
+      createMidResp.then((resp) => {
+        if (resp?.meta?.requestStatus === "fulfilled") {
+          setCreateMidData(resp?.payload)
+          setMidLoading(false)
+        } else {
+          toastConfig.errorToast(resp?.payload ?? "Something went wrong");
+          setMidLoading(false)
+        }
+      })
+    }
 
 
+  }
 
 
   useEffect(() => {
     fetchPaymentMode()
       .then(response => {
-
         const data = convertToFormikSelectJson(
           "mid_mode_name",
           "mode_name",
@@ -101,6 +144,7 @@ function AssignZone() {
         console.error('Error fetching merchant data:', error);
       });
   }, []);
+
 
   useEffect(() => {
     fetchBankName()
@@ -132,66 +176,91 @@ function AssignZone() {
 
 
 
-
   const modalBody = () => {
     return (
       <div className="container-fluid p-0">
         <div className="modal-body px-4 py-3">
           <div className="container">
-
-
             <div className="mb-4">
               <h6> Payment Mode: {formValues?.mode_name}</h6>
               <h6> Bank: {formValues?.bank_name}</h6>
               <h6> Client Code: {formValues?.react_select?.label}</h6>
+              {createMidData.onboardStatus !== 'SUCCESS' && (
+                <div className="text-center">
+                  <button
+                    type="button"
+                    // className="btn btn-primary px-4 py-2"
+                    className="submit-btn cob-btn-primary text-white mt-3"
+                    disabled={loading}
+                    onClick={handleSubmit}
+                  >
+                    {loading && (
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    )}
+                    Get Details
+                  </button>
 
-
+                </div>
+              )}
             </div>
 
+            {requestPayload && (
+              <div className="">
+                <hr />
+                <h5 className="mb-3">Request Payload</h5>
 
-            {createMidData.onboardStatus !== 'SUCCESS' && (
-              <div className="text-center">
-                <button
-                  type="button"
-                  // className="btn btn-primary px-4 py-2"
-                  className="submit-btn cob-btn-primary text-white mt-3"
-                  disabled={disable}
-                  onClick={handleSubmit}
-                >
-                  {disable && (
+                <div className="col-md-6 p-0">
+                  <p className="mb-0">Already Create VPA's</p>
+                  <select className="form-select mb-3" style={{ height: "32px", fontSize: "14px", padding: "2px 8px" }}>
+                    {subMerchantDetails && subMerchantDetails.length > 0 ? (
+                      subMerchantDetails.map((item, index) => (
+                        <option key={index} value={item?.clientVirtualAdd}>
+                          {item?.clientVirtualAdd}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No VPA's available</option>
+                    )}
+                  </select>
+                </div>
+
+                <div className="row">
+                  {Object.entries(requestPayload).map(([key, value], idx) => (
+                    <div className="col-md-6 mb-2" key={key}>
+                      <label className="form-label fw-bold">{key}</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={typeof value === "object" ? JSON.stringify(value) : value ?? ""}
+                        readOnly={key !== "clientVirtualAdd"}
+                        onChange={key === "clientVirtualAdd" ? e => {
+                          let newValue = e.target.value;
+                          setRequestPayload(prev => ({
+                            ...prev,
+                            [key]: newValue
+                          }));
+                        } : undefined}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <button type="button" className="btn btn-sm cob-btn-primary" disabled={midLoading} onClick={() => createMidHandler(requestPayload)}>
+                  {midLoading && (
                     <span
                       className="spinner-border spinner-border-sm me-2"
                       role="status"
                       aria-hidden="true"
                     ></span>
                   )}
-                  Confirm
+                  Create MID
                 </button>
-
               </div>
             )}
-
-
-            {requestPayload && (
-
-              <div>
-                <h6>Request payload</h6>
-                <pre className={`bg-light p-3 rounded ${showFullJson ? '' : 'overflow-auto'} mb-2`} style={{ maxHeight: showFullJson ? 'none' : '200px' }}>
-                  {JSON.stringify(requestPayload, null, 2)}
-                </pre>
-
-                <a
-                  className="text-primary text-decoration-underline"
-                  role="button"
-                  onClick={() => setShowFullJson(!showFullJson)}
-                >
-                  {showFullJson ? "Show Less" : "Show More"}
-                </a>
-              </div>
-            )}
-
-
-
 
           </div>
         </div>
@@ -262,62 +331,23 @@ function AssignZone() {
 
     try {
       let reqPayload = await fetchMidPayload(midData);
-
-
       reqPayload = MidPayloadUpdate(reqPayload?.data?.result)
 
-
       setRequestPayload(reqPayload);
-      let createMidResp = dispatch(createMidApi(reqPayload))
-      createMidResp.then((resp) => {
+      fetchClientVpa(reqPayload?.clientCode)
 
-        if (resp?.meta?.requestStatus === "fulfilled") {
-          Setshow(true)
-          setCreateMidData(resp?.payload)
-          setDisable(false)
-          setLoading(false)
-        } else {
-          toastConfig.errorToast(resp?.payload ?? "Something went wrong");
-          setDisable(false)
-          setLoading(false)
-        }
-      })
+      setLoading(false)
 
     } catch (error) {
       // console.log("err", error?.response?.data?.detail || error?.response?.data?.message)
       toastConfig.errorToast(error?.response?.data?.detail || error?.response?.data?.message);
-      Setshow(false)
+      // Setshow(false)
       setDisable(false)
       setLoading(false)
-
     }
 
-    // dispatch(fetchMidPayloadSlice(midData))
 
 
-    // dispatch(createMidApi(midData))
-    //   .then((resp) => {
-    //     if (resp?.meta?.requestStatus === "fulfilled") {
-    //       Setshow(true)
-    //       setCreateMidData(resp?.payload)
-    //       setDisable(false)
-    //       setLoading(false)
-    //     } else {
-    //       toastConfig.errorToast(resp?.payload ?? "Something went wrong");
-    //       setDisable(false)
-    //       setLoading(false)
-    //     }
-
-
-    //     // setData(resp.payload.ResponseData);
-    //   })
-    //   .catch((err) => {
-    //     console.log("err", err)
-    //     toastConfig.errorToast(err);
-    //     Setshow(false)
-    //     setDisable(false)
-
-    //   });
   };
 
   const validationSchema = Yup.object().shape({
@@ -332,15 +362,11 @@ function AssignZone() {
 
   return (
     <CustomCardLayout title="MID Generation">
-
-
       <div className="d-flex justify-content-between">
         <div></div>
         <Link
           to="/dashboard/mid-management"
-          className="text-decoration-none"
-
-        >
+          className="text-decoration-none">
           <button type="button" className="btn cob-btn-primary btn-sm">
             View MID
           </button>
@@ -368,7 +394,6 @@ function AssignZone() {
               </div>
 
               <div className="col-lg-3">
-
                 <FormikController
                   control="select"
                   name="mode_name"
@@ -419,4 +444,4 @@ function AssignZone() {
   );
 }
 
-export default AssignZone;
+export default GenerateMid;
