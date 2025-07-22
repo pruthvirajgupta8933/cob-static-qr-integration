@@ -237,18 +237,18 @@ const MidManagement = () => {
             name: "Action",
             cell: (row) => (
                 <div className="d-flex gap-2">
-                    {row?.bankName?.toUpperCase() === "YESBANK" ? <>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setModalDisplayData(row);
-                                setOpenModal(true);
-                            }}
-                            className="approve cob-btn-primary btn-sm text-white"
-                        >
-                            View Details
-                        </button>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setModalDisplayData(row);
+                            setOpenModal(true);
+                        }}
+                        className="approve cob-btn-primary btn-sm text-white"
+                    >
+                        View Details
+                    </button>
 
+                    {row?.bankName?.toUpperCase() === "YESBANK" ? <>
                         <button
                             type="button"
                             onClick={() => {
