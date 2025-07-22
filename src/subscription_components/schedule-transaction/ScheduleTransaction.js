@@ -100,6 +100,8 @@ const SchedulueTransaction = () => {
         "Account Number",
         "Account Type",
         "IFSC",
+        "Start Date",
+        "End Date",
         "Registration ID",
         "Prinicipal Amount",
         "Registration Status",
@@ -126,6 +128,8 @@ const SchedulueTransaction = () => {
                 <td>{mandate.failed_emi}</td>
                 <td>{showValue(mandate?.account_number)}</td>
                 <td>{showValue(mandate?.account_type)}</td>
+                <td>{showValue(mandate?.start_date)}</td>
+                <td>{showValue(mandate?.end_date)}</td>
                 <td>{showValue(mandate?.ifsc_code)}</td>
                 <td>{showValue(mandate?.registration_id)}</td>
                 <td>{showValue(mandate?.prinicipal_amount)}</td>

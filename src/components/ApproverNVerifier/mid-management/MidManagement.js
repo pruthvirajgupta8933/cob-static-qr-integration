@@ -237,17 +237,6 @@ const MidManagement = () => {
             name: "Action",
             cell: (row) => (
                 <div className="d-flex gap-2">
-                    {/* <button
-                        type="button"
-                        // onClick={() => {
-                        //     setModalDisplayData(row);
-                        //     setOpenModal(true);
-                        // }}
-                        className="approve cob-btn-primary btn-sm text-white"
-                    >
-                        Update
-                    </button> */}
-
                     <button
                         type="button"
                         onClick={() => {
@@ -259,33 +248,38 @@ const MidManagement = () => {
                         View Details
                     </button>
 
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setShowDetails(row);
-                            setOpenUpdateModal(true);
-                        }}
-                        className="approve cob-btn-primary btn-sm text-white"
-                    >
-                        Update
-                    </button>
+                    {row?.bankName?.toUpperCase() === "YESBANK" ? <>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setShowDetails(row);
+                                setOpenUpdateModal(true);
+                            }}
+                            className="approve cob-btn-primary btn-sm text-white"
+                        >
+                            Update
+                        </button>
 
 
-                    <button
-                        type="button"
-                        onClick={() => handleDeactivate(row)}
-                        className="approve cob-btn-primary btn-sm text-white"
-                    >
-                        Deactivate
-                    </button>
+                        <button
+                            type="button"
+                            onClick={() => handleDeactivate(row)}
+                            className="approve cob-btn-primary btn-sm text-white"
+                        >
+                            Deactivate
+                        </button>
 
-                    <button
-                        type="button"
-                        onClick={() => handleReactivate(row)}
-                        className="approve cob-btn-primary btn-sm text-white"
-                    >
-                        Reactivate
-                    </button>
+                        <button
+                            type="button"
+                            onClick={() => handleReactivate(row)}
+                            className="approve cob-btn-primary btn-sm text-white"
+                        >
+                            Reactivate
+                        </button>
+                    </> :
+                        <></>
+                    }
+
                 </div>
             ),
             width: "250px",
