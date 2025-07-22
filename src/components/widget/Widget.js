@@ -21,7 +21,7 @@ function MyForm() {
         client_type: '',
         client_url: '',
         return_url: '',
-        image_URL: '',
+        image_url: '',
         position: '',
         company_name: '',
         description: '',
@@ -51,7 +51,7 @@ function MyForm() {
                 client_type: clientMerchantDetailsList[0].clientType,
                 client_url: values.client_url,
                 return_url: values.return_url,
-                image_URL: values.image_URL,
+                image_URL: values.image_url,
                 position: "top",
                 company_name: values.company_name,
                 description: values.description,
@@ -136,7 +136,7 @@ function MyForm() {
 
                         {step === 1 && (
                             <div className="row">
-                                {["client_url", "return_url", "image_URL", "company_name"].map(field => (
+                                {["client_url", "return_url", "image_url", "company_name"].map(field => (
                                     <div className="col-md-6 mb-4" key={field}>
                                         <label htmlFor={field} className="form-label mb-2">
                                             {field.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -145,7 +145,7 @@ function MyForm() {
                                             name={field}
                                             id={field}
                                             className="form-control"
-                                            placeholder={`Enter ${field.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`}
+                                            placeholder={`Enter ${field.replace('_', ' ').split(' ').map(word => word.charAt(0) + word.slice(1)).join(' ')}`}
                                             onChange={(e) => customHandleChange(e, setFieldValue)}
                                             onBlur={handleBlur}
                                         />
