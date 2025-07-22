@@ -148,11 +148,15 @@ const EnachSettlementReport = () => {
         "Consumer ID",
         "Transaction ID",
         "Principal Amount",
+        "Transaction Status",
+        'Bank Reference Number',
         "Trans Amount",
-        "Settlement Amount",
-        "UTR No.",
+        "Bank Txn ID",
         "Trans Date",
         "Settlement Date",
+        "Created On",
+        "Bank Message",
+        "EMI Amount"
 
 
 
@@ -161,20 +165,19 @@ const EnachSettlementReport = () => {
     const renderRow = (row, index) => (
         <tr key={index} className="text-nowrap">
             <td>{index + 1}</td>
-            <td>{row.customer_name}</td>
-            <td>{row.consumer_id}</td>
-
-            <td>{row.transaction_id}</td>
-            <td>{row.prinicpal_amount}</td>
+            <td>{row?.customer_name}</td>
+            <td>{row?.consumer_id}</td>
+            <td>{row?.transaction_id}</td>
+            <td>{row?.principal_amount}</td>
+            <td>{row.trans_status}</td>
+            <td>{row.bank_reference_number}</td>
             <td>{row.trans_amount}</td>
-            <td>{row.settlement_amount}</td>
-            <td>{row.utr_number}</td>
-            <td>{(row.trans_date)}</td>
-            <td>{DateFormatter(row.settlement_date)}</td>
-
-
-
-
+            <td>{row.bank_transaction_id}</td>
+            <td>{DateFormatter(row.trans_date)}</td>
+            <td>{row?.settlement_date?.slice(0, 10)}</td>
+            <td>{DateFormatter(row.created_on)}</td>
+            <td>{row.bank_message}</td>
+            <td>{row.emi_amount}</td>
         </tr>
     );
 
