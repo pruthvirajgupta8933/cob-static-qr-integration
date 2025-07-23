@@ -328,7 +328,7 @@ const SettlementReportNew = () => {
     }
   };
 
-  console.log(filterState, "filterState");
+  // console.log(filterState, "filterState");
 
   useEffect(() => {
     const TxnListArrUpdated = dashboard?.settlementReport?.results;
@@ -375,7 +375,7 @@ const SettlementReportNew = () => {
   }, []);
 
   const exportToExcelFn = async () => {
-    console.log(1)
+    // console.log(1)
     if (!filterState) {
       toast.info("Please perform a search first to export data.");
       return;
