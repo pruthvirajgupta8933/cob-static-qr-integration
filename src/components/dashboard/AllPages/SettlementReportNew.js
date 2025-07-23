@@ -272,7 +272,7 @@ const SettlementReportNew = () => {
     if (runapi) {
       setLoadingState(true);
       dispatch(fetchSettlementReportSlice(filterState)).then((resp) => {
-        setLoadingState(true);
+        setLoadingState(false);
 
       });
     }
@@ -328,6 +328,8 @@ const SettlementReportNew = () => {
     }
   };
 
+  console.log(filterState, "filterState");
+
   useEffect(() => {
     const TxnListArrUpdated = dashboard?.settlementReport?.results;
     SetTxnList(TxnListArrUpdated);
@@ -373,20 +375,28 @@ const SettlementReportNew = () => {
   }, []);
 
   const exportToExcelFn = async () => {
+    console.log(1)
     if (!filterState) {
       toast.info("Please perform a search first to export data.");
       return;
     }
 
     setExportDisable(true);
-
+    // console.log({
+    //   client_code: filterState.clientCode,
+    //   start_date: filterState.fromDate,
+    //   end_date: filterState.endDate,
+    //   // transaction_status: filterState.transaction_status,
+    // })
     try {
       const res = await Dashboardservice.exportSettlementReportNew(
         {
-          client_code: filterState.client_code,
-          start_date: filterState.start_date,
-          end_date: filterState.end_date,
-          transaction_status: filterState.transaction_status,
+          clientCode: filterState.clientCode,
+          fromDate: filterState.fromDate,
+          endDate: filterState.endDate,
+          noOfClient: filterState.noOfClient,
+          rpttype: filterState.rpttype,
+          // transaction_status: filterState.transaction_status,
         },
         {
           responseType: "blob", // important for downloading file
