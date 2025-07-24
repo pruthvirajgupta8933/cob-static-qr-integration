@@ -20,7 +20,7 @@ const AssigneAccountManger = () => {
   const { clientCodeList, clientCodeLoading, clientCodeError } = useSelector(
     (state) => state.approverDashboard
   );
-  console.log("clientCodeList", clientCodeList);
+
   const { kyc } = useSelector((state) => state);
   const KycList = kyc?.kycUserList;
   const dispatch = useDispatch();
