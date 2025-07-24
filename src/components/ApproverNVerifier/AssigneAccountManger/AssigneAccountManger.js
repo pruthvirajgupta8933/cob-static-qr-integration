@@ -13,10 +13,14 @@ import { kycUserList } from "../../../slices/kycSlice";
 import CardLayout from "../../../utilities/CardLayout";
 
 const AssigneAccountManger = () => {
-  const [clientCodeList, setClientCodeList] = useState([]);
+  // const [clientCodeList, setClientCodeList] = useState([]);
   const [assignmentType, setAssignmentType] = useState([]);
   const [assignDetails, setAssignDetails] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  const { clientCodeList, clientCodeLoading, clientCodeError } = useSelector(
+    (state) => state.approverDashboard
+  );
+  console.log("clientCodeList", clientCodeList);
   const { kyc } = useSelector((state) => state);
   const KycList = kyc?.kycUserList;
   const dispatch = useDispatch();
@@ -44,11 +48,18 @@ const AssigneAccountManger = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   dispatch(getAllCLientCodeSlice()).then((resp) => {
+  //     // setClientCodeList(resp?.payload?.result);
+  //   });
+  // }, []);
+
   useEffect(() => {
-    dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setClientCodeList(resp?.payload?.result);
-    });
-  }, []);
+
+    if (!clientCodeList || clientCodeList?.length === 0) {
+      dispatch(getAllCLientCodeSlice());
+    }
+  }, [dispatch, clientCodeList]);
 
   const fetchAccountManagers = (role_id) => {
     if (role_id) {
