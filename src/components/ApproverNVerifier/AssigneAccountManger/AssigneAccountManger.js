@@ -55,11 +55,11 @@ const AssigneAccountManger = () => {
   // }, []);
 
   useEffect(() => {
-
-    if (!clientCodeList || clientCodeList?.length === 0) {
+    // Only dispatch the API call if clientCodeList is empty
+    if (clientCodeList.length === 0) {
       dispatch(getAllCLientCodeSlice());
     }
-  }, [dispatch, clientCodeList]);
+  }, [dispatch, clientCodeList.length]);
 
   const fetchAccountManagers = (role_id) => {
     if (role_id) {
