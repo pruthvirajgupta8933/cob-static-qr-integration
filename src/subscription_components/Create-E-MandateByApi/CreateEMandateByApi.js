@@ -25,7 +25,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
     let futureEndDate = moment(futureStartDate).add(3, 'days').format("YYYY-MM-DD"); // 3 days from start date
     const { user } = useSelector((state) => state.auth);
     const { clientCode } = user.clientMerchantDetailsList[0];
-    // const redirectUrl = '/dashboard/create-mandate-api-response/?consumerId='
 
     function generateRandomNumber() {
         const min = 1000000000;
@@ -45,9 +44,10 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         purpose: '',
         redirect_url: '',
         mandate_category: '',
-        emi_amount: "",
+        principal_amount: "",
         amount_type: "",
-        untilCancelled: ""
+        untilCancelled: false,
+        frequency_number: ''
 
 
     };
@@ -60,14 +60,14 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             setRedirectUrl('');
         }
 
-        // Clear bankDetailsUrl when switching to merchant
+
         if (selectedOption === 'merchant') {
             setBankDetailsUrl(null);
         }
     }, [selectedOption]);
 
 
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         consumer_id: Yup.string().required('Required'),
         customer_name: Yup.string()
             .matches(/^[a-zA-Z0-9. ]+$/, "Only alphanumeric characters and dots are allowed")
@@ -81,29 +81,29 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
 
         start_date: Yup.date().required('Required'),
-        end_date: Yup.date().min(Yup.ref("start_date"), "End date can't be before Start date").required('Required'),
+        // Removed end_date from validation schema as it's conditionally rendered or replaced
+        // end_date: Yup.date().when('untilCancelled', {
+        //     is: false,
+        //     then: (schema) => schema.min(Yup.ref("start_date"), "End date can't be before Start date").required('Required'),
+        //     otherwise: (schema) => schema.notRequired(),
+        // }),
 
         max_amount: Yup.number()
             .typeError('Max amount must be a number')
             .required('Required'),
 
-        emi_amount: Yup.number()
-            .typeError('EMI amount must be a number')
-            .required('Required')
-            .test(
-                'emi-less-than-max',
-                'EMI amount must be less than or equal to Max amount',
-                function (value) {
-                    const { max_amount } = this.parent;
-                    return value !== undefined && max_amount !== undefined
-                        ? value <= max_amount
-                        : true;
-                }
-            ),
+        principal_amount: Yup.number()
+            .typeError('Principal amount must be a number')
+            .required('Required'),
 
         frequency: Yup.string().required('Required'),
         amount_type: Yup.string().required('Required'),
         purpose: Yup.string().required('Required'),
+        frequency_number: Yup.number().when('untilCancelled', {
+            is: false,
+            then: (schema) => schema.typeError('Must be a number').required('Required').min(1, 'Must be at least 1'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     });
 
 
@@ -194,13 +194,19 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                 redirect_url: getRedirectUrl(redirectUrl),
                 amount_type: values.amount_type,
                 until_cancel: values.untilCancelled || false,
-                emi_amount: values.emi_amount,
+                principal_amount: values.principal_amount,
                 customer_type: selectedOption === "customer" ? "customer" : "merchant"
             };
 
-            // Conditionally add `end_date` if untilCancelled is false
             if (!values.untilCancelled) {
-                postDataS.end_date = moment(values?.end_date).startOf("day").format("YYYY-MM-DD");
+                // If not until cancelled, use frequency_number to calculate end_date or simply pass frequency_number
+                postDataS.frequency_number = values.frequency_number;
+                // You might need to calculate end_date based on frequency and frequency_number if the API expects it.
+                // For now, I'm assuming frequency_number is sent as is.
+            } else {
+                // If untilCancelled is true, ensure these fields are not sent
+                delete postDataS.end_date;
+                delete postDataS.frequency_number;
             }
 
             const response = await dispatch(createEmandateByApi(postDataS));
@@ -236,7 +242,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                     <Link
                         to="/dashboard/create-e-mandate"
                         className="btn cob-btn-primary approve text-white mt-3 position-absolute top-0 end-0 mr-3"
-                        onClick={() => setBankDetailsUrl('')} // Clears the URL on click
+                        onClick={() => setBankDetailsUrl('')}
                     >
                         <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
                     </Link>
@@ -245,8 +251,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                         <button className="btn btn-secondary btn-sm" onClick={copyToClipboard}>
                             <i className="fa fa-clipboard"></i>
                         </button>
-
-
                     </div>
                 </div>
             ) : (
@@ -294,8 +298,8 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                     <div className="row mb-3">
 
                                         <div className="col-md-3">
-                                            <label htmlFor="frequency" className="form-label">Amount Type</label>
-                                            <FormikController type="number" id="frequency" name="amount_type" className="form-select" control='select' options={AmountType} />
+                                            <label htmlFor="amount_type" className="form-label">Amount Type</label>
+                                            <FormikController type="number" id="amount_type" name="amount_type" className="form-select" control='select' options={AmountType} />
 
                                         </div>
 
@@ -317,13 +321,13 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                             />
                                         </div>
                                         <div className="col-md-3">
-                                            <label htmlFor="max_amount" className="form-label">EMI Amount</label>
+                                            <label htmlFor="principal_amount" className="form-label">Principal Amount</label>
                                             <FormikController
                                                 type="input"
-                                                id="emi_amount"
-                                                name="emi_amount"
+                                                id="principal_amount"
+                                                name="principal_amount"
                                                 className="form-control"
-                                                placeholder="Enter Max Amount"
+                                                placeholder="Enter Principal Amount"
                                                 control="input"
                                             />
                                         </div>
@@ -360,31 +364,58 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
 
                                         <div className="col-md-3">
-                                            <label htmlFor="end_date" className="form-label">End Date</label>
+
+                                            <label htmlFor="frequency_number" className="form-label">
+                                                {values.frequency === "DAIL" ? "Number of Days" :
+                                                    values.frequency === "WEEK" ? "Number of Weeks" :
+                                                        values.frequency === "MNTH" ? "Number of Months" :
+                                                            values.frequency === "QURT" ? "Number of Quarters" :
+                                                                values.frequency === "MIAN" ? "Number of Half-Years" :
+                                                                    values.frequency === "YEAR" ? "Number of Years" :
+                                                                        values.frequency === "BIMN" ? "Number of Bi-Months" :
+                                                                            "Number of Periods"}
+                                            </label>
                                             <FormikController
-                                                control="date"
-                                                id="end_date"
-                                                name="end_date"
-                                                value={values.end_date ? new Date(values.end_date) : null}
-                                                onChange={(date) => setFieldValue("end_date", date)}
-                                                format="dd-MM-y"
-                                                clearIcon={null}
-                                                className="form-control rounded-datepicker p-2 zindex_DateCalender"
-                                                required={true}
-                                                errorMsg={errors["end_date"]}
+                                                type="number"
+                                                id="frequency_number"
+                                                name="frequency_number"
+                                                className="form-control"
+                                                placeholder={`Enter Number of ${values.frequency === "DAIL" ? "Days" :
+                                                    values.frequency === "WEEK" ? "Weeks" :
+                                                        values.frequency === "MNTH" ? "Months" :
+                                                            values.frequency === "QURT" ? "Quarters" :
+                                                                values.frequency === "MIAN" ? "Half-Years" :
+                                                                    values.frequency === "YEAR" ? "Years" :
+                                                                        values.frequency === "BIMN" ? "Bi-Months" :
+                                                                            "Periods"
+                                                    }`}
+                                                control="input"
                                                 disabled={values.untilCancelled}
-                                                popperPlacement="top-end"
-                                                minDate={moment().add(4, 'days').toDate()} // disables today and past
-                                            // calendarStartDate={moment().add(3, 'days').toDate()} // calendar opens showing 3 days ahead
                                             />
+
                                             <div className="form-check mt-2">
                                                 <Field
                                                     type="checkbox"
-                                                    name="untilCancelled *"
+                                                    name="untilCancelled"
                                                     className="form-check-input"
                                                     checked={values.untilCancelled}
                                                     onChange={() => {
                                                         setFieldValue("untilCancelled", !values.untilCancelled);
+                                                        setFieldValue("frequency_number", ""); // Clear frequency_number when toggling
+                                                        setFieldValue("end_date", initialValues.end_date); // Keep end_date as initial or clear as needed, it won't be sent if untilCancelled is true
+                                                        if (!values.untilCancelled) {
+                                                            // alert(`You have chosen for the mandate to be valid until cancelled. The "Number of [Frequency]" field will be disabled.`);
+                                                        } else {
+                                                            // alert(`You have chosen to set the mandate to be valid for a dynamic number of ${values.frequency === "DAIL" ? "days" :
+                                                            //     values.frequency === "WEEK" ? "weeks" :
+                                                            //         values.frequency === "MNTH" ? "months" :
+                                                            //             values.frequency === "QURT" ? "quarters" :
+                                                            //                 values.frequency === "MIAN" ? "half-years" :
+                                                            //                     values.frequency === "YEAR" ? "years" :
+                                                            //                         values.frequency === "BIMN" ? "bi-months" :
+                                                            //                             "periods"
+                                                            //     } based on your frequency selection. Please specify the number in the field.`);
+                                                        }
                                                     }}
                                                 />
                                                 <label htmlFor="untilCancelled" className="form-check-label ml-1">
