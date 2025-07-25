@@ -365,6 +365,16 @@ const API_LIVE = {
   Aadhar_number: `${kyc_url}/kyc/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_url}/kyc/validator/validate-aadhar/verify-otp/`,
 
+  // Signzy
+  // Aadhar_create_url: `${kyc_validate}/validator/validate-aadhar/create-url/`,
+  // Aadhar_get_aadhaar: `${kyc_validate}/validator/validate-aadhar/get-aadhaar/`,
+
+  // https://stgcobkyc.sabpaisa.in/kyc/validator/validate-aadhar/create-url/
+  // https://stgcobkyc.sabpaisa.in/kyc/validator/get-aadhar-details/
+  Aadhar_create_url: `${kyc_url}/kyc/validator/validate-aadhar/create-url/`,
+  Aadhar_get_aadhaar: `${kyc_url}/kyc/validator/get-aadhar-details/`,
+
+
   // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,
   // OnBoard Merchant Role URL
@@ -531,7 +541,7 @@ export const PAYMENT_LINK = {
 
 export const E_NACH_URL = {
   BASE_URL_E_NACH: subscriptionUrl,
-  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
+  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate-v1/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
   DEBIT_TRANSACTION_HISTORY: `${subscriptionUrl}api/transaction/transaction-history-by-user/`,
