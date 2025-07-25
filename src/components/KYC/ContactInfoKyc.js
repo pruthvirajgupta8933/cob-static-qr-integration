@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import Yup from "../../_components/formik/Yup";
@@ -18,13 +18,16 @@ import gotVerified from "../../assets/images/verified.png";
 import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 import "./kyc-style.css";
 import toastConfig from "../../utilities/toastTypes";
-import AadhaarVerficationModal from "./OtpVerificationKYC/AadhaarVerficationModal";
+// import AadhaarVerficationModal from "./OtpVerificationKYC/AadhaarVerficationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import {
-  aadhaarNumberVerification,
+  aadhaarCreateUrlSlice,
+  aadhaarGetAadhaarSlice,
+  // aadhaarNumberVerification,
   dlValidation,
   voterCardValidation,
 } from "../../slices/kycValidatorSlice";
+import { useLocation, useHistory } from "react-router-dom";
 
 function ContactInfoKyc(props) {
   const setTab = props.tab;
@@ -32,6 +35,10 @@ function ContactInfoKyc(props) {
   const merchantloginMasterId = props.merchantloginMasterId;
 
   const dispatch = useDispatch();
+  const location = useLocation();
+  const redirectReposnseParams = new URLSearchParams(location.search);
+  const aadhaar_resp_id = redirectReposnseParams.get("id");
+
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
@@ -44,30 +51,35 @@ function ContactInfoKyc(props) {
   const [otpLoader, setOtpLoader] = useState(false);
   const [selectedIdProofName, setSelectedIdProofName] = useState("");
 
-  const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
-    useState(false);
+  // const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
+  // useState(false);
   const [aadhaarVerificationLoader, setAadhaarVerificationLoader] =
     useState(false);
   const [idProofInputToggle, setIdProofInputToggle] = useState(true);
   const [dlDobToggle, setDlDobToggle] = useState(false);
   const [idType, setIdType] = useState();
   const proofIdList = useSelector((state) => state.kyc.kycIdList);
-  useEffect(() => {
-    dispatch(getKycIDList());
-  }, []);
 
+  const hasFetchedRef = useRef({});
+  const updateIdProofVerifyStatus = useRef("");
+
+  const history = useHistory()
+
+
+  const { id_number, proof_id, proof_text } = sessionStorage
+  // console.log(updateIdProofVerifyStatus.current)
   const initialValues = {
     name: KycList?.name || "",
     email_id: KycList?.emailId || "",
 
     // ID proof verification
-    id_proof_type: KycList?.id_proof_type || 1,
-    id_number: KycList?.aadharNumber || "",
-    oldIdNumber: KycList?.aadharNumber || "",
+    id_proof_type: proof_id || (KycList?.id_proof_type || 1),
+    id_number: id_number || (KycList?.aadharNumber || ""),
+    oldIdNumber: id_number || (KycList?.aadharNumber || ""),
     aadhaarOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
-    isIdProofVerified: KycList?.aadharNumber ? 1 : "",
+    isIdProofVerified: updateIdProofVerifyStatus.current || (KycList?.aadharNumber ? 1 : ""),
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified || "",
@@ -182,99 +194,15 @@ function ContactInfoKyc(props) {
       .nullable(),
   });
 
-  // const validationSchema = Yup.object().shape({
-  //   name: Yup.string()
-  //     .allowOneSpace()
-  //     .matches(Regex.acceptAlphaNumericDot, RegexMsg.acceptAlphaNumericDot)
-  //     .required("Required")
-  //     .wordLength("Word character length exceeded")
-  //     .max(100, "Maximum 100 characters are allowed")
-  //     .nullable()
-  //     .allowOneSpace(),
+  useEffect(() => {
+    dispatch(getKycIDList());
 
-  //   email_id: Yup.string().when("isEmailVerified", {
-  //     is: 0,
-  //     then: Yup.string().email("Invalid email / Please verify email").nullable(),
-  //     otherwise: Yup.string().email("Invalid email").required("Required"),
-  //   }),
-
-  //   contact_number: Yup.string()
-  //     .allowOneSpace()
-  //     .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
-  //     .required("Required")
-  //     .matches(Regex.phoneNumber, RegexMsg.phoneNumber)
-  //     .min(10, "Phone number is not valid")
-  //     .max(10, "Only 10 digits are allowed ")
-  //     .nullable(),
-  //   oldContactNumber: Yup.string()
-  //     .trim()
-  //     .oneOf(
-  //       [Yup.ref("contact_number"), null],
-  //       "You need to verify Your Contact Number"
-  //     )
-  //     .required("You need to verify Your Contact Number")
-  //     .nullable(),
-  //   isContactNumberVerified: Yup.string()
-  //     .required("Please verify the contact number")
-  //     .nullable(),
-
-  //   contactOtpDigit: Yup.string().when("isContactOtpSend", {
-  //     is: true,
-  //     then: Yup.string()
-  //       .matches(Regex.digit, RegexMsg.digit)
-  //       .min(6, "Minimum 6 digits are required")
-  //       .max(6, "Maximum 6 digits are allowed")
-  //       .required("Required")
-  //       .nullable(),
-  //     otherwise: Yup.string(),
-  //   }),
-  //   // ************2110
-  //   id_number: Yup.string()
-  //     // .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-  //     .when("id_proof_type", {
-  //       is: (value) => value === 1, // For id_proof_type = 1
-  //       then: Yup.string()
-  //         .max(12, "Maximum 12 digits are required")
-  //         .required("Required")
-  //         .nullable(),
-
-  //       otherwise: Yup.string().when("id_proof_type", {
-  //         is: (value) => value === 4, // For id_proof_type = 4
-  //         then: Yup.string()
-  //           .min(14, "Minimum 14 digits are required")
-  //           .required("Required")
-  //           .nullable(),
-
-  //         otherwise: Yup.string().when("id_proof_type", {
-  //           is: (value) => value === 3,
-  //           then: Yup.string().length(10, "Invalid Voter ID"),
-
-  //           otherwise: Yup.string()
-  //             .allowOneSpace()
-  //             .required("Required")
-  //             .nullable(), // Default case if none of the above conditions match
-  //         }),
-  //       }),
-  //     }),
-  //   oldIdNumber: Yup.string()
-  //     .trim()
-  //     .nullable(),
-
-  //   aadhaarOtpDigit: Yup.string().when("isProofOtpSend", {
-  //     is: true,
-  //     then: Yup.string()
-  //       .matches(Regex.digit, RegexMsg.digit)
-  //       .min(6, "Minimum 6 digits are required")
-  //       .max(6, "Maximum 6 digits are allowed")
-  //       .required("Required")
-  //       .nullable(),
-  //     otherwise: Yup.string(),
-  //   }),
-  //   isIdProofVerified: Yup.string()
-  //     .required("Please verify the ID Proof")
-  //     .nullable(),
-  // });
-
+    return () => {
+      sessionStorage.removeItem("id_number")
+      sessionStorage.removeItem("proof_id")
+      sessionStorage.removeItem("proof_text")
+    }
+  }, []);
 
 
   const handleSubmitContact = (values) => {
@@ -297,6 +225,13 @@ function ContactInfoKyc(props) {
           res?.meta?.requestStatus === "fulfilled" &&
           res.payload?.status === true
         ) {
+          // clear the session
+
+          sessionStorage.removeItem("id_number")
+          sessionStorage.removeItem("proof_id")
+          sessionStorage.removeItem("proof_text")
+
+          // navigate('/new-path', { replace: true });
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
           setIsDisable(false);
@@ -318,7 +253,7 @@ function ContactInfoKyc(props) {
         }
       })
       .catch((error) => {
-        toast.error("Something went wrong");
+        toastConfig.errorToast("Something went wrong");
       });
   };
 
@@ -347,33 +282,131 @@ function ContactInfoKyc(props) {
       "We will reach out to this phone for any account related issues.",
   };
 
+  const memoParamId = useMemo(() => aadhaar_resp_id, [aadhaar_resp_id])
+
+
+  useEffect(() => {
+    // Only proceed if:
+    // 1. memoParamId has a value
+    // 2. We have NOT already fetched for this specific memoParamId
+
+    if (memoParamId && !hasFetchedRef.current[memoParamId]) {
+      // Mark this memoParamId as "currently fetching" or "fetched"
+      // This prevents duplicate calls if memoParamId doesn't change but the component re-renders
+      hasFetchedRef.current[memoParamId] = true;
+      // setSelectedIdProofName(proof_text);
+      dispatch(aadhaarGetAadhaarSlice({ aadhaar_id: memoParamId }))
+        .then((resp) => {
+          // console.log(resp.payload);
+          if (
+            resp.meta.requestStatus === "fulfilled" &&
+            resp.payload.status === true
+          ) {
+            // Your existing success logic
+            // const { aadhar_number, id_proof_type } = resp.payload.data;
+            // const idProofName = proofIdList?.find(
+            //   (item) => item.id === id_proof_type
+            // )?.name;
+            // setSelectedIdProofName(idProofName);
+            // setIdType(id_proof_type);
+            // setAadhaarNumberVerifyToggle(true);
+            // setAadhaarVerificationLoader(false);
+            // setFieldVal("isProofOtpSend", true);
+            // setFieldVal("aadhaarOtpDigit", "");
+
+            // setFieldValue("oldIdNumber", id_number);
+            // setFieldValue("isIdProofVerified", 1);
+            updateIdProofVerifyStatus.current = 1
+            toastConfig.successToast(resp.payload.message);
+            history.replace(location.pathname)
+          } else {
+            setAadhaarVerificationLoader(false);
+            toastConfig.errorToast(
+              resp.payload ?? "Something went wrong, Please try again"
+            );
+            // If the API call failed, reset the flag for this ID
+            // This allows a retry if the component re-renders or memoParamId changes again
+            hasFetchedRef.current[memoParamId] = false;
+          }
+        })
+        .catch(error => {
+          // Handle network errors or other unexpected errors during dispatch
+          // console.error('API dispatch error:', error);
+          setAadhaarVerificationLoader(false);
+          toastConfig.errorToast('An unexpected error occurred. Please try again.');
+          // Reset the flag on error to allow retries
+          hasFetchedRef.current[memoParamId] = false;
+        });
+    }
+
+
+
+  }, [memoParamId, dispatch, setAadhaarVerificationLoader]); // Add all external dependencies
+
+
+  // console.log(location)
   // aadhar verification
   const aadhaarVerificationHandler = async (aadhar_number, setFieldVal) => {
-    setAadhaarVerificationLoader(true);
+    // setAadhaarVerificationLoader(true);
+    // window.location.href = `https://api.digitallocker.gov.in/public/oauth2/1/authorize?client_id=7E5773C4&code_challenge=jcm7ODH9eH9uMTw4PRKvLxkXh0g2yTlpO8Ax1U9_X68&code_challenge_method=S256&consent_valid_till=1829141682&dl_flow=signup&pla&purpose=kyc&redirect_uri=https%3A%2F%2Fdigilocker-preproduction.signzy.tech%2Fdigilocker-auth-complete&req_doctype=PANCR%2CADHAR%2CDRVLC&response_type=code&state=68809430c9db0108d4bb2e14`;
 
-    dispatch(aadhaarNumberVerification({ aadhar_number: aadhar_number }))
-      .then((resp) => {
-        if (resp.type === "kycValidator/aadhaarNumberVerification/fulfilled") {
-          setAadhaarNumberVerifyToggle(true);
-          setAadhaarVerificationLoader(false);
-          setFieldVal("isProofOtpSend", true);
-          setFieldVal("aadhaarOtpDigit", "");
-          toastConfig.successToast(resp.payload.message);
+
+    dispatch(aadhaarCreateUrlSlice({ aadhar_number })).then(
+      (resp) => {
+        if (
+          resp.meta.requestStatus === "fulfilled" &&
+          resp.payload.status === true
+        ) {
+          const confirmation = window.confirm("You will redirect to the verification page.");
+          if (!confirmation) {
+            return false
+          }
+          window.location.href = resp.payload.url;
+          // let newWindow = window.open(resp.payload.url, "_blank", "width=600,height=500");
+          // if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+          //   // Pop-up blocked or failed to open
+          //   alert('Please allow pop-ups for this site.');
+          // }
+
+          // setAadhaarNumberVerifyToggle(true);
+          // setAadhaarVerificationLoader(false);
+          // setFieldVal("isProofOtpSend", true);
+          // setFieldVal("aadhaarOtpDigit", "");
+          // toastConfig.successToast(resp.payload.message);
         } else {
           setAadhaarVerificationLoader(false);
           toastConfig.errorToast(
             resp.payload ?? "Something went wrong, Please try again"
           );
         }
-      })
-      .catch((err) => {
-        setAadhaarVerificationLoader(false);
-        toastConfig.errorToast(
-          err?.response?.data?.message ??
-          "Something went wrong, Please try again"
-        );
-      });
+      }
+    )
+
+    // dispatch(aadhaarNumberVerification({ aadhar_number: aadhar_number }))
+    //   .then((resp) => {
+    //     if (resp.type === "kycValidator/aadhaarNumberVerification/fulfilled") {
+    //       setAadhaarNumberVerifyToggle(true);
+    //       setAadhaarVerificationLoader(false);
+    //       setFieldVal("isProofOtpSend", true);
+    //       setFieldVal("aadhaarOtpDigit", "");
+    //       toastConfig.successToast(resp.payload.message);
+    //     } else {
+    //       setAadhaarVerificationLoader(false);
+    //       toastConfig.errorToast(
+    //         resp.payload ?? "Something went wrong, Please try again"
+    //       );
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setAadhaarVerificationLoader(false);
+    //     toastConfig.errorToast(
+    //       err?.response?.data?.message ??
+    //       "Something went wrong, Please try again"
+    //     );
+    //   });
   };
+
+
 
   // contact number verification
   const contactVerificationHandler = async (values, setFieldVal) => {
@@ -431,6 +464,13 @@ function ContactInfoKyc(props) {
   };
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
+
+    const handleInputFieldVal = (e) => {
+      setFieldValue("id_number", e.target.value);
+      setFieldValue("isIdProofVerified", "");
+      sessionStorage.setItem("id_number", e.target.value)
+    }
+
     return (
       <>
         <Field
@@ -440,8 +480,7 @@ function ContactInfoKyc(props) {
           className="form-control"
           placeholder="Enter ID Proof Number"
           onChange={(e) => {
-            setFieldValue("id_number", e.target.value);
-            setFieldValue("isIdProofVerified", "");
+            handleInputFieldVal(e, setFieldValue)
           }}
           disabled={VerifyKycStatus === "Verified" ? true : false}
         />
@@ -604,18 +643,32 @@ function ContactInfoKyc(props) {
     } else {
 
       setIdProofInputToggle(false);
-      setIdType(KycList?.id_proof_type);
+      setIdType(proof_id || KycList?.id_proof_type);
       IdProofName = proofIdList.data?.find(
         (item) => item?.id === KycList?.id_proof_type ?? 1
       );
     }
 
     if (IdProofName?.id_type) {
-      setSelectedIdProofName(IdProofName?.id_type);
+      setSelectedIdProofName(proof_text || IdProofName?.id_type);
     }
 
-  }, [KycList?.id_proof_type, proofIdList]);
 
+  }, [KycList?.id_proof_type, proofIdList, proof_text, proof_id]);
+
+
+
+  const idProofChangeHandler = (e, setFieldValue) => {
+    idProofhandler(e.target.value);
+    setFieldValue("id_number", "");
+    setFieldValue("id_proof_type", e.target.value);
+    setSelectedIdProofName(e.target[e.target.selectedIndex].text);
+    sessionStorage.setItem("proof_id", e.target.value)
+    sessionStorage.removeItem("id_number")
+    sessionStorage.setItem("proof_text", e.target[e.target.selectedIndex].text)
+  }
+
+  // console.log("proof_text", selectedIdProofName)
   return (
     <div className="col-lg-12 p-0">
       {KycList?.isEmailVerified !== 1 && (
@@ -670,22 +723,14 @@ function ContactInfoKyc(props) {
                   {idProofInputToggle ? (
                     <select
                       className="form-select"
-                      onChange={(e) => {
-                        idProofhandler(e.target.value);
-                        setFieldValue("id_number", "");
-                        setFieldValue("id_proof_type", e.target.value);
-                        setSelectedIdProofName(
-                          e.target[e.target.selectedIndex].text
-                        );
-                      }}
+                      onChange={(e) => idProofChangeHandler(e, setFieldValue)}
                       disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
-
                     >
                       <option value="">Select ID Proof</option>
                       {proofIdList.data?.map((item) => {
                         if (item.is_active)
                           return (
-                            <option value={item.id} datarel={item.id_type}>
+                            <option value={item.id} datarel={item.id_type} selected={item.id === proof_id}>
                               {item.id_type}
                             </option>
                           );
@@ -709,7 +754,7 @@ function ContactInfoKyc(props) {
                 )}
               </div>
 
-              {aadhaarNumberVerifyToggle && (
+              {/* {aadhaarNumberVerifyToggle && (
                 <AadhaarVerficationModal
                   formikFields={{
                     values,
@@ -723,7 +768,7 @@ function ContactInfoKyc(props) {
                     aadhaarVerificationHandler(values, setFieldValue)
                   }
                 />
-              )}
+              )} */}
               {dlDobToggle && (
                 <CustomModal
                   modalToggle={dlDobToggle}

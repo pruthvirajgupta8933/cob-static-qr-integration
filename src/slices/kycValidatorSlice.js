@@ -14,6 +14,8 @@ import {
   dlVerify,
   advancePanVerify,
   cinDataByLogin,
+  aadharCreateUrl,
+  aadharGetAadhaar,
 } from "../services/kyc-validator-service/kycValidator.service";
 import { getErrorMessage } from "../utilities/errorUtils";
 
@@ -258,6 +260,46 @@ export const aadhaarNumberVerification = createAsyncThunk(
         error.request.toString();
       thunkAPI.dispatch(setMessage({ message }));
       // console.log("message", message)
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Signzy aadhaar api
+export const aadhaarCreateUrlSlice = createAsyncThunk(
+  "kycValidator/aadhaarCreateUrlSlice",
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await aadharCreateUrl(requestParam);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage({ message }));
+      return thunkAPI.rejectWithValue(message);
+    }
+  });
+
+export const aadhaarGetAadhaarSlice = createAsyncThunk(
+  "kycValidator/aadhaarGetAadhaarSlice",
+  async (requestParam, thunkAPI) => {
+    try {
+      const response = await aadharGetAadhaar(requestParam);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() ||
+        error.request.toString();
+      thunkAPI.dispatch(setMessage({ message }));
       return thunkAPI.rejectWithValue(message);
     }
   }

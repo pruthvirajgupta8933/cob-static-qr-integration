@@ -22,6 +22,22 @@ export const aadharOtpVerify = (paramData) => {
   );
 };
 
+// Signzy aadhaar api integration
+// create url
+export const aadharCreateUrl = (paramData) => {
+  return axiosInstanceJWT.post(
+    `${API_URL.Aadhar_create_url}`,
+    paramData
+  );
+};
+
+export const aadharGetAadhaar = (paramData) => {
+  return axiosInstanceJWT.post(
+    `${API_URL.Aadhar_get_aadhaar}`,
+    paramData
+  );
+};
+
 export const panVerify = (paramData) => {
   return axiosInstanceJWT.post(
     `${API_URL.VALIDATE_DOC_KYC}/validate-pan/`,
