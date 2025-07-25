@@ -531,7 +531,7 @@ export const PAYMENT_LINK = {
 
 export const E_NACH_URL = {
   BASE_URL_E_NACH: subscriptionUrl,
-  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
+  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate-v1/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
   DEBIT_TRANSACTION_HISTORY: `${subscriptionUrl}api/transaction/transaction-history-by-user/`,
