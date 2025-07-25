@@ -247,7 +247,7 @@ const TransactionReport = () => {
   return (
     <div className="container-fluid mt-4">
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom mb-4">
-        <h5>Transaction Report</h5>
+        <h5>Debit Report</h5>
       </div>
 
       <div className="card shadow-sm mb-4">

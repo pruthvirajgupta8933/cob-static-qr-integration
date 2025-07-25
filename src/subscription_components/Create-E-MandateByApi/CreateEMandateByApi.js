@@ -173,6 +173,29 @@ const CreateEMandateByApi = ({ selectedOption }) => {
 
     const handleViewSubmit = async (values) => {
         setDisable(true);
+
+
+        const principalAmount = values.principal_amount;
+        const frequency = values.frequency;
+        const frequencyNumber = values.frequency_number || '-';
+        const maxAmount = values.max_amount;
+
+        const confirmationMessage = `
+Are you sure you want to proceed with the following details?
+
+Principal Amount: ₹${principalAmount}
+Number of Periods: ${frequencyNumber}
+Frequency: ${frequency}
+Max Amount: ₹${maxAmount}
+`;
+
+        const confirmed = window.confirm(confirmationMessage);
+
+        if (!confirmed) {
+            setDisable(false);
+            return;
+        }
+
         try {
             const filteredPurpose = pusposeListData.filter(
                 (item) => item.description === values.purpose
@@ -199,18 +222,13 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             };
 
             if (!values.untilCancelled) {
-                // If not until cancelled, use frequency_number to calculate end_date or simply pass frequency_number
                 postDataS.frequency_number = values.frequency_number;
-                // You might need to calculate end_date based on frequency and frequency_number if the API expects it.
-                // For now, I'm assuming frequency_number is sent as is.
             } else {
-                // If untilCancelled is true, ensure these fields are not sent
                 delete postDataS.end_date;
                 delete postDataS.frequency_number;
             }
 
             const response = await dispatch(createEmandateByApi(postDataS));
-
 
             if (response?.payload.data?.bank_details_url) {
                 toast.success(response?.payload.data.message);
@@ -225,8 +243,10 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Something went wrong.');
         }
+
         setDisable(false);
     };
+
 
 
     const copyToClipboard = () => {
