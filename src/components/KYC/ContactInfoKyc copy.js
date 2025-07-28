@@ -50,7 +50,7 @@ function ContactInfoKyc(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [otpLoader, setOtpLoader] = useState(false);
   const [selectedIdProofName, setSelectedIdProofName] = useState("");
-  // const [aadhaarProofState, setAadhaarProofState] = useState({})
+  const [aadhaarProofState, setAadhaarProofState] = useState({})
 
   // const [aadhaarNumberVerifyToggle, setAadhaarNumberVerifyToggle] =
   // useState(false);
@@ -60,29 +60,28 @@ function ContactInfoKyc(props) {
   const [dlDobToggle, setDlDobToggle] = useState(false);
   const [idType, setIdType] = useState();
   const proofIdList = useSelector((state) => state.kyc.kycIdList);
+
   const hasFetchedRef = useRef({});
   const updateIdProofVerifyStatus = useRef("");
 
   const history = useHistory()
 
 
-  const { id_number, proof_id, proof_text } = sessionStorage;
+  const { id_number, proof_id, proof_text } = sessionStorage
+  // console.log(updateIdProofVerifyStatus.current)
   const initialValues = {
     name: KycList?.name || "",
     email_id: KycList?.emailId || "",
 
     // ID proof verification
-    id_proof_type: updateIdProofVerifyStatus.current === 1 ? proof_id : (KycList?.id_proof_type || 1),
-    id_number: updateIdProofVerifyStatus.current === 1 ? id_number : (KycList?.aadharNumber || ""),
-    oldIdNumber: updateIdProofVerifyStatus.current === 1 ? id_number : (KycList?.aadharNumber || ""),
-    // id_proof_type: KycList?.id_proof_type || 1,
-    // id_number: KycList?.aadharNumber || "",
-    // oldIdNumber: KycList?.aadharNumber || "",
+    id_proof_type: proof_id || (KycList?.id_proof_type || 1),
+    id_number: id_number || (KycList?.aadharNumber || ""),
+    oldIdNumber: id_number || (KycList?.aadharNumber || ""),
     aadhaarOtpDigit: "",
     proofOtpDigit: "",
     isProofOtpSend: false,
     // isIdProofVerified: updateIdProofVerifyStatus.current || (KycList?.aadharNumber ? 1 : ""),
-    isIdProofVerified: updateIdProofVerifyStatus.current === 1 ? 1 : KycList?.aadharNumber ? 1 : "",
+    isIdProofVerified: KycList?.aadharNumber ? 1 : "",
 
     // contact OTP initial values
     isContactNumberVerified: KycList?.isContactNumberVerified || "",
@@ -197,13 +196,8 @@ function ContactInfoKyc(props) {
       .nullable(),
   });
 
-
   useEffect(() => {
-
-    if (!proofIdList?.data?.length > 0) {
-      dispatch(getKycIDList());
-    }
-
+    dispatch(getKycIDList());
 
     return () => {
       sessionStorage.removeItem("id_number")
@@ -234,6 +228,7 @@ function ContactInfoKyc(props) {
           res.payload?.status === true
         ) {
           // clear the session
+
           sessionStorage.removeItem("id_number")
           sessionStorage.removeItem("proof_id")
           sessionStorage.removeItem("proof_text")
@@ -309,10 +304,23 @@ function ContactInfoKyc(props) {
             resp.meta.requestStatus === "fulfilled" &&
             resp.payload.status === true
           ) {
+            // Your existing success logic
+            // const { aadhar_number, id_proof_type } = resp.payload.data;
+            // const idProofName = proofIdList?.find(
+            //   (item) => item.id === id_proof_type
+            // )?.name;
+            // setSelectedIdProofName(idProofName);
+            // setIdType(id_proof_type);
+            // setAadhaarNumberVerifyToggle(true);
+            // setAadhaarVerificationLoader(false);
+            // setFieldVal("isProofOtpSend", true);
+            // setFieldVal("aadhaarOtpDigit", "");
+
+            // setFieldValue("oldIdNumber", id_number);
+            // setFieldValue("isIdProofVerified", 1);
             updateIdProofVerifyStatus.current = 1
             toastConfig.successToast(resp.payload.message);
             history.replace(location.pathname)
-
 
 
           } else {
@@ -342,6 +350,7 @@ function ContactInfoKyc(props) {
   }, [memoParamId, dispatch, setAadhaarVerificationLoader]); // Add all external dependencies
 
 
+  // console.log(location)
   // aadhar verification
   const aadhaarVerificationHandler = async (aadhar_number, setFieldVal) => {
     setAadhaarVerificationLoader(true);
@@ -361,6 +370,17 @@ function ContactInfoKyc(props) {
           }
           setAadhaarVerificationLoader(false);
           window.location.href = resp.payload.url;
+          // let newWindow = window.open(resp.payload.url, "_blank", "width=600,height=500");
+          // if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+          //   // Pop-up blocked or failed to open
+          //   alert('Please allow pop-ups for this site.');
+          // }
+
+          // setAadhaarNumberVerifyToggle(true);
+          // setAadhaarVerificationLoader(false);
+          // setFieldVal("isProofOtpSend", true);
+          // setFieldVal("aadhaarOtpDigit", "");
+          // toastConfig.successToast(resp.payload.message);
         } else {
           setAadhaarVerificationLoader(false);
           toastConfig.errorToast(
@@ -369,6 +389,29 @@ function ContactInfoKyc(props) {
         }
       }
     )
+
+    // dispatch(aadhaarNumberVerification({ aadhar_number: aadhar_number }))
+    //   .then((resp) => {
+    //     if (resp.type === "kycValidator/aadhaarNumberVerification/fulfilled") {
+    //       setAadhaarNumberVerifyToggle(true);
+    //       setAadhaarVerificationLoader(false);
+    //       setFieldVal("isProofOtpSend", true);
+    //       setFieldVal("aadhaarOtpDigit", "");
+    //       toastConfig.successToast(resp.payload.message);
+    //     } else {
+    //       setAadhaarVerificationLoader(false);
+    //       toastConfig.errorToast(
+    //         resp.payload ?? "Something went wrong, Please try again"
+    //       );
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setAadhaarVerificationLoader(false);
+    //     toastConfig.errorToast(
+    //       err?.response?.data?.message ??
+    //       "Something went wrong, Please try again"
+    //     );
+    //   });
   };
 
 
@@ -436,6 +479,9 @@ function ContactInfoKyc(props) {
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
 
+
+    console.log(values)
+
     return (
       <>
         <Field
@@ -453,9 +499,7 @@ function ContactInfoKyc(props) {
         {values.oldIdNumber &&
           values.id_number &&
           values.isIdProofVerified &&
-          values.oldIdNumber === values.id_number &&
-          !errors.hasOwnProperty("id_number") &&
-          !errors.hasOwnProperty("oldIdNumber") ? (
+          values.oldIdNumber === values.id_number ? (
           <span className="success input-group-append">
             <img
               src={gotVerified}
@@ -600,6 +644,13 @@ function ContactInfoKyc(props) {
     if (KycList?.id_proof_type === null || KycList?.id_proof_type === undefined) {
       // If id_proof_type is null or undefined
       setIdProofInputToggle(true);
+
+      // Find the default proof with id 1 as fallback
+      // IdProofName = proofIdList.data?.find(item => item?.id === 1);
+
+      // Optionally set the type to 1 (default)
+      // setIdType(1);
+
     } else {
 
       setIdProofInputToggle(false);
@@ -714,6 +765,21 @@ function ContactInfoKyc(props) {
                 )}
               </div>
 
+              {/* {aadhaarNumberVerifyToggle && (
+                <AadhaarVerficationModal
+                  formikFields={{
+                    values,
+                    errors,
+                    setFieldError,
+                    setFieldValue,
+                  }}
+                  isOpen={aadhaarNumberVerifyToggle}
+                  toggle={setAadhaarNumberVerifyToggle}
+                  resendOtp={(values, setFieldValue) =>
+                    aadhaarVerificationHandler(values, setFieldValue)
+                  }
+                />
+              )} */}
               {dlDobToggle && (
                 <CustomModal
                   modalToggle={dlDobToggle}
