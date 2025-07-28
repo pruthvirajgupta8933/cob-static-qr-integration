@@ -69,6 +69,7 @@ function KycForm() {
 
   //------------- Kyc  User List ------------//
   useEffect(() => {
+
     if (roles.merchant) {
       dispatch(kycUserListForMerchant());
     } else {
