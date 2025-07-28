@@ -381,11 +381,8 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                <p className="fs-10">
-                  Please give a brief description of the nature of your
-                  business. Please give examples of products you sell, business
-                  category you operate in, your customers and channels through
-                  which you operate (website, offline-retail).
+                <p className="fs-10 text-muted">
+                  Please provide a brief overview of your business, including the types of products or services you offer, the industry or category you operate in, your target customers, and the sales channels you utilize (such as online through your website or offline retail locations).
                 </p>
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr
