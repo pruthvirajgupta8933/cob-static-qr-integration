@@ -105,7 +105,6 @@ const Login = () => {
         keyConfig.LOGIN_AUTH_IV
       ),
     };
-    console.log(encQuery)
 
     dispatch(login(encQuery)).then((res) => {
       if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
