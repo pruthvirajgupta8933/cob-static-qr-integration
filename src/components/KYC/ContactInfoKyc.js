@@ -29,6 +29,21 @@ import {
 } from "../../slices/kycValidatorSlice";
 import { useLocation, useHistory } from "react-router-dom";
 
+import keyConfig from "../../key.config";
+import { Decrypt, Encrypt } from "../../utilities/aes";
+
+const newEcrypt = (value) => {
+  const resp = Encrypt(value, keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV)
+  return resp
+}
+
+const newDecrypt = (value) => {
+  if (!value) return value
+  const resp = Decrypt(value, keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV)
+  return resp
+}
+
+
 function ContactInfoKyc(props) {
   const setTab = props.tab;
   const setTitle = props.title;
@@ -66,7 +81,15 @@ function ContactInfoKyc(props) {
   const history = useHistory()
 
 
-  const { id_number, proof_id, proof_text } = sessionStorage;
+
+
+
+  let id_number = newDecrypt(sessionStorage.getItem("id_number"))
+  let proof_id = newDecrypt(sessionStorage.getItem("proof_id"))
+  let proof_text = newDecrypt(sessionStorage.getItem("proof_text"))
+
+
+
   const initialValues = {
     name: KycList?.name || "",
     email_id: KycList?.emailId || "",
@@ -427,12 +450,18 @@ function ContactInfoKyc(props) {
     //   setIdProofInputToggle(true);
     // }
   };
+
+
+
   const handleInputFieldVal = (e, setFieldValue) => {
     setFieldValue("id_number", e.target.value);
     setFieldValue("oldIdNumber", "");
     setFieldValue("isIdProofVerified", "");
-    sessionStorage.setItem("id_number", e.target.value)
+
+    const enc_id_number = newEcrypt(e.target.value)
+    sessionStorage.setItem("id_number", enc_id_number)
   }
+
 
   const renderInputField = ({ values, errors, setFieldValue }) => {
 
@@ -623,9 +652,13 @@ function ContactInfoKyc(props) {
     setFieldValue("id_number", "");
     setFieldValue("id_proof_type", e.target.value);
     setSelectedIdProofName(e.target[e.target.selectedIndex].text);
-    sessionStorage.setItem("proof_id", e.target.value)
     sessionStorage.removeItem("id_number")
-    sessionStorage.setItem("proof_text", e.target[e.target.selectedIndex].text)
+
+    const enc_curr_value = newEcrypt(e.target.value)
+    const enc_curr_value_text = newEcrypt(e.target[e.target.selectedIndex].text)
+
+    sessionStorage.setItem("proof_id", enc_curr_value)
+    sessionStorage.setItem("proof_text", enc_curr_value_text)
   }
 
   // console.log("proof_text", selectedIdProofName)
