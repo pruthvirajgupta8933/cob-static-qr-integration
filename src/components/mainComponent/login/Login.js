@@ -16,8 +16,7 @@ import useMediaQuery from "../../../custom-hooks/useMediaQuery";
 import ReCAPTCHA from "react-google-recaptcha";
 import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
-// import { Encrypt } from "../../../utilities/aes";
-// import { encrypt } from "sabpaisa-encryption-package-gcm";
+
 import keyConfig from "../../../key.config";
 import { APP_ENV } from "../../../config";
 import { encrypt } from "@cto_sabpaisa/sabpaisa-aes-256-encryption";
@@ -27,6 +26,7 @@ const INITIAL_FORM_STATE = {
   userPassword: "",
   reCaptcha: "",
 };
+
 
 const validationSchema = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username").allowOneSpace(),
@@ -105,6 +105,7 @@ const Login = () => {
         keyConfig.LOGIN_AUTH_IV
       ),
     };
+    console.log(encQuery)
 
     dispatch(login(encQuery)).then((res) => {
       if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
