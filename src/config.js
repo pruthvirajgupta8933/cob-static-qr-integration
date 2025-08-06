@@ -176,6 +176,18 @@ const API_LIVE = {
   GET_LINKS: `${payLinkAPIURL}/getLinks/`,
   GET_REPORTS: `${payLinkAPIURL}/getReports/`,
 
+
+  //Super Admin Api
+
+  TABLE_LIST: `${url}/super-admin/table-list/`,
+  ADMIN_GET_FILTERS: `${url}/super-admin/get-filters/`,
+  EXPORTING_TABLE: `${url}/super-admin/export/`,
+  SUPER_ADMIN_FETH_DATA: `${url}/super-admin/view/`,
+
+  ////
+
+
+
   /** GET MANDATE REG. STATUS */
   MANDATE_REGISTRATION_STATUS:
     "https://subscription.sabpaisa.in/subscription/npci/registration/status/",
