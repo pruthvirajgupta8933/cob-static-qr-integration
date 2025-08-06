@@ -18,7 +18,8 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/persist-slice/persistSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
@@ -52,12 +53,12 @@ const SettlementReportNew = () => {
   const [runapi, setRunApi] = useState(false);
   const [totalSettlementAmount, setSettlementAmount] = useState(0);
 
-  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
+  const { auth, dashboard, commonPersistReducer } = useSelector(
     (state) => state
   );
   const { user } = auth;
   const { isLoadingTxnHistory, settlementSummaryReport } = dashboard;
-  const { refrerChiledList } = merchantReferralOnboardReducer;
+  const { refrerChiledList } = commonPersistReducer;
 
   const roles = roleBasedAccess();
   const clientCodeData = refrerChiledList?.resp?.results ?? [];

@@ -17,7 +17,7 @@ const AssigneAccountManger = () => {
   const [assignmentType, setAssignmentType] = useState([]);
   const [assignDetails, setAssignDetails] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-  const { clientCodeList, clientCodeLoading, clientCodeError } = useSelector(
+  const { clientCodeList } = useSelector(
     (state) => state.approverDashboard
   );
 
@@ -54,12 +54,21 @@ const AssigneAccountManger = () => {
   //   });
   // }, []);
 
+  // const TEN_MINUTES = 10 * 60 * 1000;
+
+  const FIVE_MINUTES = 5 * 60 * 1000;
+
+
   useEffect(() => {
-    // Only dispatch the API call if clientCodeList is empty
+    const interval = setInterval(() => {
+      dispatch(getAllCLientCodeSlice());
+    }, FIVE_MINUTES);
     if (clientCodeList.length === 0) {
       dispatch(getAllCLientCodeSlice());
     }
-  }, [dispatch, clientCodeList.length]);
+
+    return () => clearInterval(interval);
+  }, [dispatch]); // 
 
   const fetchAccountManagers = (role_id) => {
     if (role_id) {

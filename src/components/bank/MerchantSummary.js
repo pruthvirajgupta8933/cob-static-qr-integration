@@ -7,7 +7,8 @@ import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { fetchChildDataList } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// import { fetchChildDataList } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../slices/persist-slice/persistSlice";
 import Yup from "../../_components/formik/Yup";
 import toastConfig from "../../utilities/toastTypes";
 import { fetchBankMerchantSummary } from "../../slices/bank-dashboard-slice/bankDashboardSlice";
@@ -26,11 +27,11 @@ function MerchantSummary() {
   // const [updateTxnList, setUpdateTxnList] = useState([]);
   const [formValues, setFormValues] = useState({});
 
-  const { auth, bankDashboardReducer, merchantReferralOnboardReducer } =
+  const { auth, bankDashboardReducer, commonPersistReducer } =
     useSelector((state) => state);
 
   const { user } = auth;
-  const { refrerChiledList, isLoading } = merchantReferralOnboardReducer;
+  const { refrerChiledList, isLoading } = commonPersistReducer;
   const { merchantSummary, reportLoading } = bankDashboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 

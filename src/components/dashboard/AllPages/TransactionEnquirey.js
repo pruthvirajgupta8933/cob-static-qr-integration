@@ -8,7 +8,8 @@ import moment from "moment";
 import CustomLoader from "../../../_components/loader";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/persist-slice/persistSlice";
 import { transactionEnquireyApi } from "../../../services/transaction-enquirey/transactionEnquirey.service";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 import CardLayout from "../../../utilities/CardLayout"
@@ -24,10 +25,10 @@ const TransactionEnquirey = React.memo(() => {
     loadingState: false,
   });
 
-  const { auth, merchantReferralOnboardReducer } = useSelector(
+  const { auth, commonPersistReducer } = useSelector(
     (state) => state
   );
-  const { refrerChiledList } = merchantReferralOnboardReducer;
+  const { refrerChiledList } = commonPersistReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   const roles = roleBasedAccess();
   const { user } = auth;

@@ -60,6 +60,7 @@ import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDe
 import { scheduleTransactionSliceReducer } from "./slices/subscription-slice/scheduleTransactionSlice";
 import { updateSettlementApiSliceReducer } from "./slices/subscription-slice/updateSettlementSlice";
 import clientCodeTransform from "./utilities/ClientCodeTransForm";
+import { commonPersistSliceReducer } from "./slices/persist-slice/persistSlice";
 
 const reducer = {
   auth: authReducer,
@@ -125,7 +126,7 @@ const reducer = {
   paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer,
   qForm: qFormSliceReducer,
   mfaReducer: mfaReducer,
-  assignBdReducer: assignBdReducer
+  commonPersistReducer: commonPersistSliceReducer
 
 };
 
@@ -147,7 +148,9 @@ const rootPersistConfig = {
     // 'payout', 
     'menuListReducer',
     'approverDashboard',
-    'kyc'
+    // 'kyc'
+    'commonPersistReducer'
+
     // 'productCatalogueSlice', 
     // 'ReferralMidReducer', 
     // 'challanReducer', 

@@ -9,9 +9,10 @@ import {
   clearTransactionHistory,
   fetchTransactionHistoryDetailSlice,
   fetchTransactionHistorySlice,
-  fetchPayModeList,
-  fetchPayStatusList,
+
+
 } from "../../../../slices/dashboardSlice";
+import { fetchPayStatusList, fetchPayModeList, } from "../../../../slices/persist-slice/persistSlice";
 import API_URL from "../../../../config";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
@@ -20,7 +21,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import classes from "../allpage.module.css";
-import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../../slices/persist-slice/persistSlice";
 import TransactionRefund from "./TransactionRefund";
 import ExportTransactionHistory from "./ExportTransactionHistory";
 import TransactionDetailModal from "./TransactionDetailModal";
@@ -37,12 +39,16 @@ const TransactionHistory = () => {
   const history = useHistory();
   const roles = roleBasedAccess();
 
-  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
+  const { auth, dashboard, commonPersistReducer } = useSelector(
     (state) => state
   );
-  const { paymode, payStatus, transactionHistory } = dashboard;
+  const { transactionHistory } = dashboard;
+
+  const { payStatus, paymode } = useSelector((state) => state.commonPersistReducer);
+
+
   const { user } = auth;
-  const { refrerChiledList } = merchantReferralOnboardReducer;
+  const { refrerChiledList } = commonPersistReducer;
 
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
