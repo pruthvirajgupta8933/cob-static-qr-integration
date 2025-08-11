@@ -63,7 +63,7 @@ const MerchantBalance = () => {
       </div>
       <div>
         {selectedClientId &&
-          <WalletDetail walletDisplayData={SubscribedPlanData} walletCommission={walletCommission} isLoading={isLoading} />
+          <WalletDetail walletDisplayData={SubscribedPlanData} walletCommission={walletCommission || 0} isLoading={isLoading} />
 
         }
       </div>
