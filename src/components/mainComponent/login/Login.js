@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useHistory, Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Yup from "../../../_components/formik/Yup";
-import { login, loginVerify, logout } from "../../../slices/auth";
-import { clearMessage } from "../../../slices/message";
-import sbbnner from "../../../assets/images/login-banner.svg";
 import arrow_one from "../../../assets/images/arrow_one.png";
 import arrow_two from "../../../assets/images/arrow_two.png";
+import sbbnner from "../../../assets/images/login-banner.svg";
+import useMediaQuery from "../../../custom-hooks/useMediaQuery";
+import authService from "../../../services/auth.service";
+import { login, loginVerify, logout } from "../../../slices/auth";
+import { clearMessage } from "../../../slices/message";
+import toastConfig from "../../../utilities/toastTypes";
 import GoogleLoginButton from "../../social-login/GoogleLoginButton";
 import Header from "../header/Header";
-import classes from "./login.module.css";
-import toastConfig from "../../../utilities/toastTypes";
-import useMediaQuery from "../../../custom-hooks/useMediaQuery";
-import ReCAPTCHA from "react-google-recaptcha";
-import authService from "../../../services/auth.service";
 import AuthOtpVerify from "./AuthOtpVerify";
+import classes from "./login.module.css";
 
-import keyConfig from "../../../key.config";
-import { APP_ENV } from "../../../config";
 import { encrypt } from "@cto_sabpaisa/sabpaisa-aes-256-encryption";
+import { APP_ENV } from "../../../config";
+import keyConfig from "../../../key.config";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
   userPassword: "",
   reCaptcha: "",
 };
-
 
 const validationSchema = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username").allowOneSpace(),
@@ -93,7 +92,6 @@ const Login = () => {
 
     setLoading(true);
 
-
     const encQuery = {
       query: await encrypt(
         JSON.stringify({
@@ -105,7 +103,6 @@ const Login = () => {
         keyConfig.LOGIN_AUTH_IV
       ),
     };
-
 
     dispatch(login(encQuery)).then((res) => {
       if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
