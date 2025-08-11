@@ -417,7 +417,7 @@ const KycDetailsModal = (props) => {
     <div>
       <CustomModal
         modalBody={modalBody}
-        headerTitle={"Merchant KYC Details"}
+        headerTitle={`Merchant KYC Details : ${selectedUserData?.clientCode || ""}`}
         modalFooter={modalFooter}
         modalToggle={isOpenModal}
         fnSetModalToggle={closeVerification}

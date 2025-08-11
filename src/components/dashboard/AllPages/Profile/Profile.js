@@ -175,7 +175,7 @@ const Profile = () => {
               <WalletDetail
                 isLoading={isLoading}
                 walletDisplayData={SubscribedPlanData}
-                walletCommission={walletCommission}
+                walletCommission={walletCommission || 0}
               />
             )}
             {currentTab === 3 && <WalletRecharge />}

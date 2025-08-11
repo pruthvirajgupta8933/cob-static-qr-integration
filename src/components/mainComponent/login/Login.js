@@ -106,6 +106,7 @@ const Login = () => {
       ),
     };
 
+
     dispatch(login(encQuery)).then((res) => {
       if (res?.payload?.user?.status && res?.payload?.user?.is_mfa_enabled) {
         setOpenOtpModal(true);
