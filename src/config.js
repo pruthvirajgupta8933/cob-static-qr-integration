@@ -183,6 +183,7 @@ const API_LIVE = {
   ADMIN_GET_FILTERS: `${url}/super-admin/get-filters/`,
   EXPORTING_TABLE: `${url}/super-admin/export/`,
   SUPER_ADMIN_FETH_DATA: `${url}/super-admin/view/`,
+  SUPER_EXPORT_ADMIN: `${url}/super-admin/export/`,
 
   ////
 
