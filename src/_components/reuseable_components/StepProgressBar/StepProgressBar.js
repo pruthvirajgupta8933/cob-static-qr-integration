@@ -1,26 +1,39 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./stepProgressBar.css";
 
-import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
-import "react-step-progress/dist/index.css";
-import { KYC_STATUS_APPROVED, KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../../utilities/enums";
-import { v4 as uuidv4 } from 'uuid';
-
+import "react-step-progress-bar/styles.css";
+// import "react-step-progress/dist/index.css";
+import { v4 as uuidv4 } from "uuid";
+import {
+  KYC_STATUS_APPROVED,
+  KYC_STATUS_NOT_FILLED,
+  KYC_STATUS_PENDING,
+  KYC_STATUS_PROCESSING,
+  KYC_STATUS_REJECTED,
+  KYC_STATUS_VERIFIED,
+} from "../../../utilities/enums";
 
 function StepComplete(props) {
-
-  const { data, progressPercentage } = props
+  const { data, progressPercentage } = props;
   let colorValue = "#ffffff";
 
-  if (data.id === 1 && (progressPercentage >= 1 && progressPercentage <= 100)) {
-    colorValue = "#286ECD"
-  } else if (data.id === 2 && (progressPercentage > 33)) {
-    colorValue = "#286ECD"
-  } else if (data.id === 3 && (progressPercentage > 33.4 && progressPercentage <= 100)) {
-    colorValue = "#286ECD"
-  } else if (data.id === 4 && (progressPercentage > 67 && progressPercentage <= 100)) {
-    colorValue = "#286ECD"
+  if (data.id === 1 && progressPercentage >= 1 && progressPercentage <= 100) {
+    colorValue = "#286ECD";
+  } else if (data.id === 2 && progressPercentage > 33) {
+    colorValue = "#286ECD";
+  } else if (
+    data.id === 3 &&
+    progressPercentage > 33.4 &&
+    progressPercentage <= 100
+  ) {
+    colorValue = "#286ECD";
+  } else if (
+    data.id === 4 &&
+    progressPercentage > 67 &&
+    progressPercentage <= 100
+  ) {
+    colorValue = "#286ECD";
   } else {
     colorValue = "#ffffff";
   }
@@ -42,32 +55,41 @@ function StepComplete(props) {
 }
 
 function StepProgressBar(props) {
-
   const [kycStatusData, setKycStatusData] = useState([]);
   const [percentage, setPercentage] = useState(0);
 
   // let status = props?.status?.toLocaleLowerCase();
 
-  let { status } = props
+  let { status } = props;
   const getProgressByStatus = (status) => {
-
     let percent = 0;
     if (status) {
-      if (status?.toLocaleLowerCase() === KYC_STATUS_PENDING.toLocaleLowerCase() || status?.toLocaleLowerCase() === KYC_STATUS_NOT_FILLED.toLocaleLowerCase() || status?.toLocaleLowerCase() === KYC_STATUS_REJECTED.toLocaleLowerCase()) {
-        percent = 1
-      } else if (status?.toLocaleLowerCase() === KYC_STATUS_PROCESSING.toLocaleLowerCase()) {
+      if (
+        status?.toLocaleLowerCase() ===
+          KYC_STATUS_PENDING.toLocaleLowerCase() ||
+        status?.toLocaleLowerCase() ===
+          KYC_STATUS_NOT_FILLED.toLocaleLowerCase() ||
+        status?.toLocaleLowerCase() === KYC_STATUS_REJECTED.toLocaleLowerCase()
+      ) {
+        percent = 1;
+      } else if (
+        status?.toLocaleLowerCase() ===
+        KYC_STATUS_PROCESSING.toLocaleLowerCase()
+      ) {
         percent = 33.3;
-      } else if (status?.toLocaleLowerCase() === KYC_STATUS_VERIFIED.toLocaleLowerCase()) {
+      } else if (
+        status?.toLocaleLowerCase() === KYC_STATUS_VERIFIED.toLocaleLowerCase()
+      ) {
         percent = 66.6;
-      } else if (status?.toLocaleLowerCase() === KYC_STATUS_APPROVED.toLocaleLowerCase()) {
+      } else if (
+        status?.toLocaleLowerCase() === KYC_STATUS_APPROVED.toLocaleLowerCase()
+      ) {
         percent = 100;
       }
     }
 
     return percent;
-  }
-
-
+  };
 
   useEffect(() => {
     let data = [
@@ -89,10 +111,8 @@ function StepProgressBar(props) {
 
     return () => {
       setPercentage(0);
-    }
-
+    };
   }, [status]);
-
 
   const steps = kycStatusData[0]?.steps?.map((s, index) => {
     return (
@@ -110,7 +130,15 @@ function StepProgressBar(props) {
               <StepComplete data={s} progressPercentage={percentage} />
             </div>
 
-            <div className="steps-text" style={{ width: 70, marginBottom: 60, marginLeft: 0, fontSize: "14px" }} >
+            <div
+              className="steps-text"
+              style={{
+                width: 70,
+                marginBottom: 60,
+                marginLeft: 0,
+                fontSize: "14px",
+              }}
+            >
               {s.title}
             </div>
           </div>
@@ -118,7 +146,6 @@ function StepProgressBar(props) {
       </Step>
     );
   });
-
 
   return (
     <div className="mb-5">
@@ -134,11 +161,10 @@ function StepProgressBar(props) {
           <ProgressBar
             percent={percentage}
             height={4}
-          // filledBackground="green"
-          // unfilledBackground="#286ECD"
+            // filledBackground="green"
+            // unfilledBackground="#286ECD"
           >
             {steps}
-
           </ProgressBar>
           {/* <ProgressBar
             filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
@@ -191,7 +217,6 @@ function StepProgressBar(props) {
             </Step>
           </ProgressBar> */}
         </div>
-
       </div>
     </div>
   );

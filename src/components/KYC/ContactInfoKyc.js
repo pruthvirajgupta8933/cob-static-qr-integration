@@ -330,46 +330,35 @@ function ContactInfoKyc(props) {
     // console.log("hasFetchedRef", hasFetchedRef)
     setSelectedIdProofName(proof_text);
     if (memoParamId && !hasFetchedRef.current[memoParamId]) {
-      // Mark this memoParamId as "currently fetching" or "fetched"
-      // This prevents duplicate calls if memoParamId doesn't change but the component re-renders
-      hasFetchedRef.current[memoParamId] = true;
+      hasFetchedRef.current[memoParamId] = true; // Mark as fetched
 
       dispatch(aadhaarGetAadhaarSlice({ aadhaar_id: memoParamId }))
         .then((resp) => {
-          console.log("resp", resp);
-
           if (
             resp.meta.requestStatus === "fulfilled" &&
             resp.payload.status === true
           ) {
-            setIdProofInputToggle(false)
-            updateIdProofVerifyStatus.current = 1
+            setIdProofInputToggle(false);
+            updateIdProofVerifyStatus.current = 1;
             toastConfig.successToast(resp.payload.message);
-            history.replace(location.pathname)
 
-            // sessionStorage.removeItem("id_number")
-            // sessionStorage.removeItem("proof_id")
-            // sessionStorage.removeItem("proof_text")
-
+            // Remove specific keys from the URL
+            const url = new URL(window.location.href);
+            ["requestId", "status", "scope"].forEach((key) => url.searchParams.delete(key));
+            const newUrl = url.toString();
+            window.history.replaceState(null, "", newUrl); // Update the URL without reloading
           } else {
-            // setAadhaarVerificationLoader(false);
-            updateIdProofVerifyStatus.current = ""
+            updateIdProofVerifyStatus.current = "";
             toastConfig.errorToast(
               resp.payload ?? "Something went wrong, Please try again"
             );
-            history.replace(location.pathname)
-            // If the API call failed, reset the flag for this ID
-            // This allows a retry if the component re-renders or memoParamId changes again
-            hasFetchedRef.current[memoParamId] = false;
+            hasFetchedRef.current[memoParamId] = false; // Allow retry
           }
         })
-        .catch(error => {
-          // Handle network errors or other unexpected errors during dispatch
-          // console.error('API dispatch error:', error);
+        .catch(() => {
           setAadhaarVerificationLoader(false);
-          toastConfig.errorToast('An unexpected error occurred. Please try again.');
-          // Reset the flag on error to allow retries
-          hasFetchedRef.current[memoParamId] = false;
+          toastConfig.errorToast("An unexpected error occurred. Please try again.");
+          hasFetchedRef.current[memoParamId] = false; // Allow retry
         });
     }
 
@@ -383,8 +372,9 @@ function ContactInfoKyc(props) {
     setAadhaarVerificationLoader(true);
     // window.location.href = `https://api.digitallocker.gov.in/public/oauth2/1/authorize?client_id=7E5773C4&code_challenge=jcm7ODH9eH9uMTw4PRKvLxkXh0g2yTlpO8Ax1U9_X68&code_challenge_method=S256&consent_valid_till=1829141682&dl_flow=signup&pla&purpose=kyc&redirect_uri=https%3A%2F%2Fdigilocker-preproduction.signzy.tech%2Fdigilocker-auth-complete&req_doctype=PANCR%2CADHAR%2CDRVLC&response_type=code&state=68809430c9db0108d4bb2e14`;
 
+    const redirect_url = window.location.href
 
-    dispatch(aadhaarCreateUrlSlice({ aadhar_number })).then(
+    dispatch(aadhaarCreateUrlSlice({ aadhar_number, redirect_url })).then(
       (resp) => {
         if (
           resp.meta.requestStatus === "fulfilled" &&
@@ -976,5 +966,6 @@ function ContactInfoKyc(props) {
     </div>
   );
 }
+
 
 export default ContactInfoKyc;
