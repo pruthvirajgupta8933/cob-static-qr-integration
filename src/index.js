@@ -11,9 +11,6 @@ import setupInterceptors from "./services/setupInterceptors";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-// console.log("setupInterceptors",setupInterceptors)
-
-
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}> {/* Wrap with PersistGate */}
