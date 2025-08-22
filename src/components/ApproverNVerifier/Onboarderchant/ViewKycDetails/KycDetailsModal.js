@@ -89,41 +89,45 @@ const KycDetailsModal = (props) => {
     }
   }, [merchantLoginLogin, dispatch]);
 
-  useEffect(async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetch subscribed product by merchant
+      if (selectedUserData?.clientCode) {
+        const postData = {
+          clientCode: selectedUserData?.clientCode,
+        };
+        dispatch(merchantSubscribedPlanData(postData));
 
-    // fetch subscribe product by merchant
-    if (selectedUserData?.clientCode) {
-      const postData = {
-        clientCode: selectedUserData?.clientCode
-      };
-      dispatch(merchantSubscribedPlanData(postData));
-
-
-      axiosInstanceJWT.get(API_URL.PRODUCT_DETAILS).then(resp => {
-        setProductData(resp.data?.ProductDetail)
-      })
-
-
-    }
-
-
-
-
-
-
-    if (selectedUserData?.loginMasterId) {
-      dispatch(kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId }));
-      dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
-
-      const businessType = selectedUserData?.businessType;
-      if (businessType) {
-        dispatch(documentsUpload({ businessType, is_udyam: selectedUserData?.is_udyam })).then((resp) => {
-          const data = convertToFormikSelectJson("id", "name", resp?.payload);
-          setDocTypeList(data);
-        });
+        try {
+          const resp = await axiosInstanceJWT.get(API_URL.PRODUCT_DETAILS);
+          setProductData(resp.data?.ProductDetail);
+        } catch (error) {
+          console.error("Error fetching product details:", error);
+        }
       }
-    }
+
+      // Fetch KYC document upload list and status
+      if (selectedUserData?.loginMasterId) {
+        dispatch(kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId }));
+        dispatch(GetKycTabsStatus({ login_id: selectedUserData?.loginMasterId }));
+
+        const businessType = selectedUserData?.businessType;
+        if (businessType) {
+          try {
+            const resp = await dispatch(documentsUpload({ businessType, is_udyam: selectedUserData?.is_udyam }));
+            const data = convertToFormikSelectJson("id", "name", resp?.payload);
+            setDocTypeList(data);
+          } catch (error) {
+            console.error("Error uploading documents:", error);
+          }
+        }
+      }
+    };
+
+    // Call the async function
+    fetchData();
   }, [selectedUserData, dispatch]);
+
 
   useEffect(() => {
     return () => {
