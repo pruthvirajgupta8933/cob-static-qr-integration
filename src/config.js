@@ -100,6 +100,12 @@ const API_LIVE = {
   // https://stage-merchantonboarding.sabpaisa.in
 
 
+  //profile edit email and phone
+  EDIT_PROFILE_OTP: `${url}/auth-service/account/edit-profile-otp`,
+  UPDATE_PROFILE: `${url}/auth-service/account/edit-profile`,
+
+
+
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
   ////////////MFA
   MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
