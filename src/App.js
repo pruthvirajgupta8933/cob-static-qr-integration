@@ -26,7 +26,6 @@ const App = () => {
       setLogin(true);
     }
   }, []);
-
   // logout session expireTime if user not idle
   const logOutUser = (isLoggedIn) => {
     setLogin(isLoggedIn);
