@@ -84,7 +84,7 @@ function ContactInfoKyc(props) {
 
 
 
-  let id_number = newDecrypt(sessionStorage.getItem("id_number"))
+  let id_number = sessionStorage.getItem("id_number")
   let proof_id = parseInt(newDecrypt(sessionStorage.getItem("proof_id")))
   let proof_text = newDecrypt(sessionStorage.getItem("proof_text"))
 
@@ -338,9 +338,11 @@ function ContactInfoKyc(props) {
             resp.meta.requestStatus === "fulfilled" &&
             resp.payload.status === true
           ) {
+
             setIdProofInputToggle(false);
             updateIdProofVerifyStatus.current = 1;
             toastConfig.successToast(resp.payload.message);
+            sessionStorage.setItem("id_number", resp.payload.masked_aadhar_number);
 
             // Remove specific keys from the URL
             const url = new URL(window.location.href);
@@ -354,6 +356,7 @@ function ContactInfoKyc(props) {
             );
             hasFetchedRef.current[memoParamId] = false; // Allow retry
           }
+
         })
         .catch(() => {
           setAadhaarVerificationLoader(false);
@@ -461,8 +464,8 @@ function ContactInfoKyc(props) {
     setFieldValue("oldIdNumber", "");
     setFieldValue("isIdProofVerified", "");
 
-    const enc_id_number = newEcrypt(e.target.value)
-    sessionStorage.setItem("id_number", enc_id_number)
+    // const enc_id_number = newEcrypt(e.target.value)
+    // sessionStorage.setItem("id_number", enc_id_number)
   }
 
 
