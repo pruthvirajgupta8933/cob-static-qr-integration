@@ -53,7 +53,7 @@ function ContactInfoKyc(props) {
   const location = useLocation();
   const redirectReposnseParams = new URLSearchParams(location.search);
   const aadhaar_resp_id = redirectReposnseParams.get("id");
-
+  // console.log("aadhaar_resp_id", aadhaar_resp_id);
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
@@ -84,11 +84,15 @@ function ContactInfoKyc(props) {
 
 
 
-  let id_number = newDecrypt(sessionStorage.getItem("id_number"))
-  let proof_id = newDecrypt(sessionStorage.getItem("proof_id"))
+  let id_number = sessionStorage.getItem("id_number")
+  let proof_id = parseInt(newDecrypt(sessionStorage.getItem("proof_id")))
   let proof_text = newDecrypt(sessionStorage.getItem("proof_text"))
 
+  // console.log("updateIdProofVerifyStatus.current", updateIdProofVerifyStatus.current);
 
+  // console.log("id_number", id_number);
+  // console.log("proof_id", proof_id);
+  // console.log("proof_text", proof_text);
 
   const initialValues = {
     name: KycList?.name || "",
@@ -119,7 +123,7 @@ function ContactInfoKyc(props) {
   };
 
 
-
+  // console.log(initialValues)
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -178,12 +182,11 @@ function ContactInfoKyc(props) {
       otherwise: Yup.string().when("id_proof_type", {
         is: 4, // Case: id_proof_type = 4 
         then: Yup.string()
-          // .min(10, "Minimum 10 digits are required")
           .required("Required")
           .nullable(),
         otherwise: Yup.string().when("id_proof_type", {
           is: 3, // Case: id_proof_type = 3 (e.g., Voter ID)
-          then: Yup.string().length(10, "Invalid Voter ID"),
+          then: Yup.string().length(10, "Invalid Voter ID").nullable(),
           otherwise: Yup.string()
             .allowOneSpace()
             .required("Required")
@@ -229,9 +232,10 @@ function ContactInfoKyc(props) {
 
 
     return () => {
-      sessionStorage.removeItem("id_number")
-      sessionStorage.removeItem("proof_id")
-      sessionStorage.removeItem("proof_text")
+      // console.log("Clear the session");
+      // sessionStorage.removeItem("id_number")
+      // sessionStorage.removeItem("proof_id")
+      // sessionStorage.removeItem("proof_text")
     }
   }, []);
 
@@ -252,11 +256,14 @@ function ContactInfoKyc(props) {
       })
     )
       .then((res) => {
+
+        // console.log("res", res);
         if (
           res?.meta?.requestStatus === "fulfilled" &&
           res.payload?.status === true
         ) {
           // clear the session
+          // console.log("Clear the session 2!")
           sessionStorage.removeItem("id_number")
           sessionStorage.removeItem("proof_id")
           sessionStorage.removeItem("proof_text")
@@ -319,44 +326,42 @@ function ContactInfoKyc(props) {
     // Only proceed if:
     // 1. memoParamId has a value
     // 2. We have NOT already fetched for this specific memoParamId
-
+    // console.log("memoParamId", memoParamId)
+    // console.log("hasFetchedRef", hasFetchedRef)
+    setSelectedIdProofName(proof_text);
     if (memoParamId && !hasFetchedRef.current[memoParamId]) {
-      // Mark this memoParamId as "currently fetching" or "fetched"
-      // This prevents duplicate calls if memoParamId doesn't change but the component re-renders
-      hasFetchedRef.current[memoParamId] = true;
-      // setSelectedIdProofName(proof_text);
+      hasFetchedRef.current[memoParamId] = true; // Mark as fetched
+
       dispatch(aadhaarGetAadhaarSlice({ aadhaar_id: memoParamId }))
         .then((resp) => {
-          // console.log(resp.payload);
           if (
             resp.meta.requestStatus === "fulfilled" &&
             resp.payload.status === true
           ) {
-            updateIdProofVerifyStatus.current = 1
+
+            setIdProofInputToggle(false);
+            updateIdProofVerifyStatus.current = 1;
             toastConfig.successToast(resp.payload.message);
-            history.replace(location.pathname)
+            sessionStorage.setItem("id_number", resp.payload.masked_aadhar_number);
 
-
-
+            // Remove specific keys from the URL
+            const url = new URL(window.location.href);
+            ["requestId", "status", "scope"].forEach((key) => url.searchParams.delete(key));
+            const newUrl = url.toString();
+            window.history.replaceState(null, "", newUrl); // Update the URL without reloading
           } else {
-            // setAadhaarVerificationLoader(false);
-            updateIdProofVerifyStatus.current = ""
+            updateIdProofVerifyStatus.current = "";
             toastConfig.errorToast(
               resp.payload ?? "Something went wrong, Please try again"
             );
-            history.replace(location.pathname)
-            // If the API call failed, reset the flag for this ID
-            // This allows a retry if the component re-renders or memoParamId changes again
-            hasFetchedRef.current[memoParamId] = false;
+            hasFetchedRef.current[memoParamId] = false; // Allow retry
           }
+
         })
-        .catch(error => {
-          // Handle network errors or other unexpected errors during dispatch
-          // console.error('API dispatch error:', error);
+        .catch(() => {
           setAadhaarVerificationLoader(false);
-          toastConfig.errorToast('An unexpected error occurred. Please try again.');
-          // Reset the flag on error to allow retries
-          hasFetchedRef.current[memoParamId] = false;
+          toastConfig.errorToast("An unexpected error occurred. Please try again.");
+          hasFetchedRef.current[memoParamId] = false; // Allow retry
         });
     }
 
@@ -370,8 +375,9 @@ function ContactInfoKyc(props) {
     setAadhaarVerificationLoader(true);
     // window.location.href = `https://api.digitallocker.gov.in/public/oauth2/1/authorize?client_id=7E5773C4&code_challenge=jcm7ODH9eH9uMTw4PRKvLxkXh0g2yTlpO8Ax1U9_X68&code_challenge_method=S256&consent_valid_till=1829141682&dl_flow=signup&pla&purpose=kyc&redirect_uri=https%3A%2F%2Fdigilocker-preproduction.signzy.tech%2Fdigilocker-auth-complete&req_doctype=PANCR%2CADHAR%2CDRVLC&response_type=code&state=68809430c9db0108d4bb2e14`;
 
+    const redirect_url = window.location.href
 
-    dispatch(aadhaarCreateUrlSlice({ aadhar_number })).then(
+    dispatch(aadhaarCreateUrlSlice({ aadhar_number, redirect_url })).then(
       (resp) => {
         if (
           resp.meta.requestStatus === "fulfilled" &&
@@ -458,8 +464,8 @@ function ContactInfoKyc(props) {
     setFieldValue("oldIdNumber", "");
     setFieldValue("isIdProofVerified", "");
 
-    const enc_id_number = newEcrypt(e.target.value)
-    sessionStorage.setItem("id_number", enc_id_number)
+    // const enc_id_number = newEcrypt(e.target.value)
+    // sessionStorage.setItem("id_number", enc_id_number)
   }
 
 
@@ -497,7 +503,7 @@ function ContactInfoKyc(props) {
           </span>
         ) : (
           <div className="input-group-append">
-            {idType === "1" && (
+            {idType == "1" && (
               <button
                 // href={() => false}
                 type='button'
@@ -521,7 +527,7 @@ function ContactInfoKyc(props) {
                 )}
               </button>
             )}
-            {idType === "3" && (
+            {idType == "3" && (
               <button
                 // href={() => false}
                 type='button'
@@ -541,7 +547,7 @@ function ContactInfoKyc(props) {
                 )}
               </button>
             )}
-            {idType === "4" && (
+            {idType == "4" && (
               <button
                 // href={() => false}
                 type='button'
@@ -626,11 +632,12 @@ function ContactInfoKyc(props) {
 
   useEffect(() => {
     let IdProofName = ""
-    if (KycList?.id_proof_type === null || KycList?.id_proof_type === undefined) {
+    if ((KycList?.id_proof_type === null || KycList?.id_proof_type === undefined) && !proof_id) {
       // If id_proof_type is null or undefined
       setIdProofInputToggle(true);
+      // console.log("11", KycList?.id_proof_type)
     } else {
-
+      // console.log("22", KycList?.id_proof_type)
       setIdProofInputToggle(false);
       setIdType(proof_id || KycList?.id_proof_type);
       IdProofName = proofIdList.data?.find(
@@ -719,6 +726,8 @@ function ContactInfoKyc(props) {
                       onChange={(e) => idProofChangeHandler(e, setFieldValue)}
                       disabled={VerifyKycStatus === "Verified" || KycList?.isEmailVerified !== 1 ? true : false}
                     >
+
+                      {/* {console.log("typeof", typeof (proof_id))} */}
                       <option value="">Select ID Proof</option>
                       {proofIdList.data?.map((item) => {
                         if (item.is_active)
@@ -960,5 +969,6 @@ function ContactInfoKyc(props) {
     </div>
   );
 }
+
 
 export default ContactInfoKyc;

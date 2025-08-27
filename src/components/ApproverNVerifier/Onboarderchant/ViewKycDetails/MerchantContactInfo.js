@@ -133,7 +133,7 @@ function MerchantContactInfo(props) {
             <input type="text" className="form-control" disabled={true} value={field.value} />
             {field.verified !== undefined && (
               <p className={field.verified === 1 ? "text-success" : "text-danger"}>
-                {field.verified === 1 ? "Verified" : "Not Verified"}
+                {field.verified === 1 ? "Verified" : ""}
               </p>
             )}
           </div>
