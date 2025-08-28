@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-// import { PaymentInitModal } from "pg-test-project";
+import React, { useState, useEffect } from 'react'
+import { PaymentInitModal } from "pg-test-project";
+
 
 function SabpaisaPaymentGateway(props) {
-  const clientDetails = props?.clientData;
+  const clientDetails = props?.clientData
   const [isOpen, setIsOpen] = useState(false);
   const [clientCode, setClientCode] = useState("SRSSUB");
   const [transUserName, setTransUserName] = useState("nishant.jha_6493");
@@ -41,23 +42,27 @@ function SabpaisaPaymentGateway(props) {
   const [programId, setprogramId] = useState("x");
   const [mcc, setmcc] = useState("");
 
+
   useEffect(() => {
-    setIsOpen(props?.openPg);
+
+    setIsOpen(props?.openPg)
     setpayerName(clientDetails?.clientContactPersonName);
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
-    setclientTxnId(props?.clientTxnId);
+    setclientTxnId(props?.clientTxnId)
     setamount(props?.planData?.[0]?.actual_price);
-    setudf12(props?.clientData?.clientMerchantDetailsList[0]?.clientCode);
-    setudf13(props?.planData?.[0]?.plan_id);
-    setudf14(props?.planData?.[0]?.plan_name);
-    setudf15(props?.planData?.[0]?.app_id);
-    setudf16(props?.subscribeId);
-  }, [props, clientDetails]);
+    setudf12(props?.clientData?.clientMerchantDetailsList[0]?.clientCode)
+    setudf13(props?.planData?.[0]?.plan_id)
+    setudf14(props?.planData?.[0]?.plan_name)
+    setudf15(props?.planData?.[0]?.app_id)
+    setudf16(props?.subscribeId)
+
+  }, [props, clientDetails])
+
 
   return (
-    <div>
-      {/* {(clientCode && transUserPassword && transUserName && authkey && authiv) &&
+    <div> {
+      (clientCode && transUserPassword && transUserName && authkey && authiv) &&
       <PaymentInitModal
         clientCode={clientCode}
         transUserPassword={transUserPassword}
@@ -84,9 +89,12 @@ function SabpaisaPaymentGateway(props) {
         mcc={mcc}
         label={"Production"}
         env={'prod'}
-      />} */}
-    </div>
-  );
+      />
+
+
+
+    }</div>
+  )
 }
 
-export default SabpaisaPaymentGateway;
+export default SabpaisaPaymentGateway
