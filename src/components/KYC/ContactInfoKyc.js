@@ -26,16 +26,16 @@ import {
 } from "../../slices/kycValidatorSlice";
 import { useLocation, useHistory } from "react-router-dom";
 
-import keyConfig from "../../key.config";
-import { Decrypt, Encrypt } from "../../utilities/aes";
+// import keyConfig from "../../key.config";
+// import { Decrypt, Encrypt } from "../../utilities/aes";
 
-const newEcrypt = (value) =>
-  Encrypt(value, keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV);
+// const newEcrypt = (value) =>
+//   Encrypt(value, keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV);
 
-const newDecrypt = (value) => {
-  if (!value) return value;
-  return Decrypt(value, keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV);
-};
+// const newDecrypt = (value) => {
+//   if (!value) return value;
+//   return Decrypt(value, keyConfig.LOGIN_AUTH_KEY, keyConfig.LOGIN_AUTH_IV);
+// };
 
 // Keys to persist ONLY Aadhaar result across refresh/reinit
 const AADHAAR_MASKED_KEY = "aadhaar_masked_number";
@@ -80,8 +80,8 @@ function ContactInfoKyc(props) {
   // Session (persisted) bits we use to *override* Aadhaar on reinit
   const sessionMaskedAadhaar = sessionStorage.getItem(AADHAAR_MASKED_KEY) || "";
   const sessionAadhaarType = sessionStorage.getItem(AADHAAR_TYPE_KEY) || ""; // "1" means verified Aadhaar
-  const proof_id_ss = parseInt(newDecrypt(sessionStorage.getItem(PROOF_ID_KEY)));
-  const proof_text_ss = newDecrypt(sessionStorage.getItem(PROOF_TEXT_KEY));
+  const proof_id_ss = parseInt(sessionStorage.getItem(PROOF_ID_KEY));
+  const proof_text_ss = sessionStorage.getItem(PROOF_TEXT_KEY);
 
   // ---------- Validation ----------
   const validationSchema = Yup.object().shape({
@@ -298,6 +298,7 @@ function ContactInfoKyc(props) {
   const aadhaarVerificationHandler = async (aadhar_number, setFieldVal) => {
     setAadhaarVerificationLoader(true);
     const redirect_url = window.location.href;
+    // const redirect_url = "https://misportal.sabpaisa.in/";
 
     dispatch(aadhaarCreateUrlSlice({ aadhar_number, redirect_url })).then((resp) => {
       if (resp.meta.requestStatus === "fulfilled" && resp.payload.status === true) {
@@ -349,9 +350,11 @@ function ContactInfoKyc(props) {
       if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
         setFieldVal("oldIdNumber", voterId);
         setFieldVal("isIdProofVerified", 1);
+      } else {
+        toastConfig.errorToast(res?.payload || "Something went wrong. Please try again");
       }
-    } catch {
-      toast.error(res?.payload?.message);
+    } catch (error) {
+      toast.error(error?.message || "An unexpected error occurred. Please try again.");
       setOtpLoader(false);
     }
   };
@@ -400,8 +403,8 @@ function ContactInfoKyc(props) {
 
     sessionStorage.removeItem(AADHAAR_MASKED_KEY);
     sessionStorage.removeItem(AADHAAR_TYPE_KEY);
-    sessionStorage.setItem(PROOF_ID_KEY, newEcrypt(val));
-    sessionStorage.setItem(PROOF_TEXT_KEY, newEcrypt(txt));
+    sessionStorage.setItem(PROOF_ID_KEY, val);
+    sessionStorage.setItem(PROOF_TEXT_KEY, txt);
   };
 
   const renderInputField = ({ values, errors, setFieldValue }) => (
@@ -512,6 +515,8 @@ function ContactInfoKyc(props) {
           // keep Aadhaar session values; clearing only proof selection
           sessionStorage.removeItem(PROOF_ID_KEY);
           sessionStorage.removeItem(PROOF_TEXT_KEY);
+          sessionStorage.removeItem(AADHAAR_MASKED_KEY);
+          sessionStorage.removeItem(AADHAAR_TYPE_KEY);
 
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
