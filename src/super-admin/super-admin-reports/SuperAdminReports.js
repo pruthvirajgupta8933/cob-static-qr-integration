@@ -218,7 +218,7 @@ const SuperAdminReports = () => {
                                     options={options}
                                     placeholder="Select Table"
                                     filterOption={createFilter({ ignoreAccents: false })}
-                                    label="Select Table"
+                                    label="Select Table*"
                                     onChange={(selectedOption) => {
                                         formik.setFieldValue('react_select', selectedOption);
                                         handleChange(selectedOption);
@@ -230,7 +230,7 @@ const SuperAdminReports = () => {
                                     control="input"
                                     type="text"
                                     name="client_code"
-                                    label="Client Code"
+                                    label="Client Code (Optional)"
                                     placeholder="Enter Client Code"
                                     className="form-control"
                                 />
@@ -238,7 +238,7 @@ const SuperAdminReports = () => {
                             <div className="form-group col-md-3">
                                 <FormikController
                                     control="date"
-                                    label="From Date"
+                                    label="From Date (Optional)"
                                     id="from_date"
                                     name="from_date"
                                     value={formik.values.from_date ? new Date(formik.values.from_date) : null}
@@ -252,7 +252,7 @@ const SuperAdminReports = () => {
                             <div className="form-group col-md-3">
                                 <FormikController
                                     control="date"
-                                    label="End Date"
+                                    label="End Date (Optional)"
                                     id="to_date"
                                     name="to_date"
                                     value={formik.values.to_date ? new Date(formik.values.to_date) : null}
