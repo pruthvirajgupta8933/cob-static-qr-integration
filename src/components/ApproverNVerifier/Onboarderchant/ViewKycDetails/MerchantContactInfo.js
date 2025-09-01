@@ -128,6 +128,7 @@ function MerchantContactInfo(props) {
       <h6 className="">Merchant Contact Info</h6>
       <div className="form-row g-3">
         {inputFields?.map((field) => (
+
           <div className="col-sm-6 col-md-6 col-lg-6 mb-3" key={uuidv4()}>
             <label className="">{field.label}</label>
             <input type="text" className="form-control" disabled={true} value={field.value} />
