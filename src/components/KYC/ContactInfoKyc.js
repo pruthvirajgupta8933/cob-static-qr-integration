@@ -131,13 +131,13 @@ function ContactInfoKyc(props) {
 
     id_number: Yup.string().when("id_proof_type", {
       is: 1,
-      then: Yup.string().max(12, "Maximum 12 digits are required").required("Required").nullable(),
+      then: Yup.string().required("Required").nullable(),
       otherwise: Yup.string().when("id_proof_type", {
         is: 4,
         then: Yup.string().required("Required").nullable(),
         otherwise: Yup.string().when("id_proof_type", {
           is: 3,
-          then: Yup.string().length(10, "Invalid Voter ID").nullable(),
+          then: Yup.string().nullable(),
           otherwise: Yup.string().allowOneSpace().required("Required").nullable(),
         }),
       }),
