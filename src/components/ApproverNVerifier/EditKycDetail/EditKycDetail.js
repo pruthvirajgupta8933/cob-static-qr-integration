@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classes from "./editkycDetails.module.css"
 import ContactInfoEdtkyc from "./ContactInfoEdtkyc";
 import BusinessOverviewEditKyc from "./BusinessOverviewEditKyc";
@@ -19,7 +19,9 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 
 function EditKycDetail() {
   const dispatch = useDispatch();
-  const [clientCodeList, setCliencodeList] = useState([])
+  const { clientCodeList } = useSelector(
+    (state) => state.approverDashboard
+  );
   const [selectedId, setSelectedId] = useState(null);
   const [showForm, setShowForm] = useState(false)
   const [tab, SetTab] = useState(1);
@@ -29,11 +31,17 @@ function EditKycDetail() {
     react_select: ""
   }
 
+  const FIVE_MINUTES = 5 * 60 * 1000;
   useEffect(() => {
-    dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setCliencodeList(resp?.payload?.result)
-    })
-  }, [])
+    const interval = setInterval(() => {
+      dispatch(getAllCLientCodeSlice());
+    }, FIVE_MINUTES);
+    if (clientCodeList.length === 0) {
+      dispatch(getAllCLientCodeSlice());
+    }
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(kycUserList({ login_id: selectedId, masking: 1 }));
@@ -53,8 +61,8 @@ function EditKycDetail() {
     }))
   ];
 
-  
-    const roles = roleBasedAccess();
+
+  const roles = roleBasedAccess();
 
   return (
     <section className="ant-layout NunitoSans-Regular">
@@ -119,7 +127,7 @@ function EditKycDetail() {
             }} >
 
               View Document</a>
-             <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 7 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
+            <a href={false} className={`nav-link kyc-menu-font rounded-0 ${tab === 7 ? 'btn btn-sm cob-btn-primary  text-white' : ''} ${classes.kyc_tab_link}`} type="button" onClick={() => {
               SetTab(7);
               setTitle("Update Location");
             }} >
@@ -171,7 +179,7 @@ function EditKycDetail() {
                   (tab === 6 && (
                     <ViewDocument selectedId={selectedId} />
                   )) || (tab === 7 && (
-                    <SaveLocation role={roles} propCurrentTab={3}  />
+                    <SaveLocation role={roles} propCurrentTab={3} />
                   )) || <ContactInfoEdtkyc
 
                     tab={SetTab}

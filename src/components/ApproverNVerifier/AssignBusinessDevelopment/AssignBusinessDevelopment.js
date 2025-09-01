@@ -16,7 +16,10 @@ import {
 import { assignBd } from "./bdSlice.js/bdSlice";
 
 const AssigneBusinessDevelopment = () => {
-    const [clientCodeList, setClientCodeList] = useState([]);
+    const { clientCodeList } = useSelector(
+        (state) => state.approverDashboard
+    );
+    // const [clientCodeList, setClientCodeList] = useState([]);
     const [selectedClient, setSelectedClient] = useState(null);
     const [assignedAccountManger, setAssignedAccountManger] = useState("");
     const [assignDetails, setAssignDetails] = useState([]);
@@ -71,11 +74,18 @@ const AssigneBusinessDevelopment = () => {
             });
     }, []);
 
+
+    const FIVE_MINUTES = 5 * 60 * 1000;
     useEffect(() => {
-        dispatch(getAllCLientCodeSlice()).then((resp) => {
-            setClientCodeList(resp?.payload?.result);
-        });
-    }, []);
+        const interval = setInterval(() => {
+            dispatch(getAllCLientCodeSlice());
+        }, FIVE_MINUTES);
+        if (clientCodeList.length === 0) {
+            dispatch(getAllCLientCodeSlice());
+        }
+
+        return () => clearInterval(interval);
+    }, [dispatch]);
 
     const onSubmit = (values) => {
         setDisable(true);

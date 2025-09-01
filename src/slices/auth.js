@@ -361,7 +361,11 @@ const authSlice = createSlice({
     updateClientDataInLocal: (state, action) => {
       state.user = action.payload
 
-    }
+    },
+
+    updateUserProfile: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -470,6 +474,6 @@ const authSlice = createSlice({
 });
 
 
-export const { isUserAlreadyLogin, updateClientDataInLocal } = authSlice.actions
+export const { isUserAlreadyLogin, updateClientDataInLocal, updateUserProfile } = authSlice.actions
 const { reducer } = authSlice;
 export default reducer;

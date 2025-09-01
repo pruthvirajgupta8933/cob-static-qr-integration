@@ -369,15 +369,9 @@ const TotalPayers = () => {
         })
     };
 
-
-
-
-
     const edit = () => {
         loadData(initialValues);
     };
-
-
 
     return (
         <React.Fragment>
@@ -414,7 +408,7 @@ const TotalPayers = () => {
                                 <div className="col-md-6">
                                     <h6 className="mb-0">Total Payer</h6>
                                 </div>
-                                <div className="col-md-6 d-flex justify-content-end">
+                                <div className="col-md-6 d-flex justify-content-end gap-3">
 
 
 
@@ -424,24 +418,25 @@ const TotalPayers = () => {
                                                 <i className="fa fa-trash"></i> Delete ({selectedRows?.length} Payer)
                                             </button>
                                         </div>}
-
-                                        <SearchBar
-                                            searchTerm={searchTerm}
-                                            setSearchTerm={setSearchTerm}
-                                            onSearch={formSubmit}
-                                            placeholder="Name, Email, Mobile"
-                                            loadData={loadData}
-                                        />
+                                        <div className="d-flex align-items-center mt-1 ms-3">
+                                            <div className="me-3">
+                                                <SearchBar
+                                                    searchTerm={searchTerm}
+                                                    setSearchTerm={setSearchTerm}
+                                                    onSearch={formSubmit}
+                                                    placeholder="Name, Email, Mobile"
+                                                    loadData={loadData}
+                                                />
+                                            </div>
+                                            <CountPerPageFilter
+                                                pageSize={pageSize}
+                                                dataCount={dataCount}
+                                                currentPage={currentPage}
+                                                changePageSize={changePageSize}
+                                                changeCurrentPage={changeCurrentPage}
+                                            />
+                                        </div>
                                     </div>
-
-
-                                    <CountPerPageFilter
-                                        pageSize={pageSize}
-                                        dataCount={dataCount}
-                                        currentPage={currentPage}
-                                        changePageSize={changePageSize}
-                                        changeCurrentPage={changeCurrentPage}
-                                    />
                                 </div>
                             </div>
                         </div>

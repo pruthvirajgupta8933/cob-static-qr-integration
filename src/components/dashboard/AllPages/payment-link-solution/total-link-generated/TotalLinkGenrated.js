@@ -15,11 +15,6 @@ import ActionButtons from "../ActionButtons";
 import FilterModal from "../FilterModal";
 import SearchBar from "../searchBar/SearchBar";
 
-
-
-
-
-
 const TotalLinkGenrated = () => {
     const [pageSize, setPageSize] = useState(10);
     const [data, setData] = useState([]);
@@ -314,7 +309,7 @@ const TotalLinkGenrated = () => {
                                 </div>
                                 {filterData?.length !== 0 && (
                                     <div className="col-md-6 d-flex justify-content-end gap-3 ">
-                                        <div className="d-flex align-items-center mt-4">
+                                        <div className="d-flex align-items-center mt-1 mr-2">
                                             <SearchBar
                                                 searchTerm={searchTerm}
                                                 setSearchTerm={setSearchTerm}

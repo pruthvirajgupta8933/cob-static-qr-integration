@@ -13,10 +13,14 @@ import { kycUserList } from "../../../slices/kycSlice";
 import CardLayout from "../../../utilities/CardLayout";
 
 const AssigneAccountManger = () => {
-  const [clientCodeList, setClientCodeList] = useState([]);
+  // const [clientCodeList, setClientCodeList] = useState([]);
   const [assignmentType, setAssignmentType] = useState([]);
   const [assignDetails, setAssignDetails] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  const { clientCodeList } = useSelector(
+    (state) => state.approverDashboard
+  );
+
   const { kyc } = useSelector((state) => state);
   const KycList = kyc?.kycUserList;
   const dispatch = useDispatch();
@@ -44,11 +48,27 @@ const AssigneAccountManger = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   dispatch(getAllCLientCodeSlice()).then((resp) => {
+  //     // setClientCodeList(resp?.payload?.result);
+  //   });
+  // }, []);
+
+  // const TEN_MINUTES = 10 * 60 * 1000;
+
+  const FIVE_MINUTES = 5 * 60 * 1000;
+
+
   useEffect(() => {
-    dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setClientCodeList(resp?.payload?.result);
-    });
-  }, []);
+    const interval = setInterval(() => {
+      dispatch(getAllCLientCodeSlice());
+    }, FIVE_MINUTES);
+    if (clientCodeList.length === 0) {
+      dispatch(getAllCLientCodeSlice());
+    }
+
+    return () => clearInterval(interval);
+  }, [dispatch]); // 
 
   const fetchAccountManagers = (role_id) => {
     if (role_id) {
