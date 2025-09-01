@@ -1,0 +1,167 @@
+@import url("../src/assets/fonts/Sofia/sofia.css");
+
+// $primaryColor: #29205d;
+$primaryColor: #154280;
+$primaryColorSecond: #286ECD;
+$secondaryColor: #FF8F00;
+$lightGrayColor: #D2D2D2;
+
+.webColorBg1 {
+    background-color: #ffffff;
+}
+
+// $buttonPrimary:
+// $buttonOnHover:
+// $buttonDisable:
+
+// paragraphFontSize
+// headingFontSize
+
+// fontFamily
+
+
+#root {
+    font-family: "Sofia-Pro-Regular";
+}
+
+// outer dashboard
+.headerBg {
+    background-color: $primaryColor;
+}
+
+.primaryColorSecond {
+    background-color: $primaryColorSecond;
+}
+
+
+// --------------------------------------------------------------------------------- 
+
+// inner dashboard 
+.sidebarBg {
+    background-color: $primaryColor //;
+}
+
+.dashboardHeaderBg {
+    background-color: $primaryColor //#130532;
+}
+
+
+
+
+// --------------------------------------------------------------------------------------
+
+.cob-primary-btn-bg {
+    background-color: $primaryColor;
+}
+
+.cob-secondary-btn {
+    background-color: $secondaryColor;
+}
+
+
+
+.active-secondary {
+    color: white !important;
+    background-color: $secondaryColor !important;
+}
+
+.active-tab {
+    color: #000000 !important;
+    background-color: #ADD1F4 !important;
+}
+
+
+
+
+// global tag
+
+p {
+    font-family: "Sofia-Pro-Regular";
+    font-weight: 500;
+    font-style: normal;
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Sofia-Pro-Regular" !important;
+    font-weight: 500 !important;
+    font-style: normal !important;
+}
+
+a,
+span,
+label {
+    font-family: "Sofia-Pro-Regular";
+    font-weight: 500;
+    font-style: normal
+}
+
+.btn {
+    // font-family: "Sofia-Pro-Regular !important";
+    // font-weight: 500 !important;
+    // font-style: normal !important;;
+}
+
+input {
+    font-family: "Sofia-Pro-Regular";
+}
+
+
+.large_content_wrap {
+    word-wrap: break-word;
+    /* Break long words */
+    word-break: break-all;
+    /* Break long words anywhere */
+    white-space: normal;
+    /* Allow wrapping within the container */
+}
+
+.background_color {
+    background-color: #FAFAFA !important
+}
+
+.rs-picker-popup.rs-picker-popup-date {
+    z-index: 9999
+}
+
+.model_custom_w {
+    width: 650px;
+}
+
+.custom_hover_primary {
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.custom_hover_primary:hover {
+    color: #0d6efd;
+    cursor: pointer;
+}
+
+.customBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    z-index: 1040;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    transition: background 0.3s ease-in-out;
+    overflow: auto;
+}
+
+.backdropShow {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.react-date-picker__inputGroup__leadingZero {
+    font-size: 14px;
+}

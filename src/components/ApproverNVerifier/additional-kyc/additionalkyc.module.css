@@ -1,0 +1,6 @@
+.scroll_bar{
+    overflow-y: scroll;
+    scrollbar-width: thin;
+      height: 200px; 
+      max-height: '200px'
+}

@@ -1,0 +1,21 @@
+.search_butn {
+  background: #fff;
+  border: 1px solid #ced4da;
+  color: #333;
+  outline: none;
+  padding-right: 10px;
+  padding-left: 10px;
+  outline: none !important;
+}
+.clearfilter{
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    width: 90px;
+    background-color: #dedede;
+}
+.search-filter
+{
+  height: 37px;
+}

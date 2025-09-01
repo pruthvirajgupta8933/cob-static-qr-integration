@@ -1,0 +1,44 @@
+.file {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+  }
+  .submit-btn
+  {
+    padding: 9px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 0px;
+    border-radius: 5px;
+  }
+  .file-input label {
+    display: block;
+    position: relative;
+    width: 100px;
+    height: 35px;
+    border-radius: 3px;
+    background: #0156b3;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 400;
+    cursor: pointer;
+    transition: transform .2s ease-out;
+  }
+  .file-name {
+    position: absolute;
+    bottom: -35px;
+    left: 10px;
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}

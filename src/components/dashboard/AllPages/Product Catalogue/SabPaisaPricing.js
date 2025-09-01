@@ -1,0 +1,234 @@
+/* eslint-disable eqeqeq */
+import React, { useState, useEffect } from "react";
+import rafiki from "../../../../assets/images/rafiki.png";
+import { productSubscribeState } from "../../../../slices/dashboardSlice";
+import { useDispatch, useSelector } from "react-redux";
+import API_URL from "../../../../config";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
+import "./product.css";
+import toastConfig from "../../../../utilities/toastTypes";
+import { useParams, useHistory } from "react-router-dom";
+import { logout } from "../../../../slices/auth";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
+import CustomModal from "../../../../_components/custom_modal";
+import { v4 as uuidv4 } from 'uuid';
+import { subscribedPlanDetails,productSubDetails,subscribeFetchAppAndPlan } from "../../../../slices/merchant-slice/productCatalogueSlice";
+
+const SabPaisaPricing = () => {
+  const history = useHistory();
+  let roles = roleBasedAccess();
+  const dispatch = useDispatch();
+//  const [productDetails, setProductDetails] = useState([]);
+  // const [spinner, setSpinner] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState({});
+  const [modalToggle, setModalToggle] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
+  const {productSubDetails: productDetails} = useSelector(state => state.productCatalogueSlice);
+  const {isLoading}=useSelector((state)=>state.productCatalogueSlice)
+
+
+  const clickHandler = (value) => {
+    history.push("/dashboard");
+    dispatch(productSubscribeState(value));
+  };
+
+
+  useEffect(() => {
+    if (roles?.merchant !== true) {
+      dispatch(logout())
+    }
+  })
+
+
+  const param = useParams();
+
+  const getSubscribedPlan = (id) => {
+    
+    
+    const postData = {
+      "clientId": clientId,
+      "applicationId": id
+    }
+    dispatch(subscribedPlanDetails(postData))
+      .then((resp) => {
+       
+        setSelectedPlan(resp?.payload?.data[0])
+      }).catch(()=>{
+        console.log("in error")
+      })
+  }
+
+
+  useEffect(() => {
+    const id = param?.id;
+   dispatch(productSubDetails(id))
+      
+    getSubscribedPlan(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+
+  const handleClick = async (plan_id, plan_name, plan_code) => {
+   
+    const postData = {
+      clientId: clientId,
+      applicationName: param?.name,
+      planId: plan_id,
+      planName: plan_name,
+      applicationId: param?.id,
+    };
+
+   
+    dispatch(subscribeFetchAppAndPlan(postData))
+    .then(res => {
+      if (res?.meta.requestStatus === "fulfilled") {
+        getSubscribedPlan(param?.id);
+        setModalToggle(true)
+      }
+
+    }).catch(error => toastConfig.errorToast(error.response?.data?.detail))
+
+  };
+
+
+
+  const modalBody = () => {
+    return (
+      <React.Fragment>
+        <h2 className="subscribingproduct mb-0">
+          Thank You For Subscribing
+        </h2>
+        <div className="text-center">
+          <h2 className="manshacss">
+            Our team will contact you and help you integrate your platform.
+            Till then, please familiarize yourself with our Dashboard
+          </h2>
+        </div>
+        <div className="row">
+          <div className="col-lg-12 text-center">
+            <img
+              src={rafiki}
+              className="modalsimageclass-1"
+              alt="SabPaisa"
+              title="SabPaisa"
+              style={{ width: 250 }}
+            />
+          </div>
+        </div>
+      </React.Fragment>
+    )
+  }
+  const modalFooter = () => {
+    return (
+      <div className="col-lg-12 text-center">
+
+        <button
+          type="button"
+          className="ColrsforredirectProdct text-white m-0"
+          onClick={() => clickHandler(true)}
+          data-dismiss="modal"
+        >
+          Return to Dashboard
+        </button>
+
+      </div>
+    )
+  }
+
+  return (
+
+    <section className="ant-layout">
+
+
+      {/* custom modal for thanks message after select the plan */}
+      <CustomModal modalBody={modalBody} modalFooter={modalFooter} modalToggle={modalToggle} fnSetModalToggle={setModalToggle} />
+
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+
+        <div className="text-center">
+          <h1 >SabPaisa Pricing</h1>
+          <h5 className="headingpricing prdhead">{param?.name}</h5>
+          <h5 className="forbasicparacss">
+            We offer a very competitive pricing to match your business needs.
+            Sign Up now to get started.
+          </h5>
+        </div>
+        <div className="container">
+          
+          <div className="d-flex justify-content-center flex-wrap">
+          {isLoading && <span className="spinner-border" role="status"></span>}
+          
+            {productDetails.map((Products) => (
+              // If the user selects the business category gaming, hide the subscription plan
+              (business_cat_code === "37" && Products.plan_code === "005") ? (
+                <React.Fragment key={uuidv4()}></React.Fragment>
+              ) : (
+                <div key={uuidv4()} className="col-lg-4 card mx-3 mb-3">
+                  <div className="card-body">
+                    <div className="col-lg-12 text-center">
+                      {param?.id === '14' ? (
+                        <h2 className="bold-font text-center mb-20 price d_block">
+                          {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ? (
+                            <></>
+                          ) : (
+                            <>
+                              {Products?.plan_price?.split("*")[0]}{' '}
+                              <span className={`title2 ${param?.id === "14" ? 'fontn' : 'fontna'}`}>
+                                {Products?.plan_price?.split("*")[1]}
+                              </span>
+                            </>
+                          )}
+                        </h2>
+                      ) : (
+                        <>
+                          <h1 className="card-title- cardoneheadingcss pb-3-">{Products.plan_name}</h1>
+                          <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length === 2 ? 'fs-6' : ''}`}>
+                            {Products.plan_price === "Connect" && Products.plan_name === "Enterprise" ? (
+                              <></>
+                            ) : (
+                              <>
+                                {Products?.plan_price?.split("*")[0]}{' '}
+                                <span className="title2">{Products?.plan_price?.split("*")[1]}</span>
+                              </>
+                            )}
+                          </span>
+                          <h3 className="paragraphcsss text-center">{Products?.plan_type}</h3>
+                        </>
+                      )}
+                      <button
+                        type="button"
+                        className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
+                        disabled={selectedPlan?.mandateStatus === "success"}
+                        onClick={() => {
+                          if (selectedPlan?.planId !== Products?.plan_id) {
+                            handleClick(Products.plan_id, Products.plan_name, Products?.plan_code);
+                          }
+                        }}
+                      >
+                        {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
+                      </button>
+                    </div>
+                    <span className="w-50 pxsolid text-center">&nbsp;</span>
+                    <h2 className="featurespricing text-center">FEATURES INCLUDING</h2>
+                    <div className="text-center">
+                      {Products?.plan_description
+                        .split(",")
+                        .map((details, i) => (
+                          <p key={uuidv4()} className="firstli1 mb-1">{details}</p>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            ))}
+              
+          </div>
+        </div>
+      </main>
+    </section>
+  );
+};
+
+export default SabPaisaPricing;

@@ -1,0 +1,438 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Formik, Form, ErrorMessage } from "formik";
+import Yup from "../../../../../../_components/formik/Yup";
+import FormikController from "../../../../../../_components/formik/FormikController";
+import {
+  Regex,
+  RegexMsg,
+} from "../../../../../../_components/formik/ValidationRegex";
+import { convertToFormikSelectJson } from "../../../../../../_components/reuseable_components/convertToFormikSelectJson";
+import {
+  saveMerchantBasicDetails,
+  updateBasicDetailsSlice,
+} from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import {
+  busiCategory,
+  businessType,
+  kycUserList,
+} from "../../../../../../slices/kycSlice";
+import toastConfig from "../../../../../../utilities/toastTypes";
+
+function BasicDetailsOps({
+  setCurrentTab,
+  isEditableInput,
+  zoneCode,
+  bankLoginId,
+  editKyc,
+}) {
+  const dispatch = useDispatch();
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [businessCode, setBusinessCode] = useState([]);
+  const [businessTypeData, setBusinessTypeData] = useState([]);
+  const [passwordType, setPasswordType] = useState({ showPasswords: false });
+  const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
+    (state) => state
+  );
+
+  const { kycUserList: kycData } = kyc;
+  const { merchantBasicDetails, merchantOnboardingProcess } =
+    merchantReferralOnboardReducer;
+  const loginIdFromState = merchantOnboardingProcess?.merchantLoginId !== "";
+
+  const initialValues = {
+    fullName: kycData?.name ?? "",
+    mobileNumber:
+      kycData?.contactNumber ?? "",
+    email_id: kycData?.emailId ?? "",
+    business_category:
+      kycData?.businessCategory ?? "",
+    business_type: kycData?.businessType ?? "",
+    password: editKyc ? "********" : merchantBasicDetails?.resp?.password ?? "",
+    username: kycData?.username ?? "",
+    isEditTable: loginIdFromState,
+    zone_code: "",
+    bank_login_id: "",
+    developer_name: kycData?.developer_name || "",
+    developer_contact: kycData?.developer_contact || "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
+      .wordLength("Word character length exceeded", 100)
+      .max(100, "Maximum 100 characters are allowed")
+      .required("Required")
+      .nullable(),
+    mobileNumber: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
+      .required("Required")
+      .min(10, "Phone number is not valid")
+      .max(10, "Only 10 digits are allowed ")
+      .nullable(),
+    email_id: Yup.string()
+      .allowOneSpace()
+      .email("Invalid email")
+      .required("Required")
+      .nullable(),
+    business_category: Yup.string().required("Required"),
+    business_type: Yup.string().required("Required"),
+
+    password: editKyc
+      ? Yup.string()
+        .matches(
+          /(?:\*+|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,})$/,
+          RegexMsg.password
+        )
+        .required("Required")
+      : Yup.string()
+        .allowOneSpace()
+        .when("isEditTable", {
+          is: true,
+          then: Yup.string(),
+
+          otherwise: (Yup) =>
+            Yup.matches(Regex.password, RegexMsg.password).required(
+              "Required"
+            ),
+        }),
+    username: Yup.string()
+      .allowOneSpace()
+      .required("Required")
+      .min(6, "Minimum 6 characters are allowed")
+      .max(100, "Maximum 100 characters are allowed")
+      .matches(Regex.userNameRegex, RegexMsg.userNameRegex)
+      .nullable(),
+
+    developer_name: Yup.string()
+      .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
+      .max(100, "Maximum 50 characters are allowed")
+      .nullable(),
+    developer_contact: Yup.string()
+      .allowOneSpace()
+      .matches(Regex.phoneNumber_Masked, RegexMsg.phoneNumber)
+      .min(10, "Phone number is not valid")
+      .max(10, "Only 10 digits are allowed")
+      .nullable(),
+
+
+  });
+
+  const handleSubmitContact = async (value) => {
+    setSubmitLoader(true);
+    setDisable(true);
+    const {
+      fullName,
+      mobileNumber,
+      email_id,
+      business_category,
+      password,
+      business_type,
+      username,
+      developer_contact,
+      developer_name
+    } = value;
+
+    const updateReqBody = {
+      login_id:
+        kycData?.loginMasterId ?? merchantOnboardingProcess?.merchantLoginId,
+      name: fullName,
+      email: email_id,
+      mobileNumber: mobileNumber,
+      business_category: business_category,
+      business_type: business_type,
+      updated_by: auth?.user?.loginId,
+      password: kycData?.secret_key,
+      zone_code: zoneCode,
+      developer_contact: developer_contact,
+      developer_name: developer_name
+    };
+
+    const saveDetailsReqBody = {
+      name: fullName,
+      mobileNumber: mobileNumber,
+      email: email_id,
+      business_category: business_category,
+      business_type: business_type,
+      password: password,
+      username: username,
+      bank_login_id: auth?.user?.loginId,
+      created_by: auth?.user?.loginId,
+      developer_contact: developer_contact,
+      developer_name: developer_name
+    };
+    if (bankLoginId) {
+      saveDetailsReqBody.bank_login_id = bankLoginId;
+    }
+
+    if (zoneCode) {
+      saveDetailsReqBody.zone_code = zoneCode;
+    }
+
+    if (!editKyc && merchantOnboardingProcess?.merchantLoginId === "") {
+      dispatch(saveMerchantBasicDetails(saveDetailsReqBody))
+        .then((resp) => {
+          setSubmitLoader(false);
+          setDisable(false);
+          if (resp?.payload?.status_code) {
+            toastConfig.errorToast(resp?.payload?.detail || resp?.payload?.message);
+          }
+          if (resp?.payload?.status === true) {
+            dispatch(
+              kycUserList({
+                login_id: resp?.payload?.merchant_data?.loginMasterId,
+                masking: 1
+              })
+            );
+            toastConfig.successToast(resp?.payload?.message);
+          }
+        })
+        .catch((err) => {
+          toastConfig.errorToast("Something went wrong!");
+          // console.log(err)
+          setSubmitLoader(false);
+          setDisable(false);
+        });
+    } else {
+      dispatch(updateBasicDetailsSlice(updateReqBody))
+        .then((resp) => {
+          setSubmitLoader(false);
+          setDisable(false);
+          if (resp?.error?.message) {
+            toastConfig.errorToast(resp?.error?.message);
+            toastConfig.errorToast(resp?.payload?.toString()?.toUpperCase());
+          }
+
+          if (resp?.payload?.status === true) {
+            dispatch(
+              kycUserList({
+                login_id: resp?.payload?.merchant_data?.loginMasterId,
+                masking: 1
+              })
+            );
+            toastConfig.successToast(resp?.payload?.message);
+          }
+        })
+        .catch((err) => {
+          toastConfig.errorToast("Something went wrong!");
+          // console.log(err)
+          setSubmitLoader(false);
+          setDisable(false);
+        });
+    }
+  };
+
+  useEffect(() => {
+    // business type
+    dispatch(businessType())
+      .then((resp) => {
+        const data = convertToFormikSelectJson(
+          "businessTypeId",
+          "businessTypeText",
+          resp.payload
+        );
+        setBusinessTypeData(data);
+      })
+      .catch((err) => console.log(err));
+
+    // busniessCategory
+    dispatch(busiCategory())
+      .then((resp) => {
+        const data = convertToFormikSelectJson(
+          "category_id",
+          "category_name",
+          resp.payload
+        );
+
+        setBusinessCode(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const togglePassword = () => {
+    setPasswordType({
+      ...passwordType,
+      showPasswords: !passwordType.showPasswords,
+    });
+  };
+
+  return (
+    <div
+      className="tab-pane fade show active"
+      id="v-pills-link1"
+      role="tabpanel"
+      aria-labelledby="v-pills-link1-tab"
+    >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmitContact}
+        enableReinitialize={true}
+      >
+        {() => (
+          <Form>
+            <div className="row g-3">
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="fullName"
+                  className="form-control"
+                  placeholder="Enter Merchant Name"
+                  label="Full Name *"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="mobileNumber"
+                  placeholder="Enter Mobile Number"
+                  className="form-control"
+                  label="Contact Number *"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="email_id"
+                  className="form-control"
+                  placeholder="Enter Email Id"
+                  label="Email ID *"
+                  autoComplete="off"
+                  disabled={loginIdFromState}
+                />
+              </div>
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="username"
+                  className="form-control"
+                  label="Username *"
+                  autoComplete="off"
+                  disabled={loginIdFromState}
+                />
+              </div>
+              <div className="col-sm-6 col-md-3">
+                <FormikController
+                  control="select"
+                  name="business_type"
+                  options={businessTypeData}
+                  className="form-select"
+                  label="Business Type *"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+              <div className="col-md-3">
+                <FormikController
+                  control="select"
+                  options={businessCode}
+                  name="business_category"
+                  className="form-select"
+                  label="Business Category *"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+              <div className="col-md-6">
+                <label>
+                  Create Password <span>*</span>
+                </label>
+                <div className="input-group">
+                  <FormikController
+                    control="input"
+                    type={passwordType.showPasswords ? "text" : "password"}
+                    name="password"
+                    autoComplete="off"
+                    className="form-control"
+                    displayMsgOutside={true}
+                    disabled={loginIdFromState || editKyc}
+                  />
+                  <span
+                    className="input-group-text"
+                    onClick={togglePassword}
+                    id="basic-addon2"
+                  >
+                    {passwordType.showPasswords ? (
+                      <i className="fa fa-eye" ariaHidden="true"></i>
+                    ) : (
+                      <i className="fa fa-eye-slash" ariaHidden="true"></i>
+                    )}
+                  </span>
+                </div>
+                <ErrorMessage name={"password"}>
+                  {(msg) => <p className="text-danger m-0">{msg}</p>}
+                </ErrorMessage>
+              </div>
+
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="developer_name"
+                  className="form-control"
+                  placeholder="Enter Developer Name"
+                  label="Developer Name"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+
+              <div className="col-md-6">
+                <FormikController
+                  control="input"
+                  name="developer_contact"
+                  placeholder="Developer Contact Number"
+                  className="form-control"
+                  label="Enter Developer Contact Number"
+                  autoComplete="off"
+                  disabled={isEditableInput}
+                />
+              </div>
+
+              <div className="col-6">
+                {!isEditableInput && (
+                  <button
+                    type="submit"
+                    className="btn cob-btn-primary btn-sm m-2"
+                    disabled={disable}
+                  >
+                    {submitLoader && (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          ariaHidden="true"
+                        />
+                        <span className="sr-only">Loading...</span>
+                      </>
+                    )}
+                    Save
+                  </button>
+                )}
+
+                {(kycData?.isContactNumberVerified === 1) && (
+                  <a
+                    className="btn active-secondary btn-sm m-2"
+                    onClick={() => setCurrentTab(2)}
+                  >
+                    Next
+                  </a>
+                )}
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
+}
+
+export default BasicDetailsOps;

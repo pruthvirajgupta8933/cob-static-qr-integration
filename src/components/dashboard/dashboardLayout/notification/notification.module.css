@@ -1,0 +1,107 @@
+.notification_card {
+    position: absolute;
+    min-width: 100%;
+    right: 0px;
+    top: 40px;
+    box-shadow: black 0px 6px 14px -4px;
+    height: 380px;
+    width: 450px;
+}
+
+.notify_container {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: max-content;
+    min-width: 60px;
+}
+
+.notify_ul {
+    overflow: scroll;
+    height: 100%;
+}
+
+
+
+
+
+.font_sofia_pro_light {
+    font-family: Sofia-Pro-Light;
+}
+
+.font_timestamp {
+    font-size: 13px;
+    color: #adb5bd;
+}
+
+.font6px {
+    font-size: 6px;
+}
+
+
+.content_wrap{
+    /* white-space: normal; */
+    /* word-wrap: break-word; */
+}
+
+/* button toggle */
+
+.btn_icon_with_count {
+    position: relative;
+    padding: 0px;
+    border: none;
+}
+
+.fa {
+    font-size: 14px;
+    margin-right: 8px;
+    position: relative;
+    top: 5px;
+}
+
+.count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #f00;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.count_number {
+    position: absolute;
+    top: -3px;
+    font-size: 14px;
+    color: white;
+}
+
+
+
+.markasread {
+    box-shadow: var(--ds-border-focused, #2684FF) 0 0 0 2px;
+    cursor: pointer;
+    background-color: var(--ds-background-neutral-subtle-hovered, rgba(9, 30, 66, 0.04));
+    border: 1px solid transparent;
+    padding: 0px;
+    background-color: transparent;
+    pointer-events: all;
+    z-index: 1;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    -moz-box-pack: center;
+    justify-content: center;
+    -moz-box-align: center;
+    align-items: center;
+    outline: none;
+}

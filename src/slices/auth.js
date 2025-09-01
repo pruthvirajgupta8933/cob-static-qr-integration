@@ -1,0 +1,501 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { setMessage } from "./message";
+import { axiosInstance } from "../utilities/axiosInstance";
+import AuthService from "../services/auth.service";
+import TokenService from "../services/token.service";
+import { getErrorMessage } from "../utilities/errorUtils";
+// import { socketConnection } from "../services/notification-service/notification.service";
+
+// For testing: Create a mock user
+const mockUser = {
+  loginId: "Abh789@sp",
+  clientContactPersonName: "Test User",
+  roleId: 1,
+  loginStatus: "Activate",
+  clientMobileNo: "9999999999",
+  clientSuperMasterList: [],
+  clientMerchantDetailsList: [{
+    clientCode: "TEST001",
+    clientName: "Test Merchant",
+    clientId: 1,
+    merchantName: "Test Merchant",
+    business_cat_code: "01"
+  }],
+  jwt_token: {
+    access: "mock_access_token",
+    refresh: "mock_refresh_token"
+  }
+};
+
+// Use mock user for testing
+const user = mockUser; // JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
+localStorage.setItem("user", JSON.stringify(mockUser));
+// Also set tokens for axios to use
+localStorage.setItem("accessToken", "mock_access_token");
+localStorage.setItem("refreshToken", "mock_refresh_token");
+// console.log("user",user)
+const userAlreadyLoggedIn = true; // user && user.loginId !== null ? true : false;
+
+const auth = {
+  LoginResponse: { message: "", verification_token: "", response_code: "" },
+  OtpVerificationResponse: {
+    fulfilled: {
+      auth_token: "",
+      jwt_token: {
+        refresh: "",
+        access: "",
+      },
+      user_token: {
+        login_token: "",
+        tab_login: "",
+      },
+      response_code: "",
+    },
+    rejected: {
+      message: "",
+      response_code: "",
+    },
+  },
+  auth_verification: {},
+  user: user,
+  isLoggedIn: true,
+  currentUser: {},
+  status: "",
+  error: "",
+  userAlreadyLoggedIn: userAlreadyLoggedIn,
+  otpVerified: false,
+  isUserRegistered: null,
+  subscriptionplandetail: [],
+  createClientProfile: [],
+  passwordChange: null,
+  forgotPassword: {
+    otpResponse: {
+      verification_token: "",
+      status: false
+    },
+    sendUserName: {
+      username: "",
+      isValid: null
+    },
+    otpVerify: {
+      emailOtp: null,
+      smsOtp: null,
+    },
+    createNewPassowrd: null,
+    isNewPasswordCreated: null,
+  },
+  payLinkPermission: [],
+  avalabilityOfClientCode: {}
+};
+
+
+export const register = createAsyncThunk(
+  "auth/register",
+  async (dataObj, thunkAPI) => {
+    try {
+      const response = await AuthService.register(dataObj);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const login = createAsyncThunk(
+  "auth/login",
+  async ({ query }, thunkAPI) => {
+    try {
+      const data = await AuthService.login({ query });
+      return { user: data?.data };
+    } catch (error) {
+
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.detail) ||
+      //   error.response.data.message ||
+      //   error.message ||
+      //   error.toString() || error.request.toString();
+
+      const message = getErrorMessage(error)
+      return thunkAPI.rejectWithValue(message);              // here we pass message for error
+    }
+  }
+);
+
+export const loginVerify = createAsyncThunk(
+  "auth/login-verify",
+  async ({ otp, verification_token }, thunkAPI) => {
+    try {
+      const data = await AuthService.loginOtpVerify(otp, verification_token);
+      data && TokenService.setUser(data?.data)
+      data && TokenService.setUserData(data?.data)
+      data && TokenService.setCategory()
+
+      return { user: data?.data };
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString() || error.request.toString();
+      const message = getErrorMessage(error)
+      return thunkAPI.rejectWithValue(message);              // here we pass message for error
+    }
+  }
+);
+
+export const sendEmail = createAsyncThunk(
+  "auth/sendEmail",
+  async ({ toEmail, toCc, subject, msg }, thunkAPI) => {
+    try {
+      const response = await AuthService.sendEmail(toEmail, toCc, subject, msg);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const OTPVerificationApi = createAsyncThunk(
+  "auth/OTPVerification",
+  async (requestParam) => {
+    const response = await axiosInstance.post(
+      `https://api.msg91.com/api/sendhttp.php?sender=SPTRAN&route=4&mobiles=mobileNO&authkey=177009ASboH8XM59ce18cb&DLT_TE_ID=1107161794798561616&country=91&message=Dear,`,
+      { ...requestParam, type: "back_office" }
+    ).catch((error) => {
+      return error.response;
+    });
+    return response.data;
+  }
+);
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+  //  socketConnection.disconnect();
+  await AuthService.logout();
+});
+
+export const udpateRegistrationStatus = createAsyncThunk("auth/udpateRegistrationStatus", async () => {
+  await AuthService.logout();
+});
+
+// check and remove fn
+export const successTxnSummary = createAsyncThunk(
+  "auth/successTxnSummary",
+  async (object, thunkAPI) => {
+    try {
+      const { fromDate, toDate, clientCode } = object;
+      const response = await AuthService.successTxnSummary(fromDate, toDate, clientCode);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+/* ======Start Profile Function ======= */
+export const createClientProfile = createAsyncThunk(
+  "auth/createClientProfile",
+  async (data, thunkAPI) => {
+    try {
+      // console.log("try")
+      const response = await AuthService.createClintCode(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+
+      return response?.data;
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+
+
+
+/* ======End Profile Function ======= */
+
+
+// change password
+
+export const changePasswordSlice = createAsyncThunk(
+  "auth/changePasswordSlice",
+  async (requestParam) => {
+    const response = await AuthService.changePassword(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
+
+// check client code is exists
+export const checkClientCodeSlice = createAsyncThunk(
+  "auth/checkClientCodeSlice",
+  async (requestParam) => {
+    const response = await AuthService.checkClintCode(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
+
+// forgot password
+export const getEmailToSendOtpSlice = createAsyncThunk(
+  "auth/getEmailToSendOtp",
+  async (data, thunkAPI) => {
+    try {
+      const response = await AuthService.getEmailToSendOTP(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      //save post username
+      response.data.username = data.username
+      return response.data;
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+
+)
+
+
+
+
+export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
+  "auth/verifyOtpOnForgotPwd",
+  async (data, thunkAPI) => {
+    try {
+      const response = await AuthService.verifyOtpOnForgotPwd(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      const message = getErrorMessage(error)
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+
+)
+
+
+
+export const createNewPasswordSlice = createAsyncThunk(
+  "auth/createNewPassword",
+  async (data, thunkAPI) => {
+    try {
+      const response = await AuthService.changePassword(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+)
+
+
+
+export const checkPermissionSlice = createAsyncThunk(
+  "auth/checkPermission",
+  async (data, thunkAPI) => {
+    try {
+
+      const response = await AuthService.checkPermission(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+)
+
+
+
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState: auth,
+  reducers: {
+    isUserAlreadyLogin: (state, action) => {
+      // console.log(action)
+      // state.userAlreadyLoggedIn = 
+    },
+    updateClientDataInLocal: (state, action) => {
+      state.user = action.payload
+
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(checkClientCodeSlice.fulfilled, (state, action) => {
+        state.avalabilityOfClientCode = action.payload
+      })
+
+      .addCase(register.pending, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = true;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = false;
+      })
+      .addCase(udpateRegistrationStatus.fulfilled, (state, action) => {
+        state.isLoggedIn = null
+        state.isUserRegistered = null;
+      })
+      .addCase(successTxnSummary.fulfilled, (state, action) => {
+        state.successTxnsumry = action.payload;
+      })
+      .addCase(sendEmail.fulfilled, (state, action) => {
+        state.sendEmail = action.payload.data;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.auth_verification = action.payload?.user
+
+      })
+      .addCase(login.pending, (state) => {
+        state.auth_verification = {}
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.auth_verification = {}
+      })
+      .addCase(loginVerify.fulfilled, (state, action) => {
+        let loggedInStatus = false;
+        let isValidData = '';
+        const loginState = action.payload?.user?.loginStatus;
+        if (loginState === "Activate") {
+          loggedInStatus = true;
+          isValidData = 'Yes';
+          state.userAlreadyLoggedIn = true;
+        } else {
+          loggedInStatus = false;
+          isValidData = 'No';
+        }
+        state.isLoggedIn = loggedInStatus;
+        state.user = action.payload.user;
+        localStorage.setItem("user", JSON.stringify(state.user))
+        localStorage.setItem("categoryId", 1)
+        state.isValidUser = isValidData;
+      })
+      .addCase(loginVerify.pending, (state) => {
+        state.isLoggedIn = null;
+        // state.userAlreadyLoggedIn = false;
+        state.isValidUser = '';
+        state.user = null;
+      })
+      .addCase(loginVerify.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        state.userAlreadyLoggedIn = false;
+        state.isValidUser = '';
+        state.user = null;
+      })
+
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoggedIn = null;
+        state.userAlreadyLoggedIn = false;
+        state.isValidUser = '';
+        state.user = null;
+        state = {}
+      })
+
+      .addCase(changePasswordSlice.fulfilled, (state, action) => {
+        state.passwordChange = true;
+      })
+      .addCase(changePasswordSlice.pending, (state) => {
+        state.passwordChange = null;
+      })
+      .addCase(changePasswordSlice.rejected, (state) => {
+        state.passwordChange = false;
+      })
+      .addCase(getEmailToSendOtpSlice.fulfilled, (state, action) => {
+        state.forgotPassword.otpResponse = action.payload;
+
+        const username = action.payload.username;
+
+        const status = action.payload.status;
+        state.forgotPassword.sendUserName.username = username;
+
+        state.forgotPassword.sendUserName.isValid = status ? true : false;
+      })
+      .addCase(getEmailToSendOtpSlice.rejected, (state, action) => {
+        state.forgotPassword.sendUserName.isValid = false;
+      })
+
+      .addCase(checkPermissionSlice.fulfilled, (state, action) => {
+        state.payLinkPermission = action.payload
+      })
+  },
+});
+
+
+export const { isUserAlreadyLogin, updateClientDataInLocal } = authSlice.actions
+const { reducer } = authSlice;
+export default reducer;

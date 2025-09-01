@@ -1,0 +1,23 @@
+/* Transaction History */
+.calendar_input_border {
+  border: none;
+}
+
+.calendar {
+  width: 100%;
+}
+
+.calendar_border {
+  border: 1px solid #dee2e6;
+}
+
+.custom_datepicker_popper {
+  transform: translate(-50%, 0) !important;
+  left: 60% !important;
+  top: 100% !important;
+  z-index: 888 !important;
+}
+
+/* .react-datepicker-wrapper{
+   
+} */

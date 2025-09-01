@@ -1,0 +1,85 @@
+import React, { useEffect, useState } from "react";
+import { fetchBeneficiaryDetails } from "../slices/payoutSlice";
+import { useSelector, useDispatch } from "react-redux";
+import NavBar from "../components/dashboard/NavBar/NavBar";
+import Spinner from "../_components/reuseable_components/ProgressBar";
+import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
+import Table from "../_components/table_components/table/Table";
+import { beneficiaryRowData } from "../utilities/tableData";
+import Paginataion from "../_components/table_components/pagination/Pagination";
+import { fetchClientCode } from "../slices/payoutSlice";
+
+const Beneficiary = () => {
+  const dispatch = useDispatch();
+  const payoutBeneficiaryState = useSelector((state) => state.payout);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const TotalData = payoutBeneficiaryState?.beneficiaryList?.count;
+  const beneficiaryData = payoutBeneficiaryState?.beneficiaryList.results;
+  const loadingState = useSelector((state) => state.payout.isLoading);
+
+  useEffect(() => {
+    dispatch(fetchClientCode()).then((res) => {
+      fetchBeneficiaryList();
+    });
+  }, [currentPage, pageSize]);
+
+  const fetchBeneficiaryList = () => {
+    const data = {
+      pageSize: pageSize,
+      pageNumber: currentPage,
+    };
+    dispatch(fetchBeneficiaryDetails({ data }));
+  };
+  const makeFirstLetterCapital = (str) => {
+    let resultString = str.charAt(0).toUpperCase() + str.substring(1);
+    return resultString;
+  };
+
+
+  //function for change current page
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
+  };
+  return (
+    <>
+      <section className="ant-layout">
+        <div>
+          
+        </div>
+        {payoutBeneficiaryState.isLoading && <Spinner />}
+        <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+          <div className="gx-main-content-wrapper">
+            <div className="right_layout my_account_wrapper right_side_heading">
+              <h1 className="m-b-sm gx-float-left">Beneficiary Details</h1>
+            </div>
+            <div className="table-responsive">
+              <div className="col-md-12 ml-4 col-md-offset-4">
+                <div className="scroll overflow-auto">
+                  {loadingState ? (
+                    <p className="text-center spinner-roll">{<Spinner />}</p>
+                  ) : (
+                    <Table
+                      row={beneficiaryRowData}
+                      data={beneficiaryData}
+                      dataCount={TotalData}
+                      pageSize={pageSize}
+                      currentPage={currentPage}
+                      changeCurrentPage={changeCurrentPage}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </section>
+    </>
+  );
+};
+export default Beneficiary;

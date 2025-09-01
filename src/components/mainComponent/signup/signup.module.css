@@ -1,0 +1,69 @@
+
+.container_custom {
+    min-height: 100px;
+    overflow: hidden;
+}
+
+.login_left_bg_color {
+    background-color: #ccd7e9
+}
+
+.form_container_cob {
+    padding: 1em 4em 0 4em;
+    margin: 1em 1em 0 1em;
+}
+
+
+.sp-font-12 {
+    font-size: 12px;
+}
+
+.sp-font-14 {
+    font-size: 14px;
+}
+
+
+.left_screen {
+    width: 100%;
+    padding: 0px;
+    line-height: normal;
+    border-radius: 10px;
+    background: #ffffff63;
+}
+.right_screen {
+    width: 100%;
+}
+
+.form_row_cob{
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.signup_banner{
+    width: 65%;
+}
+
+
+
+@media (max-width: 959px){
+    .left_screen {
+        width: 100%;
+    }
+
+    .flex_xs_column_reverse_cob {
+        flex-direction: column-reverse !important;
+    }
+
+    }
+
+@media (max-width: 768px) {
+    .flex_xs_column_reverse_cob {
+        flex-direction: column-reverse !important;
+    }
+
+    .form_row_cob{
+        display: block;
+    }
+
+}

@@ -1,0 +1,63 @@
+.rdt_Table .rdt_TableRow {
+  white-space: normal;
+  border: none !important;
+}
+
+.rdt_TableCol {
+  border-right: 0.5px solid #dee2e6;
+  white-space: normal !important;
+  min-height: 20px;
+  max-height: 40px;
+}
+
+.rdt_TableCell {
+  /* border-right: 0.5px solid #dee2e6; */
+  font-size: 12px;
+}
+
+.dnsAhI {
+  white-space: normal !important;
+}
+
+.ccwXBw {
+  white-space: normal !important;
+}
+
+.rdt_TableHeadRow {
+  background-color: transaparent !important;
+  /* font-weight: 600 !important; */
+  font-size: 14px;
+  padding: 0px !important;
+  border: none !important;
+  height: 40px;
+  color: #727272
+}
+
+.rdt_TableBody {
+  padding: 0px !important;
+}
+
+.rdt_TableHead {
+  padding: 0px !important;
+  height: 50px;
+}
+
+.__rdt_custom_sort_icon__ {
+  position: absolute;
+  right: 5px;
+  color: #4DABF7;
+  font-size: 14px;
+}
+
+.desc.__rdt_custom_sort_icon__ {
+  top: 7px;
+}
+
+.asc.__rdt_custom_sort_icon__ {
+  top: 5px;
+
+}
+
+.__rdt_custom_sort_icon__ i {
+  font-size: 14px !important;
+}

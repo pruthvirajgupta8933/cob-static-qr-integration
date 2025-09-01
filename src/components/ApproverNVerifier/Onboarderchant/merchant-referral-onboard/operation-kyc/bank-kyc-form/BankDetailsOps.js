@@ -1,0 +1,520 @@
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import Yup from "../../../../../../_components/formik/Yup";
+import FormikController from "../../../../../../_components/formik/FormikController";
+import {
+  Regex,
+  RegexMsg,
+} from "../../../../../../_components/formik/ValidationRegex";
+import { convertToFormikSelectJson } from "../../../../../../_components/reuseable_components/convertToFormikSelectJson";
+import verifiedIcon from "../../../../../../assets/images/verified.png";
+import {
+  getBankId,
+  kycUserList,
+} from "../../../../../../slices/kycSlice";
+import {
+  bankAccountVerification,
+  ifscValidation,
+} from "../../../../../../slices/kycValidatorSlice";
+import { saveBankDetails } from "../../../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchBankList } from "../../../../../../services/approver-dashboard/merchantReferralOnboard.service";
+import toastConfig from "../../../../../../utilities/toastTypes";
+
+function BankDetailsOps({ setCurrentTab, isEditableInput, editKyc }) {
+  const [loading, setLoading] = useState(false);
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const [bankList, setBankList] = useState([]);
+  const dispatch = useDispatch();
+  const { auth, merchantReferralOnboardReducer, kyc } = useSelector(
+    (state) => state
+  );
+  const merchantLoginId =
+    merchantReferralOnboardReducer?.merchantOnboardingProcess?.merchantLoginId;
+  const { bankDetails } = merchantReferralOnboardReducer;
+  const { kycUserList: kycData } = kyc;
+
+  const initialValues = {
+    account_holder_name:
+      kycData?.merchant_account_details?.account_holder_name ?? "",
+    account_number:
+      kycData?.merchant_account_details?.account_number ?? "",
+    ifsc_code:
+      kycData?.merchant_account_details?.ifsc_code ?? "",
+    bank_id:
+      kycData?.merchant_account_details?.bankId ?? "",
+    account_type:
+      kycData?.merchant_account_details?.accountType
+        ?.toString()
+        .toLowerCase() === "saving"
+        ? "2"
+        : "1",
+    branch:
+      kycData?.merchant_account_details?.branch ?? "",
+    isAccountNumberVerified:
+      kycData?.merchant_account_details?.account_number ?? "",
+    isIfscVerified:
+      kycData?.merchant_account_details?.ifsc_code ?? "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    account_holder_name: Yup.string()
+      .allowOneSpace()
+      .required("Required")
+      .nullable(),
+    ifsc_code: Yup.string()
+      .matches(Regex.ifsc_Masked, RegexMsg.ifscRegex)
+      .min(6, "Username must be at least 6 characters")
+      .max(20, "Username must not exceed 20 characters")
+      .required("Required")
+      .nullable(),
+    account_number: Yup.string()
+      .trim()
+      .matches(Regex.accountNo_Masked, RegexMsg.accountNoRgex)
+      .required("Required")
+      .nullable(),
+    account_type: Yup.string().required("Required").nullable(),
+    branch: Yup.string().allowOneSpace().required("Required").nullable(),
+    bank_id: Yup.string().required("Required").nullable(),
+    isAccountNumberVerified: Yup.string().required(
+      "You need to verify Your Account Number"
+    ),
+    isIfscVerified: Yup.string().required("You need to verify Your IFSC Code"),
+  });
+
+  const handleSubmit = (values) => {
+    setSubmitLoader((prev) => true);
+    setDisable((prev) => true);
+
+    let selectedAccType =
+      values.account_type?.toString() === "1"
+        ? "Current"
+        : values.account_type?.toString() === "2"
+          ? "Saving"
+          : "";
+
+    dispatch(
+      saveBankDetails({
+        account_holder_name: values.account_holder_name,
+        account_number: values.account_number,
+        ifsc_code: values.ifsc_code,
+        bank_id: values.bank_id,
+        account_type: selectedAccType,
+        branch: values.branch,
+        login_id: kycData?.loginMasterId ?? merchantLoginId,
+        modified_by: auth?.user?.loginId,
+      })
+    )
+      .then((resp) => {
+        setDisable(false);
+        setSubmitLoader(false);
+        if (resp?.payload?.detail) {
+          toastConfig.errorToast(resp?.payload?.detail);
+        }
+
+        if (resp?.payload?.status === true) {
+          toastConfig.successToast(resp?.payload?.message);
+          // if (editKyc) {
+          dispatch(
+            kycUserList({
+              login_id: kycData?.loginMasterId,
+              password_required: true,
+              masking: 1
+            })
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const selectedType = [
+    { key: "", value: "Select" },
+    { key: "1", value: "Current" },
+    { key: "2", value: "Saving" },
+  ];
+
+  //---------------GET ALL BANK NAMES DROPDOWN--------------------
+  useEffect(() => {
+    fetchBankList()
+      .then((resp) => {
+        const convertResp = convertToFormikSelectJson(
+          "bankId",
+          "bankName",
+          resp.data
+        );
+        setBankList(convertResp);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const ifscValidationNo = (values, setFieldValue) => {
+    setLoading(true);
+    if (values?.length !== 0 || typeof values?.length !== "undefined") {
+      dispatch(
+        ifscValidation({
+          ifsc_number: values,
+        })
+      ).then((res) => {
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true &&
+          res.payload.valid === true
+        ) {
+          // console.log(res?.payload)
+          setLoading(false);
+          const postData = { bank_name: res?.payload?.bank };
+          dispatch(getBankId(postData))
+            .then((resp) => {
+              if (resp?.payload?.length > 0) {
+                setFieldValue("bank_id", resp?.payload[0]?.bankId);
+              }
+            })
+            .catch((err) => {
+              // console.log(err?.payload?.bankName)
+            });
+          setFieldValue("branch", res?.payload?.branch);
+          setFieldValue("ifsc_code", values);
+          setFieldValue("isIfscVerified", 1);
+        } else {
+          setLoading(false);
+          setFieldValue("isIfscVerified", "");
+          toast.error(res?.payload?.message);
+        }
+      });
+    }
+  };
+
+  const bankAccountValidate = (values, ifscCode, setFieldValue) => {
+    setLoading(true);
+    dispatch(
+      bankAccountVerification({
+        account_number: values,
+        ifsc: ifscCode,
+      })
+    ).then((res) => {
+      if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true &&
+        res?.payload?.valid === true
+      ) {
+        setLoading(false);
+
+        const fullName =
+          res?.payload?.first_name + " " + res?.payload?.last_name;
+        setFieldValue("account_holder_name", fullName);
+
+        setFieldValue("account_number", values);
+        setFieldValue("oldAccountNumber", values);
+        setFieldValue("isAccountNumberVerified", 1);
+        toast.success(res?.payload?.message);
+
+        ifscValidationNo(ifscCode, setFieldValue);
+      } else {
+        setLoading(false);
+        setFieldValue("isAccountNumberVerified", "");
+        toast.error(res?.payload ?? res?.payload?.message);
+      }
+    });
+  };
+
+  const checkInputIsValid = (
+    err,
+    val,
+    setErr,
+    setFieldTouched,
+    key,
+    setFieldValue
+  ) => {
+    const hasErr = err.hasOwnProperty(key);
+    const fieldVal = val[key];
+
+    let isValidVal = true;
+    if (fieldVal === null || fieldVal === undefined) {
+      isValidVal = false;
+      setFieldTouched(key, true);
+    }
+
+    if (hasErr) {
+      if (val[key] === "") {
+        setErr(key, true);
+      }
+    }
+
+    // console.log("key",key)
+    if (!hasErr && isValidVal && val[key] !== "" && key === "ifsc_code") {
+      ifscValidationNo(val[key]);
+    }
+
+    if (!hasErr && isValidVal && val[key] !== "" && key === "account_number") {
+      const ifscCodeVal = val?.ifsc_code;
+      bankAccountValidate(val[key], ifscCodeVal, setFieldValue);
+    }
+  };
+
+  return (
+    // create html bootstrap from with for the bank details eg: account number / ifce / account holder name/ bank name/ account type
+    <div
+      className="tab-pane fade show active"
+      id="v-pills-link1"
+      role="tabpanel"
+      aria-labelledby="v-pills-link1-tab"
+    >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        enableReinitialize={true}
+      >
+        {({
+          values,
+          errors,
+          setFieldError,
+          setFieldValue,
+          setFieldTouched,
+        }) => (
+          <Form>
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-6 ">
+                <label className="col-form-label mt-0 p-2">
+                  IFSC Code<span className="text-danger">*</span>
+                </label>
+                <div className="input-group">
+                  <Field
+                    text="text"
+                    name="ifsc_code"
+                    className="form-control"
+                    disabled={isEditableInput}
+                    onChange={(e) => {
+                      setFieldValue("ifsc_code", e.target.value);
+                      setFieldValue("isIfscVerified", "");
+                    }}
+                  />
+
+                  {values?.ifsc_code !== null && loading && (
+                    <div className="input-group-append">
+                      <button
+                        className="btn cob-btn-primary text-white mb-0 btn-sm"
+                        type="button"
+                        disabled={loading}
+                      >
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </span>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* if found any error in validation */}
+                  {/* {console.log("errors",errors)} */}
+                  {values?.ifsc_code !== null &&
+                    values?.ifsc_code !== "" &&
+                    !errors.hasOwnProperty("isAccountNumberVerified") &&
+                    !errors.hasOwnProperty("isIfscVerified") && (
+                      <span className="success input-group-append">
+                        <img
+                          src={verifiedIcon}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
+                      </span>
+                    )}
+                </div>
+
+                {
+                  <ErrorMessage name="ifsc_code">
+                    {(msg) => <span className="text-danger">{msg}</span>}
+                  </ErrorMessage>
+                }
+                {errors?.isIfscVerified && (
+                  <span className="text-danger imp_css">
+                    {errors?.isIfscVerified}
+                  </span>
+                )}
+              </div>
+
+              <div className="col-sm-12 col-md-12 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Business Account Number
+                  <span className="text-danger">*</span>
+                </label>
+                <div className="input-group">
+                  <Field
+                    type="text"
+                    name="account_number"
+                    className="form-control"
+                    disabled={isEditableInput}
+                    onChange={(e) => {
+                      setFieldValue("account_number", e.target.value);
+                      setFieldValue("isAccountNumberVerified", "");
+                    }}
+                  />
+                  {/* if both values are same then display verified icon */}
+                  {values?.account_number !== null &&
+                    values?.account_number !== "" &&
+                    !errors.hasOwnProperty("isAccountNumberVerified") &&
+                    !errors.hasOwnProperty("isIfscVerified") && (
+                      <span className="success input-group-append">
+                        <img
+                          src={verifiedIcon}
+                          alt=""
+                          title=""
+                          width={"20px"}
+                          height={"20px"}
+                          className="btn-outline-secondary"
+                        />
+                      </span>
+                    )}
+
+                  {/* if found any error in validation */}
+
+                  {values?.ifsc_code !== null &&
+                    (errors.hasOwnProperty("isAccountNumberVerified") ||
+                      errors.hasOwnProperty("isIfscVerified")) && (
+                      <div className="input-group-append">
+                        <button
+                          className="btn cob-btn-primary text-white mb-0 btn-sm"
+                          type="button"
+                          disabled={loading}
+                          onClick={() => {
+                            checkInputIsValid(
+                              errors,
+                              values,
+                              setFieldError,
+                              setFieldTouched,
+                              "account_number",
+                              setFieldValue
+                            );
+                          }}
+                        >
+                          {loading ? (
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                            >
+                              <span className="sr-only">Loading...</span>
+                            </span>
+                          ) : (
+                            "Verify"
+                          )}
+                        </button>
+                      </div>
+                    )}
+                </div>
+                {
+                  <ErrorMessage name="account_number">
+                    {(msg) => <span className="text-danger">{msg}</span>}
+                  </ErrorMessage>
+                }
+
+                {errors?.isAccountNumberVerified && (
+                  <span className="text-danger imp_css">
+                    {errors?.isAccountNumberVerified}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Account Holder Name<span>*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  disabled={isEditableInput}
+                  name="account_holder_name"
+                  className="form-control"
+                />
+              </div>
+
+              <div className="col-sm-12 col-md-12 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Account Type<span>*</span>
+                </label>
+
+                <FormikController
+                  control="select"
+                  name="account_type"
+                  disabled={isEditableInput}
+                  options={selectedType}
+                  className="form-select"
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Bank Name<span className="">*</span>
+                </label>
+                <FormikController
+                  control="select"
+                  name="bank_id"
+                  className="form-select"
+                  options={bankList}
+                  disabled={isEditableInput}
+                />
+              </div>
+
+              <div className="col-sm-12 col-md-12 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Branch<span className="">*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="branch"
+                  disabled={isEditableInput}
+                  className="form-control"
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-6 mt-2">
+                {!isEditableInput && (
+                  <button
+                    className="cob-btn-primary btn text-white btn-sm"
+                    type="submit"
+                    disabled={disable}
+                  >
+                    {submitLoader && (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          ariaHidden="true"
+                        />
+                        <span className="sr-only">Loading...</span>
+                      </>
+                    )}
+                    Save
+                  </button>
+                )}
+
+                {bankDetails?.resp?.status === true && (
+                  <a
+                    className="btn active-secondary btn-sm m-2"
+                    onClick={() => setCurrentTab(3)}
+                  >
+                    Next
+                  </a>
+                )}
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
+}
+
+export default BankDetailsOps;

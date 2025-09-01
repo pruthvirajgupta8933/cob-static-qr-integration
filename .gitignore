@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Production builds
+build/
+dist/
+
+# Environment files
+.env
+.env.*
+backend/.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Local data files
+backend/data/*.json
+!backend/data/.gitkeep
+
+# Test files
+test-*.js
+simulate-hdfc-payment.js
+
+# Temporary
+*.tmp
+temp/

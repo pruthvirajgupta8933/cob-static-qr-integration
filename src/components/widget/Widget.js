@@ -1,0 +1,462 @@
+import React, { useRef, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import * as Yup from 'yup';
+
+import FormikController from '../../_components/formik/FormikController';
+import { widgetClientKeys, widgetDetails } from '../../slices/widgetSlice';
+import { toast } from "react-toastify";
+import hljs from 'highlight.js';
+import { WIDGET_SCRIPT_URL } from '../../config';
+import Yup from '../../_components/formik/Yup';
+
+function MyForm() {
+    const dispatch = useDispatch();
+    const codeSnippetRef = useRef(null);
+    const [isCopied, setIsCopied] = useState(false);
+    const [show, setShow] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
+    const { user } = useSelector((state) => state.auth);
+    const widgetDetail = useSelector((state) => state?.widget?.widgetDetail?.data)
+    const activeStatus = widgetDetail?.status
+
+    let clientMerchantDetailsList = [];
+    let clientCode = "";
+    if (user && user.clientMerchantDetailsList === null) {
+
+    } else {
+        clientMerchantDetailsList = user.clientMerchantDetailsList;
+        clientCode = clientMerchantDetailsList[0].clientCode;
+    }
+    const initialValues = {
+        client_name: widgetDetail?.client_name || '',
+        client_code: clientCode,
+        client_type: widgetDetail?.client_type || '',
+        client_url: widgetDetail?.client_url || '',
+        return_url: widgetDetail?.return_url || '',
+        image_URL: widgetDetail?.image_URL || '',
+        position: widgetDetail?.position || '',
+        company_name: widgetDetail?.company_name || '',
+        description: widgetDetail?.description || ''
+    };
+
+    useEffect(() => {
+        dispatch(widgetDetails(clientCode))
+            .then(() => {
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching widget details:', error);
+                setIsLoading(false);
+            });
+    }, [dispatch, clientCode, activeStatus]);
+
+
+    const validationSchema = Yup.object().shape({
+        client_name: Yup.string().required('Client Name is required'),
+        client_code: Yup.string().required('Client Code is required'),
+        client_type: Yup.string().required('Client Type is required'),
+        client_url: Yup.string().url('Invalid URL').required('Client URL is required'),
+        return_url: Yup.string().url('Invalid URL').required('Return URL is required'),
+        image_URL: Yup.string().url('Invalid URL').required('Return URL is required'),
+        position: Yup.string().required('Position is required'),
+        company_name: Yup.string().required('Company Name is required'),
+        description: Yup.string()
+    });
+
+
+
+
+
+    const handleSubmit = (values) => {
+        const postData = {
+            "client_name": values.client_name,
+            "client_code": clientCode,
+            "client_type": values.client_type,
+            "client_url": values.client_url,
+            "return_url": values.return_url,
+            "image_URL": values.image_URL,
+            "position": values.position,
+            "company_name": values.company_name,
+            "description": values.description
+        }
+        dispatch(
+            widgetClientKeys(postData)
+        )
+            .then((res) => {
+
+                if (
+                    res?.meta?.requestStatus === "fulfilled"
+
+                ) {
+
+
+                    dispatch(widgetDetails(clientCode))
+
+                    setShow(false)
+                    toast.success(res.payload?.message);
+
+                } else {
+                    toast.error(res?.payload ?? "Somthing went wrong");
+                }
+            }).catch((error) => {
+                toast.error(error?.res?.data.message);
+
+
+            })
+
+
+    };
+
+    const copyToClipboard = () => {
+        if (codeSnippetRef.current) {
+            const codeSnippet = codeSnippetRef.current.innerText;
+            navigator.clipboard.writeText(codeSnippet)
+                .then(() => {
+                    setIsCopied(true);
+
+                    // Reset the copy status after a delay (e.g., 2 seconds)
+                    setTimeout(() => {
+                        setIsCopied(false);
+                    }, 1000);
+                })
+                .catch((error) => {
+                    console.error('Error copying code to clipboard:', error);
+                });
+        }
+
+
+    };
+
+
+    useEffect(() => {
+        hljs.highlightAll();
+    }, []);
+
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-6">
+                    <h5 className="">Create Widget</h5>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={handleSubmit}
+                        enableReinitialize={true}
+                    >
+                        {({
+
+                        }) => (
+                            <Form>
+                                <div className="row mt-3">
+                                    <div className="col-lg-6 col-sm-12 col-md-12">
+                                        <label className="col-form-label mt-0 p-2" >
+                                            Client Name<span className="text-danger">*</span>
+                                        </label>
+
+                                        <FormikController
+                                            control="input"
+                                            type="text"
+                                            name="client_name"
+                                            className="form-control"
+                                            placeholder="Enter client name"
+                                            disabled={activeStatus === "Active" || activeStatus === "Pending"}
+
+                                        />
+                                    </div>
+
+                                    <div className="col-sm-6 col-md-6 col-lg-6" >
+                                        <label className="col-form-label mt-0 p-2 " >
+                                            Client Code<span style={{ color: "red" }}>*</span>
+                                        </label>
+
+                                        <FormikController
+                                            control="input"
+                                            type="text"
+                                            name="client_code"
+                                            placeholder="Enter client code"
+                                            disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            className="form-control"
+
+
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-sm-6 col-md-6 col-lg-6">
+                                        <label className="col-form-label mt-0 p-2" >
+                                            Client Type<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="client_type"
+                                                placeholder="Enter client type"
+                                                className="form-control"
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            />
+                                        </div>
+
+                                        {
+                                            <ErrorMessage name="client_type">
+                                                {(msg) => (
+                                                    <span className="abhitest- errortxt- text-danger">
+                                                        {msg}
+                                                    </span>
+                                                )}
+                                            </ErrorMessage>
+                                        }
+                                    </div>
+
+                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Website URL (e.g., https://www.example.com)">
+                                            Client URL<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="client_url"
+                                                placeholder="Enter client url"
+                                                className="form-control"
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+
+                                            />
+
+
+                                        </div>
+
+                                        {<ErrorMessage name="client_url">
+                                            {(msg) => (
+                                                <span className="abhitest- errortxt- text-danger">
+                                                    {msg}
+                                                </span>
+                                            )}
+                                        </ErrorMessage>
+                                        }
+
+
+                                    </div>
+
+
+
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-sm-6 col-md-6 col-lg-6">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter Response URL">
+                                            Return URL<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="return_url"
+                                                className="form-control"
+                                                placeholder="Enter return url"
+
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            />
+                                        </div>
+
+                                        {
+                                            <ErrorMessage name="return_url">
+                                                {(msg) => (
+                                                    <span className="abhitest- errortxt- text-danger">
+                                                        {msg}
+                                                    </span>
+                                                )}
+                                            </ErrorMessage>
+                                        }
+                                    </div>
+                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Enter image URL (e.g., https://www.example.com/image.jpg)">
+                                            Image URL<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="image_URL"
+                                                className="form-control"
+                                                placeholder="Enter image url"
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+
+                                            />
+
+
+                                        </div>
+
+                                        {<ErrorMessage name="image_URL">
+                                            {(msg) => (
+                                                <span className="abhitest- errortxt- text-danger">
+                                                    {msg}
+                                                </span>
+                                            )}
+                                        </ErrorMessage>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                <div className="row">
+                                    <div className="col-sm-6 col-md-6 col-lg-6">
+                                        <label className="col-form-label mt-0 p-2" data-tip="Left/Right/Center">
+                                            Position<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="position"
+                                                className="form-control"
+                                                placeholder="Enter position"
+
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            />
+                                        </div>
+
+                                        {
+                                            <ErrorMessage name="position">
+                                                {(msg) => (
+                                                    <span className="abhitest- errortxt- text-danger">
+                                                        {msg}
+                                                    </span>
+                                                )}
+                                            </ErrorMessage>
+                                        }
+                                    </div>
+                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
+                                        <label className="col-form-label mt-0 p-2">
+                                            Company Name<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="company_name"
+                                                className="form-control"
+                                                placeholder="Enter company name"
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            />
+                                        </div>
+
+                                        {<ErrorMessage name="company_name">
+                                            {(msg) => (
+                                                <span className="abhitest- errortxt- text-danger">
+                                                    {msg}
+                                                </span>
+                                            )}
+                                        </ErrorMessage>
+                                        }
+
+                                    </div>
+
+                                    <div className="col-sm-6 col-md-6 col-lg-6 ">
+                                        <label className="col-form-label mt-0 p-2">
+                                            Description<span style={{ color: "red" }}>*</span>
+                                        </label>
+                                        <div className="input-group">
+                                            <Field
+                                                type="text"
+                                                name="description"
+                                                className="form-control"
+                                                placeholder="Enter description"
+                                                disabled={activeStatus === "Active" || activeStatus === "Pending"}
+                                            />
+                                        </div>
+
+                                        {<ErrorMessage name="description">
+                                            {(msg) => (
+                                                <span className="abhitest- errortxt- text-danger">
+                                                    {msg}
+                                                </span>
+                                            )}
+                                        </ErrorMessage>
+                                        }
+
+                                    </div>
+
+                                </div>
+                                {!(activeStatus === "Active" || activeStatus === "Pending") && (
+                                    <div className="row mt-4">
+                                        <div className="col-sm-12 col-md-12 col-lg-12 col-form-label d-flex justify-content-center">
+
+                                            <button
+                                                disabled={activeStatus === "Active" ? true : false}
+                                                type="submit"
+                                                className="btn btn-sm  cob-btn-primary text-white"
+                                                style={{ width: "150px", height: "40px" }}
+                                            >
+
+                                                Generate Script
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                )}
+
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className="col-lg-6">
+                    {isLoading ? (
+                        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    ) : (
+                        activeStatus === "Active" ? (
+                            <React.Fragment>
+                                <div className="code-snippet">
+                                    <div className="d-flex justify-content-end align-items-center mb-3">
+                                        <span
+                                            className="input-group-text"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={copyToClipboard}
+                                            data-tip={isCopied ? "Copied!" : "Copy"}
+                                        >
+                                            <i className="fa fa-copy" style={{ fontSize: '12px' }}></i>
+                                        </span>
+                                    </div>
+                                    <pre className='scroll-overflow'>
+                                        <code className="html" ref={(node) => {
+                                            if (node) {
+                                                codeSnippetRef.current = node;
+                                                hljs.highlightBlock(node);
+                                            }
+                                        }}>
+                                            &lt;div id="sabpaisa" client_code="{clientCode}" client_key="{widgetDetail?.client_key}"&gt;&lt;/div&gt; {'\n'}
+                                            &lt;script src={WIDGET_SCRIPT_URL.SCRIPT_URL}&gt;&lt;/script&gt; {'\n'}
+                                        </code>
+                                    </pre>
+                                </div>
+                                <div className="instructions mt-2">
+                                    <h6>
+                                        Instruction : To use this widget, please copy the following <span className="ml-1 mr-1"></span>
+                                        <span className="html-tag">&lt;div&gt;</span> and
+                                        <span className="ml-1 mr-1"></span>
+                                        <span className="html-tag">&lt;script&gt;</span>
+                                        <span className="ml-1 mr-1">into the &lt;body&gt; tag of your HTML document.</span>
+                                    </h6>
+                                </div>
+                            </React.Fragment>
+                        ) : (
+                            activeStatus === "Pending" && (
+                                <div className="alert alert-warning alertcss ml-3" role="alert">
+                                    Thank you for your registration with our new product, "Widget".Please bear with us.Your "Access Key" will be generated below, post approval from us!
+                                </div>
+                            ))
+                    )}
+                </div>
+
+            </div>
+        </div>
+    );
+}
+
+export default MyForm;
+
+
+
+

@@ -1,0 +1,1158 @@
+import React, { useEffect } from "react";
+import DashboardHeader from "./header/DashboardHeader";
+import SideNavbar from "./side-navbar/SideNavbar";
+import classes from "./dashboard-main.module.css";
+import Home from "../AllPages/Home";
+import TransactionEnquirey from "../AllPages/TransactionEnquirey";
+import SettlementReport from "../AllPages/SettlementReport";
+
+import {
+  useRouteMatch,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import ClientList from "../AllPages/ClientList";
+// import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
+// import Paylink from "../AllPages/createpaymentlink/Paylink";
+// import Paylinks from "../AllPages/payment-links/Paylink";
+// improt Profile
+// import { Profile } from "../../AllPages/Profile/Profile";
+import Emandate from "../AllPages/Emandate";
+import PaymentResponse from "../AllPages/PaymentResponse";
+import KycForm from "../../KYC/KycForm";
+// import Test from "../../Otherpages/Test";
+import SettlementReportNew from "../AllPages/SettlementReportNew";
+import TransactionHistoryDownload from "../AllPages/TransactionHistoryDownload";
+import Approver from "../../ApproverNVerifier/merchant-list/Approver";
+import ThanksPage from "../../Otherpages/ThanksPage";
+import ChangePassword from "../AllPages/ChangePassword";
+import Products from "../AllPages/Product Catalogue/Products";
+import SabPaisaPricing from "../AllPages/Product Catalogue/SabPaisaPricing";
+import TransactionSummery from "../AllPages/TransactionSummery";
+import OnboardMerchant from "../../ApproverNVerifier/Onboarderchant/OnboardMerchant";
+import RefundTransactionHistory from "../AllPages/RefundTransactionHistory";
+import ChargeBackTxnHistory from "../AllPages/ChargeBackTxnHistory";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { logout, updateClientDataInLocal } from "../../../slices/auth";
+import Sandbox from "../../SandBox/SendBox";
+// import AssignZone from "../../ApproverNVerifier/Configuration";
+import Configuration from "../../ApproverNVerifier/Configuration";
+import AdditionalKYC from "../../ApproverNVerifier/additional-kyc/AdditionalKYC";
+import RateMapping from "../../ApproverNVerifier/RateMapping";
+import SignupData from "../../ApproverNVerifier/SignupData";
+// import MerchantRoute from "../../../ProtectedRoutes/MerchantRoute";
+// import BankRoute from "../../../ProtectedRoutes/BankRoute";
+// import VerifierRoute from "../../../ProtectedRoutes/VerifierRoute";
+// import ApproverRoute from "../../../ProtectedRoutes/ApproverRoute";
+// import ViewerRoute from "../../../ProtectedRoutes/ViewerRoute";
+import SpPg from "../../sabpaisa-pg/SpPg";
+import UrlNotFound from "../UrlNotFound";
+import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
+import API_URL from "../../../config";
+import PayoutTransaction from "../../../payout/Ledger";
+import TransactionsPayoutHistory from "../../../payout/Transactions";
+import Beneficiary from "../../../payout/Beneficiary";
+import MISReport from "../../../payout/MISReport";
+import MakePayment from "../../../payout/MakePayment";
+import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
+import ChallanTransactReport from "../../../b2b-components/ChallanTransactReport";
+// import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
+import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
+import { isNull, reject } from "lodash";
+import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
+import ReferZone from "../../ApproverNVerifier/ReferZone";
+import GenerateMid from "../../ApproverNVerifier/GenerateMid";
+import generateAndSaveClientCode, {
+  generateWord,
+} from "../../../utilities/generateClientCode";
+import TransactionHistoryDoitc from "../AllPages/reports/TransactionHistoryDoitc";
+import SettlementReportDoitc from "../AllPages/reports/SettlementReportDoitc";
+import MandateReport from "../../../subscription_components/MandateReport";
+import BizzAppData from "../../ApproverNVerifier/BizzData";
+import CreateMandate from "../../../subscription_components/Create_Mandate/index";
+import DebitReport from "../../../subscription_components/DebitReport";
+import Faq from "../../../components/Faq/Faq";
+import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
+import ManualRateMapping from "../../ApproverNVerifier/ManualRateMapping";
+// import HandleResponseModal from "../../../subscription_components/Create_Mandate/HandleResponseModal";
+import AuthorizedRoute from "../../../ProtectedRoutes/AuthorizedRoute";
+import MerchantReferralOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/MerchantReferralOnboard";
+import BankMerchantOnboard from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/BankMerchantOnboard";
+import authService from "../../../services/auth.service";
+import MyMerchantList from "../../ApproverNVerifier/MyMerchantList";
+import Profile from "../AllPages/Profile/Profile";
+import InternalDashboard from "../../ApproverNVerifier/InternalDashboard";
+import Widget from "../../widget/Widget";
+import MerchantBalance from "../../ApproverNVerifier/MerchantBalance";
+import MultiUserOnboard from "../../MultiUserOnboard/MultiUserOnboard";
+import toastConfig from "../../../utilities/toastTypes";
+import UserInfo from "../../ApproverNVerifier/UserInfo";
+import TransactionHistory from "../AllPages/transaction-history/TransactionHistory";
+import AssigneAccountManger from "../../ApproverNVerifier/AssigneAccountManger/AssigneAccountManger";
+import AadharResponse from "../../ApproverNVerifier/additional-kyc/aadhar-attestr/AadharResponse";
+import EditKycDetail from "../../ApproverNVerifier/EditKycDetail/EditKycDetail";
+import WebWhiteList from "../../ApproverNVerifier/WebWhiteList";
+import CreateMandateApi from "../../../subscription_components/CreateMandateApi/CreateMandateApi";
+import CreateMandateApiResponse from "../../../subscription_components/CreateMandateApi/CreateMandateApiResponse";
+import MerchantDetailList from "../../bank/MerchantDetailList";
+import MerchantSummary from "../../bank/MerchantSummary";
+import InformationBulletin from "../../InfoBulletin";
+import ManualSubscription from "../../ManualSubscription";
+import SubscriptionBalance from "../../ManualSubscription/subscription-balance/SubscriptionBalance";
+import ChiledMerchantList from "../../ApproverNVerifier/ChiledMerchantList/ChiledMerchantList";
+import BranchTransactionHistory from "../AllPages/BranchTransactionHistory";
+// import CreateEMandateByApi from "../../../subscription_components/Create-E-MandateByApi/CreateEMandateByApi";
+import HandleMandateResponse from "../../../subscription_components/Create-E-MandateByApi/HandleMandateResponse";
+import RegistrationHistory from "../../../subscription_components/Registartion-history/RegistrationHistory";
+import EnachForm from "../../../subscription_components/Create-E-MandateByApi/EnachForm";
+import TransactionReport from "../../../subscription_components/Transaction-Report/TransactionReport";
+import CreateBulkEmandate from "../../../subscription_components/Create-Bulk-E-Mandate/CreateBulkEmandate";
+import WebsiteWhitelistPage from "../../ApproverNVerifier/website-whitelist/WebsiteWhitelistPage";
+import PaylinkDashboard from "../AllPages/payment-link-solution/PayLinkDashboard";
+import TotalLinkGenrated from "../AllPages/payment-link-solution/total-link-generated/TotalLinkGenrated";
+import TotalPayers from "../AllPages/payment-link-solution/total-payers/TotalPayers";
+import RecentTransaction from "../AllPages/payment-link-solution/recent-transaction/RecentTransaction";
+import QFormReports from "../../qform-reports";
+import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
+import StaticQR from "../AllPages/static-qr/StaticQR";
+
+import {
+  assignmentTypeApi,
+  setAssignmentType,
+} from "../../../slices/assign-accountmanager-slice/assignAccountMangerSlice";
+import Mfa from "../../ApproverNVerifier/Mfa/Mfa";
+import AssigneBusinessDevelopment from "../../ApproverNVerifier/AssignBusinessDevelopment/AssignBusinessDevelopment";
+import UpdateRollingReserve from "../../ApproverNVerifier/UpdateRollingReserve/UpdateRollingReserve";
+import Disbursement from "../../ApproverNVerifier/Disbursement/Disbursement";
+// import ScheduleTransaction from "../../../subscription_components/schedule-transaction/ScheduleTransaction";
+import SchedulueTransaction from "../../../subscription_components/schedule-transaction/ScheduleTransaction";
+import useSingleTabGuard from "../../../custom-hooks/useSingleTabGuard";
+import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement";
+import EnachSettlementReport from "../../../subscription_components/settlement-report-enach/EnachSettlementReport";
+import IdleTimerContainer from "../../../utilities/IdleTimer";
+import AdminAuthRegister from "../../ApproverNVerifier/admin-auth-register/AdminAuthRegister";
+
+function DashboardMainContent() {
+  let history = useHistory();
+  let { path } = useRouteMatch();
+  useSingleTabGuard();
+  const { auth, menuListReducer } = useSelector((state) => state);
+  const { user } = auth;
+  const loginId = user?.loginId;
+  const roleId = user?.roleId;
+  const roles = roleBasedAccess();
+  const assignmentType = useSelector(
+    (state) => state.assignAccountManagerReducer.assignmentType
+  );
+
+  // console.log("roles",roles);
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  // const queryParams = new URLSearchParams(location.search);
+  // const mendateRegId = queryParams.get("mendateRegId");
+  const createAndSaveClientCode = async () => {
+    if (
+      (roles?.merchant || roles?.referral) &&
+      user?.clientMerchantDetailsList[0]?.clientCode === null
+    ) {
+      const clientFullName = user?.clientContactPersonName;
+      const clientMobileNo = user?.clientMobileNo;
+      // const arrayOfClientCode = generateWord(clientFullName, clientMobileNo);
+
+      // check client code is existing
+      // const stepRespOne = await authService.checkClintCode({
+      //   client_code: arrayOfClientCode,
+      // });
+      const stepRespOne = await generateAndSaveClientCode(
+        clientFullName,
+        clientMobileNo
+      );
+      // console.log("stepRespOne", stepRespOne)
+      let newClientCode;
+      // if client code available return status true, then make request with the given client
+      if (
+        stepRespOne?.data?.clientCode !== "" &&
+        stepRespOne?.data?.status === true
+      ) {
+        newClientCode = stepRespOne?.data?.clientCode;
+      } else {
+        newClientCode = Math.random()?.toString(36).slice(-6).toUpperCase();
+      }
+
+      // update new client code in db
+      const data = {
+        loginId: user?.loginId,
+        clientName: user?.clientContactPersonName,
+        clientCode: newClientCode,
+      };
+      const stepRespTwo = await axiosInstanceJWT.post(
+        API_URL.AUTH_CLIENT_CREATE,
+        data
+      );
+      // console.log("stepRespTwo", stepRespTwo)
+
+      let userLocalData = JSON.parse(localStorage?.getItem("user"));
+      // console.log("before update - userLocalData", userLocalData)
+      let clientMerchantDetailsListLocal =
+        userLocalData.clientMerchantDetailsList[0];
+      let mergeClientMerchantDetailsList = Object.assign(
+        clientMerchantDetailsListLocal,
+        stepRespTwo.data
+      );
+
+      // console.log("mergeClientMerchantDetailsList", mergeClientMerchantDetailsList)
+      userLocalData.clientMerchantDetailsList = [
+        mergeClientMerchantDetailsList,
+      ];
+      // console.log("after update - userLocalData", userLocalData)
+      dispatch(updateClientDataInLocal(userLocalData));
+      localStorage?.setItem("user", JSON.stringify(userLocalData));
+      // fetch the details selected product by users
+      const postData = { login_id: user?.loginId };
+
+      const stepRespThree = await axiosInstanceJWT.post(
+        API_URL.website_plan_details,
+        postData
+      );
+      // console.log("stepRespThree", stepRespThree)
+      // console.log("user", user)
+
+      const webData = stepRespThree?.data?.data[0]?.plan_details;
+      // if business catagory code is gaming then not subscribed the plan
+      if (user?.clientMerchantDetailsList[0]?.business_cat_code !== "37") {
+        const postData = {
+          clientId: stepRespTwo?.data?.clientId,
+          applicationName: !isNull(webData?.appName)
+            ? webData?.appName
+            : "Paymentgateway",
+          planId: !isNull(webData?.planid) ? webData?.planid : "1",
+          planName: !isNull(webData?.planName)
+            ? webData?.planName
+            : "Subscription",
+          applicationId: !isNull(webData?.appid) ? webData?.appid : "10",
+        };
+
+        await axiosInstanceJWT
+          .post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData)
+          .then((res) => {
+            dispatch(
+              merchantSubscribedPlanData({
+                clientId: stepRespTwo?.data?.clientId,
+              })
+            );
+          });
+      }
+    }
+  };
+
+  // create new client code
+  useEffect(() => {
+    createAndSaveClientCode();
+  }, []);
+
+  useEffect(() => {
+    if (
+      user?.loginId != null &&
+      user?.loginId !== undefined &&
+      user?.loginId !== ""
+    ) {
+      const postBody = {
+        LoginId: user?.loginId,
+      };
+
+
+      if (!menuListReducer?.enableMenu?.length) {
+        dispatch(fetchMenuList(postBody));
+      }
+
+    } else {
+      dispatch(logout());
+      toastConfig.errorToast("Session Expired, You have been logged out.");
+    }
+  }, []);
+
+  useEffect(() => {
+    const shouldFetch =
+      !assignmentType && (roles?.businessDevelopment || roles?.zonalManager);
+
+    if (shouldFetch && roleId) {
+      dispatch(assignmentTypeApi(roleId)).then((response) => {
+        const assignmentTypes = response?.payload?.assignment_type ?? [];
+
+        if (Array.isArray(assignmentTypes)) {
+          const filteredAssignment = assignmentTypes.find(
+            (item) => item?.role_id === roleId
+          );
+
+
+          if (filteredAssignment) {
+            dispatch(setAssignmentType(filteredAssignment));
+          }
+        }
+      });
+    }
+  }, [dispatch, assignmentType, roleId, roles]);
+
+
+  useEffect(() => {
+    // fetch subscribe product data
+    try {
+      if (roles.merchant && location?.pathname === "/dashboard") {
+        dispatch(
+          merchantSubscribedPlanData({
+            clientId: user?.clientMerchantDetailsList[0]?.clientId,
+          })
+        );
+      }
+    } catch (error) { }
+  }, [location]);
+
+  if (user !== null && user.userAlreadyLoggedIn) {
+    history.push("/login-page");
+    return <Redirect to="/login-page" />;
+  } else if (user === null) {
+    return <Redirect to="/login-page" />;
+  }
+
+  // console.log("roles", roles)
+  return (
+    <React.Fragment>
+
+      <DashboardHeader />
+      <div className="container-fluid">
+        <div className="row dashboard_bg">
+          <SideNavbar />
+          <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob} dashboard_bg`}>
+            <IdleTimerContainer />
+            <Switch>
+              <Route exact path={path}>
+                <Home />
+              </Route>
+              <Route exact path={`${path}/profile`}>
+                <Profile />
+              </Route>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/onboard-merchant`}
+                Component={OnboardMerchant}
+                roleList={{
+                  approver: true,
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                }}
+              >
+                <OnboardMerchant />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/Internal-dashboard`}
+                Component={InternalDashboard}
+                roleList={{
+                  approver: true,
+                  viewer: true,
+                  verifier: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              >
+                <InternalDashboard />
+              </AuthorizedRoute>
+              <Route exact path={`${path}/change-password`}>
+                <ChangePassword />
+              </Route>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/settled-transaction-merchant`}
+                Component={SettlementReportDoitc}
+                roleList={{ referral: true }}
+              >
+                <SettlementReportDoitc />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-history-merchant`}
+                Component={TransactionHistoryDoitc}
+                roleList={{ referral: true }}
+              >
+                <TransactionHistoryDoitc />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-summery`}
+                Component={TransactionSummery}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <TransactionSummery />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-enquiry`}
+                Component={TransactionEnquirey}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <TransactionEnquirey />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-history`}
+                Component={TransactionHistory}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <TransactionHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/client-list`}
+                Component={ClientList}
+                roleList={{ bank: true, referral: true }}
+              >
+                <ClientList />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/settlement-report`}
+                Component={SettlementReport}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <SettlementReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/refund-transaction-history`}
+                Component={RefundTransactionHistory}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <RefundTransactionHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/branch-transaction`}
+                Component={BranchTransactionHistory}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <RefundTransactionHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/chargeback-transaction-history`}
+                Component={ChargeBackTxnHistory}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <ChargeBackTxnHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/product-catalogue`}
+                Component={Products}
+                roleList={{ merchant: true }}
+              >
+                <Products />
+              </AuthorizedRoute>
+
+              {/* <AuthorizedRoute
+                exaxt
+                path={`${path}/paylink`}
+                Component={Paylink}
+                roleList={{ merchant: true }}
+              >
+                <Paylink />
+              </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/paylinks`}
+                Component={PaylinkDashboard}
+                roleList={{ merchant: true }}
+              />
+              {/* <AuthorizedRoute
+                exaxt
+                path={`${path}/paylinkdetail`}
+                Component={PaymentLinkDetail}
+                roleList={{ merchant: true }}
+              >
+                <PaymentLinkDetail />
+              </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/Sandbox`}
+                Component={Sandbox}
+                roleList={{ merchant: true, referral: true }}
+              >
+                <Sandbox />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/emandate/`}
+                roleList={{ merchant: true }}
+              >
+                <Emandate />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/payment-response/`}
+                roleList={{ merchant: true }}
+              >
+                <PaymentResponse />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/settlement-report-new`}
+                Component={SettlementReportNew}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <SettlementReportNew />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-history-new`}
+                Component={TransactionHistoryDownload}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <TransactionHistoryDownload />
+              </AuthorizedRoute>
+
+              <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
+                {/* getting issue to get query param in protected route */}
+                <SabPaisaPricing />
+              </Route>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/kyc`}
+                Component={KycForm}
+                roleList={{
+                  merchant: true,
+                  referral: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true,
+                  viewer: true,
+                }}
+              >
+                <KycForm />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/approver`}
+                Component={Approver}
+                roleList={{ approver: true, verifier: true, viewer: true }}
+              >
+                <Approver />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/configuration`}
+                Component={Configuration}
+                roleList={{ approver: true, verifier: true }}
+              >
+                <Configuration />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/signup-data`}
+                Component={SignupData}
+                roleList={{ approver: true, verifier: true, viewer: true }}
+              >
+                <SignupData />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/ratemapping`}
+                Component={RateMapping}
+                roleList={{ approver: true }}
+              >
+                <RateMapping />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/additional-kyc`}
+                Component={AdditionalKYC}
+                roleList={{
+                  approver: true,
+                  verifier: true,
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              >
+                <AdditionalKYC />
+              </AuthorizedRoute>
+              <AuthorizedRoute
+                exact
+                path={`${path}/aadhar-response`}
+                Component={AadharResponse}
+                roleList={{
+                  approver: true,
+                  verifier: true,
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              ></AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/user-info`}
+                Component={UserInfo}
+                roleList={{ approver: true }}
+              >
+                <UserInfo />
+              </AuthorizedRoute>
+
+              <Route exact path={`${path}/thanks`}>
+                <ThanksPage />
+              </Route>
+
+              {/* <Route exact path={`${path}/pg-response`} >
+                                    <PgResponse />
+                                </Route> */}
+
+              <Route
+                exact
+                path={`${path}/sabpaisa-pg/:subscribeId/:applicationid/:chargeflag`}
+                Component={SpPg}
+              >
+                <SpPg />
+              </Route>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/ledger`}
+                Component={PayoutTransaction}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/transactions`}
+                Component={TransactionsPayoutHistory}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/beneficiary`}
+                Component={Beneficiary}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/mis_report`}
+                Component={MISReport}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/payout/payment_status`}
+                Component={MakePayment}
+                roleList={{ merchant: true }}
+              >
+                <PayoutTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-balance`}
+                Component={MerchantBalance}
+                roleList={{
+                  approver: true,
+                  verifier: true,
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              >
+                <MerchantBalance />
+              </AuthorizedRoute>
+
+
+
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/q-form-reports`}
+                Component={QFormReports}
+                roleList={{ merchant: true }}
+              >
+                <QFormReports />
+              </AuthorizedRoute>
+              {/* Routing for Faq */}
+
+              <AllowedForAll exact path={`${path}/faq`} Component={Faq}>
+                <Faq />
+              </AllowedForAll>
+              <AllowedForAll
+                exact
+                path={`${path}/info-bulletin`}
+                Component={InformationBulletin}
+              >
+                <InformationBulletin />
+              </AllowedForAll>
+              <AuthorizedRoute
+                exact
+                path={`${path}/widget`}
+                Component={Widget}
+                roleList={{ merchant: true }}
+              >
+                <Widget />
+              </AuthorizedRoute>
+
+              <Route
+                exact
+                path={`${path}/static-qr`}
+              >
+                <StaticQR />
+              </Route>
+
+              {/* Routing for subscription */}
+              {/* ----------------------------------------------------------------------------------------------------|| */}
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/mandateReports`}
+                Component={MandateReport}
+                roleList={{ merchant: true }}
+              >
+                <MandateReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/debitReports`}
+                Component={DebitReport}
+                roleList={{ merchant: true }}
+              >
+                <DebitReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/mandate_registration`}
+                Component={CreateMandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandate />
+              </AuthorizedRoute>
+
+              {/* <AuthorizedRoute //Create Mandate handle by frontend(Old code)
+                exact
+                path={`${path}/subscription/create-mandate-api`}
+                Component={CreateMandateApi}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandateApi />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription/create-mandate-api-response`}
+                Component={CreateMandateApiResponse}
+                roleList={{ merchant: true }}
+              >
+                <CreateMandateApiResponse />
+              </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-e-mandate`}
+                Component={EnachForm}
+                roleList={{ merchant: true }}
+              >
+                <EnachForm />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-mandate-api-response`}
+                Component={HandleMandateResponse}
+                roleList={{ merchant: true }}
+              >
+                <HandleMandateResponse />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/registaration-history`}
+                Component={RegistrationHistory}
+                roleList={{ merchant: true }}
+              >
+                <RegistrationHistory />
+              </AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/registaration-history`}
+                Component={RegistrationHistory}
+                roleList={{ merchant: true }}
+              >
+                <RegistrationHistory />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/e-nach-settlement-report`}
+                Component={EnachSettlementReport}
+                roleList={{ merchant: true }}
+              >
+
+              </AuthorizedRoute>
+
+
+
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/schedule-transaction`}
+                Component={SchedulueTransaction}
+                roleList={{ merchant: true }}
+              ></AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/transaction-report`}
+                Component={TransactionReport}
+                roleList={{ merchant: true }}
+              >
+                <TransactionReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/create-bulk-mandate`}
+                Component={CreateBulkEmandate}
+                roleList={{ merchant: true }}
+              >
+                <CreateBulkEmandate />
+              </AuthorizedRoute>
+
+              {/* -----------------------------------------------------------------------------------------------------|| */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/onboarded-report`}
+                Component={OnboardedReport}
+                roleList={{ approver: true, verifier: true }}
+              >
+                <OnboardedReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/referzone`}
+                Component={ReferZone}
+                roleList={{ approver: true, verifier: true }}
+              >
+                <ReferZone />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/generatemid`}
+                Component={GenerateMid}
+                roleList={{ approver: true, verifier: true }}
+              >
+                <GenerateMid />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/mid-management`}
+                Component={MidManagement}
+                roleList={{ approver: true, verifier: true }}
+              />
+              <AuthorizedRoute
+                exact
+                path={`${path}/bank-onboarding`}
+                Component={BankMerchantOnboard}
+                roleList={{ bank: true, approver: true }}
+              />
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/referral-onboarding`}
+                Component={MerchantReferralOnboard}
+                roleList={{
+                  approver: true,
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              />
+
+              {roles?.approver && (
+                <Route
+                  exact
+                  path={`${path}/ratemapping/:loginid`}
+                  Component={ManualRateMapping}
+                >
+                  <ManualRateMapping />
+                </Route>
+              )}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/manual-subscription`}
+                Component={ManualSubscription}
+                roleList={{ approver: true }}
+              />
+              <AuthorizedRoute
+                exact
+                path={`${path}/subscription-balance`}
+                Component={SubscriptionBalance}
+                roleList={{ approver: true }}
+              />
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/emami/challan-transactions`}
+                Component={ChallanTransactReport}
+                roleList={{ b2b: true }}
+              >
+                <ChallanTransactReport />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/bizz-appdata`}
+                Component={BizzAppData}
+                roleList={{
+                  approver: true,
+                  verifier: true,
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              >
+                <BizzAppData />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/my-merchant`}
+                Component={MyMerchantList}
+                roleList={{
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              >
+                <MyMerchantList />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/chiled-merchant-list`}
+                Component={ChiledMerchantList}
+                roleList={{ approver: true }}
+              >
+                <ChiledMerchantList />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/multi-user-onboard`}
+                Component={MultiUserOnboard}
+                roleList={{
+                  viewer: true,
+                  accountManager: true,
+                  businessDevelopment: true,
+                  zonalManager: true
+                }}
+              >
+                <MultiUserOnboard />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-assignment`}
+                Component={AssigneAccountManger}
+                roleList={{ approver: true }}
+              >
+                <AssigneAccountManger />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/edit-kyc-detail`}
+                Component={EditKycDetail}
+                roleList={{ verifier: true, approver: true }}
+              >
+                <EditKycDetail />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/website-whitelist`}
+                Component={WebsiteWhitelistPage}
+                roleList={{ verifier: true }}
+              >
+                <WebWhiteList />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-detail-list`}
+                Component={MerchantDetailList}
+                roleList={{ bank: true }}
+              />
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-summary`}
+                Component={MerchantSummary}
+                roleList={{ bank: true }}
+              />
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/payment-link-solution`}
+                roleList={{ merchant: true }}
+                Component={PaylinkDashboard}
+              >
+                <PaylinkDashboard />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-link-generated`}
+                roleList={{ merchant: true }}
+                Component={TotalLinkGenrated}
+              >
+                <TotalLinkGenrated />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/total-payers`}
+                roleList={{ merchant: true }}
+                Component={TotalPayers}
+              >
+                <TotalPayers />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exaxt
+                path={`${path}/recent-transaction`}
+                roleList={{ merchant: true }}
+                Component={RecentTransaction}
+              >
+                <RecentTransaction />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/mfa`}
+                Component={Mfa}
+                roleList={{
+                  approver: true,
+                }}
+              />
+
+              {/* </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/assigned-merchant`}
+                Component={AssignedMerchant}
+                roleList={{
+                  approver: true,
+                  accountManager: true,
+                  zonalManager: true,
+                  businessDevelopment: true,
+                }}
+              />
+
+              {/* <AuthorizedRoute
+                path={`${path}/assign-business-development`}
+                Component={AssigneBusinessDevelopment}
+                roleList={{
+                  approver: true,
+                  verifier: true
+                }}
+              >
+              </AuthorizedRoute> */}
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/update-rolling-reserve`}
+                Component={UpdateRollingReserve}
+                roleList={{ approver: true, verifier: true }}
+              />
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/admin-auth-register`}
+                Component={AdminAuthRegister}
+                roleList={{ approver: true }}
+              >
+                <AdminAuthRegister />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/Disbursement`}
+                Component={Disbursement}
+                roleList={{ approver: true }}
+              ></AuthorizedRoute>
+
+              <Route path={`${path}/*`} component={UrlNotFound}>
+                <UrlNotFound />
+              </Route>
+            </Switch>
+          </main>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
+
+export default DashboardMainContent;

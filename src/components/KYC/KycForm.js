@@ -1,0 +1,450 @@
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useHistory,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
+import BankDetails from "./BankDetails";
+import BusinessDetails from "./BusinessDetails";
+import BusinessOverview from "./BusinessOverview";
+// import ContactInfo from "./ContactInfo";
+import DocumentsUploadNew from "./DocumentsUploadNew";
+import SubmitKyc from "./SubmitKyc";
+import {
+  kycUserList,
+  kycDocumentUploadList,
+  GetKycTabsStatus,
+  clearKycState,
+  kycUserListForMerchant,
+  clearKYCDocumentList,
+} from "../../slices/kycSlice";
+import { referralOnboardSlice } from "../../slices/approver-dashboard/referral-onboard-slice";
+import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
+import classes from "./kycForm.module.css";
+// import NavBar from "../dashboard/NavBar/NavBar";
+
+import {
+  KYC_STATUS_APPROVED,
+  KYC_STATUS_PENDING,
+  KYC_STATUS_PROCESSING,
+  KYC_STATUS_REJECTED,
+  KYC_STATUS_VERIFIED,
+} from "../../utilities/enums";
+import ContactInfoKyc from "./ContactInfoKyc";
+import { stringDec } from "../../utilities/encodeDecode";
+import { isNull, isUndefined } from "lodash";
+import toastConfig from "../../utilities/toastTypes";
+
+function KycForm() {
+  const dispatch = useDispatch();
+
+  const search = useLocation().search;
+  const kycid = new URLSearchParams(search).get("kycid");
+  const redirectUrl = new URLSearchParams(search).get("redirectUrl");
+  const [tab, SetTab] = useState(1);
+  const [title, setTitle] = useState("CONTACT INFO");
+  const [kycPopUp, setKycPopUp] = useState(true);
+  const { auth, kyc } = useSelector((state) => state);
+  const basicDetailsResponse = useSelector(
+    (state) => state.referralOnboard.basicDetailsResponse
+  );
+  const { user } = auth;
+  const { loginId } = user;
+  const roles = roleBasedAccess();
+
+  let merchantloginMasterId = "";
+  if (roles.referral || roles.accountManager || roles.viewer) {
+    merchantloginMasterId = stringDec(kycid);
+  } else if (roles.merchant) {
+    merchantloginMasterId = loginId;
+  }
+
+  merchantloginMasterId = parseInt(merchantloginMasterId);
+
+  const { KycTabStatusStore } = kyc;
+
+  const merchant_consent = kyc?.kycUserList?.merchant_consent;
+
+  let history = useHistory();
+
+  //------------- Kyc  User List ------------//
+  useEffect(() => {
+    if (roles.merchant) {
+      dispatch(kycUserListForMerchant());
+    } else {
+      dispatch(kycUserList({ login_id: merchantloginMasterId, masking: 1 }));
+    }
+
+    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }));
+    dispatch(GetKycTabsStatus({ login_id: merchantloginMasterId }));
+
+  }, [merchantloginMasterId]);
+  //-----------Kyc Document Upload List ------//
+  useEffect(() => {
+    // clear kyc state when unmount the component
+    return () => {
+      dispatch(clearKYCDocumentList())
+    }
+  }, [])
+
+
+  const redirect = () => {
+    if (
+      (roles.accountManager || roles.viewer) &&
+      (isNull(basicDetailsResponse.data?.business_cat_code) ||
+        isUndefined(basicDetailsResponse.data?.business_cat_code))
+    ) {
+      if (
+        window.confirm(
+          "You might have unsaved changes. Are you sure you want to leave?"
+        )
+      ) {
+        dispatch(referralOnboardSlice.actions.resetBasicDetails());
+        dispatch(clearKycState());
+        setKycPopUp(false);
+        history.push(redirectUrl ? redirectUrl : "/dashboard");
+        return true; // Allow navigation
+      } else return false;
+    } else history.push(redirectUrl ? redirectUrl : "/dashboard");
+  };
+
+  const kycStatusIcon = (
+    tabStatus,
+    currentTab,
+    merchantConsent,
+    isLastAction = false
+  ) => {
+    // console.log("tabStatus",tabStatus)
+    if (tabStatus && merchantConsent === false && isLastAction) {
+      return (
+        <i
+          className={`fa kyc-form-status-icon fa-exclamation`}
+          ariaHidden="true"
+        ></i>
+      );
+    }
+    if (tabStatus === KYC_STATUS_REJECTED) {
+      return (
+        <i
+          className={`fa kyc-form-status-icon fa-exclamation`}
+          ariaHidden="true"
+        ></i>
+      );
+    }
+    if (
+      tabStatus === KYC_STATUS_PENDING ||
+      tabStatus === KYC_STATUS_PROCESSING
+    ) {
+      return (
+        <i className={`fa kyc-form-status-icon fa-check`} ariaHidden="true"></i>
+      );
+    }
+    if (
+      tabStatus === KYC_STATUS_VERIFIED ||
+      tabStatus === KYC_STATUS_APPROVED
+    ) {
+      return (
+        <i
+          className={`fa kyc-form-status-icon fa-check-square-o`}
+          ariaHidden="true"
+        ></i>
+      );
+    }
+  };
+
+  const kycTabColorClassByStatus = (tabStatus, merchantConsent) => {
+    // console.log("tabStatus",tabStatus)
+    if (merchantConsent === false) {
+      return "kyc_active_tab_warning";
+    } else if (tabStatus === KYC_STATUS_REJECTED) {
+      return "kyc_active_tab_error";
+    } else if (
+      tabStatus === KYC_STATUS_VERIFIED ||
+      tabStatus === KYC_STATUS_APPROVED
+    ) {
+      return "kyc_active_tab_success";
+    } else {
+      return "kyc_active_tab_default";
+    }
+  };
+
+  // console.log("KycTabStatusStore?.document_status",KycTabStatusStore?.document_status)
+
+  return (
+    <section className="ant-layout NunitoSans-Regular">
+      <div
+        className={
+          "pt-5 modal fade mymodals" +
+          (kycPopUp === true ? " show d-block" : " d-none")
+        }
+        style={{ overflow: "scroll" }}
+      >
+        <div className="modal-dialog modal-dialog-center modal-lg">
+          <div className="modal-content kyc-modal_form rounded-2">
+            <div className="modal-header py-1">
+              <div>
+                <h5 className="font-weight-bold mb-0"> KYC Form</h5>
+                <p className="paymentSubHeader m-0 border-bottom">
+                  Complete KYC to start accepting payments
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => redirect()}
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body p-0">
+              <div className="d-lg-flex align-items-start">
+                <div
+                  className={`${classes.kyc_tab_nav} nav flex-column nav-pills`}
+                  id="v-pills-tab"
+                  role="tablist"
+                  aria-orientation="vertical"
+                >
+                  <a
+                    href={false}
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      } ${tab === 1
+                        ? kycTabColorClassByStatus(
+                          KycTabStatusStore?.general_info_status
+                        )
+                        : "inactive"
+                      }`}
+                    type="button"
+                    role="tab"
+                    onClick={() => {
+                      SetTab(1);
+                      setTitle("CONTACT INFO");
+                    }}
+                  >
+                    {kycStatusIcon(KycTabStatusStore?.general_info_status)}
+                    Merchant Contact Info
+                  </a>
+
+                  <a
+                    href={false}
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      } ${tab === 2
+                        ? kycTabColorClassByStatus(
+                          KycTabStatusStore?.business_info_status
+                        )
+                        : "inactive"
+                      }`}
+                    type="button"
+                    onClick={() => {
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(2);
+                        setTitle("BUSINESS OVERVIEW");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
+                    }}
+                  >
+                    {kycStatusIcon(KycTabStatusStore?.business_info_status)}
+                    Business Overview
+                  </a>
+
+                  <a
+                    href={false}
+                    className={`nav-link kyc-menu-font rounded-0 ${classes.kyc_tab_link
+                      }  ${tab === 3
+                        ? kycTabColorClassByStatus(
+                          KycTabStatusStore?.merchant_info_status
+                        )
+                        : "inactive"
+                      }`}
+                    type="button"
+                    onClick={() => {
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(3);
+                        setTitle("BUSINESS DETAILS");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
+                    }}
+                  >
+                    {" "}
+                    {kycStatusIcon(KycTabStatusStore?.merchant_info_status)}
+                    Business Details
+                  </a>
+
+                  <a
+                    href={false}
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      } ${tab === 4
+                        ? kycTabColorClassByStatus(
+                          KycTabStatusStore?.settlement_info_status
+                        )
+                        : "inactive"
+                      }`}
+                    type="button"
+                    onClick={() => {
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(4);
+                        setTitle("BANK DETAILS");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
+                    }}
+                  >
+                    {" "}
+                    {kycStatusIcon(KycTabStatusStore?.settlement_info_status)}
+                    Bank Details
+                  </a>
+
+                  <a
+                    href={false}
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      }  ${tab === 5
+                        ? kycTabColorClassByStatus(
+                          KycTabStatusStore?.document_status
+                        )
+                        : "inactive"
+                      }`}
+                    type="button"
+                    onClick={() => {
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(5);
+                        setTitle("DOCUMENTS UPLOAD");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
+                    }}
+                  >
+                    {kycStatusIcon(KycTabStatusStore?.document_status)}
+                    Upload Document
+                  </a>
+
+                  <a
+                    href={false}
+                    className={`nav-link kyc-menu-font rounded-0  ${classes.kyc_tab_link
+                      } ${tab === 6
+                        ? kycTabColorClassByStatus(KycTabStatusStore?.status)
+                        : "inactive"
+                      }`}
+                    type="button"
+                    onClick={() => {
+                      if (
+                        kyc?.kycUserList?.isContactNumberVerified &&
+                        kyc?.kycUserList?.isEmailVerified
+                      ) {
+                        SetTab(6);
+                        setTitle("SUBMIT KYC");
+                      } else
+                        toastConfig.infoToast(
+                          "Please verify contact number and email"
+                        );
+                    }}
+                  >
+                    {/* warning icon required/  */}
+                    {kycStatusIcon(
+                      KycTabStatusStore?.status,
+                      tab,
+                      merchant_consent?.term_condition,
+                      true
+                    )}
+                    Submit KYC
+                  </a>
+                </div>
+
+                <div
+                  className="tab-content w-100 overflow-auto"
+                  id="v-pills-tabContent"
+                >
+                  <div className="card m-0 p-0 rounded-0">
+                    <div className="card-body">
+                      <h6 className="mb-3 font-weight-bold">{title}</h6>
+                      {(tab === 1 && (
+                        <ContactInfoKyc
+                          role={roles}
+                          kycid={kycid}
+                          merchantloginMasterId={merchantloginMasterId}
+                          tab={SetTab}
+                          title={setTitle}
+                        />
+                      )) ||
+                        (tab === 2 && (
+                          <BusinessOverview
+                            role={roles}
+                            kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 3 && (
+                          <BusinessDetails
+                            role={roles}
+                            kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 4 && (
+                          <BankDetails
+                            role={roles}
+                            kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 5 && (
+                          <DocumentsUploadNew
+                            role={roles}
+                            kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
+                            tab={SetTab}
+                            tabValue={tab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 6 && (
+                          <SubmitKyc
+                            role={roles}
+                            kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
+                          />
+                        )) || (
+                          <ContactInfoKyc
+                            role={roles}
+                            kycid={kycid}
+                            merchantloginMasterId={merchantloginMasterId}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default KycForm;
