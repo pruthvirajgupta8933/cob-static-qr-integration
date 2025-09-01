@@ -214,7 +214,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                     window.location.href = response?.payload?.data.bank_details_url;
                 }
             } else {
-                toast.error(response?.payload?.detail);
+                toast.error(response?.payload?.detail || 'Something went wrong.');
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Something went wrong.');
