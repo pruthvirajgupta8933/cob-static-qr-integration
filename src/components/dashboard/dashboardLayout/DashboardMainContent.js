@@ -119,6 +119,7 @@ import RecentTransaction from "../AllPages/payment-link-solution/recent-transact
 import QFormReports from "../../qform-reports";
 import AssignedMerchant from "../../BusinessDevlopment/AssignedMerchant";
 import StaticQR from "../AllPages/static-qr/StaticQR";
+import BulkQRGenerator from "../../bulkQR/BulkQRGenerator";
 
 import {
   assignmentTypeApi,
@@ -746,6 +747,13 @@ function DashboardMainContent() {
                 path={`${path}/static-qr`}
               >
                 <StaticQR />
+              </Route>
+
+              <Route
+                exact
+                path={`${path}/bulk-qr`}
+              >
+                <BulkQRGenerator />
               </Route>
 
               {/* Routing for subscription */}

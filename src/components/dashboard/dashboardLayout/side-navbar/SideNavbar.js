@@ -4,6 +4,8 @@ import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import sideNavClasses from "./sidenavbar.module.css";
 import ProgressBar from "../../../../_components/reuseable_components/ProgressBar";
+import { shouldShowNewBadge } from "../../../../config/featureLaunchDates";
+import "./new-badge.css";
 
 function SideNavbar() {
   const { menuListReducer, auth, themeReducer } = useSelector((state) => state);
@@ -123,7 +125,15 @@ function SideNavbar() {
                 <h6
                   className={`sidebar-heading context-menu d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted  ${sideNavClasses.sidebar_heading}`}
                 >
-                  <span className="font-size-14 ">QR Solutions</span>
+                  <span className="font-size-14 ">
+                    QR Solutions
+                    {/* NEW Badge - Managed centrally via featureLaunchDates.js */}
+                    {shouldShowNewBadge('staticQR') && (
+                      <span className="new-feature-badge">
+                        NEW
+                      </span>
+                    )}
+                  </span>
                   <div className="link-secondary">
                     <i className={`fa fa-minus cursor_pointer`}></i>
                   </div>
@@ -142,6 +152,28 @@ function SideNavbar() {
                     }`}
                   >
                     <i className="fa fa-qrcode"></i>&nbsp;Static QR
+                    {/* NEW Badge for individual item */}
+                    {shouldShowNewBadge('staticQR') && (
+                      <span className="new-feature-badge new-feature-badge-small">
+                        NEW
+                      </span>
+                    )}
+                  </Link>
+                </li>
+                <li className="nav-item ml-1" role="menuitem">
+                  <Link
+                    to={`${url}/bulk-qr`}
+                    className={`nav-link ${sideNavClasses.sidebar_menu} ${
+                      selectedMenu === "bulk-qr" ? sideNavClasses.selected_memu : ""
+                    }`}
+                  >
+                    <i className="fa fa-layer-group"></i>&nbsp;Bulk QR
+                    {/* NEW Badge for bulk QR */}
+                    {shouldShowNewBadge('bulkQR') && (
+                      <span className="new-feature-badge new-feature-badge-small">
+                        NEW
+                      </span>
+                    )}
                   </Link>
                 </li>
               </ul>

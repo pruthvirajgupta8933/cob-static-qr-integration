@@ -235,6 +235,101 @@ export const toggleQRStatus = createAsyncThunk(
     }
 );
 
+// Bulk Create QR Codes
+export const bulkCreateQR = createAsyncThunk(
+    'sabqr/bulkCreate',
+    async (data, { rejectWithValue, dispatch, getState }) => {
+        try {
+            // Use the same logic as single QR creation but optimized for bulk
+            const QRCode = await import('qrcode');
+            
+            // Generate unique identifier
+            const originalIdentifier = data.custom_identifier || data.qr_identifier || sabQRService.generateUniqueIdentifier();
+            const identifier = originalIdentifier.toLowerCase();
+            
+            // Get merchant information
+            const merchantName = data.merchant_name || data.reference_name || 'SRS Live Technologies';
+            const merchantId = HDFC_CONFIG.MERCHANT_ID || 'HDFC000010380443';
+            
+            // Check for existing QR
+            const { sabqr } = getState();
+            const existingQR = sabqr.qrList.find(qr => qr.qr_identifier === identifier);
+            
+            if (existingQR) {
+                const errorMessage = `QR with identifier "${identifier}" already exists`;
+                return rejectWithValue(errorMessage);
+            }
+            
+            // Generate timestamp and transaction reference
+            const timestamp = Date.now().toString().slice(-6);
+            const transactionRef = `STQ${identifier.toUpperCase()}${timestamp}`;
+            
+            // Generate DYNAMIC VPA
+            const dynamicVPA = VPAGenerator.generateUniqueVPA({
+                identifier: identifier,
+                merchantName: merchantName,
+                merchantId: merchantId,
+                strategy: 'prefix'
+            });
+            
+            // Generate UPI string
+            const upiString = [
+                'upi://pay?',
+                `pa=${dynamicVPA}`,
+                `&pn=${encodeURIComponent(data.reference_name || 'SRS Live Technologies')}`,
+                `&tn=${encodeURIComponent(data.description || 'TestQR')}`,
+                '&cu=INR',
+                '&mc=6012',
+                `&tr=${transactionRef}`,
+                '&mode=01',
+                data.max_amount_per_transaction ? `&am=${data.max_amount_per_transaction}` : ''
+            ].filter(Boolean).join('');
+            
+            // Generate QR Code
+            const qrOptions = {
+                errorCorrectionLevel: 'M',
+                type: 'image/png',
+                width: 300,
+                margin: 1,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            };
+            
+            const qrImageData = await QRCode.toDataURL(upiString, qrOptions);
+            
+            // Prepare response data
+            const qrData = {
+                id: Date.now(),
+                qr_identifier: identifier,
+                merchant_name: merchantName,
+                reference_name: data.reference_name || 'SRS Live Technologies',
+                description: data.description || 'TestQR',
+                max_amount_per_transaction: data.max_amount_per_transaction || null,
+                min_amount_per_transaction: data.min_amount_per_transaction || null,
+                qr_image_url: qrImageData,
+                full_vpa: dynamicVPA,
+                upi_string: upiString,
+                transaction_ref: transactionRef,
+                status: 'active',
+                created_at: new Date().toISOString(),
+                mobile_number: data.mobile_number,
+                email: data.email,
+                address: data.address
+            };
+            
+            // Save to localStorage for persistence
+            saveToLocalStorage(STORAGE_KEY, qrData);
+            
+            return qrData;
+        } catch (error) {
+            const message = error.message || 'Failed to create QR code in bulk';
+            return rejectWithValue(message);
+        }
+    }
+);
+
 // Validate QR Identifier
 export const validateQRIdentifier = createAsyncThunk(
     'sabqr/validateIdentifier',

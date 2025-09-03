@@ -1,0 +1,123 @@
+/* NEW Badge Styles for QR Solutions - Professional Fintech Colors */
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.4), 0 0 12px rgba(37, 99, 235, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+  }
+}
+
+.new-feature-badge {
+  display: inline-block;
+  /* Professional blue gradient - matches fintech/payment industry */
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  
+  /* Alternative professional color options: */
+  /* Purple gradient (modern SaaS): */
+  /* background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); */
+  
+  /* Green gradient (success/growth): */
+  /* background: linear-gradient(135deg, #10b981 0%, #059669 100%); */
+  
+  /* Teal gradient (trust/reliability): */
+  /* background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); */
+  
+  /* Gold gradient (premium): */
+  /* background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); */
+  
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: pulse 3s infinite ease-in-out;
+  position: relative;
+  vertical-align: middle;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  
+  /* Shimmer effect for premium feel */
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    135deg,
+    #2563eb 0%,
+    #3b82f6 25%,
+    #1e40af 50%,
+    #3b82f6 75%,
+    #2563eb 100%
+  );
+  animation: pulse 3s infinite ease-in-out, shimmer 3s infinite linear;
+}
+
+.new-feature-badge-small {
+  font-size: 9px;
+  padding: 1px 6px;
+  vertical-align: super;
+}
+
+/* Subtle version for less prominent display */
+.new-feature-badge-subtle {
+  background: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  animation: none;
+  font-weight: 500;
+}
+
+/* Optional: Notification dot style */
+.new-notification-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  border: 1px solid white;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .new-feature-badge {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  }
+  
+  .new-feature-badge-subtle {
+    background: #1e293b;
+    color: #60a5fa;
+    border: 1px solid #334155;
+  }
+}

@@ -179,6 +179,77 @@ class LocalTransactionStore {
         const transactions = this.getTransactions();
         return transactions.some(t => t.transactionId === transactionId);
     }
+
+    // =================== Bulk QR Methods ===================
+    
+    // Save QR code
+    async saveQRCode(qrData) {
+        try {
+            const qrCodes = this.getQRCodes();
+            
+            // Check for duplicate
+            const exists = qrCodes.find(q => q.merchant_id === qrData.merchant_id);
+            if (exists) {
+                throw new Error(`QR code for merchant ${qrData.merchant_id} already exists`);
+            }
+            
+            qrCodes.push(qrData);
+            fs.writeFileSync(this.qrCodesFile, JSON.stringify(qrCodes, null, 2));
+            
+            return qrData;
+        } catch (error) {
+            console.error('Error saving QR code:', error);
+            throw error;
+        }
+    }
+    
+    // Get batch status
+    async getBatchStatus(batchId) {
+        try {
+            const batchFile = path.join(this.dataDir, `batch_${batchId}.json`);
+            
+            if (!fs.existsSync(batchFile)) {
+                return null;
+            }
+            
+            const data = fs.readFileSync(batchFile, 'utf8');
+            return JSON.parse(data);
+        } catch (error) {
+            console.error('Error getting batch status:', error);
+            return null;
+        }
+    }
+    
+    // Get batch data
+    async getBatchData(batchId) {
+        try {
+            const batchFile = path.join(this.dataDir, `batch_${batchId}.json`);
+            
+            if (!fs.existsSync(batchFile)) {
+                return null;
+            }
+            
+            const data = fs.readFileSync(batchFile, 'utf8');
+            const batchInfo = JSON.parse(data);
+            
+            return batchInfo.qrCodes || [];
+        } catch (error) {
+            console.error('Error getting batch data:', error);
+            return null;
+        }
+    }
+    
+    // Save batch
+    async saveBatch(batchId, data) {
+        try {
+            const batchFile = path.join(this.dataDir, `batch_${batchId}.json`);
+            fs.writeFileSync(batchFile, JSON.stringify(data, null, 2));
+            return true;
+        } catch (error) {
+            console.error('Error saving batch:', error);
+            return false;
+        }
+    }
 }
 
 // Create singleton instance
