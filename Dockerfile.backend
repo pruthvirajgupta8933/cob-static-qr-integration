@@ -1,0 +1,47 @@
+# Backend Dockerfile - Node.js API with QR Generation
+FROM node:16-alpine
+
+# Install system dependencies for QR generation
+RUN apk add --no-cache \
+    cairo-dev \
+    pango-dev \
+    jpeg-dev \
+    giflib-dev \
+    librsvg-dev \
+    pixman-dev \
+    pangomm-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    python3 \
+    make \
+    g++
+
+# Set working directory
+WORKDIR /app
+
+# Copy backend package files
+COPY backend/package*.json ./backend/
+
+# Install backend dependencies
+WORKDIR /app/backend
+RUN npm ci --only=production
+
+# Copy backend source code
+COPY backend ./
+
+# Create data directory for QR storage
+RUN mkdir -p /app/data
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3001
+
+# Expose backend port
+EXPOSE 3001
+
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:3001/api/health', (r) => {r.statusCode === 200 ? process.exit(0) : process.exit(1)})"
+
+# Run the backend server
+CMD ["node", "server.js"]

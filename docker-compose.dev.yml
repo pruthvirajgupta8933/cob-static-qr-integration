@@ -1,0 +1,89 @@
+version: '3.8'
+
+# Development Docker Compose Configuration
+# Use: docker-compose -f docker-compose.dev.yml up
+
+services:
+  # Frontend with hot reload
+  frontend-dev:
+    image: node:16-alpine
+    container_name: cob-qr-frontend-dev
+    working_dir: /app
+    command: npm start
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3001/api
+      - REACT_APP_ENABLE_QR_FEATURE=true
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # For file watching in Docker
+    volumes:
+      - .:/app  # Mount entire project for hot reload
+      - /app/node_modules  # Exclude node_modules
+    networks:
+      - qr-dev-network
+    stdin_open: true
+    tty: true
+
+  # Backend with nodemon for auto-restart
+  backend-dev:
+    image: node:16-alpine
+    container_name: cob-qr-backend-dev
+    working_dir: /app/backend
+    command: sh -c "npm install -g nodemon && nodemon server.js"
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - CORS_ORIGIN=http://localhost:3000
+    volumes:
+      - ./backend:/app/backend  # Mount backend code
+      - ./backend/node_modules:/app/backend/node_modules
+      - qr-dev-data:/app/data  # Persistent QR storage
+    networks:
+      - qr-dev-network
+
+  # Optional: MongoDB for future enhancement
+  mongo-dev:
+    image: mongo:5-focal
+    container_name: cob-qr-mongo-dev
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=qr_database
+    volumes:
+      - mongo-dev-data:/data/db
+    networks:
+      - qr-dev-network
+
+  # Optional: Redis for caching
+  redis-dev:
+    image: redis:alpine
+    container_name: cob-qr-redis-dev
+    ports:
+      - "6379:6379"
+    networks:
+      - qr-dev-network
+
+  # Optional: Mailhog for email testing
+  mailhog-dev:
+    image: mailhog/mailhog
+    container_name: cob-qr-mailhog-dev
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - qr-dev-network
+
+networks:
+  qr-dev-network:
+    driver: bridge
+
+volumes:
+  qr-dev-data:
+    driver: local
+  mongo-dev-data:
+    driver: local
