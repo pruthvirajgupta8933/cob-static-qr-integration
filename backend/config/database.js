@@ -77,19 +77,50 @@ class DatabaseConnection {
 
     async initializeMySQLTables() {
         const queries = [
-            // QR Codes table
+            // Bulk QR Batches table (new)
+            `CREATE TABLE IF NOT EXISTS bulk_qr_batches (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                batch_id VARCHAR(50) UNIQUE NOT NULL,
+                batch_name VARCHAR(255),
+                total_count INT DEFAULT 0,
+                successful_count INT DEFAULT 0,
+                failed_count INT DEFAULT 0,
+                status VARCHAR(50) DEFAULT 'pending',
+                created_by VARCHAR(100),
+                processing_time_ms INT,
+                error_details JSON,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                completed_at TIMESTAMP NULL,
+                INDEX idx_batch_id (batch_id),
+                INDEX idx_batch_status (status)
+            )`,
+            
+            // Enhanced QR Codes table with bulk QR support
             `CREATE TABLE IF NOT EXISTS qr_codes (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 qr_id VARCHAR(50) UNIQUE NOT NULL,
                 merchant_name VARCHAR(255),
                 merchant_id VARCHAR(100),
+                reference_name VARCHAR(255),
+                description TEXT,
                 vpa VARCHAR(255),
                 amount DECIMAL(10, 2),
+                mobile_number VARCHAR(20),
+                email VARCHAR(255),
+                address TEXT,
+                transaction_ref VARCHAR(100),
+                qr_image_data MEDIUMTEXT,
+                upi_string TEXT,
+                vpa_handle VARCHAR(50) DEFAULT 'hdfc',
+                batch_id VARCHAR(50),
+                metadata JSON,
                 status VARCHAR(50) DEFAULT 'active',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 INDEX idx_qr_id (qr_id),
-                INDEX idx_status (status)
+                INDEX idx_status (status),
+                INDEX idx_batch_id (batch_id),
+                INDEX idx_merchant_id (merchant_id)
             )`,
             
             // Transactions table
@@ -127,6 +158,39 @@ class DatabaseConnection {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX idx_webhook_id (webhook_id),
                 INDEX idx_created_at (created_at)
+            )`,
+            
+            // QR Validations table (new)
+            `CREATE TABLE IF NOT EXISTS qr_validations (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                qr_id VARCHAR(50),
+                validation_type VARCHAR(50),
+                original_value TEXT,
+                sanitized_value TEXT,
+                is_valid BOOLEAN DEFAULT TRUE,
+                validation_message TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                INDEX idx_qr_id (qr_id),
+                INDEX idx_validation_type (validation_type)
+            )`,
+            
+            // CSV Upload Logs table (new)
+            `CREATE TABLE IF NOT EXISTS csv_upload_logs (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                upload_id VARCHAR(50) UNIQUE NOT NULL,
+                file_name VARCHAR(255),
+                file_size_bytes BIGINT,
+                total_rows INT,
+                processed_rows INT DEFAULT 0,
+                failed_rows INT DEFAULT 0,
+                batch_id VARCHAR(50),
+                error_details JSON,
+                processing_status VARCHAR(50) DEFAULT 'uploading',
+                uploaded_by VARCHAR(100),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                completed_at TIMESTAMP NULL,
+                INDEX idx_upload_id (upload_id),
+                INDEX idx_batch_id (batch_id)
             )`
         ];
 
