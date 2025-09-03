@@ -189,9 +189,10 @@ const TransactionReport = () => {
           const blob = new Blob([resp?.payload?.data], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           });
+          // Changed the file extension to .xlsx
           saveAs(
             blob,
-            `E-mandate_Transaction_REPORT_${clientCode}_${splitDate}.csv`
+            `E-mandate_Transaction_REPORT_${clientCode}_${splitDate}.xlsx`
           );
           toast.success("Downloaded successfully");
         } else {
