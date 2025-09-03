@@ -1,44 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Typography,
-    LinearProgress,
-    Alert,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Chip,
-    IconButton,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Grid
-} from '@mui/material';
-import {
-    CloudUpload,
-    Download,
-    Delete,
-    Visibility,
-    QrCode,
-    CheckCircle,
-    Error,
-    Warning,
-    GetApp
-} from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
 import { bulkCreateQR } from '../../slices/sabqr/sabqrSlice';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
+import './BulkQRGenerator.css';
 
 const BulkQRGenerator = () => {
     const dispatch = useDispatch();
@@ -48,8 +14,7 @@ const BulkQRGenerator = () => {
     const [progress, setProgress] = useState(0);
     const [results, setResults] = useState([]);
     const [errors, setErrors] = useState([]);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [selectedQR, setSelectedQR] = useState(null);
+    const [previewQR, setPreviewQR] = useState(null);
     const [validationErrors, setValidationErrors] = useState([]);
 
     // CSV Template columns
@@ -107,37 +72,103 @@ const BulkQRGenerator = () => {
         });
     };
 
-    // Validate CSV Data
+    // Sanitize input to prevent XSS
+    const sanitizeInput = (input) => {
+        if (typeof input !== 'string') return input;
+        return input
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/<[^>]*>/g, '')
+            .replace(/[<>\"']/g, (match) => {
+                const replacements = {
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#x27;'
+                };
+                return replacements[match];
+            })
+            .trim();
+    };
+
+    // Validate email with strict regex
+    const validateEmail = (email) => {
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        return emailRegex.test(email) && email.length <= 254 && !email.includes('..');
+    };
+
+    // Validate mobile number (Indian format)
+    const validateMobile = (mobile) => {
+        const cleaned = String(mobile).replace(/\D/g, '');
+        return cleaned.length === 10 && ['6', '7', '8', '9'].includes(cleaned[0]);
+    };
+
+    // Validate merchant ID format
+    const validateMerchantId = (merchantId) => {
+        const merchantIdRegex = /^[A-Z0-9_]{3,20}$/;
+        return merchantIdRegex.test(merchantId.toUpperCase());
+    };
+
+    // Validate amount
+    const validateAmount = (amount) => {
+        const numAmount = parseFloat(amount);
+        if (isNaN(numAmount)) return false;
+        if (numAmount < 0 || numAmount > 10000000) return false;
+        const decimalPlaces = (String(amount).split('.')[1] || '').length;
+        return decimalPlaces <= 2;
+    };
+
+    // Validate CSV Data with enhanced security
     const validateCSVData = (data) => {
         const errors = [];
         const requiredFields = ['merchant_name', 'merchant_id', 'reference_name'];
         
         data.forEach((row, index) => {
+            // Check required fields
             requiredFields.forEach(field => {
                 if (!row[field] || row[field].trim() === '') {
                     errors.push(`Row ${index + 1}: Missing required field '${field}'`);
                 }
             });
 
+            // Check for XSS attempts
+            ['merchant_name', 'reference_name', 'description', 'address'].forEach(field => {
+                if (row[field] && row[field] !== sanitizeInput(row[field])) {
+                    errors.push(`Row ${index + 1}: Invalid characters in ${field} (possible XSS attempt)`);
+                }
+            });
+
+            // Check for SQL injection patterns
+            const sqlPatterns = /(\b(DROP|DELETE|INSERT|UPDATE|ALTER|CREATE|EXEC|UNION|SELECT)\b|--|;|\/\*|\*\/)/gi;
+            Object.values(row).forEach(value => {
+                if (value && typeof value === 'string' && sqlPatterns.test(value)) {
+                    errors.push(`Row ${index + 1}: Suspicious SQL pattern detected`);
+                }
+            });
+
+            // Validate merchant ID format
+            if (row.merchant_id && !validateMerchantId(row.merchant_id)) {
+                errors.push(`Row ${index + 1}: Invalid merchant ID format (use 3-20 uppercase alphanumeric characters)`);
+            }
+
             // Validate email format if provided
-            if (row.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(row.email)) {
+            if (row.email && !validateEmail(row.email)) {
                 errors.push(`Row ${index + 1}: Invalid email format`);
             }
 
             // Validate mobile number if provided
-            if (row.mobile_number && !/^\d{10}$/.test(row.mobile_number.replace(/\D/g, ''))) {
-                errors.push(`Row ${index + 1}: Invalid mobile number (must be 10 digits)`);
+            if (row.mobile_number && !validateMobile(row.mobile_number)) {
+                errors.push(`Row ${index + 1}: Invalid mobile number (must be 10 digits starting with 6-9)`);
             }
 
             // Validate amount if provided
-            if (row.amount && isNaN(parseFloat(row.amount))) {
-                errors.push(`Row ${index + 1}: Invalid amount format`);
+            if (row.amount && !validateAmount(row.amount)) {
+                errors.push(`Row ${index + 1}: Invalid amount (max 10000000, max 2 decimal places)`);
             }
         });
 
         // Check for duplicate merchant IDs
-        const merchantIds = data.map(row => row.merchant_id);
-        const duplicates = merchantIds.filter((id, index) => merchantIds.indexOf(id) !== index);
+        const merchantIds = data.map(row => row.merchant_id ? row.merchant_id.toUpperCase() : '');
+        const duplicates = merchantIds.filter((id, index) => id && merchantIds.indexOf(id) !== index);
         if (duplicates.length > 0) {
             errors.push(`Duplicate merchant IDs found: ${[...new Set(duplicates)].join(', ')}`);
         }
@@ -236,12 +267,6 @@ const BulkQRGenerator = () => {
         saveAs(content, `bulk_qr_codes_${new Date().toISOString().split('T')[0]}.zip`);
     };
 
-    // Preview QR Code
-    const handlePreview = (qr) => {
-        setSelectedQR(qr);
-        setPreviewOpen(true);
-    };
-
     // Clear all data
     const clearAll = () => {
         setCsvData([]);
@@ -249,33 +274,33 @@ const BulkQRGenerator = () => {
         setErrors([]);
         setValidationErrors([]);
         setProgress(0);
+        setPreviewQR(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
     };
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Typography variant="h4" gutterBottom>
-                Bulk QR Code Generator
-            </Typography>
+        <div className="container-fluid bulk-qr-generator">
+            <div className="row">
+                <div className="col-12">
+                    <h2 className="mb-4">Bulk QR Code Generator</h2>
+                </div>
+            </div>
 
             {/* Upload Section */}
-            <Card sx={{ mb: 3 }}>
-                <CardContent>
-                    <Grid container spacing={3} alignItems="center">
-                        <Grid item xs={12} md={6}>
-                            <Typography variant="h6" gutterBottom>
-                                Step 1: Upload CSV File
-                            </Typography>
-                            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<Download />}
+            <div className="card mb-4">
+                <div className="card-body">
+                    <h5 className="card-title">Step 1: Upload CSV File</h5>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="btn-group" role="group">
+                                <button 
+                                    className="btn btn-outline-primary"
                                     onClick={downloadTemplate}
                                 >
-                                    Download Template
-                                </Button>
+                                    <i className="fa fa-download"></i> Download Template
+                                </button>
                                 <input
                                     type="file"
                                     accept=".csv"
@@ -283,30 +308,29 @@ const BulkQRGenerator = () => {
                                     onChange={handleFileUpload}
                                     style={{ display: 'none' }}
                                 />
-                                <Button
-                                    variant="contained"
-                                    startIcon={<CloudUpload />}
+                                <button
+                                    className="btn btn-primary"
                                     onClick={() => fileInputRef.current.click()}
                                     disabled={processing}
                                 >
-                                    Upload CSV
-                                </Button>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
+                                    <i className="fa fa-upload"></i> Upload CSV
+                                </button>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
                             {csvData.length > 0 && (
-                                <Alert severity="success">
-                                    {csvData.length} records loaded successfully
-                                </Alert>
+                                <div className="alert alert-success">
+                                    <i className="fa fa-check-circle"></i> {csvData.length} records loaded successfully
+                                </div>
                             )}
-                        </Grid>
-                    </Grid>
+                        </div>
+                    </div>
 
                     {/* Validation Errors */}
                     {validationErrors.length > 0 && (
-                        <Alert severity="error" sx={{ mt: 2 }}>
-                            <Typography variant="subtitle2">Validation Errors:</Typography>
-                            <ul style={{ marginTop: 8, marginBottom: 0 }}>
+                        <div className="alert alert-danger mt-3">
+                            <strong>Validation Errors:</strong>
+                            <ul className="mb-0 mt-2">
                                 {validationErrors.slice(0, 5).map((error, index) => (
                                     <li key={index}>{error}</li>
                                 ))}
@@ -314,151 +338,158 @@ const BulkQRGenerator = () => {
                                     <li>... and {validationErrors.length - 5} more errors</li>
                                 )}
                             </ul>
-                        </Alert>
+                        </div>
                     )}
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Process Section */}
             {csvData.length > 0 && validationErrors.length === 0 && (
-                <Card sx={{ mb: 3 }}>
-                    <CardContent>
-                        <Typography variant="h6" gutterBottom>
-                            Step 2: Generate QR Codes
-                        </Typography>
-                        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                startIcon={<QrCode />}
-                                onClick={processBulkGeneration}
-                                disabled={processing}
-                                size="large"
-                            >
-                                Generate {csvData.length} QR Codes
-                            </Button>
-                            {processing && (
-                                <Box sx={{ flex: 1, ml: 2 }}>
-                                    <LinearProgress variant="determinate" value={progress} />
-                                    <Typography variant="caption">
-                                        Processing... {progress}%
-                                    </Typography>
-                                </Box>
-                            )}
-                        </Box>
-                    </CardContent>
-                </Card>
+                <div className="card mb-4">
+                    <div className="card-body">
+                        <h5 className="card-title">Step 2: Generate QR Codes</h5>
+                        <div className="row align-items-center">
+                            <div className="col-md-3">
+                                <button
+                                    className="btn btn-primary btn-lg"
+                                    onClick={processBulkGeneration}
+                                    disabled={processing}
+                                >
+                                    <i className="fa fa-qrcode"></i> Generate {csvData.length} QR Codes
+                                </button>
+                            </div>
+                            <div className="col-md-9">
+                                {processing && (
+                                    <div>
+                                        <div className="progress">
+                                            <div 
+                                                className="progress-bar progress-bar-striped progress-bar-animated" 
+                                                role="progressbar" 
+                                                style={{ width: `${progress}%` }}
+                                            >
+                                                {progress}%
+                                            </div>
+                                        </div>
+                                        <small className="text-muted">Processing... {progress}%</small>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
 
             {/* Results Section */}
             {results.length > 0 && (
-                <Card>
-                    <CardContent>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                            <Typography variant="h6">
-                                Generation Results
-                            </Typography>
-                            <Box sx={{ display: 'flex', gap: 2 }}>
-                                <Button
-                                    variant="contained"
-                                    color="success"
-                                    startIcon={<GetApp />}
+                <div className="card">
+                    <div className="card-body">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h5 className="card-title mb-0">Generation Results</h5>
+                            <div className="btn-group">
+                                <button
+                                    className="btn btn-success"
                                     onClick={downloadAllQRs}
                                     disabled={results.filter(r => r.status === 'success').length === 0}
                                 >
-                                    Download All QRs
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    color="error"
-                                    startIcon={<Delete />}
+                                    <i className="fa fa-download"></i> Download All QRs
+                                </button>
+                                <button
+                                    className="btn btn-outline-danger"
                                     onClick={clearAll}
                                 >
-                                    Clear All
-                                </Button>
-                            </Box>
-                        </Box>
+                                    <i className="fa fa-trash"></i> Clear All
+                                </button>
+                            </div>
+                        </div>
 
-                        <TableContainer component={Paper}>
-                            <Table size="small">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Merchant Name</TableCell>
-                                        <TableCell>Merchant ID</TableCell>
-                                        <TableCell>Status</TableCell>
-                                        <TableCell>VPA</TableCell>
-                                        <TableCell>Actions</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
+                        <div className="table-responsive">
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Merchant Name</th>
+                                        <th>Merchant ID</th>
+                                        <th>Status</th>
+                                        <th>VPA</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     {results.map((row, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{row.merchant_name}</TableCell>
-                                            <TableCell>{row.merchant_id}</TableCell>
-                                            <TableCell>
-                                                <Chip
-                                                    label={row.status}
-                                                    color={row.status === 'success' ? 'success' : 'error'}
-                                                    size="small"
-                                                    icon={row.status === 'success' ? <CheckCircle /> : <Error />}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
+                                        <tr key={index}>
+                                            <td>{row.merchant_name}</td>
+                                            <td>{row.merchant_id}</td>
+                                            <td>
+                                                <span className={`badge badge-${row.status === 'success' ? 'success' : 'danger'}`}>
+                                                    {row.status === 'success' ? (
+                                                        <><i className="fa fa-check-circle"></i> Success</>
+                                                    ) : (
+                                                        <><i className="fa fa-times-circle"></i> Failed</>
+                                                    )}
+                                                </span>
+                                            </td>
+                                            <td>
                                                 {row.status === 'success' ? row.vpa : row.error}
-                                            </TableCell>
-                                            <TableCell>
+                                            </td>
+                                            <td>
                                                 {row.status === 'success' && (
-                                                    <IconButton
-                                                        size="small"
-                                                        onClick={() => handlePreview(row)}
+                                                    <button
+                                                        className="btn btn-sm btn-outline-primary"
+                                                        onClick={() => setPreviewQR(row)}
+                                                        data-toggle="modal"
+                                                        data-target="#qrPreviewModal"
                                                     >
-                                                        <Visibility />
-                                                    </IconButton>
+                                                        <i className="fa fa-eye"></i> Preview
+                                                    </button>
                                                 )}
-                                            </TableCell>
-                                        </TableRow>
+                                            </td>
+                                        </tr>
                                     ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </CardContent>
-                </Card>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             )}
 
-            {/* QR Preview Dialog */}
-            <Dialog open={previewOpen} onClose={() => setPreviewOpen(false)} maxWidth="sm" fullWidth>
-                <DialogTitle>QR Code Preview</DialogTitle>
-                <DialogContent>
-                    {selectedQR && (
-                        <Box sx={{ textAlign: 'center' }}>
-                            <img 
-                                src={selectedQR.qr_image} 
-                                alt="QR Code" 
-                                style={{ maxWidth: '300px', width: '100%' }}
-                            />
-                            <Typography variant="h6" sx={{ mt: 2 }}>
-                                {selectedQR.merchant_name}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                VPA: {selectedQR.vpa}
-                            </Typography>
-                            <TextField
-                                fullWidth
-                                multiline
-                                rows={3}
-                                value={selectedQR.upi_string}
-                                sx={{ mt: 2 }}
-                                InputProps={{ readOnly: true }}
-                                label="UPI String"
-                            />
-                        </Box>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setPreviewOpen(false)}>Close</Button>
-                </DialogActions>
-            </Dialog>
-        </Box>
+            {/* QR Preview Modal */}
+            <div className="modal fade" id="qrPreviewModal" tabIndex="-1" role="dialog">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">QR Code Preview</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body text-center">
+                            {previewQR && (
+                                <>
+                                    <img 
+                                        src={previewQR.qr_image} 
+                                        alt="QR Code" 
+                                        style={{ maxWidth: '300px', width: '100%' }}
+                                    />
+                                    <h6 className="mt-3">{previewQR.merchant_name}</h6>
+                                    <p className="text-muted">VPA: {previewQR.vpa}</p>
+                                    <div className="form-group">
+                                        <label>UPI String:</label>
+                                        <textarea
+                                            className="form-control"
+                                            rows="3"
+                                            value={previewQR.upi_string}
+                                            readOnly
+                                        />
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 

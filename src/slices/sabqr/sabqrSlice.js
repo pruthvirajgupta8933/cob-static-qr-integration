@@ -472,22 +472,6 @@ export const exportPayments = createAsyncThunk(
     }
 );
 
-// Bulk Create QR Codes
-export const bulkCreateQR = createAsyncThunk(
-    'sabqr/bulkCreate',
-    async (file, { rejectWithValue, dispatch }) => {
-        try {
-            const response = await sabQRService.bulkCreateQR(file);
-            toastConfig.successToast('Bulk QR creation initiated!');
-            return response.data;
-        } catch (error) {
-            const message = error.response?.data?.message || 'Failed to initiate bulk creation';
-            dispatch(setMessage(message));
-            toastConfig.errorToast(message);
-            return rejectWithValue(error.response?.data || error.message);
-        }
-    }
-);
 
 // Get Bulk Job Status
 export const fetchBulkJobStatus = createAsyncThunk(

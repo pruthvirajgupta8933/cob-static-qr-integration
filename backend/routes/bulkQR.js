@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const QRCode = require('qrcode');
 const crypto = require('crypto');
-const LocalTransactionStore = require('../services/LocalTransactionStore');
-
-// Initialize transaction store
-const transactionStore = new LocalTransactionStore();
+const transactionStore = require('../services/LocalTransactionStore');
+const security = require('../utils/security');
 
 /**
  * Bulk QR Generation Endpoint
@@ -34,39 +32,51 @@ router.post('/generate', async (req, res) => {
 
         for (const merchant of merchants) {
             try {
-                // Validate required fields
-                if (!merchant.merchant_name || !merchant.merchant_id) {
+                // Validate and sanitize merchant data
+                const validation = security.validateAndSanitizeMerchant(merchant);
+                if (!validation.success) {
                     errors.push({
-                        merchant_id: merchant.merchant_id,
-                        error: 'Missing required fields: merchant_name or merchant_id'
+                        merchant_id: merchant.merchant_id || 'UNKNOWN',
+                        error: validation.error
+                    });
+                    continue;
+                }
+                
+                const sanitizedMerchant = validation.data;
+                
+                // Additional validation for required fields
+                if (!sanitizedMerchant.merchant_id || !sanitizedMerchant.merchant_name || !sanitizedMerchant.reference_name) {
+                    errors.push({
+                        merchant_id: merchant.merchant_id || 'UNKNOWN',
+                        error: 'Missing required fields'
                     });
                     continue;
                 }
 
-                // Generate unique VPA
-                const merchantPrefix = merchant.merchant_name
+                // Generate unique VPA using sanitized data
+                const merchantPrefix = sanitizedMerchant.merchant_name
                     .toLowerCase()
                     .replace(/[^a-z0-9]/g, '')
                     .substring(0, 8);
                 
-                const identifier = merchant.merchant_id.toLowerCase();
+                const identifier = sanitizedMerchant.merchant_id.toLowerCase();
                 const vpa = `${merchantPrefix}.${identifier}@hdfc`;
 
                 // Generate transaction reference
                 const timestamp = Date.now().toString().slice(-6);
                 const transactionRef = `BULK${identifier.toUpperCase()}${timestamp}`;
 
-                // Create UPI string
+                // Create UPI string with sanitized data
                 const upiString = [
                     'upi://pay?',
                     `pa=${vpa}`,
-                    `&pn=${encodeURIComponent(merchant.reference_name || merchant.merchant_name)}`,
-                    `&tn=${encodeURIComponent(merchant.description || 'Payment')}`,
+                    `&pn=${encodeURIComponent(sanitizedMerchant.reference_name)}`,
+                    `&tn=${encodeURIComponent(sanitizedMerchant.description || 'Payment')}`,
                     '&cu=INR',
                     '&mc=6012',
                     `&tr=${transactionRef}`,
                     '&mode=01',
-                    merchant.amount ? `&am=${merchant.amount}` : ''
+                    sanitizedMerchant.amount ? `&am=${sanitizedMerchant.amount}` : ''
                 ].filter(Boolean).join('');
 
                 // Generate QR Code
@@ -79,23 +89,23 @@ router.post('/generate', async (req, res) => {
 
                 const qrImageData = await QRCode.toDataURL(upiString, qrOptions);
 
-                // Store QR data
+                // Store QR data with sanitized values
                 const qrData = {
                     id: crypto.randomBytes(8).toString('hex'),
-                    merchant_id: merchant.merchant_id,
-                    merchant_name: merchant.merchant_name,
-                    reference_name: merchant.reference_name || merchant.merchant_name,
-                    description: merchant.description || 'Payment',
-                    amount: merchant.amount || null,
+                    merchant_id: sanitizedMerchant.merchant_id,
+                    merchant_name: sanitizedMerchant.merchant_name,
+                    reference_name: sanitizedMerchant.reference_name,
+                    description: sanitizedMerchant.description || 'Payment',
+                    amount: sanitizedMerchant.amount || null,
                     vpa: vpa,
                     upi_string: upiString,
                     transaction_ref: transactionRef,
                     qr_image: qrImageData,
                     status: 'active',
                     created_at: new Date().toISOString(),
-                    mobile_number: merchant.mobile_number || null,
-                    email: merchant.email || null,
-                    address: merchant.address || null
+                    mobile_number: sanitizedMerchant.mobile_number || null,
+                    email: sanitizedMerchant.email || null,
+                    address: sanitizedMerchant.address || null
                 };
 
                 // Save to store

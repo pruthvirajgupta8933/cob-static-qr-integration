@@ -1,0 +1,6 @@
+merchant_name,merchant_id,vpa_handle,reference_name,description,amount,mobile_number,email,address
+ABC Electronics Store,MERCH001,hdfc,ABC Electronics - Main Branch,Payment for electronics,5000,9876543210,abc@electronics.com,123 Electronic City
+XYZ Fashion Boutique,MERCH002,hdfc,XYZ Fashion Store,Fashion and apparel payment,3000,9876543211,xyz@fashion.com,456 Fashion Street
+Quick Mart Grocery,MERCH003,hdfc,Quick Mart - Downtown,Grocery shopping payment,2000,9876543212,quick@mart.com,789 Market Road
+Tech Solutions Hub,MERCH004,hdfc,Tech Solutions,IT services payment,10000,9876543213,info@techsolutions.com,321 Tech Park
+Green Garden Restaurant,MERCH005,hdfc,Green Garden Dining,Restaurant bill payment,1500,9876543214,green@garden.com,654 Food Court
