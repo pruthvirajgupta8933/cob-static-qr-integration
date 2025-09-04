@@ -18,21 +18,36 @@ const ManualSubscription = () => {
   const subscriptionPlans = useSelector(
     (state) => state.subscription.manualSubscriptions
   );
+  const { clientCodeList } = useSelector(
+    (state) => state.approverDashboard
+  );
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
-  const [clientCodeList, setCliencodeList] = useState([]);
+  // const [clientCodeList, setCliencodeList] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [modalDisplayData, setModalDisplayData] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getSubscriptionPlans());
   }, []);
+
+
+
+  // const TEN_MINUTES = 10 * 60 * 1000;
+  const FIVE_MINUTES = 5 * 60 * 1000;
+
+
   useEffect(() => {
-    dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setCliencodeList(resp?.payload?.result);
-    });
-  }, []);
+    const interval = setInterval(() => {
+      dispatch(getAllCLientCodeSlice());
+    }, FIVE_MINUTES);
+    if (clientCodeList.length === 0) {
+      dispatch(getAllCLientCodeSlice());
+    }
+
+    return () => clearInterval(interval);
+  }, [dispatch]); // 
 
   const changeCurrentPage = (page) => {
     setCurrentPage(page);

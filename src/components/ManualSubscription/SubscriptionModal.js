@@ -10,20 +10,38 @@ import toastConfig from "../../utilities/toastTypes";
 
 import { axiosInstance, axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { createSubscriptionPlan } from "../../slices/subscription";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utilities/DateConvert";
 import { getAllCLientCodeSlice } from "../../slices/approver-dashboard/approverDashboardSlice";
 
 const SubscriptionModal = ({ data, setOpenModal }) => {
   const [subscriptionData, setSubscriptionData] = useState(data);
-  const [clientCodeList, setCliencodeList] = useState([]);
+  // const [clientCodeList, setCliencodeList] = useState([]);
+  const { clientCodeList } = useSelector(
+    (state) => state.approverDashboard
+  );
   const [disable, setIsDisable] = useState(false);
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getAllCLientCodeSlice()).then((resp) => {
+  //     setCliencodeList(resp?.payload?.result);
+  //   });
+  // }, []);
+
+  const FIVE_MINUTES = 5 * 60 * 1000;
+
+
   useEffect(() => {
-    dispatch(getAllCLientCodeSlice()).then((resp) => {
-      setCliencodeList(resp?.payload?.result);
-    });
-  }, []);
+    const interval = setInterval(() => {
+      dispatch(getAllCLientCodeSlice());
+    }, FIVE_MINUTES);
+    if (clientCodeList.length === 0) {
+      dispatch(getAllCLientCodeSlice());
+    }
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
   const options = [
     { value: "", label: "Select Client Code" },
     ...clientCodeList.map((data) => ({

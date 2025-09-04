@@ -59,6 +59,9 @@ import { mfaReducer } from "./components/ApproverNVerifier/Mfa/MfaSlice";
 import { assignBdReducer } from "./components/ApproverNVerifier/AssignBusinessDevelopment/bdSlice.js/bdSlice";
 import { scheduleTransactionSliceReducer } from "./slices/subscription-slice/scheduleTransactionSlice";
 import { updateSettlementApiSliceReducer } from "./slices/subscription-slice/updateSettlementSlice";
+import { superAdminSliceReducer } from "./slices/super-admin-slice/superAdminSlice";
+import clientCodeTransform from "./utilities/ClientCodeTransForm";
+import { commonPersistSliceReducer } from "./slices/persist-slice/persistSlice";
 
 const reducer = {
   auth: authReducer,
@@ -124,7 +127,11 @@ const reducer = {
   paymentLinkSolutionSliceReducer: paymentLinkSolutionSliceReducer,
   qForm: qFormSliceReducer,
   mfaReducer: mfaReducer,
-  assignBdReducer: assignBdReducer
+  assignBdReducer: assignBdReducer,
+
+  ///super admin slice
+  superAdminSliceReducer: superAdminSliceReducer,
+  commonPersistReducer: commonPersistSliceReducer
 
 };
 
@@ -145,6 +152,11 @@ const rootPersistConfig = {
     // 'kycOperationReducer', 
     // 'payout', 
     'menuListReducer',
+    'superAdminSliceReducer',
+    'approverDashboard',
+    // 'kyc'
+    'commonPersistReducer'
+
     // 'productCatalogueSlice', 
     // 'ReferralMidReducer', 
     // 'challanReducer', 
@@ -156,6 +168,8 @@ const rootPersistConfig = {
     // 'registrationHisorySliceReducer', 
     // 'scheduleTransactionSliceReducer'
   ], // Only persist these slices
+
+  transforms: [clientCodeTransform],
 };
 
 // Combine all your reducers into a single rootReducer

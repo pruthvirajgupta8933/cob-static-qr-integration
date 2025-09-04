@@ -1,24 +1,24 @@
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import API_URL from "../../../config";
 import "../../login/css/home.css";
-import { Formik, Field, Form, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../../slices/auth";
-import { toast, Zoom } from "react-toastify";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { stringEnc } from "../../../utilities/encodeDecode";
+import { toast, Zoom } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import FormikController from "../../../_components/formik/FormikController";
+import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+import Yup from "../../../_components/formik/Yup";
+import { createSubMerchant } from "../../../slices/approver-dashboard/approverDashboardSlice";
+import { register } from "../../../slices/auth";
 import {
   axiosInstanceAuth,
   axiosInstanceJWT,
 } from "../../../utilities/axiosInstance";
-import { v4 as uuidv4 } from "uuid";
-import Yup from "../../../_components/formik/Yup";
-import { createSubMerchant } from "../../../slices/approver-dashboard/approverDashboardSlice";
-import toastConfig from "../../../utilities/toastTypes";
-import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
-import FormikController from "../../../_components/formik/FormikController";
 import ReportLayout from "../../../utilities/CardLayout";
+import { stringEnc } from "../../../utilities/encodeDecode";
+import toastConfig from "../../../utilities/toastTypes";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -46,10 +46,7 @@ const FORM_VALIDATION = Yup.object().shape({
   passwordd: Yup.string()
     .allowOneSpace()
     .required("Password Required")
-    .matches(
-      Regex.password,
-      RegexMsg.password
-    ),
+    .matches(Regex.password, RegexMsg.password),
   confirmpasswordd: Yup.string()
     .allowOneSpace()
     .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
@@ -125,9 +122,15 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
 
   const handleRegistration = (formData, { resetForm }) => {
     let businessType = 1;
-    let { fullname, mobilenumber, emaill, passwordd, business_cat_code, developer_contact,
-      developer_name } =
-      formData;
+    let {
+      fullname,
+      mobilenumber,
+      emaill,
+      passwordd,
+      business_cat_code,
+      developer_contact,
+      developer_name,
+    } = formData;
 
     setBtnDisable(true);
 
@@ -145,9 +148,7 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
         roleId: "4",
         is_social: false,
         developer_contact: developer_contact,
-        developer_name: developer_name
-
-
+        developer_name: developer_name,
       })
     )
       .unwrap()
@@ -201,7 +202,7 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
         limit: 1,
         transition: Zoom,
       });
-      setTimeout(function () { }, 3000);
+      // setTimeout(function () { }, 3000);
     }
 
     if (isUserRegistered === false) {
@@ -219,17 +220,9 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
   }, [isUserRegistered]);
 
   return (
-
     <ReportLayout title="Onboard Merchant">
-
       <React.Fragment>
-        {heading === false ? (
-          <></>
-        ) : (
-          <div className="logmod__heading">
-
-          </div>
-        )}
+        {heading === false ? <></> : <div className="logmod__heading"></div>}
         <Formik
           initialValues={{
             fullname: "",
@@ -252,7 +245,9 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
           }}
         >
           {(formik) => (
-            <Form className={`${heading === false ? "row g-3" : "row g-3 mt-4"}`}>
+            <Form
+              className={`${heading === false ? "row g-3" : "row g-3 mt-4"}`}
+            >
               {zoneCode ? (
                 <div className="col-md-6">
                   <label
@@ -379,7 +374,10 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                 </div>
               )}
               <div className="col-md-6">
-                <label htmlFor="user-pw" className="form-label font-weight-bold">
+                <label
+                  htmlFor="user-pw"
+                  className="form-label font-weight-bold"
+                >
                   Create Password
                   {zoneCode && <span style={{ color: "red" }}>*</span>}
                 </label>
@@ -463,7 +461,6 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                   placeholder="Enter Developer Name"
                   label="Developer Name"
                   autoComplete="off"
-
                 />
               </div>
 
@@ -475,7 +472,6 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                   className="form-control"
                   label="Enter Developer Contact Number"
                   autoComplete="off"
-
                 />
               </div>
 
@@ -488,9 +484,9 @@ const OnboardMerchant = ({ zoneCode, heading, clientLoginId, validator }) => {
                   defaultValue="Create Account"
                   disabled={
                     btnDisable ||
-                      (zoneCode
-                        ? !(formik.isValid && formik.dirty)
-                        : !clientLoginId)
+                    (zoneCode
+                      ? !(formik.isValid && formik.dirty)
+                      : !clientLoginId)
                       ? true
                       : false
                   }

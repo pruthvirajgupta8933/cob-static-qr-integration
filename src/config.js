@@ -100,6 +100,12 @@ const API_LIVE = {
   // https://stage-merchantonboarding.sabpaisa.in
 
 
+  //profile edit email and phone
+  EDIT_PROFILE_OTP: `${url}/auth-service/account/edit-profile-otp`,
+  UPDATE_PROFILE: `${url}/auth-service/account/edit-profile`,
+
+
+
   SUBSCRIPTION_BALANCE_DETAIL: `${url}/subscription/balance-detail/`,
   ////////////MFA
   MFA_STATUS_UPDATE: `${url}/mfa-status/update/`,
@@ -175,6 +181,19 @@ const API_LIVE = {
   DELETE_CUSTOMER: `${payLinkAPIURL}/deleteCustomer`,
   GET_LINKS: `${payLinkAPIURL}/getLinks/`,
   GET_REPORTS: `${payLinkAPIURL}/getReports/`,
+
+
+  //Super Admin Api
+
+  TABLE_LIST: `${url}/super-admin/table-list/`,
+  ADMIN_GET_FILTERS: `${url}/super-admin/get-filters/`,
+  EXPORTING_TABLE: `${url}/super-admin/export/`,
+  SUPER_ADMIN_FETH_DATA: `${url}/super-admin/view/`,
+  SUPER_EXPORT_ADMIN: `${url}/super-admin/export/`,
+
+  ////
+
+
 
   /** GET MANDATE REG. STATUS */
   MANDATE_REGISTRATION_STATUS:
@@ -365,6 +384,16 @@ const API_LIVE = {
   Aadhar_number: `${kyc_url}/kyc/validator/validate-aadhar/send-otp/`,
   Aadhar_otp_verify: `${kyc_url}/kyc/validator/validate-aadhar/verify-otp/`,
 
+  // Signzy
+  // Aadhar_create_url: `${kyc_validate}/validator/validate-aadhar/create-url/`,
+  // Aadhar_get_aadhaar: `${kyc_validate}/validator/validate-aadhar/get-aadhaar/`,
+
+  // https://stgcobkyc.sabpaisa.in/kyc/validator/validate-aadhar/create-url/
+  // https://stgcobkyc.sabpaisa.in/kyc/validator/get-aadhar-details/
+  Aadhar_create_url: `${kyc_url}/kyc/validator/validate-aadhar/create-url/`,
+  Aadhar_get_aadhaar: `${kyc_url}/kyc/validator/get-aadhar-details/`,
+
+
   // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,
   // OnBoard Merchant Role URL
@@ -531,7 +560,7 @@ export const PAYMENT_LINK = {
 
 export const E_NACH_URL = {
   BASE_URL_E_NACH: subscriptionUrl,
-  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate/`,
+  MANDATE_BY_API: `${subscriptionUrl}api/mandate/create-mandate-v1/`,
   CREATE_MANDATE_HANDLE_RESPONSE: `${subscriptionUrl}api/mandate/mandate-enquiry/ `,
   REGISTRATION_HISTORY: `${subscriptionUrl}api/mandate/mandate-history-by-user/`,
   DEBIT_TRANSACTION_HISTORY: `${subscriptionUrl}api/transaction/transaction-history-by-user/`,

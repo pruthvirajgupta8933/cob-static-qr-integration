@@ -1375,13 +1375,13 @@ export const kycSlice = createSlice({
 
       //kycIDList
       .addCase(getKycIDList.pending, (state) => {
-        state.kycIdList = [];
+        state.kycIdList = {};
       })
       .addCase(getKycIDList.fulfilled, (state, action) => {
         state.kycIdList = action.payload;
       })
       .addCase(getKycIDList.rejected, (state) => {
-        state.kycIdList = [];
+        state.kycIdList = {};
       })
       .addCase(documentsUpload.pending, (state) => {
         state.documentsUpload = [];

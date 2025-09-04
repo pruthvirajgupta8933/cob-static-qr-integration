@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ReactSelect, { createFilter } from "react-select";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { stringEnc } from "../../../utilities/encodeDecode";
-import Yup from "../../../_components/formik/Yup";
-import {
-  getCLientCodeByRoleSlice,
-  fetchSubMerchant,
-} from "../../../slices/approver-dashboard/approverDashboardSlice";
-import OnboardMerchant from "./OnboardMerchant";
-import CustomLoader from "../../../_components/loader";
+import ReactSelect, { createFilter } from "react-select";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+import Yup from "../../../_components/formik/Yup";
+import CustomLoader from "../../../_components/loader";
+import {
+  fetchSubMerchant,
+  getCLientCodeByRoleSlice,
+} from "../../../slices/approver-dashboard/approverDashboardSlice";
+import { stringEnc } from "../../../utilities/encodeDecode";
+import OnboardMerchant from "./OnboardMerchant";
 
 const SubMerchant = ({ edit }) => {
   const [clientLoginId, setClientLoginId] = useState();
@@ -21,7 +21,10 @@ const SubMerchant = ({ edit }) => {
   );
   const merchantClientCodeList = clientCodeByRole?.["Merchant"] || [];
   const dispatch = useDispatch();
-  useEffect(() => dispatch(getCLientCodeByRoleSlice({ role: "Merchant" })), []);
+  useEffect(() => {
+    dispatch(getCLientCodeByRoleSlice({ role: "Merchant" }));
+    return () => {};
+  }, []);
 
   const options = [
     { value: "", label: "Select Client Code" },
@@ -51,10 +54,7 @@ const SubMerchant = ({ edit }) => {
       .max(255),
     passwordd: Yup.string()
       .allowOneSpace()
-      .matches(
-        Regex.password,
-        RegexMsg.password
-      ),
+      .matches(Regex.password, RegexMsg.password),
     confirmpasswordd: Yup.string()
       .allowOneSpace()
       .oneOf([Yup.ref("passwordd"), null], "Passwords must match")

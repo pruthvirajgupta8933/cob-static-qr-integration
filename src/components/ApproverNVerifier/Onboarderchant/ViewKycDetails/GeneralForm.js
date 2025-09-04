@@ -15,14 +15,30 @@ import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
 import CustomReactSelect from '../../../../_components/formik/components/CustomReactSelect';
 import { createFilter } from 'react-select';
+import { fetchRollingReservePeriod, fetchParentClientCodes } from '../../../../slices/persist-slice/persistSlice';
 
 const GeneralForm = ({ role }) => {
     const dispatch = useDispatch();
-    const [parentClientCode, setParentClientCode] = useState([]);
+    // const [parentClientCode, setParentClientCode] = useState([]);
     const [selectedRefBy, setSelectedRefBy] = useState(null);
-    const [rollingResPeriod, setRollingResPeriod] = useState([]);
+    // const [rollingResPeriod, setRollingResPeriod] = useState([]);
     const { approverDashboard, kyc, verifierApproverTab } = useSelector((state) => state);
     const currenTab = parseInt(verifierApproverTab?.currenTab);
+    const rollingResPeriod = useSelector((state) => state.
+        commonPersistReducer.rollingReservePeriod.
+        rollingResPeriod
+    );
+
+    const parentClientCode = useSelector(
+        (state) => state.
+            commonPersistReducer.parentClientCodes.data
+    );
+
+
+
+
+    // const { data } = useSelector((state) => console.log(state, "state"));
+
 
     useEffect(() => {
 
@@ -30,17 +46,18 @@ const GeneralForm = ({ role }) => {
             dispatch(businessCategoryType());
         }
         // set parent client code
-        axiosInstanceJWT.get(API_URL.fetchParentClientCodes)
-            .then((resp) => {
-                setParentClientCode(resp.data);
-            })
-            .catch((err) => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"));
-
+        // axiosInstanceJWT.get(API_URL.fetchParentClientCodes)
+        //     .then((resp) => {
+        //         setParentClientCode(resp.data);
+        //     })
+        //     .catch((err) => toastConfig.errorToast("Parent Client Code not found. Please try again after some time"));
+        dispatch(fetchParentClientCodes());
 
         // set rolling reserve period
-        axiosInstanceJWT.get(API_URL.rollingReservePeriod).then((resp) => {
-            setRollingResPeriod(resp.data)
-        }).catch(err => toastConfig.errorToast("Rolling reserve period not found. Please try again after some time"))
+        // axiosInstanceJWT.get(API_URL.rollingReservePeriod).then((resp) => {
+        //     setRollingResPeriod(resp.data)
+        // }).catch(err => toastConfig.errorToast("Rolling reserve period not found. Please try again after some time"))
+        dispatch(fetchRollingReservePeriod())
     }, [dispatch]);
 
     const amtTypeOptions = useMemo(() => [

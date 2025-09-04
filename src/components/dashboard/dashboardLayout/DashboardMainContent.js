@@ -134,6 +134,7 @@ import MidManagement from "../../ApproverNVerifier/mid-management/MidManagement"
 import EnachSettlementReport from "../../../subscription_components/settlement-report-enach/EnachSettlementReport";
 import IdleTimerContainer from "../../../utilities/IdleTimer";
 import AdminAuthRegister from "../../ApproverNVerifier/admin-auth-register/AdminAuthRegister";
+import SuperAdminReports from "../../../super-admin/super-admin-reports/SuperAdminReports";
 
 function DashboardMainContent() {
   let history = useHistory();
@@ -1135,6 +1136,16 @@ function DashboardMainContent() {
                 Component={Disbursement}
                 roleList={{ approver: true }}
               ></AuthorizedRoute>
+
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/admin-reports`}
+                Component={SuperAdminReports}
+                roleList={{ approver: true }}
+              >
+                <SuperAdminReports />
+              </AuthorizedRoute>
 
               <Route path={`${path}/*`} component={UrlNotFound}>
                 <UrlNotFound />

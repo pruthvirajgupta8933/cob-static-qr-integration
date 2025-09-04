@@ -9,7 +9,7 @@ import { createEmandateByApi } from '../../slices/subscription-slice/createEmand
 import { getRedirectUrl } from '../../utilities/getRedirectUrl';
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom"
-
+import { Tooltip } from "bootstrap";
 
 
 const CreateEMandateByApi = ({ selectedOption }) => {
@@ -32,7 +32,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
     const initialValues = {
-
         consumer_id: generateRandomNumber(),
         customer_name: '',
         customer_mobile: '',
@@ -48,8 +47,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         amount_type: "",
         untilCancelled: false,
         frequency_number: ''
-
-
     };
     useEffect(() => {
         if (selectedOption === 'customer') {
@@ -59,7 +56,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         } else {
             setRedirectUrl('');
         }
-
 
         if (selectedOption === 'merchant') {
             setBankDetailsUrl(null);
@@ -79,15 +75,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             .required('Required'),
         customer_email_id: Yup.string().email('Invalid email').max(100, "Maximum 100 characters are allowed").required('Required'),
 
-
         start_date: Yup.date().required('Required'),
-        // Removed end_date from validation schema as it's conditionally rendered or replaced
-        // end_date: Yup.date().when('untilCancelled', {
-        //     is: false,
-        //     then: (schema) => schema.min(Yup.ref("start_date"), "End date can't be before Start date").required('Required'),
-        //     otherwise: (schema) => schema.notRequired(),
-        // }),
-
         max_amount: Yup.number()
             .typeError('Max amount must be a number')
             .required('Required'),
@@ -105,10 +93,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             otherwise: (schema) => schema.notRequired(),
         }),
     });
-
-
-
-
 
 
     const frequencyDropdown =
@@ -131,7 +115,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         { key: '', value: 'Select' },
         { key: "Fixed", value: "Fixed" },
         { key: "Variable", value: "Variable" },
-
     ]
 
     useEffect(() => {
@@ -155,7 +138,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
         };
         setPurposeListDate(apiResponse?.data)
 
-
         const formattedData = [
             { key: "", value: "Select" },
             ...apiResponse.data.map(item => ({
@@ -164,15 +146,34 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             }))
         ];
 
-
         setDropdownData(formattedData);
     }, []);
 
 
-
-
     const handleViewSubmit = async (values) => {
         setDisable(true);
+
+        const principalAmount = values.principal_amount;
+        const frequency = values.frequency;
+        const frequencyNumber = values.frequency_number || '-';
+        const maxAmount = values.max_amount;
+
+        const confirmationMessage = `
+Are you sure you want to proceed with the following details?
+
+Principal Amount: ₹${principalAmount}
+Number of Periods: ${frequencyNumber}
+Frequency: ${frequency}
+Max Amount: ₹${maxAmount}
+`;
+
+        const confirmed = window.confirm(confirmationMessage);
+
+        if (!confirmed) {
+            setDisable(false);
+            return;
+        }
+
         try {
             const filteredPurpose = pusposeListData.filter(
                 (item) => item.description === values.purpose
@@ -199,18 +200,13 @@ const CreateEMandateByApi = ({ selectedOption }) => {
             };
 
             if (!values.untilCancelled) {
-                // If not until cancelled, use frequency_number to calculate end_date or simply pass frequency_number
                 postDataS.frequency_number = values.frequency_number;
-                // You might need to calculate end_date based on frequency and frequency_number if the API expects it.
-                // For now, I'm assuming frequency_number is sent as is.
             } else {
-                // If untilCancelled is true, ensure these fields are not sent
                 delete postDataS.end_date;
                 delete postDataS.frequency_number;
             }
 
             const response = await dispatch(createEmandateByApi(postDataS));
-
 
             if (response?.payload.data?.bank_details_url) {
                 toast.success(response?.payload.data.message);
@@ -220,13 +216,23 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                     window.location.href = response?.payload?.data.bank_details_url;
                 }
             } else {
-                toast.error(response?.payload?.detail);
+                toast.error(response?.payload?.detail || 'Something went wrong.');
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Something went wrong.');
         }
+
         setDisable(false);
     };
+
+    useEffect(() => {
+        const tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        tooltipTriggerList.map((tooltipTriggerEl) => {
+            return new Tooltip(tooltipTriggerEl);
+        });
+    }, []);
 
 
     const copyToClipboard = () => {
@@ -275,42 +281,48 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                         <div className="col-md-3">
                                             <label htmlFor="consumer_id" className="form-label">Consumer ID</label>
                                             <FormikController type="text" id="consumer_id" name="consumer_id" className="form-control" placeholder="Enter Consumer ID" control='input' />
-
                                         </div>
                                         <div className="col-md-3">
                                             <label htmlFor="customer_name" className="form-label">Customer Name</label>
                                             <FormikController type="text" id="customer_name" name="customer_name" className="form-control" placeholder="Enter Customer Name" control='input' />
-
                                         </div>
                                         <div className="col-md-3">
                                             <label htmlFor="customer_mobile" className="form-label">Customer Mobile</label>
                                             <FormikController type="text" id="customer_mobile" name="customer_mobile" className="form-control" placeholder="Enter Customer Mobile" control='input' />
-
                                         </div>
                                         <div className="col-md-3">
                                             <label htmlFor="customer_email_id" className="form-label">Customer Email</label>
                                             <FormikController type="email" id="customer_email_id" name="customer_email_id" className="form-control" placeholder="Enter Customer Email" control='input' />
-
                                         </div>
-
-
                                     </div>
-                                    <div className="row mb-3">
 
+                                    <div className="row mb-3">
                                         <div className="col-md-3">
                                             <label htmlFor="amount_type" className="form-label">Amount Type</label>
                                             <FormikController type="number" id="amount_type" name="amount_type" className="form-select" control='select' options={AmountType} />
-
                                         </div>
 
                                         <div className="col-md-3">
-                                            <label htmlFor="frequency" className="form-label">Frequency</label>
+                                            <label htmlFor="frequency" className="form-label">
+                                                Frequency
+                                                <i className="fa fa-info-circle ms-1 text-primary"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Select how often the EMI will be deducted (e.g., monthly, quarterly, yearly).">
+                                                </i>
+                                            </label>
                                             <FormikController type="number" id="frequency" name="frequency" className="form-select" control='select' options={frequencyDropdown} />
-
                                         </div>
 
                                         <div className="col-md-3">
-                                            <label htmlFor="max_amount" className="form-label">Max Amount</label>
+                                            <label htmlFor="max_amount" className="form-label">
+                                                Max Amount (Account Limit)
+                                                <i className="fa fa-info-circle ms-1 text-primary"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Maximum amount that can be debited from your account per transaction.">
+                                                </i>
+                                            </label>
                                             <FormikController
                                                 type="input"
                                                 id="max_amount"
@@ -320,8 +332,19 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 control="input"
                                             />
                                         </div>
+
                                         <div className="col-md-3">
-                                            <label htmlFor="principal_amount" className="form-label">Principal Amount</label>
+                                            <label htmlFor="principal_amount" className="form-label">
+                                                Principal Amount
+                                                <i
+                                                    className="fa fa-info-circle ms-1 text-primary"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    data-bs-html="true"
+                                                    title=" Total cost of the product/service.<br/>For example: if a phone costs ₹60,000, enter <b>60000</b> here."
+                                                ></i>
+
+                                            </label>
                                             <FormikController
                                                 type="input"
                                                 id="principal_amount"
@@ -331,17 +354,12 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 control="input"
                                             />
                                         </div>
-
                                     </div>
 
                                     <div className="row mb-3">
-
-
-
                                         <div className="col-md-3">
                                             <label htmlFor="purpose" className="form-label">Purpose</label>
                                             <FormikController type="text" id="purpose" name="purpose" className="form-select" placeholder="Enter Purpose" control='select' options={dropdownData} />
-
                                         </div>
 
                                         <div className="col-md-3">
@@ -362,9 +380,7 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                             />
                                         </div>
 
-
                                         <div className="col-md-3">
-
                                             <label htmlFor="frequency_number" className="form-label">
                                                 {values.frequency === "DAIL" ? "Number of Days" :
                                                     values.frequency === "WEEK" ? "Number of Weeks" :
@@ -375,6 +391,17 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                                         values.frequency === "BIMN" ? "Number of Bi-Months" :
                                                                             "Number of Periods"}
                                             </label>
+                                            <i
+                                                className="fa fa-info-circle ms-1 text-primary"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                data-bs-html="true"
+                                                title=" Number of periods defines how many cycles you want based on the selected frequency.<br/><br/>
+  • If you choose <b>Monthly</b> and enter <b>12</b>, it means 12 months.<br/>
+  • If you choose <b>Yearly</b> and enter <b>5</b>, it means 5 years.<br/><br/>
+  The value depends on the frequency you select."
+                                            ></i>
+
                                             <FormikController
                                                 type="number"
                                                 id="frequency_number"
@@ -401,21 +428,8 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                     checked={values.untilCancelled}
                                                     onChange={() => {
                                                         setFieldValue("untilCancelled", !values.untilCancelled);
-                                                        setFieldValue("frequency_number", ""); // Clear frequency_number when toggling
-                                                        setFieldValue("end_date", initialValues.end_date); // Keep end_date as initial or clear as needed, it won't be sent if untilCancelled is true
-                                                        if (!values.untilCancelled) {
-                                                            // alert(`You have chosen for the mandate to be valid until cancelled. The "Number of [Frequency]" field will be disabled.`);
-                                                        } else {
-                                                            // alert(`You have chosen to set the mandate to be valid for a dynamic number of ${values.frequency === "DAIL" ? "days" :
-                                                            //     values.frequency === "WEEK" ? "weeks" :
-                                                            //         values.frequency === "MNTH" ? "months" :
-                                                            //             values.frequency === "QURT" ? "quarters" :
-                                                            //                 values.frequency === "MIAN" ? "half-years" :
-                                                            //                     values.frequency === "YEAR" ? "years" :
-                                                            //                         values.frequency === "BIMN" ? "bi-months" :
-                                                            //                             "periods"
-                                                            //     } based on your frequency selection. Please specify the number in the field.`);
-                                                        }
+                                                        setFieldValue("frequency_number", "");
+                                                        setFieldValue("end_date", initialValues.end_date);
                                                     }}
                                                 />
                                                 <label htmlFor="untilCancelled" className="form-check-label ml-1">
@@ -423,14 +437,6 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                                                 </label>
                                             </div>
                                         </div>
-
-
-                                    </div>
-
-
-
-                                    <div className="row mb-3">
-
                                     </div>
 
                                     <div className="row">
@@ -450,11 +456,10 @@ const CreateEMandateByApi = ({ selectedOption }) => {
                             )}
                         </Formik>
                     </div>
-
                 </div>
             )}
         </div>
     );
 };
 
-export default CreateEMandateByApi;
+export default CreateEMandateByApi

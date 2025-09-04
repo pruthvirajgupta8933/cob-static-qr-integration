@@ -11,6 +11,7 @@ import MerchantSubscriptionBalance from "./MerchantSubscriptionBalance";
 import { getSubscriptionPlanByClientCode } from "../../../../slices/subscription";
 import WalletRecharge from "./WalletRecharge";
 
+
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const roles = roleBasedAccess();
@@ -175,7 +176,7 @@ const Profile = () => {
               <WalletDetail
                 isLoading={isLoading}
                 walletDisplayData={SubscribedPlanData}
-                walletCommission={walletCommission}
+                walletCommission={walletCommission || 0}
               />
             )}
             {currentTab === 3 && <WalletRecharge />}

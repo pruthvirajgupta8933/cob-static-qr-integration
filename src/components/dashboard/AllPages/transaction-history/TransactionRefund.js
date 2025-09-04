@@ -18,6 +18,7 @@ import {
 } from "../../../../utilities/axiosInstance";
 import API_URL from "../../../../config";
 import toastConfig from "../../../../utilities/toastTypes";
+import { decrypt, encrypt } from "@cto_sabpaisa/sabpaisa-aes-256-encryption";
 function TransactionRefund(props) {
   const { radioInputVal, refundModal, setRefundModal } = props;
   const [submitLoader, setSubmitLoader] = useState(false);
@@ -100,8 +101,12 @@ function TransactionRefund(props) {
           case "AES256HEX":
             enc = encryptAES256HEX(str, authKey, authIV);
             break;
+          case "AES256HMACSHA384HEX":
+            // new encrption logic
+            enc = await encrypt(str, authKey, authIV);
+            break;
           default:
-            toastConfig.errorToast("Unsupported encryption type");
+            toastConfig.errorToast("Encryption type not supported");
             setSubmitLoader(false);
             return;
         }
@@ -131,8 +136,11 @@ function TransactionRefund(props) {
           case "AES256HEX":
             dc = decryptAES256HEX(refundResponse.data.refundResponse, authKey);
             break;
+          case "AES256HMACSHA384HEX":
+            dc = await decrypt(refundResponse.data.refundResponse, authKey, authIV);
+            break;
           default:
-            toastConfig.errorToast("Unsupported decryption type");
+            toastConfig.errorToast("Unsupported decryption type ");
             setSubmitLoader(false);
             return;
         }
@@ -141,8 +149,8 @@ function TransactionRefund(props) {
 
         refundResponse?.data?.apiStatusCode === "00"
           ? toastConfig.successToast(
-              jsonRsp.message || "Refund Request Initiated"
-            )
+            jsonRsp.message || "Refund Request Initiated"
+          )
           : toastConfig.warningToast(jsonRsp.message);
 
         setSubmitLoader(false);
