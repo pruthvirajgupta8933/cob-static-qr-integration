@@ -13,6 +13,8 @@ const App = () => {
   const dispatch = useDispatch();
   const [login, setLogin] = useState(false);
 
+  console.log(process.env.REACT_APP_STAGE_ENC_IV)
+
   useCallback(() => {
     dispatch(logout());
   }, [dispatch]);
@@ -24,7 +26,6 @@ const App = () => {
       setLogin(true);
     }
   }, []);
-
   // logout session expireTime if user not idle
   const logOutUser = (isLoggedIn) => {
     setLogin(isLoggedIn);

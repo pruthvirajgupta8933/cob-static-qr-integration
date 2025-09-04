@@ -283,6 +283,7 @@ function ContactInfoKyc(props) {
             toastConfig.errorToast(resp.payload ?? "Something went wrong, Please try again");
             hasFetchedRef.current[memoParamId] = false;
           }
+
         })
         .catch(() => {
           setAadhaarVerificationLoader(false);
