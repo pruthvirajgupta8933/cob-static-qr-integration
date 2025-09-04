@@ -304,7 +304,7 @@ function TransactionSummery() {
       <main>
         {<ReportLayout
           type="txnSummary"
-          title="Transaction Summary"
+          title="Merchant Summary"
           data={showData}
           rowData={rowData}
           form={form}

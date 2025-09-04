@@ -1,4 +1,4 @@
-const ENV_PROD = false; // For proudction make it true, don't change in the local environment
+const ENV_PROD = true; // For proudction make it true, don't change in the local environment
 let url,
   kyc_url,
   b2b_url,
