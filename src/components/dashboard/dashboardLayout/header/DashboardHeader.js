@@ -1,14 +1,12 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { logout } from "../../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import headerClasses from "./dashboard-header.module.css";
-// import Sabpaisalogo from "../../../../assets/images/sabpaisalogo.png";
 import sabpaisalogoWhite from "../../../../assets/images/sabpaisalogoWhite.png";
 import { dashboardHeaderMenuToggle } from "../../../../slices/theme/themeSlice";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
-import { clearKycDetailsByMerchantLoginId, clearKycState } from "../../../../slices/kycSlice";
+import { clearKycState } from "../../../../slices/kycSlice";
 
 function DashboardHeader() {
   const dispatch = useDispatch();
@@ -20,19 +18,34 @@ function DashboardHeader() {
   const loggedUser = Object.keys(roles).find((key) => roles[key] === true);
   const headerMenuToggle = themeReducer.dashboardHeader.headerMenuToggle;
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
 
   const exitback = () => {
-
     dispatch(clearKycState());
-    // dispatch(clearKycDetailsByMerchantLoginId());
     dispatch(logout());
-
   };
 
   const toggleHandler = (value) => {
     dispatch(dashboardHeaderMenuToggle(value));
   };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (event.target.closest(`.${headerClasses.col3}`) === null) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   let urlChagned = useMemo(() => location, [location]);
   useEffect(() => {
@@ -44,7 +57,7 @@ function DashboardHeader() {
       className={`navbar sticky-top flex-md-nowrap p-0 position-fixed ${headerClasses.navbar_cob}`}
     >
       <div
-        className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`}
+        className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`}
       >
         <button
           className={`d-md-none collapsed navbar-toggler `}
@@ -79,9 +92,9 @@ function DashboardHeader() {
             <div className={`dropdown ${headerClasses.col3}`}>
               <button
                 className="btn btn-sm dropdown-toggle mr-2 border-1 font-size-16 text-capitalize p-0"
+                onClick={toggleDropdown}
                 type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+                aria-expanded={isDropdownOpen}
               >
                 <i
                   className="fa fa-user-circle font-size-16 "
@@ -91,7 +104,9 @@ function DashboardHeader() {
                   ? username?.substring(0, 15) + "..."
                   : username}
               </button>
-              <ul className="dropdown-menu position-absolute">
+              <ul
+                className={`dropdown-menu position-absolute ${isDropdownOpen ? "show" : ""}`}
+              >
                 <li>
                   <Link to="/dashboard/profile" className="dropdown-item">
                     Profile
