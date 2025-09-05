@@ -9,6 +9,7 @@ require('dotenv').config();
 // Import routes
 const hdfcWebhookRoutes = require('./routes/hdfc.webhook');
 const bulkQRRoutes = require('./routes/bulkQR');
+const merchantAPIRoutes = require('./routes/api/v1/merchant');
 
 // Initialize Express app
 const app = express();
@@ -46,6 +47,7 @@ if (process.env.NODE_ENV === 'development') {
 // API Routes
 app.use('/api', hdfcWebhookRoutes);
 app.use('/api/bulk-qr', bulkQRRoutes);
+app.use('/api/v1/merchant', merchantAPIRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
