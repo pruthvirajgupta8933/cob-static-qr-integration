@@ -11,6 +11,9 @@ export const getMandateRegistrationReport = (requestParam) => {
   return axiosInstanceEmandateAuthApiKey.post(
     E_NACH_URL.REGISTRATION_REPORT,
     requestParam,
+    {
+      responseType: 'arraybuffer',
+    }
   );
 };
 

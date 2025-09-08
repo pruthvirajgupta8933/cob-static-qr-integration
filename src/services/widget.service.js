@@ -6,7 +6,7 @@
 
 // const  widgetKeyurl = (postData) => {
 // return axiosInstance.post(WIDGET_URL.WIDGET_CLIENT_KEY,postData)
-   
+
 // }
 
 // const widgetService = {
@@ -22,16 +22,20 @@ import { WIDGET_URL } from "../config";
 
 
 const createClientkey = (postData) => {
-  return axiosInstance.post(WIDGET_URL.WIDGET_CLIENT_KEY,postData)
-  }
+  return axiosInstance.post(WIDGET_URL.WIDGET_CLIENT_KEY, postData)
+}
 
-  
+const creteClientScript = (data) => {
+  return axiosInstance.post(WIDGET_URL.WIDGET_CLIENT_KEY, data)
+}
 
-  
 
 
-  const widgetService = {
-    createClientkey
-   
-  };
-  export default widgetService;
+
+
+const widgetService = {
+  createClientkey,
+  creteClientScript
+
+};
+export default widgetService;

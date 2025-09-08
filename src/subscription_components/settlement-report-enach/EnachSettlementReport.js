@@ -230,7 +230,7 @@ const EnachSettlementReport = () => {
             end_date: moment(savedValues?.end_date).startOf("day").format("YYYY-MM-DD"),
             page: currentPage,
             page_size: pageSize,
-            client_code: savedValues?.client_code,
+            client_code: clientCode,
             download: 1,
         };
 
