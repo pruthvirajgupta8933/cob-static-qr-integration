@@ -10,7 +10,10 @@ export const getAllMandateApi = (requestParam) => {
 export const getMandateRegistrationReport = (requestParam) => {
   return axiosInstanceEmandateAuthApiKey.post(
     E_NACH_URL.REGISTRATION_REPORT,
-    requestParam
+    requestParam,
+    {
+      responseType: 'arraybuffer',
+    }
   );
 };
 
@@ -24,6 +27,9 @@ export const transactionHistoryByuserApi = (requestParam) => {
 export const debitTransactionReport = (requestParam) => {
   return axiosInstanceEmandateAuthApiKey.post(
     E_NACH_URL.DEBIT_TRANSACTION_REPORT,
-    requestParam
+    requestParam,
+    {
+      responseType: 'arraybuffer',
+    }
   );
 };
