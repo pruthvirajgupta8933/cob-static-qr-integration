@@ -196,7 +196,8 @@ Max Amount: ₹${maxAmount}
                 amount_type: values.amount_type,
                 until_cancel: values.untilCancelled || false,
                 principal_amount: values.principal_amount,
-                customer_type: selectedOption === "customer" ? "customer" : "merchant"
+                customer_type: "customer"
+
             };
 
             if (!values.untilCancelled) {
@@ -440,18 +441,24 @@ Max Amount: ₹${maxAmount}
                                     </div>
 
                                     <div className="row">
-                                        <div className="col text-center">
-                                            <button type="submit" className="btn cob-btn-primary approve text-white" disabled={disable}>
+                                        <div className="col text-end">
+                                            <button
+                                                type="submit"
+                                                className="btn cob-btn-primary approve text-white"
+                                                disabled={disable}
+                                            >
                                                 {disable && (
                                                     <span
-                                                        className="spinner-border spinner-border-sm mr-1"
+                                                        className="spinner-border spinner-border-sm me-1"
                                                         role="status"
                                                         aria-hidden="true"
                                                     ></span>
                                                 )}
-                                                Submit</button>
+                                                Submit
+                                            </button>
                                         </div>
                                     </div>
+
                                 </Form>
                             )}
                         </Formik>
