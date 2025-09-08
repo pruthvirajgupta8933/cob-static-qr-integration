@@ -17,7 +17,8 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+// import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import { fetchChildDataList } from "../../../slices/persist-slice/persistSlice";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { v4 as uuidv4 } from "uuid";
 import Yup from "../../../_components/formik/Yup";
@@ -40,11 +41,11 @@ const RefundTransactionHistory = () => {
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false);
   const roles = roleBasedAccess();
-  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
+  const { auth, dashboard, commonPersistReducer } = useSelector(
     (state) => state
   );
   const { user } = auth;
-  const { refrerChiledList } = merchantReferralOnboardReducer;
+  const { refrerChiledList } = commonPersistReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
   const { isLoadingTxnHistory } = dashboard;
   var clientMerchantDetailsList = [];

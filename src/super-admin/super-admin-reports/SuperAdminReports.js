@@ -44,7 +44,7 @@ const SuperAdminReports = () => {
 
     const validationSchema = Yup.object({
         react_select: Yup.object().required('Table is required').nullable(),
-        client_code: Yup.string().required('Client Code is required'),
+        // client_code: Yup.string().required('Client Code is required'),
         from_date: Yup.date().required('From date is required'),
         to_date: Yup.date().required('To date is required'),
     });
@@ -57,6 +57,7 @@ const SuperAdminReports = () => {
         if (data && data.length > 0) {
             const firstRow = data[0];
             const dynamicRowData = Object.keys(firstRow).map((key, index) => {
+                console.log("key", key)
                 const isDateColumn = key.toLowerCase().includes('date') || key.toLowerCase().includes('at');
                 const isMobileNumberColumn = key.toLowerCase().includes('mobile') || key.toLowerCase().includes('contact');
 
@@ -65,12 +66,21 @@ const SuperAdminReports = () => {
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ');
 
-                let selectorFunction = (row) => row[key];
+                let selectorFunction = (row) => row[key] ?? "NA";
+
 
                 if (isDateColumn) {
-                    selectorFunction = (row) => moment(row[key]).format('DD-MM-YYYY');
+                    selectorFunction = (row) => {
+
+                        const value = row[key];
+                        // check if value is valid date
+                        if (!value || !moment(value, moment.ISO_8601, true).isValid()) {
+                            return "NA";
+                        }
+                        return moment(value).format('DD-MM-YYYY');
+                    };
                 } else if (isMobileNumberColumn) {
-                    selectorFunction = (row) => `+${row[key]}`;
+                    selectorFunction = (row) => row[key] ? `+${row[key]}` : "NA";
                 }
 
                 return {
@@ -78,6 +88,7 @@ const SuperAdminReports = () => {
                     name: headerName,
                     selector: selectorFunction,
                     sortable: true,
+
                 };
             });
             setRowData(dynamicRowData);
@@ -85,6 +96,8 @@ const SuperAdminReports = () => {
             setRowData([]);
         }
     }, [data]);
+
+
 
     const handleChange = async (selectedOption) => {
         setData([])
@@ -118,13 +131,16 @@ const SuperAdminReports = () => {
             }
         });
 
+
+
         const bodyData = {
             table_name: values.react_select.value,
             filters: filtersPayload,
-            start_date: values.from_date,
-            end_date: values.to_date,
+            start_date: values.from_date ? moment(values.from_date).format("YYYY-MM-DD") : null,
+            end_date: values.to_date ? moment(values.to_date).format("YYYY-MM-DD") : null,
             client_code: values.client_code,
         };
+
 
         setSearchBodyData(bodyData);
         fetchData(bodyData, 1);
@@ -135,15 +151,18 @@ const SuperAdminReports = () => {
             page: page,
             page_size: pageSize,
         };
+        setLoadingState(true);
 
         dispatch(superAdminReports({ body, query: queryParams }))
             .then((resp) => {
                 if (resp?.payload?.results) {
                     setDataCount(resp.payload.count);
                     setData(resp.payload.results);
+                    setLoadingState(false);
                 } else {
                     setDataCount(0);
                     setData([]);
+                    setLoadingState(false);
                 }
             })
             .finally(() => {
@@ -199,7 +218,7 @@ const SuperAdminReports = () => {
                                     options={options}
                                     placeholder="Select Table"
                                     filterOption={createFilter({ ignoreAccents: false })}
-                                    label="Select Table"
+                                    label="Select Table*"
                                     onChange={(selectedOption) => {
                                         formik.setFieldValue('react_select', selectedOption);
                                         handleChange(selectedOption);
@@ -211,7 +230,7 @@ const SuperAdminReports = () => {
                                     control="input"
                                     type="text"
                                     name="client_code"
-                                    label="Client Code"
+                                    label="Client Code (Optional)"
                                     placeholder="Enter Client Code"
                                     className="form-control"
                                 />
@@ -219,7 +238,7 @@ const SuperAdminReports = () => {
                             <div className="form-group col-md-3">
                                 <FormikController
                                     control="date"
-                                    label="From Date"
+                                    label="From Date (Optional)"
                                     id="from_date"
                                     name="from_date"
                                     value={formik.values.from_date ? new Date(formik.values.from_date) : null}
@@ -233,7 +252,7 @@ const SuperAdminReports = () => {
                             <div className="form-group col-md-3">
                                 <FormikController
                                     control="date"
-                                    label="End Date"
+                                    label="End Date (Optional)"
                                     id="to_date"
                                     name="to_date"
                                     value={formik.values.to_date ? new Date(formik.values.to_date) : null}

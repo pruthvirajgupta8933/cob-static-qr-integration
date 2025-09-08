@@ -1,0 +1,96 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black */
+    z-index: 999;
+    /* High z-index to ensure it covers other content */
+    font-family: Georgia;
+  }
+  
+  .widget-container {
+    position: fixed;
+    right: 37%;
+    bottom: 6%;
+    color: #333;
+    width: 50%;
+    max-width: 350px;
+    background: #ffffff;
+    border-radius: 40px 0px 40px 0px;
+    opacity: 1;
+    min-height: 580px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .widget-cross {
+    width: 140px;
+    height: 45px;
+    background: #2a53ee;
+    color: #fff;
+    border-radius: 5px;
+  }
+  
+  .logo-img {
+    width: 40px;
+    height: 46px;
+    bottom: 30px;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-left: -8px;
+    padding: 5px;
+  }
+  
+  .pay-now-title,
+  .secured-by {
+    display: block;
+    text-align: center;
+    /* font-size: 10px; */
+  }
+  
+  .my-flex-container {
+    display: flex;
+    flex-direction: row;
+    /* Changed to row */
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .widget-container .powered-by {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: absolute;
+    left: -5%;
+    right: 0;
+    bottom: 3%;
+  }
+  
+  @media (max-width: 768px) {
+    .widget-container {
+      right: 8%;
+      width: 90%;
+    }
+  
+    .widget-cross {
+      right: 8%;
+      width: 60px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .widget-container {
+      right: 8%;
+      bottom: 45px;
+      min-height: 560px;
+    }
+  
+    .widget-cross {
+      bottom: 5px;
+      width: 130px;
+    }
+  }

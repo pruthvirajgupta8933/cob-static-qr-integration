@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch,useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./product.css";
 import onlinePayment from "../../../../assets/images/onlinePayment.png";
 import paymentLink from "../../../../assets/images/paymentLink.png";
@@ -9,7 +9,7 @@ import qwikform from "../../../../assets/images/qwikform.png";
 import echallan from "../../../../assets/images/echallan.png";
 import epos from "../../../../assets/images/epos.png";
 import linkPaisa from "../../../../assets/images/linkPaisa.png";
-import { productDetails } from "../../../../slices/merchant-slice/productCatalogueSlice";
+import { productDetails } from "../../../../slices/persist-slice/persistSlice";
 
 import { uniqueId } from "lodash";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
@@ -17,8 +17,8 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 
 const Products = () => {
-  
-  const dispatch=useDispatch()
+
+  const dispatch = useDispatch()
   const iconImg = [
     onlinePayment,
     paymentLink,
@@ -29,9 +29,9 @@ const Products = () => {
     epos,
     linkPaisa,
   ];
-    const { productDetailsData: products } = useSelector(state => state.productCatalogueSlice);
-    const {isLoading}=useSelector((state)=>state.productCatalogueSlice)
-    
+  const { productDetailsData: products } = useSelector(state => state.commonPersistReducer);
+  const { isLoading } = useSelector((state) => state.commonPersistReducer)
+
 
   useEffect(() => {
     dispatch(productDetails())
@@ -41,7 +41,7 @@ const Products = () => {
 
   return (
     <section className="ant-layout">
-       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="container">
           <div className="row justify-content-md-center">
             <div className="col-md-auto">

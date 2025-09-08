@@ -11,6 +11,7 @@ import MerchantSubscriptionBalance from "./MerchantSubscriptionBalance";
 import { getSubscriptionPlanByClientCode } from "../../../../slices/subscription";
 import WalletRecharge from "./WalletRecharge";
 
+
 const Profile = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const roles = roleBasedAccess();

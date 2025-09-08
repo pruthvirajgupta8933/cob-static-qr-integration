@@ -196,9 +196,10 @@ const RegistrationHistory = () => {
       start_date: moment(savedValues?.from_date).startOf("day").format("YYYY-MM-DD"),
       end_date: moment(savedValues?.end_date).startOf("day").format("YYYY-MM-DD"),
       registration_status:
-        savedValues.registration_status.toLowerCase() === "all"
+        (savedValues?.registration_status ?? "").toLowerCase() === "all"
           ? ""
-          : savedValues.registration_status,
+          : (savedValues?.registration_status ?? ""),
+      client_code: clientCode
     };
     setExporting(true);
     dispatch(registrationHistoryReport(postDataS))
@@ -209,7 +210,8 @@ const RegistrationHistory = () => {
           });
           saveAs(
             blob,
-            `E-mandate_Registration_REPORT_${clientCode}_${splitDate}.csv`
+
+            `E-mandate_Registration_REPORT_${clientCode}_${splitDate}.xlsx`
           );
           toast.success("Downloaded successfully");
         } else {
