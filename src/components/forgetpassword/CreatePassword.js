@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import API_URL from "../../config";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import Yup from "../../_components/formik/Yup";
 import ThanksCard from "./ThanksCard";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
@@ -57,12 +57,11 @@ const CreatePassword = (props) => {
 
   const onSubmit = async (values) => {
     setLoading(true)
-    const res = await axiosInstanceJWT
-      .put(API_URL.AUTH_CREATE_NEW_PASSWORD, {
-        email: "textbhuvi@gmail.com",
-        verification_token: verification_token,
-        password: values.password,
-      })
+    await axiosInstanceAuth.put(API_URL.AUTH_CREATE_NEW_PASSWORD, {
+      email: "textbhuvi@gmail.com",
+      verification_token: verification_token,
+      password: values.password,
+    })
       .then((response) => {
         if (response.status === 200) {
           toast.success(response.data.message);
