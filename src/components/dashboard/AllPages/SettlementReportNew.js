@@ -483,6 +483,8 @@ const SettlementReportNew = () => {
       "CLIENT CODE",
       "CLIENT NAME",
       "SETTLEMENT AMOUNT",
+      "CHARGE BACK AMOUNT",
+      "REFUNDED AMOUNT",
       "SETTLEMENT DATE",
       "SETTLEMENT BY",
       "TRANSACTION COUNT",
@@ -496,6 +498,8 @@ const SettlementReportNew = () => {
         client_code: item.client_code || "",
         client_name: item.client_name || "",
         settlement_amount: item.settlement_amount || "",
+        charge_back_amount: item.charge_back_amount || "",
+        refunded_amount: item.refunded_amount || "",
         settlement_date: item.settlement_date
           ? dateFormatBasic(item.settlement_date)
           : "",
@@ -541,6 +545,8 @@ const SettlementReportNew = () => {
                 <th>Client Code</th>
                 <th>Client Name</th>
                 <th>Settlement Amount</th>
+                <th>Charge Back Amount</th>
+                <th>Refunded Amount</th>
                 <th>Settlement Date</th>
                 <th>Settlement By</th>
                 <th>Transaction Count</th>
@@ -554,6 +560,8 @@ const SettlementReportNew = () => {
                   <td>{item.client_code}</td>
                   <td>{item.client_name}</td>
                   <td>{Number(item.settlement_amount).toFixed(2)}</td>
+                  <td>{Number(item.charge_back_amount).toFixed(2)}</td>
+                  <td>{Number(item.refunded_amount).toFixed(2)}</td>
                   <td>{dateFormatBasic(item.settlement_date)}</td>
                   <td>{item.settlement_by}</td>
                   <td>{item.txn_count}</td>
