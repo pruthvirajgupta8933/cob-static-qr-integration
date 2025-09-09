@@ -23,6 +23,11 @@ export const fetchBankList = () => {
 export const saveBusinessDetails = (obj) => {
   return axiosInstanceJWT.post(API_URL.saveBusinesDetails, obj);
 };
+
+export const getAllKycStatus = () => {
+  return axiosInstanceJWT.get(API_URL.GET_ALL_KYC_STATUS);
+
+}
 export const getAllZoneCode = () => {
   return axiosInstanceJWT.get(API_URL.getAllzone);
 };

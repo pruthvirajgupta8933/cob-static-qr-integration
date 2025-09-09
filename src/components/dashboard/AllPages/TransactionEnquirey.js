@@ -105,7 +105,7 @@ const TransactionEnquirey = React.memo(() => {
           ? clientCodeListArr[0][fnKey]
           : "",
       transaction_id: "",
-      transaction_from: "1",
+      transaction_from: "",
     }),
     [roles.merchant, clientCodeListArr, fnKey]
   );
@@ -198,6 +198,7 @@ const TransactionEnquirey = React.memo(() => {
 
   const txnOption = useMemo(
     () => [
+      { key: "", value: "Select" },
       { key: "1", value: "Sabpaisa Transaction ID" },
       { key: "2", value: "Client Transaction ID" },
     ],
