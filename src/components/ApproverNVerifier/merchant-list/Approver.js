@@ -17,10 +17,11 @@ import CardLayout from "../../../utilities/CardLayout";
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  const { clientCodeList } = useSelector((state) => state.approverDashboard);
+
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
   const dispatch = useDispatch();
-
 
   const commonRows = [
     {
@@ -126,14 +127,30 @@ const Approver = () => {
   }, [loggedUser, dispatch]);
 
   // Callback to fetch all client codes
-  const fetchAllClientCode = useCallback(() => {
-    dispatch(getAllCLientCodeSlice());
-  }, [dispatch]);
+  // const fetchAllClientCode = useCallback(() => {
+  //   dispatch(getAllCLientCodeSlice());
+  // }, [dispatch]);
 
 
+
+  // useEffect(() => {
+  //   fetchAllClientCode();
+  // }, [fetchAllClientCode]);\
+
+
+
+  const FIVE_MINUTES = 5 * 60 * 1000;
   useEffect(() => {
-    fetchAllClientCode();
-  }, [fetchAllClientCode]);
+    const interval = setInterval(() => {
+      dispatch(getAllCLientCodeSlice());
+    }, FIVE_MINUTES);
+
+    if (clientCodeList.length === 0) {
+      dispatch(getAllCLientCodeSlice());
+    }
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
 
   const handleTabClick = (newTab) => {
     dispatch(merchantTab(newTab));
