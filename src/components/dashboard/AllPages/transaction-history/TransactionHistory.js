@@ -73,6 +73,7 @@ const TransactionHistory = () => {
   const [duration, setDuration] = useState("today");
   const [isExportReportLoading, setIsExportReportLoading] = useState(false);
   const [transactionCount, setTransactionCount] = useState(0);
+  const [totalGmv, setTotalGmv] = useState(0)
   const [loadingState, setLoadingState] = useState(false);
 
   const durationOptions = [
@@ -380,6 +381,9 @@ const TransactionHistory = () => {
     const transactionListUpdated = transactionHistory?.results;
     setTransactionList(transactionListUpdated);
     setTransactionCount(transactionHistory?.count);
+    setTotalGmv(transactionHistory?.
+      total_gmv
+    )
     setFilteredTransactionData(transactionListUpdated);
   }, [transactionHistory]);
 
@@ -851,7 +855,21 @@ const TransactionHistory = () => {
         <main>
           <div className="container p-0 ">
             <div className="scroll overflow-auto">
-              {transactionCount > 0 && <h6 className="mt-2">Total Count : {transactionCount}</h6>}
+              {transactionCount > 0 && (
+                <p className="mt-2 d-inline me-2">
+                  Total Count : {transactionCount}
+                </p>
+              )}
+              {transactionCount > 0 && totalGmv > 0 && (
+                <span className="mx-2">|</span>
+              )}
+              {totalGmv > 0 && (
+                <p className="mt-2 d-inline ms-2">
+                  Total GMV : {totalGmv}
+                </p>
+              )}
+
+
 
               <Table
                 row={rowData}

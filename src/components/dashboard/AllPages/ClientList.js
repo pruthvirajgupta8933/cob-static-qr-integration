@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CustomModal from "../../../_components/custom_modal";
-import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
+import {
+  fetchChildDataList,
+  getAllKycStatusData,
+} from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import ReferralOnboardForm from "../../ApproverNVerifier/Onboarderchant/merchant-referral-onboard/operation-kyc/ReferralOnboardForm/ReferralOnboardForm";
 import Table from "../../../_components/table_components/table/Table";
 import SearchFilter from "../../../_components/table_components/filters/SearchFilter";
@@ -18,12 +21,19 @@ import { saveAs } from "file-saver";
 import Blob from "blob";
 import { dateFormatBasic } from "../../../utilities/DateConvert";
 import ReportLayout from "../../../utilities/CardLayout";
+import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import FormikController from "../../../_components/formik/FormikController";
+import { Form, Formik } from "formik";
+import DocViewerComponent from "../../../utilities/DocViewerComponent";
+import { kycDocumentUploadList } from "../../../slices/kycSlice";
 
 function ClientList() {
   const convertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
   };
+  const { kyc } = useSelector((state) => state);
+  const { KycDocUpload } = kyc;
 
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -49,18 +59,53 @@ function ClientList() {
   };
 
   const [modalToggle, setModalToggle] = useState(false);
+  const [docPreviewToggle, setDocPreviewToggle] = useState(false);
+  const [docListModalToggle, setDocListModalToggle] = useState(false);
   const [modalToggleFormessage, setModalTogalforMessage] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
   const [disable, setDisable] = useState(false);
+  const [kycStatus, setKycStatus] = useState([]);
+  const [selectedUserData, setSelectedUserData] = useState(null);
+
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const { auth } = useSelector((state) => state);
   const { user } = auth;
+  const [selectViewDoc, setSelectedViewDoc] = useState("#");
+
+  const docModalToggle = (docData) => {
+    setDocListModalToggle(false);
+    setDocPreviewToggle(true);
+    setSelectedViewDoc(docData);
+  };
+  const docListModal = (rowData) => {
+    setSelectedUserData(rowData);
+
+
+    setDocListModalToggle(true);
+  };
 
   let history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllKycStatusData()).then((resp) => {
+      const data = convertToFormikSelectJson(
+        "value",
+        "code",
+        resp.payload.result
+      );
+      setKycStatus(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (docListModalToggle && selectedUserData) {
+      dispatch(kycDocumentUploadList({ login_id: selectedUserData?.loginMasterId }));
+    }
+  }, [docListModalToggle, selectedUserData, dispatch]);
 
   const RefrerChiledList = [
     {
@@ -74,16 +119,16 @@ function ClientList() {
 
     {
       id: "2",
-      key: "client_code", // id: "3",P
+      key: "client_code",
       name: "Client Code",
       selector: (row) => row?.client_code,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>, // width: "200px",
+      cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
     },
 
     {
       id: "3",
-      key: "name", // id: "3",P
+      key: "name",
       name: "Merchant Name",
       selector: (row) => row?.name,
       sortable: true,
@@ -96,12 +141,31 @@ function ClientList() {
     },
 
     {
+      id: "#",
+      key: "name",
+      name: "Kyc Staus",
+      selector: (row) => (row?.kyc_status ? row?.kyc_status : "NA"),
+      sortable: true,
+      cell: (row) => (
+        <div className="removeWhiteSpace">
+          {(row?.kyc_status)}
+        </div>
+      ),
+      width: "200px",
+    },
+
+    {
+      id: "#",
+      name: "Mcc Code",
+      selector: (row) => row?.mcc_code,
+      cell: (row) => <div className="removeWhiteSpace">{row?.mcc_code || "NA"}</div>,
+    },
+
+    {
       id: "4",
       name: "Mobile Number",
       selector: (row) => row?.mobileNumber,
-      cell: (row) => (
-        <div className="removeWhiteSpace">{row?.mobileNumber}</div>
-      ), // width: "250px",
+      cell: (row) => <div className="removeWhiteSpace">{row?.mobileNumber}</div>,
     },
     {
       id: "5",
@@ -117,7 +181,7 @@ function ClientList() {
 
     {
       id: "6",
-      key: "email", // id: "3",P
+      key: "email",
       name: "Email",
       selector: (row) => row?.email,
       sortable: true,
@@ -127,20 +191,13 @@ function ClientList() {
 
     {
       id: "7",
-      key: "username", // id: "3",P
+      key: "username",
       name: "User Name",
       selector: (row) => row?.username,
       sortable: true,
       cell: (row) => <div className="removeWhiteSpace">{row?.username}</div>,
       width: "200px",
     },
-    // {
-    //   id: "8",
-    //   name: "Password",
-    //   selector: (row) => row.password,
-    //   cell: (row) => <PasswordCell password={row.password} />,
-    //   width: "170px",
-    // },
 
     {
       id: "9",
@@ -150,12 +207,13 @@ function ClientList() {
           <Link
             to={`kyc?kycid=${stringEnc(row?.loginMasterId)}`}
             type="button"
-            className="approve text-white  cob-btn-primary   btn-sm"
+            className="approve text-white  cob-btn-primary   btn-sm"
             data-toggle="modal"
             onClick={() => {
               setModalTogalforMessage(true);
             }}
-          >Edit Kyc
+          >
+            Edit Kyc
           </Link>
         </div>
       ),
@@ -167,14 +225,14 @@ function ClientList() {
       name: "Action",
       cell: (row) => (
         <div>
-          <Link
-            className="approve text-white cob-btn-primary btn-sm"
-            to={`bank-onboarding/?merchantId=${stringEnc(
-              row?.loginMasterId
-            )}&redirectUrl=${history.location.pathname}`}
+          <button
+            type="button"
+            className="approve text-white  cob-btn-primary   btn-sm"
+            data-toggle="modal"
+            onClick={() => docListModal(row)}
           >
-            Edit Details
-          </Link>
+            View Document
+          </button>
         </div>
       ),
       omit: user?.roleId !== 3,
@@ -195,7 +253,6 @@ function ClientList() {
       .then((res) => {
         if (res.status === 200) {
           const data = res?.data;
-          // console.log("data", data);
           setLoading(false);
           setDisable(false);
           const blob = new Blob([data], {
@@ -224,6 +281,7 @@ function ClientList() {
   const [clientListData, setClientListData] = useState([]);
   const [data, setData] = useState([]);
   const [dataCount, setDataCount] = useState("");
+
   useEffect(() => {
     const chiledReferList = refrerDataList?.results;
     const dataCount = refrerDataList?.count;
@@ -259,8 +317,7 @@ function ClientList() {
     fetchData();
   }, [currentPage, pageSize]);
 
-  const fetchData = () => {
-    // Determine the type based on the result of roleBasedAccess()
+  const fetchData = (kycStatusValue) => {
     const roleType = roleBasedAccess();
     const type = roleType.bank
       ? "bank"
@@ -270,24 +327,26 @@ function ClientList() {
     let postObj = {
       page: currentPage,
       page_size: pageSize,
-      type: type, // Set the type based on roleType
+      type: type,
       login_id: user?.loginId,
     };
-    //  console.log(postObj)
+
+    if (kycStatusValue) {
+      postObj.kyc_status = kycStatusValue;
+    }
+
     dispatch(fetchChildDataList(postObj));
   };
 
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
-    // alert("d")
   };
-  //function for change page size
+
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
     setCurrentPage(1);
   };
 
-  // console.log(user?.roleId)
   const modalBody = () => {
     return <ReferralOnboardForm referralChild={true} fetchData={fetchData} />;
   };
@@ -304,14 +363,59 @@ function ClientList() {
     );
   };
 
+  const docListModalBody = () => {
+    return (
+      <div className="table-responsive">
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>Merchant Document</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {KycDocUpload?.length > 0 ? (
+              KycDocUpload.map((doc, i) => (
+                <tr key={doc.documentId}>
+                  <td>{i + 1}</td>
+                  <td>
+                    <p className="text-wrap mb-1">
+                      <span className="font-weight-bold">Doc.Type:</span>{" "}
+                      {doc.doc_type_name}
+                    </p>
+                    <p>
+                      <span className="font-weight-bold">Doc.Status:</span>{" "}
+                      {doc.status}
+                    </p>
+                    <p
+                      className="text-primary cursor_pointer text-decoration-underline"
+                      rel="noreferrer"
+                      onClick={() => docModalToggle(doc)}
+                    >
+                      View Document
+                    </p>
+                  </td>
+
+
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center">
+                  No documents found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   return (
-
-    <ReportLayout title="Client List">
-
-
-
+    <ReportLayout title="Merchant List">
       <div className="d-flex justify-content-between">
-
         {user?.roleId === 13 && user.loginId !== 27458 && (
           <div className="col-lg-2 col-md-3 col-sm-4 mb-md-0">
             <button
@@ -323,9 +427,25 @@ function ClientList() {
           </div>
         )}
       </div>
+      {docPreviewToggle && (
+        <DocViewerComponent
+          modalToggle={docPreviewToggle}
+          fnSetModalToggle={setDocListModalToggle}
+          setDocPreviewToggle={setDocPreviewToggle}
+
+          selectViewDoc={{
+            documentUrl: selectViewDoc?.filePath,
+            documentName: selectViewDoc?.doc_type_name,
+          }}
+
+
+
+        />
+      )}
+
       <section className="">
         <div className="container-fluid p-0">
-          <div className="row mt-4">
+          <div className="row mt-4 align-items-end">
             <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
               <SearchFilter
                 kycSearch={kycSearch}
@@ -342,8 +462,31 @@ function ClientList() {
                 changeCurrentPage={changeCurrentPage}
               />
             </div>
-
-            <div className="col-lg-1 col-md-3 col-sm-4 mb-3 mb-md-0 mt-4">
+            <div className="col-lg-3 col-md-3 col-sm-4 mb-3 mb-md-0">
+              <Formik
+                initialValues={{ status: "" }}
+                onSubmit={(values) => {
+                  fetchData(values.status);
+                }}
+              >
+                {({ setFieldValue }) => (
+                  <Form>
+                    <FormikController
+                      control="select"
+                      name="status"
+                      options={kycStatus}
+                      label="Kyc Status"
+                      className="form-select"
+                      onChange={(e) => {
+                        setFieldValue("status", e.target.value);
+                        fetchData(e.target.value);
+                      }}
+                    />
+                  </Form>
+                )}
+              </Formik>
+            </div>
+            <div className="col-lg-1 col-md-3 col-sm-4 mb-2 mb-md-0">
               {data.length > 0 && (
                 <button
                   className="btn btn-sm cob-btn-primary"
@@ -374,26 +517,37 @@ function ClientList() {
             </>
           )}
 
+          {!loadingState && data?.length === 0 && (
+            <div className="col-lg-12 mt-5 text-center">
+              <h6>No data found</h6>
+            </div>
+          )}
+
           <CustomLoader loadingState={loadingState} />
         </div>
       </section>
-
-
 
       <CustomModal
         headerTitle={"Add Child Client"}
         modalBody={modalBody}
         modalToggle={modalToggle}
-        fnSetModalToggle={() => setModalToggle()}
+        fnSetModalToggle={() => setModalToggle(false)}
+      />
+
+      <CustomModal
+        headerTitle={"View Document"}
+        modalBody={docListModalBody}
+        modalToggle={docListModalToggle}
+        fnSetModalToggle={() => setDocListModalToggle(false)}
+        size="lg"
       />
 
       <CustomModal
         headerTitle={"Message"}
         modalBody={modalBodyForMessage}
         modalToggle={modalToggleFormessage}
-        fnSetModalToggle={() => setModalTogalforMessage()}
+        fnSetModalToggle={() => setModalTogalforMessage(false)}
       />
-
     </ReportLayout>
   );
 }

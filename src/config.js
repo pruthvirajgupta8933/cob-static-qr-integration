@@ -1,4 +1,4 @@
-const ENV_PROD = true; // For proudction make it true, don't change in the local environment
+const ENV_PROD = false; // For proudction make it true, don't change in the local environment
 let url,
   kyc_url,
   b2b_url,
@@ -500,6 +500,11 @@ const API_LIVE = {
   // Refund transaction
   refundTxn: `${refund_url}/refund`,
 
+
+  ///for kyc status
+
+  GET_ALL_KYC_STATUS: `${kyc_url}/kyc/get-all-kyc-status/`,
+
   // rolling reserve
   rollingReservePeriod: `${url}/get-rolling-reserve-period`,
 
@@ -517,6 +522,7 @@ const API_LIVE = {
 
   // Bank merchant related reports
   BANK_MERCHANT_DETAIL_LIST: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary/`,
+  MERCHANT_EXPORT_SUMMAARY: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary-export/`,
   BANK_MERCHANT_SUMMARY: `${report_api_url}/transactions/merchantSummary/`,
 
   GET_INFORMATION_BULLETIN: `${url}/get-information-bulletin/?order_by=-id`,
