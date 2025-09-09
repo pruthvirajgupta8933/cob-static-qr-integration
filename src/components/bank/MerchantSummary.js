@@ -7,7 +7,6 @@ import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-// import { fetchChildDataList } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { fetchChildDataList } from "../../slices/persist-slice/persistSlice";
 import Yup from "../../_components/formik/Yup";
 import toastConfig from "../../utilities/toastTypes";
@@ -19,12 +18,10 @@ import ReportLayout from "../../utilities/CardLayout";
 
 function MerchantSummary() {
   const dispatch = useDispatch();
-  // const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [showData, setShowData] = useState([]);
-  // const [updateTxnList, setUpdateTxnList] = useState([]);
   const [formValues, setFormValues] = useState({});
 
   const { auth, bankDashboardReducer, commonPersistReducer } =
@@ -33,6 +30,7 @@ function MerchantSummary() {
   const { user } = auth;
   const { refrerChiledList, isLoading } = commonPersistReducer;
   const { merchantSummary, reportLoading } = bankDashboardReducer;
+
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
   let now = moment().format("YYYY-M-D");
@@ -86,14 +84,13 @@ function MerchantSummary() {
     page: 1,
   };
 
-  // fetch the bank child data for the dropdown
   useEffect(() => {
     let postObj = {
-      type: "bank", // Set the type based on roleType
+      type: "bank",
       login_id: auth?.user?.loginId,
     };
     dispatch(fetchChildDataList(postObj));
-  }, [auth]);
+  }, [auth, dispatch]);
 
   const fetchReportData = async (objData) => {
     let strClientCode = "";
@@ -117,13 +114,16 @@ function MerchantSummary() {
       page: currentPage,
       length: pageSize,
     };
-    dispatch(fetchBankMerchantSummary(paramData));
+    // The dispatch returns a promise, which we can await to know when the action is finished
+    await dispatch(fetchBankMerchantSummary(paramData));
   };
 
-  const onSubmitHandler = async (values) => {
+  const onSubmitHandler = async (values, { setSubmitting }) => {
     setFormValues(values);
     setPageSize(10);
     setCurrentPage(1);
+    await fetchReportData(values); // Call the data fetch function
+    setSubmitting(false); // Manually set submitting to false after the promise resolves
   };
 
   useEffect(() => {
@@ -163,7 +163,6 @@ function MerchantSummary() {
       "Settlement Amount",
     ];
     const excelArr = [excelHeaderRow];
-    // eslint-disable-next-line array-callback-return
     merchantSummary?.results?.map((item) => {
       const allowDataToShow = {
         client_id: item.client_id || "",
@@ -175,7 +174,6 @@ function MerchantSummary() {
         settlement_date: dateFormatBasic(item.settlement_date) || "",
         settlement_amount: item.settlement_amount || "",
       };
-
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Bank-Merchant-Summary";
@@ -192,10 +190,10 @@ function MerchantSummary() {
     setPageSize(val);
   };
 
-  //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
+
   const tableRow = [
     {
       id: "1",
@@ -241,7 +239,6 @@ function MerchantSummary() {
       selector: (row) => row.settlement_date,
       sortable: true,
     },
-
     {
       id: "9",
       name: "Settlement Amount",
@@ -250,11 +247,7 @@ function MerchantSummary() {
   ];
 
   return (
-
     <ReportLayout title="Merchant Summary">
-
-
-
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -283,14 +276,8 @@ function MerchantSummary() {
                   label="From Date"
                   id="fromDate"
                   name="fromDate"
-                  value={
-                    formik.values.fromDate
-                      ? new Date(formik.values.fromDate)
-                      : null
-                  }
-                  onChange={(date) =>
-                    formik.setFieldValue("fromDate", date)
-                  }
+                  value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                  onChange={(date) => formik.setFieldValue("fromDate", date)}
                   format="dd-MM-y"
                   clearIcon={null}
                   className="form-control rounded-0 p-0"
@@ -305,14 +292,8 @@ function MerchantSummary() {
                   label="End Date"
                   id="endDate"
                   name="endDate"
-                  value={
-                    formik.values.endDate
-                      ? new Date(formik.values.endDate)
-                      : null
-                  }
-                  onChange={(date) =>
-                    formik.setFieldValue("endDate", date)
-                  }
+                  value={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                  onChange={(date) => formik.setFieldValue("endDate", date)}
                   format="dd-MM-y"
                   clearIcon={null}
                   className="form-control rounded-0 p-0"
@@ -325,18 +306,22 @@ function MerchantSummary() {
             <div className="form-row">
               <div className="form-group col-lg-1">
                 <button
-                  disabled={reportLoading}
+                  disabled={formik.isSubmitting}
                   className="btn cob-btn-primary text-white btn-sm"
                   type="submit"
                 >
-                  Search
+                  {formik.isSubmitting && (
+                    <span className="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+                  )}
+                  {formik.isSubmitting ? "Searching..." : "Search"}
+
                 </button>
               </div>
               {merchantSummary?.count > 0 && (
                 <div className="form-group col-lg-1">
                   <button
                     className="btn btn-sm text-white cob-btn-primary"
-                    type=""
+                    type="button"
                     onClick={() => {
                       exportToExcelFn();
                     }}
@@ -380,13 +365,17 @@ function MerchantSummary() {
       ) : (
         <> </>
       )}
-
-
       <section className="">
         <div className="scroll overflow-auto">
           {!reportLoading && merchantSummary?.count > 0 && (
             <React.Fragment>
-              <h6>Total Count : {merchantSummary?.count}</h6>
+              <p className="mt-2">
+                Total Count : {merchantSummary?.count}
+                <span className="mx-2">|</span>
+                Total GMV : {merchantSummary?.total_gmv_processed?.toFixed(2)}
+                <span className="mx-2">|</span>
+                Total Settlement Amount : {merchantSummary?.total_settlement_amount?.toFixed(2)}
+              </p>
               <Table
                 row={tableRow}
                 data={showData}
@@ -403,7 +392,6 @@ function MerchantSummary() {
           <h6 className="text-center font-weight-bold">No Data Found</h6>
         )}
       </section>
-
     </ReportLayout>
   );
 }

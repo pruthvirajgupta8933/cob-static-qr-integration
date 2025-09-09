@@ -6,6 +6,7 @@ import {
   updateBasicDetails,
   fetchPerentTypeMerchantData,
   getAllZoneCode,
+  getAllKycStatus
 } from "../../services/approver-dashboard/merchantReferralOnboard.service";
 
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
@@ -121,24 +122,38 @@ export const businessDetailsSlice = createAsyncThunk(
   }
 );
 
+export const getAllKycStatusData = createAsyncThunk(
+  "merchantReferralOnboardSlice/bank/getAllKycStatusData",
+  async (requestParam) => {
+    const response = await getAllKycStatus(requestParam).catch((error) => {
+      return error.response;
+    });
+    return response.data;
+  }
+);
+
 export const fetchChildDataList = createAsyncThunk(
   "merchantReferralOnboardSlice/bank/fetchChildDataList",
   async (data) => {
     const login_id = data?.login_id;
     const refrerType = data?.type;
+    const kycStatus = data?.kyc_status;
     let param = "";
 
     if (data?.page) {
-      param += `&page_size=${data?.page_size}`;
+      param += `&page=${data?.page}`;
     }
     if (data?.page_size) {
-      param += `&page=${data?.page}`;
+      param += `&page_size=${data?.page_size}`;
     }
     if (refrerType === "bank") {
       param += `&bank_login_id=${login_id}`;
     }
     if (refrerType === "referrer") {
       param += `&referrer_login_id=${login_id}`;
+    }
+    if (kycStatus) {
+      param += `&kyc_status=${kycStatus}`;
     }
 
     const response = await axiosInstanceJWT
@@ -150,6 +165,13 @@ export const fetchChildDataList = createAsyncThunk(
     return response.data;
   }
 );
+
+
+
+
+
+
+
 
 export const resetFormState = createAsyncThunk(
   "merchantReferralOnboardSlice/bank/resetFormState",

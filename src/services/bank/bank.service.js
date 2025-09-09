@@ -11,14 +11,25 @@ const bankMerchantDetailList = (obj) => {
 }
 
 
+const exportMerchantSummary = (obj) => {
+    return axiosInstanceJWT.post(API_URL.MERCHANT_EXPORT_SUMMAARY, obj, {
+        responseType: 'arraybuffer'
+    });
+};
+
+
 const bankMerchantSummary = (obj) => {
-    return axiosInstanceJWT.post(API_URL.BANK_MERCHANT_SUMMARY, obj)
-}
+    return axiosInstanceJWT.post(API_URL.BANK_MERCHANT_SUMMARY, obj, {
+        responseType: "arraybuffer",
+    });
+};
+
 
 
 export const bankDashboardService = {
     bankMerchantDetailList,
-    bankMerchantSummary
+    bankMerchantSummary,
+    exportMerchantSummary
 }
 
 
