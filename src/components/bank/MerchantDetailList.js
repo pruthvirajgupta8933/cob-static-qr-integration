@@ -1,40 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
 import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
-import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-// import { fetchChildDataList } from "../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import { fetchChildDataList } from '../../slices/persist-slice/persistSlice'
 import Yup from "../../_components/formik/Yup";
-import toastConfig from "../../utilities/toastTypes";
 import { fetchBankMerchantDetailList } from "../../slices/bank-dashboard-slice/bankDashboardSlice";
 import Table from "../../_components/table_components/table/Table";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import DateFormatter from "../../utilities/DateConvert";
 import ReportLayout from "../../utilities/CardLayout";
+import { bankDashboardService } from "../../services/bank/bank.service";
 
 function MerchantDetailList() {
 
     const dispatch = useDispatch();
-    const [txnList, SetTxnList] = useState([]);
     const [searchText, SetSearchText] = useState("");
     const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [showData, setShowData] = useState([]);
-    const [updateTxnList, setUpdateTxnList] = useState([]);
     const [formValues, setFormValues] = useState({})
-
 
     const { auth, bankDashboardReducer, commonPersistReducer } = useSelector((state) => state);
 
-
-    // const { user } = auth;
     const { refrerChiledList, isLoading } = commonPersistReducer
-
     const { merhcantDetailsList, reportLoading } = bankDashboardReducer
     const clientCodeData = refrerChiledList?.resp?.results ?? []
 
@@ -48,7 +39,6 @@ function MerchantDetailList() {
     }
     todayDate = todayDate.join("-");
 
-
     const validationSchema = Yup.object({
         clientCode: Yup.string().required("Required"),
         fromDate: Yup.date().required("Required"),
@@ -57,17 +47,14 @@ function MerchantDetailList() {
             .required("Required"),
     });
 
-
     let isExtraDataRequired = true;
     let extraDataObj = {};
     extraDataObj = { key: "All", value: "All" };
 
     const forClientCode = true;
 
-
     let fnKey, fnVal = ""
     let clientCodeListArr = []
-
 
     fnKey = "client_code"
     fnVal = "name"
@@ -82,7 +69,6 @@ function MerchantDetailList() {
         forClientCode
     );
 
-
     const initialValues = {
         clientCode: "",
         fromDate: todayDate,
@@ -90,19 +76,15 @@ function MerchantDetailList() {
         paymentStatus: "all",
         length: 10,
         page: 1
-
     };
 
-
-    // fetch the bank child data for the dropdown
     useEffect(() => {
         let postObj = {
-            type: 'bank',  // Set the type based on roleType
+            type: 'bank',
             login_id: auth?.user?.loginId
         }
         dispatch(fetchChildDataList(postObj));
     }, []);
-
 
     const fetchReportData = async (objData) => {
         const paramData = {
@@ -116,32 +98,17 @@ function MerchantDetailList() {
         dispatch(fetchBankMerchantDetailList(paramData))
     }
 
-
-
     const onSubmitHandler = async (values) => {
         setFormValues(values)
         setPageSize(10)
         setCurrentPage(1)
     };
 
-
     useEffect(() => {
         if (formValues?.fromDate && formValues?.endDate) {
             fetchReportData(formValues)
         }
     }, [pageSize, currentPage, formValues])
-
-
-
-    useEffect(() => {
-        // setUpdateTxnList(merhcantDetailsList.results || []);
-        setShowData(merhcantDetailsList.results || []);
-        // SetTxnList(merhcantDetailsList.results || []);
-
-    }, [merhcantDetailsList]);
-
-
-
 
     useEffect(() => {
         if (searchText !== "") {
@@ -156,47 +123,42 @@ function MerchantDetailList() {
         } else {
             setShowData(merhcantDetailsList?.results);
         }
-    }, [searchText]);
+    }, [searchText, merhcantDetailsList]);
 
-
-
-    const exportToExcelFn = () => {
-        const excelHeaderRow = [
-            "Merchant ID",
-            "Merchant Name",
-            "Settlement Account",
-            "Date Of Onboarding"
-        ];
-        const excelArr = [excelHeaderRow];
-        // eslint-disable-next-line array-callback-return
-        merhcantDetailsList?.results?.map((item) => {
-            const allowDataToShow = {
-                client_name: item.sub_merchant_id || "",
-                transaction_date: item.merchant_name || "",
-                payment_mode: item.settlement_account || "",
-                number_of_txns: DateFormatter(item?.date_of_onboarding, false) || ""
-            };
-
-            excelArr.push(Object.values(allowDataToShow));
-        });
-        const fileName = "Bank-Merchant-Summary";
-        let handleExportLoading = (state) => {
-            if (state) {
-                alert("Exporting Excel File, Please wait...")
+    const exportToExcelFn = async (formikValues) => {
+        const payload = {
+            clientCode: formikValues.clientCode === 'All' ? '' : formikValues.clientCode,
+            start_date: moment(formikValues.fromDate).startOf('day').format('YYYY-MM-DD'),
+            end_date: moment(formikValues.endDate).startOf('day').format('YYYY-MM-DD'),
+        };
+        try {
+            const response = await bankDashboardService.exportMerchantSummary(payload);
+            if (response && response.data) {
+                const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Bank-Merchant-Summary-${moment().format('YYYY-MM-DD')}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } else {
+                console.error('No data received for export.');
             }
-            return state
+        } catch (error) {
+            console.error('Error during file export:', error);
         }
-        exportToSpreadsheet(excelArr, fileName, handleExportLoading);
     };
 
     const countPageHandler = (val) => {
         setPageSize(val)
     }
 
-    //function for change current page
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
     };
+
     const tableRow = [
         {
             id: "1",
@@ -207,8 +169,14 @@ function MerchantDetailList() {
         },
         {
             id: "2",
-            name: "Merchant ID",
+            name: "Client ID",
             selector: (row) => row.sub_merchant_id,
+            sortable: true
+        },
+        {
+            id: "#",
+            name: "Client Code",
+            selector: (row) => row.client_code,
             sortable: true
         },
         {
@@ -229,11 +197,8 @@ function MerchantDetailList() {
         }
     ]
 
-
-
     return (
         <ReportLayout title="Merchant Detail List">
-
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -254,7 +219,6 @@ function MerchantDetailList() {
                                     : <p>Loading...</p>
                                 }
                             </div>
-
                             <div className="form-group col-md-3">
                                 <FormikController
                                     control="date"
@@ -270,7 +234,6 @@ function MerchantDetailList() {
                                     errorMsg={formik.errors["fromDate"]}
                                 />
                             </div>
-
                             <div className="form-group col-md-3">
                                 <FormikController
                                     control="date"
@@ -287,7 +250,6 @@ function MerchantDetailList() {
                                 />
                             </div>
                         </div>
-
                         <div className="form-row">
                             <div className="form-group col-lg-1">
                                 <button
@@ -301,9 +263,9 @@ function MerchantDetailList() {
                                 <div className="form-group col-lg-1">
                                     <button
                                         className="btn btn-sm text-white cob-btn-primary"
-                                        type=""
+                                        type="button"
                                         onClick={() => {
-                                            exportToExcelFn();
+                                            exportToExcelFn(formik.values);
                                         }}
                                     >
                                         <i className="fa fa-download"></i> Export
@@ -345,10 +307,6 @@ function MerchantDetailList() {
             ) : (
                 <> </>
             )}
-
-
-
-
             <section className="">
                 <div className="scroll overflow-auto">
                     {!reportLoading && merhcantDetailsList?.count > 0 && (
@@ -363,14 +321,12 @@ function MerchantDetailList() {
                                 changeCurrentPage={changeCurrentPage}
                             />
                         </>
-
                     )}
                 </div>
                 {reportLoading && <SkeletonTable />}
                 {merhcantDetailsList?.count === 0 && !reportLoading && (
                     <h6 className="text-center font-weight-bold">No Data Found</h6>
                 )}
-
             </section>
         </ReportLayout>
     )

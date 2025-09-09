@@ -4,7 +4,7 @@ import classes from "./utilities.module.css"
 // import testTimage from "../assets/images/Background.png"
 import { saveImage } from "./saveImage";
 
-const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) => {
+const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle, setDocListModalToggle, setDocPreviewToggle }) => {
 
   const getFileType = (url) => {
     if (!url) return 'unsupported';
@@ -77,7 +77,8 @@ const DocViewerComponent = ({ selectViewDoc, modalToggle, fnSetModalToggle }) =>
 
 
   const modalToggleHandler = () => {
-    fnSetModalToggle(false);
+    fnSetModalToggle(true);
+    setDocPreviewToggle(false)
   };
 
   return (
