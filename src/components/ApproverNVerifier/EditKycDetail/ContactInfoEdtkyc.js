@@ -103,7 +103,7 @@ function ContactInfoEdtkyc(props) {
     }),
 
     isIdProofVerified: Yup.string()
-      .required("Please verify the ID Proof")
+      // .required("Please verify the ID Proof")
       .nullable(),
     developer_name: Yup.string()
       .matches(Regex.acceptAlphaNumericDot_Masked, RegexMsg.acceptAlphaNumericDot)
