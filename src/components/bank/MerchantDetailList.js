@@ -127,7 +127,7 @@ function MerchantDetailList() {
 
     const exportToExcelFn = async (formikValues) => {
         const payload = {
-            clientCode: formikValues.clientCode === 'All' ? '' : formikValues.clientCode,
+            client_code: formikValues.clientCode === 'All' ? '' : formikValues.clientCode,
             start_date: moment(formikValues.fromDate).startOf('day').format('YYYY-MM-DD'),
             end_date: moment(formikValues.endDate).startOf('day').format('YYYY-MM-DD'),
         };
