@@ -602,7 +602,7 @@ const TransactionHistory = () => {
     },
 
     {
-      id: "#",
+      id: "89",
       name: "Client Code",
       selector: (row) => row.client_code,
       width: "120px",
