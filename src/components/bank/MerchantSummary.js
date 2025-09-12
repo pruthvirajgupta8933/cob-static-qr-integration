@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
-import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
@@ -13,7 +12,6 @@ import toastConfig from "../../utilities/toastTypes";
 import { fetchBankMerchantSummary } from "../../slices/bank-dashboard-slice/bankDashboardSlice";
 import Table from "../../_components/table_components/table/Table";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
-import { dateFormatBasic } from "../../utilities/DateConvert";
 import ReportLayout from "../../utilities/CardLayout";
 import { bankDashboardService } from "../../services/bank/bank.service";
 
@@ -235,7 +233,7 @@ function MerchantSummary() {
     },
 
     {
-      id: "#",
+      id: "67",
       name: "Client Code",
       selector: (row) => row.client_code,
       sortable: true,
