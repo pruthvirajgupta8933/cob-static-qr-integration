@@ -118,7 +118,7 @@ function ClientList() {
     },
 
     {
-      id: "#",
+      id: "76",
       key: "client_id",
       name: "Client ID",
       selector: (row) => row?.client_id,
@@ -153,7 +153,7 @@ function ClientList() {
     },
 
     {
-      id: "#",
+      id: "75",
       key: "name",
       name: "Kyc Staus",
       selector: (row) => (row?.kyc_status ? row?.kyc_status : "NA"),
@@ -167,7 +167,7 @@ function ClientList() {
     },
 
     {
-      id: "#",
+      id: "34",
       name: "Mcc Code",
       selector: (row) => row?.mcc_code,
       cell: (row) => <div className="removeWhiteSpace">{row?.mcc_code || "NA"}</div>,

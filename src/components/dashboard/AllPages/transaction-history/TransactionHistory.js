@@ -595,7 +595,7 @@ const TransactionHistory = () => {
     },
 
     {
-      id: "#",
+      id: "8",
       name: "Client ID",
       selector: (row) => row.client_id || "NA",
       width: "120px",
@@ -608,7 +608,7 @@ const TransactionHistory = () => {
       width: "120px",
     },
     {
-      id: "3",
+      id: "10",
       name: "Client Transaction ID",
       selector: (row) => row.client_txn_id,
       cell: (row) => (

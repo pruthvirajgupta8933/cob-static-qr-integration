@@ -203,7 +203,7 @@ function MerchantDetailList() {
             sortable: true
         },
         {
-            id: "#",
+            id: "45",
             name: "Client Code",
             selector: (row) => row.client_code,
             sortable: true
