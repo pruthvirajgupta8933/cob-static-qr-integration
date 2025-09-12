@@ -38,9 +38,13 @@ const initialValues = {
   business_cat_code: "38",
   terms_and_condition: false,
   reCaptcha: "",
+  registrationType: "",
 };
 
 const FORM_VALIDATION = Yup.object().shape({
+  registrationType: Yup.string()
+    .required("Please select registration type")
+    .oneOf(['merchant', 'partner'], "Please select a valid registration type"),
   fullname: Yup.string()
     .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
     .required("Required")
@@ -110,9 +114,7 @@ function Signup() {
     password: "",
     showPassword: false,
   });
-
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [partnerModalOpen, setPartnerModalOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -149,6 +151,11 @@ function Signup() {
   }, []);
 
   const handleRegistration = (formData, { resetForm }) => {
+    if (formData.registrationType === 'partner') {
+
+      return;
+    }
+
     let businessType = 1;
     let {
       fullname,
@@ -156,13 +163,7 @@ function Signup() {
       emaill,
       passwordd,
       business_cat_code,
-      // reCaptcha,
     } = formData;
-
-    // if (!reCaptcha) {
-    //   alert("Please complete the CAPTCHA");
-    //   return;
-    // }
 
     setBtnDisable(true);
 
@@ -228,9 +229,15 @@ function Signup() {
   const enableSocialLogin = (flag, response) => {
     setIsModalOpen(true);
     toastConfig.warningToast("Please add mobile number & bussiness category.");
-    setFullName(response?.profileObj?.name);
-    setEmail(response?.profileObj?.email);
+    setFormValues({
+      fullname: response?.profileObj?.name || "",
+      emaill: response?.profileObj?.email || "",
+    });
   };
+  const [formValues, setFormValues] = useState({
+    fullname: "",
+    emaill: "",
+  });
   const queryStringUrl = window.location.search;
 
   //function to get pending details like mobile number,bussiness caregory code
@@ -240,9 +247,9 @@ function Signup() {
       setBtnDisable(true);
       dispatch(
         register({
-          fullname: fullName,
+          fullname: formValues.fullname,
           mobileNumber: mobileNumber,
-          email: email,
+          email: formValues.emaill,
           business_cat_code: businessCategoryCode,
           businessType,
           isDirect: true,
@@ -265,8 +272,8 @@ function Signup() {
     return (
       <AfterSignUp
         hideDetails={true}
-        fullName={fullName}
-        email={email}
+        fullName={formValues.fullname}
+        email={formValues.emaill}
         getPendingDetails={getPendingDetails}
       />
     );
@@ -375,17 +382,111 @@ function Signup() {
                   >
                     Create New Account
                   </h6>
+
                   <Formik
                     initialValues={initialValues}
                     validationSchema={FORM_VALIDATION}
-                    onSubmit={(values, { resetForm }) => {
+                    validateOnChange={true}
+                    validateOnBlur={true}
+                    onSubmit={(values, { resetForm, setTouched }) => {
+                      // Mark all fields as touched when form is submitted
+                      setTouched({
+                        registrationType: true,
+                        fullname: true,
+                        mobilenumber: true,
+                        emaill: true,
+                        passwordd: true,
+                      });
+
+                      if (values.registrationType === 'partner') {
+                        setPartnerModalOpen(true);
+                        return;
+                      }
                       handleRegistration(values, { resetForm });
                     }}
                   >
-                    {(formik, resetForm) => (
-                      <Form>
+                    {(formik) => (
+                      <>
+                        <CustomModal
+                          modalBody={() => (
+                            <div className="text-center p-4">
+                              <h6 className="mb-3">Partner/Referral Onboarding Temporarily Unavailable</h6>
+                              <p className="mb-0">
+                                We've temporarily disabled partner and referral onboarding via our self-service portal.
+                                For assistance, please contact our onboarding team at{' '}
+                                <a href="mailto:onboarding@sabpaisa.in" className="alert-link">
+                                  onboarding@sabpaisa.in
+                                </a>.
+                              </p>
+                            </div>
+                          )}
+                          headerTitle={"Registration"}
+                          modalToggle={partnerModalOpen}
+                          fnSetModalToggle={() => {
+                            setPartnerModalOpen(false);
+                          }}
+                        />
+                        <Form>
+                          <div className="mb-1 mt-2">
+                          <div className="d-flex justify-content-center gap-4">
+                            <div className="form-check">
+                              <Field
+                                className={`form-check-input border border-3 ${
+                                  formik.touched.registrationType && formik.errors.registrationType ? 'is-invalid' : ''
+                                }`}
+                                style={{ 
+                                  borderColor: '#000000',
+                                  borderWidth: '3px !important',
+                                  cursor: 'pointer'
+                                }}
+                                type="radio"
+                                name="registrationType"
+                                id="merchantRadio"
+                                value="merchant"
+                                onBlur={() => formik.setFieldTouched('registrationType', true)}
+                              />
+                              <label 
+                                className="form-check-label" 
+                                htmlFor="merchantRadio"
+                                style={{ cursor: 'pointer' }}
+                              >
+                                Merchant
+                              </label>
+                            </div>
+                            <div className="form-check">
+                              <Field
+                                className={`form-check-input border border-3 ${
+                                  formik.touched.registrationType && formik.errors.registrationType ? 'is-invalid' : ''
+                                }`}
+                                style={{ 
+                                  borderColor: '#000000',
+                                  borderWidth: '3px !important',
+                                  cursor: 'pointer'
+                                }}
+                                type="radio"
+                                name="registrationType"
+                                id="partnerRadio"
+                                value="partner"
+                                onBlur={() => formik.setFieldTouched('registrationType', true)}
+                              />
+                              <label 
+                                className="form-check-label" 
+                                htmlFor="partnerRadio"
+                                style={{ cursor: 'pointer' }}
+                              >
+                                Partner/Referral
+                              </label>
+                            </div>
+                          </div>
+                          <ErrorMessage
+                            name="registrationType"
+                            component="p"
+                            className="text-danger text-center mt-2"
+                          />
+                        </div>
+
                         <div className="mb-3">
-                          <label className="form-label font-weight-bold font-size-16">
+                          <label className="form-label  font-size-16">
                             Full Name <span className="text-danger">*</span>
                           </label>
                           <Field
@@ -397,13 +498,13 @@ function Signup() {
                             name="fullname"
                             size={50}
                           />
-                          <ErrorMessage name="fullname">
-                            {(msg) => <p className="text-danger">{msg}</p>}
-                          </ErrorMessage>
+                          {formik.touched.fullname && formik.errors.fullname && (
+                            <p className="text-danger">{formik.errors.fullname}</p>
+                          )}
                         </div>
 
                         <div className="mb-3">
-                          <label className="form-label font-weight-bold font-size-16">
+                          <label className="form-label  font-size-16">
                             Mobile Number <span className="text-danger">*</span>
                           </label>
                           <Field
@@ -420,13 +521,13 @@ function Signup() {
                               e.preventDefault()
                             }
                           />
-                          <ErrorMessage name="mobilenumber">
-                            {(msg) => <p className="text-danger">{msg}</p>}
-                          </ErrorMessage>
+                          {formik.touched.mobilenumber && formik.errors.mobilenumber && (
+                            <p className="text-danger">{formik.errors.mobilenumber}</p>
+                          )}
                         </div>
 
                         <div className="mb-3">
-                          <label className="form-label font-weight-bold font-size-16">
+                          <label className="form-label  font-size-16">
                             Email ID <span className="text-danger">*</span>
                           </label>
                           <Field
@@ -438,14 +539,14 @@ function Signup() {
                             size={50}
                             autocomplete="off"
                           />
-                          <ErrorMessage name="emaill">
-                            {(msg) => <p className="text-danger">{msg}</p>}
-                          </ErrorMessage>
+                          {formik.touched.emaill && formik.errors.emaill && (
+                            <p className="text-danger">{formik.errors.emaill}</p>
+                          )}
                         </div>
 
                         <div className="mb-3 ">
                           <label
-                            className="label font-weight-bold font-size-16"
+                            className="label  font-size-16"
                             htmlFor="user-pw"
                           >
                             Password <span className="text-danger">*</span>
@@ -480,9 +581,9 @@ function Signup() {
                               </span>
                             </div>
                           </div>
-                          <ErrorMessage name="passwordd">
-                            {(msg) => <p className="text-danger">{msg}</p>}
-                          </ErrorMessage>
+                          {formik.touched.passwordd && formik.errors.passwordd && (
+                            <p className="text-danger">{formik.errors.passwordd}</p>
+                          )}
                         </div>
 
                         <div className="bd-highlight text-center sp-font-12">
@@ -552,6 +653,7 @@ function Signup() {
                           </div>
                         </div>
                       </Form>
+                      </>
                     )}
                   </Formik>
 
