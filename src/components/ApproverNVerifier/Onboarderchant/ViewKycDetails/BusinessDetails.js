@@ -7,6 +7,7 @@ import {
   verifyKycEachTab,
   GetKycTabsStatus,
   getMerchantpanData,
+  kycUserList,
 } from "../../../../slices/kycSlice";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,9 +15,11 @@ import ViewKycCollapse from "./ViewKycCollapse";
 import CustomLoader from "../../../../_components/loader";
 import CinDisplay from "../../additional-kyc/cin-validate/CinDisplay";
 import { cinDataByLoginSlice } from "../../../../slices/kycValidatorSlice";
+import { frmSingleScreening } from "../../../../slices/approver-dashboard/frmSlice";
 
 const BusinessDetails = (props) => {
   const { KycTabStatus, selectedUserData } = props;
+
 
   const { classifications, nic_codes: nicCodes } =
     selectedUserData?.udyam_data || {};
@@ -26,8 +29,10 @@ const BusinessDetails = (props) => {
   const { cinData } = kycValidatorReducer
 
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
-  const { kycUserList } = useSelector((state) => state?.kyc || {});
-  const factumData = kycUserList?.factum_data;
+  const [frmScreeningLoader, setFrmScreeningLoader] = useState(false);
+
+  const kyc = useSelector((state) => state?.kyc || {});
+  const factumData = kyc?.kycUserList?.factum_data;
 
   const panListData = useSelector((state) => state.kyc.panDetailsData.result);
   const count = useSelector((state) =>
@@ -39,6 +44,9 @@ const BusinessDetails = (props) => {
   );
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForpanDetails);
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  const currenTab = parseInt(verifierApproverTab?.currenTab);
+
 
   const { user } = auth;
   const { loginId } = user;
@@ -196,6 +204,23 @@ const BusinessDetails = (props) => {
     }
   ];
 
+
+  // run frm screening
+  const handleRunScreening = () => {
+    setFrmScreeningLoader(true);
+    // Dispatch the action to run screening
+
+    const postData = {
+      login_id: selectedUserData?.loginMasterId
+    };
+
+    dispatch(frmSingleScreening(postData)).then((res) => {
+      dispatch(
+        kycUserList({ login_id: selectedUserData?.loginMasterId, masking: 1 })
+      );
+      setFrmScreeningLoader(false);
+    });
+  };
 
   // const factumData = {
   //   "apiStatus": 200,
@@ -540,6 +565,14 @@ const BusinessDetails = (props) => {
             title={"Screening Data"}
             formContent={
               <>
+                {[3, 4, 5].includes(currenTab) &&
+                  <button className="cob-btn-primary btn-sm btn my-4" type="button" disabled={frmScreeningLoader} onClick={() => handleRunScreening()}>
+                    Run Screening
+                    {frmScreeningLoader && (
+                      <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                    )}
+                  </button>}
+
                 <div className="table-responsive table_maxheight m-3">
                   <table className="table ">
                     <tbody>
