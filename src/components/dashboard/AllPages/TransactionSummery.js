@@ -271,13 +271,13 @@ function TransactionSummery() {
       sortable: true,
     },
     {
-      id: "#",
+      id: "2",
       name: "Client ID",
       selector: (row) => row.client_id,
       cell: (row) => <div className="removeWhiteSpace">{row?.client_id}</div>,
     },
     {
-      id: "2",
+      id: "3",
       name: "Client Code",
       selector: (row) => row.client_code,
       cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
