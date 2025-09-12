@@ -399,6 +399,15 @@ function DashboardMainContent() {
 
               <AuthorizedRoute
                 exact
+                path={`${path}/transaction-summary`}
+                Component={TransactionSummery}
+                roleList={{ merchant: true, bank: true, referral: true }}
+              >
+                <TransactionSummery />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
                 path={`${path}/transaction-enquiry`}
                 Component={TransactionEnquirey}
                 roleList={{ merchant: true, bank: true, referral: true }}
@@ -418,6 +427,15 @@ function DashboardMainContent() {
               <AuthorizedRoute
                 exact
                 path={`${path}/client-list`}
+                Component={ClientList}
+                roleList={{ bank: true, referral: true }}
+              >
+                <ClientList />
+              </AuthorizedRoute>
+
+              <AuthorizedRoute
+                exact
+                path={`${path}/merchant-list`}
                 Component={ClientList}
                 roleList={{ bank: true, referral: true }}
               >

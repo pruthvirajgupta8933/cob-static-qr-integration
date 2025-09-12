@@ -23,6 +23,8 @@ const ReportLayout = ({
   loadingState,
   totalSettlementAmount
 }) => {
+
+
   const [searchText, SetSearchText] = useState("");
   const [localPageSize, setLocalPageSize] = useState(10);
   const [localCurrentPage, setLocalCurrentPage] = useState(1);
@@ -31,6 +33,9 @@ const ReportLayout = ({
 
   const actualPageSize = dynamicPagination ? page_size : localPageSize;
   const actualCurrentPage = dynamicPagination ? current_page : localCurrentPage;
+
+
+
 
   useEffect(() => {
 
@@ -123,18 +128,24 @@ const ReportLayout = ({
             ) : (
               <div className="container-fluid p-0 my-3">
                 {data?.length > 0 && (
-                  <h6 className="mb-2">
-                    <p className="d-inline me-3 mb-0">
-                      Total Record: {dynamicPagination ? dataCount : filteredData?.length || 0}
-                    </p>
+                  <h6 className="mb-2 d-flex flex-wrap align-items-center font_size_each">
+                    <span className="me-3">
+                      Total Count: {dynamicPagination ? dataCount : filteredData?.length || 0}
+                    </span>
                     {dataSummary?.map((summary, index) => (
-                      <p className="d-inline me-3 mb-0" key={index}>
-                        | <span className="px-1">{summary.name}:</span>
-                        <span>{summary.value}</span>
-                      </p>
+                      <span key={index} className="me-3 d-flex align-items-center">
+                        <span className="mx-2">|</span>
+                        <span>
+                          {summary.name}:{" "}
+                          {(typeof summary.value === "number"
+                            ? summary.value.toFixed(2)
+                            : parseFloat(summary.value).toFixed(2))}
+                        </span>
+                      </span>
                     ))}
                   </h6>
                 )}
+
 
                 <div className="overflow-auto">
                   <Table

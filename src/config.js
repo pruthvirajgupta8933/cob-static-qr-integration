@@ -114,6 +114,7 @@ const API_LIVE = {
 
   SUCCESS_TXN_SUMMARY:
     report_api_url + "/transactions/SuccessTxnSummaryMerchant/",
+  EXPORT_TXN_SUMMARY: `${report_api_url}/transactions/SuccessTxnSummaryMerchantExport/`,
   // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob:
@@ -524,6 +525,7 @@ const API_LIVE = {
   BANK_MERCHANT_DETAIL_LIST: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary/`,
   MERCHANT_EXPORT_SUMMAARY: `${kyc_url}/kyc/get-merchant-data/reseller-merchant-summary-export/`,
   BANK_MERCHANT_SUMMARY: `${report_api_url}/transactions/merchantSummary/`,
+  EXPORT_REPORT_MERCHANT_SUMMARY: `${report_api_url}/transactions/merchantSummaryExcel/`,
 
   GET_INFORMATION_BULLETIN: `${url}/get-information-bulletin/?order_by=-id`,
 };
