@@ -285,17 +285,19 @@ const RefundTransactionHistory = () => {
   const onSubmitHandler = async (values) => {
     let strClientCode,
       clientCodeArrLength = "";
+
     if (values.clientCode === "All") {
-      const allClientCode = [];
-      clientCodeListArr?.map((item) => {
-        allClientCode.push(item.client_code);
-      });
-      clientCodeArrLength = allClientCode.length?.toString();
-      strClientCode = allClientCode.join()?.toString();
+      const allClientCode = clientCodeListArr
+        ?.map((item) => item?.client_code)
+        ?.filter((code) => code !== undefined && code !== null && code !== "");
+
+      clientCodeArrLength = allClientCode?.length?.toString() || "0";
+      strClientCode = allClientCode?.join(",") || "";
     } else {
-      strClientCode = values.clientCode;
-      clientCodeArrLength = "1";
+      strClientCode = values.clientCode || "";
+      clientCodeArrLength = strClientCode ? "1" : "0";
     }
+
     const paramData = {
       clientCode: strClientCode,
       fromDate: moment(values.fromDate).startOf("day").format("YYYY-MM-DD"),
