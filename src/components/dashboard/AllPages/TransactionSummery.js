@@ -277,7 +277,7 @@ function TransactionSummery() {
       cell: (row) => <div className="removeWhiteSpace">{row?.client_id}</div>,
     },
     {
-      id: "3",
+      id: "8",
       name: "Client Code",
       selector: (row) => row.client_code,
       cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
