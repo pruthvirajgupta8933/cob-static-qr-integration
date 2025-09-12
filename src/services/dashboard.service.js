@@ -75,6 +75,12 @@ const dowlonadTransactionHistory = (postData) => {
   });
 };
 
+const exportTxnSummaryData = (postData) => {
+  return axiosInstanceJWT.post(API_URL.EXPORT_TXN_SUMMARY, postData, {
+    responseType: "arraybuffer",
+  });
+}
+
 // const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`
 const settlementReport = (paramData) => {
   return axiosInstanceJWT.post(API_URL.SettlementReport, paramData);
@@ -117,5 +123,6 @@ export const Dashboardservice = {
   dowlonadTransactionHistory,
   getPayModeList,
   getPayStatusList,
-  exportSettlementReportNew
+  exportSettlementReportNew,
+  exportTxnSummaryData
 };

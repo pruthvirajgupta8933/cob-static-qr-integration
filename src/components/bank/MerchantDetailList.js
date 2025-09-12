@@ -78,13 +78,42 @@ function MerchantDetailList() {
         page: 1
     };
 
+    // useEffect(() => {
+    //     let postObj = {
+    //         type: 'bank',
+    //         login_id: auth?.user?.loginId
+    //     }
+    //     dispatch(fetchChildDataList(postObj));
+    // }, []);
+
+    const FIVE_MINUTES = 5 * 60 * 1000;
+
     useEffect(() => {
-        let postObj = {
-            type: 'bank',
-            login_id: auth?.user?.loginId
+        if (!auth?.user?.loginId) return;
+
+        const fetchData = () => {
+            dispatch(fetchChildDataList({
+                type: "bank",
+                login_id: auth.user.loginId,
+            }));
+        };
+
+
+        if (!clientCodeData || clientCodeData.length === 0) {
+            fetchData();
+
+
+            const interval = setInterval(() => {
+                if (!clientCodeData || clientCodeData.length === 0) {
+                    fetchData();
+                } else {
+                    clearInterval(interval);
+                }
+            }, FIVE_MINUTES);
+
+            return () => clearInterval(interval);
         }
-        dispatch(fetchChildDataList(postObj));
-    }, []);
+    }, [dispatch, auth?.user?.loginId]);
 
     const fetchReportData = async (objData) => {
         const paramData = {
@@ -174,7 +203,7 @@ function MerchantDetailList() {
             sortable: true
         },
         {
-            id: "#",
+            id: "45",
             name: "Client Code",
             selector: (row) => row.client_code,
             sortable: true
@@ -325,7 +354,7 @@ function MerchantDetailList() {
                 </div>
                 {reportLoading && <SkeletonTable />}
                 {merhcantDetailsList?.count === 0 && !reportLoading && (
-                    <h6 className="text-center font-weight-bold">No Data Found</h6>
+                    <h6 className="text-center ">No Data Found</h6>
                 )}
             </section>
         </ReportLayout>
