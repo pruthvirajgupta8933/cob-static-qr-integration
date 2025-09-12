@@ -148,25 +148,33 @@ const TransactionHistory = () => {
     if (roles?.merchant === true) {
       fnKey = "clientCode";
       fnVal = "clientName";
-      clientCodeListForConversion = user?.clientMerchantDetailsList;
+      clientCodeListForConversion = user?.clientMerchantDetailsList || [];
     } else {
       fnKey = "client_code";
       fnVal = "name";
-      clientCodeListForConversion = clientCodeData;
+      clientCodeListForConversion = clientCodeData || [];
     }
+
+    //  Filter out records where client_code/clientCode is null/empty/undefined
+    const filteredList = clientCodeListForConversion.filter(
+      (item) => item?.[fnKey] !== null && item?.[fnKey] !== undefined && item?.[fnKey] !== ""
+    );
+
     const convertedOptions = convertToFormikSelectJson(
       fnKey,
       fnVal,
-      clientCodeListForConversion,
+      filteredList,
       extraDataObj,
       isExtraDataRequired,
       true
     );
+
     return {
       clientCodeOption: convertedOptions,
-      processedClientCodeList: clientCodeListForConversion,
+      processedClientCodeList: filteredList,
     };
   }, [clientCodeData, roles, user]);
+
 
   useEffect(() => {
     setSelectedClientCodeList(processedClientCodeList);
@@ -584,6 +592,20 @@ const TransactionHistory = () => {
         </div>
       ),
       width: "150px",
+    },
+
+    {
+      id: "#",
+      name: "Client ID",
+      selector: (row) => row.client_id || "NA",
+      width: "120px",
+    },
+
+    {
+      id: "#",
+      name: "Client Code",
+      selector: (row) => row.client_code,
+      width: "120px",
     },
     {
       id: "3",

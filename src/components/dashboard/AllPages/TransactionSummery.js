@@ -3,45 +3,43 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import { successTxnSummary } from "../../../slices/dashboardSlice";
-// import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
-// import { useRouteMatch, Redirect } from "react-router-dom";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { fetchChildDataList } from "../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-// import { v4 as uuidv4 } from "uuid";
 import classes from "./allpage.module.css";
 import toastConfig from "../../../utilities/toastTypes";
-import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
-// import DateFormatter from "../../../utilities/DateConvert";
+import { Dashboardservice } from "../../../services/dashboard.service";
 import moment from "moment";
-// import { is } from "date-fns/locale";
-// import SkeletonTable from "../../../_components/table_components/table/skeleton-table";
+import { saveAs } from 'file-saver';
+import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
+
 function TransactionSummery() {
   const dispatch = useDispatch();
-  // const { path } = useRouteMatch();
   const userRole = roleBasedAccess();
-
   let currentDate = new Date().toLocaleDateString();
-
   const [dttype, setDttype] = useState("1");
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
+
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterState, setFilterState] = useState(null);
   const [fromDate, setFromDate] = useState(currentDate);
   const [toDate, setToDate] = useState(currentDate);
-
   const { dashboard, auth, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
-
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
+
   const { isLoading, successTxnsumry } = dashboard;
+
   const { user } = auth;
-
-
   let clientCodeArr = [];
+
+
   let totalSuccessTxn = 0;
   let totalAmt = 0;
   let strClientCode,
@@ -49,20 +47,19 @@ function TransactionSummery() {
 
   if (userRole.merchant !== true) {
     const allClientCode = [];
-    // console.log("clientCodeData",clientCodeData)
-    clientCodeData?.map((item) => {
-      allClientCode.push(item.client_code);
-    });
-
+    clientCodeData
+      .filter(item => item.client_code)
+      .map((item) => {
+        allClientCode.push(item.client_code);
+      });
     clientCodeArrLength = allClientCode.length?.toString();
     strClientCode = allClientCode.join()?.toString();
   } else {
     strClientCode = user?.clientMerchantDetailsList[0]?.clientCode;
     clientCodeArrLength = "1";
   }
-  // dispatch action when client code change
+
   useEffect(() => {
-    // console.log("user", user)
     if (strClientCode) {
       const objParam = {
         fromdate: moment(fromDate).format("YYYY-MM-DD"),
@@ -70,14 +67,14 @@ function TransactionSummery() {
         dttype,
         clientcodelst: strClientCode,
         clientNo: clientCodeArrLength,
+        page: currentPage,
+        length: pageSize,
       };
-
+      setFilterState(objParam);
       if (dttype !== "6") dispatch(successTxnSummary(objParam));
     }
+  }, [dttype, strClientCode, currentPage, pageSize]);
 
-  }, [dttype, strClientCode]);
-
-  //make client code array
   if (clientCodeData !== null && clientCodeData?.length > 0) {
     clientCodeArr = clientCodeData.map((item) => {
       return item.client_code;
@@ -87,7 +84,6 @@ function TransactionSummery() {
   }
 
   const fetchData = () => {
-    // const roleType = roles
     const type = userRole.bank
       ? "bank"
       : userRole.referral
@@ -95,28 +91,45 @@ function TransactionSummery() {
         : "default";
     if (type !== "default") {
       let postObj = {
-        type: type, // Set the type based on roleType
+        type: type,
         login_id: auth?.user?.loginId,
       };
       dispatch(fetchChildDataList(postObj));
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  // filter api response data with client code
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+    if (filterState) {
+      setFilterState((prev) => ({ ...prev, page: page }));
+    }
+  };
+
+  const changePageSize = (size) => {
+    setPageSize(size);
+    setCurrentPage(1);
+    if (filterState) {
+      setFilterState((prev) => ({ ...prev, length: size, page: 1 }));
+    }
+  };
+
   useEffect(() => {
     if (successTxnsumry?.results?.length > 0) {
-      let filterData = successTxnsumry?.results?.filter((txnsummery) => {
-        if (clientCodeArr.includes(txnsummery.client_code)) {
-          return clientCodeArr.includes(txnsummery.client_code);
-        }
-      });
-      SetTxnList(filterData);
-      SetShowData(filterData);
+      // let filterData = successTxnsumry?.results?.filter((txnsummery) => {
+      //   if (clientCodeArr.includes(txnsummery.client_code)) {
+
+      //     return clientCodeArr.includes(txnsummery.client_code);
+      //   }
+      // });
+      SetTxnList(successTxnsumry?.results);
+      SetShowData(successTxnsumry?.results);
     }
   }, [successTxnsumry]);
+
 
   useEffect(() => {
     search !== ""
@@ -143,11 +156,11 @@ function TransactionSummery() {
           clientcodelst: strClientCode,
           clientNo: clientCodeArrLength,
         };
-
         dispatch(successTxnSummary(objParam));
       }
     }
   }, [fromDate, toDate]);
+
   const handleChange = (e) => {
     SetSearch(e);
   };
@@ -156,39 +169,26 @@ function TransactionSummery() {
     totalSuccessTxn += item.no_of_transaction;
     totalAmt += item.payeeamount;
   });
-  const exportToExcelFn = () => {
-    const excelHeaderRow = [
-      "Sr. No.",
-      "Client Name",
-      "Client Code",
-      "Transactions",
-      "Amount",
-    ];
-    const excelArr = [excelHeaderRow];
-    // eslint-disable-next-line array-callback-return
-    showData.map((item, i) => {
-      const allowDataToShow = {
-        sr_no: i + 1,
-        client_name: item.client_name,
-        client_code: item.client_code,
-        no_of_txn: item.no_of_transaction,
-        amt: `Rs. ${item.payeeamount}`,
-      };
 
-      excelArr.push(Object.values(allowDataToShow));
-    });
-    const fileName = `Txn-Summary-Report ${fromDate
-      .toString()
-      ?.substring(4, 15)}-${toDate.toString()?.substring(4, 15)}`;
-
-    let handleExportLoading = (state) => {
-      // console.log(state)
-      if (state) {
-        alert("Exporting Excel File, Please wait...");
-      }
-      return state;
+  const exportToExcelFn = async () => {
+    const objParam = {
+      fromdate: moment(fromDate).format("YYYY-MM-DD"),
+      todate: moment(toDate).format("YYYY-MM-DD"),
+      dttype,
+      clientcodelst: strClientCode,
+      clientNo: clientCodeArrLength,
     };
-    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+
+    try {
+      const response = await Dashboardservice.exportTxnSummaryData(objParam);
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, `Transaction_Summary_${moment().format('YYYY-MM-DD')}.xlsx`);
+      }
+    } catch (error) {
+      console.error("Error exporting transaction summary:", error);
+      toastConfig.errorToast("Failed to export data");
+    }
   };
 
   const form = (
@@ -271,6 +271,12 @@ function TransactionSummery() {
       sortable: true,
     },
     {
+      id: "#",
+      name: "Client ID",
+      selector: (row) => row.client_id,
+      cell: (row) => <div className="removeWhiteSpace">{row?.client_id}</div>,
+    },
+    {
       id: "2",
       name: "Client Code",
       selector: (row) => row.client_code,
@@ -304,87 +310,30 @@ function TransactionSummery() {
       <main>
         {<ReportLayout
           type="txnSummary"
-          title="Merchant Summary"
+          title="Transaction Summary"
           data={showData}
           rowData={rowData}
           form={form}
           dataSummary={[
             {
-              name: "Total Amount (INR)",
-              value: showData
-                ?.reduce((prevVal, currVal) => {
-                  return prevVal + parseFloat(currVal.payeeamount, 2);
-                }, 0)
-                .toFixed(2),
+              name: "Total Settlement Amount (INR)",
+              value: successTxnsumry?.total_settlement_amount
             },
-
+            {
+              name: "Total GMV ",
+              value: successTxnsumry?.total_gmv
+            },
           ]}
           loadingState={isLoading}
+          dynamicPagination={true}
+          page_size={pageSize}
+          dataCount={successTxnsumry?.count}
+          current_page={currentPage}
+          change_currentPage={changeCurrentPage}
+          change_pageSize={changePageSize}
         />}
-        {/* {isLoading && <SkeletonTable />} */}
-        {/* <section className="">
-          <div className="container-fluid p-0"> */}
-        {/* <div className="row mt-4">
-              {" "}
-              <div className="">
-                {showData.length !== 0 && (
-                  <h5 className="my-4">
-                    Total Successful Transactions: {totalSuccessTxn} | Total
-                    Amount {`(INR)`}: {totalAmt.toFixed()}
-                  </h5>
-                )}
-              </div>
-              <div>
-                <table
-                  cellPadding={10}
-                  border={0}
-                  width="100%"
-                  className="tables"
-                >
-                  <tbody>
-                    {showData.length !== 0 && isLoading === false && (
-                      <tr>
-                        <th>Sr. No.</th>
-                        <th>Client Name</th>
-                        <th>Client Code</th>
-                        <th>Transactions</th>
-                        <th>Amount</th>
-                      </tr>
-                    )}
-                    {showData &&
-                      !isLoading &&
-                      showData.map((item, i) => {
-                        return (
-                          <tr key={uuidv4()}>
-                            <td>{i + 1}</td>
-                            <td>{item.client_name}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.no_of_transaction}</td>
-                            <td>
-                              Rs{" "}
-                              {Number.parseFloat(item.payeeamount).toFixed(2)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div> */}
-        {/* {showData.length <= 0 && isLoading === false && (
-                <div className="text-center p-4 m-4">
-                  <h6>
-                    I can't find the result for you with the given search, I'm
-                    sorry, could you try it once again.
-                  </h6>
-                </div>
-              )} */}
-        {/* {isLoading ? <ProgressBar /> : <></>} */}
-        {/* </div>
-          </div>
-        </section> */}
       </main>
     </section>
   );
 }
-
 export default TransactionSummery;

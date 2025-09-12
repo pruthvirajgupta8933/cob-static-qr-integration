@@ -15,6 +15,7 @@ import Table from "../../_components/table_components/table/Table";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 import { dateFormatBasic } from "../../utilities/DateConvert";
 import ReportLayout from "../../utilities/CardLayout";
+import { bankDashboardService } from "../../services/bank/bank.service";
 
 function MerchantSummary() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function MerchantSummary() {
   const { merchantSummary, reportLoading } = bankDashboardReducer;
 
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
+
 
   let now = moment().format("YYYY-M-D");
   let todayDate = now.split("-");
@@ -84,13 +86,36 @@ function MerchantSummary() {
     page: 1,
   };
 
+  const FIVE_MINUTES = 5 * 60 * 1000;
+
   useEffect(() => {
-    let postObj = {
-      type: "bank",
-      login_id: auth?.user?.loginId,
+    if (!auth?.user?.loginId) return;
+
+    const fetchData = () => {
+      dispatch(fetchChildDataList({
+        type: "bank",
+        login_id: auth.user.loginId,
+      }));
     };
-    dispatch(fetchChildDataList(postObj));
-  }, [auth, dispatch]);
+
+
+    if (!clientCodeData || clientCodeData.length === 0) {
+      fetchData();
+
+
+      const interval = setInterval(() => {
+        if (!clientCodeData || clientCodeData.length === 0) {
+          fetchData();
+        } else {
+          clearInterval(interval);
+        }
+      }, FIVE_MINUTES);
+
+      return () => clearInterval(interval);
+    }
+  }, [dispatch, auth?.user?.loginId]);
+
+
 
   const fetchReportData = async (objData) => {
     let strClientCode = "";
@@ -114,7 +139,6 @@ function MerchantSummary() {
       page: currentPage,
       length: pageSize,
     };
-    // The dispatch returns a promise, which we can await to know when the action is finished
     await dispatch(fetchBankMerchantSummary(paramData));
   };
 
@@ -122,8 +146,8 @@ function MerchantSummary() {
     setFormValues(values);
     setPageSize(10);
     setCurrentPage(1);
-    await fetchReportData(values); // Call the data fetch function
-    setSubmitting(false); // Manually set submitting to false after the promise resolves
+    await fetchReportData(values);
+    setSubmitting(false);
   };
 
   useEffect(() => {
@@ -151,39 +175,41 @@ function MerchantSummary() {
     }
   }, [searchText]);
 
-  const exportToExcelFn = () => {
-    const excelHeaderRow = [
-      "Merchant ID",
-      "Merchant Name",
-      "Transaction Date",
-      "Payment Mode",
-      "No. of Txns",
-      "GMV Processed",
-      "Settlement Date",
-      "Settlement Amount",
-    ];
-    const excelArr = [excelHeaderRow];
-    merchantSummary?.results?.map((item) => {
-      const allowDataToShow = {
-        client_id: item.client_id || "",
-        client_name: item.client_name || "",
-        transaction_date: item.transaction_date || "",
-        payment_mode: item.payment_mode || "",
-        number_of_txns: item.number_of_txns || "",
-        gmv_processed: item.gmv_processed || "",
-        settlement_date: dateFormatBasic(item.settlement_date) || "",
-        settlement_amount: item.settlement_amount || "",
-      };
-      excelArr.push(Object.values(allowDataToShow));
-    });
-    const fileName = "Bank-Merchant-Summary";
-    let handleExportLoading = (state) => {
-      if (state) {
-        alert("Exporting Excel File, Please wait...");
-      }
-      return state;
+  const exportToExcelFn = async () => {
+    let strClientCode = "";
+    if (formValues.clientCode === "All") {
+      const allClientCode = [];
+      clientCodeListArr?.map((item) => {
+        if (item.client_code) {
+          allClientCode.push(item.client_code);
+        }
+      });
+      strClientCode = allClientCode.join()?.toString();
+    } else {
+      strClientCode = formValues.clientCode;
+    }
+
+    const exportParams = {
+      clientCode: strClientCode,
+      fromDate: moment(formValues.fromDate).startOf("day").format("YYYY-MM-DD"),
+      endDate: moment(formValues.endDate).startOf("day").format("YYYY-MM-DD"),
+      paymentStatus: formValues.paymentStatus,
+      // page: 1,
+      // length: merchantSummary?.count,
     };
-    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
+    try {
+      const response = await bankDashboardService.exportMerchantReportSummary(exportParams);
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `MerchantSummary_${moment().format("YYYYMMDD_HHmmss")}.xlsx`;
+      link.click();
+    } catch (error) {
+      console.error("Export failed:", error);
+      toastConfig.error("Export failed. Please try again.");
+    }
   };
 
   const countPageHandler = (val) => {
@@ -203,8 +229,15 @@ function MerchantSummary() {
     },
     {
       id: "2",
-      name: "Merchant ID",
+      name: "Client ID",
       selector: (row) => row.client_id,
+      sortable: true,
+    },
+
+    {
+      id: "#",
+      name: "Client Code",
+      selector: (row) => row.client_code,
       sortable: true,
     },
     {
@@ -389,7 +422,7 @@ function MerchantSummary() {
         </div>
         {reportLoading && <SkeletonTable />}
         {merchantSummary?.count === 0 && !reportLoading && (
-          <h6 className="text-center font-weight-bold">No Data Found</h6>
+          <h6 className="text-center ">No Data Found</h6>
         )}
       </section>
     </ReportLayout>

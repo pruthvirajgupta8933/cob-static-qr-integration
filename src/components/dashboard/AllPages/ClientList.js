@@ -113,9 +113,19 @@ function ClientList() {
       name: "S.No",
       selector: (row) => row.s_no,
       sortable: true,
-      width: "90px",
+      width: "20px",
       cell: (row) => <div className="removeWhiteSpace">{row?.s_no}</div>,
     },
+
+    {
+      id: "#",
+      key: "client_id",
+      name: "Client ID",
+      selector: (row) => row?.client_id,
+      sortable: true,
+      cell: (row) => <div className="removeWhiteSpace">{row?.client_id}</div>,
+    },
+
 
     {
       id: "2",
@@ -125,6 +135,8 @@ function ClientList() {
       sortable: true,
       cell: (row) => <div className="removeWhiteSpace">{row?.client_code}</div>,
     },
+
+
 
     {
       id: "3",
@@ -222,7 +234,7 @@ function ClientList() {
 
     {
       id: "10",
-      name: "Action",
+      name: "Agreement Doc.",
       cell: (row) => (
         <div>
           <button
@@ -504,7 +516,7 @@ function ClientList() {
           {!loadingState && data?.length !== 0 && (
             <>
               <div className="col-lg-12 mt-5 mb-2 pl-0 d-flex justify-content-between">
-                <h6>Totol Record: {dataCount}</h6>
+                <h6>Total Count: {dataCount}</h6>
               </div>
               <Table
                 row={RefrerChiledList}
