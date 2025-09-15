@@ -1,0 +1,737 @@
+{
+  "total": 17,
+  "passed": 16,
+  "failed": 1,
+  "byCategory": {
+    "XSS Prevention": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Script tag in merchant name",
+          "category": "XSS Prevention",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "5ab51734af0d0abd",
+            "merchant_id": "XSS55251",
+            "merchant_name": "Store",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "store.xss55251@hdfc",
+            "upi_string": "upi://pay?pa=store.xss55251@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKXSS55251175559&mode=01",
+            "transaction_ref": "BULKXSS55251175559",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:15.571Z",
+            "mobile_number": "9876543210",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should sanitize and remove script tags",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "5ab51734af0d0abd",
+                "merchant_id": "XSS55251",
+                "merchant_name": "Store",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "store.xss55251@hdfc",
+                "upi_string": "upi://pay?pa=store.xss55251@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKXSS55251175559&mode=01",
+                "transaction_ref": "BULKXSS55251175559",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:15.571Z",
+                "mobile_number": "9876543210",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "XSS successfully prevented"
+        },
+        {
+          "name": "Event handler in description",
+          "category": "XSS Prevention",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "56f2959f4d570da1",
+            "merchant_id": "XSS55252",
+            "merchant_name": "Safe Store",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "safestor.xss55252@hdfc",
+            "upi_string": "upi://pay?pa=safestor.xss55252@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKXSS55252175687&mode=01",
+            "transaction_ref": "BULKXSS55252175687",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:15.696Z",
+            "mobile_number": "9876543211",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should remove HTML tags and event handlers",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "56f2959f4d570da1",
+                "merchant_id": "XSS55252",
+                "merchant_name": "Safe Store",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "safestor.xss55252@hdfc",
+                "upi_string": "upi://pay?pa=safestor.xss55252@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKXSS55252175687&mode=01",
+                "transaction_ref": "BULKXSS55252175687",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:15.696Z",
+                "mobile_number": "9876543211",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "XSS successfully prevented"
+        },
+        {
+          "name": "Encoded XSS attempt",
+          "category": "XSS Prevention",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "ca81029af8f66b61",
+            "merchant_id": "XSS55253",
+            "merchant_name": "Test Store",
+            "reference_name": "&ltscript&gtalert(&quotXSS&quot)&lt/script&gt",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "teststor.xss55253@hdfc",
+            "upi_string": "upi://pay?pa=teststor.xss55253@hdfc&pn=%26ltscript%26gtalert(%26quotXSS%26quot)%26lt%2Fscript%26gt&tn=Payment&cu=INR&mc=6012&tr=BULKXSS55253175805&mode=01",
+            "transaction_ref": "BULKXSS55253175805",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:15.815Z",
+            "mobile_number": "9876543212",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should handle encoded HTML entities",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "ca81029af8f66b61",
+                "merchant_id": "XSS55253",
+                "merchant_name": "Test Store",
+                "reference_name": "&ltscript&gtalert(&quotXSS&quot)&lt/script&gt",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "teststor.xss55253@hdfc",
+                "upi_string": "upi://pay?pa=teststor.xss55253@hdfc&pn=%26ltscript%26gtalert(%26quotXSS%26quot)%26lt%2Fscript%26gt&tn=Payment&cu=INR&mc=6012&tr=BULKXSS55253175805&mode=01",
+                "transaction_ref": "BULKXSS55253175805",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:15.815Z",
+                "mobile_number": "9876543212",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "XSS successfully prevented"
+        }
+      ]
+    },
+    "SQL Injection Prevention": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "DROP TABLE attempt",
+          "category": "SQL Injection Prevention",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "b54c5930c7d40b4b",
+            "merchant_id": "SQL55251",
+            "merchant_name": "Store&quot  TABLE users",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "storequo.sql55251@hdfc",
+            "upi_string": "upi://pay?pa=storequo.sql55251@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKSQL55251175923&mode=01",
+            "transaction_ref": "BULKSQL55251175923",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:15.932Z",
+            "mobile_number": "9876543213",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should remove SQL keywords and special characters",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "b54c5930c7d40b4b",
+                "merchant_id": "SQL55251",
+                "merchant_name": "Store&quot  TABLE users",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "storequo.sql55251@hdfc",
+                "upi_string": "upi://pay?pa=storequo.sql55251@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKSQL55251175923&mode=01",
+                "transaction_ref": "BULKSQL55251175923",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:15.932Z",
+                "mobile_number": "9876543213",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "SQL injection prevented"
+        },
+        {
+          "name": "UNION SELECT injection",
+          "category": "SQL Injection Prevention",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "5e690ff21f0de048",
+            "merchant_id": "SQL55252",
+            "merchant_name": "Store",
+            "reference_name": "&#x27  * FROM users",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "store.sql55252@hdfc",
+            "upi_string": "upi://pay?pa=store.sql55252@hdfc&pn=%26%23x27%20%20*%20FROM%20users&tn=Payment&cu=INR&mc=6012&tr=BULKSQL55252176040&mode=01",
+            "transaction_ref": "BULKSQL55252176040",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:16.050Z",
+            "mobile_number": "9876543214",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should sanitize SQL injection patterns",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "5e690ff21f0de048",
+                "merchant_id": "SQL55252",
+                "merchant_name": "Store",
+                "reference_name": "&#x27  * FROM users",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "store.sql55252@hdfc",
+                "upi_string": "upi://pay?pa=store.sql55252@hdfc&pn=%26%23x27%20%20*%20FROM%20users&tn=Payment&cu=INR&mc=6012&tr=BULKSQL55252176040&mode=01",
+                "transaction_ref": "BULKSQL55252176040",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:16.050Z",
+                "mobile_number": "9876543214",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "SQL injection prevented"
+        },
+        {
+          "name": "OR 1=1 injection",
+          "category": "SQL Injection Prevention",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "e65556e1d197e003",
+            "merchant_id": "SQL55253",
+            "merchant_name": "Store",
+            "reference_name": "Test",
+            "description": "&#x27 OR &#x271&#x27=&#x271",
+            "amount": null,
+            "vpa": "store.sql55253@hdfc",
+            "upi_string": "upi://pay?pa=store.sql55253@hdfc&pn=Test&tn=%26%23x27%20OR%20%26%23x271%26%23x27%3D%26%23x271&cu=INR&mc=6012&tr=BULKSQL55253176158&mode=01",
+            "transaction_ref": "BULKSQL55253176158",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:16.168Z",
+            "mobile_number": "9876543215",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should remove OR conditions",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "e65556e1d197e003",
+                "merchant_id": "SQL55253",
+                "merchant_name": "Store",
+                "reference_name": "Test",
+                "description": "&#x27 OR &#x271&#x27=&#x271",
+                "amount": null,
+                "vpa": "store.sql55253@hdfc",
+                "upi_string": "upi://pay?pa=store.sql55253@hdfc&pn=Test&tn=%26%23x27%20OR%20%26%23x271%26%23x27%3D%26%23x271&cu=INR&mc=6012&tr=BULKSQL55253176158&mode=01",
+                "transaction_ref": "BULKSQL55253176158",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:16.168Z",
+                "mobile_number": "9876543215",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "SQL injection prevented"
+        }
+      ]
+    },
+    "Email Validation": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Invalid email format",
+          "category": "Email Validation",
+          "passed": true,
+          "details": {
+            "merchant_id": "EMAIL55251",
+            "error": "Invalid email format: notanemail"
+          },
+          "expectation": "Should reject invalid email format",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "EMAIL55251",
+                "error": "Invalid email format: notanemail"
+              }
+            ]
+          },
+          "message": "Invalid email properly rejected"
+        },
+        {
+          "name": "Email with XSS",
+          "category": "Email Validation",
+          "passed": true,
+          "details": {
+            "merchant_id": "EMAIL55252",
+            "error": "Invalid email format: test<script>@example.com"
+          },
+          "expectation": "Should reject email with special characters",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "EMAIL55252",
+                "error": "Invalid email format: test<script>@example.com"
+              }
+            ]
+          },
+          "message": "Invalid email properly rejected"
+        },
+        {
+          "name": "Valid email",
+          "category": "Email Validation",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "ab5526073faa50c4",
+            "merchant_id": "EMAIL55253",
+            "merchant_name": "Email Test Store 3",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "emailtes.email55253@hdfc",
+            "upi_string": "upi://pay?pa=emailtes.email55253@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKEMAIL55253176482&mode=01",
+            "transaction_ref": "BULKEMAIL55253176482",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:16.492Z",
+            "mobile_number": "9876543218",
+            "email": "valid.email@example.com",
+            "address": null
+          },
+          "expectation": "Should accept valid email",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "ab5526073faa50c4",
+                "merchant_id": "EMAIL55253",
+                "merchant_name": "Email Test Store 3",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "emailtes.email55253@hdfc",
+                "upi_string": "upi://pay?pa=emailtes.email55253@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKEMAIL55253176482&mode=01",
+                "transaction_ref": "BULKEMAIL55253176482",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:16.492Z",
+                "mobile_number": "9876543218",
+                "email": "valid.email@example.com",
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "Valid email accepted"
+        }
+      ]
+    },
+    "Mobile Number Validation": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Invalid mobile - too short",
+          "category": "Mobile Number Validation",
+          "passed": true,
+          "details": {
+            "merchant_id": "MOB55251",
+            "error": "Invalid mobile number: 12345"
+          },
+          "expectation": "Should reject mobile with less than 10 digits",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "MOB55251",
+                "error": "Invalid mobile number: 12345"
+              }
+            ]
+          },
+          "message": "Invalid mobile properly rejected"
+        },
+        {
+          "name": "Invalid mobile - wrong prefix",
+          "category": "Mobile Number Validation",
+          "passed": true,
+          "details": {
+            "merchant_id": "MOB55252",
+            "error": "Invalid mobile number: 1234567890"
+          },
+          "expectation": "Should reject mobile not starting with 6-9",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "MOB55252",
+                "error": "Invalid mobile number: 1234567890"
+              }
+            ]
+          },
+          "message": "Invalid mobile properly rejected"
+        },
+        {
+          "name": "Valid mobile",
+          "category": "Mobile Number Validation",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "29637c4a2e4d98e7",
+            "merchant_id": "MOB55253",
+            "merchant_name": "Mobile Test Store 3",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "mobilete.mob55253@hdfc",
+            "upi_string": "upi://pay?pa=mobilete.mob55253@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKMOB55253176840&mode=01",
+            "transaction_ref": "BULKMOB55253176840",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:16.849Z",
+            "mobile_number": "9876543210",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should accept valid 10-digit mobile",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "29637c4a2e4d98e7",
+                "merchant_id": "MOB55253",
+                "merchant_name": "Mobile Test Store 3",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "mobilete.mob55253@hdfc",
+                "upi_string": "upi://pay?pa=mobilete.mob55253@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKMOB55253176840&mode=01",
+                "transaction_ref": "BULKMOB55253176840",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:16.849Z",
+                "mobile_number": "9876543210",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "Valid mobile accepted"
+        }
+      ]
+    },
+    "Merchant ID Validation": {
+      "total": 2,
+      "passed": 1,
+      "failed": 1,
+      "tests": [
+        {
+          "name": "Merchant ID with special chars",
+          "category": "Merchant ID Validation",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "63a5bb7c457bd574",
+            "merchant_id": "MERCH55251",
+            "merchant_name": "ID Test Store",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": null,
+            "vpa": "idtestst.merch55251@hdfc",
+            "upi_string": "upi://pay?pa=idtestst.merch55251@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKMERCH55251176956&mode=01",
+            "transaction_ref": "BULKMERCH55251176956",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:16.965Z",
+            "mobile_number": "9876543219",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should sanitize special characters from merchant ID",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "63a5bb7c457bd574",
+                "merchant_id": "MERCH55251",
+                "merchant_name": "ID Test Store",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": null,
+                "vpa": "idtestst.merch55251@hdfc",
+                "upi_string": "upi://pay?pa=idtestst.merch55251@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKMERCH55251176956&mode=01",
+                "transaction_ref": "BULKMERCH55251176956",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:16.965Z",
+                "mobile_number": "9876543219",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "Merchant ID properly sanitized"
+        },
+        {
+          "name": "Lowercase merchant ID",
+          "category": "Merchant ID Validation",
+          "passed": false,
+          "details": {
+            "merchant_id": "merch55251",
+            "error": "QR code for merchant MERCH55251 already exists"
+          },
+          "expectation": "Should convert to uppercase",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "merch55251",
+                "error": "QR code for merchant MERCH55251 already exists"
+              }
+            ]
+          },
+          "message": "Valid merchant ID rejected"
+        }
+      ]
+    },
+    "Amount Validation": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Negative amount",
+          "category": "Amount Validation",
+          "passed": true,
+          "details": {
+            "merchant_id": "AMT55251",
+            "error": "Invalid amount: -100"
+          },
+          "expectation": "Should reject negative amounts",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "AMT55251",
+                "error": "Invalid amount: -100"
+              }
+            ]
+          },
+          "message": "Invalid amount properly rejected"
+        },
+        {
+          "name": "Amount with excessive decimals",
+          "category": "Amount Validation",
+          "passed": true,
+          "details": {
+            "merchant_id": "AMT55252",
+            "error": "Invalid amount: 100.12345"
+          },
+          "expectation": "Should limit to 2 decimal places",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 0,
+            "failed": 1,
+            "results": [],
+            "errors": [
+              {
+                "merchant_id": "AMT55252",
+                "error": "Invalid amount: 100.12345"
+              }
+            ]
+          },
+          "message": "Invalid amount properly rejected"
+        },
+        {
+          "name": "Valid amount",
+          "category": "Amount Validation",
+          "passed": true,
+          "details": {
+            "success": true,
+            "id": "c3a7d7750da2aada",
+            "merchant_id": "AMT55253",
+            "merchant_name": "Amount Test Store 3",
+            "reference_name": "Test Store",
+            "description": "Payment",
+            "amount": "1500.50",
+            "vpa": "amountte.amt55253@hdfc",
+            "upi_string": "upi://pay?pa=amountte.amt55253@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKAMT55253177415&mode=01&am=1500.50",
+            "transaction_ref": "BULKAMT55253177415",
+            "qr_image": "data:image/png;base64,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",
+            "status": "active",
+            "created_at": "2025-09-03T08:46:17.435Z",
+            "mobile_number": "9876543223",
+            "email": null,
+            "address": null
+          },
+          "expectation": "Should accept valid amount",
+          "actualResult": {
+            "success": true,
+            "total": 1,
+            "successful": 1,
+            "failed": 0,
+            "results": [
+              {
+                "success": true,
+                "id": "c3a7d7750da2aada",
+                "merchant_id": "AMT55253",
+                "merchant_name": "Amount Test Store 3",
+                "reference_name": "Test Store",
+                "description": "Payment",
+                "amount": "1500.50",
+                "vpa": "amountte.amt55253@hdfc",
+                "upi_string": "upi://pay?pa=amountte.amt55253@hdfc&pn=Test%20Store&tn=Payment&cu=INR&mc=6012&tr=BULKAMT55253177415&mode=01&am=1500.50",
+                "transaction_ref": "BULKAMT55253177415",
+                "qr_image": "data:image/png;base64,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",
+                "status": "active",
+                "created_at": "2025-09-03T08:46:17.435Z",
+                "mobile_number": "9876543223",
+                "email": null,
+                "address": null
+              }
+            ],
+            "errors": []
+          },
+          "message": "Valid amount accepted"
+        }
+      ]
+    }
+  }
+}
