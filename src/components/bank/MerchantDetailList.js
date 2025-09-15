@@ -268,6 +268,33 @@ function MerchantDetailList() {
                 </div>
 
 
+                <h6>Business Overview</h6>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Business Type</th>
+                                <th>Business Category</th>
+                                <th>Business Description</th>
+                                <th>Expected Transactions/Year</th>
+                                <th>Avg Ticket Amount</th>
+                                <th>Platform Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{kycData.business_type_name || 'N/A'}</td>
+                                <td>{kycData.business_category_name || 'N/A'}</td>
+                                <td>{kycData.billingLabel || 'N/A'}</td>
+                                <td>{kycData.expectedTransactions || 'N/A'}</td>
+                                <td>{kycData.avg_ticket_size || 'N/A'}</td>
+                                <td>{kycData.platform_name || 'N/A'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
                 <h6>Business Details</h6>
                 <div className="table-responsive">
                     <table className="table table-bordered table-striped">
@@ -429,7 +456,12 @@ function MerchantDetailList() {
                                     disabled={reportLoading}
                                     className="btn cob-btn-primary text-white btn-sm"
                                     type="submit"
-                                >Search
+                                >
+                                    {reportLoading && (
+                                        <span className="spinner-border spinner-border-sm mr-1" role="status" ariaHidden="true"></span>
+                                    )}
+
+                                    Search
                                 </button>
                             </div>
                             {merhcantDetailsList?.count > 0 && (
