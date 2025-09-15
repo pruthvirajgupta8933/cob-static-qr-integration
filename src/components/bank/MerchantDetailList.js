@@ -5,7 +5,7 @@ import FormikController from "../../_components/formik/FormikController";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import moment from "moment";
-import { fetchChildDataList } from '../../slices/persist-slice/persistSlice'
+import { fetchChildDataList } from '../../slices/persist-slice/persistSlice';
 import Yup from "../../_components/formik/Yup";
 import { fetchBankMerchantDetailList } from "../../slices/bank-dashboard-slice/bankDashboardSlice";
 import Table from "../../_components/table_components/table/Table";
@@ -15,19 +15,20 @@ import ReportLayout from "../../utilities/CardLayout";
 import { bankDashboardService } from "../../services/bank/bank.service";
 
 function MerchantDetailList() {
-
     const dispatch = useDispatch();
     const [searchText, SetSearchText] = useState("");
     const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [showData, setShowData] = useState([]);
-    const [formValues, setFormValues] = useState({})
+    const [formValues, setFormValues] = useState({});
+    const [searchType, setSearchType] = useState('clientCode');
+    // New state variable to trigger useEffect on every search click
+    const [searchTrigger, setSearchTrigger] = useState(0);
 
     const { auth, bankDashboardReducer, commonPersistReducer } = useSelector((state) => state);
-
-    const { refrerChiledList, isLoading } = commonPersistReducer
-    const { merhcantDetailsList, reportLoading } = bankDashboardReducer
-    const clientCodeData = refrerChiledList?.resp?.results ?? []
+    const { refrerChiledList } = commonPersistReducer;
+    const { merhcantDetailsList, reportLoading } = bankDashboardReducer;
+    const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
     let now = moment().format("YYYY-M-D");
     let todayDate = now.split("-");
@@ -39,31 +40,30 @@ function MerchantDetailList() {
     }
     todayDate = todayDate.join("-");
 
-    const validationSchema = Yup.object({
-        clientCode: Yup.string().required("Required"),
-        fromDate: Yup.date().required("Required"),
-        endDate: Yup.date()
-            .min(Yup.ref("fromDate"), "End date can't be before Start date")
-            .required("Required"),
+    const validationSchema = Yup.object().shape({
+        clientCode: Yup.string().when('searchType', {
+            is: 'clientCode',
+            then: Yup.string().required("Required")
+        }),
+        fromDate: Yup.date().when('searchType', {
+            is: 'dateWise',
+            then: Yup.date().required("Required")
+        }),
+        endDate: Yup.date().when('searchType', {
+            is: 'dateWise',
+            then: Yup.date().min(Yup.ref("fromDate"), "End date can't be before Start date").required("Required")
+        }),
     });
 
-    let isExtraDataRequired = true;
-    let extraDataObj = {};
-    extraDataObj = { key: "All", value: "All" };
-
+    const isExtraDataRequired = true;
+    const extraDataObj = { key: "All", value: "All" };
     const forClientCode = true;
-
-    let fnKey, fnVal = ""
-    let clientCodeListArr = []
-
-    fnKey = "client_code"
-    fnVal = "name"
-    clientCodeListArr = clientCodeData
-
+    const fnKey = "client_code";
+    const fnVal = "name";
     const clientCodeOption = convertToFormikSelectJson(
         fnKey,
         fnVal,
-        clientCodeListArr,
+        clientCodeData,
         extraDataObj,
         isExtraDataRequired,
         forClientCode
@@ -75,16 +75,9 @@ function MerchantDetailList() {
         endDate: todayDate,
         paymentStatus: "all",
         length: 10,
-        page: 1
+        page: 1,
+        searchType: 'clientCode'
     };
-
-    // useEffect(() => {
-    //     let postObj = {
-    //         type: 'bank',
-    //         login_id: auth?.user?.loginId
-    //     }
-    //     dispatch(fetchChildDataList(postObj));
-    // }, []);
 
     const FIVE_MINUTES = 5 * 60 * 1000;
 
@@ -98,11 +91,8 @@ function MerchantDetailList() {
             }));
         };
 
-
         if (!clientCodeData || clientCodeData.length === 0) {
             fetchData();
-
-
             const interval = setInterval(() => {
                 if (!clientCodeData || clientCodeData.length === 0) {
                     fetchData();
@@ -113,31 +103,40 @@ function MerchantDetailList() {
 
             return () => clearInterval(interval);
         }
-    }, [dispatch, auth?.user?.loginId]);
+    }, [dispatch, auth?.user?.loginId, clientCodeData]);
 
-    const fetchReportData = async (objData) => {
-        const paramData = {
-            clientCode: objData.clientCode === 'All' ? '' : objData.clientCode,
-            fromDate: moment(objData.fromDate).startOf('day').format('YYYY-MM-DD'),
-            endDate: moment(objData.endDate).startOf('day').format('YYYY-MM-DD'),
-            paymentStatus: objData.paymentStatus,
-            page: currentPage,
-            length: pageSize,
-        };
-        dispatch(fetchBankMerchantDetailList(paramData))
-    }
+    const fetchReportData = async (objData, page, size) => {
+        let paramData = {};
 
-    const onSubmitHandler = async (values) => {
-        setFormValues(values)
-        setPageSize(10)
-        setCurrentPage(1)
+        if (objData.searchType === 'clientCode') {
+            paramData = {
+                clientCode: objData.clientCode === 'All' ? '' : objData.clientCode,
+                page: page,
+                length: size,
+            };
+        } else { // 'dateWise'
+            paramData = {
+                fromDate: moment(objData.fromDate).startOf('day').format('YYYY-MM-DD'),
+                endDate: moment(objData.endDate).startOf('day').format('YYYY-MM-DD'),
+                page: page,
+                length: size,
+            };
+        }
+        dispatch(fetchBankMerchantDetailList(paramData));
+    };
+
+    const onSubmitHandler = async (values, { setFieldValue }) => {
+        setFormValues(values);
+        setPageSize(10);
+        setCurrentPage(1);
+        setSearchTrigger(prev => prev + 1); // Increment to force useEffect
     };
 
     useEffect(() => {
-        if (formValues?.fromDate && formValues?.endDate) {
-            fetchReportData(formValues)
+        if (formValues && Object.keys(formValues).length !== 0) {
+            fetchReportData(formValues, currentPage, pageSize);
         }
-    }, [pageSize, currentPage, formValues])
+    }, [pageSize, currentPage, searchTrigger]); // Added searchTrigger to dependency array
 
     useEffect(() => {
         if (searchText !== "") {
@@ -181,50 +180,21 @@ function MerchantDetailList() {
     };
 
     const countPageHandler = (val) => {
-        setPageSize(val)
-    }
+        setPageSize(val);
+    };
 
     const changeCurrentPage = (page) => {
         setCurrentPage(page);
     };
 
     const tableRow = [
-        {
-            id: "1",
-            name: "S.No",
-            selector: (row) => row.sno,
-            sortable: true,
-            width: "100px"
-        },
-        {
-            id: "2",
-            name: "Client ID",
-            selector: (row) => row.sub_merchant_id,
-            sortable: true
-        },
-        {
-            id: "45",
-            name: "Client Code",
-            selector: (row) => row.client_code,
-            sortable: true
-        },
-        {
-            id: "3",
-            name: "Merchant Name",
-            selector: (row) => row.merchant_name,
-            cell: (row) => <div className="removeWhiteSpace">{row?.merchant_name}</div>,
-        },
-        {
-            id: "4",
-            name: "Settlement Account",
-            selector: (row) => row.settlement_account
-        },
-        {
-            id: "5",
-            name: "Date Of Onboarding",
-            selector: (row) => DateFormatter(row.date_of_onboarding, false),
-        }
-    ]
+        { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true, width: "100px" },
+        { id: "2", name: "Client ID", selector: (row) => row.sub_merchant_id, sortable: true },
+        { id: "45", name: "Client Code", selector: (row) => row.client_code, sortable: true },
+        { id: "3", name: "Merchant Name", selector: (row) => row.merchant_name, cell: (row) => <div className="removeWhiteSpace">{row?.merchant_name}</div> },
+        { id: "4", name: "Settlement Account", selector: (row) => row.settlement_account },
+        { id: "5", name: "Date Of Onboarding", selector: (row) => DateFormatter(row.date_of_onboarding, false) }
+    ];
 
     return (
         <ReportLayout title="Merchant Detail List">
@@ -236,8 +206,50 @@ function MerchantDetailList() {
                 {(formik) => (
                     <Form>
                         <div className="form-row mt-4">
-                            <div className="form-group col-md-3">
-                                {!isLoading ?
+                            <div className="form-group col-md-12 mb-3">
+                                <label className="form-label">Select Search Type</label>
+                                <div className="d-flex align-items-center gap-4">
+                                    <div className="form-check form-check-inline">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="searchType"
+                                            id="clientCodeRadio"
+                                            value="clientCode"
+                                            checked={formik.values.searchType === 'clientCode'}
+                                            onChange={() => {
+                                                setSearchType('clientCode');
+                                                formik.setFieldValue('searchType', 'clientCode');
+                                            }}
+                                        />
+                                        <label className="form-check-label" htmlFor="clientCodeRadio">
+                                            Client Code
+                                        </label>
+                                    </div>
+                                    <div className="form-check form-check-inline">
+                                        <input
+                                            className="form-check-input"
+                                            type="radio"
+                                            name="searchType"
+                                            id="dateWiseRadio"
+                                            value="dateWise"
+                                            checked={formik.values.searchType === 'dateWise'}
+                                            onChange={() => {
+                                                setSearchType('dateWise');
+                                                formik.setFieldValue('searchType', 'dateWise');
+                                            }}
+                                        />
+                                        <label className="form-check-label" htmlFor="dateWiseRadio">
+                                            Date Wise
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="form-row">
+                            {searchType === 'clientCode' && (
+                                <div className="form-group col-md-3">
                                     <FormikController
                                         control="select"
                                         label="Client Code"
@@ -245,39 +257,47 @@ function MerchantDetailList() {
                                         className="form-select rounded-0 mt-0"
                                         options={clientCodeOption}
                                     />
-                                    : <p>Loading...</p>
-                                }
-                            </div>
-                            <div className="form-group col-md-3">
-                                <FormikController
-                                    control="date"
-                                    label="From Date"
-                                    id="fromDate"
-                                    name="fromDate"
-                                    value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
-                                    onChange={date => formik.setFieldValue('fromDate', date)}
-                                    format="dd-MM-y"
-                                    clearIcon={null}
-                                    className="form-control rounded-0 p-0"
-                                    required={true}
-                                    errorMsg={formik.errors["fromDate"]}
-                                />
-                            </div>
-                            <div className="form-group col-md-3">
-                                <FormikController
-                                    control="date"
-                                    label="End Date"
-                                    id="endDate"
-                                    name="endDate"
-                                    value={formik.values.endDate ? new Date(formik.values.endDate) : null}
-                                    onChange={date => formik.setFieldValue('endDate', date)}
-                                    format="dd-MM-y"
-                                    clearIcon={null}
-                                    className="form-control rounded-0 p-0"
-                                    required={true}
-                                    errorMsg={formik.errors["endDate"]}
-                                />
-                            </div>
+                                </div>
+                            )}
+
+                            {searchType === 'dateWise' && (
+                                <>
+                                    <div className="form-group col-md-3">
+                                        <FormikController
+                                            control="date"
+                                            label="From Date"
+                                            id="fromDate"
+                                            name="fromDate"
+                                            value={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                                            onChange={date => formik.setFieldValue('fromDate', date)}
+                                            format="dd-MM-y"
+                                            clearIcon={null}
+                                            className="form-control rounded-0 p-0"
+                                            required={true}
+                                            errorMsg={formik.errors["fromDate"]}
+                                            // Add tooltip here
+                                            tooltipText="Onboarded Date"
+                                        />
+                                    </div>
+                                    <div className="form-group col-md-3">
+                                        <FormikController
+                                            control="date"
+                                            label="End Date"
+                                            id="endDate"
+                                            name="endDate"
+                                            value={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                                            onChange={date => formik.setFieldValue('endDate', date)}
+                                            format="dd-MM-y"
+                                            clearIcon={null}
+                                            className="form-control rounded-0 p-0"
+                                            required={true}
+                                            errorMsg={formik.errors["endDate"]}
+                                            // Add tooltip here
+                                            tooltipText="Onboarded Date"
+                                        />
+                                    </div>
+                                </>
+                            )}
                         </div>
                         <div className="form-row">
                             <div className="form-group col-lg-1">
@@ -306,7 +326,7 @@ function MerchantDetailList() {
                 )}
             </Formik>
             <hr className="hr" />
-            {merhcantDetailsList?.count > 0 ? (
+            {merhcantDetailsList?.count > 0 && (
                 <div className="form-row">
                     <div className="form-group col-md-3">
                         <label>Search</label>
@@ -333,8 +353,6 @@ function MerchantDetailList() {
                         </select>
                     </div>
                 </div>
-            ) : (
-                <> </>
             )}
             <section className="">
                 <div className="scroll overflow-auto">
@@ -358,7 +376,7 @@ function MerchantDetailList() {
                 )}
             </section>
         </ReportLayout>
-    )
+    );
 }
 
-export default MerchantDetailList
+export default MerchantDetailList;
