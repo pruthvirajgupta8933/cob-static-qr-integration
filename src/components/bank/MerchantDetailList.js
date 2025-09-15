@@ -13,21 +13,30 @@ import SkeletonTable from "../../_components/table_components/table/skeleton-tab
 import DateFormatter from "../../utilities/DateConvert";
 import ReportLayout from "../../utilities/CardLayout";
 import { bankDashboardService } from "../../services/bank/bank.service";
+import { kycUserList } from "../../slices/kycSlice";
+import CustomModal from "../../_components/custom_modal";
 
 function MerchantDetailList() {
     const dispatch = useDispatch();
     const [searchText, SetSearchText] = useState("");
+    const [selectedId, setSelectedId] = useState(null);
     const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [showData, setShowData] = useState([]);
     const [formValues, setFormValues] = useState({});
+    const [modalToggle, setModalToggle] = useState(false);
+    const [modalContactData, setModalContactData] = useState(null); // New state for modal data
+
     const [searchType, setSearchType] = useState('clientCode');
     const [searchTrigger, setSearchTrigger] = useState(0);
     const [shouldFetchChildData, setShouldFetchChildData] = useState(true);
 
-    const { auth, bankDashboardReducer, commonPersistReducer } = useSelector((state) => state);
+    const { auth, bankDashboardReducer, commonPersistReducer, kyc } = useSelector((state) => state);
+    const kycData = kyc?.kycUserList;
+
     const { refrerChiledList } = commonPersistReducer;
     const { merhcantDetailsList, reportLoading } = bankDashboardReducer;
+
     const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
     let now = moment().format("YYYY-M-D");
@@ -110,7 +119,6 @@ function MerchantDetailList() {
 
     const fetchReportData = async (objData, page, size) => {
         let paramData = {};
-
         if (objData.searchType === 'clientCode') {
             paramData = {
                 clientCode: objData.clientCode === 'All' ? '' : objData.clientCode,
@@ -190,14 +198,129 @@ function MerchantDetailList() {
         setCurrentPage(page);
     };
 
+    const docListModal = (row) => {
+        setSelectedId(row?.login_id);
+        // Dispatch kycUserList only if it's necessary for other parts of the modal
+        dispatch(kycUserList({ login_id: row?.login_id, }));
+
+        // Set the contact data from the row to the new state
+        setModalContactData({
+            contactPersonName: row?.contact_person_name || 'N/A', // Assuming a contact_person_name field exists
+            contactNumber: row?.contact_number || 'N/A', // Assuming a contact_number field exists
+            emailId: row?.email_id || 'N/A', // Assuming an email_id field exists
+        });
+
+        setModalToggle(true);
+    };
+
     const tableRow = [
         { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true, width: "100px" },
         { id: "2", name: "Client ID", selector: (row) => row.sub_merchant_id, sortable: true },
         { id: "45", name: "Client Code", selector: (row) => row.client_code, sortable: true },
         { id: "3", name: "Merchant Name", selector: (row) => row.merchant_name, cell: (row) => <div className="removeWhiteSpace">{row?.merchant_name}</div> },
         { id: "4", name: "Settlement Account", selector: (row) => row.settlement_account },
-        { id: "5", name: "Date Of Onboarding", selector: (row) => DateFormatter(row.date_of_onboarding, false) }
+        { id: "5", name: "Date Of Onboarding", selector: (row) => DateFormatter(row.date_of_onboarding, false) },
+        {
+            id: "10",
+            name: "Action",
+            cell: (row) => (
+                <div>
+                    <button
+                        type="button"
+                        className="approve text-white cob-btn-primary btn-sm"
+                        onClick={() => docListModal(row)}
+                    >
+                        View Status
+                    </button>
+                </div>
+            ),
+        }
     ];
+
+    const modalBody = () => {
+        if (!modalContactData) {
+            return <div className="kyc-modal-body">No contact data available.</div>;
+        }
+
+        return (
+            <div className="kyc-modal-body">
+
+                <h6>Merchant Contact Info</h6>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Contact Person Name</th>
+                                <th>Contact Number</th>
+                                <th>Email ID</th>
+                                <th>Developer Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{kycData.name}</td>
+                                <td>{kycData.contactNumber}</td>
+                                <td>{kycData.emailId}</td>
+                                <td>{kycData?.developer_name}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <h6>Business Details</h6>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Business PAN</th>
+                                <th>Business PAN DOB/DOI</th>
+                                <th>Authorized Signatory PAN</th>
+                                <th>Auth Signatory  DOB/DOI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{kycData.panCard || 'N/A'}</td>
+                                <td>{kycData.pan_dob_or_doi || 'N/A'}</td>
+                                <td>{kycData.signatoryPAN || 'N/A'}</td>
+                                <td>{kycData.authorized_person_dob || 'N/A'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <h6>Bank Details</h6>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>IFSC Code</th>
+                                <th>Business Account Number</th>
+                                <th>Account Holder Name</th>
+                                <th>Account Type</th>
+                                <th>Bank Name</th>
+                                <th>Branch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{kycData.merchant_account_details?.ifsc_code || 'N/A'}</td>
+                                <td>{kycData.merchant_account_details?.account_number || 'N/A'}</td>
+                                <td>{kycData.merchant_account_details?.account_holder_name || 'N/A'}</td>
+                                <td>{kycData.merchant_account_details?.accountType || 'N/A'}</td>
+                                <td>{kycData.merchant_account_details?.bankName || 'N/A'}</td>
+                                <td>{kycData.merchant_account_details?.branch || 'N/A'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* You can add more sections here if needed */}
+            </div>
+        );
+    };
 
     return (
         <ReportLayout title="Merchant Detail List">
@@ -223,7 +346,6 @@ function MerchantDetailList() {
                                             onChange={() => {
                                                 setSearchType('clientCode');
                                                 formik.setFieldValue('searchType', 'clientCode');
-
                                             }}
                                         />
                                         <label className="form-check-label" htmlFor="clientCodeRadio">
@@ -377,6 +499,13 @@ function MerchantDetailList() {
                     <h6 className="text-center ">No Data Found</h6>
                 )}
             </section>
+
+            <CustomModal
+                headerTitle={"KYC Details"}
+                modalBody={modalBody}
+                modalToggle={modalToggle}
+                fnSetModalToggle={() => setModalToggle(false)}
+            />
         </ReportLayout>
     );
 }
