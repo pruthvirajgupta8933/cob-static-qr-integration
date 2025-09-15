@@ -105,6 +105,7 @@ const CommentModal = (props) => {
   const fileTypeCheck = (file) => {
     let ext = file.split(".").pop();
     const formats = ["pdf", "jpg", "jpeg", "png"];
+    ext = ext.toLowerCase();
     let htmlType = _.includes(formats, `${ext}`);
     if (!htmlType) {
       return false;

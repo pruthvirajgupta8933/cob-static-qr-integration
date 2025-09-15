@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import { successTxnSummary } from "../../../slices/dashboardSlice";
@@ -11,56 +11,49 @@ import toastConfig from "../../../utilities/toastTypes";
 import ReportLayout from "../../../_components/report_component/ReportLayout";
 import { Dashboardservice } from "../../../services/dashboard.service";
 import moment from "moment";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 
 function TransactionSummery() {
   const dispatch = useDispatch();
   const userRole = roleBasedAccess();
-  let currentDate = new Date().toLocaleDateString();
   const [dttype, setDttype] = useState("1");
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
-
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterState, setFilterState] = useState(null);
-  const [fromDate, setFromDate] = useState(currentDate);
-  const [toDate, setToDate] = useState(currentDate);
-  const { dashboard, auth, merchantReferralOnboardReducer } = useSelector(
+  const [fromDate, setFromDate] = useState(moment().toDate());
+  const [toDate, setToDate] = useState(moment().toDate());
+  const [localIsLoading, setLocalIsLoading] = useState(true);
+
+  const { auth, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
   const { refrerChiledList } = merchantReferralOnboardReducer;
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
-
-  const { isLoading, successTxnsumry } = dashboard;
-
+  const { successTxnsumry } = useSelector(state => state.dashboard);
   const { user } = auth;
-  let clientCodeArr = [];
 
-
-  let totalSuccessTxn = 0;
-  let totalAmt = 0;
-  let strClientCode,
-    clientCodeArrLength = "";
-
-  if (userRole.merchant !== true) {
-    const allClientCode = [];
-    clientCodeData
-      .filter(item => item.client_code)
-      .map((item) => {
-        allClientCode.push(item.client_code);
-      });
-    clientCodeArrLength = allClientCode.length?.toString();
-    strClientCode = allClientCode.join()?.toString();
-  } else {
-    strClientCode = user?.clientMerchantDetailsList[0]?.clientCode;
-    clientCodeArrLength = "1";
-  }
+  const [strClientCode, setStrClientCode] = useState("");
+  const [clientCodeArrLength, setClientCodeArrLength] = useState("");
 
   useEffect(() => {
+    if (userRole.merchant !== true) {
+      const allClientCode = clientCodeData
+        .filter((item) => item.client_code)
+        .map((item) => item.client_code);
+      setClientCodeArrLength(allClientCode.length?.toString());
+      setStrClientCode(allClientCode.join()?.toString());
+    } else {
+      setStrClientCode(user?.clientMerchantDetailsList[0]?.clientCode);
+      setClientCodeArrLength("1");
+    }
+  }, [userRole.merchant, clientCodeData, user]);
+
+  const fetchTransactionSummary = useCallback(() => {
     if (strClientCode) {
+      setLocalIsLoading(true);
       const objParam = {
         fromdate: moment(fromDate).format("YYYY-MM-DD"),
         todate: moment(toDate).format("YYYY-MM-DD"),
@@ -70,20 +63,83 @@ function TransactionSummery() {
         page: currentPage,
         length: pageSize,
       };
-      setFilterState(objParam);
-      if (dttype !== "6") dispatch(successTxnSummary(objParam));
+      dispatch(successTxnSummary(objParam));
     }
-  }, [dttype, strClientCode, currentPage, pageSize]);
+  }, [
+    dispatch,
+    strClientCode,
+    clientCodeArrLength,
+    fromDate,
+    toDate,
+    dttype,
+    currentPage,
+    pageSize,
+  ]);
 
-  if (clientCodeData !== null && clientCodeData?.length > 0) {
-    clientCodeArr = clientCodeData.map((item) => {
-      return item.client_code;
-    });
-  } else {
-    clientCodeArr = [user?.clientMerchantDetailsList[0]?.clientCode];
-  }
+  useEffect(() => {
+    fetchTransactionSummary();
+  }, [fetchTransactionSummary]);
 
-  const fetchData = () => {
+  useEffect(() => {
+    if (!successTxnsumry?.loading) {
+      setLocalIsLoading(false);
+    }
+  }, [successTxnsumry]);
+
+  const handleDropdownChange = (e) => {
+    const value = e.currentTarget.value;
+    setDttype(value);
+    setCurrentPage(1);
+
+    const today = moment();
+    let newFromDate, newToDate;
+
+    switch (value) {
+      case "1":
+        newFromDate = today.clone();
+        newToDate = today.clone();
+        break;
+      case "2":
+        newFromDate = today.clone().subtract(1, "days");
+        newToDate = today.clone().subtract(1, "days");
+        break;
+      case "3":
+        newFromDate = today.clone().subtract(6, "days");
+        newToDate = today.clone();
+        break;
+      case "4":
+        newFromDate = today.clone().startOf("month");
+        newToDate = today.clone().endOf("month");
+        break;
+      case "5":
+        newFromDate = today.clone().subtract(1, "month").startOf("month");
+        newToDate = today.clone().subtract(1, "month").endOf("month");
+        break;
+      case "6":
+        newFromDate = fromDate;
+        newToDate = toDate;
+        break;
+      default:
+        break;
+    }
+    setFromDate(newFromDate.toDate());
+    setToDate(newToDate.toDate());
+  };
+
+  const handleCustomDateChange = (update) => {
+    const [start, end] = update;
+    setFromDate(start);
+    setToDate(end);
+    if (start && end) {
+      setCurrentPage(1);
+      const diffDays = moment(end).diff(moment(start), "days");
+      if (diffDays > 30) {
+        toastConfig.errorToast("Maximum 31 days allowed");
+      }
+    }
+  };
+
+  useEffect(() => {
     const type = userRole.bank
       ? "bank"
       : userRole.referral
@@ -96,40 +152,26 @@ function TransactionSummery() {
       };
       dispatch(fetchChildDataList(postObj));
     }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [dispatch, userRole.bank, userRole.referral, auth?.user?.loginId]);
 
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
-    if (filterState) {
-      setFilterState((prev) => ({ ...prev, page: page }));
-    }
   };
 
   const changePageSize = (size) => {
     setPageSize(size);
     setCurrentPage(1);
-    if (filterState) {
-      setFilterState((prev) => ({ ...prev, length: size, page: 1 }));
-    }
   };
 
   useEffect(() => {
     if (successTxnsumry?.results?.length > 0) {
-      // let filterData = successTxnsumry?.results?.filter((txnsummery) => {
-      //   if (clientCodeArr.includes(txnsummery.client_code)) {
-
-      //     return clientCodeArr.includes(txnsummery.client_code);
-      //   }
-      // });
       SetTxnList(successTxnsumry?.results);
       SetShowData(successTxnsumry?.results);
+    } else {
+      SetTxnList([]);
+      SetShowData([]);
     }
   }, [successTxnsumry]);
-
 
   useEffect(() => {
     search !== ""
@@ -142,30 +184,15 @@ function TransactionSummery() {
         )
       )
       : SetShowData(txnList);
-  }, [search]);
-
-  useEffect(() => {
-    if (dttype === "6" && fromDate && toDate) {
-      if ((toDate - fromDate) / (24 * 3600 * 1000) > 31)
-        toastConfig.errorToast("Maximum 31 days allowed");
-      else {
-        const objParam = {
-          fromdate: moment(fromDate).format("YYYY-MM-DD"),
-          todate: moment(toDate).format("YYYY-MM-DD"),
-          dttype,
-          clientcodelst: strClientCode,
-          clientNo: clientCodeArrLength,
-        };
-        dispatch(successTxnSummary(objParam));
-      }
-    }
-  }, [fromDate, toDate]);
+  }, [search, txnList]);
 
   const handleChange = (e) => {
     SetSearch(e);
   };
 
-  showData.map((item) => {
+  let totalSuccessTxn = 0;
+  let totalAmt = 0;
+  showData.forEach((item) => {
     totalSuccessTxn += item.no_of_transaction;
     totalAmt += item.payeeamount;
   });
@@ -182,8 +209,10 @@ function TransactionSummery() {
     try {
       const response = await Dashboardservice.exportTxnSummaryData(objParam);
       if (response.status === 200) {
-        const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, `Transaction_Summary_${moment().format('YYYY-MM-DD')}.xlsx`);
+        const blob = new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        saveAs(blob, `Transaction_Summary_${moment().format("YYYY-MM-DD")}.xlsx`);
       }
     } catch (error) {
       console.error("Error exporting transaction summary:", error);
@@ -197,11 +226,9 @@ function TransactionSummery() {
         <select
           className="form-select"
           value={dttype}
-          onChange={(e) => setDttype(e.currentTarget.value)}
+          onChange={handleDropdownChange}
         >
-          <option defaultValue="selected" value="1">
-            Today
-          </option>
+          <option value="1">Today</option>
           <option value="2">Yesterday</option>
           <option value="3">Last 7 Days</option>
           <option value="4">Current Month</option>
@@ -222,13 +249,9 @@ function TransactionSummery() {
               selectsRange={true}
               startDate={fromDate}
               endDate={toDate}
-              onChange={(update) => {
-                const [start, end] = update;
-                setFromDate(start);
-                setToDate(end);
-              }}
+              onChange={handleCustomDateChange}
               dateFormat="dd-MM-yyyy"
-              maxDate={currentDate}
+              maxDate={new Date()}
               placeholderText="Select Date Range"
               className={`form-control rounded-0 p-0 date_picker ${classes.calendar} ${classes.calendar_input_border}`}
               showPopperArrow={false}
@@ -237,17 +260,19 @@ function TransactionSummery() {
           </div>
         </div>
       )}
-      {userRole.merchant !== true && <div className={`col-lg-3 ${dttype === "6" && "mt-4"}`}>
-        <input
-          type="text"
-          className="form-control "
-          onChange={(e) => {
-            handleChange(e.currentTarget.value);
-          }}
-          placeholder="Search from here"
-        />
-      </div>}
-      {txnList.length > 0 && !isLoading ? (
+      {userRole.merchant !== true && (
+        <div className={`col-lg-3 ${dttype === "6" && "mt-4"}`}>
+          <input
+            type="text"
+            className="form-control"
+            onChange={(e) => {
+              handleChange(e.currentTarget.value);
+            }}
+            placeholder="Search from here"
+          />
+        </div>
+      )}
+      {txnList.length > 0 && !localIsLoading ? (
         <div className={`col-md-3 ${dttype === "6" && "mt-4"}`}>
           <button
             className="btn cob-btn-primary text-white btn-sm"
@@ -299,39 +324,39 @@ function TransactionSummery() {
     {
       id: "5",
       name: "Amount",
-      cell: (row) => (
-        <div>Rs {Number.parseFloat(row.payeeamount).toFixed(2)}</div>
-      ),
+      cell: (row) => <div>Rs {Number.parseFloat(row.payeeamount).toFixed(2)}</div>,
       sortable: true,
     },
   ];
   return (
     <section className="">
       <main>
-        {<ReportLayout
-          type="txnSummary"
-          title="Transaction Summary"
-          data={showData}
-          rowData={rowData}
-          form={form}
-          dataSummary={[
-            {
-              name: "Total Settlement Amount (INR)",
-              value: successTxnsumry?.total_settlement_amount
-            },
-            {
-              name: "Total GMV ",
-              value: successTxnsumry?.total_gmv
-            },
-          ]}
-          loadingState={isLoading}
-          dynamicPagination={true}
-          page_size={pageSize}
-          dataCount={successTxnsumry?.count}
-          current_page={currentPage}
-          change_currentPage={changeCurrentPage}
-          change_pageSize={changePageSize}
-        />}
+        {
+          <ReportLayout
+            type="txnSummary"
+            title="Transaction Summary"
+            data={showData}
+            rowData={rowData}
+            form={form}
+            dataSummary={[
+              {
+                name: "Total Settlement Amount (INR)",
+                value: successTxnsumry?.total_settlement_amount,
+              },
+              {
+                name: "Total GMV ",
+                value: successTxnsumry?.total_gmv,
+              },
+            ]}
+            loadingState={localIsLoading}
+            dynamicPagination={true}
+            page_size={pageSize}
+            dataCount={successTxnsumry?.count}
+            current_page={currentPage}
+            change_currentPage={changeCurrentPage}
+            change_pageSize={changePageSize}
+          />
+        }
       </main>
     </section>
   );
