@@ -1,0 +1,83 @@
+.bulk-qr-generator {
+    padding: 20px;
+}
+
+.bulk-qr-generator h2 {
+    color: #333;
+    font-weight: 600;
+}
+
+.bulk-qr-generator .card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.bulk-qr-generator .card-title {
+    color: #2c5282;
+    font-weight: 500;
+}
+
+.bulk-qr-generator .btn-group {
+    gap: 10px;
+}
+
+.bulk-qr-generator .progress {
+    height: 25px;
+    background-color: #f0f0f0;
+}
+
+.bulk-qr-generator .progress-bar {
+    background-color: #007bff;
+    font-weight: 600;
+}
+
+.bulk-qr-generator .table {
+    margin-bottom: 0;
+}
+
+.bulk-qr-generator .table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.bulk-qr-generator .badge {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.bulk-qr-generator .badge-success {
+    background-color: #28a745;
+}
+
+.bulk-qr-generator .badge-danger {
+    background-color: #dc3545;
+}
+
+.bulk-qr-generator .modal-content {
+    border-radius: 8px;
+}
+
+.bulk-qr-generator .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.bulk-qr-generator .alert {
+    border-radius: 6px;
+}
+
+.bulk-qr-generator .btn-lg {
+    padding: 12px 24px;
+}
+
+/* Loading animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.bulk-qr-generator .fa-spinner {
+    animation: spin 1s linear infinite;
+}

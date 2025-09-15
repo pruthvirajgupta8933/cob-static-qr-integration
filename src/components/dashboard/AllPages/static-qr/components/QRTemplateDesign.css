@@ -1,0 +1,110 @@
+.qr-template-container {
+    width: 100%;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.qr-template-canvas {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.qr-template-canvas:hover {
+    transform: scale(1.02);
+}
+
+/* Download button styles */
+.template-download-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+.template-download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.template-download-btn:active {
+    transform: translateY(0);
+}
+
+/* Template options */
+.template-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.template-option {
+    flex: 1;
+    min-width: 120px;
+    padding: 8px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.template-option:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+}
+
+.template-option.active {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+/* Live preview label */
+.live-preview-label {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .qr-template-canvas {
+        max-width: 100%;
+    }
+    
+    .template-options {
+        flex-direction: column;
+    }
+    
+    .template-option {
+        width: 100%;
+    }
+}

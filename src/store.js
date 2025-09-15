@@ -62,6 +62,7 @@ import { updateSettlementApiSliceReducer } from "./slices/subscription-slice/upd
 import { superAdminSliceReducer } from "./slices/super-admin-slice/superAdminSlice";
 import clientCodeTransform from "./utilities/ClientCodeTransForm";
 import { commonPersistSliceReducer } from "./slices/persist-slice/persistSlice";
+import sabqrReducer from "./slices/sabqr/sabqrSlice";
 
 const reducer = {
   auth: authReducer,
@@ -131,7 +132,10 @@ const reducer = {
 
   ///super admin slice
   superAdminSliceReducer: superAdminSliceReducer,
-  commonPersistReducer: commonPersistSliceReducer
+  commonPersistReducer: commonPersistSliceReducer,
+  
+  // Static QR Module
+  sabqr: sabqrReducer
 
 };
 

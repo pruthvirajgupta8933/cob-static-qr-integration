@@ -29,6 +29,8 @@
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "pg-test-project": "^4.0.9",
+    "qrcode": "^1.5.3",
+    "crypto-js": "^4.2.0",
     "react": "^17.0.2",
     "react-calendar": "^5.1.0",
     "react-charts": "^2.0.0-beta.7",
