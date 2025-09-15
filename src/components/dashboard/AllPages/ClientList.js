@@ -239,7 +239,7 @@ function ClientList() {
         <div>
           <button
             type="button"
-            className="approve text-white  cob-btn-primary   btn-sm"
+            className="approve text-white cob-btn-primary  btn-sm"
             data-toggle="modal"
             onClick={() => docListModal(row)}
           >

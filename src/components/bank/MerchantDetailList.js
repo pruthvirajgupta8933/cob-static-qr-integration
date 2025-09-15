@@ -22,8 +22,8 @@ function MerchantDetailList() {
     const [showData, setShowData] = useState([]);
     const [formValues, setFormValues] = useState({});
     const [searchType, setSearchType] = useState('clientCode');
-    // New state variable to trigger useEffect on every search click
     const [searchTrigger, setSearchTrigger] = useState(0);
+    const [shouldFetchChildData, setShouldFetchChildData] = useState(true);
 
     const { auth, bankDashboardReducer, commonPersistReducer } = useSelector((state) => state);
     const { refrerChiledList } = commonPersistReducer;
@@ -82,7 +82,7 @@ function MerchantDetailList() {
     const FIVE_MINUTES = 5 * 60 * 1000;
 
     useEffect(() => {
-        if (!auth?.user?.loginId) return;
+        if (!auth?.user?.loginId || !shouldFetchChildData) return;
 
         const fetchData = () => {
             dispatch(fetchChildDataList({
@@ -91,19 +91,22 @@ function MerchantDetailList() {
             }));
         };
 
-        if (!clientCodeData || clientCodeData.length === 0) {
+        if (clientCodeData.length === 0) {
             fetchData();
             const interval = setInterval(() => {
-                if (!clientCodeData || clientCodeData.length === 0) {
+                if (clientCodeData.length === 0) {
                     fetchData();
                 } else {
                     clearInterval(interval);
+                    setShouldFetchChildData(false);
                 }
             }, FIVE_MINUTES);
 
             return () => clearInterval(interval);
+        } else {
+            setShouldFetchChildData(false);
         }
-    }, [dispatch, auth?.user?.loginId, clientCodeData]);
+    }, [dispatch, auth?.user?.loginId, clientCodeData.length, shouldFetchChildData]);
 
     const fetchReportData = async (objData, page, size) => {
         let paramData = {};
@@ -129,14 +132,14 @@ function MerchantDetailList() {
         setFormValues(values);
         setPageSize(10);
         setCurrentPage(1);
-        setSearchTrigger(prev => prev + 1); // Increment to force useEffect
+        setSearchTrigger(prev => prev + 1);
     };
 
     useEffect(() => {
         if (formValues && Object.keys(formValues).length !== 0) {
             fetchReportData(formValues, currentPage, pageSize);
         }
-    }, [pageSize, currentPage, searchTrigger]); // Added searchTrigger to dependency array
+    }, [pageSize, currentPage, searchTrigger, formValues]);
 
     useEffect(() => {
         if (searchText !== "") {
@@ -220,6 +223,7 @@ function MerchantDetailList() {
                                             onChange={() => {
                                                 setSearchType('clientCode');
                                                 formik.setFieldValue('searchType', 'clientCode');
+
                                             }}
                                         />
                                         <label className="form-check-label" htmlFor="clientCodeRadio">
@@ -275,7 +279,6 @@ function MerchantDetailList() {
                                             className="form-control rounded-0 p-0"
                                             required={true}
                                             errorMsg={formik.errors["fromDate"]}
-                                            // Add tooltip here
                                             tooltipText="Onboarded Date"
                                         />
                                     </div>
@@ -292,7 +295,6 @@ function MerchantDetailList() {
                                             className="form-control rounded-0 p-0"
                                             required={true}
                                             errorMsg={formik.errors["endDate"]}
-                                            // Add tooltip here
                                             tooltipText="Onboarded Date"
                                         />
                                     </div>
