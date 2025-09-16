@@ -552,6 +552,20 @@ const TransactionHistory = () => {
         ),
       width: "95px",
     },
+
+    {
+      id: "1226",
+      name: "Client ID",
+      selector: (row) => row.client_id,
+      width: "120px",
+    },
+
+    {
+      id: "1229",
+      name: "Client Code",
+      selector: (row) => row.client_code,
+      width: "120px",
+    },
     {
       id: "1232",
       name: "RRN / UTR",
