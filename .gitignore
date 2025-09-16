@@ -50,3 +50,19 @@ service-account-credentials.json
 yarn.lock
 .gitignore
 package-lock.json
+# Environment Variables
+.env
+.env.*
+!.env.example
+!.env.sample
+*.env
+backend/.env
+
+# Sensitive files
+*secret*
+*key*
+*password*
+*credential*
+
+# GitHub workflows (add back when needed)
+.github/workflows/*.yml
