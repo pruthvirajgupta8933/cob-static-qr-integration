@@ -200,14 +200,14 @@ function MerchantDetailList() {
 
     const docListModal = (row) => {
         setSelectedId(row?.login_id);
-        // Dispatch kycUserList only if it's necessary for other parts of the modal
-        dispatch(kycUserList({ login_id: row?.login_id, }));
 
-        // Set the contact data from the row to the new state
+        dispatch(kycUserList({ login_id: row?.login_id, masking: 1 }));
+
+
         setModalContactData({
-            contactPersonName: row?.contact_person_name || 'N/A', // Assuming a contact_person_name field exists
-            contactNumber: row?.contact_number || 'N/A', // Assuming a contact_number field exists
-            emailId: row?.email_id || 'N/A', // Assuming an email_id field exists
+            contactPersonName: row?.contact_person_name || 'N/A',
+            contactNumber: row?.contact_number || 'N/A',
+            emailId: row?.email_id || 'N/A',
         });
 
         setModalToggle(true);
