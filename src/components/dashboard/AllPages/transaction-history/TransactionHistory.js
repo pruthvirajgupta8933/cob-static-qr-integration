@@ -9,10 +9,9 @@ import {
   clearTransactionHistory,
   fetchTransactionHistoryDetailSlice,
   fetchTransactionHistorySlice,
-
-
+  fetchPayModeList,
+  fetchPayStatusList,
 } from "../../../../slices/dashboardSlice";
-import { fetchPayStatusList, fetchPayModeList, } from "../../../../slices/persist-slice/persistSlice";
 import API_URL from "../../../../config";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
@@ -21,8 +20,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import classes from "../allpage.module.css";
-// import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
-import { fetchChildDataList } from "../../../../slices/persist-slice/persistSlice";
+import { fetchChildDataList } from "../../../../slices/approver-dashboard/merchantReferralOnboardSlice";
 import TransactionRefund from "./TransactionRefund";
 import ExportTransactionHistory from "./ExportTransactionHistory";
 import TransactionDetailModal from "./TransactionDetailModal";
@@ -39,16 +37,12 @@ const TransactionHistory = () => {
   const history = useHistory();
   const roles = roleBasedAccess();
 
-  const { auth, dashboard, commonPersistReducer } = useSelector(
+  const { auth, dashboard, merchantReferralOnboardReducer } = useSelector(
     (state) => state
   );
-  const { transactionHistory } = dashboard;
-
-  const { payStatus, paymode } = useSelector((state) => state.commonPersistReducer);
-
-
+  const { paymode, payStatus, transactionHistory } = dashboard;
   const { user } = auth;
-  const { refrerChiledList } = commonPersistReducer;
+  const { refrerChiledList } = merchantReferralOnboardReducer;
 
   const clientCodeData = refrerChiledList?.resp?.results ?? [];
 
@@ -56,6 +50,8 @@ const TransactionHistory = () => {
   const [payloadSearchText, setPayloadSearchText] = useState("");
   const [isSearchButtonClicked, setIsSearchButtonClicked] = useState(false);
   const [pageSize, setPageSize] = useState(10);
+  const [totalGmv, setTotalGmv] = useState(0)
+
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredTransactionData, setFilteredTransactionData] = useState([]);
   const [selectedClientCodeList, setSelectedClientCodeList] = useState([]);
@@ -73,7 +69,6 @@ const TransactionHistory = () => {
   const [duration, setDuration] = useState("today");
   const [isExportReportLoading, setIsExportReportLoading] = useState(false);
   const [transactionCount, setTransactionCount] = useState(0);
-  const [totalGmv, setTotalGmv] = useState(0)
   const [loadingState, setLoadingState] = useState(false);
 
   const durationOptions = [
@@ -148,33 +143,25 @@ const TransactionHistory = () => {
     if (roles?.merchant === true) {
       fnKey = "clientCode";
       fnVal = "clientName";
-      clientCodeListForConversion = user?.clientMerchantDetailsList || [];
+      clientCodeListForConversion = user?.clientMerchantDetailsList;
     } else {
       fnKey = "client_code";
       fnVal = "name";
-      clientCodeListForConversion = clientCodeData || [];
+      clientCodeListForConversion = clientCodeData;
     }
-
-    //  Filter out records where client_code/clientCode is null/empty/undefined
-    const filteredList = clientCodeListForConversion.filter(
-      (item) => item?.[fnKey] !== null && item?.[fnKey] !== undefined && item?.[fnKey] !== ""
-    );
-
     const convertedOptions = convertToFormikSelectJson(
       fnKey,
       fnVal,
-      filteredList,
+      clientCodeListForConversion,
       extraDataObj,
       isExtraDataRequired,
       true
     );
-
     return {
       clientCodeOption: convertedOptions,
-      processedClientCodeList: filteredList,
+      processedClientCodeList: clientCodeListForConversion,
     };
   }, [clientCodeData, roles, user]);
-
 
   useEffect(() => {
     setSelectedClientCodeList(processedClientCodeList);
@@ -565,6 +552,20 @@ const TransactionHistory = () => {
         ),
       width: "95px",
     },
+
+    {
+      id: "1226",
+      name: "Client ID",
+      selector: (row) => row.client_id,
+      width: "120px",
+    },
+
+    {
+      id: "1229",
+      name: "Client Code",
+      selector: (row) => row.client_code,
+      width: "120px",
+    },
     {
       id: "1232",
       name: "RRN / UTR",
@@ -593,22 +594,8 @@ const TransactionHistory = () => {
       ),
       width: "150px",
     },
-
     {
-      id: "8",
-      name: "Client ID",
-      selector: (row) => row.client_id || "NA",
-      width: "120px",
-    },
-
-    {
-      id: "89",
-      name: "Client Code",
-      selector: (row) => row.client_code,
-      width: "120px",
-    },
-    {
-      id: "10",
+      id: "3",
       name: "Client Transaction ID",
       selector: (row) => row.client_txn_id,
       cell: (row) => (
@@ -877,6 +864,7 @@ const TransactionHistory = () => {
         <main>
           <div className="container p-0 ">
             <div className="scroll overflow-auto">
+
               {transactionCount > 0 && (
                 <p className="mt-2 d-inline me-2">
                   Total Count : {transactionCount}
@@ -890,7 +878,6 @@ const TransactionHistory = () => {
                   Total GMV : {totalGmv}
                 </p>
               )}
-
 
 
               <Table
